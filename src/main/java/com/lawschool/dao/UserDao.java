@@ -10,5 +10,6 @@ public interface UserDao {
 	
 	public List<User> selectAllUsers();
 	
-	public void addUser(User user);
+	//public void addUser(User user);
+	
 }

@@ -19,8 +19,4 @@
         SELECT * FROM LAW_USER1
     </select>
     
-    <!-- 新增 -->
-    <select id="addUser"  resultMap="BaseResultMap">
-        insert into LAW_USER1(ID,LOGIN_NAME,USER_PASSWORD) values(#{userId},#{loginName},#{userPassword})
-    </select>
 </mapper>

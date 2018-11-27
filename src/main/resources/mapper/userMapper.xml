@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lawschool.dao.UserDao">
 <!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->
@@ -19,8 +19,4 @@
         SELECT * FROM LAW_USER1
     </select>
     
-    <!-- 新增 -->
-    <select id="addUser" parameterType="BaseResultMap">
-        insert into LAW_USER1(ID,LOGIN_NAME,USER_PASSWORD) values(#{userId},#{loginName},#{userPassword})
-    </select>
 </mapper>
