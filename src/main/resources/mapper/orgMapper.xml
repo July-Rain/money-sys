@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.OrgDao">
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.Org">
+     <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="ADD_TIME" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="ADD_USER" jdbcType="VARCHAR" property="addUser" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+    <result column="DICTIONARY_NAME" jdbcType="VARCHAR" property="dictionaryName" />
+    <result column="FULL_NAME" jdbcType="VARCHAR" property="fullName" />
+    <result column="OLD_ORG_CODE" jdbcType="VARCHAR" property="oldOrgCode" />
+    <result column="ORDERCODE" jdbcType="VARCHAR" property="ordercode" />
+    <result column="ORG_CODE" jdbcType="VARCHAR" property="orgCode" />
+    <result column="ORG_ENDDATE" jdbcType="TIMESTAMP" property="orgEnddate" />
+    <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
+    <result column="ORG_INDATE" jdbcType="TIMESTAMP" property="orgIndate" />
+    <result column="ORG_LEVEL" jdbcType="DECIMAL" property="orgLevel" />
+    <result column="ORG_NAME" jdbcType="VARCHAR" property="orgName" />
+    <result column="ORG_SHORTNAME" jdbcType="VARCHAR" property="orgShortname" />
+    <result column="ORG_STARTDATE" jdbcType="TIMESTAMP" property="orgStartdate" />
+    <result column="ORG_STATUS" jdbcType="DECIMAL" property="orgStatus" />
+    <result column="ORG_TYPE" jdbcType="DECIMAL" property="orgType" />
+    <result column="OTHER_NAME" jdbcType="VARCHAR" property="otherName" />
+    <result column="PARENT_CODE" jdbcType="VARCHAR" property="parentCode" />
+    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+    <result column="SYN_FLAG" jdbcType="DECIMAL" property="synFlag" />
+    <result column="LOCAL_ORG_CODE" jdbcType="VARCHAR" property="localOrgCode" />
+    <result column="LOCAL_ORG_NAME" jdbcType="VARCHAR" property="localOrgName" />
+    <result column="LOCAL_PARENT_ORG_ID" jdbcType="VARCHAR" property="localParentOrgId" />
+    <result column="LOCAL_ORG_TYPE" jdbcType="VARCHAR" property="localOrgType" />
+    <result column="LOCAL_POLICE_TYPE" jdbcType="VARCHAR" property="localPoliceType" />
+   	<collection property="user" ofType="com.lawschool.beans.User" column="pid">
+		<id column="o_id" property="id"/>
+		<result column="price" property="price"/>
+	</collection>
+  </resultMap>
+  <insert id="insert" parameterType="com.lawschool.beans.Org">
+    insert into LAW_ORG (ID, ADD_TIME, ADD_USER, 
+      UPDATE_TIME, UPDATE_USER, DICTIONARY_NAME, 
+      FULL_NAME, OLD_ORG_CODE, ORDERCODE, 
+      ORG_CODE, ORG_ENDDATE, ORG_ID, 
+      ORG_INDATE, ORG_LEVEL, ORG_NAME, 
+      ORG_SHORTNAME, ORG_STARTDATE, ORG_STATUS, 
+      ORG_TYPE, OTHER_NAME, PARENT_CODE, 
+      PARENT_ID, SYN_FLAG, LOCAL_ORG_CODE, 
+      LOCAL_ORG_NAME, LOCAL_PARENT_ORG_ID, LOCAL_ORG_TYPE, 
+      LOCAL_POLICE_TYPE)
+    values (#{id,jdbcType=DECIMAL}, #{addTime,jdbcType=TIMESTAMP}, #{addUser,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{dictionaryName,jdbcType=VARCHAR}, 
+      #{fullName,jdbcType=VARCHAR}, #{oldOrgCode,jdbcType=VARCHAR}, #{ordercode,jdbcType=VARCHAR}, 
+      #{orgCode,jdbcType=VARCHAR}, #{orgEnddate,jdbcType=TIMESTAMP}, #{orgId,jdbcType=VARCHAR}, 
+      #{orgIndate,jdbcType=TIMESTAMP}, #{orgLevel,jdbcType=DECIMAL}, #{orgName,jdbcType=VARCHAR}, 
+      #{orgShortname,jdbcType=VARCHAR}, #{orgStartdate,jdbcType=TIMESTAMP}, #{orgStatus,jdbcType=DECIMAL}, 
+      #{orgType,jdbcType=DECIMAL}, #{otherName,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=VARCHAR}, #{synFlag,jdbcType=DECIMAL}, #{localOrgCode,jdbcType=VARCHAR}, 
+      #{localOrgName,jdbcType=VARCHAR}, #{localParentOrgId,jdbcType=VARCHAR}, #{localOrgType,jdbcType=VARCHAR}, 
+      #{localPoliceType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lawschool.beans.Org">
+    insert into LAW_ORG
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="addTime != null">
+        ADD_TIME,
+      </if>
+      <if test="addUser != null">
+        ADD_USER,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER,
+      </if>
+      <if test="dictionaryName != null">
+        DICTIONARY_NAME,
+      </if>
+      <if test="fullName != null">
+        FULL_NAME,
+      </if>
+      <if test="oldOrgCode != null">
+        OLD_ORG_CODE,
+      </if>
+      <if test="ordercode != null">
+        ORDERCODE,
+      </if>
+      <if test="orgCode != null">
+        ORG_CODE,
+      </if>
+      <if test="orgEnddate != null">
+        ORG_ENDDATE,
+      </if>
+      <if test="orgId != null">
+        ORG_ID,
+      </if>
+      <if test="orgIndate != null">
+        ORG_INDATE,
+      </if>
+      <if test="orgLevel != null">
+        ORG_LEVEL,
+      </if>
+      <if test="orgName != null">
+        ORG_NAME,
+      </if>
+      <if test="orgShortname != null">
+        ORG_SHORTNAME,
+      </if>
+      <if test="orgStartdate != null">
+        ORG_STARTDATE,
+      </if>
+      <if test="orgStatus != null">
+        ORG_STATUS,
+      </if>
+      <if test="orgType != null">
+        ORG_TYPE,
+      </if>
+      <if test="otherName != null">
+        OTHER_NAME,
+      </if>
+      <if test="parentCode != null">
+        PARENT_CODE,
+      </if>
+      <if test="parentId != null">
+        PARENT_ID,
+      </if>
+      <if test="synFlag != null">
+        SYN_FLAG,
+      </if>
+      <if test="localOrgCode != null">
+        LOCAL_ORG_CODE,
+      </if>
+      <if test="localOrgName != null">
+        LOCAL_ORG_NAME,
+      </if>
+      <if test="localParentOrgId != null">
+        LOCAL_PARENT_ORG_ID,
+      </if>
+      <if test="localOrgType != null">
+        LOCAL_ORG_TYPE,
+      </if>
+      <if test="localPoliceType != null">
+        LOCAL_POLICE_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null">
+        #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="dictionaryName != null">
+        #{dictionaryName,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null">
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="oldOrgCode != null">
+        #{oldOrgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ordercode != null">
+        #{ordercode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null">
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgEnddate != null">
+        #{orgEnddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgIndate != null">
+        #{orgIndate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orgLevel != null">
+        #{orgLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="orgName != null">
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgShortname != null">
+        #{orgShortname,jdbcType=VARCHAR},
+      </if>
+      <if test="orgStartdate != null">
+        #{orgStartdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orgStatus != null">
+        #{orgStatus,jdbcType=DECIMAL},
+      </if>
+      <if test="orgType != null">
+        #{orgType,jdbcType=DECIMAL},
+      </if>
+      <if test="otherName != null">
+        #{otherName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null">
+        #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="synFlag != null">
+        #{synFlag,jdbcType=DECIMAL},
+      </if>
+      <if test="localOrgCode != null">
+        #{localOrgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="localOrgName != null">
+        #{localOrgName,jdbcType=VARCHAR},
+      </if>
+      <if test="localParentOrgId != null">
+        #{localParentOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="localOrgType != null">
+        #{localOrgType,jdbcType=VARCHAR},
+      </if>
+      <if test="localPoliceType != null">
+        #{localPoliceType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="selectOrgById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  	select * from LAW_ORG where id = #{orgId}
+  </select>
+  
+  <select id="selectAllOrg" resultMap="BaseResultMap">
+  	select * from LAW_ORG
+  </select>
+  
+  <select id="findOrgByParentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  	select * from LAW_ORG START WITH ORG_ID=#{orgId} CONNECT by PRIOR ORG_ID = PARENT_ID
+  </select>
+  
+
+</mapper>
