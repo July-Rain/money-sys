@@ -9,7 +9,7 @@
   		<plugin>
   			<artifactId>maven-war-plugin</artifactId>
   			<configuration>
-  				<version>3.0</version>
+  				<!--<version>3.0</version>-->
   			</configuration>
   		</plugin>
   	</plugins>
@@ -40,6 +40,12 @@
         <junit.version>4.10</junit.version>
         <!-- mybatis版本号 -->
         <mybatis.version>3.2.1</mybatis.version>
+       <commons.lang.version>3.7</commons.lang.version>
+       <commons.fileupload.version>1.3.3</commons.fileupload.version>
+       <commons.io.version>2.6</commons.io.version>
+       <commons.codec.version>1.11</commons.codec.version>
+       <commons.configuration.version>1.10</commons.configuration.version>
+       <fastjson.version>1.2.46</fastjson.version>
     </properties>
 
     <dependencies>
@@ -170,7 +176,39 @@
 			<version>6.0</version>
 			<scope>provided</scope>
 		</dependency>
-		
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons.lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons.fileupload.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons.codec.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+
+
     </dependencies>
   
   
