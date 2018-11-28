@@ -72,8 +72,7 @@ public class UserServiceImpl implements UserService {
             }
             return -2;//密码错误
         }
-        return -1;//用户不存在
-
+        return -1;//用户不存在s
     }
 
     @Override
