@@ -26,7 +26,7 @@ public class UserServiceTest extends SpringTestCase {
        System.out.println("count:    "+users.size());
        
        User u=new User();
-       u.setUserId(4);
+       u.setUserId(566);
        u.setLoginName("test4");
        u.setUserPassword("444444");
        
