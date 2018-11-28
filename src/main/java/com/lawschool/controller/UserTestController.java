@@ -2,24 +2,24 @@ package com.lawschool.controller;
 
 import javax.annotation.Resource;
 
+import com.lawschool.beans.UserTest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.lawschool.beans.User;
-import com.lawschool.service.UserService;
+import com.lawschool.service.UserTestService;
 
 @Controller
-public class UserController {
+public class UserTestController {
 	
 	@Resource
-	private UserService userService;
+	private UserTestService userService;
 	
 	@RequestMapping("/")
 	public ModelAndView getIndex(){
 		
 		ModelAndView mav=new ModelAndView("index");
-		User user=userService.selectUserById(1);
+		UserTest user=userService.selectUserById(1);
 		mav.addObject("user",user);
 		return mav;
 	}
