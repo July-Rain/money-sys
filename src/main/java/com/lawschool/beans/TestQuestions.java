@@ -1,57 +1,67 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ *
+ * @Descriptin  试题库
+ * @author      zjw
+ * @version     v1.0
+ * @Time        2018/11/29
+ *
+ */
 @TableName("LAW_TESTQUESTIONS")
 public class TestQuestions {
     @TableId
-    private String id;
+    private String id;//id
 
-    private String typeId;
+    private String typeId;//类型  对应字典表
 
-    private String comContent;
+    private String comContent;//内容
 
-    private String questionDifficulty;
+    private String questionDifficulty;//难度   低/中/高
 
-    private String questionType;
+    private String questionType;//提醒  选择题，判断
 
-    private Short answerChoiceNumber;
+    private Short answerChoiceNumber;//答案个数
 
-    private String answerId;
+    private String answerId;//正确答案的id
 
-    private String specialKnowledgeId;
+    private String specialKnowledgeId;//专项知识id   对应专项知识库
 
-    private String policeClassification;
+    private String policeClassification;//警种
 
-    private String legalBasis;
+    private String legalBasis;//法律依据
 
-    private String answerDescrible;
+    private String answerDescrible;//答案描述
 
-    private BigDecimal releaseStatus;
+    private BigDecimal releaseStatus;//发布状态
 
-    private BigDecimal disableStatus;
+    private BigDecimal disableStatus;//删除状态
 
-    private String stuIssuer;
+    private String stuIssuer;//发布人
 
-    private String stuIssdepartment;
+    private String stuIssdepartment;//发布单位
 
-    private Date stuIsstim;
+    private Date stuIsstim;//发布时间
 
-    private String optuser;
+    private String optuser;//操作人员
 
-    private Date opttime;
+    private Date opttime;//操作时间
 
-    private String stuOptdepartment;
+    private String stuOptdepartment;//使用单位
 
-    private BigDecimal useNumber;
+    private BigDecimal useNumber;//使用次数
 
-    private BigDecimal rigthNumber;
+    private BigDecimal rigthNumber;//正确次数
 
-    private String collectId;
+    @TableField(exist = false)
+    private String collectId;//收藏id
 
     public String getId() {
         return id;

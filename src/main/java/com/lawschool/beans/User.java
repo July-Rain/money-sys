@@ -7,63 +7,71 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+/**
+ *
+ * @Descriptin  系统用户
+ * @author      zjw
+ * @version     v1.0
+ * @Time        2018/11/28
+ *
+ */
 @TableName("law_user")
 public class User {
-    private String id;
+    private String id;//id
 
-    private Date addTime;
+    private Date addTime;//添加时间
 
-    private String addUser;
+    private String addUser;//不用
 
-    private Date updateTime;
+    private Date updateTime;//更细时间
 
-    private String updateUser;
+    private String updateUser;//不用
 
-    private String fullName;
+    private String fullName;//用户全名
 
-    private String orgCode;
+    private String orgCode;//部门code
 
-    private Short synFlag;
+    private Short synFlag;//是否同步
 
-    private String userCode;
+    private String userCode;//用户code
 
-    private String userId;
+    private String userId;//用户id
 
-    private Date userIndate;
+    private Date userIndate;//用户注册时间
 
     private Integer userJob;
 
     private Integer userJobLevel;
 
-    private String userMobileLong;
+    private String userMobileLong;//用户电话
 
-    private String userMobileShort;
+    private String userMobileShort;//用户电话
 
-    private String userName;
+    private String userName;//用户名字
 
     private Date userOverdate;
 
     private Integer userPartType;
 
-    private String userPoliceId;
+    private String userPoliceId;//行政号
 
-    private Integer userPoliceType;
+    private Integer userPoliceType;//行政类型
 
     private Integer userQuater;
 
-    private Integer userSex;
+    private Integer userSex;//性别
 
     private Date userStartdate;
 
-    private Integer userStatus;
+    private Integer userStatus;//用户状态
 
-    private Integer userType;
+    private Integer userType;//类型
 
-    private String password;
+    private String password;//密码
 
-    private String salt;
+    private String salt;//盐
 
-    private Long sort;
+    private Long sort;//排序号
 
     private BigDecimal corrosionFile;
 
@@ -83,7 +91,7 @@ public class User {
 
     private String middleRequiredType;
 
-    private BigDecimal photo;
+    private BigDecimal photo;//照片
 
     private Date workPoliceTime;
 
@@ -91,15 +99,15 @@ public class User {
 
     private String roles;
 
-    private Date quaStartTime;
+    private Date quaStartTime;//有效期开始
 
-    private Date quaEndTime;
+    private Date quaEndTime;//有效期借宿
 
-    private Date birthday;
+    private Date birthday;//生日
 
-    private String localOrgCode;
+    private String localOrgCode;//本地部门编号
 
-    private String isOnline;
+    private String isOnline;//是否在线
 
     @TableField(exist = false) //数据权限
     private List<String> orgDataAuth;

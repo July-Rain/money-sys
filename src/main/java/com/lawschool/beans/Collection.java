@@ -4,21 +4,29 @@ import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.util.Date;
 
+/**
+ *
+ * @Descriptin  收藏表
+ * @author      zjw
+ * @version     v1.0
+ * @Time        2018/11/29
+ *
+ */
 @TableName("LAW_COLLECTION")
 public class Collection {
-    private String id;
+    private String id;//id
 
-    private String comStucode;
+    private String comStucode;//课件code   对应  Stu_Media /  TestQuestion 的id
 
-    private String comUserid;
+    private String comUserid;//用户id
 
-    private String optuser;
+    private String optuser;//用户名字
 
-    private Date opttime;
+    private Date opttime;//操作时间
 
-    private Short type;
+    private Short type;//类型  10-课程 20-试卷
 
-    private Short delStatus ;
+    private Short delStatus ;//状态
 
     public String getId() {
         return id;
