@@ -1,5 +1,7 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
 import java.util.List;
 /**
@@ -14,7 +16,7 @@ import java.util.List;
 /**
  * 闯关配置
  */
-
+@TableName("LAW_RECRUIT_CONFIGURATION")
 public class RecruitConfiguration implements Serializable {
 	//id主键
 	private String id;

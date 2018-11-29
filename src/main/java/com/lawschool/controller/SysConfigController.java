@@ -1,6 +1,7 @@
 package com.lawschool.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.lawschool.annotation.SysLog;
 import com.lawschool.beans.SysConfig;
 import com.lawschool.service.SysConfigService;
 import com.lawschool.util.Result;
@@ -26,10 +27,11 @@ public class SysConfigController {
     @Autowired
     private SysConfigService configService;
 
+    @SysLog("查询配置")
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params){
         SysConfig config = new SysConfig();
-        config.setId(1);
+        config.setId("1");
         return Result.ok().put("data", configService.queryConfig(config));
     }
 

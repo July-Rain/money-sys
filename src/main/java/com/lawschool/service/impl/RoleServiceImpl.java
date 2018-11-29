@@ -91,7 +91,7 @@ public class RoleServiceImpl implements RoleService {
      * 删除角色
      */
     @Override
-    public void deleteById(Integer roleId) {
+    public void deleteById(String roleId) {
         roleMapper.deleteRoleById(roleId);
         //删除角色对应的相关权限
         authService.deleteAuth(roleId.toString());
@@ -111,7 +111,7 @@ public class RoleServiceImpl implements RoleService {
      * 查找角色
      */
     @Override
-    public Role findByRoleId(Integer roleId) {
+    public Role findByRoleId(String roleId) {
         return roleMapper.selectRoleById(roleId);
     }
 }

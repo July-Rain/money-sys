@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.SysConfig;
 import com.lawschool.dao.SysConfigMapper;
 import com.lawschool.service.SysConfigService;
+import com.lawschool.util.GetUUID;
 import com.lawschool.util.UtilValidate;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class SysConfigServiceImpl implements SysConfigService {
 
     @Override
     public int insertConfig(SysConfig config) {
-        config.setId(IdWorker.getId());
+        config.setId(GetUUID.getUUIDs("SC"));
         return configMapper.insert(config);
     }
 
@@ -49,12 +50,12 @@ public class SysConfigServiceImpl implements SysConfigService {
     }
 
     @Override
-    public int deleteConfig(SysConfig sysCofig) {
-        return configMapper.deleteByPrimaryKey(sysCofig.getId());
+    public int deleteConfig(SysConfig sysConfig) {
+        return configMapper.deleteByPrimaryKey(sysConfig.getId());
     }
 
     @Override
-    public SysConfig queryConfig(SysConfig sysCofig) {
-        return configMapper.selectByPrimaryKey(sysCofig.getId());
+    public SysConfig queryConfig(SysConfig sysConfig) {
+        return configMapper.selectByPrimaryKey(sysConfig.getId());
     }
 }

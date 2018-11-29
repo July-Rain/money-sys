@@ -1,5 +1,7 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
 /**
  *
@@ -11,7 +13,7 @@ import java.io.Serializable;
  */
 
 
-
+@TableName("LAW_COMPETITION_RECORD")
 public class CompetitionRecord implements Serializable {
 	//id主键
 	private String id;
