@@ -3,27 +3,27 @@ package com.lawschool.beans;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
-import java.util.List;
+
 /**
  *
- * @Descriptin  闯关配置实体类
+ * @Descriptin  战队人员表
  * @author      孙小康
  * @version     v1.0
  * @Time        2018/11/29
  *
  */
 
-/**
- * 闯关配置
- */
-@TableName("LAW_RECRUIT_CONFIGURATION")
-public class RecruitConfiguration implements Serializable {
+
+@TableName("LAW_TEAM_USER")
+public class TeamUser implements Serializable {
 	//id主键
 	private String id;
-	//大关数量
-	private String markNum;
-	//配置状态      0禁用    1启用
-	private String status;
+	//战队id
+	private String teamId;
+	//人员id
+	private String userId;
+
+
 	//备用字段1
 	private String backup1;
 	//备用字段2
@@ -44,20 +44,20 @@ public class RecruitConfiguration implements Serializable {
 		this.id = id;
 	}
 
-	public String getMarkNum() {
-		return markNum;
+	public String getTeamId() {
+		return teamId;
 	}
 
-	public void setMarkNum(String markNum) {
-		this.markNum = markNum;
+	public void setTeamId(String teamId) {
+		this.teamId = teamId;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getBackup1() {
@@ -101,17 +101,5 @@ public class RecruitConfiguration implements Serializable {
 	}
 
 
-	@Override
-	public String toString() {
-		return "RecruitConfiguration{" +
-				"id='" + id + '\'' +
-				", markNum='" + markNum + '\'' +
-				", status='" + status + '\'' +
-				", backup1='" + backup1 + '\'' +
-				", backup2='" + backup2 + '\'' +
-				", backup3='" + backup3 + '\'' +
-				", backup4='" + backup4 + '\'' +
-				", backup5='" + backup5 + '\'' +
-				'}';
-	}
+
 }

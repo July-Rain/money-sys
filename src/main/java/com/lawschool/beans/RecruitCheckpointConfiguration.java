@@ -1,5 +1,7 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
 /**
@@ -14,7 +16,7 @@ import java.util.Date;
 /**
  * 闯关关卡配置
  */
-
+@TableName("LAW_RECRUIT_CHECK_CON")
 public class RecruitCheckpointConfiguration implements Serializable {
 //  对应数据库	LAW_RECRUIT_CHECK_CON   太长了 存不了  所以删减了表名字
 
