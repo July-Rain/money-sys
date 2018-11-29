@@ -51,9 +51,9 @@
     </update>
 
     <!--批量删除数据字典数据-->
-    <delete id="deleteByDictIds" parameterType="String[]">
+    <delete id="deleteByDictIds" parameterType="map">
         delete from  LAW_SYS_DICT where ID in
-        <foreach collection="array" item="ids" index="no" open="("
+        <foreach collection="list" item="ids" index="no" open="("
                  separator="," close=")">
             #{ids}
         </foreach>

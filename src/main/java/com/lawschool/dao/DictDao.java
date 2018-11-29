@@ -14,7 +14,7 @@ public interface DictDao {
 
     public void updateByDictId(Dict dict);
 
-    public void deleteByDictIds(String[] ids);
+    public void deleteByDictIds(Map ids);
 
     public void deleteByDictId(String id);
 }

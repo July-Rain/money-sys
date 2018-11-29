@@ -35,8 +35,15 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
-    public void deleteByDictIds(String[] ids) {
-        dictDao.deleteByDictIds(ids);
+    public void deleteByDictIds() {
+        //去查找  所有 符合的 id    ids
+        //用list来吧这些id 包装起来
+
+        //见一个 map
+        //吧list  放到 map里面
+        Map map=new HashMap();
+        map.put("list",list);
+        dictDao.deleteByDictIds(map);
     }
 
     @Override

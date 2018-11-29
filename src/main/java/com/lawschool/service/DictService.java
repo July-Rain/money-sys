@@ -42,7 +42,7 @@ public interface DictService {
      * 批量删除数据字典
      * @param ids
      */
-    public void deleteByDictIds(String[] ids);
+    public void deleteByDictIds(Map ids);
 
     /**
      * 删除数据字典表
