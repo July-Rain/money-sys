@@ -6,7 +6,7 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 @TableName("LAW_EXAM_CONFIG")
-public class ExamConfig {
+public class ExamConfig  {
     private String id;
 
     private String examName;
