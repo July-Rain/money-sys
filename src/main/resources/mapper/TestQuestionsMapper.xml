@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.TestQuestionsMapper">
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.TestQuestions">
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="TYPE_ID" jdbcType="VARCHAR" property="typeId" />
+    <result column="COM_CONTENT" jdbcType="VARCHAR" property="comContent" />
+    <result column="QUESTION_DIFFICULTY" jdbcType="VARCHAR" property="questionDifficulty" />
+    <result column="QUESTION_TYPE" jdbcType="VARCHAR" property="questionType" />
+    <result column="ANSWER_CHOICE_NUMBER" jdbcType="DECIMAL" property="answerChoiceNumber" />
+    <result column="ANSWER_ID" jdbcType="VARCHAR" property="answerId" />
+    <result column="SPECIAL_KNOWLEDGE_ID" jdbcType="VARCHAR" property="specialKnowledgeId" />
+    <result column="POLICE_CLASSIFICATION" jdbcType="VARCHAR" property="policeClassification" />
+    <result column="LEGAL_BASIS" jdbcType="VARCHAR" property="legalBasis" />
+    <result column="ANSWER_DESCRIBLE" jdbcType="VARCHAR" property="answerDescrible" />
+    <result column="RELEASE_STATUS" jdbcType="DECIMAL" property="releaseStatus" />
+    <result column="DISABLE_STATUS" jdbcType="DECIMAL" property="disableStatus" />
+    <result column="STU_ISSUER" jdbcType="VARCHAR" property="stuIssuer" />
+    <result column="STU_ISSDEPARTMENT" jdbcType="VARCHAR" property="stuIssdepartment" />
+    <result column="STU_ISSTIM" jdbcType="TIMESTAMP" property="stuIsstim" />
+    <result column="OPTUSER" jdbcType="VARCHAR" property="optuser" />
+    <result column="OPTTIME" jdbcType="TIMESTAMP" property="opttime" />
+    <result column="STU_OPTDEPARTMENT" jdbcType="VARCHAR" property="stuOptdepartment" />
+    <result column="USE_NUMBER" jdbcType="DECIMAL" property="useNumber" />
+    <result column="RIGTH_NUMBER" jdbcType="DECIMAL" property="rigthNumber" />
+    <result column="collectId"  property="collectId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.lawschool.beans.TestQuestions">
+    insert into LAW_TESTQUESTIONS (ID, TYPE_ID, COM_CONTENT, 
+      QUESTION_DIFFICULTY, QUESTION_TYPE, ANSWER_CHOICE_NUMBER, 
+      ANSWER_ID, SPECIAL_KNOWLEDGE_ID, POLICE_CLASSIFICATION, 
+      LEGAL_BASIS, ANSWER_DESCRIBLE, RELEASE_STATUS, 
+      DISABLE_STATUS, STU_ISSUER, STU_ISSDEPARTMENT, 
+      STU_ISSTIM, OPTUSER, OPTTIME, 
+      STU_OPTDEPARTMENT, USE_NUMBER, RIGTH_NUMBER
+      )
+    values (#{id,jdbcType=VARCHAR}, #{typeId,jdbcType=VARCHAR}, #{comContent,jdbcType=VARCHAR}, 
+      #{questionDifficulty,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR}, #{answerChoiceNumber,jdbcType=DECIMAL}, 
+      #{answerId,jdbcType=VARCHAR}, #{specialKnowledgeId,jdbcType=VARCHAR}, #{policeClassification,jdbcType=VARCHAR}, 
+      #{legalBasis,jdbcType=VARCHAR}, #{answerDescrible,jdbcType=VARCHAR}, #{releaseStatus,jdbcType=DECIMAL}, 
+      #{disableStatus,jdbcType=DECIMAL}, #{stuIssuer,jdbcType=VARCHAR}, #{stuIssdepartment,jdbcType=VARCHAR}, 
+      #{stuIsstim,jdbcType=TIMESTAMP}, #{optuser,jdbcType=VARCHAR}, #{opttime,jdbcType=TIMESTAMP}, 
+      #{stuOptdepartment,jdbcType=VARCHAR}, #{useNumber,jdbcType=DECIMAL}, #{rigthNumber,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lawschool.beans.TestQuestions">
+    insert into LAW_TESTQUESTIONS
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="typeId != null">
+        TYPE_ID,
+      </if>
+      <if test="comContent != null">
+        COM_CONTENT,
+      </if>
+      <if test="questionDifficulty != null">
+        QUESTION_DIFFICULTY,
+      </if>
+      <if test="questionType != null">
+        QUESTION_TYPE,
+      </if>
+      <if test="answerChoiceNumber != null">
+        ANSWER_CHOICE_NUMBER,
+      </if>
+      <if test="answerId != null">
+        ANSWER_ID,
+      </if>
+      <if test="specialKnowledgeId != null">
+        SPECIAL_KNOWLEDGE_ID,
+      </if>
+      <if test="policeClassification != null">
+        POLICE_CLASSIFICATION,
+      </if>
+      <if test="legalBasis != null">
+        LEGAL_BASIS,
+      </if>
+      <if test="answerDescrible != null">
+        ANSWER_DESCRIBLE,
+      </if>
+      <if test="releaseStatus != null">
+        RELEASE_STATUS,
+      </if>
+      <if test="disableStatus != null">
+        DISABLE_STATUS,
+      </if>
+      <if test="stuIssuer != null">
+        STU_ISSUER,
+      </if>
+      <if test="stuIssdepartment != null">
+        STU_ISSDEPARTMENT,
+      </if>
+      <if test="stuIsstim != null">
+        STU_ISSTIM,
+      </if>
+      <if test="optuser != null">
+        OPTUSER,
+      </if>
+      <if test="opttime != null">
+        OPTTIME,
+      </if>
+      <if test="stuOptdepartment != null">
+        STU_OPTDEPARTMENT,
+      </if>
+      <if test="useNumber != null">
+        USE_NUMBER,
+      </if>
+      <if test="rigthNumber != null">
+        RIGTH_NUMBER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="comContent != null">
+        #{comContent,jdbcType=VARCHAR},
+      </if>
+      <if test="questionDifficulty != null">
+        #{questionDifficulty,jdbcType=VARCHAR},
+      </if>
+      <if test="questionType != null">
+        #{questionType,jdbcType=VARCHAR},
+      </if>
+      <if test="answerChoiceNumber != null">
+        #{answerChoiceNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="answerId != null">
+        #{answerId,jdbcType=VARCHAR},
+      </if>
+      <if test="specialKnowledgeId != null">
+        #{specialKnowledgeId,jdbcType=VARCHAR},
+      </if>
+      <if test="policeClassification != null">
+        #{policeClassification,jdbcType=VARCHAR},
+      </if>
+      <if test="legalBasis != null">
+        #{legalBasis,jdbcType=VARCHAR},
+      </if>
+      <if test="answerDescrible != null">
+        #{answerDescrible,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseStatus != null">
+        #{releaseStatus,jdbcType=DECIMAL},
+      </if>
+      <if test="disableStatus != null">
+        #{disableStatus,jdbcType=DECIMAL},
+      </if>
+      <if test="stuIssuer != null">
+        #{stuIssuer,jdbcType=VARCHAR},
+      </if>
+      <if test="stuIssdepartment != null">
+        #{stuIssdepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="stuIsstim != null">
+        #{stuIsstim,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optuser != null">
+        #{optuser,jdbcType=VARCHAR},
+      </if>
+      <if test="opttime != null">
+        #{opttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stuOptdepartment != null">
+        #{stuOptdepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="useNumber != null">
+        #{useNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="rigthNumber != null">
+        #{rigthNumber,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="listMyCollection" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+           LAW_COLLECTION. ID collectId,
+           LAW_TESTQUESTIONS. ID,
+           LAW_TESTQUESTIONS.COM_CONTENT,
+           LAW_TESTQUESTIONS.QUESTION_TYPE,
+           LAW_TESTQUESTIONS.ANSWER_ID,
+           LAW_TESTQUESTIONS.QUESTION_DIFFICULTY,
+           LAW_TESTQUESTIONS.TYPE_ID,
+           LAW_TESTQUESTIONS.SPECIAL_KNOWLEDGE_ID
+    FROM
+         LAW_COLLECTION
+           LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
+    WHERE
+            LAW_COLLECTION.COM_USERID = #{userId}
+      AND LAW_COLLECTION. TYPE = 20
+    <if test="questionType != null">
+      AND QUESTION_TYPE=#{questionType}
+    </if>
+    <if test="typeId != null">
+      AND TYPE_ID=#{typeId}
+    </if>
+    <if test="questionDifficulty != null">
+      AND QUESTION_DIFFICULTY=#{questionDifficulty}
+    </if>
+  </select>
+
+
+</mapper>

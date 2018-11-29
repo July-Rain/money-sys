@@ -1,70 +1,70 @@
 package com.lawschool.beans;
 
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 public class Org {
-    private Long id;
+    private String id;
 
-    private Date addTime;
+    private Date addTime;  //添加时间
 
-    private String addUser;
+    private String addUser;//添加人
 
-    private Date updateTime;
+    private Date updateTime; //更新时间
 
-    private String updateUser;
+    private String updateUser;//更新人
 
-    private String dictionaryName;
+    private String dictionaryName; // 大平台名称
 
-    private String fullName;
+    private String fullName;	//部门全称
 
-    private String oldOrgCode;
+    private String oldOrgCode;	//旧部门编号
 
-    private String ordercode;
+    private String ordercode;	// 排序
 
-    private String orgCode;
+    private String orgCode;// 机构代码
 
-    private Date orgEnddate;
+    private Date orgEnddate;// 停用日期
 
-    private String orgId;
+    private String orgId;// 机构ID
 
-    private Date orgIndate;
+    private Date orgIndate;// 更新日期
 
-    private Short orgLevel;
+    private Short orgLevel;// 更新日期
 
-    private String orgName;
+    private String orgName;// 机构名称
 
-    private String orgShortname;
+    private String orgShortname;// 机构简称
 
-    private Date orgStartdate;
+    private Date orgStartdate;// 启用日期
 
-    private Integer orgStatus;
+    private Integer orgStatus;// 机构状态：大于等于2000正常
 
-    private Integer orgType;
+    private Integer orgType;// 机构类型：10在编；20内设；30临时；40外部；70现役；99999其他；0未知；-1待验证（挂局领导）
+	// 本地第一次 -1 已修改成 10
 
-    private String otherName;
+    private String otherName;// 机构其他名称
 
-    private String parentCode;
+    private String parentCode;// 上级机构代码
 
-    private String parentId;
+    private String parentId;// 上级机构ID
 
-    private Short synFlag;
+    private Short synFlag; // 同步标志位，具体请参开存储过程dpt_syn_grp
 
-    private String localOrgCode;
+    private String localOrgCode; // 本地组织代码（挂树增加6位的代码）
 
-    private String localOrgName;
+    private String localOrgName;// 本地组织名称（13个局机关=〉xx市公安局）
 
-    private String localParentOrgId;
+    private String localParentOrgId; // 本地上级组织
 
-    private String localOrgType;
+    private String localOrgType; // 部门分类：勤务机构、综合单位、派出所、其他
 
-    private String localPoliceType;
+    private String localPoliceType;// 警种
     
     private List<User> list;
 
-    public Org(Long id, Date addTime, String addUser, Date updateTime, String updateUser, String dictionaryName, String fullName, String oldOrgCode, String ordercode, String orgCode, Date orgEnddate, String orgId, Date orgIndate, Short orgLevel, String orgName, String orgShortname, Date orgStartdate, Integer orgStatus, Integer orgType, String otherName, String parentCode, String parentId, Short synFlag, String localOrgCode, String localOrgName, String localParentOrgId, String localOrgType, String localPoliceType) {
+    public Org(String id, Date addTime, String addUser, Date updateTime, String updateUser, String dictionaryName, String fullName, String oldOrgCode, String ordercode, String orgCode, Date orgEnddate, String orgId, Date orgIndate, Short orgLevel, String orgName, String orgShortname, Date orgStartdate, Integer orgStatus, Integer orgType, String otherName, String parentCode, String parentId, Short synFlag, String localOrgCode, String localOrgName, String localParentOrgId, String localOrgType, String localPoliceType) {
         this.id = id;
         this.addTime = addTime;
         this.addUser = addUser;
@@ -99,11 +99,11 @@ public class Org {
         super();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

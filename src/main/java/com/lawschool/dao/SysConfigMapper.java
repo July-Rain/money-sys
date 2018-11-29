@@ -7,13 +7,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface SysConfigMapper extends BaseMapper<SysConfig> {
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(String id);
 
     //int insert(SysConfig record);
 
     int insertSelective(SysConfig record);
 
-    SysConfig selectByPrimaryKey(Long id);
+    SysConfig selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(SysConfig record);
 

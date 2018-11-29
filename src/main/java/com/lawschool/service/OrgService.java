@@ -6,6 +6,13 @@ import java.util.Map;
 import com.lawschool.beans.Org;
 import com.lawschool.beans.User;
 
+/**
+ * 
+ * @Title:OrgService.java
+ * @Description: 部门管理接口
+ * @author: 王帅奇
+ * @date 2018年11月29日
+ */
 public interface OrgService {
 
 	/**
