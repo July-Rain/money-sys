@@ -3,9 +3,11 @@ package com.lawschool.beans;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.Date;
+
 /**
  *
- * @Descriptin  竞赛记录实体类
+ * @Descriptin  在线比武配置
  * @author      孙小康
  * @version     v1.0
  * @Time        2018/11/29
@@ -13,18 +15,22 @@ import java.io.Serializable;
  */
 
 
-@TableName("LAW_COMPETITION_RECORD")
-public class CompetitionRecord implements Serializable {
+@TableName("LAW_COMPETITION_ONLINE")
+public class CompetitionOnline implements Serializable {
 	//id主键
 	private String id;
-	//用户id
-	private String userId;
-	//闯关id/比武台记录id----------------外键id
-	private String foreignKeyId;
-	//类型id(作用于判断存的到底是闯关id还是比武台记录id，因为这是两张不同的表)
-	private String typeId;
-	//获得的积分
-	private String score;
+
+	//题量
+	private String topicNum;
+	//是否统一规则  0 不是  1是
+	private String uniformRules;
+	//获胜奖励
+	private String winReward;
+	//失败奖励
+	private String loserReward;
+	//答题时间
+	private Date answerTime;
+
 	//备用字段1
 	private String backup1;
 	//备用字段2
@@ -45,36 +51,44 @@ public class CompetitionRecord implements Serializable {
 		this.id = id;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getTopicNum() {
+		return topicNum;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setTopicNum(String topicNum) {
+		this.topicNum = topicNum;
 	}
 
-	public String getForeignKeyId() {
-		return foreignKeyId;
+	public String getUniformRules() {
+		return uniformRules;
 	}
 
-	public void setForeignKeyId(String foreignKeyId) {
-		this.foreignKeyId = foreignKeyId;
+	public void setUniformRules(String uniformRules) {
+		this.uniformRules = uniformRules;
 	}
 
-	public String getTypeId() {
-		return typeId;
+	public String getWinReward() {
+		return winReward;
 	}
 
-	public void setTypeId(String typeId) {
-		this.typeId = typeId;
+	public void setWinReward(String winReward) {
+		this.winReward = winReward;
 	}
 
-	public String getScore() {
-		return score;
+	public String getLoserReward() {
+		return loserReward;
 	}
 
-	public void setScore(String score) {
-		this.score = score;
+	public void setLoserReward(String loserReward) {
+		this.loserReward = loserReward;
+	}
+
+	public Date getAnswerTime() {
+		return answerTime;
+	}
+
+	public void setAnswerTime(Date answerTime) {
+		this.answerTime = answerTime;
 	}
 
 	public String getBackup1() {
@@ -119,12 +133,13 @@ public class CompetitionRecord implements Serializable {
 
 	@Override
 	public String toString() {
-		return "CompetitionRecord{" +
+		return "CompetitionOnline{" +
 				"id='" + id + '\'' +
-				", userId='" + userId + '\'' +
-				", foreignKeyId='" + foreignKeyId + '\'' +
-				", typeId='" + typeId + '\'' +
-				", score='" + score + '\'' +
+				", topicNum='" + topicNum + '\'' +
+				", uniformRules='" + uniformRules + '\'' +
+				", winReward='" + winReward + '\'' +
+				", loserReward='" + loserReward + '\'' +
+				", answerTime=" + answerTime +
 				", backup1='" + backup1 + '\'' +
 				", backup2='" + backup2 + '\'' +
 				", backup3='" + backup3 + '\'' +

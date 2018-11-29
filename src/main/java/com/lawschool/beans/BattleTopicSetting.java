@@ -3,9 +3,10 @@ package com.lawschool.beans;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+
 /**
  *
- * @Descriptin  竞赛记录实体类
+ * @Descriptin  对战题目配置
  * @author      孙小康
  * @version     v1.0
  * @Time        2018/11/29
@@ -13,18 +14,24 @@ import java.io.Serializable;
  */
 
 
-@TableName("LAW_COMPETITION_RECORD")
-public class CompetitionRecord implements Serializable {
+@TableName("LAW_BATTLE_TOPIC_SETTING")
+public class BattleTopicSetting implements Serializable {
 	//id主键
 	private String id;
-	//用户id
-	private String userId;
-	//闯关id/比武台记录id----------------外键id
-	private String foreignKeyId;
-	//类型id(作用于判断存的到底是闯关id还是比武台记录id，因为这是两张不同的表)
-	private String typeId;
-	//获得的积分
+
+	//比武配置id（可能是在线比武，也可能是 打擂台。存在2种表里的id）
+	private String foreignkeyId;
+	//对战类型 （来区分是在线比武还是打擂台。来确定反查到哪张表）
+	private String type;
+	//试题难度
+	private String questionDifficulty;
+	//是否获取积分 0否  1是
+	private String whetherGetIntegral;
+	//获得分值
 	private String score;
+	//专项知识id
+	private String knowledgeId;
+
 	//备用字段1
 	private String backup1;
 	//备用字段2
@@ -45,28 +52,36 @@ public class CompetitionRecord implements Serializable {
 		this.id = id;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getForeignkeyId() {
+		return foreignkeyId;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setForeignkeyId(String foreignkeyId) {
+		this.foreignkeyId = foreignkeyId;
 	}
 
-	public String getForeignKeyId() {
-		return foreignKeyId;
+	public String getType() {
+		return type;
 	}
 
-	public void setForeignKeyId(String foreignKeyId) {
-		this.foreignKeyId = foreignKeyId;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public String getTypeId() {
-		return typeId;
+	public String getQuestionDifficulty() {
+		return questionDifficulty;
 	}
 
-	public void setTypeId(String typeId) {
-		this.typeId = typeId;
+	public void setQuestionDifficulty(String questionDifficulty) {
+		this.questionDifficulty = questionDifficulty;
+	}
+
+	public String getWhetherGetIntegral() {
+		return whetherGetIntegral;
+	}
+
+	public void setWhetherGetIntegral(String whetherGetIntegral) {
+		this.whetherGetIntegral = whetherGetIntegral;
 	}
 
 	public String getScore() {
@@ -75,6 +90,14 @@ public class CompetitionRecord implements Serializable {
 
 	public void setScore(String score) {
 		this.score = score;
+	}
+
+	public String getKnowledgeId() {
+		return knowledgeId;
+	}
+
+	public void setKnowledgeId(String knowledgeId) {
+		this.knowledgeId = knowledgeId;
 	}
 
 	public String getBackup1() {
@@ -119,12 +142,14 @@ public class CompetitionRecord implements Serializable {
 
 	@Override
 	public String toString() {
-		return "CompetitionRecord{" +
+		return "battleTopicSetting{" +
 				"id='" + id + '\'' +
-				", userId='" + userId + '\'' +
-				", foreignKeyId='" + foreignKeyId + '\'' +
-				", typeId='" + typeId + '\'' +
+				", foreignkeyId='" + foreignkeyId + '\'' +
+				", type='" + type + '\'' +
+				", questionDifficulty='" + questionDifficulty + '\'' +
+				", whetherGetIntegral='" + whetherGetIntegral + '\'' +
 				", score='" + score + '\'' +
+				", knowledgeId='" + knowledgeId + '\'' +
 				", backup1='" + backup1 + '\'' +
 				", backup2='" + backup2 + '\'' +
 				", backup3='" + backup3 + '\'' +

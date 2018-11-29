@@ -3,9 +3,10 @@ package com.lawschool.beans;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+
 /**
  *
- * @Descriptin  竞赛记录实体类
+ * @Descriptin  对战记录
  * @author      孙小康
  * @version     v1.0
  * @Time        2018/11/29
@@ -13,18 +14,22 @@ import java.io.Serializable;
  */
 
 
-@TableName("LAW_COMPETITION_RECORD")
-public class CompetitionRecord implements Serializable {
+@TableName("LAW_BATTLE_RECORD")
+public class BattleRecord implements Serializable {
 	//id主键
 	private String id;
+
+	//对战平台id
+	private String battlePlatformId;
 	//用户id
 	private String userId;
-	//闯关id/比武台记录id----------------外键id
-	private String foreignKeyId;
-	//类型id(作用于判断存的到底是闯关id还是比武台记录id，因为这是两张不同的表)
-	private String typeId;
-	//获得的积分
+	//是否获胜   0失败   1获胜
+	private String whetherWin;
+	//获得分值
 	private String score;
+	//对战类型    这次的对战比赛是在线比武还是擂台比赛
+	private String type;
+
 	//备用字段1
 	private String backup1;
 	//备用字段2
@@ -45,6 +50,15 @@ public class CompetitionRecord implements Serializable {
 		this.id = id;
 	}
 
+
+	public String getBattlePlatformId() {
+		return battlePlatformId;
+	}
+
+	public void setBattlePlatformId(String battlePlatformId) {
+		this.battlePlatformId = battlePlatformId;
+	}
+
 	public String getUserId() {
 		return userId;
 	}
@@ -53,20 +67,12 @@ public class CompetitionRecord implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getForeignKeyId() {
-		return foreignKeyId;
+	public String getWhetherWin() {
+		return whetherWin;
 	}
 
-	public void setForeignKeyId(String foreignKeyId) {
-		this.foreignKeyId = foreignKeyId;
-	}
-
-	public String getTypeId() {
-		return typeId;
-	}
-
-	public void setTypeId(String typeId) {
-		this.typeId = typeId;
+	public void setWhetherWin(String whetherWin) {
+		this.whetherWin = whetherWin;
 	}
 
 	public String getScore() {
@@ -75,6 +81,14 @@ public class CompetitionRecord implements Serializable {
 
 	public void setScore(String score) {
 		this.score = score;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getBackup1() {
@@ -119,12 +133,13 @@ public class CompetitionRecord implements Serializable {
 
 	@Override
 	public String toString() {
-		return "CompetitionRecord{" +
+		return "battleRecord{" +
 				"id='" + id + '\'' +
+				", battlePlatformId='" + battlePlatformId + '\'' +
 				", userId='" + userId + '\'' +
-				", foreignKeyId='" + foreignKeyId + '\'' +
-				", typeId='" + typeId + '\'' +
+				", whetherWin='" + whetherWin + '\'' +
 				", score='" + score + '\'' +
+				", type='" + type + '\'' +
 				", backup1='" + backup1 + '\'' +
 				", backup2='" + backup2 + '\'' +
 				", backup3='" + backup3 + '\'' +

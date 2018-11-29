@@ -3,9 +3,11 @@ package com.lawschool.beans;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.Date;
+
 /**
  *
- * @Descriptin  竞赛记录实体类
+ * @Descriptin  比武战队
  * @author      孙小康
  * @version     v1.0
  * @Time        2018/11/29
@@ -13,18 +15,19 @@ import java.io.Serializable;
  */
 
 
-@TableName("LAW_COMPETITION_RECORD")
-public class CompetitionRecord implements Serializable {
+@TableName("LAW_COMPETITION_TEAM")
+public class CompetitionTeam implements Serializable {
 	//id主键
 	private String id;
-	//用户id
+	//战队名称
+	private String teamName;
+	//队长
 	private String userId;
-	//闯关id/比武台记录id----------------外键id
-	private String foreignKeyId;
-	//类型id(作用于判断存的到底是闯关id还是比武台记录id，因为这是两张不同的表)
-	private String typeId;
-	//获得的积分
-	private String score;
+	//战队规模
+	private String scale;
+	//战队状态   0 解散   1 正常
+	private String status;
+
 	//备用字段1
 	private String backup1;
 	//备用字段2
@@ -45,6 +48,14 @@ public class CompetitionRecord implements Serializable {
 		this.id = id;
 	}
 
+	public String getTeamName() {
+		return teamName;
+	}
+
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
+	}
+
 	public String getUserId() {
 		return userId;
 	}
@@ -53,28 +64,20 @@ public class CompetitionRecord implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getForeignKeyId() {
-		return foreignKeyId;
+	public String getScale() {
+		return scale;
 	}
 
-	public void setForeignKeyId(String foreignKeyId) {
-		this.foreignKeyId = foreignKeyId;
+	public void setScale(String scale) {
+		this.scale = scale;
 	}
 
-	public String getTypeId() {
-		return typeId;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setTypeId(String typeId) {
-		this.typeId = typeId;
-	}
-
-	public String getScore() {
-		return score;
-	}
-
-	public void setScore(String score) {
-		this.score = score;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getBackup1() {
@@ -119,12 +122,12 @@ public class CompetitionRecord implements Serializable {
 
 	@Override
 	public String toString() {
-		return "CompetitionRecord{" +
+		return "CompetitionTeam{" +
 				"id='" + id + '\'' +
+				", teamName='" + teamName + '\'' +
 				", userId='" + userId + '\'' +
-				", foreignKeyId='" + foreignKeyId + '\'' +
-				", typeId='" + typeId + '\'' +
-				", score='" + score + '\'' +
+				", scale='" + scale + '\'' +
+				", status='" + status + '\'' +
 				", backup1='" + backup1 + '\'' +
 				", backup2='" + backup2 + '\'' +
 				", backup3='" + backup3 + '\'' +
