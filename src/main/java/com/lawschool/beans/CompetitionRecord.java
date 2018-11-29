@@ -10,9 +10,7 @@ import java.io.Serializable;
  *
  */
 
-/**
- * 闯关配置
- */
+
 
 public class CompetitionRecord implements Serializable {
 	//id主键
