@@ -1,6 +1,7 @@
 package com.lawschool.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.lawschool.beans.Org;
 import com.lawschool.beans.User;
@@ -47,5 +48,5 @@ public interface OrgService {
 	 * @param orgCode
 	 * @return
 	 */
-	public List<User> findUserByOrg(String orgCode);
+	public List<Map<String, Object>> findUserByOrg(String orgCode);
 }

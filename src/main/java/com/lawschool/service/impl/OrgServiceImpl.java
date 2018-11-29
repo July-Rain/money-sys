@@ -1,6 +1,7 @@
 package com.lawschool.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ public class OrgServiceImpl implements OrgService{
 		return orgDao.findOrgByParentId(orgId);
 	}
 
-	public List<User> findUserByOrg(String orgCode) {
+	public List<Map<String, Object>> findUserByOrg(String orgCode) {
 		return orgDao.findUserByOrg(orgCode);
 	}
 	

@@ -1,6 +1,7 @@
 package com.lawschool.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.lawschool.beans.Org;
 import com.lawschool.beans.User;
@@ -18,5 +19,5 @@ public interface OrgDao {
 
 	public List<Org> findOrgByParentId(Long orgId);
 	
-	public List<User> findUserByOrg(String orgCode);
+	public List<Map<String,Object>> findUserByOrg(String orgCode);
 }
