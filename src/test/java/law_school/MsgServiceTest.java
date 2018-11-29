@@ -6,8 +6,6 @@ import com.lawschool.service.MsgService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
-import java.util.List;
 
 
 public class MsgServiceTest extends SpringTestCase{
@@ -21,6 +19,7 @@ public class MsgServiceTest extends SpringTestCase{
         Msg msg=new Msg();
         msg.setId("1");
         msg.setTitle("我我我我");
+
 
     }
 }

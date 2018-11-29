@@ -9,29 +9,6 @@ public class Msg implements Serializable{
      * 消息ID
      */
     private String id;
-
-    @Override
-    public String toString() {
-        return "Msg{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", noticeType='" + noticeType + '\'' +
-                ", content='" + content + '\'' +
-                ", releaseDept='" + releaseDept + '\'' +
-                ", releasePeople='" + releasePeople + '\'' +
-                ", releaseDate=" + releaseDate +
-                ", recieveDept='" + recieveDept + '\'' +
-                ", recievePeople='" + recievePeople + '\'' +
-                ", recieveDate=" + recieveDate +
-                ", releaseState='" + releaseState + '\'' +
-                ", backup1='" + backup1 + '\'' +
-                ", backup2='" + backup2 + '\'' +
-                ", backup3='" + backup3 + '\'' +
-                ", backup4='" + backup4 + '\'' +
-                ", backup5='" + backup5 + '\'' +
-                '}';
-    }
-
     /**
      * 消息标题
      */
@@ -55,6 +32,43 @@ public class Msg implements Serializable{
     /**
      * 发布时间
      */
+    /**
+     * 接收单位
+     */
+    private String recieveDept;
+    /**
+     * 接收人
+     */
+    private String recievePeople;
+    /**
+     * 接收日期
+     */
+    private Date recieveDate;
+    /**
+     * 消息发布状态 1：已发送，0：未发送
+     */
+    private String releaseState;
+    /**
+     *备用字段1
+     */
+    private String backup1;
+    /**
+     *备用字段2
+     */
+    private String backup2;
+    /**
+     *备用字段3
+     */
+    private String backup3;
+    /**
+     *备用字段4
+     */
+    private String backup4;
+    /**
+     *备用字段5
+     */
+    private String backup5;
+
     private Date releaseDate;
 
     public String getId() {
@@ -185,41 +199,26 @@ public class Msg implements Serializable{
         this.backup5 = backup5;
     }
 
-    /**
-     * 接收单位
-     */
-    private String recieveDept;
-    /**
-     * 接收人
-     */
-    private String recievePeople;
-    /**
-     * 接收日期
-     */
-    private Date recieveDate;
-    /**
-     * 消息发布状态 1：已发送，0：未发送
-     */
-    private String releaseState;
-    /**
-     *备用字段1
-     */
-    private String backup1;
-    /**
-     *备用字段2
-     */
-    private String backup2;
-    /**
-     *备用字段3
-     */
-    private String backup3;
-    /**
-     *备用字段4
-     */
-    private String backup4;
-    /**
-     *备用字段5
-     */
-    private String backup5;
+    @Override
+    public String toString() {
+        return "Msg{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", noticeType='" + noticeType + '\'' +
+                ", content='" + content + '\'' +
+                ", releaseDept='" + releaseDept + '\'' +
+                ", releasePeople='" + releasePeople + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", recieveDept='" + recieveDept + '\'' +
+                ", recievePeople='" + recievePeople + '\'' +
+                ", recieveDate=" + recieveDate +
+                ", releaseState='" + releaseState + '\'' +
+                ", backup1='" + backup1 + '\'' +
+                ", backup2='" + backup2 + '\'' +
+                ", backup3='" + backup3 + '\'' +
+                ", backup4='" + backup4 + '\'' +
+                ", backup5='" + backup5 + '\'' +
+                '}';
+    }
 
 }
