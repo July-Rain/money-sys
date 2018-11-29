@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lawschool.dao.OrgDao">
   <resultMap id="BaseResultMap" type="com.lawschool.beans.Org">
-     <id column="ID" jdbcType="DECIMAL" property="id" />
+     <id column="ID" jdbcType="String" property="id" />
     <result column="ADD_TIME" jdbcType="TIMESTAMP" property="addTime" />
     <result column="ADD_USER" jdbcType="VARCHAR" property="addUser" />
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />

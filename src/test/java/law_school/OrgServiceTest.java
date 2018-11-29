@@ -1,6 +1,7 @@
 package law_school;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class OrgServiceTest extends SpringTestCase{
 //		
 //		System.out.println(list1.size());
 		
-		List<User> list2 = orgService.findUserByOrg("320000000000");
+		List<Map<String, Object>> list2 = orgService.findUserByOrg("320000000000");
 		
 		System.out.println(list2.size());
 	}
