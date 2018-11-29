@@ -58,19 +58,19 @@ public interface SysConfigService {
      * @Author MengyuWu
      * @Description 删除配置
      * @Date 17:14 2018-11-28
-     * @Param [sysCofig]
+     * @Param [sysConfig]
      * @return int
      **/
     
-    public int deleteConfig(SysConfig sysCofig);
+    public int deleteConfig(SysConfig sysConfig);
 
     /**
      * @Author MengyuWu
      * @Description 查询配置详情
      * @Date 17:27 2018-11-28
-     * @Param [sysCofig]
+     * @Param [sysConfig]
      * @return com.lawschool.beans.SysConfig
      **/
     
-    public SysConfig queryConfig(SysConfig sysCofig);
+    public SysConfig queryConfig(SysConfig sysConfig);
 }
