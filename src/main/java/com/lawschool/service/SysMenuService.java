@@ -10,9 +10,9 @@ import java.util.Map;
 /**
  * 
  * @Descriptin  菜单管理service接口
- * @author      马庆飞 
+ * @author      孙小康
  * @version     v1.0
- * @Time        2018/11/27
+ * @Time        2018/11/28
  *
  */
 public interface SysMenuService {
