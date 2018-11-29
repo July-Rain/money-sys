@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.StuMediaMapper">
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.StuMedia">
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="STU_CODE" jdbcType="VARCHAR" property="stuCode" />
+    <result column="STU_TITLE" jdbcType="VARCHAR" property="stuTitle" />
+    <result column="COM_CONTENT" jdbcType="VARCHAR" property="comContent" />
+    <result column="STU_DESCRIBE" jdbcType="VARCHAR" property="stuDescribe" />
+    <result column="STU_TIME" jdbcType="VARCHAR" property="stuTime" />
+    <result column="STU_COUNT" jdbcType="DECIMAL" property="stuCount" />
+    <result column="STU_CREAT" jdbcType="TIMESTAMP" property="stuCreat" />
+    <result column="STU_ISSUER" jdbcType="VARCHAR" property="stuIssuer" />
+    <result column="STU_ISSDEPARTMENT" jdbcType="VARCHAR" property="stuIssdepartment" />
+    <result column="STU_ISSTIME" jdbcType="TIMESTAMP" property="stuIsstime" />
+    <result column="OPTUSER" jdbcType="VARCHAR" property="optuser" />
+    <result column="OPTTIME" jdbcType="TIMESTAMP" property="opttime" />
+    <result column="STU_OPTDEPARTMENT" jdbcType="VARCHAR" property="stuOptdepartment" />
+    <result column="STU_POLICECLASS" jdbcType="VARCHAR" property="stuPoliceclass" />
+    <result column="STU_FROM" jdbcType="VARCHAR" property="stuFrom" />
+    <result column="STU_TYPE" jdbcType="VARCHAR" property="stuType" />
+    <result column="STU_KNOWLEDGE" jdbcType="VARCHAR" property="stuKnowledge" />
+    <result column="STU_LAWID" jdbcType="VARCHAR" property="stuLawid" />
+    <result column="collectId" property="collectId" />
+    <result column="collecttime" property="collecttime" />
+  </resultMap>
+  <insert id="insert" parameterType="com.lawschool.beans.StuMedia">
+    insert into LAW_STU_MEDIA (ID, STU_CODE, STU_TITLE, 
+      COM_CONTENT, STU_DESCRIBE, STU_TIME, 
+      STU_COUNT, STU_CREAT, STU_ISSUER, 
+      STU_ISSDEPARTMENT, STU_ISSTIME, OPTUSER, 
+      OPTTIME, STU_OPTDEPARTMENT, STU_POLICECLASS, 
+      STU_FROM, STU_TYPE, STU_KNOWLEDGE, 
+      STU_LAWID)
+    values (#{id,jdbcType=VARCHAR}, #{stuCode,jdbcType=VARCHAR}, #{stuTitle,jdbcType=VARCHAR}, 
+      #{comContent,jdbcType=VARCHAR}, #{stuDescribe,jdbcType=VARCHAR}, #{stuTime,jdbcType=VARCHAR}, 
+      #{stuCount,jdbcType=DECIMAL}, #{stuCreat,jdbcType=TIMESTAMP}, #{stuIssuer,jdbcType=VARCHAR}, 
+      #{stuIssdepartment,jdbcType=VARCHAR}, #{stuIsstime,jdbcType=TIMESTAMP}, #{optuser,jdbcType=VARCHAR}, 
+      #{opttime,jdbcType=TIMESTAMP}, #{stuOptdepartment,jdbcType=VARCHAR}, #{stuPoliceclass,jdbcType=VARCHAR}, 
+      #{stuFrom,jdbcType=VARCHAR}, #{stuType,jdbcType=VARCHAR}, #{stuKnowledge,jdbcType=VARCHAR}, 
+      #{stuLawid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lawschool.beans.StuMedia">
+    insert into LAW_STU_MEDIA
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="stuCode != null">
+        STU_CODE,
+      </if>
+      <if test="stuTitle != null">
+        STU_TITLE,
+      </if>
+      <if test="comContent != null">
+        COM_CONTENT,
+      </if>
+      <if test="stuDescribe != null">
+        STU_DESCRIBE,
+      </if>
+      <if test="stuTime != null">
+        STU_TIME,
+      </if>
+      <if test="stuCount != null">
+        STU_COUNT,
+      </if>
+      <if test="stuCreat != null">
+        STU_CREAT,
+      </if>
+      <if test="stuIssuer != null">
+        STU_ISSUER,
+      </if>
+      <if test="stuIssdepartment != null">
+        STU_ISSDEPARTMENT,
+      </if>
+      <if test="stuIsstime != null">
+        STU_ISSTIME,
+      </if>
+      <if test="optuser != null">
+        OPTUSER,
+      </if>
+      <if test="opttime != null">
+        OPTTIME,
+      </if>
+      <if test="stuOptdepartment != null">
+        STU_OPTDEPARTMENT,
+      </if>
+      <if test="stuPoliceclass != null">
+        STU_POLICECLASS,
+      </if>
+      <if test="stuFrom != null">
+        STU_FROM,
+      </if>
+      <if test="stuType != null">
+        STU_TYPE,
+      </if>
+      <if test="stuKnowledge != null">
+        STU_KNOWLEDGE,
+      </if>
+      <if test="stuLawid != null">
+        STU_LAWID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="stuCode != null">
+        #{stuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stuTitle != null">
+        #{stuTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="comContent != null">
+        #{comContent,jdbcType=VARCHAR},
+      </if>
+      <if test="stuDescribe != null">
+        #{stuDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="stuTime != null">
+        #{stuTime,jdbcType=VARCHAR},
+      </if>
+      <if test="stuCount != null">
+        #{stuCount,jdbcType=DECIMAL},
+      </if>
+      <if test="stuCreat != null">
+        #{stuCreat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stuIssuer != null">
+        #{stuIssuer,jdbcType=VARCHAR},
+      </if>
+      <if test="stuIssdepartment != null">
+        #{stuIssdepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="stuIsstime != null">
+        #{stuIsstime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optuser != null">
+        #{optuser,jdbcType=VARCHAR},
+      </if>
+      <if test="opttime != null">
+        #{opttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stuOptdepartment != null">
+        #{stuOptdepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="stuPoliceclass != null">
+        #{stuPoliceclass,jdbcType=VARCHAR},
+      </if>
+      <if test="stuFrom != null">
+        #{stuFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="stuType != null">
+        #{stuType,jdbcType=VARCHAR},
+      </if>
+      <if test="stuKnowledge != null">
+        #{stuKnowledge,jdbcType=VARCHAR},
+      </if>
+      <if test="stuLawid != null">
+        #{stuLawid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+  <select id="listMyCollection" parameterType="map" resultMap="BaseResultMap">
+      SELECT
+             LAW_COLLECTION.ID collectId,
+             LAW_STU_MEDIA.ID,
+             LAW_STU_MEDIA.stu_title,
+             LAW_STU_MEDIA.stu_type,
+             LAW_COLLECTION.OPTTIME collecttime,
+             ROWNUM
+      FROM
+           LAW_COLLECTION
+             LEFT JOIN LAW_STU_MEDIA ON LAW_COLLECTION.COM_STUCODE = LAW_STU_MEDIA.ID
+      where LAW_COLLECTION.COM_USERID=#{userId}  and LAW_COLLECTION.TYPE=10
+  </select>
+</mapper>
