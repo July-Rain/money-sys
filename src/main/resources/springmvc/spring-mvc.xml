@@ -7,4 +7,7 @@
 
    <!-- 对模型视图添加前后缀 -->
    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/WEB-INF/view/" p:suffix=".jsp"/>
+
+   <!--资源拦截-->
+   <mvc:resources location="/WEB-INF/statics/" mapping="/statics/**"/>
 </beans>

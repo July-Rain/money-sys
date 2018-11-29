@@ -1,6 +1,8 @@
 package com.lawschool.util;
 
 
+import com.baomidou.mybatisplus.plugins.Page;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,7 +18,7 @@ public class PageUtils implements Serializable {
 	private int currPage;
 	//列表数据
 	private List<?> list;
-	
+
 	public PageUtils(List<?> list, long totalCount, long pageSize, int currPage) {
 		this.list = list;
 		this.totalCount = totalCount;
@@ -25,6 +27,13 @@ public class PageUtils implements Serializable {
 		this.totalPage = (int)Math.ceil((double)totalCount/pageSize);
 	}
 
+	public PageUtils(Page<?> page) {
+		this.list = page.getRecords();
+		this.totalCount = page.getTotal();
+		this.pageSize = page.getSize();
+		this.currPage = page.getCurrent();
+		this.totalPage = page.getPages();
+	}
 
 
 	public long getTotalCount() {

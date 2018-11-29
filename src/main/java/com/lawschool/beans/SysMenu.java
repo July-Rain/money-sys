@@ -2,6 +2,7 @@ package com.lawschool.beans;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 /**
  *
  * @Descriptin  菜单管理实体类
@@ -210,5 +211,19 @@ public class SysMenu implements Serializable {
 				", orderNum='" + orderNum + '\'' +
 				", isShow='" + isShow + '\'' +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof SysMenu)) return false;
+		SysMenu sysMenu = (SysMenu) o;
+		return Objects.equals(id, sysMenu.id);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(id);
 	}
 }

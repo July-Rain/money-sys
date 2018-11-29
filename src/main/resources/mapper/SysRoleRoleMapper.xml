@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.SysUserRoleMapper">
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.SysUserRole">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="ROLE_ID" jdbcType="DECIMAL" property="roleId" />
+    <result column="USER_ID" jdbcType="DECIMAL" property="userId" />
+  </resultMap>
+</mapper>

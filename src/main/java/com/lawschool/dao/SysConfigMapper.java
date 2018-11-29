@@ -1,0 +1,25 @@
+package com.lawschool.dao;
+
+import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.lawschool.beans.SysConfig;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+public interface SysConfigMapper extends BaseMapper<SysConfig> {
+    int deleteByPrimaryKey(Long id);
+
+    //int insert(SysConfig record);
+
+    int insertSelective(SysConfig record);
+
+    SysConfig selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(SysConfig record);
+
+    int updateByPrimaryKey(SysConfig record);
+
+    SysConfig selectByCode(String code);
+
+    List<SysConfig> listConfig(SysConfig record);
+}

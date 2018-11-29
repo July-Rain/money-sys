@@ -1,4 +1,4 @@
-package law_school;
+﻿package law_school;
 
 import org.junit.runner.RunWith;  
 import org.springframework.test.context.ContextConfiguration;  

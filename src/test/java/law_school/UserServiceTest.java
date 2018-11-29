@@ -37,7 +37,7 @@ public class UserServiceTest  extends SpringTestCase{
         user.setFullName("测试用户");
         user.setUserId("1111");
         BigDecimal decimal=new BigDecimal(1794561);
-        user.setId(decimal);
+        //user.setId(decimal);
         int i = userService.addUser(user);
        System.out.println(user);
     }
