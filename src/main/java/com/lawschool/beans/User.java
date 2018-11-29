@@ -1,10 +1,15 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
+@TableName("law_user")
 public class User {
-    private BigDecimal id;
+    private String id;
 
     private Date addTime;
 
@@ -96,11 +101,20 @@ public class User {
 
     private String isOnline;
 
-    public BigDecimal getId() {
+    @TableField(exist = false) //数据权限
+    private List<String> orgDataAuth;
+
+    @TableField(exist = false) //菜单管理
+    private List<SysMenu> menuAuth;
+
+    @TableField(exist = false) //角色list
+    private List<Role> roleList;
+
+    public String getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -514,5 +528,29 @@ public class User {
                 ", localOrgCode='" + localOrgCode + '\'' +
                 ", isOnline='" + isOnline + '\'' +
                 '}';
+    }
+
+    public List<String> getOrgDataAuth() {
+        return orgDataAuth;
+    }
+
+    public void setOrgDataAuth(List<String> orgDataAuth) {
+        this.orgDataAuth = orgDataAuth;
+    }
+
+    public List<SysMenu> getMenuAuth() {
+        return menuAuth;
+    }
+
+    public void setMenuAuth(List<SysMenu> menuAuth) {
+        this.menuAuth = menuAuth;
+    }
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
     }
 }

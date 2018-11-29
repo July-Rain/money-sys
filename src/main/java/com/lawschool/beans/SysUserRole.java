@@ -3,13 +3,13 @@ package com.lawschool.beans;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.math.BigDecimal;
-@TableName("law_sys_role_org")
-public class SysRoleOrg {
+@TableName("law_sys_user_role")
+public class SysUserRole {
     private String id;
 
     private String roleId;
 
-    private String orgId;
+    private String userId;
 
     public String getId() {
         return id;
@@ -27,11 +27,11 @@ public class SysRoleOrg {
         this.roleId = roleId;
     }
 
-    public String getOrgId() {
-        return orgId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
