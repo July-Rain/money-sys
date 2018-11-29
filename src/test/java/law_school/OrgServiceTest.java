@@ -28,8 +28,8 @@ public class OrgServiceTest extends SpringTestCase{
 //		
 //		System.out.println(list1.size());
 		
-		List<User> list2 = orgService.findUserByOrg("320000000000");
+		//List<User> list2 = orgService.findUserByOrg("320000000000");
 		
-		System.out.println(list2.size());
+		//System.out.println(list2.size());
 	}
 }
