@@ -1,22 +1,860 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lawschool.dao.UserDao">
-<!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->
-    <resultMap id="BaseResultMap" type="com.lawschool.beans.User">
-        <id column="ID" property="userId" jdbcType="INTEGER" />
-        <result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR" />
-        <result column="USER_PASSWORD" property="userPassword" jdbcType="VARCHAR" />
-    </resultMap>
-    <!-- 查询单条记录 -->
-    <select id="selectUserById" parameterType="int" resultMap="BaseResultMap">
-        SELECT * FROM LAW_USER1 WHERE ID = #{userId}
-    </select>
-    
-    <!-- 查询多条条记录 -->
-    <select id="selectAllUsers"  resultMap="BaseResultMap">
-        SELECT * FROM LAW_USER1
-    </select>
-    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.User">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="ADD_TIME" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="ADD_USER" jdbcType="VARCHAR" property="addUser" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+    <result column="FULL_NAME" jdbcType="VARCHAR" property="fullName" />
+    <result column="ORG_CODE" jdbcType="VARCHAR" property="orgCode" />
+    <result column="SYN_FLAG" jdbcType="DECIMAL" property="synFlag" />
+    <result column="USER_CODE" jdbcType="VARCHAR" property="userCode" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="USER_INDATE" jdbcType="TIMESTAMP" property="userIndate" />
+    <result column="USER_JOB" jdbcType="DECIMAL" property="userJob" />
+    <result column="USER_JOB_LEVEL" jdbcType="DECIMAL" property="userJobLevel" />
+    <result column="USER_MOBILE_LONG" jdbcType="VARCHAR" property="userMobileLong" />
+    <result column="USER_MOBILE_SHORT" jdbcType="VARCHAR" property="userMobileShort" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="USER_OVERDATE" jdbcType="TIMESTAMP" property="userOverdate" />
+    <result column="USER_PART_TYPE" jdbcType="DECIMAL" property="userPartType" />
+    <result column="USER_POLICE_ID" jdbcType="VARCHAR" property="userPoliceId" />
+    <result column="USER_POLICE_TYPE" jdbcType="DECIMAL" property="userPoliceType" />
+    <result column="USER_QUATER" jdbcType="DECIMAL" property="userQuater" />
+    <result column="USER_SEX" jdbcType="DECIMAL" property="userSex" />
+    <result column="USER_STARTDATE" jdbcType="TIMESTAMP" property="userStartdate" />
+    <result column="USER_STATUS" jdbcType="DECIMAL" property="userStatus" />
+    <result column="USER_TYPE" jdbcType="DECIMAL" property="userType" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="SALT" jdbcType="VARCHAR" property="salt" />
+    <result column="SORT" jdbcType="DECIMAL" property="sort" />
+    <result column="CORROSION_FILE" jdbcType="DECIMAL" property="corrosionFile" />
+    <result column="IS_BASIC_CORROSION" jdbcType="DECIMAL" property="isBasicCorrosion" />
+    <result column="IS_MIDDLE_REQUIRED" jdbcType="DECIMAL" property="isMiddleRequired" />
+    <result column="IS_PASSED_JUDICIA" jdbcType="DECIMAL" property="isPassedJudicia" />
+    <result column="QUA_LEVEL" jdbcType="VARCHAR" property="quaLevel" />
+    <result column="LOCAL_JOB_ACTUAL" jdbcType="VARCHAR" property="localJobActual" />
+    <result column="LOCAL_JOB_LEVEL" jdbcType="VARCHAR" property="localJobLevel" />
+    <result column="LOCAL_JOB_STAND" jdbcType="VARCHAR" property="localJobStand" />
+    <result column="MIDDLE_REQUIRED_TYPE" jdbcType="VARCHAR" property="middleRequiredType" />
+    <result column="PHOTO" jdbcType="DECIMAL" property="photo" />
+    <result column="WORK_POLICE_TIME" jdbcType="TIMESTAMP" property="workPoliceTime" />
+    <result column="WORK_TIME" jdbcType="TIMESTAMP" property="workTime" />
+    <result column="ROLES" jdbcType="VARCHAR" property="roles" />
+    <result column="QUA_START_TIME" jdbcType="TIMESTAMP" property="quaStartTime" />
+    <result column="QUA_END_TIME" jdbcType="TIMESTAMP" property="quaEndTime" />
+    <result column="BIRTHDAY" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="LOCAL_ORG_CODE" jdbcType="VARCHAR" property="localOrgCode" />
+    <result column="IS_ONLINE" jdbcType="CHAR" property="isOnline" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, ADD_TIME, ADD_USER, UPDATE_TIME, UPDATE_USER, FULL_NAME, ORG_CODE, SYN_FLAG, 
+    USER_CODE, USER_ID, USER_INDATE, USER_JOB, USER_JOB_LEVEL, USER_MOBILE_LONG, USER_MOBILE_SHORT, 
+    USER_NAME, USER_OVERDATE, USER_PART_TYPE, USER_POLICE_ID, USER_POLICE_TYPE, USER_QUATER, 
+    USER_SEX, USER_STARTDATE, USER_STATUS, USER_TYPE, PASSWORD, SALT, SORT, CORROSION_FILE, 
+    IS_BASIC_CORROSION, IS_MIDDLE_REQUIRED, IS_PASSED_JUDICIA, QUA_LEVEL, LOCAL_JOB_ACTUAL, 
+    LOCAL_JOB_LEVEL, LOCAL_JOB_STAND, MIDDLE_REQUIRED_TYPE, PHOTO, WORK_POLICE_TIME, 
+    WORK_TIME, ROLES, QUA_START_TIME, QUA_END_TIME, BIRTHDAY, LOCAL_ORG_CODE, IS_ONLINE
+  </sql>
+  <select id="selectByExample" parameterType="com.lawschool.beans.UserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from LAW_USER
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LAW_USER
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+    delete from LAW_USER
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lawschool.beans.UserExample">
+    delete from LAW_USER
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lawschool.beans.User">
+    insert into LAW_USER (ID, ADD_TIME, ADD_USER, 
+      UPDATE_TIME, UPDATE_USER, FULL_NAME, 
+      ORG_CODE, SYN_FLAG, USER_CODE, 
+      USER_ID, USER_INDATE, USER_JOB, 
+      USER_JOB_LEVEL, USER_MOBILE_LONG, USER_MOBILE_SHORT, 
+      USER_NAME, USER_OVERDATE, USER_PART_TYPE, 
+      USER_POLICE_ID, USER_POLICE_TYPE, USER_QUATER, 
+      USER_SEX, USER_STARTDATE, USER_STATUS, 
+      USER_TYPE, PASSWORD, SALT, 
+      SORT, CORROSION_FILE, IS_BASIC_CORROSION, 
+      IS_MIDDLE_REQUIRED, IS_PASSED_JUDICIA, QUA_LEVEL, 
+      LOCAL_JOB_ACTUAL, LOCAL_JOB_LEVEL, LOCAL_JOB_STAND, 
+      MIDDLE_REQUIRED_TYPE, PHOTO, WORK_POLICE_TIME, 
+      WORK_TIME, ROLES, QUA_START_TIME, 
+      QUA_END_TIME, BIRTHDAY, LOCAL_ORG_CODE, 
+      IS_ONLINE)
+    values (#{id,jdbcType=DECIMAL}, #{addTime,jdbcType=TIMESTAMP}, #{addUser,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, 
+      #{orgCode,jdbcType=VARCHAR}, #{synFlag,jdbcType=DECIMAL}, #{userCode,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=VARCHAR}, #{userIndate,jdbcType=TIMESTAMP}, #{userJob,jdbcType=DECIMAL}, 
+      #{userJobLevel,jdbcType=DECIMAL}, #{userMobileLong,jdbcType=VARCHAR}, #{userMobileShort,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{userOverdate,jdbcType=TIMESTAMP}, #{userPartType,jdbcType=DECIMAL}, 
+      #{userPoliceId,jdbcType=VARCHAR}, #{userPoliceType,jdbcType=DECIMAL}, #{userQuater,jdbcType=DECIMAL}, 
+      #{userSex,jdbcType=DECIMAL}, #{userStartdate,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=DECIMAL}, 
+      #{userType,jdbcType=DECIMAL}, #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=DECIMAL}, #{corrosionFile,jdbcType=DECIMAL}, #{isBasicCorrosion,jdbcType=DECIMAL}, 
+      #{isMiddleRequired,jdbcType=DECIMAL}, #{isPassedJudicia,jdbcType=DECIMAL}, #{quaLevel,jdbcType=VARCHAR}, 
+      #{localJobActual,jdbcType=VARCHAR}, #{localJobLevel,jdbcType=VARCHAR}, #{localJobStand,jdbcType=VARCHAR}, 
+      #{middleRequiredType,jdbcType=VARCHAR}, #{photo,jdbcType=DECIMAL}, #{workPoliceTime,jdbcType=TIMESTAMP}, 
+      #{workTime,jdbcType=TIMESTAMP}, #{roles,jdbcType=VARCHAR}, #{quaStartTime,jdbcType=TIMESTAMP}, 
+      #{quaEndTime,jdbcType=TIMESTAMP}, #{birthday,jdbcType=TIMESTAMP}, #{localOrgCode,jdbcType=VARCHAR}, 
+      #{isOnline,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lawschool.beans.User">
+    insert into LAW_USER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="addTime != null">
+        ADD_TIME,
+      </if>
+      <if test="addUser != null">
+        ADD_USER,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER,
+      </if>
+      <if test="fullName != null">
+        FULL_NAME,
+      </if>
+      <if test="orgCode != null">
+        ORG_CODE,
+      </if>
+      <if test="synFlag != null">
+        SYN_FLAG,
+      </if>
+      <if test="userCode != null">
+        USER_CODE,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="userIndate != null">
+        USER_INDATE,
+      </if>
+      <if test="userJob != null">
+        USER_JOB,
+      </if>
+      <if test="userJobLevel != null">
+        USER_JOB_LEVEL,
+      </if>
+      <if test="userMobileLong != null">
+        USER_MOBILE_LONG,
+      </if>
+      <if test="userMobileShort != null">
+        USER_MOBILE_SHORT,
+      </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="userOverdate != null">
+        USER_OVERDATE,
+      </if>
+      <if test="userPartType != null">
+        USER_PART_TYPE,
+      </if>
+      <if test="userPoliceId != null">
+        USER_POLICE_ID,
+      </if>
+      <if test="userPoliceType != null">
+        USER_POLICE_TYPE,
+      </if>
+      <if test="userQuater != null">
+        USER_QUATER,
+      </if>
+      <if test="userSex != null">
+        USER_SEX,
+      </if>
+      <if test="userStartdate != null">
+        USER_STARTDATE,
+      </if>
+      <if test="userStatus != null">
+        USER_STATUS,
+      </if>
+      <if test="userType != null">
+        USER_TYPE,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="salt != null">
+        SALT,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+      <if test="corrosionFile != null">
+        CORROSION_FILE,
+      </if>
+      <if test="isBasicCorrosion != null">
+        IS_BASIC_CORROSION,
+      </if>
+      <if test="isMiddleRequired != null">
+        IS_MIDDLE_REQUIRED,
+      </if>
+      <if test="isPassedJudicia != null">
+        IS_PASSED_JUDICIA,
+      </if>
+      <if test="quaLevel != null">
+        QUA_LEVEL,
+      </if>
+      <if test="localJobActual != null">
+        LOCAL_JOB_ACTUAL,
+      </if>
+      <if test="localJobLevel != null">
+        LOCAL_JOB_LEVEL,
+      </if>
+      <if test="localJobStand != null">
+        LOCAL_JOB_STAND,
+      </if>
+      <if test="middleRequiredType != null">
+        MIDDLE_REQUIRED_TYPE,
+      </if>
+      <if test="photo != null">
+        PHOTO,
+      </if>
+      <if test="workPoliceTime != null">
+        WORK_POLICE_TIME,
+      </if>
+      <if test="workTime != null">
+        WORK_TIME,
+      </if>
+      <if test="roles != null">
+        ROLES,
+      </if>
+      <if test="quaStartTime != null">
+        QUA_START_TIME,
+      </if>
+      <if test="quaEndTime != null">
+        QUA_END_TIME,
+      </if>
+      <if test="birthday != null">
+        BIRTHDAY,
+      </if>
+      <if test="localOrgCode != null">
+        LOCAL_ORG_CODE,
+      </if>
+      <if test="isOnline != null">
+        IS_ONLINE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null">
+        #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null">
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null">
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="synFlag != null">
+        #{synFlag,jdbcType=DECIMAL},
+      </if>
+      <if test="userCode != null">
+        #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userIndate != null">
+        #{userIndate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userJob != null">
+        #{userJob,jdbcType=DECIMAL},
+      </if>
+      <if test="userJobLevel != null">
+        #{userJobLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="userMobileLong != null">
+        #{userMobileLong,jdbcType=VARCHAR},
+      </if>
+      <if test="userMobileShort != null">
+        #{userMobileShort,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userOverdate != null">
+        #{userOverdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userPartType != null">
+        #{userPartType,jdbcType=DECIMAL},
+      </if>
+      <if test="userPoliceId != null">
+        #{userPoliceId,jdbcType=VARCHAR},
+      </if>
+      <if test="userPoliceType != null">
+        #{userPoliceType,jdbcType=DECIMAL},
+      </if>
+      <if test="userQuater != null">
+        #{userQuater,jdbcType=DECIMAL},
+      </if>
+      <if test="userSex != null">
+        #{userSex,jdbcType=DECIMAL},
+      </if>
+      <if test="userStartdate != null">
+        #{userStartdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userStatus != null">
+        #{userStatus,jdbcType=DECIMAL},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=DECIMAL},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=DECIMAL},
+      </if>
+      <if test="corrosionFile != null">
+        #{corrosionFile,jdbcType=DECIMAL},
+      </if>
+      <if test="isBasicCorrosion != null">
+        #{isBasicCorrosion,jdbcType=DECIMAL},
+      </if>
+      <if test="isMiddleRequired != null">
+        #{isMiddleRequired,jdbcType=DECIMAL},
+      </if>
+      <if test="isPassedJudicia != null">
+        #{isPassedJudicia,jdbcType=DECIMAL},
+      </if>
+      <if test="quaLevel != null">
+        #{quaLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="localJobActual != null">
+        #{localJobActual,jdbcType=VARCHAR},
+      </if>
+      <if test="localJobLevel != null">
+        #{localJobLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="localJobStand != null">
+        #{localJobStand,jdbcType=VARCHAR},
+      </if>
+      <if test="middleRequiredType != null">
+        #{middleRequiredType,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        #{photo,jdbcType=DECIMAL},
+      </if>
+      <if test="workPoliceTime != null">
+        #{workPoliceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="workTime != null">
+        #{workTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roles != null">
+        #{roles,jdbcType=VARCHAR},
+      </if>
+      <if test="quaStartTime != null">
+        #{quaStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="quaEndTime != null">
+        #{quaEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="localOrgCode != null">
+        #{localOrgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isOnline != null">
+        #{isOnline,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lawschool.beans.UserExample" resultType="java.lang.Long">
+    select count(*) from LAW_USER
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update LAW_USER
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=DECIMAL},
+      </if>
+      <if test="record.addTime != null">
+        ADD_TIME = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addUser != null">
+        ADD_USER = #{record.addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null">
+        UPDATE_USER = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fullName != null">
+        FULL_NAME = #{record.fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgCode != null">
+        ORG_CODE = #{record.orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.synFlag != null">
+        SYN_FLAG = #{record.synFlag,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userCode != null">
+        USER_CODE = #{record.userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        USER_ID = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userIndate != null">
+        USER_INDATE = #{record.userIndate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userJob != null">
+        USER_JOB = #{record.userJob,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userJobLevel != null">
+        USER_JOB_LEVEL = #{record.userJobLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userMobileLong != null">
+        USER_MOBILE_LONG = #{record.userMobileLong,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userMobileShort != null">
+        USER_MOBILE_SHORT = #{record.userMobileShort,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null">
+        USER_NAME = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userOverdate != null">
+        USER_OVERDATE = #{record.userOverdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userPartType != null">
+        USER_PART_TYPE = #{record.userPartType,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userPoliceId != null">
+        USER_POLICE_ID = #{record.userPoliceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPoliceType != null">
+        USER_POLICE_TYPE = #{record.userPoliceType,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userQuater != null">
+        USER_QUATER = #{record.userQuater,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userSex != null">
+        USER_SEX = #{record.userSex,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userStartdate != null">
+        USER_STARTDATE = #{record.userStartdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userStatus != null">
+        USER_STATUS = #{record.userStatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userType != null">
+        USER_TYPE = #{record.userType,jdbcType=DECIMAL},
+      </if>
+      <if test="record.password != null">
+        PASSWORD = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salt != null">
+        SALT = #{record.salt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sort != null">
+        SORT = #{record.sort,jdbcType=DECIMAL},
+      </if>
+      <if test="record.corrosionFile != null">
+        CORROSION_FILE = #{record.corrosionFile,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isBasicCorrosion != null">
+        IS_BASIC_CORROSION = #{record.isBasicCorrosion,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isMiddleRequired != null">
+        IS_MIDDLE_REQUIRED = #{record.isMiddleRequired,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isPassedJudicia != null">
+        IS_PASSED_JUDICIA = #{record.isPassedJudicia,jdbcType=DECIMAL},
+      </if>
+      <if test="record.quaLevel != null">
+        QUA_LEVEL = #{record.quaLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.localJobActual != null">
+        LOCAL_JOB_ACTUAL = #{record.localJobActual,jdbcType=VARCHAR},
+      </if>
+      <if test="record.localJobLevel != null">
+        LOCAL_JOB_LEVEL = #{record.localJobLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.localJobStand != null">
+        LOCAL_JOB_STAND = #{record.localJobStand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.middleRequiredType != null">
+        MIDDLE_REQUIRED_TYPE = #{record.middleRequiredType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photo != null">
+        PHOTO = #{record.photo,jdbcType=DECIMAL},
+      </if>
+      <if test="record.workPoliceTime != null">
+        WORK_POLICE_TIME = #{record.workPoliceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.workTime != null">
+        WORK_TIME = #{record.workTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.roles != null">
+        ROLES = #{record.roles,jdbcType=VARCHAR},
+      </if>
+      <if test="record.quaStartTime != null">
+        QUA_START_TIME = #{record.quaStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.quaEndTime != null">
+        QUA_END_TIME = #{record.quaEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.birthday != null">
+        BIRTHDAY = #{record.birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.localOrgCode != null">
+        LOCAL_ORG_CODE = #{record.localOrgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isOnline != null">
+        IS_ONLINE = #{record.isOnline,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update LAW_USER
+    set ID = #{record.id,jdbcType=DECIMAL},
+      ADD_TIME = #{record.addTime,jdbcType=TIMESTAMP},
+      ADD_USER = #{record.addUser,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      UPDATE_USER = #{record.updateUser,jdbcType=VARCHAR},
+      FULL_NAME = #{record.fullName,jdbcType=VARCHAR},
+      ORG_CODE = #{record.orgCode,jdbcType=VARCHAR},
+      SYN_FLAG = #{record.synFlag,jdbcType=DECIMAL},
+      USER_CODE = #{record.userCode,jdbcType=VARCHAR},
+      USER_ID = #{record.userId,jdbcType=VARCHAR},
+      USER_INDATE = #{record.userIndate,jdbcType=TIMESTAMP},
+      USER_JOB = #{record.userJob,jdbcType=DECIMAL},
+      USER_JOB_LEVEL = #{record.userJobLevel,jdbcType=DECIMAL},
+      USER_MOBILE_LONG = #{record.userMobileLong,jdbcType=VARCHAR},
+      USER_MOBILE_SHORT = #{record.userMobileShort,jdbcType=VARCHAR},
+      USER_NAME = #{record.userName,jdbcType=VARCHAR},
+      USER_OVERDATE = #{record.userOverdate,jdbcType=TIMESTAMP},
+      USER_PART_TYPE = #{record.userPartType,jdbcType=DECIMAL},
+      USER_POLICE_ID = #{record.userPoliceId,jdbcType=VARCHAR},
+      USER_POLICE_TYPE = #{record.userPoliceType,jdbcType=DECIMAL},
+      USER_QUATER = #{record.userQuater,jdbcType=DECIMAL},
+      USER_SEX = #{record.userSex,jdbcType=DECIMAL},
+      USER_STARTDATE = #{record.userStartdate,jdbcType=TIMESTAMP},
+      USER_STATUS = #{record.userStatus,jdbcType=DECIMAL},
+      USER_TYPE = #{record.userType,jdbcType=DECIMAL},
+      PASSWORD = #{record.password,jdbcType=VARCHAR},
+      SALT = #{record.salt,jdbcType=VARCHAR},
+      SORT = #{record.sort,jdbcType=DECIMAL},
+      CORROSION_FILE = #{record.corrosionFile,jdbcType=DECIMAL},
+      IS_BASIC_CORROSION = #{record.isBasicCorrosion,jdbcType=DECIMAL},
+      IS_MIDDLE_REQUIRED = #{record.isMiddleRequired,jdbcType=DECIMAL},
+      IS_PASSED_JUDICIA = #{record.isPassedJudicia,jdbcType=DECIMAL},
+      QUA_LEVEL = #{record.quaLevel,jdbcType=VARCHAR},
+      LOCAL_JOB_ACTUAL = #{record.localJobActual,jdbcType=VARCHAR},
+      LOCAL_JOB_LEVEL = #{record.localJobLevel,jdbcType=VARCHAR},
+      LOCAL_JOB_STAND = #{record.localJobStand,jdbcType=VARCHAR},
+      MIDDLE_REQUIRED_TYPE = #{record.middleRequiredType,jdbcType=VARCHAR},
+      PHOTO = #{record.photo,jdbcType=DECIMAL},
+      WORK_POLICE_TIME = #{record.workPoliceTime,jdbcType=TIMESTAMP},
+      WORK_TIME = #{record.workTime,jdbcType=TIMESTAMP},
+      ROLES = #{record.roles,jdbcType=VARCHAR},
+      QUA_START_TIME = #{record.quaStartTime,jdbcType=TIMESTAMP},
+      QUA_END_TIME = #{record.quaEndTime,jdbcType=TIMESTAMP},
+      BIRTHDAY = #{record.birthday,jdbcType=TIMESTAMP},
+      LOCAL_ORG_CODE = #{record.localOrgCode,jdbcType=VARCHAR},
+      IS_ONLINE = #{record.isOnline,jdbcType=CHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lawschool.beans.User">
+    update LAW_USER
+    <set>
+      <if test="addTime != null">
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null">
+        ADD_USER = #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null">
+        FULL_NAME = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null">
+        ORG_CODE = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="synFlag != null">
+        SYN_FLAG = #{synFlag,jdbcType=DECIMAL},
+      </if>
+      <if test="userCode != null">
+        USER_CODE = #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userIndate != null">
+        USER_INDATE = #{userIndate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userJob != null">
+        USER_JOB = #{userJob,jdbcType=DECIMAL},
+      </if>
+      <if test="userJobLevel != null">
+        USER_JOB_LEVEL = #{userJobLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="userMobileLong != null">
+        USER_MOBILE_LONG = #{userMobileLong,jdbcType=VARCHAR},
+      </if>
+      <if test="userMobileShort != null">
+        USER_MOBILE_SHORT = #{userMobileShort,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userOverdate != null">
+        USER_OVERDATE = #{userOverdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userPartType != null">
+        USER_PART_TYPE = #{userPartType,jdbcType=DECIMAL},
+      </if>
+      <if test="userPoliceId != null">
+        USER_POLICE_ID = #{userPoliceId,jdbcType=VARCHAR},
+      </if>
+      <if test="userPoliceType != null">
+        USER_POLICE_TYPE = #{userPoliceType,jdbcType=DECIMAL},
+      </if>
+      <if test="userQuater != null">
+        USER_QUATER = #{userQuater,jdbcType=DECIMAL},
+      </if>
+      <if test="userSex != null">
+        USER_SEX = #{userSex,jdbcType=DECIMAL},
+      </if>
+      <if test="userStartdate != null">
+        USER_STARTDATE = #{userStartdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userStatus != null">
+        USER_STATUS = #{userStatus,jdbcType=DECIMAL},
+      </if>
+      <if test="userType != null">
+        USER_TYPE = #{userType,jdbcType=DECIMAL},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        SALT = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=DECIMAL},
+      </if>
+      <if test="corrosionFile != null">
+        CORROSION_FILE = #{corrosionFile,jdbcType=DECIMAL},
+      </if>
+      <if test="isBasicCorrosion != null">
+        IS_BASIC_CORROSION = #{isBasicCorrosion,jdbcType=DECIMAL},
+      </if>
+      <if test="isMiddleRequired != null">
+        IS_MIDDLE_REQUIRED = #{isMiddleRequired,jdbcType=DECIMAL},
+      </if>
+      <if test="isPassedJudicia != null">
+        IS_PASSED_JUDICIA = #{isPassedJudicia,jdbcType=DECIMAL},
+      </if>
+      <if test="quaLevel != null">
+        QUA_LEVEL = #{quaLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="localJobActual != null">
+        LOCAL_JOB_ACTUAL = #{localJobActual,jdbcType=VARCHAR},
+      </if>
+      <if test="localJobLevel != null">
+        LOCAL_JOB_LEVEL = #{localJobLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="localJobStand != null">
+        LOCAL_JOB_STAND = #{localJobStand,jdbcType=VARCHAR},
+      </if>
+      <if test="middleRequiredType != null">
+        MIDDLE_REQUIRED_TYPE = #{middleRequiredType,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        PHOTO = #{photo,jdbcType=DECIMAL},
+      </if>
+      <if test="workPoliceTime != null">
+        WORK_POLICE_TIME = #{workPoliceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="workTime != null">
+        WORK_TIME = #{workTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roles != null">
+        ROLES = #{roles,jdbcType=VARCHAR},
+      </if>
+      <if test="quaStartTime != null">
+        QUA_START_TIME = #{quaStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="quaEndTime != null">
+        QUA_END_TIME = #{quaEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="birthday != null">
+        BIRTHDAY = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="localOrgCode != null">
+        LOCAL_ORG_CODE = #{localOrgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isOnline != null">
+        IS_ONLINE = #{isOnline,jdbcType=CHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lawschool.beans.User">
+    update LAW_USER
+    set ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      ADD_USER = #{addUser,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      FULL_NAME = #{fullName,jdbcType=VARCHAR},
+      ORG_CODE = #{orgCode,jdbcType=VARCHAR},
+      SYN_FLAG = #{synFlag,jdbcType=DECIMAL},
+      USER_CODE = #{userCode,jdbcType=VARCHAR},
+      USER_ID = #{userId,jdbcType=VARCHAR},
+      USER_INDATE = #{userIndate,jdbcType=TIMESTAMP},
+      USER_JOB = #{userJob,jdbcType=DECIMAL},
+      USER_JOB_LEVEL = #{userJobLevel,jdbcType=DECIMAL},
+      USER_MOBILE_LONG = #{userMobileLong,jdbcType=VARCHAR},
+      USER_MOBILE_SHORT = #{userMobileShort,jdbcType=VARCHAR},
+      USER_NAME = #{userName,jdbcType=VARCHAR},
+      USER_OVERDATE = #{userOverdate,jdbcType=TIMESTAMP},
+      USER_PART_TYPE = #{userPartType,jdbcType=DECIMAL},
+      USER_POLICE_ID = #{userPoliceId,jdbcType=VARCHAR},
+      USER_POLICE_TYPE = #{userPoliceType,jdbcType=DECIMAL},
+      USER_QUATER = #{userQuater,jdbcType=DECIMAL},
+      USER_SEX = #{userSex,jdbcType=DECIMAL},
+      USER_STARTDATE = #{userStartdate,jdbcType=TIMESTAMP},
+      USER_STATUS = #{userStatus,jdbcType=DECIMAL},
+      USER_TYPE = #{userType,jdbcType=DECIMAL},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      SALT = #{salt,jdbcType=VARCHAR},
+      SORT = #{sort,jdbcType=DECIMAL},
+      CORROSION_FILE = #{corrosionFile,jdbcType=DECIMAL},
+      IS_BASIC_CORROSION = #{isBasicCorrosion,jdbcType=DECIMAL},
+      IS_MIDDLE_REQUIRED = #{isMiddleRequired,jdbcType=DECIMAL},
+      IS_PASSED_JUDICIA = #{isPassedJudicia,jdbcType=DECIMAL},
+      QUA_LEVEL = #{quaLevel,jdbcType=VARCHAR},
+      LOCAL_JOB_ACTUAL = #{localJobActual,jdbcType=VARCHAR},
+      LOCAL_JOB_LEVEL = #{localJobLevel,jdbcType=VARCHAR},
+      LOCAL_JOB_STAND = #{localJobStand,jdbcType=VARCHAR},
+      MIDDLE_REQUIRED_TYPE = #{middleRequiredType,jdbcType=VARCHAR},
+      PHOTO = #{photo,jdbcType=DECIMAL},
+      WORK_POLICE_TIME = #{workPoliceTime,jdbcType=TIMESTAMP},
+      WORK_TIME = #{workTime,jdbcType=TIMESTAMP},
+      ROLES = #{roles,jdbcType=VARCHAR},
+      QUA_START_TIME = #{quaStartTime,jdbcType=TIMESTAMP},
+      QUA_END_TIME = #{quaEndTime,jdbcType=TIMESTAMP},
+      BIRTHDAY = #{birthday,jdbcType=TIMESTAMP},
+      LOCAL_ORG_CODE = #{localOrgCode,jdbcType=VARCHAR},
+      IS_ONLINE = #{isOnline,jdbcType=CHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
 </mapper>
