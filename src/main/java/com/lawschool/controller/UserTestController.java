@@ -15,7 +15,7 @@ public class UserTestController {
 	@Resource
 	private UserTestService userService;
 	
-	@RequestMapping("/aa")
+	@RequestMapping("/")
 	public ModelAndView getIndex(){
 		
 		ModelAndView mav=new ModelAndView("index");
