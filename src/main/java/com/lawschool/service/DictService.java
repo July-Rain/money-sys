@@ -18,7 +18,7 @@ public interface DictService {
      * @param id
      * @return
      */
-    public Dict selectByDictId(int id);
+    public Dict selectByDictId(String id);
 
     /**
      * 获取全部字典集合
@@ -42,11 +42,11 @@ public interface DictService {
      * 批量删除数据字典
      * @param ids
      */
-    public void deleteByDictIds(int[] ids);
+    public void deleteByDictIds(String[] ids);
 
     /**
      * 删除数据字典表
      * @param id
      */
-    public  void deleteByDictId(@Param(value="id") int id);
+    public  void deleteByDictId(@Param(value="id") String id);
 }

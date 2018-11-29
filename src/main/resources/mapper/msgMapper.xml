@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.MsgDao">
+    <resultMap id="BaseResultMap" type="com.lawschool.beans.Msg">
+        <id column="ID" jdbcType="VARCHAR" property="id" />
+        <result column="TITLE" jdbcType="VARCHAR" property="title" />
+        <result column="NOTICE_TYPE" jdbcType="VARCHAR" property="noticeType" />
+        <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+        <result column="RELEASE_DEPT" jdbcType="VARCHAR" property="releaseDept" />
+        <result column="RELEASE_PEOPLE" jdbcType="VARCHAR" property="releasePeople" />
+        <result column="RELEASE_DATE" jdbcType="DATE" property="releaseDate" />
+        <result column="RECIEVE_DEPT" jdbcType="VARCHAR" property="recieveDept" />
+        <result column="RECIEVE_PEOPLE" jdbcType="VARCHAR" property="recievePeople" />
+        <result column="RECIEVE_DATE" jdbcType="DATE" property="recieveDate" />
+        <result column="RELEASE_STATE" jdbcType="VARCHAR" property="releaseState" />
+    </resultMap>
+    <!--新增消息-->
+    <insert id="insert" parameterType="com.lawschool.beans.Msg">
+        insert into LAW_SYS_MSG_WITHIN_STATION(ID,TITLE,NOTICE_TYPE,CONTENT,RELEASE_DEPT,RELEASE_PEOPLE,RELEASE_DATE,RECIEVE_DEPT,RECIEVE_PEOPLE,RECIEVE_DATE,RELEASE_STATE)
+         values
+         (#{id},#{title},#{noticeType},#{content},#{releaseDept},#{releasePeople},#{releaseDate},#{recieveDept},#{recievePeople},#{recieveDate},#{releaseState})
+    </insert>
+
+    <!--查询全部消息-->
+    <select id="selectAllMsg" resultMap="BaseResultMap">
+        select * from LAW_SYS_MSG_WITHIN_STATION
+    </select>
+
+    <!--查询单条消息-->
+    <select id="selectByMsgId" parameterType="java.lang.String" resultType="com.lawschool.beans.Msg">
+        select * from LAW_SYS_MSG_WITHIN_STATION where ID = #{id}
+    </select>
+
+    <!--修改一条数据-->
+    <update id="updateByMsg" parameterType="com.lawschool.beans.Msg">
+        UPDATE LAW_SYS_MSG_WITHIN_STATION
+          <trim prefix="set" suffixOverrides=",">
+                <if test="title!=null and title != ''">TITLE=#{title},</if>
+                <if test="noticeType!=null and noticeType != ''">NOTICE_TYPE=#{noticeType},</if>
+                <if test="content!=null and content != ''">CONTENT=#{content},</if>
+                <if test="releaseDept!=null and releaseDept != ''">RELEASE_DEPT=#{releaseDept},</if>
+                <if test="releasePeople!=null and releasePeople != ''">RELEASE_PEOPLE=#{releasePeople},</if>
+                <if test="releaseDate!=null and releaseDate != ''">RELEASE_DATE=#{releaseDate},</if>
+                <if test="releaseState!=null and releaseState != ''">RELEASE_STATE=#{releaseState},</if>
+            </trim>
+        WHERE id=#{id}
+    </update>
+
+    <!--删除单条数据-->
+    <delete id="deleteByMsgId" parameterType="java.lang.String">
+        delete from LAW_SYS_MSG_WITHIN_STATION where  ID = #{id}
+    </delete>
+</mapper>

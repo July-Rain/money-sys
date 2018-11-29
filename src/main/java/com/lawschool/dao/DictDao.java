@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DictDao {
 
-    public Dict selectByDictId(Integer id);
+    public Dict selectByDictId(String id);
 
     public List<Dict> selectAllDict();
 
@@ -14,7 +14,7 @@ public interface DictDao {
 
     public void updateByDictId(Dict dict);
 
-    public void deleteByDictIds(int[] ids);
+    public void deleteByDictIds(String[] ids);
 
-    public void deleteByDictId(int id);
+    public void deleteByDictId(String id);
 }

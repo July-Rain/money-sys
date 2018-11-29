@@ -15,7 +15,7 @@ public class DictServiceImpl implements DictService {
     DictDao dictDao;
 
     @Override
-    public Dict selectByDictId(int id) {
+    public Dict selectByDictId(String id) {
         return dictDao.selectByDictId(id);
     }
 
@@ -35,12 +35,12 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
-    public void deleteByDictIds(int[] ids) {
+    public void deleteByDictIds(String[] ids) {
         dictDao.deleteByDictIds(ids);
     }
 
     @Override
-    public void deleteByDictId(int id) {
+    public void deleteByDictId(String id) {
         dictDao.deleteByDictId(id);
     }
 }

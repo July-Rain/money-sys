@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Dict {
-    private int id;
+    private String id;
 
     private String name;
 
@@ -26,7 +26,7 @@ public class Dict {
 
     private String delFlag;
 
-    public Dict(int id, String name, String type, String parentCode, String code, String value, int orderNum, String remark, String createUser, Date addTime, String delFlag) {
+    public Dict(String id, String name, String type, String parentCode, String code, String value, int orderNum, String remark, String createUser, Date addTime, String delFlag) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -85,11 +85,11 @@ public class Dict {
         this.value = value == null ? null : value.trim();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
