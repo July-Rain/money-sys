@@ -26,7 +26,7 @@ public interface RoleMapper  extends BaseMapper<Role> {
     /**
      * 删除角色
      */
-    public void deleteRoleById(Integer roleId);
+    public void deleteRoleById(String roleId);
     /**
      * 修改角色
      */
@@ -35,7 +35,7 @@ public interface RoleMapper  extends BaseMapper<Role> {
     /**
      * 查找角色
      */
-    public Role selectRoleById(Integer roleId);
+    public Role selectRoleById(String roleId);
 
     /**
      * @Author MengyuWu

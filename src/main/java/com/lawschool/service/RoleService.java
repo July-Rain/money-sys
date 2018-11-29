@@ -19,7 +19,7 @@ public interface RoleService {
     /**
      * 删除角色
      */
-    public void deleteById(Integer roleId);
+    public void deleteById(String roleId);
     /**
      * 修改角色
      */
@@ -27,7 +27,7 @@ public interface RoleService {
     /**
      * 查找角色
      */
-    public Role findByRoleId(Integer roleId);
+    public Role findByRoleId(String roleId);
 
 
 

@@ -1,43 +1,35 @@
 package com.lawschool.beans;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class Role {
-    private BigDecimal roleId;
-
+    /**
+     * 角色ID
+     */
+    private String roleId;
+    /**
+     * 角色姓名
+     */
     private String roleName;
-
+    /**
+     * 角色备注
+     */
     private String remark;
-
+    /**
+     * 角色创建时间
+     */
     private Date createTime;
 
-    @TableField(exist = false)
-    //菜单id
     private String menuIds;
-
-    @TableField(exist = false)
-    //单位的id
     private String orgIds;
 
-    public Role(BigDecimal roleId, String roleName, String remark, Date createTime) {
-        this.roleId = roleId;
-        this.roleName = roleName;
-        this.remark = remark;
-        this.createTime = createTime;
-    }
 
-    public Role() {
-        super();
-    }
-
-    public BigDecimal getRoleId() {
+    public String getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(BigDecimal roleId) {
+    public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
 
@@ -46,7 +38,7 @@ public class Role {
     }
 
     public void setRoleName(String roleName) {
-        this.roleName = roleName == null ? null : roleName.trim();
+        this.roleName = roleName;
     }
 
     public String getRemark() {
@@ -54,7 +46,7 @@ public class Role {
     }
 
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 
     public Date getCreateTime() {
@@ -79,5 +71,15 @@ public class Role {
 
     public void setOrgIds(String orgIds) {
         this.orgIds = orgIds;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId='" + roleId + '\'' +
+                ", roleName='" + roleName + '\'' +
+                ", remark='" + remark + '\'' +
+                ", createTime=" + createTime +
+                '}';
     }
 }
