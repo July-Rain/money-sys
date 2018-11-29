@@ -1,35 +1,36 @@
 package com.lawschool.beans;
 
-import java.math.BigDecimal;
+import com.baomidou.mybatisplus.annotations.TableName;
 
+@TableName("law_sys_role_menu")
 public class SysRoleMenu {
-    private BigDecimal id;
+    private String id;
 
-    private BigDecimal roleId;
+    private String roleId;
 
-    private BigDecimal menuId;
+    private String menuId;
 
-    public BigDecimal getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public BigDecimal getRoleId() {
+    public String getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(BigDecimal roleId) {
+    public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
 
-    public BigDecimal getMenuId() {
+    public String getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(BigDecimal menuId) {
+    public void setMenuId(String menuId) {
         this.menuId = menuId;
     }
 }

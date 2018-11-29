@@ -1,7 +1,11 @@
 package com.lawschool.dao;
 
 import java.math.BigDecimal;
+import java.util.List;
+
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.lawschool.beans.Role;
+import com.lawschool.beans.SysRoleMenu;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,11 +17,11 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository
-public interface RoleMapper {
+public interface RoleMapper  extends BaseMapper<Role> {
     /**
      * 增加角色
      */
-    public void insert(Role role);
+    //public void insert(Role role);
 
     /**
      * 删除角色
@@ -33,5 +37,14 @@ public interface RoleMapper {
      */
     public Role selectRoleById(Integer roleId);
 
+    /**
+     * @Author MengyuWu
+     * @Description 根据用户的id查询用户的角色
+     * @Date 14:33 2018-11-29
+     * @Param [userId]
+     * @return java.util.List<com.lawschool.beans.Role>
+     **/
+    
+    public List<Role> listRoleByUserId(String userId);
 
 }

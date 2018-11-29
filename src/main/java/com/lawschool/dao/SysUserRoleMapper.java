@@ -4,10 +4,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.lawschool.beans.SysRoleMenu;
 import com.lawschool.beans.SysRoleOrg;
+import com.lawschool.beans.SysUserRole;
 import org.apache.ibatis.annotations.Param;
 
-public interface SysRoleOrgMapper  extends BaseMapper< SysRoleOrg> {
-    public int insertBatch(List<SysRoleOrg> sysRoleOrgList);
+public interface SysUserRoleMapper extends BaseMapper<SysUserRole>{
 }

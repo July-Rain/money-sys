@@ -28,7 +28,24 @@
         order by s1.order_num asc
     </select>
 
-
+    <!-- 查询权限下数据 -->
+    <select id="listMenuAuth" parameterType="java.lang.String" resultType="com.lawschool.beans.SysMenu">
+        select s.menu_id menuId,
+        s.parent_id parentId,
+        s.name name,
+        s.url url,
+        s.perms perms,
+        s.type type,
+        s.icon icon,
+        s1.order_num orderNum,
+        s.is_show isShow ,
+        s.`name` parentName
+        from LAW_SYS_MENU s
+        right join LAW_SYS_ROLE_MENU r
+        on s.menu_id = r.menu_id
+        where r.role_id=#{roleId}
+        order by s.order_num asc
+    </select>
     <!-- 查询单条记录 -->
     <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT * FROM LAW_SYS_MENU WHERE ID = #{id}
