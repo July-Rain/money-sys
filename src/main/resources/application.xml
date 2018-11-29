@@ -36,14 +36,21 @@
     </bean>
 
     <!-- 配置Mybatis的文件 ，mapperLocations配置**Mapper.xml文件位置，configLocation配置mybatis-config文件位置-->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
         
         <property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
         <property name="dataSource" ref="dataSource" />
-        <property name="mapperLocations" value="classpath:mapper/*.xml"/>  
-        
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <property name="globalConfig" ref="globalConfiguration" />
     </bean>
-
+    <bean id ="globalConfiguration" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+        <!--映射数据库下划线字段名到数据库实体类的驼峰命名的映射-->
+        <property name="dbColumnUnderline" value="true"></property>
+        <!-- 全局的主键策略 -->
+        <property name="idType" value="0"></property>
+        <!-- 全局的表前缀策略配置 -->
+       <!-- <property name="tablePrefix" value="tbl_"></property>-->
+    </bean>
     <!-- 自动扫描注解的bean -->
     <context:component-scan base-package="com.lawschool.service" />
 
