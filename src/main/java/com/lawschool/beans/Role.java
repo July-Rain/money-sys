@@ -1,5 +1,7 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,6 +13,14 @@ public class Role {
     private String remark;
 
     private Date createTime;
+
+    @TableField(exist = false)
+    //菜单id
+    private String menuIds;
+
+    @TableField(exist = false)
+    //单位的id
+    private String orgIds;
 
     public Role(BigDecimal roleId, String roleName, String remark, Date createTime) {
         this.roleId = roleId;
@@ -53,5 +63,21 @@ public class Role {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getMenuIds() {
+        return menuIds;
+    }
+
+    public void setMenuIds(String menuIds) {
+        this.menuIds = menuIds;
+    }
+
+    public String getOrgIds() {
+        return orgIds;
+    }
+
+    public void setOrgIds(String orgIds) {
+        this.orgIds = orgIds;
     }
 }

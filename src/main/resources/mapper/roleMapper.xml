@@ -44,4 +44,14 @@
 
   </select>
 
+    <!-- 查询权限下数据 -->
+    <select id="listRoleByUserId" parameterType="java.lang.String" resultType="com.lawschool.beans.Role">
+        select s.role_Id roleId,
+        s.role_name roleName
+        from LAW_SYS_ROLE s
+        right join LAW_SYS_USER_ROLE r
+        on s.role_Id = r.role_Id
+        where r.user_id=#{userId}
+        order by s.CREATE_TIME asc
+    </select>
 </mapper>
