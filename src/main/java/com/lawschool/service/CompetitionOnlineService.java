@@ -1,6 +1,10 @@
 package com.lawschool.service;
 
 
+import com.lawschool.beans.CompetitionOnline;
+
+import java.util.List;
+
 /**
  * 
  * @Descriptin  在线比武配置service接口
@@ -11,5 +15,5 @@ package com.lawschool.service;
  */
 public interface CompetitionOnlineService {
 
-
+    public List<CompetitionOnline>  list();
 }
