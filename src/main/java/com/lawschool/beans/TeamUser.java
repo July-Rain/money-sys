@@ -1,5 +1,6 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 @TableName("LAW_TEAM_USER")
 public class TeamUser implements Serializable {
 	//id主键
+	@TableId
 	private String id;
 	//战队id
 	private String teamId;
