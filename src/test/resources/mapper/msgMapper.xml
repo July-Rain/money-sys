@@ -8,15 +8,15 @@
         <result column="CONTENT" jdbcType="VARCHAR" property="content" />
         <result column="RELEASE_DEPT" jdbcType="VARCHAR" property="releaseDept" />
         <result column="RELEASE_PEOPLE" jdbcType="VARCHAR" property="releasePeople" />
-        <result column="RELEASE_DATE" jdbcType="TIMESTAMP" property="releaseDate" />
+        <result column="RELEASE_DATE" jdbcType="DATE" property="releaseDate" />
         <result column="RECIEVE_DEPT" jdbcType="VARCHAR" property="recieveDept" />
         <result column="RECIEVE_PEOPLE" jdbcType="VARCHAR" property="recievePeople" />
-        <result column="RECIEVE_DATE" jdbcType="TIMESTAMP" property="recieveDate" />
+        <result column="RECIEVE_DATE" jdbcType="DATE" property="recieveDate" />
         <result column="RELEASE_STATE" jdbcType="VARCHAR" property="releaseState" />
     </resultMap>
     <!--新增消息-->
-    <insert id="insert" parameterType="com.lawschool.beans.Msg">
-        insert  into LAW_SYS_MSG_WITHIN_STATION (ID, TITLE, NOTICE_TYPE,CONTENT, RELEASE_DEPT, RELEASE_PEOPLE,RELEASE_DATE, RECIEVE_DEPT, RECIEVE_PEOPLE,RECIEVE_DATE, RELEASE_STATE)
+    <insert id="add" parameterType="com.lawschool.beans.Msg">
+        insert into LAW_SYS_MSG_WITHIN_STATION(ID,TITLE,NOTICE_TYPE,CONTENT,RELEASE_DEPT,RELEASE_PEOPLE,RELEASE_DATE,RECIEVE_DEPT,RECIEVE_PEOPLE,RECIEVE_DATE,RELEASE_STATE)
          values
          (#{id},#{title},#{noticeType},#{content},#{releaseDept},#{releasePeople},#{releaseDate},#{recieveDept},#{recievePeople},#{recieveDate},#{releaseState})
     </insert>
@@ -31,7 +31,7 @@
         select * from LAW_SYS_MSG_WITHIN_STATION where ID = #{id}
     </select>
 
-    <!--修改数据-->
+    <!--修改一条数据-->
     <update id="updateByMsg" parameterType="com.lawschool.beans.Msg">
         UPDATE LAW_SYS_MSG_WITHIN_STATION
           <trim prefix="set" suffixOverrides=",">

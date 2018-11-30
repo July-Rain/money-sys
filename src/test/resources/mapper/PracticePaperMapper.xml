@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.PracticePaperDao">
+    <resultMap id="BaseResultMap" type="com.lawschool.beans.PracticePaper">
+        <id column="ID" jdbcType="VARCHAR" property="id" />
+        <result column="PRACTICE_NAME" jdbcType="VARCHAR" property="practiceName" />
+        <result column="PRAC_CREAT_USER" jdbcType="VARCHAR" property="pracCreatUser" />
+        <result column="PRAC_CREAT_TIME" jdbcType="DATE" property="pracCreatTime" />
+        <result column="PRAC_CREAT_DEPARTMENT" jdbcType="VARCHAR" property="pracCreatDepartment" />
+        <result column="OPTUSER" jdbcType="VARCHAR" property="optuser" />
+        <result column="OPTTIME" jdbcType="DATE" property="opttime" />
+        <result column="STU_KNOWLEDGE" jdbcType="VARCHAR" property="stuKnowledge" />
+        <result column="COUNT" jdbcType="INTEGER" property="count" />
+        <result column="PRAC_PAPER_TYPE" jdbcType="VARCHAR" property="pracPaperType" />
+    </resultMap>
+
+</mapper>

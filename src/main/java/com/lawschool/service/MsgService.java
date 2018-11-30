@@ -10,7 +10,7 @@ public interface MsgService {
      * 新增消息
      * @param msg
      */
-    public void insert(Msg msg);
+    public void add(Msg msg);
 
     /**
      * 展示所有消息

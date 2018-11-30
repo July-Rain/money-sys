@@ -18,7 +18,7 @@ public class MsgServiceImpl implements MsgService {
      * @param msg
      */
     @Override
-    public void insert(Msg msg) {
+    public void add(Msg msg) {
         msgDao.insert(msg);
     }
 

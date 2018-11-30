@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DictServiceImpl implements DictService {
@@ -35,15 +36,8 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
-    public void deleteByDictIds() {
-        //去查找  所有 符合的 id    ids
-        //用list来吧这些id 包装起来
+    public void deleteByDictIds(Map ids) {
 
-        //见一个 map
-        //吧list  放到 map里面
-        Map map=new HashMap();
-        map.put("list",list);
-        dictDao.deleteByDictIds(map);
     }
 
     @Override

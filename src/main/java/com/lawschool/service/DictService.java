@@ -4,6 +4,7 @@ import com.lawschool.beans.Dict;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Descriptin 字典service
