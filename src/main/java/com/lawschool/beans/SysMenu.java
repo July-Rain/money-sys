@@ -1,5 +1,7 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableId;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +21,7 @@ public class SysMenu implements Serializable {
 	/**
 	 * 菜单ID
 	 */
+	@TableId
 	private String id;
 	/**
 	 * 父菜单ID，一级菜单为0

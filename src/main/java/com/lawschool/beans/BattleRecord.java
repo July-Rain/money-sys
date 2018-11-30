@@ -1,5 +1,6 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 @TableName("LAW_BATTLE_RECORD")
 public class BattleRecord implements Serializable {
 	//id主键
+	@TableId
 	private String id;
 
 	//对战平台id

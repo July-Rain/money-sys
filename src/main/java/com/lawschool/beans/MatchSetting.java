@@ -1,5 +1,6 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -18,6 +19,7 @@ import java.util.Date;
 @TableName("LAW_MATCH_SETTING")
 public class MatchSetting implements Serializable {
 	//id主键
+	@TableId
 	private String id;
 	//擂主用户id
 	private String winId;

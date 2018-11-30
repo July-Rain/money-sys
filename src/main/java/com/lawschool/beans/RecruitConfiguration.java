@@ -1,5 +1,6 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -19,6 +20,7 @@ import java.util.List;
 @TableName("LAW_RECRUIT_CONFIGURATION")
 public class RecruitConfiguration implements Serializable {
 	//id主键
+	@TableId
 	private String id;
 	//大关数量
 	private String markNum;
