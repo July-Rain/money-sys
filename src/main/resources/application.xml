@@ -47,7 +47,13 @@
         <!--映射数据库下划线字段名到数据库实体类的驼峰命名的映射-->
         <property name="dbColumnUnderline" value="true"></property>
         <!-- 全局的主键策略 -->
-        <property name="idType" value="0"></property>
+        <!--
+             AUTO->`0`("数据库ID自增")
+             INPUT->`1`(用户输入ID")
+            ID_WORKER->`2`("全局唯一ID")
+             UUID->`3`("全局唯一ID")
+       -->
+        <property name="idType" value="1"></property>
         <!-- 全局的表前缀策略配置 -->
        <!-- <property name="tablePrefix" value="tbl_"></property>-->
     </bean>
