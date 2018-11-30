@@ -1,12 +1,19 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
+
+@TableName("LAW_SYS_ROLE")
 public class Role {
     /**
      * 角色ID
      */
+    @TableId
     private String roleId;
     /**
      * 角色姓名
@@ -21,7 +28,9 @@ public class Role {
      */
     private Date createTime;
 
+    @TableField(exist = false)
     private String menuIds;
+    @TableField(exist = false)
     private String orgIds;
 
 
