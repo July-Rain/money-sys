@@ -10,4 +10,12 @@
 
    <!--资源拦截-->
    <mvc:resources location="/WEB-INF/statics/" mapping="/statics/**"/>
+
+   <!--  Log自定义注解拦截器 -->
+   <mvc:interceptors>
+      <mvc:interceptor>
+         <mvc:mapping path="/**"/>
+         <bean class="com.lawschool.annotation.SysLogAspect"></bean>
+      </mvc:interceptor>
+   </mvc:interceptors>
 </beans>

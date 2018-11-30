@@ -6,46 +6,53 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
-
+/**
+ *
+ * @Descriptin  课件表
+ * @author      zjw
+ * @version     v1.0
+ * @Time        2018/11/29
+ *
+ */
 @TableName("LAW_STU_MEDIA")
 public class StuMedia {
     private String id;//id
 
-    private String stuCode;//编码
+    private String stuCode;//课件编码
 
-    private String stuTitle;
+    private String stuTitle;//标题
 
-    private String comContent;
+    private String comContent;//内容
 
-    private String stuDescribe;
+    private String stuDescribe;//描述
 
-    private String stuTime;
+    private String stuTime;//时长
 
-    private BigDecimal stuCount;
+    private BigDecimal stuCount;//观看次数
 
-    private Date stuCreat;
+    private Date stuCreat;//制作时间
 
-    private String stuIssuer;
+    private String stuIssuer;//发布人
 
-    private String stuIssdepartment;
+    private String stuIssdepartment;//发布单位
 
-    private Date stuIsstime;
+    private Date stuIsstime;//发布时间
 
     private String optuser;//操作人
 
     private Date opttime;//操作时间
 
-    private String stuOptdepartment;//操作部门
+    private String stuOptdepartment;//使用单位
 
-    private String stuPoliceclass;
+    private String stuPoliceclass;//所属警种
 
-    private String stuFrom;
+    private String stuFrom;//来源
 
     private String stuType;//课件类型
 
-    private String stuKnowledge;
+    private String stuKnowledge;//专项知识
 
-    private String stuLawid;
+    private String stuLawid;//专项知识ID
 
     @TableField(exist = false)
     private String collectId;//收藏id
