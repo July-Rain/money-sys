@@ -1,5 +1,6 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -22,6 +23,7 @@ public class RecruitCheckpointConfiguration implements Serializable {
 
 
 	//id
+	@TableId
 	private String id;
 	//闯关配置id
 	private String recruitConfigurationId;

@@ -1,5 +1,6 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 @TableName("LAW_BATTLE_PLATFORM")
 public class BattlePlatform implements Serializable {
 	//id主键
+	@TableId
 	private String id;
 
 	//比武配置id（可能是在线比武，也可能是 打擂台。存在2种表里的id）

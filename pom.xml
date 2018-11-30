@@ -170,7 +170,16 @@
 			<artifactId>ojdbc7</artifactId>
 			<version>12.1.0.2.0</version>
 		</dependency>
-        
+        <!--<dependency>-->
+            <!--<groupId>ojdbc</groupId>-->
+            <!--<artifactId>ojdbc</artifactId>-->
+            <!--<version>14</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>ojdbc</groupId>-->
+            <!--<artifactId>ojdbc</artifactId>-->
+            <!--<version>6</version>-->
+        <!--</dependency>-->
         
         <!-- javaee-api包 注意和项目使用的JDK版本对应 -->
 		<dependency>
