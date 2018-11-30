@@ -1,7 +1,9 @@
 package com.lawschool.service;
 
 
+import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.CompetitionOnline;
+import com.lawschool.beans.SysLogEntity;
 
 import java.util.List;
 
@@ -13,7 +15,16 @@ import java.util.List;
  * @Time        2018/11/29
  *
  */
-public interface CompetitionOnlineService {
+public interface CompetitionOnlineService extends IService<CompetitionOnline> {
 
     public List<CompetitionOnline>  list();
+
+    public CompetitionOnline info(String id);
+
+
+    public void save();
+
+    public  void deleteComOnline(String id);
+
+    public void  updateComOnline();
 }
