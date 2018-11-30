@@ -25,7 +25,8 @@ public interface TestQuestionsMapper extends BaseMapper<TestQuestions> {
      */
     public void deleteById(String id);
 
+
+    int insertSelective(TestQuestions record);
+
+    List<TestQuestions> listMyCollection(Map<String, Object> param);
 }
-
-
-

@@ -64,6 +64,15 @@ public class TestQuestionServiceImpl implements TestQuestionService {
         testQuestionsMapper.insert(testQuestions);
     }
 
+    @Override
+    public List<TestQuestions> listMyCollection(Map<String, Object> param) {
+        return testQuestionsMapper.listMyCollection(param);
+    }
+
+    @Override
+    public TestQuestions getTestQuestions(TestQuestions testQuestions) {
+        return null;
+    }
 
 
 }
