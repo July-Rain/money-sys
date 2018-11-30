@@ -27,7 +27,7 @@ public class SysConfigController {
     @Autowired
     private SysConfigService configService;
 
-    @SysLog("查询配置")
+    //@SysLog("查询配置")
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params){
         SysConfig config = new SysConfig();

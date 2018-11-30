@@ -2,6 +2,7 @@ package com.lawschool.beans;
 
 import com.baomidou.mybatisplus.annotations.TableName;
 
+import java.math.BigDecimal;
 
 @TableName("law_sys_config")
 public class SysConfig {

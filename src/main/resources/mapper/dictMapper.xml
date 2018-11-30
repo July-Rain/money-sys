@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.DictDao">
+
+    <resultMap id="BaseResultMap" type="com.lawschool.beans.Dict">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="NAME" property="name" jdbcType="VARCHAR" />
+        <result column="TYPE" property="type" jdbcType="VARCHAR" />
+        <result column="PARENT_CODE" property="parentCode" jdbcType="VARCHAR" />
+        <result column="CODE" property="code" jdbcType="VARCHAR" />
+        <result column="VALUE" property="value" jdbcType="VARCHAR" />
+        <result column="ORDER_NUM" property="orderNum" jdbcType="INTEGER" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+        <result column="ADD_TIME" property="addTime" jdbcType="DATE" />
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!-- 查询单条记录 -->
+    <select id="selectByDictId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM LAW_SYS_DICT WHERE ID = #{id}
+    </select>
+
+    <!-- 查询全部数据字典记录 -->
+    <select id="selectAllDict" parameterType="com.lawschool.beans.Dict" resultMap="BaseResultMap">
+        SELECT * FROM LAW_SYS_DICT
+    </select>
+
+    <!--向数据字典插入数据-->
+    <insert id="addDict" parameterType="com.lawschool.beans.Dict">
+        insert into LAW_SYS_DICT (ID,NAME ,TYPE,PARENT_CODE,CODE,VALUE,ORDER_NUM,REMARK,CREATE_USER,ADD_TIME,DEL_FLAG)
+        values (#{id},#{name},#{type},#{parentCode},#{code},#{value},#{orderNum},#{remark},#{createUser},#{addTime},#{delFlag})
+    </insert>
+
+    <!--更新数据字典数据-->
+    <update id="updateByDictId" parameterType="com.lawschool.beans.Dict">
+        UPDATE LAW_SYS_DICT
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null and name != ''">NAME=#{name},</if>
+            <if test="type!=null and type != ''">TYPE=#{type},</if>
+            <if test="parentCode!=null and parentCode != ''">PARENT_CODE=#{parentCode},</if>
+            <if test="code!=null and code != ''">CODE=#{code},</if>
+            <if test="value!=null and value != ''">VALUE=#{value},</if>
+            <if test="orderNum!=null and orderNum != ''">ORDER_NUM=#{orderNum},</if>
+            <if test="remark!=null and remark != ''">REMARK=#{remark},</if>
+            <if test="createUser!=null and createUser != ''">CREATE_USER=#{createUser},</if>
+            <if test="addTime!=null and addTime != ''">ADD_USER=#{addTime},</if>
+            <if test="delFlag!=null and delFlag != ''">DEL_FLAG=#{delFlag},</if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+    <!--批量删除数据字典数据-->
+    <delete id="deleteByDictIds" parameterType="map">
+        delete from  LAW_SYS_DICT where ID in
+        <foreach collection="array" item="ids" index="no" open="("
+                 separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <!--删除单个字典表数据-->
+    <delete id="deleteByDictId" parameterType="java.lang.String">
+        delete from LAW_SYS_DICT where ID=#{id}
+    </delete>
+</mapper>
