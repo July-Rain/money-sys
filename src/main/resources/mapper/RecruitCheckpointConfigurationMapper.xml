@@ -9,9 +9,9 @@
            <id column="ID" property="id" jdbcType="VARCHAR" />
            <result column="RECRUIT_CONFIGURATION_ID" property="recruitConfigurationId" jdbcType="VARCHAR" />
            <result column="SPECIAL_KNOWLEDGE_ID" property="specialKnowledgeId" jdbcType="VARCHAR" />
-           <result column="HOW_MANY_MARK" property="howManyMark" jdbcType="VARCHAR" />
+           <!--<result column="HOW_MANY_MARK" property="howManyMark" jdbcType="VARCHAR" />-->
            <result column="UNIFY_CONFIGURATION" property="unifyConfiguration" jdbcType="VARCHAR" />
-           <result column="SMALL_NUM" property="smallNum" jdbcType="VARCHAR" />
+           <!--<result column="SMALL_NUM" property="smallNum" jdbcType="VARCHAR" />-->
            <result column="HOW_MANY_SMALL" property="howManySmall" jdbcType="VARCHAR" />
            <result column="ITEM_DIFFICULTY" property="itemDifficulty" jdbcType="VARCHAR" />
            <result column="CROSSING_POINTS" property="crossingPoints" jdbcType="VARCHAR" />
