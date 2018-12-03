@@ -16,9 +16,9 @@ import java.util.Map;
  */
 public interface TestQuestionService {
     /**
-     * 查询所有的专项知识试题
+     * 查询所有的专项知识试题（模糊查询）
      */
-    public List<TestQuestions> findAll();
+    public PageInfo<TestQuestions> findPage(TestQuestions testQuestions, String pageNo);
     /**
      * 查询专项知识试题
      */
@@ -36,10 +36,20 @@ public interface TestQuestionService {
      * 删除专项知识试题
      */
     public void deleteById(String id);
+
     /**
      * 新增专项知识试题
      */
     public void add(TestQuestions testQuestions);
+    /**
+     * 批量导入试题
+     */
+    public List<TestQuestions> addBatch(List<TestQuestions> TestQuestions);
+    /**
+     * 树形
+     */
+    public List<TestQuestions> queryParents();
+
 
     /**
      * 我的收藏-重点试题
