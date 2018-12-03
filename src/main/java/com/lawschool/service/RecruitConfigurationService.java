@@ -26,4 +26,7 @@ public interface RecruitConfigurationService  extends IService<RecruitConfigurat
 
     public void save();
 
+    public void deleteAll();
+
+
 }
