@@ -13,6 +13,9 @@ public interface StuMediaMapper extends BaseMapper<StuMedia> {
 
     int insertSelective(StuMedia record);
 
+    //我的收藏-重点课程-zjw
     List<StuMedia> listMyCollection(Map<String,Object> param);
+
+    int cntMyCollection(Map<String,Object> param);
 
 }

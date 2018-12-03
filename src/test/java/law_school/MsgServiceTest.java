@@ -5,10 +5,10 @@ import com.lawschool.beans.Msg;
 import com.lawschool.service.MsgService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 
-
-public class MsgServiceTest extends SpringTestCase{
+public class MsgServiceTest extends AbstractJUnit4SpringContextTests {
 
     @Autowired
     MsgService msgService;

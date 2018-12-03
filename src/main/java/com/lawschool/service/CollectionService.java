@@ -28,5 +28,4 @@ public interface CollectionService {
      */
     int addCollection(Collection collection,User user);
 
-
 }
