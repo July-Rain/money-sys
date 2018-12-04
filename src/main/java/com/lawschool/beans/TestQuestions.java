@@ -63,6 +63,20 @@ public class TestQuestions {
     @TableField(exist = false)
     private String collectId;//收藏id
 
+    @TableField(exist = false)
+    private String questiontypeValue;
+
+    @TableField(exist = false)
+    private String answerValue;
+    @TableField(exist = false)
+    private String questiondifficultyValue;
+    @TableField(exist = false)
+    private String specialknowledgeValue;
+
+
+    @TableField(exist = false)
+    private String typeValue;
+
     public String getId() {
         return id;
     }
@@ -237,5 +251,78 @@ public class TestQuestions {
 
     public void setCollectId(String collectId) {
         this.collectId = collectId;
+    }
+
+    public String getQuestiontypeValue() {
+        return questiontypeValue;
+    }
+
+    public void setQuestiontypeValue(String questiontypeValue) {
+        this.questiontypeValue = questiontypeValue;
+    }
+
+    public String getAnswerValue() {
+        return answerValue;
+    }
+
+    public void setAnswerValue(String answerValue) {
+        this.answerValue = answerValue;
+    }
+
+    public String getQuestiondifficultyValue() {
+        return questiondifficultyValue;
+    }
+
+    public void setQuestiondifficultyValue(String questiondifficultyValue) {
+        this.questiondifficultyValue = questiondifficultyValue;
+    }
+
+    public String getSpecialknowledgeValue() {
+        return specialknowledgeValue;
+    }
+
+    public void setSpecialknowledgeValue(String specialknowledgeValue) {
+        this.specialknowledgeValue = specialknowledgeValue;
+    }
+
+    public String getTypeValue() {
+        return typeValue;
+    }
+
+    public void setTypeValue(String typeValue) {
+        this.typeValue = typeValue;
+    }
+
+    @Override
+    public String toString() {
+        return "TestQuestions{" +
+                "id='" + id + '\'' +
+                ", typeId='" + typeId + '\'' +
+                ", comContent='" + comContent + '\'' +
+                ", questionDifficulty='" + questionDifficulty + '\'' +
+                ", questionType='" + questionType + '\'' +
+                ", answerChoiceNumber=" + answerChoiceNumber +
+                ", answerId='" + answerId + '\'' +
+                ", specialKnowledgeId='" + specialKnowledgeId + '\'' +
+                ", policeClassification='" + policeClassification + '\'' +
+                ", legalBasis='" + legalBasis + '\'' +
+                ", answerDescrible='" + answerDescrible + '\'' +
+                ", releaseStatus=" + releaseStatus +
+                ", disableStatus=" + disableStatus +
+                ", stuIssuer='" + stuIssuer + '\'' +
+                ", stuIssdepartment='" + stuIssdepartment + '\'' +
+                ", stuIsstim=" + stuIsstim +
+                ", optuser='" + optuser + '\'' +
+                ", opttime=" + opttime +
+                ", stuOptdepartment='" + stuOptdepartment + '\'' +
+                ", useNumber=" + useNumber +
+                ", rigthNumber=" + rigthNumber +
+                ", collectId='" + collectId + '\'' +
+                ", questiontypeValue='" + questiontypeValue + '\'' +
+                ", answerValue='" + answerValue + '\'' +
+                ", questiondifficultyValue='" + questiondifficultyValue + '\'' +
+                ", specialknowledgeValue='" + specialknowledgeValue + '\'' +
+                ", typeValue='" + typeValue + '\'' +
+                '}';
     }
 }

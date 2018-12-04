@@ -60,6 +60,9 @@ public class StuMedia {
     @TableField(exist = false)
     private Date collecttime;//收藏时间
 
+    @TableField(exist = false)
+    private String stuTypeValue;//课件类型
+
     public String getId() {
         return id;
     }
@@ -210,5 +213,29 @@ public class StuMedia {
 
     public void setStuLawid(String stuLawid) {
         this.stuLawid = stuLawid == null ? null : stuLawid.trim();
+    }
+
+    public String getCollectId() {
+        return collectId;
+    }
+
+    public void setCollectId(String collectId) {
+        this.collectId = collectId;
+    }
+
+    public Date getCollecttime() {
+        return collecttime;
+    }
+
+    public void setCollecttime(Date collecttime) {
+        this.collecttime = collecttime;
+    }
+
+    public String getStuTypeValue() {
+        return stuTypeValue;
+    }
+
+    public void setStuTypeValue(String stuTypeValue) {
+        this.stuTypeValue = stuTypeValue;
     }
 }

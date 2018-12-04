@@ -1,6 +1,7 @@
 package com.lawschool.service;
 
 
+import com.lawschool.beans.Answer;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.util.PageUtils;
 
@@ -27,12 +28,28 @@ public interface TestQuestionService {
     PageUtils  listMyCollection(Map<String,Object> param);
 
     /**
+     * 重点试题-组卷
+     * @author      zjw
+     * @param param
+     * @return
+     */
+    Map<TestQuestions,List<Answer>>  randomQuestColl(Map<String,Object> param);
+
+    /**
      * 我的收藏-我的错题（获取所有的错题）
      * @author      zjw
      * @param param
      * @return
      */
     PageUtils listMyErrorQuestion(Map<String,Object> param);
+
+    /**
+     * 错题-组卷
+     * @author      zjw
+     * @param param
+     * @return
+     */
+    Map<TestQuestions,List<Answer>>  randomErrorColl(Map<String,Object> param);
 
     /**
      * 详情
