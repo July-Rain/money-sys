@@ -1,10 +1,14 @@
 package com.lawschool.service.impl;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.constants.Constant;
+import com.lawschool.constants.StatusConstant;
 import com.lawschool.dao.TestQuestionsMapper;
 import com.lawschool.service.TestQuestionService;
-import org.aspectj.apache.bcel.classfile.Constant;
+import com.lawschool.util.ParameterUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,16 +32,17 @@ public class TestQuestionServiceImpl implements TestQuestionService {
 
     @Autowired
     private TestQuestionsMapper testQuestionsMapper;
+
     /**
      * 查询所有的专项知识试题（模糊查询）
      */
 
     @Override
     @Transactional(readOnly = true)
-    public PageInfo<TestQuestions> findPage(TestQuestions testQuestions, String pageNo) {
-        PageHelper.startPage(pageNo,Constant.PAGE_SIZE);
+    public Page<TestQuestions> findPage(TestQuestions testQuestions, String pageNo) {
+//        PageHelper.startPage(pageNo, Constant.PAGE_SIZE);
         List<TestQuestions> testQuestionsList = testQuestionsMapper.selectByFuzzy(testQuestions);
-        PageInfo<TestQuestions> info = new PageInfo<>(userList);
+//        Page<TestQuestions> info = new PageInfo<>(userList);
         return info;
     }
 
@@ -50,6 +55,7 @@ public class TestQuestionServiceImpl implements TestQuestionService {
 
         return testQuestionsMapper.selectById(id);
     }
+
     /**
      * 编辑试题
      */
@@ -58,17 +64,26 @@ public class TestQuestionServiceImpl implements TestQuestionService {
 
         testQuestionsMapper.update(testQuestions);
     }
+
     /**
      * 禁用启用
      */
     @Override
-    public void modifyStatus(String id, String disableStatus) {
-        TestQuestions t=new TestQuestions();
-        t.setId(id);
-        t.setDisableStatus(new BigDecimal(disableStatus));
-        testQuestionsMapper.updateStatus(t);
+    public void modifyStatus(String id, BigDecimal typeStatus) {
 
+
+        String status = typeStatus.toString();
+        if (status == StatusConstant.PRODUCT_TYPE_STATUS_DISABLE) {
+            status = StatusConstant.PRODUCT_TYPE_STATUS_ENABLE;
+        } else {
+            status = StatusConstant.PRODUCT_TYPE_STATUS_DISABLE;
+        }
+        TestQuestions tq = new TestQuestions();
+        tq.setId(id);
+        tq.setDisableStatus(new BigDecimal(status));
+        testQuestionsMapper.updateStatus(tq);
     }
+
 
     /**
      * 删除专项知识试题

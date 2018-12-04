@@ -209,7 +209,7 @@
   <!--查询所有的专项知识试题（模糊查询）-->
   <select id="selectByFuzzy" resultType="com.lawschool.beans.TestQuestions" resultMap="BaseResultMap">
     select
-      ID,TYPE_ID,QUESTION_DIFFICULTY,RELEASE_STATUS
+    ID,TYPE_ID,QUESTION_DIFFICULTY,RELEASE_STATUS
     from
     LAW_TESTQUESTIONS
     <where>
@@ -254,7 +254,7 @@
         where
         t.ID=#{testQuestions.id}
     </update>
-<!--  删除专项知识试题-->
+  <!--  删除专项知识试题-->
   <delete id="deleteById" parameterType="java.lang.String">
         delete
         from
@@ -262,11 +262,10 @@
         WHERE
         ID = #{id}
     </delete>
-<!--  批量导入试题-->
+  <!--  批量导入试题-->
   <insert id="insertTestQuestions" parameterType="com.lawschool.beans.TestQuestions">
       insert into
        LAW_TESTQUESTIONS
-       ()
        values
        ()
   </insert>
@@ -275,7 +274,7 @@
   <select id="selectParent" resultType="com.lawschool.beans.TestQuestions">
         select id,comContent from  LAW_TESTQUESTIONS
     </select>
-    <!--树形-->
+  <!--树形-->
   <select id="selectAllTestQuestions" resultType="com.lawschool.beans.TestQuestions">
         select * from LAW_TESTQUESTIONS
     </select>

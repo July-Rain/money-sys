@@ -1,15 +1,20 @@
 package com.lawschool.controller;
 
 
-import com.lawschool.beans.StuMedia;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.lawschool.beans.TestQuestions;
-import com.lawschool.dao.TestQuestionsMapper;
+import com.lawschool.constants.Constant;
+import com.lawschool.constants.StatusConstant;
 import com.lawschool.service.TestQuestionService;
+import com.lawschool.util.ResponseResult;
 import com.lawschool.util.Result;
+import org.omg.Dynamic.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,17 +28,21 @@ public class TestQuestionController extends AbstractController{
     /**
      * 查询所有的专项知识试题（模糊查询）
      */
+    @ApiOperation(value = "分页查询", produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/index")
     public String index(TestQuestions testQuestions, @RequestParam(value = "pn",defaultValue = "1")String pageNo, ModelMap map )
     {
-        PageInfo<TestQuestions> page = testQuestionService.findPage(testQuestions,pageNo);
+
+        Page<TestQuestions> info = new Page<TestQuestions>(Integer.parseInt(pageNo), Constant.PAGE_SIZE);
+        Parameter orderparameter = new Parameter(getService(), "getOrderlist").setParam(info,new String[]{});
+//        PageInfo<TestQuestions> page = testQuestionService.findPage(testQuestions,pageNo);
         map.addAttribute("data",page);
         return "index";
     }
     /**
      * 查询专项知识试题
      */
-    @RequestMapping("findById")
+    @RequestMapping("/findById")
     public String findById(String id,Model model)
     {
         TestQuestions testQuestions = testQuestionService.findById(id);
@@ -48,12 +57,22 @@ public class TestQuestionController extends AbstractController{
         testQuestionService.modify(testQuestions);
         return "redirect:/testQuestions/index";
     }
-    /* *//**
-     * 禁用启用（回头看看）
-     *//*
+    /**
+     * 禁言启用
+     */
     @RequestMapping("/modifyStatus")
-    public String modifyStatus(String id,String disableStatus);
-    return "redirect:/testQuestions/index";*/
+    @ResponseBody
+    public ResponseResult modifyStatus(String id,String releaseStatus) {
+
+        ResponseResult result = new ResponseResult();
+
+        BigDecimal typeStatus = new BigDecimal(releaseStatus);
+        testQuestionService.modifyStatus(id, typeStatus);
+        result.setResponseCode(StatusConstant.RESPONSE_CODE_SUCCESS);
+        result.setMessage("成功");
+        return result;
+    }
+
     /**
      * 删除专项知识试题
      */
@@ -94,10 +113,6 @@ public class TestQuestionController extends AbstractController{
     public List<TestQuestions> queryParents(){
         return testQuestionService.queryParents();
     }
-
-
-
-
 
 
 

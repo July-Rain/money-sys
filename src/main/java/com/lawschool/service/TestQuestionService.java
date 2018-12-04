@@ -1,8 +1,10 @@
 package com.lawschool.service;
 
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.lawschool.beans.TestQuestions;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +20,7 @@ public interface TestQuestionService {
     /**
      * 查询所有的专项知识试题（模糊查询）
      */
-    public PageInfo<TestQuestions> findPage(TestQuestions testQuestions, String pageNo);
+    public Page<TestQuestions> findPage(TestQuestions testQuestions, String pageNo);
     /**
      * 查询专项知识试题
      */
@@ -30,7 +32,7 @@ public interface TestQuestionService {
     /**
      * 启用禁用
      */
-    public void modifyStatus(String id,String disableStatus);
+    public void modifyStatus(String id,BigDecimal releaseStatus);
 
     /**
      * 删除专项知识试题
