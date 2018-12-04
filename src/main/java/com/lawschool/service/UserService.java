@@ -2,9 +2,11 @@ package com.lawschool.service;
 
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserTest;
+import com.lawschool.util.PageUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
     /**
@@ -18,7 +20,7 @@ public interface UserService {
      * 获取全部用户集合
      * @return
      */
-    public List<User> selectAllUsers();
+    public PageUtils selectAllUsers(Map<String,Object> params);
 
 
     /**
@@ -67,5 +69,5 @@ public interface UserService {
      * 获取所有在线用户
      * @return
      */
-    public List<User>  selectOnlineUser();
+    public PageUtils  selectOnlineUser(Map<String,Object> params);
 }

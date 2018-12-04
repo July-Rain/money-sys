@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.UserQuestRecordMapper">
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.UserQuestRecord">
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="QUEST_ID" jdbcType="VARCHAR" property="questId" />
+    <result column="OPTTIME" jdbcType="TIMESTAMP" property="opttime" />
+    <result column="MY_ASWER_ID" jdbcType="VARCHAR" property="myAswerId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.lawschool.beans.UserQuestRecord">
+    insert into LAW_USER_QUESTION_RECORD (ID, USER_ID, QUEST_ID, 
+      OPTTIME, MY_ASWER_ID)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{questId,jdbcType=VARCHAR}, 
+      #{opttime,jdbcType=TIMESTAMP}, #{myAswerId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lawschool.beans.UserQuestRecord">
+    insert into LAW_USER_QUESTION_RECORD
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="questId != null">
+        QUEST_ID,
+      </if>
+      <if test="opttime != null">
+        OPTTIME,
+      </if>
+      <if test="myAswerId != null">
+        MY_ASWER_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="questId != null">
+        #{questId,jdbcType=VARCHAR},
+      </if>
+      <if test="opttime != null">
+        #{opttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="myAswerId != null">
+        #{myAswerId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>

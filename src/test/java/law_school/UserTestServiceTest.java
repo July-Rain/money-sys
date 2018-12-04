@@ -3,18 +3,14 @@ package law_school;
 
 import java.util.List;
 
-import com.lawschool.beans.User;
 import com.lawschool.beans.UserTest;
-import com.lawschool.service.UserService;
 import com.lawschool.service.UserTestService;
-import org.aspectj.apache.bcel.util.ClassPath;
-import org.junit.Test;  
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.lawschool.service.UserTestService;
-import com.lawschool.beans.UserTest;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
-public class UserTestServiceTest extends SpringTestCase {
+public class UserTestServiceTest extends AbstractJUnit4SpringContextTests {
 
     @Autowired  
     private UserTestService userService;

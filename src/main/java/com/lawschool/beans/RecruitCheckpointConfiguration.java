@@ -29,12 +29,12 @@ public class RecruitCheckpointConfiguration implements Serializable {
 	private String recruitConfigurationId;
 	//专项知识ID
 	private String specialKnowledgeId;
-	//第几大关
-	private String howManyMark;
+//	//第几大关
+//	private String howManyMark;
 	//是否统一设置  0否  1 是
 	private String unifyConfiguration;
-	//小关数量
-	private String smallNum;
+//	//小关数量
+//	private String smallNum;
 	//当前第几小关
 	private String howManySmall;
 	//试题难度
@@ -90,13 +90,7 @@ public class RecruitCheckpointConfiguration implements Serializable {
 		this.specialKnowledgeId = specialKnowledgeId;
 	}
 
-	public String getHowManyMark() {
-		return howManyMark;
-	}
 
-	public void setHowManyMark(String howManyMark) {
-		this.howManyMark = howManyMark;
-	}
 
 	public String getUnifyConfiguration() {
 		return unifyConfiguration;
@@ -106,13 +100,7 @@ public class RecruitCheckpointConfiguration implements Serializable {
 		this.unifyConfiguration = unifyConfiguration;
 	}
 
-	public String getSmallNum() {
-		return smallNum;
-	}
 
-	public void setSmallNum(String smallNum) {
-		this.smallNum = smallNum;
-	}
 
 	public String getItemDifficulty() {
 		return itemDifficulty;
@@ -229,29 +217,5 @@ public class RecruitCheckpointConfiguration implements Serializable {
 	}
 
 
-	@Override
-	public String toString() {
-		return "RecruitCheckpointConfiguration{" +
-				"id='" + id + '\'' +
-				", recruitConfigurationId='" + recruitConfigurationId + '\'' +
-				", specialKnowledgeId='" + specialKnowledgeId + '\'' +
-				", howManyMark='" + howManyMark + '\'' +
-				", unifyConfiguration='" + unifyConfiguration + '\'' +
-				", smallNum='" + smallNum + '\'' +
-				", howManySmall='" + howManySmall + '\'' +
-				", itemDifficulty='" + itemDifficulty + '\'' +
-				", crossingPoints='" + crossingPoints + '\'' +
-				", markReward='" + markReward + '\'' +
-				", rewardScore='" + rewardScore + '\'' +
-				", create='" + create + '\'' +
-				", createDept='" + createDept + '\'' +
-				", createTime='" + createTime + '\'' +
-				", status='" + status + '\'' +
-				", backup1='" + backup1 + '\'' +
-				", backup2='" + backup2 + '\'' +
-				", backup3='" + backup3 + '\'' +
-				", backup4='" + backup4 + '\'' +
-				", backup5='" + backup5 + '\'' +
-				'}';
-	}
+
 }
