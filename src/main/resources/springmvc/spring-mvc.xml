@@ -7,7 +7,7 @@
    <aop:aspectj-autoproxy proxy-target-class="true"/>
 
    <!-- MVC注解驱动 -->
-   <mvc:annotation-driven /> 
+   <mvc:annotation-driven />
    <!-- 扫描controller（controller层注入） -->
    <context:component-scan base-package="com.lawschool.*"/>
    <!--<context:component-scan base-package="com.lawschool.annotation">-->
@@ -27,7 +27,8 @@
       <property name="order" value="1" />
    </bean>
    <!--资源拦截-->
-   <mvc:resources location="/WEB-INF/statics/" mapping="/statics/**"/>
+   <mvc:resources location="/statics/" mapping="/statics/**"/>
+   <mvc:resources location="/html/" mapping="/html/**"/>
 
    <!--  Log自定义注解拦截器 -->
    <mvc:interceptors>
