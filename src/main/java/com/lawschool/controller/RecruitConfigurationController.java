@@ -59,19 +59,21 @@ public class RecruitConfigurationController {
 //    /**
 //     * 删除
 //     */
-//    @RequestMapping("/delete")
-//    public Result delete(@RequestParam String id){
+    @RequestMapping("/delete")
+    public Result delete(@RequestParam String id){
+
+        //因为数据库的结构  设计为有多少条数据 就是多少个 大关   没有一点多余数据    所以要删除的话 就是  全删   不存在 删一条的说法
+        recruitConfigurationService.deleteAll();
+
+        return Result.ok();
+    }
 //
-//        competitionOnlineService.deleteComOnline(id);
-//
-//        return Result.ok();
-//    }
-//
-//    //根据id来找数据
+//    //根据id来找数据    //修改功能待定
 //    @RequestMapping("/update")
 //    public Result update(@RequestParam Map<String, Object> params){
 //
-//        competitionOnlineService.updateComOnline();
+//        //不要更改
+//        recruitConfigurationService.updateAll();
 //        return Result.ok();
 //    }
 
