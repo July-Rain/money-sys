@@ -1,10 +1,11 @@
 package com.lawschool.dao;
 
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.lawschool.beans.Dict;
 
 import java.util.List;
 
-public interface DictDao {
+public interface DictDao extends BaseMapper<Dict> {
 
     public Dict selectByDictId(String id);
 

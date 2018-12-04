@@ -7,6 +7,8 @@ import com.lawschool.beans.User;
 import com.lawschool.dao.StuMediaMapper;
 import com.lawschool.dao.UserMapper;
 import com.lawschool.service.StuMediaService;
+import com.lawschool.util.PageUtils;
+import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,38 +22,34 @@ public class StuMediaServiceImpl implements StuMediaService {
     @Autowired
     private StuMediaMapper mapper;
 
+    //我的收藏-重点课程 -zjw
     @Override
-    public List<StuMedia> listMyCollection(Map<String, Object> param) {
-        return mapper.listMyCollection(param);
+    public PageUtils listMyCollection(Map<String, Object> param) {
+        int pageNo=1;
+        long pageSize=10l;
+        if(UtilValidate.isNotEmpty(param.get("pageNo"))){
+            pageNo=Integer.parseInt((String) param.get("pageNo"));
+        }
+        if(UtilValidate.isNotEmpty(param.get("pageSize"))){
+            pageSize=Long.parseLong((String) param.get("pageSize"));
+        }
+
+        int count=mapper.cntMyCollection(param);
+
+        param.put("startPage",(pageNo-1)*pageSize);
+        param.put("endPage",pageNo*pageSize);
+
+        List<StuMedia> stuMedias = mapper.listMyCollection(param);
+
+        PageUtils page=new PageUtils(stuMedias,count,pageSize,pageNo);
+
+        return page;
     }
 
-    @Override
-    public int deleteStuMedia(StuMedia stuMedia) {
-        return mapper.deleteById(stuMedia.getId());
-    }
 
     @Override
     public StuMedia getStuMedia(StuMedia stuMedia) {
         return mapper.selectById(stuMedia.getId());
     }
-
-    @Override
-    public int insert(StuMedia stuMedia, User user) {
-        stuMedia.setId(IdWorker.get32UUID());
-        stuMedia.setStuIsstime(new Date());//发布时间
-        stuMedia.setOptuser(user.getFullName());//操作人
-        stuMedia.setOpttime(new Date());//操作时间
-        return mapper.insert(stuMedia);
-    }
-
-    @Override
-    public int update(StuMedia stuMedia,User user) {
-        stuMedia.setOptuser(user.getFullName());
-        stuMedia.setOpttime(new Date());
-        stuMedia.setStuOptdepartment(user.getOrgCode());
-        return mapper.updateById(stuMedia);
-    }
-
-
 
 }

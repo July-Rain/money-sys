@@ -3,6 +3,7 @@ package com.lawschool.service;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.util.PageUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -54,14 +55,24 @@ public interface TestQuestionService {
 
 
     /**
-     * 我的收藏-重点试题
+     * 我的收藏-重点试题（我收藏的题目）
+     * @author      zjw
      * @param param
      * @return
      */
-    List<TestQuestions>  listMyCollection(Map<String,Object> param);
+    PageUtils  listMyCollection(Map<String,Object> param);
+
+    /**
+     * 我的收藏-我的错题（获取所有的错题）
+     * @author      zjw
+     * @param param
+     * @return
+     */
+    PageUtils listMyErrorQuestion(Map<String,Object> param);
 
     /**
      * 详情
+     * @author      zjw
      * @param testQuestions
      * @return
      */

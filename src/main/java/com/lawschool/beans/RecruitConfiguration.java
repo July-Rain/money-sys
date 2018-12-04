@@ -1,5 +1,7 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -19,9 +21,14 @@ import java.util.List;
 @TableName("LAW_RECRUIT_CONFIGURATION")
 public class RecruitConfiguration implements Serializable {
 	//id主键
+	@TableId
 	private String id;
-	//大关数量
-	private String markNum;
+	//第几大关顺序   1.2.3.4.5.6 这个样子
+	private String markNumOrder;
+
+	//小关数量
+	private String smallNum;
+
 	//配置状态      0禁用    1启用
 	private String status;
 	//备用字段1
@@ -35,6 +42,16 @@ public class RecruitConfiguration implements Serializable {
 	//备用字段5
 	private String backup5;
 
+//小关信息集合
+   @TableField(exist = false)
+	private List<RecruitCheckpointConfiguration>  recruitCheckpointConfigurationList;
+
+
+
+
+
+
+
 
 	public String getId() {
 		return id;
@@ -44,12 +61,12 @@ public class RecruitConfiguration implements Serializable {
 		this.id = id;
 	}
 
-	public String getMarkNum() {
-		return markNum;
+	public List<RecruitCheckpointConfiguration> getRecruitCheckpointConfigurationList() {
+		return recruitCheckpointConfigurationList;
 	}
 
-	public void setMarkNum(String markNum) {
-		this.markNum = markNum;
+	public void setRecruitCheckpointConfigurationList(List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationList) {
+		this.recruitCheckpointConfigurationList = recruitCheckpointConfigurationList;
 	}
 
 	public String getStatus() {
@@ -100,18 +117,19 @@ public class RecruitConfiguration implements Serializable {
 		this.backup5 = backup5;
 	}
 
+	public String getMarkNumOrder() {
+		return markNumOrder;
+	}
 
-	@Override
-	public String toString() {
-		return "RecruitConfiguration{" +
-				"id='" + id + '\'' +
-				", markNum='" + markNum + '\'' +
-				", status='" + status + '\'' +
-				", backup1='" + backup1 + '\'' +
-				", backup2='" + backup2 + '\'' +
-				", backup3='" + backup3 + '\'' +
-				", backup4='" + backup4 + '\'' +
-				", backup5='" + backup5 + '\'' +
-				'}';
+	public void setMarkNumOrder(String markNumOrder) {
+		this.markNumOrder = markNumOrder;
+	}
+
+	public String getSmallNum() {
+		return smallNum;
+	}
+
+	public void setSmallNum(String smallNum) {
+		this.smallNum = smallNum;
 	}
 }

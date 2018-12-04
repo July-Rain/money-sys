@@ -2,6 +2,7 @@ package com.lawschool.service;
 
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
+import com.lawschool.util.PageUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +23,7 @@ public interface StuMediaService  {
      * @param param
      * @return
      */
-    List<StuMedia>  listMyCollection(Map<String,Object> param);
-
-    int deleteStuMedia(StuMedia stuMedia);
+     PageUtils listMyCollection(Map<String,Object> param);
 
     /**
      * 详情
@@ -33,7 +32,4 @@ public interface StuMediaService  {
      */
     StuMedia getStuMedia(StuMedia stuMedia);
 
-    int insert(StuMedia stuMedia, User user);
-
-    int update(StuMedia stuMedia,User user);
 }
