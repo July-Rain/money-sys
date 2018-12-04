@@ -194,7 +194,39 @@
             <!--<artifactId>ojdbc</artifactId>-->
             <!--<version>6</version>-->
         <!--</dependency>-->
-        
+
+
+
+        <!--WebSocket通信-->
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>4.1.5.RELEASE</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.5</version>
+        </dependency>
+
+
+
+
+
+
+
+
+
         <!-- javaee-api包 注意和项目使用的JDK版本对应 -->
 		<dependency>
 			<groupId>javax</groupId>
