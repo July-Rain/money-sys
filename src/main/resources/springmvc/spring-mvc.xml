@@ -5,17 +5,21 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
    <aop:aspectj-autoproxy proxy-target-class="true"/>
+   <mvc:default-servlet-handler/>
    <mvc:annotation-driven /> 
    <!-- 扫描controller（controller层注入） -->
    <context:component-scan base-package="com.lawschool.controller.*"/>
    <context:component-scan base-package="com.lawschool.annotation.*">
       <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
    </context:component-scan>
+   <context:component-scan base-package="com.lawschool.controller"/>
+   <mvc:default-servlet-handler />
    <!-- 对模型视图添加前后缀 -->
-   <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/WEB-INF/view/" p:suffix=".jsp"/>
+   <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/html/" p:suffix=".html"/>
 
    <!--资源拦截-->
-   <mvc:resources location="/WEB-INF/statics/" mapping="/statics/**"/>
+   <mvc:resources location="/statics/" mapping="/statics/**"/>
+   <mvc:resources location="/html/" mapping="/html/**"/>
 
    <!--  Log自定义注解拦截器 -->
    <mvc:interceptors>
@@ -24,6 +28,4 @@
          <bean class="com.lawschool.annotation.SysLogAspect"></bean>
       </mvc:interceptor>
    </mvc:interceptors>
-
-
 </beans>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.AnswerMapper">
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.Answer">
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="QUESTION_ID" jdbcType="VARCHAR" property="questionId" />
+    <result column="QUESTION_CONTENT" jdbcType="VARCHAR" property="questionContent" />
+    <result column="ORDER" jdbcType="DECIMAL" property="order" />
+    <result column="SCORE" jdbcType="DECIMAL" property="score" />
+    <result column="OPTUSER" jdbcType="VARCHAR" property="optuser" />
+    <result column="OPTTIME" jdbcType="TIMESTAMP" property="opttime" />
+  </resultMap>
+  <insert id="insert" parameterType="com.lawschool.beans.Answer">
+    insert into LAW_ANSWER (ID, QUESTION_ID, QUESTION_CONTENT, 
+      ORDER, SCORE, OPTUSER, 
+      OPTTIME)
+    values (#{id,jdbcType=VARCHAR}, #{questionId,jdbcType=VARCHAR}, #{questionContent,jdbcType=VARCHAR}, 
+      #{order,jdbcType=DECIMAL}, #{score,jdbcType=DECIMAL}, #{optuser,jdbcType=VARCHAR}, 
+      #{opttime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lawschool.beans.Answer">
+    insert into LAW_ANSWER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="questionId != null">
+        QUESTION_ID,
+      </if>
+      <if test="questionContent != null">
+        QUESTION_CONTENT,
+      </if>
+      <if test="order != null">
+        ORDER,
+      </if>
+      <if test="score != null">
+        SCORE,
+      </if>
+      <if test="optuser != null">
+        OPTUSER,
+      </if>
+      <if test="opttime != null">
+        OPTTIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="questionId != null">
+        #{questionId,jdbcType=VARCHAR},
+      </if>
+      <if test="questionContent != null">
+        #{questionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="order != null">
+        #{order,jdbcType=DECIMAL},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=DECIMAL},
+      </if>
+      <if test="optuser != null">
+        #{optuser,jdbcType=VARCHAR},
+      </if>
+      <if test="opttime != null">
+        #{opttime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>
