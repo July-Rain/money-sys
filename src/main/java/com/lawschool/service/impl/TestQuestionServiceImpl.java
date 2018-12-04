@@ -1,12 +1,9 @@
 package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.lawschool.beans.Answer;
-import com.lawschool.beans.Dict;
-import com.lawschool.beans.TestQuestions;
-import com.lawschool.dao.AnswerMapper;
-import com.lawschool.dao.DictDao;
-import com.lawschool.dao.TestQuestionsMapper;
+import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.lawschool.beans.*;
+import com.lawschool.dao.*;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.UtilValidate;
@@ -15,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +25,12 @@ public class TestQuestionServiceImpl implements TestQuestionService {
 
     @Autowired
     AnswerMapper answerMapper;
+
+    @Autowired
+    PracticeRelevanceMapper practiceRelevanceMapper;
+
+    @Autowired
+    PracticePaperMapper practicePaperMapper;
 
     @Autowired
     DictDao dictDao;
@@ -60,17 +64,28 @@ public class TestQuestionServiceImpl implements TestQuestionService {
     //重点试题-组卷z
     @Override
     public  Map<TestQuestions,List<Answer>> randomQuestColl(Map<String, Object> param) {
+        //1,生成题目
         Map<TestQuestions,List<Answer>> map=new HashedMap();
         if(UtilValidate.isEmpty(param.get("num"))){
             param.put("num",10);//获取组成10题
         }
         List<TestQuestions> testQuestions = testQuestionsMapper.randomQuestColl(param);//仅仅只有id,提高效率
+
+        //2。生成练习
+        String uuid = IdWorker.get32UUID();
+        PracticePaper practicePaper=new PracticePaper();
+        practicePaper.setId(uuid);
+        practicePaper.setOpttime(new Date());
+
+
         testQuestions.stream().forEach(e->{
             String id=e.getId();
             TestQuestions question = testQuestionsMapper.selectById(id);//获取题目
             List<Answer> answers = answerMapper.selectList(new EntityWrapper<Answer>().eq("QUESTION_ID", id));//答案
             map.put(question,answers);
         });
+
+
         return map;
     }
 

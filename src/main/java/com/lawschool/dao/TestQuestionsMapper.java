@@ -6,6 +6,7 @@ import com.lawschool.beans.TestQuestions;
 import java.util.List;
 import java.util.Map;
 
+
 public interface TestQuestionsMapper extends BaseMapper<TestQuestions> {
     //int insert(TestQuestions record);
 
