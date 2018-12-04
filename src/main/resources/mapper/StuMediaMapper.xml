@@ -163,17 +163,44 @@
   </insert>
 
 
+  <!--列表：我收藏的课件-->
   <select id="listMyCollection" parameterType="map" resultMap="BaseResultMap">
-      SELECT
-             LAW_COLLECTION.ID collectId,
-             LAW_STU_MEDIA.ID,
-             LAW_STU_MEDIA.stu_title,
-             LAW_STU_MEDIA.stu_type,
-             LAW_COLLECTION.OPTTIME collecttime,
-             ROWNUM
-      FROM
-           LAW_COLLECTION
-             LEFT JOIN LAW_STU_MEDIA ON LAW_COLLECTION.COM_STUCODE = LAW_STU_MEDIA.ID
-      where LAW_COLLECTION.COM_USERID=#{userId}  and LAW_COLLECTION.TYPE=10
+    SELECT
+    collectId,
+    ID,
+    stu_title,
+    stu_type,
+    collecttime
+    FROM
+    (
+    SELECT
+    LAW_COLLECTION. ID collectId,
+    LAW_STU_MEDIA. ID,
+    LAW_STU_MEDIA.stu_title,
+    LAW_STU_MEDIA.stu_type,
+    LAW_COLLECTION.OPTTIME collecttime,
+    ROWNUM AS rowno
+    FROM
+    LAW_COLLECTION
+    LEFT JOIN LAW_STU_MEDIA ON LAW_COLLECTION.COM_STUCODE = LAW_STU_MEDIA. ID
+    WHERE
+    LAW_COLLECTION.COM_USERID = #{userId}
+    AND LAW_COLLECTION. TYPE = 10
+    AND ROWNUM &lt;= #{endPage}
+    And LAW_COLLECTION.DEL_STATUS=0
+    )
+    WHERE
+    rowno &gt; #{startPage}
+  </select>
+
+  <!--计数：我收藏的课件-->
+  <select id="cntMyCollection"  parameterType="map" resultType="java.lang.Integer">
+    SELECT
+        count(LAW_STU_MEDIA.ID)
+    FROM
+         LAW_COLLECTION
+           LEFT JOIN LAW_STU_MEDIA ON LAW_COLLECTION.COM_STUCODE = LAW_STU_MEDIA.ID
+    where LAW_COLLECTION.COM_USERID=#{userId}  and LAW_COLLECTION.TYPE=10
+    And LAW_COLLECTION.DEL_STATUS=0
   </select>
 </mapper>

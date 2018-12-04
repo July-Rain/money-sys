@@ -1,14 +1,10 @@
 package law_school;
 
-import com.lawschool.beans.Role;
 import com.lawschool.service.RoleService;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
-public class RoleServiceTest extends SpringTestCase {
+public class RoleServiceTest extends AbstractJUnit4SpringContextTests {
 
     @Autowired
     private RoleService roleService;

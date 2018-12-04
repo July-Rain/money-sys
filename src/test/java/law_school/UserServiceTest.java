@@ -1,16 +1,18 @@
 package law_school;
 
 import com.lawschool.beans.User;
-import com.lawschool.beans.UserTest;
 import com.lawschool.service.UserService;
+import com.lawschool.util.PageUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public class UserServiceTest  extends SpringTestCase{
+public class UserServiceTest  extends SpringTestCase {
     @Autowired
     UserService userService;
 
@@ -24,8 +26,8 @@ public class UserServiceTest  extends SpringTestCase{
     @Test
     public void selectAllUsers(){
         //System.out.println(ClassPath.getClassPath());
-        List<User> users = userService.selectAllUsers();
-        System.out.println(users);
+        PageUtils pageUtils = userService.selectAllUsers(new HashedMap());
+        System.out.println(pageUtils);
     }
 
     @Test
@@ -36,7 +38,7 @@ public class UserServiceTest  extends SpringTestCase{
         user.setBirthday(new Date());
         user.setFullName("测试用户");
         user.setUserId("1111");
-        BigDecimal decimal=new BigDecimal(1794561);
+        //BigDecimal decimal=new BigDecimal(1794561);
         //user.setId(decimal);
         int i = userService.addUser(user);
        System.out.println(user);
@@ -68,8 +70,8 @@ public class UserServiceTest  extends SpringTestCase{
 
     @Test
     public void selectOnlineUser(){
-        List<User> users = userService.selectOnlineUser();
-        System.out.println(users);
+        PageUtils pageUtils = userService.selectOnlineUser(new HashedMap());
+        System.out.println(pageUtils);
     }
 
 }

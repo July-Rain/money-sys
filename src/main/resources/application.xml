@@ -50,9 +50,9 @@
         <!--
              AUTO->`0`("数据库ID自增")
              INPUT->`1`(用户输入ID")
-            ID_WORKER->`2`("全局唯一ID")
+             ID_WORKER->`2`("全局唯一ID")
              UUID->`3`("全局唯一ID")
-       -->
+        -->
         <property name="idType" value="1"></property>
         <!-- 全局的表前缀策略配置 -->
        <!-- <property name="tablePrefix" value="tbl_"></property>-->

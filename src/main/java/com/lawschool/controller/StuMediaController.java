@@ -3,6 +3,7 @@ package com.lawschool.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.service.StuMediaService;
+import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.apache.velocity.runtime.directive.MacroParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class StuMediaController extends  AbstractController{
     public Result listMyCollection(Map<String,Object> params){
        // params.put("userId",getUser().getUserId());
         params.put("userId",1);
-        List<StuMedia> stuMedias = stuMediaService.listMyCollection(params);
-        return Result.ok().put("result",stuMedias);
+        PageUtils pageUtils = stuMediaService.listMyCollection(params);
+        return Result.ok().put("result",pageUtils);
     }
 
     //获取课件信息信息

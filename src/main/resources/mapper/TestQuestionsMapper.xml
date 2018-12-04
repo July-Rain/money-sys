@@ -177,22 +177,18 @@
     </trim>
   </insert>
 
-  <select id="listMyCollection" parameterType="map" resultMap="BaseResultMap">
+
+  <!--计数：我收藏的重点试题-->
+  <select id="cntMyCollection" parameterType="map" resultType="java.lang.Integer">
     SELECT
-           LAW_COLLECTION. ID collectId,
-           LAW_TESTQUESTIONS. ID,
-           LAW_TESTQUESTIONS.COM_CONTENT,
-           LAW_TESTQUESTIONS.QUESTION_TYPE,
-           LAW_TESTQUESTIONS.ANSWER_ID,
-           LAW_TESTQUESTIONS.QUESTION_DIFFICULTY,
-           LAW_TESTQUESTIONS.TYPE_ID,
-           LAW_TESTQUESTIONS.SPECIAL_KNOWLEDGE_ID
+    count(LAW_TESTQUESTIONS. ID)
     FROM
-         LAW_COLLECTION
-           LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
+    LAW_COLLECTION
+    LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
     WHERE
-            LAW_COLLECTION.COM_USERID = #{userId}
-      AND LAW_COLLECTION. TYPE = 20
+    LAW_COLLECTION.COM_USERID = #{userId}
+    AND LAW_COLLECTION. TYPE = 20
+    And LAW_COLLECTION.DEL_STATUS=0
     <if test="questionType != null">
       AND QUESTION_TYPE=#{questionType}
     </if>
@@ -204,5 +200,115 @@
     </if>
   </select>
 
+  <!--列表：我收藏的重点试题-->
+  <select id="listMyCollection" parameterType="map" resultMap="BaseResultMap">
+    select
+    collectId,
+    ID,
+    COM_CONTENT,
+    QUESTION_TYPE,
+    ANSWER_ID,
+    QUESTION_DIFFICULTY,
+    TYPE_ID,
+    SPECIAL_KNOWLEDGE_ID
+    from
+    (
+    SELECT
+    LAW_COLLECTION. ID collectId,
+    LAW_TESTQUESTIONS. ID,
+    LAW_TESTQUESTIONS.COM_CONTENT,
+    LAW_TESTQUESTIONS.QUESTION_TYPE,
+    LAW_TESTQUESTIONS.ANSWER_ID,
+    LAW_TESTQUESTIONS.QUESTION_DIFFICULTY,
+    LAW_TESTQUESTIONS.TYPE_ID,
+    LAW_TESTQUESTIONS.SPECIAL_KNOWLEDGE_ID,
+    ROWNUM AS rowno
+    FROM
+    LAW_COLLECTION
+    LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
+    WHERE
+    LAW_COLLECTION.COM_USERID = #{userId}
+    And LAW_COLLECTION.DEL_STATUS=0
+    And ROWNUM &lt;= #{endPage}
+    AND LAW_COLLECTION. TYPE = 20
+    <if test="questionType != null">
+      AND QUESTION_TYPE=#{questionType}
+    </if>
+    <if test="typeId != null">
+      AND TYPE_ID=#{typeId}
+    </if>
+    <if test="questionDifficulty != null">
+      AND QUESTION_DIFFICULTY=#{questionDifficulty}
+    </if>
+    )
+    WHERE
+    rowno &gt; #{startPage}
+  </select>
+
+  <!--列表：我做错的题目-->
+  <select id="listMyError" parameterType="map" resultMap="BaseResultMap">
+
+    SELECT
+    ID,
+    recordId,
+    COM_CONTENT,
+    QUESTION_TYPE,
+    ANSWER_ID,
+    QUESTION_DIFFICULTY,
+    TYPE_ID,
+    SPECIAL_KNOWLEDGE_ID
+    from
+    (
+    SELECT
+    T . ID,
+    r. ID recordId,
+    T .COM_CONTENT,
+    T .QUESTION_TYPE,
+    T .ANSWER_ID,
+    T .QUESTION_DIFFICULTY,
+    T .TYPE_ID,
+    T .SPECIAL_KNOWLEDGE_ID,
+    ROWNUM AS rowno
+    FROM
+    LAW_USER_QUESTION_RECORD r
+    INNER JOIN LAW_TESTQUESTIONS T ON r.QUEST_ID = T . ID
+    WHERE
+    r.USER_ID = 1
+    And ROWNUM &lt;= #{endPage}
+    AND r.MY_ASWER_ID != T .ANSWER_ID
+    <if test="questionType != null">
+      AND T .QUESTION_DIFFICULTY =#{questionType}
+    </if>
+    <if test="typeId != null">
+      AND T .SPECIAL_KNOWLEDGE_ID = #{typeId}
+    </if>
+    <if test="questionDifficulty != null">
+      AND QUESTION_TYPE = #{questionDifficulty}
+    </if>
+    )
+    WHERE
+    rowno &gt; #{startPage}
+  </select>
+
+  <!--计数：我做错的题目-->
+  <select id="cntMyError" parameterType="map" resultType="java.lang.Integer">
+    SELECT
+      count(T . ID)
+    FROM
+    LAW_USER_QUESTION_RECORD r
+    INNER JOIN LAW_TESTQUESTIONS T ON r.QUEST_ID = T . ID
+    WHERE
+    r.USER_ID = 1
+    AND r.MY_ASWER_ID != T .ANSWER_ID
+    <if test="questionType != null">
+      AND T .QUESTION_DIFFICULTY =#{questionType}
+    </if>
+    <if test="typeId != null">
+      AND T .SPECIAL_KNOWLEDGE_ID = #{typeId}
+    </if>
+    <if test="questionDifficulty != null">
+      AND QUESTION_TYPE = #{questionDifficulty}
+    </if>
+  </select>
 
 </mapper>
