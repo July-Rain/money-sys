@@ -1,4 +1,6 @@
 package com.lawschool.service.impl;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.lawschool.beans.SysLogEntity;
 import com.lawschool.beans.SysMenu;
 import com.lawschool.dao.SysMenuDao;
 import com.lawschool.service.SysMenuService;
@@ -8,8 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+
 @Service
-public class SysMenuServiceImpl implements SysMenuService {
+public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> implements SysMenuService   {
 	
 	@Autowired
 	private SysMenuDao sysmenuDao;
@@ -26,15 +29,15 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 
-	@Override
+	/*@Override
 	public int insert(SysMenu menu) {
 		return sysmenuDao.insert(menu);
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public int updateById(SysMenu menu) {
 		return sysmenuDao.updateById(menu);
-	}
+	}*/
 
 	@Override
 	public int delete(String id) {

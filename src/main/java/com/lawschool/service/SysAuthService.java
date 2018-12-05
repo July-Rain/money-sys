@@ -1,9 +1,11 @@
 package com.lawschool.service;
 
+import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.Org;
 import com.lawschool.beans.Role;
 import com.lawschool.beans.SysMenu;
 import com.lawschool.beans.User;
+import com.lawschool.beans.auth.AuthRelationBean;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ import java.util.List;
  * @return 
  **/
 
-public interface SysAuthService {
+public interface SysAuthService  {
 
     /**
      * @Author MengyuWu
