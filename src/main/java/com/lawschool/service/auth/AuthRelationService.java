@@ -12,4 +12,6 @@ import com.lawschool.beans.auth.AuthRelationBean;
  * @since JDK 1.8
  */
 public interface AuthRelationService extends IService<AuthRelationBean> {
+
+    void insertAuthRelation(String[] deptIdArr,String[] userIdAr,String functionId,String functionFlag,String operaUserId);
 }

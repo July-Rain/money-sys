@@ -12,6 +12,7 @@ import com.lawschool.util.PageUtils;
 import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,6 +67,7 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaMapper,StuMedia> im
      **/
     
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void insertStuMedia(StuMedia stuMedia) {
         //存学习管理基本信息
         stuMedia.setId(GetUUID.getUUIDs("SM"));
@@ -73,35 +75,7 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaMapper,StuMedia> im
         //存权限表
         String[] deptIdArr=stuMedia.getDeptId();
         String[] userIdArr=stuMedia.getUserId();
-        List<AuthRelationBean> authRelationBeanList =new ArrayList<>();
-        //设置适用部门权限
-        for(String deptId:deptIdArr){
-            AuthRelationBean relationBean = new AuthRelationBean();
-            relationBean.setId(GetUUID.getUUIDs("AU"));
-            relationBean.setAuthId(deptId);
-            relationBean.setAuthType("dept");
-            relationBean.setFunctionFlag("STUMEDIA");
-            relationBean.setFunctionId(stuMedia.getId());
-            relationBean.setCreateTime(new Date());
-            relationBean.setCreateUser(stuMedia.getOptuser());
-            authRelationBeanList.add(relationBean);
-        }
-
-        //设置适用人员权限
-        for(String userId:userIdArr){
-            AuthRelationBean relationBean = new AuthRelationBean();
-            relationBean.setId(GetUUID.getUUIDs("AU"));
-            relationBean.setAuthId(userId);
-            relationBean.setAuthType("user");
-            relationBean.setFunctionFlag("STUMEDIA");
-            relationBean.setFunctionId(stuMedia.getId());
-            relationBean.setCreateTime(new Date());
-            relationBean.setCreateUser(stuMedia.getOptuser());
-            authRelationBeanList.add(relationBean);
-        }
-        if(UtilValidate.isNotEmpty(authRelationBeanList)){
-            authService.insertBatch(authRelationBeanList);
-        }
+        authService.insertAuthRelation(deptIdArr,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getOptuser());
     }
     
     /**
