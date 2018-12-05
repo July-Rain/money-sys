@@ -1,13 +1,19 @@
 package com.lawschool.beans;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotations.TableName;
 
 @TableName("LAW_EXAM_CONFIG")
-public class ExamConfig  {
+public class ExamConfig implements Serializable  {
 	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4298322751587715208L;
+
+	/**
      * 主键
      */
     private String id;

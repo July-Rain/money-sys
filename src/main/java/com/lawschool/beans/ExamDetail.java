@@ -1,5 +1,6 @@
 package com.lawschool.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -11,8 +12,13 @@ import com.baomidou.mybatisplus.annotations.TableName;
  * @date 2018年12月4日
  */
 @TableName("LAW_EXAM_DETAIL")
-public class ExamDetail {
+public class ExamDetail implements Serializable {
 	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4659408534905593975L;
+
+	/**
      * null
      */
     private String id;
