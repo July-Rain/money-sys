@@ -337,9 +337,70 @@
         update
         LAW_TESTQUESTIONS
         set
-
+        <set>
+          <if test="TYPE_ID ! = null">
+            TYPE_ID = #{typeId, jdbcType=VARCHAR},
+          </if>
+          <if test="COM_CONTENT ! = null">
+            COM_CONTENT = #{comContent, jdbcType=VARCHAR},
+          </if>
+          <if test="QUESTION_DIFFICULTY ! = null">
+            QUESTION_DIFFICULTY = #{questionDifficulty,jdbcType=VARCHAR},
+          </if>
+          <if test="QUESTION_TYPE ! = null">
+            QUESTION_TYPE = #{questionType,jdbcType=VARCHAR},
+          </if>
+          <if test="ANSWER_CHOICE_NUMBER ! = null">
+            ANSWER_CHOICE_NUMBER = #{answerChoiceNumber,jdbcType=DECIMAL},
+          </if>
+          <if test="ANSWER_ID ! = null">
+            ANSWER_ID = #{answerId,jdbcType=VARCHAR},
+          </if>
+          <if test="SPECIAL_KNOWLEDGE_ID ! = null">
+            SPECIAL_KNOWLEDGE_ID = #{specialKnowledgeId,jdbcType=VARCHAR},
+          </if>
+          <if test="POLICE_CLASSIFICATION ! = null">
+            POLICE_CLASSIFICATION = #{policeClassification,jdbcType=VARCHAR},
+          </if>
+          <if test="LEGAL_BASIS ! = null">
+            LEGAL_BASIS = #{legalBasis,jdbcType=VARCHAR},
+          </if>
+          <if test="ANSWER_DESCRIBLE ! = null">
+            ANSWER_DESCRIBLE = #{answerDescrible,jdbcType=VARCHAR},
+          </if>
+          <if test="RELEASE_STATUS ! = null">
+            RELEASE_STATUS = #{releaseStatus,jdbcType=DECIMAL},
+          </if>
+          <if test="DISABLE_STATUS ! = null">
+            DISABLE_STATUS = #{disableStatus,jdbcType=DECIMAL},
+          </if>
+          <if test="STU_ISSUER ! = null">
+            STU_ISSUER = #{stuIssuer,jdbcType=VARCHAR},
+          </if>
+          <if test="STU_ISSDEPARTMENT ! = null">
+            STU_ISSDEPARTMENT = #{stuIssdepartment,jdbcType=VARCHAR},
+          </if>
+          <if test="STU_ISSTIM ! = null">
+            STU_ISSTIM = #{stuIsstim,jdbcType=TIMESTAMP},
+          </if>
+          <if test="OPTUSER ! = null">
+            OPTUSER = #{optuser,jdbcType=VARCHAR},
+          </if>
+          <if test="OPTTIME ! = null">
+            OPTTIME = #{opttime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="STU_OPTDEPARTMENT ! = null">
+            STU_OPTDEPARTMENT = #{stuOptdepartment,jdbcType=VARCHAR},
+          </if>
+          <if test="USE_NUMBER ! = null">
+            USE_NUMBER = #{useNumber,jdbcType=DECIMAL},
+          </if>
+          <if test="RIGTH_NUMBER ! = null">
+            RIGTH_NUMBER = #{rigthNumber,jdbcType=DECIMAL},
+          </if>
+        </set>
         where
-       ID = #{id}
+       ID = #{id,jdbcType=VARCHAR}
     </update>
   <!-- 启用禁用-->
   <update id="updateStatus" parameterType="com.lawschool.beans.TestQuestions">
@@ -362,10 +423,23 @@
   <insert id="insertTestQuestions" parameterType="com.lawschool.beans.TestQuestions">
       insert into
        LAW_TESTQUESTIONS
+       (ID, TYPE_ID, COM_CONTENT,
+      QUESTION_DIFFICULTY, QUESTION_TYPE, ANSWER_CHOICE_NUMBER,
+      ANSWER_ID, SPECIAL_KNOWLEDGE_ID, POLICE_CLASSIFICATION,
+      LEGAL_BASIS, ANSWER_DESCRIBLE, RELEASE_STATUS,
+      DISABLE_STATUS, STU_ISSUER, STU_ISSDEPARTMENT,
+      STU_ISSTIM, OPTUSER, OPTTIME,
+      STU_OPTDEPARTMENT, USE_NUMBER, RIGTH_NUMBER)
        values
-       ()
+       (#{id,jdbcType=VARCHAR}, #{typeId,jdbcType=VARCHAR}, #{comContent,jdbcType=VARCHAR},
+      #{questionDifficulty,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR}, #{answerChoiceNumber,jdbcType=DECIMAL},
+      #{answerId,jdbcType=VARCHAR}, #{specialKnowledgeId,jdbcType=VARCHAR}, #{policeClassification,jdbcType=VARCHAR},
+      #{legalBasis,jdbcType=VARCHAR}, #{answerDescrible,jdbcType=VARCHAR}, #{releaseStatus,jdbcType=DECIMAL},
+      #{disableStatus,jdbcType=DECIMAL}, #{stuIssuer,jdbcType=VARCHAR}, #{stuIssdepartment,jdbcType=VARCHAR},
+      #{stuIsstim,jdbcType=TIMESTAMP}, #{optuser,jdbcType=VARCHAR}, #{opttime,jdbcType=TIMESTAMP},
+      #{stuOptdepartment,jdbcType=VARCHAR}, #{useNumber,jdbcType=DECIMAL}, #{rigthNumber,jdbcType=DECIMAL}
+      )
   </insert>
-  <!--resultType 是返回实体对象-->
   <!--  批量导入后查所有-->
   <select id="selectParent" resultType="com.lawschool.beans.TestQuestions">
         select id,comContent from  LAW_TESTQUESTIONS

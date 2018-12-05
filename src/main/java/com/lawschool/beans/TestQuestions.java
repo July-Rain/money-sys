@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -16,7 +17,7 @@ import java.util.Date;
  *
  */
 @TableName("LAW_TESTQUESTIONS")
-public class TestQuestions {
+public class TestQuestions implements Serializable {
     @TableId
     private String id;//id
 

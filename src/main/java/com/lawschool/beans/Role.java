@@ -4,12 +4,13 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 
 @TableName("LAW_SYS_ROLE")
-public class Role {
+public class Role implements Serializable {
     /**
      * 角色ID
      */

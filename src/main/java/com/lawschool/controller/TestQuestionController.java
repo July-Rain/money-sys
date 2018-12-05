@@ -29,14 +29,14 @@ public class TestQuestionController extends AbstractController{
     /**
      * 查询所有的专项知识试题（模糊查询）
      */
-    @ApiOperation(value = "分页查询", produces = MediaType.APPLICATION_JSON_VALUE)
+
     @RequestMapping("/index")
-    public String index(TestQuestions testQuestions, @RequestParam(value = "pn",defaultValue = "1")String pageNo, ModelMap map )
+    public String index(TestQuestions testQuestions, ModelMap map )
     {
 
         Page<TestQuestions> info = new Page<TestQuestions>(Integer.parseInt(pageNo), Constant.PAGE_SIZE);
         Parameter orderparameter = new Parameter(getService(), "getOrderlist").setParam(info,new String[]{});
-//        PageInfo<TestQuestions> page = testQuestionService.findPage(testQuestions,pageNo);
+        Page<TestQuestions> page = testQuestionService.findPage(testQuestions,pageNo);
         map.addAttribute("data",page);
         return "index";
     }
@@ -73,7 +73,6 @@ public class TestQuestionController extends AbstractController{
         result.setMessage("成功");
         return result;
     }
-
     /**
      * 删除专项知识试题
      */
@@ -114,9 +113,6 @@ public class TestQuestionController extends AbstractController{
     public List<TestQuestions> queryParents(){
         return testQuestionService.queryParents();
     }
-
-
-
 
     //我收藏的题目
     @RequestMapping("/mycollection")

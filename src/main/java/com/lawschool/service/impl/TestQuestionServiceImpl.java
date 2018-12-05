@@ -45,10 +45,10 @@ public class TestQuestionServiceImpl implements TestQuestionService {
     @Override
     @Transactional(readOnly = true)
     public Page<TestQuestions> findPage(TestQuestions testQuestions, String pageNo) {
-//        PageHelper.startPage(pageNo, Constant.PAGE_SIZE);
+     PageHelper.startPage(pageNo, Constant.PAGE_SIZE);
         List<TestQuestions> testQuestionsList = testQuestionsMapper.selectByFuzzy(testQuestions);
 //        Page<TestQuestions> info = new PageInfo<>(userList);
-        return info;
+        return ;
     }
 
     /**
@@ -76,7 +76,6 @@ public class TestQuestionServiceImpl implements TestQuestionService {
     @Override
     public void modifyStatus(String id, BigDecimal typeStatus) {
 
-
         String status = typeStatus.toString();
         if (status == StatusConstant.PRODUCT_TYPE_STATUS_DISABLE) {
             status = StatusConstant.PRODUCT_TYPE_STATUS_ENABLE;
@@ -89,7 +88,6 @@ public class TestQuestionServiceImpl implements TestQuestionService {
         testQuestionsMapper.updateStatus(tq);
     }
 
-
     /**
      * 删除专项知识试题
      */
@@ -98,6 +96,7 @@ public class TestQuestionServiceImpl implements TestQuestionService {
 
         testQuestionsMapper.deleteById(id);
     }
+
     /**
      * 新增专项知识试题
      */
@@ -106,6 +105,7 @@ public class TestQuestionServiceImpl implements TestQuestionService {
 
         testQuestionsMapper.insert(testQuestions);
     }
+
     /**
      * 批量导入试题并且查询出所有
      *
@@ -113,13 +113,14 @@ public class TestQuestionServiceImpl implements TestQuestionService {
     @Override
     public List<TestQuestions> addBatch(List<TestQuestions> testQuestions) {
 //        testQuestionsMapper.insertBatch(testQuestions);
-        if(testQuestions !=null && !testQuestions.isEmpty()){
+        if (testQuestions != null && !testQuestions.isEmpty()) {
             for (TestQuestions testQuestion : testQuestions) {
                 testQuestionsMapper.insertTestQuestions(testQuestion);
             }
             return testQuestionsMapper.selectAllTestQuestions();
         }
     }
+
     /**
      * 树形
      */
@@ -128,9 +129,6 @@ public class TestQuestionServiceImpl implements TestQuestionService {
     public List<TestQuestions> queryParents() {
         return testQuestionsMapper.selectParent();
     }
-
-
-
 
 
 
