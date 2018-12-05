@@ -1,6 +1,9 @@
 package com.lawschool.service.competition;
 
 
+import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.beans.competition.MatchSetting;
+
 /**
  * 
  * @Descriptin  擂台配置service接口
@@ -9,7 +12,7 @@ package com.lawschool.service.competition;
  * @Time        2018/11/29
  *
  */
-public interface MatchSettingService {
+public interface MatchSettingService extends IService<MatchSetting> {
 
 
 }
