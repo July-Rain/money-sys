@@ -2,6 +2,8 @@ package com.lawschool.service;
 
 import com.lawschool.beans.Role;
 
+import java.util.List;
+
 /**
  *
  * @Descriptin  用户service
@@ -30,5 +32,7 @@ public interface RoleService {
     public Role findByRoleId(String roleId);
 
 
+
+    public List<Role> findAll();
 
 }

@@ -1,5 +1,6 @@
 package com.lawschool.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.Role;
 import com.lawschool.beans.SysRoleMenu;
@@ -113,5 +114,13 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role findByRoleId(String roleId) {
         return roleMapper.selectRoleById(roleId);
+    }
+
+
+    @Override
+    public List<Role> findAll() {
+
+        return roleMapper.selectList(new EntityWrapper<Role>());
+
     }
 }

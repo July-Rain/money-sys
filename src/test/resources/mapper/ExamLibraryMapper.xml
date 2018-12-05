@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.ExamLibraryMapper">
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.ExamLibrary">
+    <constructor>
+      <idArg column="ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="TYPE_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CONTENT" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="ITEM_DIFFICULTY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="QUESTION_TYPES" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="OPTION_NUMBER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="ANSWER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="SPECIAL_KNOWLEDGE_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="POLICE_CLASSIFICATION" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="LEGAL_BASIS" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="ANSWER_DESCRIBE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="PUBLISH_STATUS" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DISABLED_STATE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="PUBLISHER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="PUBLISH_UNIT" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="PUBLISH_TIME" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="OPERATOR" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="OPERATION_TIME" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="USE_UNIT" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USE_NUMBER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CORRECT_NUMBER" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, TYPE_ID, CONTENT, ITEM_DIFFICULTY, QUESTION_TYPES, OPTION_NUMBER, ANSWER_ID,
+    SPECIAL_KNOWLEDGE_ID, POLICE_CLASSIFICATION, LEGAL_BASIS, ANSWER_DESCRIBE, PUBLISH_STATUS,
+    DISABLED_STATE, PUBLISHER, PUBLISH_UNIT, PUBLISH_TIME, OPERATOR, OPERATION_TIME,
+    USE_UNIT, USE_NUMBER, CORRECT_NUMBER
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LAW_EXAM_LIBRARY
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from LAW_EXAM_LIBRARY
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.lawschool.beans.ExamLibrary">
+    insert into LAW_EXAM_LIBRARY (ID, TYPE_ID, CONTENT,
+      ITEM_DIFFICULTY, QUESTION_TYPES, OPTION_NUMBER,
+      ANSWER_ID, SPECIAL_KNOWLEDGE_ID, POLICE_CLASSIFICATION,
+      LEGAL_BASIS, ANSWER_DESCRIBE, PUBLISH_STATUS,
+      DISABLED_STATE, PUBLISHER, PUBLISH_UNIT,
+      PUBLISH_TIME, OPERATOR, OPERATION_TIME,
+      USE_UNIT, USE_NUMBER, CORRECT_NUMBER
+      )
+    values (#{id,jdbcType=VARCHAR}, #{typeId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
+      #{itemDifficulty,jdbcType=VARCHAR}, #{questionTypes,jdbcType=VARCHAR}, #{optionNumber,jdbcType=VARCHAR},
+      #{answerId,jdbcType=VARCHAR}, #{specialKnowledgeId,jdbcType=VARCHAR}, #{policeClassification,jdbcType=VARCHAR},
+      #{legalBasis,jdbcType=VARCHAR}, #{answerDescribe,jdbcType=VARCHAR}, #{publishStatus,jdbcType=VARCHAR},
+      #{disabledState,jdbcType=VARCHAR}, #{publisher,jdbcType=VARCHAR}, #{publishUnit,jdbcType=VARCHAR},
+      #{publishTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR}, #{operationTime,jdbcType=TIMESTAMP},
+      #{useUnit,jdbcType=VARCHAR}, #{useNumber,jdbcType=VARCHAR}, #{correctNumber,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lawschool.beans.ExamLibrary">
+    insert into LAW_EXAM_LIBRARY
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="typeId != null">
+        TYPE_ID,
+      </if>
+      <if test="content != null">
+        CONTENT,
+      </if>
+      <if test="itemDifficulty != null">
+        ITEM_DIFFICULTY,
+      </if>
+      <if test="questionTypes != null">
+        QUESTION_TYPES,
+      </if>
+      <if test="optionNumber != null">
+        OPTION_NUMBER,
+      </if>
+      <if test="answerId != null">
+        ANSWER_ID,
+      </if>
+      <if test="specialKnowledgeId != null">
+        SPECIAL_KNOWLEDGE_ID,
+      </if>
+      <if test="policeClassification != null">
+        POLICE_CLASSIFICATION,
+      </if>
+      <if test="legalBasis != null">
+        LEGAL_BASIS,
+      </if>
+      <if test="answerDescribe != null">
+        ANSWER_DESCRIBE,
+      </if>
+      <if test="publishStatus != null">
+        PUBLISH_STATUS,
+      </if>
+      <if test="disabledState != null">
+        DISABLED_STATE,
+      </if>
+      <if test="publisher != null">
+        PUBLISHER,
+      </if>
+      <if test="publishUnit != null">
+        PUBLISH_UNIT,
+      </if>
+      <if test="publishTime != null">
+        PUBLISH_TIME,
+      </if>
+      <if test="operator != null">
+        OPERATOR,
+      </if>
+      <if test="operationTime != null">
+        OPERATION_TIME,
+      </if>
+      <if test="useUnit != null">
+        USE_UNIT,
+      </if>
+      <if test="useNumber != null">
+        USE_NUMBER,
+      </if>
+      <if test="correctNumber != null">
+        CORRECT_NUMBER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDifficulty != null">
+        #{itemDifficulty,jdbcType=VARCHAR},
+      </if>
+      <if test="questionTypes != null">
+        #{questionTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="optionNumber != null">
+        #{optionNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="answerId != null">
+        #{answerId,jdbcType=VARCHAR},
+      </if>
+      <if test="specialKnowledgeId != null">
+        #{specialKnowledgeId,jdbcType=VARCHAR},
+      </if>
+      <if test="policeClassification != null">
+        #{policeClassification,jdbcType=VARCHAR},
+      </if>
+      <if test="legalBasis != null">
+        #{legalBasis,jdbcType=VARCHAR},
+      </if>
+      <if test="answerDescribe != null">
+        #{answerDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="publishStatus != null">
+        #{publishStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="disabledState != null">
+        #{disabledState,jdbcType=VARCHAR},
+      </if>
+      <if test="publisher != null">
+        #{publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="publishUnit != null">
+        #{publishUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operationTime != null">
+        #{operationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useUnit != null">
+        #{useUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="useNumber != null">
+        #{useNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="correctNumber != null">
+        #{correctNumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lawschool.beans.ExamLibrary">
+    update LAW_EXAM_LIBRARY
+    <set>
+      <if test="typeId != null">
+        TYPE_ID = #{typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        CONTENT = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDifficulty != null">
+        ITEM_DIFFICULTY = #{itemDifficulty,jdbcType=VARCHAR},
+      </if>
+      <if test="questionTypes != null">
+        QUESTION_TYPES = #{questionTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="optionNumber != null">
+        OPTION_NUMBER = #{optionNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="answerId != null">
+        ANSWER_ID = #{answerId,jdbcType=VARCHAR},
+      </if>
+      <if test="specialKnowledgeId != null">
+        SPECIAL_KNOWLEDGE_ID = #{specialKnowledgeId,jdbcType=VARCHAR},
+      </if>
+      <if test="policeClassification != null">
+        POLICE_CLASSIFICATION = #{policeClassification,jdbcType=VARCHAR},
+      </if>
+      <if test="legalBasis != null">
+        LEGAL_BASIS = #{legalBasis,jdbcType=VARCHAR},
+      </if>
+      <if test="answerDescribe != null">
+        ANSWER_DESCRIBE = #{answerDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="publishStatus != null">
+        PUBLISH_STATUS = #{publishStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="disabledState != null">
+        DISABLED_STATE = #{disabledState,jdbcType=VARCHAR},
+      </if>
+      <if test="publisher != null">
+        PUBLISHER = #{publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="publishUnit != null">
+        PUBLISH_UNIT = #{publishUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        PUBLISH_TIME = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        OPERATOR = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operationTime != null">
+        OPERATION_TIME = #{operationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useUnit != null">
+        USE_UNIT = #{useUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="useNumber != null">
+        USE_NUMBER = #{useNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="correctNumber != null">
+        CORRECT_NUMBER = #{correctNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lawschool.beans.ExamLibrary">
+    update LAW_EXAM_LIBRARY
+    set TYPE_ID = #{typeId,jdbcType=VARCHAR},
+      CONTENT = #{content,jdbcType=VARCHAR},
+      ITEM_DIFFICULTY = #{itemDifficulty,jdbcType=VARCHAR},
+      QUESTION_TYPES = #{questionTypes,jdbcType=VARCHAR},
+      OPTION_NUMBER = #{optionNumber,jdbcType=VARCHAR},
+      ANSWER_ID = #{answerId,jdbcType=VARCHAR},
+      SPECIAL_KNOWLEDGE_ID = #{specialKnowledgeId,jdbcType=VARCHAR},
+      POLICE_CLASSIFICATION = #{policeClassification,jdbcType=VARCHAR},
+      LEGAL_BASIS = #{legalBasis,jdbcType=VARCHAR},
+      ANSWER_DESCRIBE = #{answerDescribe,jdbcType=VARCHAR},
+      PUBLISH_STATUS = #{publishStatus,jdbcType=VARCHAR},
+      DISABLED_STATE = #{disabledState,jdbcType=VARCHAR},
+      PUBLISHER = #{publisher,jdbcType=VARCHAR},
+      PUBLISH_UNIT = #{publishUnit,jdbcType=VARCHAR},
+      PUBLISH_TIME = #{publishTime,jdbcType=TIMESTAMP},
+      OPERATOR = #{operator,jdbcType=VARCHAR},
+      OPERATION_TIME = #{operationTime,jdbcType=TIMESTAMP},
+      USE_UNIT = #{useUnit,jdbcType=VARCHAR},
+      USE_NUMBER = #{useNumber,jdbcType=VARCHAR},
+      CORRECT_NUMBER = #{correctNumber,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.ExamLibrary">
+    <constructor>
+      <idArg column="ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="TYPE_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CONTENT" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="ITEM_DIFFICULTY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="QUESTION_TYPES" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="OPTION_NUMBER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="ANSWER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="SPECIAL_KNOWLEDGE_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="POLICE_CLASSIFICATION" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="LEGAL_BASIS" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="ANSWER_DESCRIBE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="PUBLISH_STATUS" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DISABLED_STATE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="PUBLISHER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="PUBLISH_UNIT" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="PUBLISH_TIME" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="OPERATOR" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="OPERATION_TIME" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="OPERATION_UNIT" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USE_UNIT" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USE_NUMBER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CORRECT_NUMBER" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, TYPE_ID, CONTENT, ITEM_DIFFICULTY, QUESTION_TYPES, OPTION_NUMBER, ANSWER_ID,
+    SPECIAL_KNOWLEDGE_ID, POLICE_CLASSIFICATION, LEGAL_BASIS, ANSWER_DESCRIBE, PUBLISH_STATUS,
+    DISABLED_STATE, PUBLISHER, PUBLISH_UNIT, PUBLISH_TIME, OPERATOR, OPERATION_TIME,
+    OPERATION_UNIT, USE_UNIT, USE_NUMBER, CORRECT_NUMBER
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LAW_EXAM_LIBRARY
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from LAW_EXAM_LIBRARY
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.lawschool.beans.ExamLibrary">
+    insert into LAW_EXAM_LIBRARY (ID, TYPE_ID, CONTENT,
+      ITEM_DIFFICULTY, QUESTION_TYPES, OPTION_NUMBER,
+      ANSWER_ID, SPECIAL_KNOWLEDGE_ID, POLICE_CLASSIFICATION,
+      LEGAL_BASIS, ANSWER_DESCRIBE, PUBLISH_STATUS,
+      DISABLED_STATE, PUBLISHER, PUBLISH_UNIT,
+      PUBLISH_TIME, OPERATOR, OPERATION_TIME,
+      OPERATION_UNIT, USE_UNIT, USE_NUMBER,
+      CORRECT_NUMBER)
+    values (#{id,jdbcType=VARCHAR}, #{typeId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
+      #{itemDifficulty,jdbcType=VARCHAR}, #{questionTypes,jdbcType=VARCHAR}, #{optionNumber,jdbcType=VARCHAR},
+      #{answerId,jdbcType=VARCHAR}, #{specialKnowledgeId,jdbcType=VARCHAR}, #{policeClassification,jdbcType=VARCHAR},
+      #{legalBasis,jdbcType=VARCHAR}, #{answerDescribe,jdbcType=VARCHAR}, #{publishStatus,jdbcType=VARCHAR},
+      #{disabledState,jdbcType=VARCHAR}, #{publisher,jdbcType=VARCHAR}, #{publishUnit,jdbcType=VARCHAR},
+      #{publishTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR}, #{operationTime,jdbcType=TIMESTAMP},
+      #{operationUnit,jdbcType=VARCHAR}, #{useUnit,jdbcType=VARCHAR}, #{useNumber,jdbcType=VARCHAR},
+      #{correctNumber,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lawschool.beans.ExamLibrary">
+    insert into LAW_EXAM_LIBRARY
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="typeId != null">
+        TYPE_ID,
+      </if>
+      <if test="content != null">
+        CONTENT,
+      </if>
+      <if test="itemDifficulty != null">
+        ITEM_DIFFICULTY,
+      </if>
+      <if test="questionTypes != null">
+        QUESTION_TYPES,
+      </if>
+      <if test="optionNumber != null">
+        OPTION_NUMBER,
+      </if>
+      <if test="answerId != null">
+        ANSWER_ID,
+      </if>
+      <if test="specialKnowledgeId != null">
+        SPECIAL_KNOWLEDGE_ID,
+      </if>
+      <if test="policeClassification != null">
+        POLICE_CLASSIFICATION,
+      </if>
+      <if test="legalBasis != null">
+        LEGAL_BASIS,
+      </if>
+      <if test="answerDescribe != null">
+        ANSWER_DESCRIBE,
+      </if>
+      <if test="publishStatus != null">
+        PUBLISH_STATUS,
+      </if>
+      <if test="disabledState != null">
+        DISABLED_STATE,
+      </if>
+      <if test="publisher != null">
+        PUBLISHER,
+      </if>
+      <if test="publishUnit != null">
+        PUBLISH_UNIT,
+      </if>
+      <if test="publishTime != null">
+        PUBLISH_TIME,
+      </if>
+      <if test="operator != null">
+        OPERATOR,
+      </if>
+      <if test="operationTime != null">
+        OPERATION_TIME,
+      </if>
+      <if test="operationUnit != null">
+        OPERATION_UNIT,
+      </if>
+      <if test="useUnit != null">
+        USE_UNIT,
+      </if>
+      <if test="useNumber != null">
+        USE_NUMBER,
+      </if>
+      <if test="correctNumber != null">
+        CORRECT_NUMBER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDifficulty != null">
+        #{itemDifficulty,jdbcType=VARCHAR},
+      </if>
+      <if test="questionTypes != null">
+        #{questionTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="optionNumber != null">
+        #{optionNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="answerId != null">
+        #{answerId,jdbcType=VARCHAR},
+      </if>
+      <if test="specialKnowledgeId != null">
+        #{specialKnowledgeId,jdbcType=VARCHAR},
+      </if>
+      <if test="policeClassification != null">
+        #{policeClassification,jdbcType=VARCHAR},
+      </if>
+      <if test="legalBasis != null">
+        #{legalBasis,jdbcType=VARCHAR},
+      </if>
+      <if test="answerDescribe != null">
+        #{answerDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="publishStatus != null">
+        #{publishStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="disabledState != null">
+        #{disabledState,jdbcType=VARCHAR},
+      </if>
+      <if test="publisher != null">
+        #{publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="publishUnit != null">
+        #{publishUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operationTime != null">
+        #{operationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operationUnit != null">
+        #{operationUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="useUnit != null">
+        #{useUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="useNumber != null">
+        #{useNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="correctNumber != null">
+        #{correctNumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lawschool.beans.ExamLibrary">
+    update LAW_EXAM_LIBRARY
+    <set>
+      <if test="typeId != null">
+        TYPE_ID = #{typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        CONTENT = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDifficulty != null">
+        ITEM_DIFFICULTY = #{itemDifficulty,jdbcType=VARCHAR},
+      </if>
+      <if test="questionTypes != null">
+        QUESTION_TYPES = #{questionTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="optionNumber != null">
+        OPTION_NUMBER = #{optionNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="answerId != null">
+        ANSWER_ID = #{answerId,jdbcType=VARCHAR},
+      </if>
+      <if test="specialKnowledgeId != null">
+        SPECIAL_KNOWLEDGE_ID = #{specialKnowledgeId,jdbcType=VARCHAR},
+      </if>
+      <if test="policeClassification != null">
+        POLICE_CLASSIFICATION = #{policeClassification,jdbcType=VARCHAR},
+      </if>
+      <if test="legalBasis != null">
+        LEGAL_BASIS = #{legalBasis,jdbcType=VARCHAR},
+      </if>
+      <if test="answerDescribe != null">
+        ANSWER_DESCRIBE = #{answerDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="publishStatus != null">
+        PUBLISH_STATUS = #{publishStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="disabledState != null">
+        DISABLED_STATE = #{disabledState,jdbcType=VARCHAR},
+      </if>
+      <if test="publisher != null">
+        PUBLISHER = #{publisher,jdbcType=VARCHAR},
+      </if>
+      <if test="publishUnit != null">
+        PUBLISH_UNIT = #{publishUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        PUBLISH_TIME = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        OPERATOR = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operationTime != null">
+        OPERATION_TIME = #{operationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operationUnit != null">
+        OPERATION_UNIT = #{operationUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="useUnit != null">
+        USE_UNIT = #{useUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="useNumber != null">
+        USE_NUMBER = #{useNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="correctNumber != null">
+        CORRECT_NUMBER = #{correctNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lawschool.beans.ExamLibrary">
+    update LAW_EXAM_LIBRARY
+    set TYPE_ID = #{typeId,jdbcType=VARCHAR},
+      CONTENT = #{content,jdbcType=VARCHAR},
+      ITEM_DIFFICULTY = #{itemDifficulty,jdbcType=VARCHAR},
+      QUESTION_TYPES = #{questionTypes,jdbcType=VARCHAR},
+      OPTION_NUMBER = #{optionNumber,jdbcType=VARCHAR},
+      ANSWER_ID = #{answerId,jdbcType=VARCHAR},
+      SPECIAL_KNOWLEDGE_ID = #{specialKnowledgeId,jdbcType=VARCHAR},
+      POLICE_CLASSIFICATION = #{policeClassification,jdbcType=VARCHAR},
+      LEGAL_BASIS = #{legalBasis,jdbcType=VARCHAR},
+      ANSWER_DESCRIBE = #{answerDescribe,jdbcType=VARCHAR},
+      PUBLISH_STATUS = #{publishStatus,jdbcType=VARCHAR},
+      DISABLED_STATE = #{disabledState,jdbcType=VARCHAR},
+      PUBLISHER = #{publisher,jdbcType=VARCHAR},
+      PUBLISH_UNIT = #{publishUnit,jdbcType=VARCHAR},
+      PUBLISH_TIME = #{publishTime,jdbcType=TIMESTAMP},
+      OPERATOR = #{operator,jdbcType=VARCHAR},
+      OPERATION_TIME = #{operationTime,jdbcType=TIMESTAMP},
+      OPERATION_UNIT = #{operationUnit,jdbcType=VARCHAR},
+      USE_UNIT = #{useUnit,jdbcType=VARCHAR},
+      USE_NUMBER = #{useNumber,jdbcType=VARCHAR},
+      CORRECT_NUMBER = #{correctNumber,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

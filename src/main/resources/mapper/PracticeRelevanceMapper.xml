@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.PracticeRelevanceMapper">
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.PracticeRelevance">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="PRACTICE_ID" jdbcType="VARCHAR" property="practiceId" />
+    <result column="QUESTION_ID" jdbcType="VARCHAR" property="questionId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, PRACTICE_ID, QUESTION_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LAW_PRACTICE_RELEVANCE
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from LAW_PRACTICE_RELEVANCE
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.lawschool.beans.PracticeRelevance">
+    insert into LAW_PRACTICE_RELEVANCE (ID, PRACTICE_ID, QUESTION_ID
+      )
+    values (#{id,jdbcType=VARCHAR}, #{practiceId,jdbcType=VARCHAR}, #{questionId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lawschool.beans.PracticeRelevance">
+    insert into LAW_PRACTICE_RELEVANCE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="practiceId != null">
+        PRACTICE_ID,
+      </if>
+      <if test="questionId != null">
+        QUESTION_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="practiceId != null">
+        #{practiceId,jdbcType=VARCHAR},
+      </if>
+      <if test="questionId != null">
+        #{questionId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lawschool.beans.PracticeRelevance">
+    update LAW_PRACTICE_RELEVANCE
+    <set>
+      <if test="practiceId != null">
+        PRACTICE_ID = #{practiceId,jdbcType=VARCHAR},
+      </if>
+      <if test="questionId != null">
+        QUESTION_ID = #{questionId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lawschool.beans.PracticeRelevance">
+    update LAW_PRACTICE_RELEVANCE
+    set PRACTICE_ID = #{practiceId,jdbcType=VARCHAR},
+      QUESTION_ID = #{questionId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
