@@ -2,10 +2,11 @@ package com.lawschool.beans;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Dict {
+public class Dict implements Serializable {
     /**
      * 字典表ID
      */
