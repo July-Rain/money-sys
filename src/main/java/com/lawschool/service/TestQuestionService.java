@@ -1,7 +1,7 @@
 package com.lawschool.service;
 
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.Answer;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.util.PageUtils;
@@ -18,41 +18,41 @@ import java.util.Map;
  * @Time        2018/11/29
  *
  */
-public interface TestQuestionService {
+public interface TestQuestionService extends IService<TestQuestions> {
     /**
      * 查询所有的专项知识试题（模糊查询）
      */
-    public Page<TestQuestions> findPage(TestQuestions testQuestions, String pageNo);
+//    Page<TestQuestions> findPage(Map<String, Object> params);
     /**
      * 查询专项知识试题
      */
-    public TestQuestions findById(String id);
+    TestQuestions findById(String id);
     /**
      * 编辑试题
      */
-    public void modify(TestQuestions testQuestions);
+    void modify(TestQuestions testQuestions);
     /**
      * 启用禁用
      */
-    public void modifyStatus(String id,BigDecimal releaseStatus);
+    void modifyStatus(String id,BigDecimal releaseStatus);
 
     /**
      * 删除专项知识试题
      */
-    public void deleteById(String id);
+    void deleteById(String id);
 
     /**
      * 新增专项知识试题
      */
-    public void add(TestQuestions testQuestions);
+    void add(TestQuestions testQuestions);
     /**
      * 批量导入试题
      */
-    public List<TestQuestions> addBatch(List<TestQuestions> TestQuestions);
+    List<TestQuestions> addBatch(List<TestQuestions> TestQuestions);
     /**
      * 树形
      */
-    public List<TestQuestions> queryParents();
+    List<TestQuestions> queryParents();
 
 
     /**
