@@ -1,6 +1,9 @@
 package com.lawschool.service.competition;
 
 
+import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.beans.competition.BattleRecord;
+
 /**
  * 
  * @Descriptin  对战记录service接口
@@ -9,7 +12,7 @@ package com.lawschool.service.competition;
  * @Time        2018/11/29
  *
  */
-public interface BattleRecordService {
+public interface BattleRecordService extends IService<BattleRecord> {
 
 
 }
