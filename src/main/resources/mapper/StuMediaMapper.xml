@@ -21,8 +21,9 @@
     <result column="STU_TYPE" jdbcType="VARCHAR" property="stuType" />
     <result column="STU_KNOWLEDGE" jdbcType="VARCHAR" property="stuKnowledge" />
     <result column="STU_LAWID" jdbcType="VARCHAR" property="stuLawid" />
-    <result column="collectId" property="collectId" />
-    <result column="collecttime" property="collecttime" />
+    <result column="COLLECTIONID" property="collectId" />
+    <result column="COLLECTTIME" property="collecttime" />
+      <result column="STUTYPEVALUE" property="stuTypeValue" />
   </resultMap>
   <insert id="insert" parameterType="com.lawschool.beans.StuMedia">
     insert into LAW_STU_MEDIA (ID, STU_CODE, STU_TITLE, 
@@ -166,18 +167,20 @@
   <!--列表：我收藏的课件-->
   <select id="listMyCollection" parameterType="map" resultMap="BaseResultMap">
     SELECT
-    collectId,
+    collectionId,
     ID,
     stu_title,
     stu_type,
+    stuTypeValue,
     collecttime
     FROM
     (
     SELECT
-    LAW_COLLECTION. ID collectId,
+    LAW_COLLECTION. ID collectionId,
     LAW_STU_MEDIA. ID,
     LAW_STU_MEDIA.stu_title,
     LAW_STU_MEDIA.stu_type,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = stu_type )AS stuTypeValue,
     LAW_COLLECTION.OPTTIME collecttime,
     ROWNUM AS rowno
     FROM

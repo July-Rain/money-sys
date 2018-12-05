@@ -1,22 +1,15 @@
 package com.lawschool.controller;
 
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.TestQuestions;
-import com.lawschool.constants.Constant;
-import com.lawschool.constants.StatusConstant;
 import com.lawschool.service.TestQuestionService;
-import com.lawschool.util.ResponseResult;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
-import org.omg.Dynamic.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -114,28 +107,51 @@ public class TestQuestionController extends AbstractController{
         return testQuestionService.queryParents();
     }
 
-    //我收藏的题目
+    @Autowired
+    AnswerService answerService;
+
+    //我收藏的题目z
     @RequestMapping("/mycollection")
-    public Result listMyCollection(Map<String,Object> params){
+    public Result listMyCollection(@RequestParam Map<String,Object> params){
         //params.put("userId",getUser().getUserId());
         params.put("userId",1);
         PageUtils pageUtils = testQuestionService.listMyCollection(params);
         return Result.ok().put("result",pageUtils);
     }
 
-    //我做错的题目
+    //一键组卷-我收藏的题目z
+    @RequestMapping("/randomQuestColl")
+    public Result randomQuestColl(@RequestParam Map<String,Object> params){
+        //params.put("userId",getUser().getUserId());
+        params.put("userId",1);
+        Map<TestQuestions, List<Answer>> testQuestionsListMap = testQuestionService.randomQuestColl(params);
+        return Result.ok().put("result",testQuestionsListMap);
+    }
+
+
+    //我做错的题目z
     @RequestMapping("/myerror")
-    public Result listMyErrorQuestion(Map<String,Object> params){
+    public Result listMyErrorQuestion(@RequestParam Map<String,Object> params){
         //params.put("userId",getUser().getUserId());
         params.put("userId",1);
         PageUtils pageUtils = testQuestionService.listMyErrorQuestion(params);
         return Result.ok().put("result",pageUtils);
     }
 
-    //获取收藏详情
+    //一键组卷-我做错的题目z
+    @RequestMapping("/randomErrorColl")
+    public Result randomErrorColl(@RequestParam Map<String,Object> params){
+        //params.put("userId",getUser().getUserId());
+        params.put("userId",1);
+        Map<TestQuestions, List<Answer>> testQuestionsListMap = testQuestionService.randomErrorColl(params);
+        return Result.ok().put("result",testQuestionsListMap);
+    }
+
+    //获取试题详情z
     @RequestMapping("/getTestQuestion")
-    public Result getStuMedia(TestQuestions testQuestions){
+    public Result getTestQuestion(@RequestBody TestQuestions testQuestions){
         TestQuestions info = testQuestionService.getTestQuestions(testQuestions);
-        return Result.ok().put("info",info);
+        List<Answer> answerByQid = answerService.getAnswerByQid(testQuestions.getId());
+        return Result.ok().put("qustion",info).put("answer",answerByQid);
     }
 }

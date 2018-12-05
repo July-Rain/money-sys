@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.AnswerMapper">
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.Answer">
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="QUESTION_ID" jdbcType="VARCHAR" property="questionId" />
+    <result column="QUESTION_CONTENT" jdbcType="VARCHAR" property="questionContent" />
+    <result column="ORDERSORT" jdbcType="DECIMAL" property="ordersort" />
+    <result column="SCORE" jdbcType="DECIMAL" property="score" />
+    <result column="OPTUSER" jdbcType="VARCHAR" property="optuser" />
+    <result column="OPTTIME" jdbcType="TIMESTAMP" property="opttime" />
+  </resultMap>
+</mapper>
