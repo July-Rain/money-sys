@@ -14,7 +14,7 @@
   		</plugin>
   	</plugins>
   </build>
-  
+   
   <profiles>
     <profile>
         <id>jdk-1.8</id>
@@ -305,6 +305,19 @@
             <artifactId>commons-configuration</artifactId>
             <version>${commons.configuration.version}</version>
         </dependency>
+        
+        <!-- 集成redis -->
+        <dependency>
+		    <groupId>org.springframework.data</groupId>
+		    <artifactId>spring-data-redis</artifactId>
+		    <version>1.6.0.RELEASE</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>redis.clients</groupId>
+		    <artifactId>jedis</artifactId>
+		    <version>2.7.3</version>
+		</dependency>
     </dependencies>
 
 
