@@ -2,9 +2,12 @@ package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.lawschool.beans.SysLogEntity;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserExample;
+import com.lawschool.dao.SysLogMapper;
 import com.lawschool.dao.UserMapper;
 import com.lawschool.service.UserService;
 import com.lawschool.util.Constant;
@@ -15,6 +18,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +26,7 @@ import java.util.Map;
 import static com.lawschool.util.Constant.*;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Autowired
     UserMapper userMapper;
@@ -79,15 +83,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int login(String userId,String password) {
+    public int login(String userCode,String password,HttpServletRequest request) {
         UserExample example=new UserExample();
-        example.createCriteria().andUserIdEqualTo(userId);
+        example.createCriteria().andUserCodeEqualTo(userCode);
         List<User> users = userMapper.selectByExample(example);
         if(users!=null && users.size()>0){
             User user=users.get(0);
             String salt=user.getSalt();
             String pass1 = MD5Util.Md5Hex(password + salt);
             if(user.getPassword().equals(pass1)){
+                request.getSession().setAttribute("user", user);
                 return SUCCESS;//登录成功
             }
             return ERROR_PSW;//密码错误
@@ -96,11 +101,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updatePassword(String userId, String password, String newPassword) {
-        int rst = this.login(userId, password);
+    public int updatePassword(String userCode, String password, String newPassword,HttpServletRequest request) {
+        int rst = this.login(userCode, password,request);
         if(rst==0){//用户存在
             UserExample example=new UserExample();
-            example.createCriteria().andUserIdEqualTo(userId);
+            example.createCriteria().andUserCodeEqualTo(userCode);
             User user=new User();
             String salt = RandomStringUtils.randomAlphanumeric(20);//生成盐
             String pass2=MD5Util.Md5Hex(newPassword+salt);//数据库中新密码

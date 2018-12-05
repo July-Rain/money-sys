@@ -62,7 +62,7 @@ public class RecruitConfigurationController {
 
         //因为数据库的结构  设计为有多少条数据 就是多少个 大关   没有一点多余数据    所以要删除的话 就是  全删   不存在 删一条的说法
         recruitConfigurationService.deleteAll();
-
+System.out.println();
         return Result.ok();
     }
 //

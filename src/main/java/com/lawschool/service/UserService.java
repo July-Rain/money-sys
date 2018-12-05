@@ -1,14 +1,17 @@
 package com.lawschool.service;
 
+import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.beans.SysLogEntity;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserTest;
 import com.lawschool.util.PageUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-public interface UserService {
+public interface UserService  extends IService<User> {
     /**
      * 根据userId查询用户信息
 	 * @param userId
@@ -43,20 +46,20 @@ public interface UserService {
 
     /**
      * 用户登录
-     * @param userId
+     * @param userCode
      * @param password
      * @return
      */
-    public int login(String userId,String password);
+    public int login(String userCode,String password,HttpServletRequest request);
 
     /**
      * 修改用户密码
-     * @param userId
+     * @param userCode
      * @param password
      * @param newPassword
      * @return
      */
-    public int updatePassword(String userId, String password, String newPassword);
+    public int updatePassword(String userCode, String password, String newPassword,HttpServletRequest request);
 
     /**
      * 添加用户

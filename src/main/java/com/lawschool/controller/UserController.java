@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -53,8 +54,8 @@ public class UserController extends AbstractController{
 
 
     @RequestMapping("/udtPsw")
-    public Result updatePassword(String password,String newPassword){
-        int rst = userService.updatePassword(getUser().getUserId(), password, newPassword);
+    public Result updatePassword(String password,String newPassword,HttpServletRequest request){
+        int rst = userService.updatePassword(getUser().getUserId(), password, newPassword,request);
         return rst==SUCCESS?Result.ok():Result.error("修改密码失败");
     }
 
