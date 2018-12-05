@@ -2,46 +2,51 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lawschool.dao.TestQuestionsMapper">
   <resultMap id="BaseResultMap" type="com.lawschool.beans.TestQuestions">
-    <result column="ID" jdbcType="VARCHAR" property="id" />
-    <result column="TYPE_ID" jdbcType="VARCHAR" property="typeId" />
-    <result column="COM_CONTENT" jdbcType="VARCHAR" property="comContent" />
-    <result column="QUESTION_DIFFICULTY" jdbcType="VARCHAR" property="questionDifficulty" />
-    <result column="QUESTION_TYPE" jdbcType="VARCHAR" property="questionType" />
-    <result column="ANSWER_CHOICE_NUMBER" jdbcType="DECIMAL" property="answerChoiceNumber" />
-    <result column="ANSWER_ID" jdbcType="VARCHAR" property="answerId" />
-    <result column="SPECIAL_KNOWLEDGE_ID" jdbcType="VARCHAR" property="specialKnowledgeId" />
-    <result column="POLICE_CLASSIFICATION" jdbcType="VARCHAR" property="policeClassification" />
-    <result column="LEGAL_BASIS" jdbcType="VARCHAR" property="legalBasis" />
-    <result column="ANSWER_DESCRIBLE" jdbcType="VARCHAR" property="answerDescrible" />
-    <result column="RELEASE_STATUS" jdbcType="DECIMAL" property="releaseStatus" />
-    <result column="DISABLE_STATUS" jdbcType="DECIMAL" property="disableStatus" />
-    <result column="STU_ISSUER" jdbcType="VARCHAR" property="stuIssuer" />
-    <result column="STU_ISSDEPARTMENT" jdbcType="VARCHAR" property="stuIssdepartment" />
-    <result column="STU_ISSTIM" jdbcType="TIMESTAMP" property="stuIsstim" />
-    <result column="OPTUSER" jdbcType="VARCHAR" property="optuser" />
-    <result column="OPTTIME" jdbcType="TIMESTAMP" property="opttime" />
-    <result column="STU_OPTDEPARTMENT" jdbcType="VARCHAR" property="stuOptdepartment" />
-    <result column="USE_NUMBER" jdbcType="DECIMAL" property="useNumber" />
-    <result column="RIGTH_NUMBER" jdbcType="DECIMAL" property="rigthNumber" />
-    <result column="collectId"  property="collectId" />
+    <result column="ID" jdbcType="VARCHAR" property="id"/>
+    <result column="TYPE_ID" jdbcType="VARCHAR" property="typeId"/>
+    <result column="COM_CONTENT" jdbcType="VARCHAR" property="comContent"/>
+    <result column="QUESTION_DIFFICULTY" jdbcType="VARCHAR" property="questionDifficulty"/>
+    <result column="QUESTION_TYPE" jdbcType="VARCHAR" property="questionType"/>
+    <result column="ANSWER_CHOICE_NUMBER" jdbcType="DECIMAL" property="answerChoiceNumber"/>
+    <result column="ANSWER_ID" jdbcType="VARCHAR" property="answerId"/>
+    <result column="SPECIAL_KNOWLEDGE_ID" jdbcType="VARCHAR" property="specialKnowledgeId"/>
+    <result column="POLICE_CLASSIFICATION" jdbcType="VARCHAR" property="policeClassification"/>
+    <result column="LEGAL_BASIS" jdbcType="VARCHAR" property="legalBasis"/>
+    <result column="ANSWER_DESCRIBLE" jdbcType="VARCHAR" property="answerDescrible"/>
+    <result column="RELEASE_STATUS" jdbcType="DECIMAL" property="releaseStatus"/>
+    <result column="DISABLE_STATUS" jdbcType="DECIMAL" property="disableStatus"/>
+    <result column="STU_ISSUER" jdbcType="VARCHAR" property="stuIssuer"/>
+    <result column="STU_ISSDEPARTMENT" jdbcType="VARCHAR" property="stuIssdepartment"/>
+    <result column="STU_ISSTIM" jdbcType="TIMESTAMP" property="stuIsstim"/>
+    <result column="OPTUSER" jdbcType="VARCHAR" property="optuser"/>
+    <result column="OPTTIME" jdbcType="TIMESTAMP" property="opttime"/>
+    <result column="STU_OPTDEPARTMENT" jdbcType="VARCHAR" property="stuOptdepartment"/>
+    <result column="USE_NUMBER" jdbcType="DECIMAL" property="useNumber"/>
+    <result column="RIGTH_NUMBER" jdbcType="DECIMAL" property="rigthNumber"/>
+    <result column="COLLECTIONID" jdbcType="VARCHAR" property="collectId"/>
+    <result column="QUESTIONTYPEVALUE" jdbcType="VARCHAR" property="questiontypeValue"/>
+    <result column="TYPEVALUE" jdbcType="VARCHAR" property="typeValue"/>
+    <result column="ANSWERVALUE" jdbcType="VARCHAR" property="answerValue"/>
+    <result column="QUESTIONDIFFICULTYVALUE" jdbcType="VARCHAR" property="questiondifficultyValue"/>
+    <result column="SPECIALKNOWLEDGEVALUE" jdbcType="VARCHAR" property="specialknowledgeValue"/>
   </resultMap>
   <insert id="insert" parameterType="com.lawschool.beans.TestQuestions">
-    insert into LAW_TESTQUESTIONS (ID, TYPE_ID, COM_CONTENT, 
-      QUESTION_DIFFICULTY, QUESTION_TYPE, ANSWER_CHOICE_NUMBER, 
-      ANSWER_ID, SPECIAL_KNOWLEDGE_ID, POLICE_CLASSIFICATION, 
-      LEGAL_BASIS, ANSWER_DESCRIBLE, RELEASE_STATUS, 
-      DISABLE_STATUS, STU_ISSUER, STU_ISSDEPARTMENT, 
-      STU_ISSTIM, OPTUSER, OPTTIME, 
-      STU_OPTDEPARTMENT, USE_NUMBER, RIGTH_NUMBER
-      )
-    values (#{id,jdbcType=VARCHAR}, #{typeId,jdbcType=VARCHAR}, #{comContent,jdbcType=VARCHAR}, 
-      #{questionDifficulty,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR}, #{answerChoiceNumber,jdbcType=DECIMAL}, 
-      #{answerId,jdbcType=VARCHAR}, #{specialKnowledgeId,jdbcType=VARCHAR}, #{policeClassification,jdbcType=VARCHAR}, 
-      #{legalBasis,jdbcType=VARCHAR}, #{answerDescrible,jdbcType=VARCHAR}, #{releaseStatus,jdbcType=DECIMAL}, 
-      #{disableStatus,jdbcType=DECIMAL}, #{stuIssuer,jdbcType=VARCHAR}, #{stuIssdepartment,jdbcType=VARCHAR}, 
-      #{stuIsstim,jdbcType=TIMESTAMP}, #{optuser,jdbcType=VARCHAR}, #{opttime,jdbcType=TIMESTAMP}, 
-      #{stuOptdepartment,jdbcType=VARCHAR}, #{useNumber,jdbcType=DECIMAL}, #{rigthNumber,jdbcType=DECIMAL}
-      )
+    insert into LAW_TESTQUESTIONS (ID, TYPE_ID, COM_CONTENT,
+                                   QUESTION_DIFFICULTY, QUESTION_TYPE, ANSWER_CHOICE_NUMBER,
+                                   ANSWER_ID, SPECIAL_KNOWLEDGE_ID, POLICE_CLASSIFICATION,
+                                   LEGAL_BASIS, ANSWER_DESCRIBLE, RELEASE_STATUS,
+                                   DISABLE_STATUS, STU_ISSUER, STU_ISSDEPARTMENT,
+                                   STU_ISSTIM, OPTUSER, OPTTIME,
+                                   STU_OPTDEPARTMENT, USE_NUMBER, RIGTH_NUMBER)
+    values (#{id,jdbcType=VARCHAR}, #{typeId,jdbcType=VARCHAR}, #{comContent,jdbcType=VARCHAR},
+            #{questionDifficulty,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR},
+            #{answerChoiceNumber,jdbcType=DECIMAL},
+            #{answerId,jdbcType=VARCHAR}, #{specialKnowledgeId,jdbcType=VARCHAR},
+            #{policeClassification,jdbcType=VARCHAR},
+            #{legalBasis,jdbcType=VARCHAR}, #{answerDescrible,jdbcType=VARCHAR}, #{releaseStatus,jdbcType=DECIMAL},
+            #{disableStatus,jdbcType=DECIMAL}, #{stuIssuer,jdbcType=VARCHAR}, #{stuIssdepartment,jdbcType=VARCHAR},
+            #{stuIsstim,jdbcType=TIMESTAMP}, #{optuser,jdbcType=VARCHAR}, #{opttime,jdbcType=TIMESTAMP},
+            #{stuOptdepartment,jdbcType=VARCHAR}, #{useNumber,jdbcType=DECIMAL}, #{rigthNumber,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.lawschool.beans.TestQuestions">
     insert into LAW_TESTQUESTIONS
@@ -214,14 +219,19 @@
     from
     (
     SELECT
-    LAW_COLLECTION. ID collectId,
+    LAW_COLLECTION. ID as collectionId,
     LAW_TESTQUESTIONS. ID,
     LAW_TESTQUESTIONS.COM_CONTENT,
     LAW_TESTQUESTIONS.QUESTION_TYPE,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
     LAW_TESTQUESTIONS.ANSWER_ID,
+    (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
     LAW_TESTQUESTIONS.QUESTION_DIFFICULTY,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
     LAW_TESTQUESTIONS.TYPE_ID,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
     LAW_TESTQUESTIONS.SPECIAL_KNOWLEDGE_ID,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
     ROWNUM AS rowno
     FROM
     LAW_COLLECTION
@@ -253,10 +263,15 @@
     recordId,
     COM_CONTENT,
     QUESTION_TYPE,
+    questiontypeValue,
     ANSWER_ID,
+    answerValue,
     QUESTION_DIFFICULTY,
+    questiondifficultyValue,
     TYPE_ID,
-    SPECIAL_KNOWLEDGE_ID
+    typeValue,
+    SPECIAL_KNOWLEDGE_ID,
+    specialknowledgeValue
     from
     (
     SELECT
@@ -264,16 +279,21 @@
     r. ID recordId,
     T .COM_CONTENT,
     T .QUESTION_TYPE,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
     T .ANSWER_ID,
+    (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
     T .QUESTION_DIFFICULTY,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
     T .TYPE_ID,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
     T .SPECIAL_KNOWLEDGE_ID,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
     ROWNUM AS rowno
     FROM
     LAW_USER_QUESTION_RECORD r
     INNER JOIN LAW_TESTQUESTIONS T ON r.QUEST_ID = T . ID
     WHERE
-    r.USER_ID = 1
+    r.USER_ID = #{userId}
     And ROWNUM &lt;= #{endPage}
     AND r.MY_ASWER_ID != T .ANSWER_ID
     <if test="questionType != null">
@@ -293,12 +313,12 @@
   <!--计数：我做错的题目-->
   <select id="cntMyError" parameterType="map" resultType="java.lang.Integer">
     SELECT
-      count(T . ID)
+    count(T . ID)
     FROM
     LAW_USER_QUESTION_RECORD r
     INNER JOIN LAW_TESTQUESTIONS T ON r.QUEST_ID = T . ID
     WHERE
-    r.USER_ID = 1
+    r.USER_ID = #{userId}
     AND r.MY_ASWER_ID != T .ANSWER_ID
     <if test="questionType != null">
       AND T .QUESTION_DIFFICULTY =#{questionType}

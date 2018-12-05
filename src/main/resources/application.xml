@@ -59,5 +59,6 @@
     </bean>
     <!-- 自动扫描注解的bean -->
     <context:component-scan base-package="com.lawschool.service" />
-
+	
+	<import resource="classpath:redis/spring-redis.xml"/>
 </beans>

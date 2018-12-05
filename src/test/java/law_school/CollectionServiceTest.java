@@ -6,15 +6,20 @@ package law_school;/**
  * @date 2018-11-3014:23
  */
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.annotation.SysLog;
+import com.lawschool.beans.Answer;
 import com.lawschool.beans.Collection;
 import com.lawschool.beans.User;
+import com.lawschool.dao.AnswerMapper;
 import com.lawschool.dao.CollectionMapper;
 import com.lawschool.service.CollectionService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+
+import java.util.List;
 
 /**
  * @Title: CollectionServiceTest
@@ -30,6 +35,8 @@ public class CollectionServiceTest extends SpringTestCase {
 
     @Autowired
     public CollectionMapper mapper;
+    @Autowired
+    public AnswerMapper mapper1;
 
     @Test
     public void test1(){
@@ -51,5 +58,12 @@ public class CollectionServiceTest extends SpringTestCase {
         user.setUserId("1");
         int i = service.delCollection(collection,user);
         System.out.println(i);
+    }
+
+
+    @Test
+    public void test3(){
+        List<Answer> answers = mapper1.selectList(new EntityWrapper<Answer>());
+
     }
 }

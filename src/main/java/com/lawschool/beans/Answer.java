@@ -1,18 +1,20 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.math.BigDecimal;
 import java.util.Date;
 @TableName("LAW_ANSWER")
 public class Answer {
+    @TableId
     private String id;
 
     private String questionId;
 
     private String questionContent;
 
-    private BigDecimal order;
+    private BigDecimal ordersort;
 
     private BigDecimal score;
 
@@ -44,12 +46,12 @@ public class Answer {
         this.questionContent = questionContent == null ? null : questionContent.trim();
     }
 
-    public BigDecimal getOrder() {
-        return order;
+    public BigDecimal getOrdersort() {
+        return ordersort;
     }
 
-    public void setOrder(BigDecimal order) {
-        this.order = order;
+    public void setOrdersort(BigDecimal ordersort) {
+        this.ordersort = ordersort;
     }
 
     public BigDecimal getScore() {
@@ -74,5 +76,18 @@ public class Answer {
 
     public void setOpttime(Date opttime) {
         this.opttime = opttime;
+    }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "id='" + id + '\'' +
+                ", questionId='" + questionId + '\'' +
+                ", questionContent='" + questionContent + '\'' +
+                ", ordersort=" + ordersort +
+                ", score=" + score +
+                ", optuser='" + optuser + '\'' +
+                ", opttime=" + opttime +
+                '}';
     }
 }

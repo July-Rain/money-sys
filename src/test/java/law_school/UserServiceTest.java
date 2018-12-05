@@ -1,6 +1,8 @@
 package law_school;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.beans.User;
+import com.lawschool.dao.UserMapper;
 import com.lawschool.service.UserService;
 import com.lawschool.util.PageUtils;
 import org.apache.commons.collections.map.HashedMap;
@@ -15,6 +17,13 @@ import java.util.List;
 public class UserServiceTest  extends SpringTestCase {
     @Autowired
     UserService userService;
+    @Autowired
+    UserMapper mapper;
+    
+    @Test
+    public void tes1(){
+        List<User> users = mapper.selectList(new EntityWrapper<User>());
+    }
 
     @Test
     public void selectUserByIdTest(){

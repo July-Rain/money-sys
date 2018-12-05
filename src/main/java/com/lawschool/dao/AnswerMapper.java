@@ -6,5 +6,5 @@ import com.lawschool.beans.Answer;
 public interface AnswerMapper extends BaseMapper<Answer> {
     //int insert(Answer record);
 
-    int insertSelective(Answer record);
+    //int insertSelective(Answer record);
 }
