@@ -1,5 +1,7 @@
 package com.lawschool.service;
 
+import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.beans.SysLogEntity;
 import com.lawschool.beans.SysMenu;
 import com.lawschool.beans.User;
 
@@ -15,7 +17,7 @@ import java.util.Map;
  * @Time        2018/11/28
  *
  */
-public interface SysMenuService {
+public interface SysMenuService   extends IService<SysMenu> {
 	//根据用户id找菜单   涉及到uesrService  等······
 
 	//list。包含所有的目录，菜单，按钮
@@ -26,9 +28,9 @@ public interface SysMenuService {
 
 
     //	保存新增菜单
-	public int insert(SysMenu menu);
+	//public int insert(SysMenu menu);
 	//修改菜单
-	public int updateById(SysMenu menu);
+	//public int updateById(SysMenu menu);
 
 	//删除菜单(包含判断是否有子菜单与按钮)
 	public int delete(String id);

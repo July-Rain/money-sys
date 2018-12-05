@@ -1,6 +1,8 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.Objects;
 /**
  * 菜单管理
  */
-
+@TableName("law_sys_menu")
 public class SysMenu implements Serializable {
 	/**
 	 * 菜单ID
@@ -30,6 +32,7 @@ public class SysMenu implements Serializable {
 	/**
 	 * 父菜单名称
 	 */
+	@TableField(exist=false)
 	private String parentName;
 	/**
 	 * 菜单名称
@@ -64,10 +67,10 @@ public class SysMenu implements Serializable {
 	/**
 	 * ztree属性
 	 */
-//	@TableField(exist=false)
+	@TableField(exist=false)
 	private Boolean open;
 
-//	@TableField(exist=false)
+	@TableField(exist=false)
 	private List<?> list;
 
 	public String getId() {

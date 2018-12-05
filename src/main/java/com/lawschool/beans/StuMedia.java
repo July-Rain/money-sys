@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 /**
@@ -15,7 +16,7 @@ import java.util.Date;
  *
  */
 @TableName("LAW_STU_MEDIA")
-public class StuMedia {
+public class StuMedia  implements Serializable {
     private String id;//id
 
     private String stuCode;//课件编码
@@ -62,6 +63,28 @@ public class StuMedia {
 
     @TableField(exist = false)
     private String stuTypeValue;//课件类型
+
+    @TableField(exist = false)
+    private String[] deptId;//适用部门
+
+    @TableField(exist = false)
+    private String[] userId;//适用人员
+
+    public String[] getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String[] deptId) {
+        this.deptId = deptId;
+    }
+
+    public String[] getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String[] userId) {
+        this.userId = userId;
+    }
 
     public String getId() {
         return id;

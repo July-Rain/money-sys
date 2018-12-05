@@ -1,0 +1,87 @@
+package com.lawschool.controller;
+
+import com.lawschool.service.SysConfigService;
+import com.lawschool.service.UserService;
+import com.lawschool.util.Constant;
+import com.lawschool.util.Result;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ * @Author MengyuWu
+ * @Description 登陆页面
+ * @Date 15:18 2018-12-5
+ * @Param 
+ * @return 
+ **/
+
+@Controller
+public class SysLoginController {
+	/**
+	 * request对象
+	 */
+	@Autowired
+	protected HttpServletRequest request;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private SysConfigService configService;
+
+
+
+	/**
+	 * @Author MengyuWu
+	 * @Description 登陆
+	 * @Date 15:18 2018-12-5
+	 * @Param [username, password]
+	 * @return com.lawschool.util.Result
+	 **/
+	
+	@ResponseBody
+	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
+	public Result login(String username, String password) {
+
+		int code = userService.login(username,password,request);
+		if(Constant.SUCCESS==code){
+			return Result.ok();
+		} else if (Constant.ERROR_PSW==code) {
+			return Result.error("密码错误");
+		}else if(Constant.IS_NOT_EXIST==code){
+			return Result.error("用户不存在");
+		}
+		return Result.ok();
+	}
+
+	/**
+	 * @Author MengyuWu
+	 * @Description 退出系统
+	 * @Date 15:18 2018-12-5
+	 * @Param []
+	 * @return java.lang.String
+	 **/
+	
+	@RequestMapping(value = "logout", method = RequestMethod.GET)
+	public String logout() {
+		request.getSession().setAttribute("user", null);
+		return "redirect:login.html";
+	}
+	
+	/**
+	 * @Author MengyuWu
+	 * @Description 进入首页
+	 * @Date 15:19 2018-12-5
+	 * @Param [model]
+	 * @return java.lang.String
+	 **/
+	
+	@RequestMapping(value = "main.html")
+	public String main(Model model) {
+
+		return "main";
+	}
+}
