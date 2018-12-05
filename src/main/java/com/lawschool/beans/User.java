@@ -3,6 +3,7 @@ package com.lawschool.beans;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,8 @@ import java.util.List;
  *
  */
 @TableName("law_user")
-public class User {
+public class User implements Serializable {
+
     private String id;//id
 
     private Date addTime;//添加时间

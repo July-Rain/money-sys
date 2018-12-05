@@ -54,6 +54,9 @@
         //onmessage事件提供了一个data属性，它可以包含消息的Body部分。消息的Body部分必须是一个字符串，可以进行序列化/反序列化操作，以便传递更多的数据。
         websocket.onmessage = function(event) {
             console.log('Client received a message',event);
+
+
+
             //var data=JSON.parse(event.data);
             var data=$.parseJSON(event.data);
             console.log("WebSocket:收到一条消息",data);
@@ -70,9 +73,15 @@
                 //刷新在线用户列表
                 $("#chatOnline").html("在线用户("+data.userList.length+")人");
                 $("#chatUserList").empty();
+
+
+                console.info("@@@@@@@@@@@");
+                console.info(data.userList);
                 $(data.userList).each(function(){
+                    console.info(this);
                     $("#chatUserList").append("<li>"+this.fullName+"</li>");
                 });
+
 
             }else{
                 //===普通消息
@@ -252,8 +261,7 @@
 </div>
 <!--聊天区域结束-->
 <div class="footer">
-    <p>版权所有 2006 - 2016 北京传智播客教育科技有限公司   地址：北京市昌平区建材城西路金燕龙办公楼一层   邮编：100096<br />
-        电话：010-82935150/60/70   邮箱: zhanghj@itcast.cn   京ICP备08001421号   京公网安备110108007702</p>
+
 </div>
 </body>
 </html>

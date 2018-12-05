@@ -1,6 +1,9 @@
 package com.lawschool.websocket;
 
 
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import com.lawschool.beans.Message;
 import com.lawschool.beans.User;
 import com.lawschool.util.GsonUtils;
@@ -9,11 +12,8 @@ import org.springframework.web.socket.*;
 import org.springframework.web.util.HtmlUtils;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * 
@@ -41,7 +41,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 		//将当前的连接的用户会话放入MAP,key是用户编号
 		User loginUser=(User) webSocketSession.getAttributes().get("loginUser");
 		USER_SOCKETSESSION_MAP.put(loginUser.getId(), webSocketSession);
-		
+
 		//群发消息告知大家
 		Message msg = new Message();
 		msg.setText("风骚的【"+loginUser.getFullName()+"】踩着轻盈的步伐来啦。。。大家欢迎！");
@@ -50,10 +50,15 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 		Set<Entry<String, WebSocketSession>> entrySet = USER_SOCKETSESSION_MAP.entrySet();
 		//将最新的所有的在线人列表放入消息对象的list集合中，用于页面显示
 		for (Entry<String, WebSocketSession> entry : entrySet) {
-			msg.getUserList().add((User)entry.getValue().getAttributes().get("loginUser"));
+
+			List<User> userlist=msg.getUserList();
+			userlist.add((User)entry.getValue().getAttributes().get("loginUser"));
+			msg.setUserList(userlist);
+
 		}
 		
 		//将消息转换为json
+//		JSONObject json = JSONObject.fromObject(msg);
 		TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 		//群发消息
 		sendMessageToAll(message);

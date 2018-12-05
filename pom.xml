@@ -274,6 +274,13 @@
             <version>${fastjson.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <!-- 必须加jdk的版本号 -->
+            <classifier>jdk15</classifier>
+        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
