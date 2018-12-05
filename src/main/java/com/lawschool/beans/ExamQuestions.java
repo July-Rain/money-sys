@@ -1,5 +1,6 @@
 package com.lawschool.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -11,9 +12,14 @@ import com.baomidou.mybatisplus.annotations.TableName;
  * @date 2018年12月4日
  */
 @TableName("LAW_EXAM_QUESTIONS")
-public class ExamQuestions {
+public class ExamQuestions implements Serializable {
 
 	   /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6346181933842540350L;
+
+	/**
      * null
      */
     private String id;
@@ -37,7 +43,11 @@ public class ExamQuestions {
      * 是否必考
      */
     private String isMustTest;
-
+    
+    /**
+     * 题目分值
+     */
+    private int score;
     /**
      * 添加人
      */
@@ -201,4 +211,12 @@ public class ExamQuestions {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}  
 }
