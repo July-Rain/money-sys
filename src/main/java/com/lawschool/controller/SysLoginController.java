@@ -1,11 +1,14 @@
 package com.lawschool.controller;
 
+import com.lawschool.beans.SysConfig;
 import com.lawschool.service.SysConfigService;
 import com.lawschool.service.UserService;
 import com.lawschool.util.Constant;
+import com.lawschool.util.GetUUID;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -84,4 +87,6 @@ public class SysLoginController {
 
 		return "main";
 	}
+
+
 }

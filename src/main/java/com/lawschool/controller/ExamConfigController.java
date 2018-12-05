@@ -24,7 +24,12 @@ public class ExamConfigController {
 	@RequestMapping("/examConfig")
 	private Result examConfig(String type,ExamConfig examConfig,List<ExamQueConfig> examQueList,List<ExamQuestions> queList) {
 		
-		examConfigServiceImpl.examConfig(type,examConfig,examQueList,queList);
+		try {
+			examConfigServiceImpl.examConfig(type,examConfig,examQueList,queList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return Result.ok();
 	} 

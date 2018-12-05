@@ -1,5 +1,6 @@
 package com.lawschool.beans;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -13,8 +14,13 @@ import com.baomidou.mybatisplus.annotations.TableName;
  * @date 2018年12月3日
  */
 @TableName("LAW_EXAM_QUESTION_CONFIG")
-public class ExamQueConfig {
+public class ExamQueConfig implements Serializable{
 	  /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2328174082418076685L;
+
+	/**
      * null
      */
     private String id;
@@ -25,9 +31,9 @@ public class ExamQueConfig {
     private String lawExamConfigId;
 
     /**
-     * 配置类型（随机出题，自主出题）
+     * 专项知识点
      */
-    private String configType;
+    private String specialKnowledgeId;
 
     /**
      * 题目类型（单选、多选等）
@@ -96,21 +102,7 @@ public class ExamQueConfig {
         this.lawExamConfigId = lawExamConfigId == null ? null : lawExamConfigId.trim();
     }
 
-    /**
-     * 配置类型（随机出题，自主出题）
-     * @return CONFIG_TYPE 配置类型（随机出题，自主出题）
-     */
-    public String getConfigType() {
-        return configType;
-    }
-
-    /**
-     * 配置类型（随机出题，自主出题）
-     * @param configType 配置类型（随机出题，自主出题）
-     */
-    public void setConfigType(String configType) {
-        this.configType = configType == null ? null : configType.trim();
-    }
+  
 
     /**
      * 题目类型（单选、多选等）
@@ -223,4 +215,12 @@ public class ExamQueConfig {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+	public String getSpecialKnowledgeId() {
+		return specialKnowledgeId;
+	}
+
+	public void setSpecialKnowledgeId(String specialKnowledgeId) {
+		this.specialKnowledgeId = specialKnowledgeId;
+	}
 }

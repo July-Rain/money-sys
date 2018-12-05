@@ -1,11 +1,17 @@
 package com.lawschool.beans;
 
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Org {
-    private String id;
+public class Org implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4751803427555498795L;
+
+	private String id;
 
     private Date addTime;  //添加时间
 
