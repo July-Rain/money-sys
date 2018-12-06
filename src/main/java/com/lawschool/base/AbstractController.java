@@ -1,4 +1,4 @@
-package com.lawschool.controller;
+package com.lawschool.base;
 
 import com.lawschool.beans.User;
 import org.slf4j.Logger;

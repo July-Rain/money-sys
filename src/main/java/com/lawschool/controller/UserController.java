@@ -1,25 +1,22 @@
 package com.lawschool.controller;
 
+import com.lawschool.base.AbstractController;
 import com.lawschool.beans.User;
 import com.lawschool.service.UserService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
-import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Map;
 
-import static com.lawschool.util.Constant.IS_NOT_EXIST;
 import static com.lawschool.util.Constant.SUCCESS;
 
 @RestController
 @RequestMapping("/sys")
-public class UserController extends AbstractController{
+public class UserController extends AbstractController {
 
     @Autowired
     private UserService userService;
