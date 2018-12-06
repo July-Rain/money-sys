@@ -52,5 +52,15 @@ public interface StuMediaService  extends IService<StuMedia> {
      **/
     
     StuMedia selectStuMediaInfo(String id);
+    
+    
+    /**
+     * @Author zjw
+     * @Description 获取教官的课程
+     * @Date 9:19 2018-12-6
+     * @Param [id]
+     * @return java.util.List<com.lawschool.beans.StuMedia>
+    **/
+    List<StuMedia> selectTchMedia(String id);
 
 }

@@ -3,8 +3,10 @@ package com.lawschool.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.beans.StuMedia;
+import com.lawschool.beans.User;
 import com.lawschool.beans.auth.AuthRelationBean;
 import com.lawschool.dao.StuMediaMapper;
+import com.lawschool.dao.UserMapper;
 import com.lawschool.service.StuMediaService;
 import com.lawschool.service.auth.AuthRelationService;
 import com.lawschool.util.GetUUID;
@@ -28,7 +30,16 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaMapper,StuMedia> im
     @Autowired
     private AuthRelationService authService;
 
-    //我的收藏-重点课程 -zjw
+    @Autowired
+    private UserMapper userMapper;
+
+    /**
+     * @Author zjw
+     * @Description 我的收藏-重点课程
+     * @Date 9:18 2018-12-6
+     * @Param [param]
+     * @return com.lawschool.util.PageUtils
+    **/
     @Override
     public PageUtils listMyCollection(Map<String, Object> param) {
         int pageNo=1;
@@ -85,7 +96,7 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaMapper,StuMedia> im
      * @Param [id]
      * @return com.lawschool.beans.StuMedia
      **/
-    
+
 
     @Override
     public StuMedia selectStuMediaInfo(String id) {
@@ -123,5 +134,22 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaMapper,StuMedia> im
         }
         return stuMedia;
     }
+
+    /**
+     * @Author zjw
+     * @Description 获取指定教官的课程
+     * @Date 9:17 2018-12-6
+     * @Param [id]
+     * @return java.util.List<com.lawschool.beans.StuMedia>
+     **/
+    @Override
+    public List<StuMedia> selectTchMedia(String id) {
+        User user = userMapper.selectById(id);
+        if(user.getIdentify().equals("1")){
+            return mapper.selectList(new EntityWrapper<StuMedia>().eq("OPTUSER",id));
+        }
+        return  null;
+    }
+
 
 }

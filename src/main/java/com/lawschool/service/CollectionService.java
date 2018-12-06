@@ -1,7 +1,13 @@
 package com.lawschool.service;
 
 import com.lawschool.beans.Collection;
+import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
+import com.lawschool.util.PageUtils;
+import com.lawschool.util.Result;
+
+import java.util.Map;
+
 /**
  *
  * @Descriptin  收藏service
@@ -27,5 +33,46 @@ public interface CollectionService {
      * @return
      */
     int addCollection(Collection collection,User user);
+
+
+    /**
+     * 我的收藏-重点试题（我收藏的题目）
+     * @author      zjw
+     * @param param
+     * @return
+     */
+    PageUtils listMyCollection(Map<String,Object> param);
+
+    /**
+     * 重点试题-组卷
+     * @author      zjw
+     * @param param
+     * @return
+     */
+    Result randomQuestColl(Map<String,Object> param, User user);
+
+    /**
+     * 我的收藏-我的错题（获取所有的错题）
+     * @author      zjw
+     * @param param
+     * @return
+     */
+    PageUtils listMyErrorQuestion(Map<String,Object> param);
+
+    /**
+     * 错题-组卷
+     * @author      zjw
+     * @param param
+     * @return
+     */
+    Result  randomErrorColl(Map<String,Object> param,User user);
+
+    /**
+     * 详情
+     * @author      zjw
+     * @param testQuestions
+     * @return
+     */
+    TestQuestions getTestQuestions(TestQuestions testQuestions);
 
 }
