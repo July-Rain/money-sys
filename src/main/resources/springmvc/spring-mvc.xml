@@ -11,6 +11,8 @@
    <mvc:annotation-driven />
    <!-- 扫描controller（controller层注入） -->
    <context:component-scan base-package="com.lawschool.*"/>
+
+   <!--< sda-->
    <!--<context:component-scan base-package="com.lawschool.annotation">-->
       <!--<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
    <!--</context:component-scan>-->
@@ -23,8 +25,8 @@
    <!--<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/WEB-INF/view/" p:suffix=".jsp"/>-->
 
    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-      <property name="prefix" value="/html/" />
-      <property name="suffix" value=".html" />
+      <property name="prefix" value="/jsp/" />
+      <property name="suffix" value=".jsp" />
       <property name="order" value="1" />
    </bean>
    <!--资源拦截-->
