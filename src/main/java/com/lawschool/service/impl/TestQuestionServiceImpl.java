@@ -203,7 +203,7 @@ public class TestQuestionServiceImpl extends ServiceImpl<TestQuestionsMapper,Tes
             practicePaper.setStuKnowledge(param.get("knowledge").toString());
         }
 
-        practicePaper.setCount(BigDecimal.valueOf(num));
+        practicePaper.setCount(num);
         practicePaper.setPracPaperType("自定义");
 
         practicePaperMapper.insert(practicePaper);
@@ -295,7 +295,7 @@ public class TestQuestionServiceImpl extends ServiceImpl<TestQuestionsMapper,Tes
             practicePaper.setStuKnowledge(param.get("knowledge").toString());
         }
 
-        practicePaper.setCount(BigDecimal.valueOf(num));
+        practicePaper.setCount(num);
         practicePaper.setPracPaperType("自定义");
 
         practicePaperMapper.insert(practicePaper);
