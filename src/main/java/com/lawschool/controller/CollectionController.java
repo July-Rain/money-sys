@@ -85,13 +85,9 @@ public class CollectionController extends AbstractController{
     @RequestMapping("/randomQuestColl")
     public Result randomQuestColl(@RequestParam Map<String,Object> params){
 
-//        Result result=testQuestionService.randomQuestColl(params,getUser());
+        Result result=collectionService.randomQuestColl(params,getUser());
 
-        //测试代码
-        User user=new User();
-        user.setId("1");
-        Result result=collectionService.randomQuestColl(params,user);
-        return result;
+        return Result.ok().put("result",result);
     }
 
 
@@ -104,8 +100,7 @@ public class CollectionController extends AbstractController{
     **/
     @RequestMapping("/errorTestQuestion")
     public Result listMyErrorQuestion(@RequestParam Map<String,Object> params){
-        //params.put("userId",getUser().getId());
-        params.put("userId",1);
+        params.put("userId",getUser().getId());
         PageUtils pageUtils = collectionService.listMyErrorQuestion(params);
         return Result.ok().put("result",pageUtils);
     }
@@ -120,11 +115,7 @@ public class CollectionController extends AbstractController{
     **/
     @RequestMapping("/randomErrorColl")
     public Result randomErrorColl(@RequestParam Map<String,Object> params){
-        //params.put("userId",getUser().getId());
-        //测试代码
-        User user=new User();
-        user.setUserId("1");
-        Result result=collectionService.randomErrorColl(params,user);
+        Result result=collectionService.randomErrorColl(params,getUser());
         return Result.ok().put("result",result);
     }
 

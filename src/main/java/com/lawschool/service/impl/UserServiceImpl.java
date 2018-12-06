@@ -28,13 +28,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     //获取用户用户/教官
     @Override
     public User selectUserByUserId(String id) {
-        UserExample example=new UserExample();
-        example.createCriteria().andUserIdEqualTo(id);
-        List<User> users = userMapper.selectByExample(example);
-        if(UtilValidate.isEmpty(users)){
-            return null;
-        }
-        return users.get(0);
+        return userMapper.selectById(id);
     }
 
     //查询所有的用户/教官
