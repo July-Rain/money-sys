@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.User;
-import com.lawschool.util.GetUUID;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -69,7 +68,7 @@ public abstract class AbstractServiceImpl<D extends AbstractDao<T>, T extends Da
 
     public void setBaseEntity(BaseEntity entity){
         if(StringUtils.isEmpty(entity.getId())){
-            entity.setId(IdWorker.get32UUID());
+            entity.setId(IdWorker.getIdStr());
         }
     }
 }
