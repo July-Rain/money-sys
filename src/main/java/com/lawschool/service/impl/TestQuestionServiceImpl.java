@@ -28,7 +28,7 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
     }
 
     /**
-     * 批量导入试题并且查询出所有
+     * 批量导入试题
      */
     public void importTestQuestions(List<TestQuestions> testQuestionsList) {
         if (!CollectionUtils.isEmpty(testQuestionsList)) {

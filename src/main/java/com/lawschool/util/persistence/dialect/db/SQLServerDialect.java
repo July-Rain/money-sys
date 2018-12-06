@@ -1,10 +1,10 @@
 /**
  * Copyright &copy; 2012-2014 <a href="http://www.dhc.com.cn">DHC</a> All rights reserved.
  */
-package com.lawschool.persistence.dialect.db;
+package com.lawschool.util.persistence.dialect.db;
 
 
-import com.lawschool.persistence.dialect.Dialect;
+import com.lawschool.util.persistence.dialect.Dialect;
 
 /**
  * MSSQLServer 数据库实现分页方言

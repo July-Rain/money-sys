@@ -1,13 +1,13 @@
 /**
  * Copyright &copy; 2012-2014 <a href="http://www.dhc.com.cn">DHC</a> All rights reserved.
  */
-package com.lawschool.persistence.interceptor;
+package com.lawschool.util.persistence.interceptor;
 
 
 import com.lawschool.base.Page;
-import com.lawschool.persistence.toolkit.Reflections;
-import com.lawschool.persistence.dialect.Dialect;
-import com.lawschool.persistence.dialect.db.*;
+import com.lawschool.util.persistence.toolkit.Reflections;
+import com.lawschool.util.persistence.dialect.Dialect;
+import com.lawschool.util.persistence.dialect.db.*;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.plugin.Interceptor;
