@@ -1,14 +1,12 @@
 package com.lawschool.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.base.Page;
-import com.lawschool.beans.Answer;
 import com.lawschool.beans.TestQuestions;
-import com.lawschool.beans.User;
 import com.lawschool.constants.StatusConstant;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
-import com.lawschool.util.PageUtils;
 import com.lawschool.util.ResponseResult;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,7 @@ public class TestQuestionController extends AbstractController{
     @RequestMapping("/index")
     public Result index(@RequestParam Map<String, Object> params) {
 
-        Page<TestQuestions> page = testQuestionService.findPage(params);
+        Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), new EntityWrapper<TestQuestions>());
         return Result.ok();
     }
 

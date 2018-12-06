@@ -21,10 +21,6 @@ import java.util.Map;
  */
 public interface TestQuestionService extends AbstractService<TestQuestions> {
     /**
-     * 查询所有的专项知识试题（模糊查询）
-     */
-    Page<TestQuestions> findPage(Map<String, Object> params);
-    /**
      * 查询专项知识试题
      */
     TestQuestions findById(String id);
