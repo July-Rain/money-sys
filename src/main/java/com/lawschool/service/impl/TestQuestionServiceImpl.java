@@ -1,11 +1,7 @@
 package com.lawschool.service.impl;
 
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
-import com.lawschool.beans.*;
+import com.lawschool.beans.TestQuestions;
 import com.lawschool.constants.StatusConstant;
 import com.lawschool.dao.*;
 import com.lawschool.service.TestQuestionService;
@@ -14,11 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import static java.lang.Integer.parseInt;
 
 
 @Service

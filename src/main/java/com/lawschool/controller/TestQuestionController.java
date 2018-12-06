@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/testQuestion")
-public class TestQuestionController extends AbstractController{
+public class TestQuestionController extends AbstractController {
 
     @Autowired
     private TestQuestionService testQuestionService;
@@ -34,8 +34,18 @@ public class TestQuestionController extends AbstractController{
     @RequestMapping("/index")
     public Result index(@RequestParam Map<String, Object> params) {
 
-        Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), new EntityWrapper<TestQuestions>());
-        return Result.ok();
+        String typeId = (String) params.get("typeId");
+        String questionDifficulty = (String) params.get("questionDifficulty");
+        String questionType = (String) params.get("questionType");
+        String disableStatus = (String) params.get("disableStatus");
+
+        Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params),
+                new EntityWrapper<TestQuestions>()
+                        .like("TYPEID", typeId)
+                        .like("QUESTIONDIFFICULTY", questionDifficulty)
+                        .like("QUESTIONTYPE", questionType)
+                        .like("DISABLESTATUS", disableStatus));
+        return Result.ok().put("page", page);
     }
 
     /**
@@ -85,9 +95,11 @@ public class TestQuestionController extends AbstractController{
      * 新增专项知识试题
      */
     @RequestMapping("/add")
-    public String add(TestQuestions testQuestions) {
+    public Result add(TestQuestions testQuestions) {
+
         testQuestionService.add(testQuestions);
-        return "redirect:/testQuestions/index";
+
+        return Result.ok();
     }
 
     /**
