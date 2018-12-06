@@ -1,7 +1,7 @@
-package com.lawschool.dao;
+package com.lawschool.dao.exam;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.lawschool.beans.ExamDetail;
+import com.lawschool.beans.exam.ExamDetail;
 
 public interface ExamDetailDao extends BaseMapper<ExamDetail>{
 

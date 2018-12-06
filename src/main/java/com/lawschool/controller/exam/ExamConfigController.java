@@ -1,4 +1,4 @@
-package com.lawschool.controller;
+package com.lawschool.controller.exam;
 
 import java.util.List;
 
@@ -7,10 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.lawschool.beans.ExamConfig;
-import com.lawschool.beans.ExamQueConfig;
-import com.lawschool.beans.ExamQuestions;
-import com.lawschool.service.impl.ExamConfigServiceImpl;
+import com.lawschool.beans.exam.ExamConfig;
+import com.lawschool.beans.exam.ExamQueConfig;
+import com.lawschool.beans.exam.ExamQuestions;
+import com.lawschool.service.impl.exam.ExamConfigServiceImpl;
 import com.lawschool.util.Result;
 
 @Controller

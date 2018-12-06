@@ -1,4 +1,4 @@
-package com.lawschool.beans;
+package com.lawschool.beans.exam;
 
 import java.io.Serializable;
 import java.util.Date;

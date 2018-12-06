@@ -1,4 +1,4 @@
-package com.lawschool.service.impl;
+package com.lawschool.service.impl.exam;
 
 import org.springframework.stereotype.Service;
 

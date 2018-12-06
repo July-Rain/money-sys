@@ -1,9 +1,9 @@
-package com.lawschool.dao;
+package com.lawschool.dao.exam;
 
 import java.util.List;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.lawschool.beans.ExamConfig;
+import com.lawschool.beans.exam.ExamConfig;
 
 public interface ExamConfigDao extends BaseMapper<ExamConfig>{
 
