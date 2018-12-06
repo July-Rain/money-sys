@@ -1,6 +1,7 @@
 package com.lawschool.redis;
 
 import com.lawschool.beans.Dict;
+import com.lawschool.beans.User;
 import com.lawschool.service.DictService;
 import com.lawschool.service.competition.BattlePlatformService;
 import com.lawschool.util.RedisUtil;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +35,14 @@ public class LoadData {
     //数据表在Servlet容器启动时存入Redis
     @PostConstruct
     public void putDataToRedis(String SYS_DICT,Dict value){
+
+        //定义一个user类的list
+         List<User> userList=new ArrayList<User>();
+        //将这个项目一加载的list放到redis里面
+//        redisUtil.set();
+
+
+
         List<Dict> list = dictService.selectAllDict();
         for(Dict data:list){
             redisUtil.set("dictInfo",data);
