@@ -60,8 +60,8 @@ public abstract class AbstractServiceImpl<D extends AbstractDao<T>, T extends Da
             entity.setCreateBy(userId);
             entity.setCreateDate(new Date());
         }
-        entity.setUpdateBy(userId);
-        entity.setUpdateDate(new Date());
+        entity.setOptBy(userId);
+        entity.setOptDate(new Date());
 
         setBaseEntity(entity);
     }

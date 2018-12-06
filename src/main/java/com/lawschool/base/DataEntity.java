@@ -1,8 +1,5 @@
 package com.lawschool.base;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-
 import java.util.Date;
 
 /**
@@ -13,15 +10,11 @@ public class DataEntity<T> extends BaseEntity<T> {
 
     private static final long serialVersionUID = 1L;
 
-    @TableField(exist = false)
     protected String createBy;      //创建人
-    @TableField(exist = false)
     protected Date createDate;      //创建时间
-    @TableField(exist = false)
-    protected String updateBy;      //更新人
-    @TableField(exist = false)
-    protected Date updateDate;      //更新时间
-    protected String delFlag;       //删除标记（0正常；1删除）
+    protected String optBy;         //操作人
+    protected Date optDate;         //操作时间
+    protected String isEnble;       //是否启用（0启用；1禁用）
 
 
     //======================== 静态常量 ======================
@@ -32,7 +25,7 @@ public class DataEntity<T> extends BaseEntity<T> {
 
     public DataEntity(){
         super();
-        this.delFlag = DEL_FLAG_NORMAL;
+        this.isEnble = DEL_FLAG_NORMAL;
     }
 
     public DataEntity(String id){
@@ -55,19 +48,27 @@ public class DataEntity<T> extends BaseEntity<T> {
         this.createDate = createDate;
     }
 
-    public String getUpdateBy() {
-        return updateBy;
+    public String getOptBy() {
+        return optBy;
     }
 
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
+    public void setOptBy(String optBy) {
+        this.optBy = optBy;
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public Date getOptDate() {
+        return optDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setOptDate(Date optDate) {
+        this.optDate = optDate;
+    }
+
+    public String getIsEnble() {
+        return isEnble;
+    }
+
+    public void setIsEnble(String isEnble) {
+        this.isEnble = isEnble;
     }
 }
