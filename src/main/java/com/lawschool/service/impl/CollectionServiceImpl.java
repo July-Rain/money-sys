@@ -137,7 +137,6 @@ public class CollectionServiceImpl implements CollectionService {
         }
         param.put("num",num);//获取组成10题
         param.put("userId",user.getId());
-        param.put("userId",1);
         List<TestQuestions> testQuestions = testQuestionsMapper.randomQuestColl(param);//仅仅只有id,提高效率
 
         //2。生成练习
@@ -228,8 +227,6 @@ public class CollectionServiceImpl implements CollectionService {
         }
         param.put("num",num);//获取组成10题
         param.put("userId",user.getId());
-        param.put("userId",1);
-
         List<TestQuestions> testQuestions = testQuestionsMapper.randomErrorColl(param);//仅仅只有id,提高效率
 
         //2。生成练习
