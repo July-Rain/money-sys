@@ -114,53 +114,5 @@ public class TestQuestionController extends AbstractController{
         return testQuestionService.queryParents();
     }
 
-    //我收藏的题目z
-    @RequestMapping("/mycollection")
-    public Result listMyCollection(@RequestParam Map<String,Object> params){
-        params.put("userId",getUser().getId());
-        //PageUtils pageUtils = testQuestionService.listMyCollection(params);
-        return Result.ok();//.put("result",pageUtils);
-    }
 
-    //一键组卷-我收藏的题目z
-    @RequestMapping("/randomQuestColl")
-    public Result randomQuestColl(@RequestParam Map<String,Object> params){
-
-//        Result result=testQuestionService.randomQuestColl(params,getUser());
-
-        //测试代码
-        User user=new User();
-        user.setId("1");
-        //Result result=testQuestionService.randomQuestColl(params,user);
-        return null;//result;
-    }
-
-
-    //我做错的题目z
-    @RequestMapping("/myerror")
-    public Result listMyErrorQuestion(@RequestParam Map<String,Object> params){
-        //params.put("userId",getUser().getId());
-        params.put("userId",1);
-        //PageUtils pageUtils = testQuestionService.listMyErrorQuestion(params);
-        return Result.ok();//.put("result",pageUtils);
-    }
-
-    //一键组卷-我做错的题目z
-    @RequestMapping("/randomErrorColl")
-    public Result randomErrorColl(@RequestParam Map<String,Object> params){
-        //params.put("userId",getUser().getId());
-        //测试代码
-        User user=new User();
-        user.setUserId("1");
-        //Result result=testQuestionService.randomErrorColl(params,user);
-        return Result.ok();//.put("result",result);
-    }
-
-    //获取试题详情z
-    @RequestMapping("/getTestQuestion")
-    public Result getTestQuestion(@RequestBody TestQuestions testQuestions){
-        //TestQuestions info = testQuestionService.getTestQuestions(testQuestions);
-        List<Answer> answerByQid = answerService.getAnswerByQid(testQuestions.getId());
-        return Result.ok();//.put("qustion",info).put("answer",answerByQid);
-    }
 }
