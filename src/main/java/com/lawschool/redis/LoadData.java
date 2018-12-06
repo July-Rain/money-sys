@@ -34,7 +34,7 @@ public class LoadData {
 
     //数据表在Servlet容器启动时存入Redis
     @PostConstruct
-    public void putDataToRedis(String SYS_DICT,Dict value){
+    public void putDataToRedis(){
 
         //定义一个user类的list
          List<User> userList=new ArrayList<User>();
