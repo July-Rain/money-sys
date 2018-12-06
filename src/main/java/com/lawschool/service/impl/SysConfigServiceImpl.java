@@ -1,9 +1,8 @@
 package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.SysConfig;
-import com.lawschool.dao.SysConfigMapper;
+import com.lawschool.dao.SysConfigDao;
 import com.lawschool.service.SysConfigService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.UtilValidate;
@@ -23,7 +22,7 @@ import java.util.List;
 @Service
 public class SysConfigServiceImpl implements SysConfigService {
     @Resource
-    private SysConfigMapper configMapper;
+    private SysConfigDao configMapper;
     @Override
     public String getValue(String code) {
         SysConfig config = configMapper.selectByCode(code);

@@ -7,7 +7,7 @@ import com.lawschool.beans.SysRoleMenu;
 
 import java.util.List;
 
-public interface SysRoleMenuMapper  extends BaseMapper<SysRoleMenu> {
+public interface SysRoleMenuDao extends BaseMapper<SysRoleMenu> {
 
     public int insertBatch(List<SysRoleMenu> sysRoleMenuList);
 }

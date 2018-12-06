@@ -6,7 +6,7 @@ import com.lawschool.beans.SysConfig;
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface SysConfigMapper extends BaseMapper<SysConfig> {
+public interface SysConfigDao extends BaseMapper<SysConfig> {
     int deleteByPrimaryKey(String id);
 
     //int insert(SysConfig record);

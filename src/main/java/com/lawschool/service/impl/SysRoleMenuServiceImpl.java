@@ -2,7 +2,7 @@ package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.beans.SysRoleMenu;
-import com.lawschool.dao.SysRoleMenuMapper;
+import com.lawschool.dao.SysRoleMenuDao;
 import com.lawschool.service.SysRoleMenuService;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +15,5 @@ import org.springframework.stereotype.Service;
  * @since JDK 1.8
  */
 @Service
-public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRoleMenu> implements SysRoleMenuService {
+public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuDao, SysRoleMenu> implements SysRoleMenuService {
 }

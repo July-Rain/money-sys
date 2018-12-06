@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository
-public interface RoleMapper  extends BaseMapper<Role> {
+public interface RoleDao extends BaseMapper<Role> {
     /**
      * 增加角色
      */

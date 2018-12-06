@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public interface StuMediaMapper extends BaseMapper<StuMedia> {
+public interface StuMediaDao extends BaseMapper<StuMedia> {
     //int insert(StuMedia record);
 
     int insertSelective(StuMedia record);

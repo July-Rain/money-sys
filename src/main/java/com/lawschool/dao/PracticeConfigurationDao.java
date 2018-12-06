@@ -13,7 +13,7 @@ import java.util.Map;
  * @version
  * @Time 2018/12/04
  */
-public interface PracticeConfigurationMapper extends BaseMapper<PracticeConfiguration> {
+public interface PracticeConfigurationDao extends BaseMapper<PracticeConfiguration> {
 
     public List<TestQuestions> selectQuestionsByKnowledgeId(Map map);
 

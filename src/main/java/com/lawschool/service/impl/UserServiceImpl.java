@@ -3,11 +3,8 @@ package com.lawschool.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.toolkit.IdWorker;
-import com.lawschool.beans.SysLogEntity;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserExample;
-import com.lawschool.dao.SysLogMapper;
 import com.lawschool.dao.UserMapper;
 import com.lawschool.service.UserService;
 import com.lawschool.util.*;
@@ -16,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 

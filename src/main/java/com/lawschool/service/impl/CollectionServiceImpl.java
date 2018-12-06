@@ -22,7 +22,7 @@ import static java.lang.Integer.parseInt;
 public class CollectionServiceImpl implements CollectionService {
 
     @Autowired
-    CollectionMapper collectionMapper;
+    CollectionDao collectionDao;
 
     @Autowired
     TestQuestionsDao testQuestionsMapper;
@@ -31,13 +31,13 @@ public class CollectionServiceImpl implements CollectionService {
     OrgDao orgDao;
 
     @Autowired
-    PracticePaperMapper practicePaperMapper;
+    PracticePaperDao practicePaperDao;
 
     @Autowired
-    PracticeRelevanceMapper practiceRelevanceMapper;
+    PracticeRelevanceDao practiceRelevanceDao;
 
     @Autowired
-    AnswerMapper answerMapper;
+    AnswerDao answerDao;
 
     @Override
     //1 删  0 留  取消收藏
@@ -55,7 +55,7 @@ public class CollectionServiceImpl implements CollectionService {
             collection.setOptuser(user.getFullName());
             collection.setOpttime(new Date());
             collection.setDelStatus((short)0);
-            return collectionMapper.insert(collection)==1?SUCCESS:ERROR;//1 添加成功  0 添加失败
+            return collectionDao.insert(collection)==1?SUCCESS:ERROR;//1 添加成功  0 添加失败
         }
         if(existStatus[0].equals(ONCE_EXIST+"")){//重新收藏
             collection.setOpttime(new Date());
@@ -72,7 +72,7 @@ public class CollectionServiceImpl implements CollectionService {
     private  String[]  isExist(Collection collection,User user){
         EntityWrapper<Collection> ew=new EntityWrapper();
         ew.eq("COM_USERID",user.getId()).eq("COM_STUCODE",collection.getComStucode()).eq("TYPE",collection.getType());
-        List<Collection> collections = collectionMapper.selectList(ew);
+        List<Collection> collections = collectionDao.selectList(ew);
         if(UtilValidate.isNotEmpty(collections) && collections.size()==1){
             if(collections.get(0).getDelStatus()==0) return new String[]{IS_EXITS+""};//2 目前被收藏中
             return  new String[]{ONCE_EXIST+"",collections.get(0).getId()};//1 之前被收藏过然后取消收藏了
@@ -92,7 +92,7 @@ public class CollectionServiceImpl implements CollectionService {
             collection.setDelStatus((short)0);
             ew.eq("DEL_STATUS",1);
         }
-        return collectionMapper.update(collection,ew)==1?SUCCESS:ERROR;//1 改变成功 0 改变失败
+        return collectionDao.update(collection,ew)==1?SUCCESS:ERROR;//1 改变成功 0 改变失败
     }
 
     //我的收藏-重点试题（我收藏的题目）-zjw
@@ -164,13 +164,13 @@ public class CollectionServiceImpl implements CollectionService {
         practicePaper.setCount(num);
         practicePaper.setPracPaperType("自定义");
 
-        practicePaperMapper.insert(practicePaper);
+        practicePaperDao.insert(practicePaper);
 
         //3.生成练习-试题关联表，以及选项的获取
         testQuestions.stream().forEach(e->{
             String qid=e.getId();
             TestQuestions question = testQuestionsMapper.selectById(qid);//获取题目
-            List<Answer> answers = answerMapper.selectList(new EntityWrapper<Answer>().eq("QUESTION_ID", qid));//选项
+            List<Answer> answers = answerDao.selectList(new EntityWrapper<Answer>().eq("QUESTION_ID", qid));//选项
 
             //记录表
             String rid = GetUUID.getUUIDs("PR");
@@ -179,7 +179,7 @@ public class CollectionServiceImpl implements CollectionService {
             relevance.setPracticeId(pid);
             relevance.setQuestionId(qid);
 
-            practiceRelevanceMapper.insert(relevance);
+            practiceRelevanceDao.insert(relevance);
 
             map.put(question,answers);
         });
@@ -256,12 +256,12 @@ public class CollectionServiceImpl implements CollectionService {
         practicePaper.setCount(num);
         practicePaper.setPracPaperType("自定义");
 
-        practicePaperMapper.insert(practicePaper);
+        practicePaperDao.insert(practicePaper);
         //3.生成练习-试题关联表，以及选项的获取
         testQuestions.stream().forEach(e->{
             String qid=e.getId();
             TestQuestions question = testQuestionsMapper.selectById(qid);//获取题目
-            List<Answer> answers = answerMapper.selectList(new EntityWrapper<Answer>().eq("QUESTION_ID", qid));//答案
+            List<Answer> answers = answerDao.selectList(new EntityWrapper<Answer>().eq("QUESTION_ID", qid));//答案
             //记录表
             String rid = IdWorker.get32UUID();
             PracticeRelevance relevance=new PracticeRelevance();
@@ -269,7 +269,7 @@ public class CollectionServiceImpl implements CollectionService {
             relevance.setPracticeId(pid);
             relevance.setQuestionId(qid);
 
-            practiceRelevanceMapper.insert(relevance);
+            practiceRelevanceDao.insert(relevance);
             map.put(question,answers);
         });
         return Result.ok().put("pid",pid).put("data",map);

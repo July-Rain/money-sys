@@ -7,17 +7,14 @@ package law_school;/**
  */
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.toolkit.IdWorker;
-import com.lawschool.annotation.SysLog;
 import com.lawschool.beans.Answer;
 import com.lawschool.beans.Collection;
 import com.lawschool.beans.User;
-import com.lawschool.dao.AnswerMapper;
-import com.lawschool.dao.CollectionMapper;
+import com.lawschool.dao.AnswerDao;
+import com.lawschool.dao.CollectionDao;
 import com.lawschool.service.CollectionService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import java.util.List;
 
@@ -34,9 +31,9 @@ public class CollectionServiceTest extends SpringTestCase {
     public CollectionService service;
 
     @Autowired
-    public CollectionMapper mapper;
+    public CollectionDao mapper;
     @Autowired
-    public AnswerMapper mapper1;
+    public AnswerDao mapper1;
 
     @Test
     public void test1(){

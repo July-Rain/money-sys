@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.beans.SysLogEntity;
-import com.lawschool.dao.SysLogMapper;
+import com.lawschool.dao.SysLogDao;
 import com.lawschool.service.SysLogService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 
 @Service("sysLogService")
-public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLogEntity> implements SysLogService {
+public class SysLogServiceImpl extends ServiceImpl<SysLogDao, SysLogEntity> implements SysLogService {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {

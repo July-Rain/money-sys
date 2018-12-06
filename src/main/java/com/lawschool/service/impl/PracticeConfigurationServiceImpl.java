@@ -3,7 +3,7 @@ package com.lawschool.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.beans.PracticeConfiguration;
 import com.lawschool.beans.TestQuestions;
-import com.lawschool.dao.PracticeConfigurationMapper;
+import com.lawschool.dao.PracticeConfigurationDao;
 import com.lawschool.service.PracticeConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,13 +22,13 @@ import java.util.Map;
 public class PracticeConfigurationServiceImpl implements PracticeConfigurationService {
 
     @Autowired
-    PracticeConfigurationMapper practiceConfigurationMapper;
+    PracticeConfigurationDao practiceConfigurationDao;
     /**
      * 展示全部练习配置
      */
     @Override
     public List<PracticeConfiguration> listAll() {
-        return practiceConfigurationMapper.selectList(new EntityWrapper<PracticeConfiguration>());
+        return practiceConfigurationDao.selectList(new EntityWrapper<PracticeConfiguration>());
     }
 
     @Override
@@ -36,7 +36,7 @@ public class PracticeConfigurationServiceImpl implements PracticeConfigurationSe
         /**
          * 保存练习配置
          */
-        practiceConfigurationMapper.insert(practiceConfiguration);
+        practiceConfigurationDao.insert(practiceConfiguration);
     }
 
     /**
@@ -47,6 +47,6 @@ public class PracticeConfigurationServiceImpl implements PracticeConfigurationSe
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<TestQuestions> selectByKnowledgeId(Map map) {
-        return practiceConfigurationMapper.selectQuestionsByKnowledgeId(map);
+        return practiceConfigurationDao.selectQuestionsByKnowledgeId(map);
     }
 }

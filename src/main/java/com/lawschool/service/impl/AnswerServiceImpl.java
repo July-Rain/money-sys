@@ -2,7 +2,7 @@ package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.beans.Answer;
-import com.lawschool.dao.AnswerMapper;
+import com.lawschool.dao.AnswerDao;
 import com.lawschool.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,12 @@ import java.util.List;
 public class AnswerServiceImpl implements AnswerService {
 
     @Autowired
-    private AnswerMapper answerMapper;
+    private AnswerDao answerDao;
 
     //获取题目的答案
     @Override
     public List<Answer> getAnswerByQid(String id) {
-        List<Answer> answers = answerMapper.selectList(new EntityWrapper<Answer>().eq("QUESTION_ID", id));
+        List<Answer> answers = answerDao.selectList(new EntityWrapper<Answer>().eq("QUESTION_ID", id));
         return answers;
     }
 }

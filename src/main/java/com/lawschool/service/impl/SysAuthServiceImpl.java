@@ -23,16 +23,16 @@ import java.util.List;
 @Service
 public class SysAuthServiceImpl implements SysAuthService {
     @Resource
-    private SysRoleMenuMapper roleMenuMapper;
+    private SysRoleMenuDao roleMenuMapper;
 
     @Resource
-    private SysRoleOrgMapper roleOrgMapper;
+    private SysRoleOrgDao roleOrgMapper;
 
     @Resource
-    private SysUserRoleMapper userRoleMapper;
+    private SysUserRoleDao userRoleMapper;
 
     @Resource
-    private RoleMapper roleMapper;
+    private RoleDao roleDao;
 
     @Resource
     private SysMenuDao sysMenuDao;
@@ -80,7 +80,7 @@ public class SysAuthServiceImpl implements SysAuthService {
 
     @Override
     public List<Role> listAllRole(String userId) {
-        List<Role> roleList=roleMapper.listRoleByUserId(userId);
+        List<Role> roleList= roleDao.listRoleByUserId(userId);
         return roleList;
     }
 

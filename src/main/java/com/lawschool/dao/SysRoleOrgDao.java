@@ -8,6 +8,6 @@ import com.lawschool.beans.SysRoleMenu;
 import com.lawschool.beans.SysRoleOrg;
 import org.apache.ibatis.annotations.Param;
 
-public interface SysRoleOrgMapper  extends BaseMapper< SysRoleOrg> {
+public interface SysRoleOrgDao extends BaseMapper< SysRoleOrg> {
     public int insertBatch(List<SysRoleOrg> sysRoleOrgList);
 }

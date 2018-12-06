@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.lawschool.beans.PracticePaper;
 import com.lawschool.beans.PracticeRelevance;
 
-public interface PracticeRelevanceMapper extends BaseMapper<PracticeRelevance> {
+public interface PracticeRelevanceDao extends BaseMapper<PracticeRelevance> {
     int deleteByPrimaryKey(String id);
 
     //int insert(PracticeRelevance record);

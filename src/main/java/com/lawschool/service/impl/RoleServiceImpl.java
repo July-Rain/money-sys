@@ -1,13 +1,10 @@
 package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.Role;
 import com.lawschool.beans.SysRoleMenu;
 import com.lawschool.beans.SysRoleOrg;
-import com.lawschool.dao.RoleMapper;
-import com.lawschool.dao.SysRoleMenuMapper;
-import com.lawschool.dao.SysRoleOrgMapper;
+import com.lawschool.dao.RoleDao;
 import com.lawschool.service.RoleService;
 import com.lawschool.service.SysAuthService;
 import com.lawschool.util.GetUUID;
@@ -15,7 +12,6 @@ import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +27,7 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
-    private RoleMapper roleMapper;
+    private RoleDao roleDao;
 
     @Autowired
     private SysAuthService authService;
@@ -46,7 +42,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public void add(Role role) {
-        roleMapper.insert(role);
+        roleDao.insert(role);
         //新增时添加相关的权限
         insertAuth(role);
 
@@ -93,7 +89,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public void deleteById(String roleId) {
-        roleMapper.deleteRoleById(roleId);
+        roleDao.deleteRoleById(roleId);
         //删除角色对应的相关权限
         authService.deleteAuth(roleId.toString());
     }
@@ -102,7 +98,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public void updaterRole(Role role) {
-        roleMapper.update(role);
+        roleDao.update(role);
         //删除角色对应的相关权限
         authService.deleteAuth(role.getRoleId().toString());
         //新增权限
@@ -113,14 +109,14 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public Role findByRoleId(String roleId) {
-        return roleMapper.selectRoleById(roleId);
+        return roleDao.selectRoleById(roleId);
     }
 
 
     @Override
     public List<Role> findAll() {
 
-        return roleMapper.selectList(new EntityWrapper<Role>());
+        return roleDao.selectList(new EntityWrapper<Role>());
 
     }
 }

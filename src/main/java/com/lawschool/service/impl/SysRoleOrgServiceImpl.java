@@ -2,7 +2,7 @@ package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.beans.SysRoleOrg;
-import com.lawschool.dao.SysRoleOrgMapper;
+import com.lawschool.dao.SysRoleOrgDao;
 import com.lawschool.service.SysRoleOrgService;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +15,5 @@ import org.springframework.stereotype.Service;
  * @since JDK 1.8
  */
 @Service
-public class SysRoleOrgServiceImpl extends ServiceImpl<SysRoleOrgMapper,SysRoleOrg> implements SysRoleOrgService {
+public class SysRoleOrgServiceImpl extends ServiceImpl<SysRoleOrgDao,SysRoleOrg> implements SysRoleOrgService {
 }

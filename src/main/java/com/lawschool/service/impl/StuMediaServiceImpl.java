@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
 import com.lawschool.beans.auth.AuthRelationBean;
-import com.lawschool.dao.StuMediaMapper;
+import com.lawschool.dao.StuMediaDao;
 import com.lawschool.dao.UserMapper;
 import com.lawschool.service.StuMediaService;
 import com.lawschool.service.auth.AuthRelationService;
@@ -16,16 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class StuMediaServiceImpl extends ServiceImpl<StuMediaMapper,StuMedia> implements StuMediaService {
+public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> implements StuMediaService {
 
     @Autowired
-    private StuMediaMapper mapper;
+    private StuMediaDao mapper;
 
     @Autowired
     private AuthRelationService authService;
