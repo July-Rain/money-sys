@@ -1,8 +1,8 @@
 package com.lawschool.controller;
 
 
+import com.lawschool.base.Page;
 import com.lawschool.beans.Answer;
-import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
 import com.lawschool.constants.StatusConstant;
@@ -36,7 +36,7 @@ public class TestQuestionController extends AbstractController{
     @RequestMapping("/index")
     public Result index(@RequestParam Map<String, Object> params) {
 
-//        Page<TestQuestions> page = testQuestionService.findPage(params);
+        Page<TestQuestions> page = testQuestionService.findPage(params);
         return Result.ok();
     }
 
@@ -118,8 +118,8 @@ public class TestQuestionController extends AbstractController{
     @RequestMapping("/mycollection")
     public Result listMyCollection(@RequestParam Map<String,Object> params){
         params.put("userId",getUser().getId());
-        PageUtils pageUtils = testQuestionService.listMyCollection(params);
-        return Result.ok().put("result",pageUtils);
+        //PageUtils pageUtils = testQuestionService.listMyCollection(params);
+        return Result.ok();//.put("result",pageUtils);
     }
 
     //一键组卷-我收藏的题目z
@@ -131,8 +131,8 @@ public class TestQuestionController extends AbstractController{
         //测试代码
         User user=new User();
         user.setId("1");
-        Result result=testQuestionService.randomQuestColl(params,user);
-        return result;
+        //Result result=testQuestionService.randomQuestColl(params,user);
+        return null;//result;
     }
 
 
@@ -141,8 +141,8 @@ public class TestQuestionController extends AbstractController{
     public Result listMyErrorQuestion(@RequestParam Map<String,Object> params){
         //params.put("userId",getUser().getId());
         params.put("userId",1);
-        PageUtils pageUtils = testQuestionService.listMyErrorQuestion(params);
-        return Result.ok().put("result",pageUtils);
+        //PageUtils pageUtils = testQuestionService.listMyErrorQuestion(params);
+        return Result.ok();//.put("result",pageUtils);
     }
 
     //一键组卷-我做错的题目z
@@ -152,15 +152,15 @@ public class TestQuestionController extends AbstractController{
         //测试代码
         User user=new User();
         user.setUserId("1");
-        Result result=testQuestionService.randomErrorColl(params,user);
-        return Result.ok().put("result",result);
+        //Result result=testQuestionService.randomErrorColl(params,user);
+        return Result.ok();//.put("result",result);
     }
 
     //获取试题详情z
     @RequestMapping("/getTestQuestion")
     public Result getTestQuestion(@RequestBody TestQuestions testQuestions){
-        TestQuestions info = testQuestionService.getTestQuestions(testQuestions);
+        //TestQuestions info = testQuestionService.getTestQuestions(testQuestions);
         List<Answer> answerByQid = answerService.getAnswerByQid(testQuestions.getId());
-        return Result.ok().put("qustion",info).put("answer",answerByQid);
+        return Result.ok();//.put("qustion",info).put("answer",answerByQid);
     }
 }

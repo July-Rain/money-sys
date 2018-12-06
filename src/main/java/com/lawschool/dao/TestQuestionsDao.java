@@ -1,12 +1,12 @@
 package com.lawschool.dao;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.base.AbstractDao;
 
 import java.util.List;
 import java.util.Map;
 
-public interface TestQuestionsMapper extends BaseMapper<TestQuestions> {
+public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
     //int insert(TestQuestions record);
     /**
      * 查询所有的专项知识试题（模糊查询）

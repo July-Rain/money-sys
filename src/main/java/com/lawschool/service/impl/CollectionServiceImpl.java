@@ -25,7 +25,7 @@ public class CollectionServiceImpl implements CollectionService {
     CollectionMapper collectionMapper;
 
     @Autowired
-    TestQuestionsMapper testQuestionsMapper;
+    TestQuestionsDao testQuestionsMapper;
 
     @Autowired
     OrgDao orgDao;

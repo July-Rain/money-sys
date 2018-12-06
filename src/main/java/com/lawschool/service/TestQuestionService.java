@@ -1,8 +1,8 @@
 package com.lawschool.service;
 
 
-import com.baomidou.mybatisplus.service.IService;
-import com.lawschool.beans.Answer;
+import com.lawschool.base.AbstractService;
+import com.lawschool.base.Page;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
 import com.lawschool.util.PageUtils;
@@ -19,11 +19,11 @@ import java.util.Map;
  * @Time        2018/11/29
  *
  */
-public interface TestQuestionService extends IService<TestQuestions> {
+public interface TestQuestionService extends AbstractService<TestQuestions> {
     /**
      * 查询所有的专项知识试题（模糊查询）
      */
-//    Page<TestQuestions> findPage(Map<String, Object> params);
+    Page<TestQuestions> findPage(Map<String, Object> params);
     /**
      * 查询专项知识试题
      */
