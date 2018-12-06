@@ -3,6 +3,7 @@ package com.lawschool.controller;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.service.StuMediaService;
+import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,18 @@ public class StuMediaController extends AbstractController {
         StuMedia stuMedia1 = stuMediaService.getStuMedia(stuMedia);
         return Result.ok().put("info",stuMedia1);
     }
-
+    /**
+     * @Author MengyuWu
+     * @Description 新增课程信息
+     * @Date 11:58 2018-12-6
+     * @Param [stuMedia]
+     * @return com.lawschool.util.Result
+     **/
+    @RequestMapping("/insertStuMedia")
+    public Result insertStuMedia(@RequestBody StuMedia stuMedia){
+        stuMedia.setId(GetUUID.getUUIDs("SM"));
+        stuMediaService.insertStuMedia(stuMedia);
+        return Result.ok().put("id",stuMedia.getId());
+    }
 }
+

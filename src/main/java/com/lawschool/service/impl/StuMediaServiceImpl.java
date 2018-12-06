@@ -86,7 +86,7 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
     @Transactional(rollbackFor = Exception.class)
     public void insertStuMedia(StuMedia stuMedia) {
         //存学习管理基本信息
-        stuMedia.setId(GetUUID.getUUIDs("SM"));
+        //stuMedia.setId(GetUUID.getUUIDs("SM"));
         mapper.insert(stuMedia);
         //存权限表
         String[] deptIdArr=stuMedia.getDeptId();

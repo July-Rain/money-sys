@@ -32,7 +32,6 @@
    <!--资源拦截-->
    <mvc:resources location="/statics/" mapping="/statics/**"/>
    <mvc:resources location="/html/" mapping="/html/**"/>
-
    <!--  Log自定义注解拦截器 -->
    <mvc:interceptors>
       <mvc:interceptor>
@@ -49,5 +48,41 @@
    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
       <property name="dataSource" ref="dataSource"/>
    </bean>
+   <!-- 配置freeMarker的模板路径 -->
+   <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+      <property name="templateLoaderPath" value="/html/" /><!--注意这儿不要添加classpath-->
+      <property name="defaultEncoding" value="utf-8" />
+      <property name="freemarkerVariables">
+         <map>
+            <entry key="xml_escape" value-ref="fmXmlEscape" />
+         </map>
+      </property>
+      <property name="freemarkerSettings">
+         <props>
+            <prop key="template_update_delay">0</prop>
+            <prop key="default_encoding">UTF-8</prop>
+            <prop key="number_format">0.##########</prop>
+            <prop key="date_format">yyyy-MM-dd</prop>
+            <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+            <prop key="locale">zh_CN</prop>
+            <prop key="classic_compatible">true</prop>
+            <prop key="template_exception_handler">ignore</prop>
+         </props>
+      </property>
+   </bean>
+   <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
 
+   <!-- 配置freeMarker视图解析器 -->
+   <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+      <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+      <property name="contentType" value="text/html;charset=UTF-8"></property>
+      <property name="requestContextAttribute" value="rc" />
+      <property name="exposeSpringMacroHelpers" value="true" />
+      <property name="exposeRequestAttributes" value="true" />
+      <property name="exposeSessionAttributes" value="true" />
+      <property name="cache" value="true" />
+      <property name="prefix" value="" />
+      <property name="suffix" value=".html" />
+      <property name="order" value="0"/>
+   </bean>
 </beans>

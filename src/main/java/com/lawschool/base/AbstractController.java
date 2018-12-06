@@ -64,4 +64,6 @@ public abstract class AbstractController {
 		return (User) getHttpSession().getAttribute("user");
 	}
 
+
+
 }

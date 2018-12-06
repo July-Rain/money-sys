@@ -84,8 +84,9 @@ public class SysLoginController {
 	
 	@RequestMapping(value = "main.html")
 	public String main(Model model) {
-
-		return "main";
+		model.addAttribute("userName","小明");
+		model.addAttribute("userAge",23);
+		return "main1";
 	}
 
 
