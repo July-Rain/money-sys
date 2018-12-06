@@ -8,4 +8,7 @@
         <setting name="jdbcTypeForNull" value="NULL" />
     </settings>
 
+    <plugins>
+        <plugin interceptor="com.lawschool.persistence.interceptor.PreparePaginationInterceptor"/>
+    </plugins>
 </configuration>
