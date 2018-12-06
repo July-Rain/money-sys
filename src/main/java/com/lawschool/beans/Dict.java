@@ -1,29 +1,66 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableId;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Dict {
-    private String id;
+public class Dict implements Serializable {
+    /**
+     * 字典表ID
+     */
+    @TableId
+    private String id;//
 
+    /**
+     * 数据所属类型名称
+     */
     private String name;
 
+    /**
+     * 数据类型
+     */
     private String type;
 
+    /**
+     * 上级编码
+     */
     private String parentCode;
 
+    /**
+     * 数据字段编码
+     */
     private String code;
 
+    /**
+     * 数据名称
+     */
     private String value;
 
+    /**
+     * 数据序号
+     */
     private int orderNum;
 
+    /**
+     * 标记，描述
+     */
     private String remark;
 
+    /**
+     * 创建人
+     */
     private String createUser;
 
+    /**
+     * 添加时间
+     */
     private Date addTime;
 
+    /**
+     * 删除状态 1：已删除，0：未删除
+     */
     private String delFlag;
 
     public Dict(String id, String name, String type, String parentCode, String code, String value, int orderNum, String remark, String createUser, Date addTime, String delFlag) {

@@ -1,47 +1,71 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-
-import java.math.BigDecimal;
+import java.io.Serializable;
 import java.util.Date;
-/**
- *
- * @Descriptin  练习表
- * @author      zjw
- * @version     v1.0
- * @Time        2018/12/04
- *
- */
+
 @TableName("LAW_PRACTICE_PAPER")
-public class PracticePaper {
+
+public class PracticePaper implements Serializable {
+    /**
+     * 练习卷ID
+     */
+    @TableId
     private String id;
 
+    /**
+     * 练习卷名称
+     */
     private String practiceName;
 
+    /**
+     * 练习卷创建人
+     */
     private String pracCreatUser;
 
+    /**
+     * 练习卷创建时间
+     */
     private Date pracCreatTime;
 
+    /**
+     * 练习卷创建部门
+     */
     private String pracCreatDepartment;
 
+    /**
+     * 操作人
+     */
     private String optuser;
 
+    /**
+     * 操作时间
+     */
     private Date opttime;
 
+    /**
+     *知识点
+     */
     private String stuKnowledge;
 
-    private BigDecimal count;
+    /**
+     * 题目数量
+     */
+    private Integer count;
 
+    /**
+     * 练习卷类型
+     * @return
+     */
     private String pracPaperType;
-
-    private String lawPracConfigId;
 
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+        this.id = id;
     }
 
     public String getPracticeName() {
@@ -49,7 +73,7 @@ public class PracticePaper {
     }
 
     public void setPracticeName(String practiceName) {
-        this.practiceName = practiceName == null ? null : practiceName.trim();
+        this.practiceName = practiceName;
     }
 
     public String getPracCreatUser() {
@@ -57,7 +81,7 @@ public class PracticePaper {
     }
 
     public void setPracCreatUser(String pracCreatUser) {
-        this.pracCreatUser = pracCreatUser == null ? null : pracCreatUser.trim();
+        this.pracCreatUser = pracCreatUser;
     }
 
     public Date getPracCreatTime() {
@@ -73,7 +97,7 @@ public class PracticePaper {
     }
 
     public void setPracCreatDepartment(String pracCreatDepartment) {
-        this.pracCreatDepartment = pracCreatDepartment == null ? null : pracCreatDepartment.trim();
+        this.pracCreatDepartment = pracCreatDepartment;
     }
 
     public String getOptuser() {
@@ -81,7 +105,7 @@ public class PracticePaper {
     }
 
     public void setOptuser(String optuser) {
-        this.optuser = optuser == null ? null : optuser.trim();
+        this.optuser = optuser;
     }
 
     public Date getOpttime() {
@@ -97,14 +121,14 @@ public class PracticePaper {
     }
 
     public void setStuKnowledge(String stuKnowledge) {
-        this.stuKnowledge = stuKnowledge == null ? null : stuKnowledge.trim();
+        this.stuKnowledge = stuKnowledge;
     }
 
-    public BigDecimal getCount() {
+    public Integer getCount() {
         return count;
     }
 
-    public void setCount(BigDecimal count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 
@@ -113,14 +137,22 @@ public class PracticePaper {
     }
 
     public void setPracPaperType(String pracPaperType) {
-        this.pracPaperType = pracPaperType == null ? null : pracPaperType.trim();
+        this.pracPaperType = pracPaperType;
     }
 
-    public String getLawPracConfigId() {
-        return lawPracConfigId;
-    }
-
-    public void setLawPracConfigId(String lawPracConfigId) {
-        this.lawPracConfigId = lawPracConfigId == null ? null : lawPracConfigId.trim();
+    @Override
+    public String toString() {
+        return "PracticePaper{" +
+                "id='" + id + '\'' +
+                ", practiceName='" + practiceName + '\'' +
+                ", pracCreatUser='" + pracCreatUser + '\'' +
+                ", pracCreatTime=" + pracCreatTime +
+                ", pracCreatDepartment='" + pracCreatDepartment + '\'' +
+                ", optuser='" + optuser + '\'' +
+                ", opttime=" + opttime +
+                ", stuKnowledge='" + stuKnowledge + '\'' +
+                ", count=" + count +
+                ", pracPaperType='" + pracPaperType + '\'' +
+                '}';
     }
 }

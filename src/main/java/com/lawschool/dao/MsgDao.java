@@ -1,11 +1,13 @@
 package com.lawschool.dao;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.lawschool.beans.Msg;
 
-public interface MsgDao {
+public interface MsgDao extends BaseMapper<Msg> {
 
-    public void insert(Msg msg);
+    public void add(Msg msg);
 
     public List<Msg> selectAllMsg();
 

@@ -15,7 +15,7 @@
         <result column="RELEASE_STATE" jdbcType="VARCHAR" property="releaseState" />
     </resultMap>
     <!--新增消息-->
-    <insert id="insert" parameterType="com.lawschool.beans.Msg">
+    <insert id="add" parameterType="com.lawschool.beans.Msg">
         insert into LAW_SYS_MSG_WITHIN_STATION(ID,TITLE,NOTICE_TYPE,CONTENT,RELEASE_DEPT,RELEASE_PEOPLE,RELEASE_DATE,RECIEVE_DEPT,RECIEVE_PEOPLE,RECIEVE_DATE,RELEASE_STATE)
          values
          (#{id},#{title},#{noticeType},#{content},#{releaseDept},#{releasePeople},#{releaseDate},#{recieveDept},#{recievePeople},#{recieveDate},#{releaseState})

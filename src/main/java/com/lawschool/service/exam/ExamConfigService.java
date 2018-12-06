@@ -1,10 +1,10 @@
-package com.lawschool.service;
+package com.lawschool.service.exam;
 
 import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.lawschool.beans.ExamConfig;
+import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.util.PageUtils;
 
 /***

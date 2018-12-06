@@ -1,5 +1,7 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableId;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,6 +10,7 @@ public class Msg implements Serializable{
     /**
      * 消息ID
      */
+    @TableId
     private String id;
     /**
      * 消息标题

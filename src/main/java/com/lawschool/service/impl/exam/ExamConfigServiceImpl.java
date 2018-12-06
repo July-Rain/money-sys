@@ -1,4 +1,4 @@
-package com.lawschool.service.impl;
+package com.lawschool.service.impl.exam;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,17 +17,18 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
-import com.lawschool.beans.ExamConfig;
-import com.lawschool.beans.ExamDetail;
-import com.lawschool.beans.ExamQueConfig;
-import com.lawschool.beans.ExamQuestions;
+
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.SysLogEntity;
-import com.lawschool.dao.ExamConfigDao;
-import com.lawschool.dao.ExamDetailDao;
-import com.lawschool.dao.ExamQueConfigDao;
-import com.lawschool.dao.ExamQuestionsDao;
-import com.lawschool.service.ExamConfigService;
+import com.lawschool.beans.exam.ExamConfig;
+import com.lawschool.beans.exam.ExamDetail;
+import com.lawschool.beans.exam.ExamQueConfig;
+import com.lawschool.beans.exam.ExamQuestions;
+import com.lawschool.dao.exam.ExamConfigDao;
+import com.lawschool.dao.exam.ExamDetailDao;
+import com.lawschool.dao.exam.ExamQueConfigDao;
+import com.lawschool.dao.exam.ExamQuestionsDao;
+import com.lawschool.service.exam.ExamConfigService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;
 import com.lawschool.util.UtilValidate;

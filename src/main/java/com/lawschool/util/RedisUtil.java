@@ -2,9 +2,12 @@ package com.lawschool.util;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
- 
+
+import java.util.List;
+
 /**
  * 
  * @author xx
@@ -14,8 +17,8 @@ import org.springframework.stereotype.Component;
 public class RedisUtil {
  
     @Autowired
-    private StringRedisTemplate redisTemplate;
- 
+    private RedisTemplate redisTemplate;
+
     /*
      * redis 支持五种基本类型
      * string、hash、list、set、sorted set
@@ -35,14 +38,28 @@ public class RedisUtil {
         }
         redisTemplate.opsForValue().set(k, v);
     }
- 
+
+    /**
+     * 添加Object的值
+     *
+     * @param k
+     * @param v
+     * @Description
+     */
+    public void set(String k,Object v){
+        if(isEmpty(k)){
+            return ;
+        }
+        redisTemplate.opsForValue().set(k,v);
+    }
+
     /**
      * 获取String的值
      *
      * @param k
      * @Description
      */
-    public  String get(String k) {
+    public  Object get(String k) {
         if (isEmpty(k)) {
             return null;
         }

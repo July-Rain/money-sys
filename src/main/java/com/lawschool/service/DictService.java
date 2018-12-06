@@ -4,6 +4,7 @@ import com.lawschool.beans.Dict;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Descriptin 字典service
@@ -42,7 +43,7 @@ public interface DictService {
      * 批量删除数据字典
      * @param ids
      */
-    public void deleteByDictIds(String[] ids);
+    public void deleteByDictIds(Map ids);
 
     /**
      * 删除数据字典表

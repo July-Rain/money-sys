@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DictServiceImpl implements DictService {
@@ -35,8 +36,8 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
-    public void deleteByDictIds(String[] ids) {
-        dictDao.deleteByDictIds(ids);
+    public void deleteByDictIds(Map ids) {
+
     }
 
     @Override

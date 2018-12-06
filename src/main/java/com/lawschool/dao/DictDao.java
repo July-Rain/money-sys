@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.lawschool.beans.Dict;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DictDao extends BaseMapper<Dict> {
 
@@ -15,7 +16,7 @@ public interface DictDao extends BaseMapper<Dict> {
 
     public void updateByDictId(Dict dict);
 
-    public void deleteByDictIds(String[] ids);
+    public void deleteByDictIds(Map ids);
 
     public void deleteByDictId(String id);
 }
