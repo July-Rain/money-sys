@@ -21,9 +21,18 @@ public class DataEntity<T> extends BaseEntity<T> {
     protected String updateBy;      //更新人
     @TableField(exist = false)
     protected Date updateDate;      //更新时间
+    protected String delFlag;       //删除标记（0正常；1删除）
+
+
+    //======================== 静态常量 ======================
+    //删除标记（0：正常；1：删除；）
+    public static final String DEL_FLAG_NORMAL = "0";
+    public static final String DEL_FLAG_DELETE = "1";
+
 
     public DataEntity(){
         super();
+        this.delFlag = DEL_FLAG_NORMAL;
     }
 
     public DataEntity(String id){
