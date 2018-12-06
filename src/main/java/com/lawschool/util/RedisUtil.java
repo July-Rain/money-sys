@@ -1,154 +1,93 @@
 package com.lawschool.util;
 
-
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
- * 
- * @author xx
+ * Redis工具类
  *
+ * @author chenshun
+ * @email sunlightcs@gmail.com
+ * @date 2017-07-17 21:12
  */
 @Component
 public class RedisUtil {
- 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private ValueOperations<String, String> valueOperations;
+    @Autowired
+    private HashOperations<String, String, Object> hashOperations;
+    @Autowired
+    private ListOperations<String, Object> listOperations;
+    @Autowired
+    private SetOperations<String, Object> setOperations;
+    @Autowired
+    private ZSetOperations<String, Object> zSetOperations;
+    /**  默认过期时长，单位：秒 */
+    public final static long DEFAULT_EXPIRE = 60 * 60 * 24;
+    /**  不设置过期时长 */
+    public final static long NOT_EXPIRE = -1;
+    private final static Gson gson = new Gson();
 
-    /*
-     * redis 支持五种基本类型
-     * string、hash、list、set、sorted set
-     *
-     */
- 
-    /**
-     * 添加String的值
-     *
-     * @param k
-     * @param v
-     * @Description
-     */
-    public  void set(String k, String v) {
-        if (isEmpty(k)) {
-            return;
+    public void set(String key, Object value, long expire){
+        valueOperations.set(key, toJson(value));
+        if(expire != NOT_EXPIRE){
+            redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
-        redisTemplate.opsForValue().set(k, v);
-    }
-
-    /**
-     * 添加Object的值
-     *
-     * @param k
-     * @param v
-     * @Description
-     */
-    public void set(String k,Object v){
-        if(isEmpty(k)){
-            return ;
-        }
-        redisTemplate.opsForValue().set(k,v);
     }
 
-    /**
-     * 获取String的值
-     *
-     * @param k
-     * @Description
-     */
-    public  Object get(String k) {
-        if (isEmpty(k)) {
-            return null;
-        }
-        return redisTemplate.opsForValue().get(k);
+    public void set(String key, Object value){
+        set(key, value, DEFAULT_EXPIRE);
     }
- 
-    public  void del(String k) {
-        if (isEmpty(k)) {
-            return;
+
+    public <T> T get(String key, Class<T> clazz, long expire) {
+        String value = valueOperations.get(key);
+        if(expire != NOT_EXPIRE){
+            redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
-        redisTemplate.opsForValue().get(k);
+        return value == null ? null : fromJson(value, clazz);
     }
- 
-    /**
-     * 向Hash中添加值
-     *
-     * @param key   可以对应数据库中的表名
-     * @param field 可以对应数据库表中的唯一索引
-     * @param value 存入redis中的值
-     */
-    public  void hset(String key, String field, String value) {
-        if (key == null || "".equals(key)) {
-            return;
-        }
-        redisTemplate.opsForHash().put(key, field, value);
+
+    public <T> T get(String key, Class<T> clazz) {
+        return get(key, clazz, NOT_EXPIRE);
     }
- 
-    /**
-     * 从redis中取出值
-     *
-     * @param key
-     * @param field
-     * @return
-     */
-    public  String hget(String key, String field) {
-        if (key == null || "".equals(key)) {
-            return null;
+
+    public String get(String key, long expire) {
+        String value = valueOperations.get(key);
+        if(expire != NOT_EXPIRE){
+            redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
-        return (String) redisTemplate.opsForHash().get(key, field);
+        return value;
     }
- 
-    /**
-     * 判断 是否存在 key 以及 hash key
-     *
-     * @param key
-     * @param field
-     * @return
-     */
-    public  boolean hexists(String key, String field) {
-        if (key == null || "".equals(key)) {
-            return false;
-        }
-        return redisTemplate.opsForHash().hasKey(key, field);
+
+    public String get(String key) {
+        return get(key, NOT_EXPIRE);
     }
- 
-    /**
-     * 查询 key中对应多少条数据
-     *
-     * @param key
-     * @return
-     */
-    public  long hsize(String key) {
-        if (key == null || "".equals(key)) {
-            return 0L;
-        }
-        return redisTemplate.opsForHash().size(key);
+
+    public void delete(String key) {
+        redisTemplate.delete(key);
     }
- 
+
     /**
-     * 删除
-     *
-     * @param key
-     * @param field
+     * Object转成JSON数据
      */
-    public  void hdel(String key, String field) {
-        if (key == null || "".equals(key)) {
-            return;
+    private String toJson(Object object){
+        if(object instanceof Integer || object instanceof Long || object instanceof Float ||
+                object instanceof Double || object instanceof Boolean || object instanceof String){
+            return String.valueOf(object);
         }
-        redisTemplate.opsForHash().delete(key, field);
+        return gson.toJson(object);
     }
- 
+
     /**
-     * @Description 判断key是否为null
-     * @Return
+     * JSON数据，转成Object
      */
-    public  Boolean isEmpty(String key) {
-        if (key == null || "".equals(key)) {
-            return true;
-        }
-        return false;
+    private <T> T fromJson(String json, Class<T> clazz){
+        return gson.fromJson(json, clazz);
     }
 }
