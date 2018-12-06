@@ -26,7 +26,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
 
     private String questionType;//提醒  选择题，判断
 
-    private Short answerChoiceNumber;//答案个数
+    private String answerChoiceNumber;//答案个数
 
     private String answerId;//正确答案的id
 
@@ -38,9 +38,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
 
     private String answerDescrible;//答案描述
 
-    private BigDecimal releaseStatus;//发布状态
-
-    private BigDecimal disableStatus;//删除状态
+    private String releaseStatus;//发布状态
 
     private String stuIssuer;//发布人
 
@@ -48,15 +46,11 @@ public class TestQuestions extends DataEntity<TestQuestions> {
 
     private Date stuIsstim;//发布时间
 
-    private String optuser;//操作人员
-
-    private Date opttime;//操作时间
-
     private String stuOptdepartment;//使用单位
 
-    private BigDecimal useNumber;//使用次数
+    private String useNumber;//使用次数
 
-    private BigDecimal rigthNumber;//正确次数
+    private String rigthNumber;//正确次数
 
     @TableField(exist = false)
     private String collectId;//收藏id
@@ -75,20 +69,12 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     @TableField(exist = false)
     private String typeValue;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
-
     public String getTypeId() {
         return typeId;
     }
 
     public void setTypeId(String typeId) {
-        this.typeId = typeId == null ? null : typeId.trim();
+        this.typeId = typeId;
     }
 
     public String getComContent() {
@@ -96,7 +82,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     }
 
     public void setComContent(String comContent) {
-        this.comContent = comContent == null ? null : comContent.trim();
+        this.comContent = comContent;
     }
 
     public String getQuestionDifficulty() {
@@ -104,7 +90,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     }
 
     public void setQuestionDifficulty(String questionDifficulty) {
-        this.questionDifficulty = questionDifficulty == null ? null : questionDifficulty.trim();
+        this.questionDifficulty = questionDifficulty;
     }
 
     public String getQuestionType() {
@@ -112,14 +98,14 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     }
 
     public void setQuestionType(String questionType) {
-        this.questionType = questionType == null ? null : questionType.trim();
+        this.questionType = questionType;
     }
 
-    public Short getAnswerChoiceNumber() {
+    public String getAnswerChoiceNumber() {
         return answerChoiceNumber;
     }
 
-    public void setAnswerChoiceNumber(Short answerChoiceNumber) {
+    public void setAnswerChoiceNumber(String answerChoiceNumber) {
         this.answerChoiceNumber = answerChoiceNumber;
     }
 
@@ -128,7 +114,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     }
 
     public void setAnswerId(String answerId) {
-        this.answerId = answerId == null ? null : answerId.trim();
+        this.answerId = answerId;
     }
 
     public String getSpecialKnowledgeId() {
@@ -136,7 +122,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     }
 
     public void setSpecialKnowledgeId(String specialKnowledgeId) {
-        this.specialKnowledgeId = specialKnowledgeId == null ? null : specialKnowledgeId.trim();
+        this.specialKnowledgeId = specialKnowledgeId;
     }
 
     public String getPoliceClassification() {
@@ -144,7 +130,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     }
 
     public void setPoliceClassification(String policeClassification) {
-        this.policeClassification = policeClassification == null ? null : policeClassification.trim();
+        this.policeClassification = policeClassification;
     }
 
     public String getLegalBasis() {
@@ -152,7 +138,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     }
 
     public void setLegalBasis(String legalBasis) {
-        this.legalBasis = legalBasis == null ? null : legalBasis.trim();
+        this.legalBasis = legalBasis;
     }
 
     public String getAnswerDescrible() {
@@ -160,23 +146,15 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     }
 
     public void setAnswerDescrible(String answerDescrible) {
-        this.answerDescrible = answerDescrible == null ? null : answerDescrible.trim();
+        this.answerDescrible = answerDescrible;
     }
 
-    public BigDecimal getReleaseStatus() {
+    public String getReleaseStatus() {
         return releaseStatus;
     }
 
-    public void setReleaseStatus(BigDecimal releaseStatus) {
+    public void setReleaseStatus(String releaseStatus) {
         this.releaseStatus = releaseStatus;
-    }
-
-    public BigDecimal getDisableStatus() {
-        return disableStatus;
-    }
-
-    public void setDisableStatus(BigDecimal disableStatus) {
-        this.disableStatus = disableStatus;
     }
 
     public String getStuIssuer() {
@@ -184,7 +162,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     }
 
     public void setStuIssuer(String stuIssuer) {
-        this.stuIssuer = stuIssuer == null ? null : stuIssuer.trim();
+        this.stuIssuer = stuIssuer;
     }
 
     public String getStuIssdepartment() {
@@ -192,7 +170,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     }
 
     public void setStuIssdepartment(String stuIssdepartment) {
-        this.stuIssdepartment = stuIssdepartment == null ? null : stuIssdepartment.trim();
+        this.stuIssdepartment = stuIssdepartment;
     }
 
     public Date getStuIsstim() {
@@ -203,43 +181,27 @@ public class TestQuestions extends DataEntity<TestQuestions> {
         this.stuIsstim = stuIsstim;
     }
 
-    public String getOptuser() {
-        return optuser;
-    }
-
-    public void setOptuser(String optuser) {
-        this.optuser = optuser == null ? null : optuser.trim();
-    }
-
-    public Date getOpttime() {
-        return opttime;
-    }
-
-    public void setOpttime(Date opttime) {
-        this.opttime = opttime;
-    }
-
     public String getStuOptdepartment() {
         return stuOptdepartment;
     }
 
     public void setStuOptdepartment(String stuOptdepartment) {
-        this.stuOptdepartment = stuOptdepartment == null ? null : stuOptdepartment.trim();
+        this.stuOptdepartment = stuOptdepartment;
     }
 
-    public BigDecimal getUseNumber() {
+    public String getUseNumber() {
         return useNumber;
     }
 
-    public void setUseNumber(BigDecimal useNumber) {
+    public void setUseNumber(String useNumber) {
         this.useNumber = useNumber;
     }
 
-    public BigDecimal getRigthNumber() {
+    public String getRigthNumber() {
         return rigthNumber;
     }
 
-    public void setRigthNumber(BigDecimal rigthNumber) {
+    public void setRigthNumber(String rigthNumber) {
         this.rigthNumber = rigthNumber;
     }
 
@@ -306,12 +268,12 @@ public class TestQuestions extends DataEntity<TestQuestions> {
                 ", legalBasis='" + legalBasis + '\'' +
                 ", answerDescrible='" + answerDescrible + '\'' +
                 ", releaseStatus=" + releaseStatus +
-                ", disableStatus=" + disableStatus +
+                //", disableStatus=" + disableStatus +
                 ", stuIssuer='" + stuIssuer + '\'' +
                 ", stuIssdepartment='" + stuIssdepartment + '\'' +
                 ", stuIsstim=" + stuIsstim +
-                ", optuser='" + optuser + '\'' +
-                ", opttime=" + opttime +
+                //", optuser='" + optuser + '\'' +
+                //", opttime=" + opttime +
                 ", stuOptdepartment='" + stuOptdepartment + '\'' +
                 ", useNumber=" + useNumber +
                 ", rigthNumber=" + rigthNumber +

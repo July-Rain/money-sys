@@ -21,36 +21,13 @@ import java.util.Map;
  */
 public interface TestQuestionService extends AbstractService<TestQuestions> {
     /**
-     * 查询专项知识试题
-     */
-    TestQuestions findById(String id);
-    /**
-     * 编辑试题
-     */
-    void modify(TestQuestions testQuestions);
-    /**
      * 启用禁用
      */
-    void modifyStatus(String id,BigDecimal releaseStatus);
+    void updateStatus(String id, String isEnble);
 
-    /**
-     * 删除专项知识试题
-     */
-    void deleteById(String id);
-
-    /**
-     * 新增专项知识试题
-     */
-    void add(TestQuestions testQuestions);
     /**
      * 批量导入试题
      */
-    List<TestQuestions> addBatch(List<TestQuestions> TestQuestions);
-    /**
-     * 树形
-     */
-    List<TestQuestions> queryParents();
-
-
+    void importTestQuestions(List<TestQuestions> TestQuestions);
 
 }

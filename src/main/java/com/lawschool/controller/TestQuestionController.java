@@ -5,17 +5,12 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.TestQuestions;
-import com.lawschool.constants.StatusConstant;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
-import com.lawschool.util.ResponseResult;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.GET;
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,29 +27,27 @@ public class TestQuestionController extends AbstractController {
     /**
      * 查询所有的专项知识试题（模糊查询）
      */
-    @GET
-    @RequestMapping("/list")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result index(@RequestParam Map<String, Object> params) {
 
         String typeId = (String) params.get("typeId");
         String questionDifficulty = (String) params.get("questionDifficulty");
         String questionType = (String) params.get("questionType");
-        String disableStatus = (String) params.get("disableStatus");
+        String isEnble = (String) params.get("isEnble");
 
         Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params),
                 new EntityWrapper<TestQuestions>()
-                        .like("TYPEID", typeId)
-                        .like("QUESTIONDIFFICULTY", questionDifficulty)
-                        .like("QUESTIONTYPE", questionType)
-                        .like("DISABLESTATUS", disableStatus));
+                        .eq("TYPEID", typeId)
+                        .eq("QUESTIONDIFFICULTY", questionDifficulty)
+                        .eq("QUESTIONTYPE", questionType)
+                        .eq("ISENBLE", isEnble));
         return Result.ok().put("page", page);
     }
 
     /**
      * 查询专项知识试题
      */
-    @GET
-    @RequestMapping("/info/{id}")
+    @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
     public Result info(@PathVariable("id") String id) {
         TestQuestions testQuestions = testQuestionService.selectById(id);
         return Result.ok().put("testQuestions", testQuestions);
@@ -63,69 +56,38 @@ public class TestQuestionController extends AbstractController {
     /**
      * 更新试题
      */
-    @RequestMapping("/update")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     public Result update(TestQuestions testQuestions) {
-        testQuestionService.updateById(testQuestions);
+        testQuestionService.save(testQuestions);
         return Result.ok();
     }
 
     /**
-     * 禁言启用
+     * 禁用启用
      */
-    @RequestMapping("/modifyStatus")
-    @ResponseBody
-    public ResponseResult modifyStatus(String id, String releaseStatus) {
+    @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
+    public Result modifyStatus(String id, String isEnble) {
 
-        ResponseResult result = new ResponseResult();
-
-        BigDecimal typeStatus = new BigDecimal(releaseStatus);
-        testQuestionService.modifyStatus(id, typeStatus);
-        result.setResponseCode(StatusConstant.RESPONSE_CODE_SUCCESS);
-        result.setMessage("成功");
-        return result;
+        testQuestionService.updateStatus(id, isEnble);
+        return Result.ok();
     }
 
     /**
      * 删除专项知识试题
      */
-    @RequestMapping("deleteById")
-    public String deleteById(String id) {
-        testQuestionService.deleteById(id);
-        return "redirect:/testQuestions/index";
-    }
-
-    /**
-     * 新增专项知识试题
-     */
-    @RequestMapping("/add")
-    public Result add(TestQuestions testQuestions) {
-
-        testQuestionService.add(testQuestions);
-
+    @RequestMapping(value = "delete", method = RequestMethod.GET)
+    public Result deleteById(List<String> idList) {
+        testQuestionService.deleteBatchIds(idList);
         return Result.ok();
     }
 
     /**
      * 批量导入试题并查询所有
      */
-    @RequestMapping("/addBatch")
-    @ResponseBody
-    public Map addBatch(@RequestBody List<TestQuestions> ids) {
-        List<TestQuestions> all = testQuestionService.addBatch(ids);
-
-        Map ajaxResult = new HashMap();
-        ajaxResult.put("success", true);
-        ajaxResult.put("all", all);
-        return ajaxResult;
+    @RequestMapping(value = "/import", method = RequestMethod.POST)
+    public Result importTestQuestions(@RequestBody List<TestQuestions> list) {
+        testQuestionService.importTestQuestions(list);
+        return Result.ok();
     }
-
-    /**
-     * 树形
-     */
-    @RequestMapping("/queryParents")
-    public List<TestQuestions> queryParents() {
-        return testQuestionService.queryParents();
-    }
-
 
 }
