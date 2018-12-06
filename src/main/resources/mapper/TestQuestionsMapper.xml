@@ -37,27 +37,27 @@
     <insert id="insert" parameterType="com.lawschool.beans.TestQuestions">
         insert into LAW_TESTQUESTIONS
         (
-             ID,
-             TYPE_ID,
-             COM_CONTENT,
-             QUESTION_DIFFICULTY,
-             QUESTION_TYPE,
-             ANSWER_CHOICE_NUMBER,
-             ANSWER_ID,
-             SPECIAL_KNOWLEDGE_ID,
-             POLICE_CLASSIFICATION,
-             LEGAL_BASIS,
-             ANSWER_DESCRIBLE,
-             RELEASE_STATUS,
-             DISABLE_STATUS,
-             STU_ISSUER,
-             STU_ISSDEPARTMENT,
-             STU_ISSTIM,
-             OPTUSER,
-             OPTTIME,
-             STU_OPTDEPARTMENT,
-             USE_NUMBER,
-             RIGTH_NUMBER
+             id,
+             type_id,
+             com_content,
+             question_difficulty,
+             question_type,
+             answer_choice_number,
+             answer_id,
+             special_knowledge_id,
+             police_classification,
+             legal_basis,
+             answer_describle,
+             release_status,
+             disable_status,
+             stu_issuer,
+             stu_issdepartment,
+             stu_isstim,
+             optuser,
+             opttime,
+             stu_optdepartment,
+             use_number,
+             rigth_number
          )
         values (
             #{id},
@@ -301,7 +301,52 @@
     </select>
 
     <update id="updateStatus">
-        UPDATE LAW_TESTQUESTIONS SET IS_ENABLE = #{isEnble}  WHERE ID = #{id}
+        UPDATE law_testquestions SET is_enable = #{isEnble}  WHERE id = #{id}
     </update>
+
+    <!--查询某类型的试题id-->
+    <select id="findIdBySpecialKnowledgeId" parameterType="map" resultType="string">
+        SELECT
+          a.id
+        FROM law_testquestions a
+        <where>
+            a.is_enble = #{isEnble}
+        AND a.specialKnowledgeId = #{specialKnowledgeId}
+        AND a.questionType = #{questionType}
+        </where>
+    </select>
+
+    <!--查询某类型的试题id-->
+    <select id="findBySpecialKnowledgeId" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+            id,
+            type_id,
+            com_content,
+            question_difficulty,
+            question_type,
+            answer_choice_number,
+            answer_id,
+            special_knowledge_id,
+            police_classification,
+            legal_basis,
+            answer_describle,
+            release_status,
+            stu_issuer,
+            stu_issdepartment,
+            stu_isstim,
+            stu_optdepartment,
+            use_number,
+            rigth_number
+        FROM law_testquestions a
+        <where>
+             a.is_enble = #{isEnble}
+             <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
+                 AND a.specialKnowledgeId = #{specialKnowledgeId}
+             </if>
+            <if test="questionType != null and questionType != ''">
+                AND a.questionType = #{questionType}
+            </if>
+        </where>
+    </select>
 
 </mapper>

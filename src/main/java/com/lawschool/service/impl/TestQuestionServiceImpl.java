@@ -9,13 +9,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
 public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDao,TestQuestions> implements TestQuestionService {
 
     /**
-     * 禁用启用
+     * 启用禁用
+     * @param id
+     * @param isEnble
      */
     public void updateStatus(String id, String isEnble) {
 
@@ -29,6 +32,7 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
 
     /**
      * 批量导入试题
+     * @param testQuestionsList
      */
     public void importTestQuestions(List<TestQuestions> testQuestionsList) {
         if (!CollectionUtils.isEmpty(testQuestionsList)) {
@@ -36,5 +40,21 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
                 dao.insert(testQuestion);
             }
         }
+    }
+
+    /**
+     * 查询某类型的试题id
+     * @param param
+     */
+    public List<String> findIdBySpecialKnowledgeId(Map<String, Object> param) {
+        return dao.findIdBySpecialKnowledgeId(param);
+    }
+
+    /**
+     * 查询某类型的试题id
+     * @param param
+     */
+    public List<TestQuestions> findBySpecialKnowledgeId(Map<String, Object> param) {
+        return dao.findBySpecialKnowledgeId(param);
     }
 }

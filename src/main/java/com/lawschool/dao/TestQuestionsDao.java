@@ -32,4 +32,18 @@ public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
 
 
 
+    /**
+     * 查询某类型的试题id
+     * @param param
+     * @return
+     */
+    List<String> findIdBySpecialKnowledgeId(Map<String, Object> param);
+
+    /**
+     * 查询某类型的试题id
+     * @param param
+     * @return
+     */
+    List<TestQuestions> findBySpecialKnowledgeId(Map<String, Object> param);
+
 }

@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.TestQuestions;
-import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,6 @@ public class TestQuestionController extends AbstractController {
     @Autowired
     private TestQuestionService testQuestionService;
 
-    @Autowired
-    AnswerService answerService;
 
     /**
      * 查询所有的专项知识试题（模糊查询）

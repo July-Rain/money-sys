@@ -24,7 +24,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
 
     private String questionDifficulty;//难度   id
 
-    private String questionType;//提醒  选择题，判断
+    private String questionType;//题型  选择题，判断
 
     private String answerChoiceNumber;//答案个数
 
@@ -268,12 +268,9 @@ public class TestQuestions extends DataEntity<TestQuestions> {
                 ", legalBasis='" + legalBasis + '\'' +
                 ", answerDescrible='" + answerDescrible + '\'' +
                 ", releaseStatus=" + releaseStatus +
-                //", disableStatus=" + disableStatus +
                 ", stuIssuer='" + stuIssuer + '\'' +
                 ", stuIssdepartment='" + stuIssdepartment + '\'' +
                 ", stuIsstim=" + stuIsstim +
-                //", optuser='" + optuser + '\'' +
-                //", opttime=" + opttime +
                 ", stuOptdepartment='" + stuOptdepartment + '\'' +
                 ", useNumber=" + useNumber +
                 ", rigthNumber=" + rigthNumber +
@@ -283,6 +280,11 @@ public class TestQuestions extends DataEntity<TestQuestions> {
                 ", questiondifficultyValue='" + questiondifficultyValue + '\'' +
                 ", specialknowledgeValue='" + specialknowledgeValue + '\'' +
                 ", typeValue='" + typeValue + '\'' +
+                ", optUser='" + optUser + '\'' +
+                ", optTime=" + optTime +
+                ", createUser='" + createUser + '\'' +
+                ", createTime=" + createTime +
+                ", isEnble=" + isEnble +
                 '}';
     }
 }
