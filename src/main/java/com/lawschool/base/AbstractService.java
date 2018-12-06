@@ -1,6 +1,6 @@
 package com.lawschool.base;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 
 public interface AbstractService<T> extends IService<T> {
@@ -12,5 +12,5 @@ public interface AbstractService<T> extends IService<T> {
      * @param entity
      * @return
      */
-    Page<T> findPage(Page<T> page, EntityWrapper<T> entity);
+    Page<T> findPage(Page<T> page, Wrapper<T> entity);
 }
