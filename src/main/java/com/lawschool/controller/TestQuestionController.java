@@ -2,6 +2,7 @@ package com.lawschool.controller;
 
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.constants.StatusConstant;
@@ -12,6 +13,7 @@ import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.GET;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/testQuestion")
-public class TestQuestionController extends AbstractController{
+public class TestQuestionController extends AbstractController {
 
     @Autowired
     private TestQuestionService testQuestionService;
@@ -30,30 +32,41 @@ public class TestQuestionController extends AbstractController{
     /**
      * 查询所有的专项知识试题（模糊查询）
      */
-
-    @RequestMapping("/index")
+    @GET
+    @RequestMapping("/list")
     public Result index(@RequestParam Map<String, Object> params) {
 
-        Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), new EntityWrapper<TestQuestions>());
-        return Result.ok();
+        String typeId = (String) params.get("typeId");
+        String questionDifficulty = (String) params.get("questionDifficulty");
+        String questionType = (String) params.get("questionType");
+        String disableStatus = (String) params.get("disableStatus");
+
+        Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params),
+                new EntityWrapper<TestQuestions>()
+                        .like("TYPEID", typeId)
+                        .like("QUESTIONDIFFICULTY", questionDifficulty)
+                        .like("QUESTIONTYPE", questionType)
+                        .like("DISABLESTATUS", disableStatus));
+        return Result.ok().put("page", page);
     }
 
     /**
      * 查询专项知识试题
      */
-    @RequestMapping("/findById")
-    public String findById(String id) {
-        TestQuestions testQuestions = testQuestionService.findById(id);
-        return "modify";
+    @GET
+    @RequestMapping("/info/{id}")
+    public Result info(@PathVariable("id") String id) {
+        TestQuestions testQuestions = testQuestionService.selectById(id);
+        return Result.ok().put("testQuestions", testQuestions);
     }
 
     /**
-     * 编辑试题
+     * 更新试题
      */
-    @RequestMapping("/modify")
-    public String modify(TestQuestions testQuestions) {
-        testQuestionService.modify(testQuestions);
-        return "redirect:/testQuestions/index";
+    @RequestMapping("/update")
+    public Result update(TestQuestions testQuestions) {
+        testQuestionService.updateById(testQuestions);
+        return Result.ok();
     }
 
     /**
@@ -85,9 +98,11 @@ public class TestQuestionController extends AbstractController{
      * 新增专项知识试题
      */
     @RequestMapping("/add")
-    public String add(TestQuestions testQuestions) {
+    public Result add(TestQuestions testQuestions) {
+
         testQuestionService.add(testQuestions);
-        return "redirect:/testQuestions/index";
+
+        return Result.ok();
     }
 
     /**

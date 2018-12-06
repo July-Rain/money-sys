@@ -38,8 +38,12 @@ public class LoadData {
 
         //定义一个user类的list
          List<User> userList=new ArrayList<User>();
+
+         User u=new User();
+         u.setId("412535232532");
+         userList.add(u);
         //将这个项目一加载的list放到redis里面
-//        redisUtil.set();
+        redisUtil.set("redisFromUserList",userList);
 
 
 

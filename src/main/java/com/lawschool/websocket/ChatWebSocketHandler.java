@@ -2,11 +2,13 @@ package com.lawschool.websocket;
 
 
 
+import com.lawschool.util.RedisUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import com.lawschool.beans.Message;
 import com.lawschool.beans.User;
 import com.lawschool.util.GsonUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 import org.springframework.web.util.HtmlUtils;
@@ -24,7 +26,8 @@ import java.util.Map.Entry;
  */
 @Component("chatWebSocketHandler")
 public class ChatWebSocketHandler implements WebSocketHandler {
-	
+	@Autowired
+	private RedisUtil redisUtil;
 	//在线用户的SOCKETsession(存储了所有的通信通道)
 	public static final Map<String, WebSocketSession> USER_SOCKETSESSION_MAP;
 	
@@ -41,6 +44,12 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 		//将当前的连接的用户会话放入MAP,key是用户编号
 		User loginUser=(User) webSocketSession.getAttributes().get("loginUser");
 		USER_SOCKETSESSION_MAP.put(loginUser.getId(), webSocketSession);
+
+		/**
+		 *去redis中取redisFromUserList  人员的集合   先去看看里面有没有人在
+		 */
+		  redisUtil.get("redisFromUserList");
+	      System.out.println(redisUtil.get("redisFromUserList"));
 
 		//群发消息告知大家
 		Message msg = new Message();

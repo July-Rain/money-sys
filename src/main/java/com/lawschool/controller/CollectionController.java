@@ -1,12 +1,12 @@
 package com.lawschool.controller;
 
+import com.lawschool.base.AbstractController;
 import com.lawschool.beans.Answer;
 import com.lawschool.beans.Collection;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.CollectionService;
-import com.lawschool.util.Constant;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import static com.lawschool.util.Constant.SUCCESS;
 @RestController
 @RequestMapping("/coll")
 
-public class CollectionController extends AbstractController{
+public class CollectionController extends AbstractController {
 
 
     @Autowired

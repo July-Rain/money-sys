@@ -1,8 +1,7 @@
 package com.lawschool.base;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractServiceImpl<D extends AbstractDao<T>, T extends DataEntity<T>> extends ServiceImpl<D, T> implements AbstractService<T> {
 
@@ -18,7 +17,7 @@ public abstract class AbstractServiceImpl<D extends AbstractDao<T>, T extends Da
      * @param entity
      * @return
      */
-    public Page<T> findPage(Page<T> page, EntityWrapper<T> entity){
+    public Page<T> findPage(Page<T> page, Wrapper<T> entity){
         entity.getEntity().setPage(page);
         page.setList(dao.selectList(entity));
         return page;

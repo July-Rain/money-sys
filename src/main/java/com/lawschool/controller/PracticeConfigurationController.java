@@ -1,5 +1,6 @@
 package com.lawschool.controller;
 
+import com.lawschool.base.AbstractController;
 import com.lawschool.beans.PracticeConfiguration;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
@@ -14,15 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -34,7 +31,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/pracConfiguration")
-public class PracticeConfigurationController extends  AbstractController{
+public class PracticeConfigurationController extends AbstractController {
 
     @Autowired
     PracticeConfigurationService practiceConfigurationService;

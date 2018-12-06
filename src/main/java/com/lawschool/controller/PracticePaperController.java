@@ -1,5 +1,6 @@
 package com.lawschool.controller;
 
+import com.lawschool.base.AbstractController;
 import com.lawschool.beans.PracticePaper;
 import com.lawschool.service.PracticePaperService;
 import com.lawschool.util.Result;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller("/PracticePaper")
-public class PracticePaperController extends AbstractController{
+public class PracticePaperController extends AbstractController {
     @Autowired
     PracticePaperService practicePaperService;
 
