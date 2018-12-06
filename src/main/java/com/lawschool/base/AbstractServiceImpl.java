@@ -57,11 +57,11 @@ public abstract class AbstractServiceImpl<D extends AbstractDao<T>, T extends Da
         }
 
         if(StringUtils.isNotEmpty(entity.getId())){
-            entity.setCreateBy(userId);
-            entity.setCreateDate(new Date());
+            entity.setCreateUser(userId);
+            entity.setCreateTime(new Date());
         }
-        entity.setOptBy(userId);
-        entity.setOptDate(new Date());
+        entity.setOptUser(userId);
+        entity.setOptTime(new Date());
 
         setBaseEntity(entity);
     }
