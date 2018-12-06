@@ -111,7 +111,7 @@ public class CollectionServiceImpl implements CollectionService {
         int count = testQuestionsMapper.cntMyCollection(param);
 
         param.put("startPage", (pageNo - 1) * pageSize);
-        param.put("pageSize", pageNo * pageSize);
+        param.put("endPage", pageNo * pageSize);
 
         List<TestQuestions> testQuestions = testQuestionsMapper.listMyCollection(param);
 
@@ -204,7 +204,7 @@ public class CollectionServiceImpl implements CollectionService {
         int count = testQuestionsMapper.cntMyError(param);
 
         param.put("startPage", (pageNo - 1) * pageSize);
-        param.put("pageSize", pageNo * pageSize);
+        param.put("endPage", pageNo * pageSize);
         List<TestQuestions> testQuestions = testQuestionsMapper.listMyError(param);
 
         PageUtils page = new PageUtils(testQuestions, count, pageSize, pageNo);

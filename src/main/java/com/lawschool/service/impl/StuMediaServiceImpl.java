@@ -62,6 +62,13 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
     }
 
 
+    /**
+     * @Author zjw
+     * @Description 课程详情（基础）
+     * @Date 9:44 2018-12-6
+     * @Param [stuMedia]
+     * @return com.lawschool.beans.StuMedia
+    **/
     @Override
     public StuMedia getStuMedia(StuMedia stuMedia) {
         return mapper.selectById(stuMedia.getId());
@@ -143,11 +150,12 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
     @Override
     public List<StuMedia> selectTchMedia(String id) {
         User user = userMapper.selectById(id);
-        if(user.getIdentify().equals("1")){
+        if(user.getIdentify().equals("1")){//是否是教官的身份
             return mapper.selectList(new EntityWrapper<StuMedia>().eq("OPTUSER",id));
         }
         return  null;
     }
+
 
 
 }

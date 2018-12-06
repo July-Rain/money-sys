@@ -22,7 +22,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
 
     private String comContent;//内容
 
-    private String questionDifficulty;//难度   低/中/高
+    private String questionDifficulty;//难度   id
 
     private String questionType;//提醒  选择题，判断
 

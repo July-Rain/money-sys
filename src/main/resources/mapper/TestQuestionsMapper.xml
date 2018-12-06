@@ -208,14 +208,19 @@
   <!--列表：我收藏的重点试题-->
   <select id="listMyCollection" parameterType="map" resultMap="BaseResultMap">
     select
-    collectId,
+    collectionId,
     ID,
     COM_CONTENT,
     QUESTION_TYPE,
+    questiontypeValue,
     ANSWER_ID,
+    answerValue,
     QUESTION_DIFFICULTY,
+    questiondifficultyValue,
     TYPE_ID,
-    SPECIAL_KNOWLEDGE_ID
+    typeValue,
+    SPECIAL_KNOWLEDGE_ID,
+    specialknowledgeValue
     from
     (
     SELECT
@@ -255,6 +260,40 @@
     rowno &gt; #{startPage}
   </select>
 
+
+  <!--收藏试题组卷:随机从我收藏的题目中取num条数据.仅仅取id-->
+  <select id="randomQuestColl" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    ID
+    FROM
+    (
+    SELECT
+    LAW_TESTQUESTIONS. ID
+    FROM
+    LAW_COLLECTION
+    LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
+    WHERE
+    LAW_COLLECTION.COM_USERID = #{userId}
+    AND LAW_COLLECTION. TYPE = 10
+    AND LAW_COLLECTION.DEL_STATUS = 0
+    <if test="questionType != null">
+      AND QUESTION_TYPE=#{questionType}
+    </if>
+    <if test="typeId != null">
+      AND TYPE_ID=#{typeId}
+    </if>
+    <if test="questionDifficulty != null">
+      AND QUESTION_DIFFICULTY=#{questionDifficulty}
+    </if>
+    ORDER BY
+    dbms_random.VALUE
+    )
+    WHERE
+    ROWNUM &lt;= #{num}
+  </select>
+
+
+
   <!--列表：我做错的题目-->
   <select id="listMyError" parameterType="map" resultMap="BaseResultMap">
 
@@ -263,15 +302,15 @@
     recordId,
     COM_CONTENT,
     QUESTION_TYPE,
-    questiontypeValue,
+      questiontypeValue,
     ANSWER_ID,
-    answerValue,
+      answerValue,
     QUESTION_DIFFICULTY,
-    questiondifficultyValue,
+      questiondifficultyValue,
     TYPE_ID,
-    typeValue,
+      typeValue,
     SPECIAL_KNOWLEDGE_ID,
-    specialknowledgeValue
+      specialknowledgeValue
     from
     (
     SELECT
@@ -279,15 +318,15 @@
     r. ID recordId,
     T .COM_CONTENT,
     T .QUESTION_TYPE,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
+      (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
     T .ANSWER_ID,
-    (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
+      (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
     T .QUESTION_DIFFICULTY,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
+      (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
     T .TYPE_ID,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
+      (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
     T .SPECIAL_KNOWLEDGE_ID,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
+      (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
     ROWNUM AS rowno
     FROM
     LAW_USER_QUESTION_RECORD r
@@ -313,7 +352,7 @@
   <!--计数：我做错的题目-->
   <select id="cntMyError" parameterType="map" resultType="java.lang.Integer">
     SELECT
-    count(T . ID)
+      count(T . ID)
     FROM
     LAW_USER_QUESTION_RECORD r
     INNER JOIN LAW_TESTQUESTIONS T ON r.QUEST_ID = T . ID
@@ -330,5 +369,36 @@
       AND QUESTION_TYPE = #{questionDifficulty}
     </if>
   </select>
+
+  <!--做错试题组卷:随机从我做错的题目中取num条数据.仅仅取id-->
+  <select id="randomErrorColl" parameterType="map" resultMap="BaseResultMap">
+  SELECT
+  ID
+  FROM
+  (
+    SELECT
+    T . ID
+    FROM
+    LAW_USER_QUESTION_RECORD r
+    INNER JOIN LAW_TESTQUESTIONS T ON r.QUEST_ID = T . ID
+    WHERE
+    r.USER_ID = #{userId}
+    AND r.MY_ASWER_ID != T .ANSWER_ID
+    <if test="questionType != null">
+    AND QUESTION_TYPE=#{questionType}
+  </if>
+  <if test="typeId != null">
+    AND TYPE_ID=#{typeId}
+  </if>
+  <if test="questionDifficulty != null">
+    AND QUESTION_DIFFICULTY=#{questionDifficulty}
+  </if>
+  ORDER BY
+  dbms_random.VALUE
+  )
+  WHERE
+  ROWNUM &lt;= #{num}
+  </select>
+
 
 </mapper>
