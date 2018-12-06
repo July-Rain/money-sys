@@ -1,5 +1,6 @@
 package com.lawschool.base;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ public class BaseEntity<T> implements Serializable {
 
     @TableId
     protected String id;        //主键ID
+    @TableField
     protected Page<T> page;     //分页
 
     public BaseEntity(){
