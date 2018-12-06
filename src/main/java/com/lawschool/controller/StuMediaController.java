@@ -27,8 +27,8 @@ public class StuMediaController extends  AbstractController{
     //所有我收藏的
     @RequestMapping("/mycollection")
     public Result listMyCollection(@RequestParam Map<String,Object> params){
-       // params.put("userId",getUser().getUserId());
-        params.put("userId",1);
+       // params.put("userId",getUser().getId());
+        params.put("userId","1");
         PageUtils pageUtils = stuMediaService.listMyCollection(params);
         return Result.ok().put("result",pageUtils);
     }

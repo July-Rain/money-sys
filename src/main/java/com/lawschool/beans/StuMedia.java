@@ -70,6 +70,8 @@ public class StuMedia  implements Serializable {
     @TableField(exist = false)
     private String[] userId;//适用人员
 
+    private String addsrc;//添加来源  0-默认-用户  1-教官中心
+
     public String[] getDeptId() {
         return deptId;
     }
@@ -260,5 +262,13 @@ public class StuMedia  implements Serializable {
 
     public void setStuTypeValue(String stuTypeValue) {
         this.stuTypeValue = stuTypeValue;
+    }
+
+    public String getAddsrc() {
+        return addsrc;
+    }
+
+    public void setAddsrc(String addsrc) {
+        this.addsrc = addsrc;
     }
 }

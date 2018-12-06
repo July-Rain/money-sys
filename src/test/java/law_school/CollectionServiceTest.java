@@ -44,7 +44,7 @@ public class CollectionServiceTest extends SpringTestCase {
         collection.setComStucode("3");
         collection.setType((short) 10);
         User user=new User();
-        user.setUserId("1");
+        user.setId("U931078457");
         user.setFullName("nick");
         int i = service.addCollection(collection, user);
         System.out.println(i);
@@ -53,9 +53,9 @@ public class CollectionServiceTest extends SpringTestCase {
     @Test
     public void test2(){
         Collection collection = new Collection();
-        collection.setId("1150e50c5fc342c6975f3689ece1d84b");
+        collection.setId("CO20181205161556103717");
         User user=new User();
-        user.setUserId("1");
+        user.setId("U931078457");
         int i = service.delCollection(collection,user);
         System.out.println(i);
     }

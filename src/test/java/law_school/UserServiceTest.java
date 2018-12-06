@@ -45,8 +45,8 @@ public class UserServiceTest  extends SpringTestCase {
         User user=new User();
         user.setPassword("123456");
         user.setBirthday(new Date());
-        user.setFullName("测试用户");
-        user.setUserId("1111");
+        user.setUserCode("931078457");
+        user.setFullName("wj");
         //BigDecimal decimal=new BigDecimal(1794561);
         //user.setId(decimal);
         int i = userService.addUser(user);
@@ -55,14 +55,14 @@ public class UserServiceTest  extends SpringTestCase {
 
     @Test
     public void login(){
-        int i = userService.login("1111","123456");
-        System.out.println(i);
+//        int i = userService.login("1111","123456");
+//        System.out.println(i);
     }
 
     @Test
     public void updatePassword(){
-        int i = userService.updatePassword("1111","123456","654321");
-        System.out.println(i);
+//        int i = userService.updatePassword("1111","123456","654321");
+//        System.out.println(i);
     }
 
     @Test

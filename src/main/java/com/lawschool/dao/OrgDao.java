@@ -3,10 +3,11 @@ package com.lawschool.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.lawschool.beans.Org;
 
-public interface OrgDao {
-	public int insert(Org record);
+public interface OrgDao extends BaseMapper<Org> {
+	//public int insert(Org record);
 
 	public int insertSelective(Org record);
 

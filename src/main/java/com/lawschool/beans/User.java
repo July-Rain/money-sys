@@ -1,6 +1,7 @@
 package com.lawschool.beans;
 
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -19,6 +20,7 @@ import java.util.List;
 @TableName("law_user")
 public class User implements Serializable {
 
+    @TableId
     private String id;//id
 
     private Date addTime;//添加时间
@@ -35,9 +37,9 @@ public class User implements Serializable {
 
     private Short synFlag;//是否同步
 
-    private String userCode;//用户code
+    private String userCode;//用户code   --登录用
 
-    private String userId;//用户id
+    private String userId;//用户id（不用）
 
     private Date userIndate;//用户注册时间
 
@@ -109,7 +111,9 @@ public class User implements Serializable {
 
     private String localOrgCode;//本地部门编号
 
-    private String isOnline;//是否在线
+    private String isOnline;//是否在线  0 不在  1在
+
+    private String identify;//身份  0-普通用户  1-教官
 
     @TableField(exist = false) //数据权限
     private List<String> orgDataAuth;
@@ -562,5 +566,14 @@ public class User implements Serializable {
 
     public void setRoleList(List<Role> roleList) {
         this.roleList = roleList;
+    }
+
+
+    public String getIdentify() {
+        return identify;
+    }
+
+    public void setIdentify(String identify) {
+        this.identify = identify;
     }
 }

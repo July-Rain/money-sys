@@ -24,6 +24,7 @@
     <result column="COLLECTIONID" property="collectId" />
     <result column="COLLECTTIME" property="collecttime" />
       <result column="STUTYPEVALUE" property="stuTypeValue" />
+    <result column="ADDSRC" property="addsrc" />
   </resultMap>
   <insert id="insert" parameterType="com.lawschool.beans.StuMedia">
     insert into LAW_STU_MEDIA (ID, STU_CODE, STU_TITLE, 

@@ -4,7 +4,9 @@ package com.lawschool.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.Answer;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.beans.User;
 import com.lawschool.util.PageUtils;
+import com.lawschool.util.Result;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,7 +15,6 @@ import java.util.Map;
 /**
  *
  * @Descriptin  试题service
- * @author      zjw
  * @version     v1.0
  * @Time        2018/11/29
  *
@@ -69,7 +70,7 @@ public interface TestQuestionService extends IService<TestQuestions> {
      * @param param
      * @return
      */
-    Map<TestQuestions,List<Answer>>  randomQuestColl(Map<String,Object> param);
+    Result randomQuestColl(Map<String,Object> param, User user);
 
     /**
      * 我的收藏-我的错题（获取所有的错题）
@@ -85,7 +86,7 @@ public interface TestQuestionService extends IService<TestQuestions> {
      * @param param
      * @return
      */
-    Map<TestQuestions,List<Answer>>  randomErrorColl(Map<String,Object> param);
+    Result  randomErrorColl(Map<String,Object> param,User user);
 
     /**
      * 详情

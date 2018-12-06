@@ -10,10 +10,7 @@ import com.lawschool.beans.UserExample;
 import com.lawschool.dao.SysLogMapper;
 import com.lawschool.dao.UserMapper;
 import com.lawschool.service.UserService;
-import com.lawschool.util.Constant;
-import com.lawschool.util.MD5Util;
-import com.lawschool.util.PageUtils;
-import com.lawschool.util.UtilValidate;
+import com.lawschool.util.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,10 +29,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     UserMapper userMapper;
 
 
+    //获取用户用户/教官
     @Override
-    public User selectUserByUserId(String userId) {
+    public User selectUserByUserId(String id) {
         UserExample example=new UserExample();
-        example.createCriteria().andUserIdEqualTo(userId);
+        example.createCriteria().andUserIdEqualTo(id);
         List<User> users = userMapper.selectByExample(example);
         if(UtilValidate.isEmpty(users)){
             return null;
@@ -43,6 +41,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return users.get(0);
     }
 
+    //查询所有的用户/教官
     @Override
     public PageUtils selectAllUsers(Map<String,Object> params) {
         int pageNo=1;
@@ -56,12 +55,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         Page<User> page=new Page<User>(pageNo,pageSize);
 
-        List<User> users = userMapper.selectPage(page, new EntityWrapper<User>());
+        EntityWrapper<User> ew = new EntityWrapper<>();//默认所有的用户
+        if(UtilValidate.isNotEmpty(params.get("identify"))){
+            ew.eq("IDENTIFY",params.get("identify"));// 0-普通用户  1-教官
+        }
+        List<User> users = userMapper.selectPage(page,ew);
 
         PageUtils pageUtils=new PageUtils(users,users.size(),pageNo,pageSize);
         return pageUtils;
     }
 
+    //修改用户/教官（禁用。恢复）
     @Override
     public int updateUserStatus(String userId, Integer nowStatus, Integer updateStatus) {
         UserExample example=new UserExample();
@@ -72,16 +76,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return res==1? SUCCESS:ERROR;
     }
 
+    //修改用户在线状态与否
     @Override
     public int updateUserOnlineStatus(String userId, String nowStatus, String updateStatus) {
-        UserExample example=new UserExample();
-        example.createCriteria().andUserIdEqualTo(userId).andIsOnlineEqualTo(nowStatus);
+        EntityWrapper<User> ew=new EntityWrapper<>();
+        ew.eq("ID",userId).eq("IS_ONLINE",nowStatus).eq("IDENTIFY",0);
         User use=new User();
         use.setIsOnline(updateStatus);
-        int res=userMapper.updateByExampleSelective(use,example);
+        int res=userMapper.update(use,ew);
         return res==1? SUCCESS:ERROR;
     }
 
+    //登录
     @Override
     public int login(String userCode,String password,HttpServletRequest request) {
         UserExample example=new UserExample();
@@ -100,6 +106,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return IS_NOT_EXIST;//用户不存在
     }
 
+    //修改密码
     @Override
     public int updatePassword(String userCode, String password, String newPassword,HttpServletRequest request) {
         int rst = this.login(userCode, password,request);
@@ -118,17 +125,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     }
 
+    //添加用户/教官
     @Override
     public int addUser(User user) {
         String salt = RandomStringUtils.randomAlphanumeric(20);//生成盐
         String pass2=MD5Util.Md5Hex(user.getPassword()+salt);//数据库中新密码
         user.setSalt(salt);
         user.setPassword(pass2);
-        user.setId(IdWorker.get32UUID());
+        if(user.getIdentify().equals("1")){
+            user.setId(GetUUID.getUUIDs("T"));
+        }
+        user.setId(GetUUID.getUUIDs("U"));
         int i = userMapper.insert(user);
         return 0;
     }
 
+    //获取在线用户
     @Override
     public PageUtils selectOnlineUser(Map<String,Object> params) {
         int pageNo=1;
@@ -141,10 +153,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         Page<User> page=new Page<User>(pageNo,pageSize);
-        List<User> users = userMapper.selectPage(page, new EntityWrapper<User>().eq("IS_ONLINE",1));
+        List<User> users = userMapper.selectPage(page, new EntityWrapper<User>().eq("IS_ONLINE",1).eq("identify",0));
         PageUtils pageUtils=new PageUtils(users,users.size(),pageNo,pageSize);
         return pageUtils;
     }
-
-
 }

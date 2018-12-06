@@ -48,6 +48,7 @@
     <result column="BIRTHDAY" jdbcType="TIMESTAMP" property="birthday" />
     <result column="LOCAL_ORG_CODE" jdbcType="VARCHAR" property="localOrgCode" />
     <result column="IS_ONLINE" jdbcType="CHAR" property="isOnline" />
+    <result column="IDENTIFY" jdbcType="VARCHAR" property="identify" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
