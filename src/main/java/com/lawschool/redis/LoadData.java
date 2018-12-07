@@ -45,12 +45,11 @@ public class LoadData {
         //将这个项目一加载的list放到redis里面
         redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);
 
-
-
-        List<Dict> list = dictService.selectAllDict();
-        for(Dict data:list){
-            redisUtil.set("dictInfo",data);
-        }
+//
+//        List<Dict> list = dictService.selectAllDict();
+//        for(Dict data:list){
+//            redisUtil.set("dictInfo",data);
+//        }
 
     }
 

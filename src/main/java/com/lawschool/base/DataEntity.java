@@ -10,48 +10,65 @@ public class DataEntity<T> extends BaseEntity<T> {
 
     private static final long serialVersionUID = 1L;
 
-    protected String createBy;      //创建人
-    protected Date createDate;      //创建时间
-    protected String updateBy;      //更新人
-    protected Date updateDate;      //更新时间
+    protected String createUser;    //创建人
+    protected Date createTime;      //创建时间
+    protected String optUser;       //操作人
+    protected Date optTime;         //操作时间
+    protected String isEnble;       //是否启用（0启用；1禁用）
+
+
+    //======================== 静态常量 ======================
+    //删除标记（0：正常；1：删除；）
+    public static final String DEL_FLAG_NORMAL = "0";
+    public static final String DEL_FLAG_DELETE = "1";
+
 
     public DataEntity(){
         super();
+        this.isEnble = DEL_FLAG_NORMAL;
     }
 
     public DataEntity(String id){
         super(id);
     }
 
-    public String getCreateBy() {
-        return createBy;
+    public String getCreateUser() {
+        return createUser;
     }
 
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public String getUpdateBy() {
-        return updateBy;
+    public String getOptUser() {
+        return optUser;
     }
 
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
+    public void setOptUser(String optUser) {
+        this.optUser = optUser;
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public Date getOptTime() {
+        return optTime;
     }
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setOptTime(Date optTime) {
+        this.optTime = optTime;
+    }
+
+    public String getIsEnble() {
+        return isEnble;
+    }
+
+    public void setIsEnble(String isEnble) {
+        this.isEnble = isEnble;
     }
 }

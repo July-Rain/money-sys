@@ -41,7 +41,7 @@ public interface StuMediaService  extends IService<StuMedia> {
      * @return int
      **/
     
-    void insertStuMedia(StuMedia stuMedia);
+    void insertStuMedia(StuMedia stuMedia,User user);
 
     /**
      * @Author MengyuWu
@@ -61,6 +61,15 @@ public interface StuMediaService  extends IService<StuMedia> {
      * @Param [id]
      * @return java.util.List<com.lawschool.beans.StuMedia>
     **/
-    List<StuMedia> selectTchMedia(String id);
+    List<StuMedia> selectTchMedia(Map<String,Object> param,User user);
+
+    /**
+     * @Author zjw
+     * @Description 教官删除自己的课程
+     * @Date 15:38 2018-12-6
+     * @Param [stuMedia, user]
+     * @return java.util.List<com.lawschool.beans.StuMedia>
+    **/
+    int delTchMedia(StuMedia stuMedia,User user);
 
 }

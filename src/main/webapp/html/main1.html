@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<body>
+<div id="app" v-cloak>
+    {{ message }}
+    <input type="text" :placeholder="message" @change="">
+    <div>
+        <ol>
+            <li v-for="item in todos">
+                {{ item.text }}
+            </li>
+        </ol>
+    </div>
+    <p>{{ message }}</p>
+    <button @click="vMessage">逆转消息</button>
+
+    <el-row>
+        <el-col :span="12"><div class="grid-content bg-purple">1111</div></el-col>
+        <el-col :span="12"><div class="grid-content bg-purple-light">22222</div></el-col>
+    </el-row>
+
+    <template>
+        <el-table
+                :data="tableData"
+                style="width: 100%">
+            <el-table-column
+                    prop="date"
+                    label="日期"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="姓名"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="address"
+                    label="地址">
+            </el-table-column>
+        </el-table>
+    </template>
+</div>
+<div>
+    <ol>
+        <li v-for="todo in todos">
+            {{ todo.text }}
+        </li>
+    </ol>
+</div>
+</body>
+<!-- import common JavaScript -->
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/statics/js/index2.js"></script>
+</html>

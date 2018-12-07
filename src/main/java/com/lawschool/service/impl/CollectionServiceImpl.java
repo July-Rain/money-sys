@@ -54,7 +54,7 @@ public class CollectionServiceImpl implements CollectionService {
             collection.setComUserid(user.getId());
             collection.setOptuser(user.getFullName());
             collection.setOpttime(new Date());
-            collection.setDelStatus((short)0);
+            collection.setDelStatus(0);
             return collectionDao.insert(collection)==1?SUCCESS:ERROR;//1 添加成功  0 添加失败
         }
         if(existStatus[0].equals(ONCE_EXIST+"")){//重新收藏
@@ -86,7 +86,7 @@ public class CollectionServiceImpl implements CollectionService {
         EntityWrapper<Collection> ew=new EntityWrapper();
         ew.eq("COM_USERID",user.getId()).eq("ID",collection.getId());
         if(flag){//0-》1  取消收藏
-            collection.setDelStatus((short)1);
+            collection.setDelStatus(1);
             ew.eq("DEL_STATUS",0);
         }else {//1-》0 重新收藏
             collection.setDelStatus((short)0);
@@ -111,7 +111,7 @@ public class CollectionServiceImpl implements CollectionService {
         int count = testQuestionsMapper.cntMyCollection(param);
 
         param.put("startPage", (pageNo - 1) * pageSize);
-        param.put("pageSize", pageNo * pageSize);
+        param.put("endPage", pageNo * pageSize);
 
         List<TestQuestions> testQuestions = testQuestionsMapper.listMyCollection(param);
 
@@ -137,7 +137,6 @@ public class CollectionServiceImpl implements CollectionService {
         }
         param.put("num",num);//获取组成10题
         param.put("userId",user.getId());
-        param.put("userId",1);
         List<TestQuestions> testQuestions = testQuestionsMapper.randomQuestColl(param);//仅仅只有id,提高效率
 
         //2。生成练习
@@ -204,7 +203,7 @@ public class CollectionServiceImpl implements CollectionService {
         int count = testQuestionsMapper.cntMyError(param);
 
         param.put("startPage", (pageNo - 1) * pageSize);
-        param.put("pageSize", pageNo * pageSize);
+        param.put("endPage", pageNo * pageSize);
         List<TestQuestions> testQuestions = testQuestionsMapper.listMyError(param);
 
         PageUtils page = new PageUtils(testQuestions, count, pageSize, pageNo);
@@ -228,8 +227,6 @@ public class CollectionServiceImpl implements CollectionService {
         }
         param.put("num",num);//获取组成10题
         param.put("userId",user.getId());
-        param.put("userId",1);
-
         List<TestQuestions> testQuestions = testQuestionsMapper.randomErrorColl(param);//仅仅只有id,提高效率
 
         //2。生成练习

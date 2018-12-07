@@ -4,11 +4,11 @@ html,body{
     height: 100% !important;
 }
 body{
-    background: url("../images/bg.jpg") no-repeat;
+    background: url("../img/bg.jpg") no-repeat;
     background-size: cover;
 }
 .city{
-    background: url("../images/bgnew.png") no-repeat;
+    background: url("../img/bgnew.png") no-repeat;
 }
 .login-box{
     position: absolute;
@@ -29,7 +29,6 @@ body{
 }
 .login-box-body>div{
     width: 50%;
-    padding: 5% 5% 0 5%;
 }
 .pull-left{
     margin-top: 5%;
@@ -267,6 +266,19 @@ video#bgvid {
     font-size: 19px;
 }
 .login-browser-msg a:focus,.login-browser-msg a:hover {
+    color: #3da3ff;
+    text-decoration: underline;
+}
+
+/*首页提醒*/
+.login-version-msg{
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    color: #f70c2c;
+    font-size: 19px;
+}
+.login-version-msg a:focus,.login-version-msg a:hover {
     color: #3da3ff;
     text-decoration: underline;
 }

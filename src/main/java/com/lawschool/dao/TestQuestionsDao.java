@@ -1,53 +1,17 @@
 package com.lawschool.dao;
 
-import com.lawschool.beans.TestQuestions;
 import com.lawschool.base.AbstractDao;
+import com.lawschool.beans.TestQuestions;
 
 import java.util.List;
 import java.util.Map;
 
 public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
-    //int insert(TestQuestions record);
-    /**
-     * 查询所有的专项知识试题（模糊查询）
-     */
-    public List<TestQuestions> selectByFuzzy(TestQuestions testQuestions);
-    /**
-     * 查询专项知识试题
-     */
-    public TestQuestions selectById(String id);
-    /**
-     * 编辑试题
-     */
-    public void update(TestQuestions testQuestions);
+
     /**
      * 启用禁用
      */
-    public void updateStatus(TestQuestions testQuestions);
-
-    /**
-     * 删除专项知识试题
-     */
-    public void deleteById(String id);
-
-
-    /**
-     * 批量导入试题
-     */
-    public void insertTestQuestions(TestQuestions testQuestions);
-    /**
-     * 批量导入后查所有
-     */
-    public List<TestQuestions> selectAllTestQuestions();
-    /**
-     * 树形
-     */
-    public List<TestQuestions> selectParent();
-
-
-
-
-    int insertSelective(TestQuestions record);
+    void updateStatus(String id, String isEnble);
 
     //我的收藏-重点试题（我收藏的题目）-zjw
     List<TestQuestions> listMyCollection(Map<String, Object> param);
@@ -67,5 +31,19 @@ public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
     int cntMyError(Map<String, Object> param);
 
 
+
+    /**
+     * 查询某类型的试题id
+     * @param param
+     * @return
+     */
+    List<String> findIdBySpecialKnowledgeId(Map<String, Object> param);
+
+    /**
+     * 查询某类型的试题id
+     * @param param
+     * @return
+     */
+    List<TestQuestions> findBySpecialKnowledgeId(Map<String, Object> param);
 
 }

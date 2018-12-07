@@ -15,7 +15,7 @@ public class BaseEntity<T> implements Serializable {
 
     @TableId
     protected String id;        //主键ID
-    @TableField
+    @TableField(exist = false)
     protected Page<T> page;     //分页
 
     public BaseEntity(){

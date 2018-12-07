@@ -1,6 +1,8 @@
 package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
@@ -16,8 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static com.lawschool.util.Constant.ERROR;
+import static com.lawschool.util.Constant.SUCCESS;
+import static java.lang.Integer.parseInt;
 
 @Service
 public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> implements StuMediaService {
@@ -33,7 +40,7 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
 
     /**
      * @Author zjw
-     * @Description 我的收藏-重点课程
+     * @Description 我的收藏-重点课程(已经下架的也展示出来了，有需要再xml里改)
      * @Date 9:18 2018-12-6
      * @Param [param]
      * @return com.lawschool.util.PageUtils
@@ -62,6 +69,13 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
     }
 
 
+    /**
+     * @Author zjw
+     * @Description 课程详情（基础）
+     * @Date 9:44 2018-12-6
+     * @Param [stuMedia]
+     * @return com.lawschool.beans.StuMedia
+    **/
     @Override
     public StuMedia getStuMedia(StuMedia stuMedia) {
         return mapper.selectById(stuMedia.getId());
@@ -69,7 +83,7 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
 
     /**
      * @Author MengyuWu
-     * @Description 插入学习管理  加权限
+     * @Description 插入学习管理  加权限  //教官添加课程复用
      * @Date 15:35 2018-12-5
      * @Param [stuMedia]
      * @return int
@@ -77,9 +91,11 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
     
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void insertStuMedia(StuMedia stuMedia) {
+    public void insertStuMedia(StuMedia stuMedia,User user) {
         //存学习管理基本信息
-        stuMedia.setId(GetUUID.getUUIDs("SM"));
+
+        stuMedia.setOptuser(user.getId());
+        stuMedia.setOpttime(new Date());
         mapper.insert(stuMedia);
         //存权限表
         String[] deptIdArr=stuMedia.getDeptId();
@@ -141,13 +157,35 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
      * @return java.util.List<com.lawschool.beans.StuMedia>
      **/
     @Override
-    public List<StuMedia> selectTchMedia(String id) {
-        User user = userMapper.selectById(id);
-        if(user.getIdentify().equals("1")){
-            return mapper.selectList(new EntityWrapper<StuMedia>().eq("OPTUSER",id));
+    public List<StuMedia> selectTchMedia(Map<String,Object> param,User user) {
+        int pageNo = 1;
+        int pageSize = 10;
+        if (UtilValidate.isNotEmpty(param.get("pageNo"))) {
+            pageNo = parseInt((String) param.get("pageNo"));
+        }
+        if (UtilValidate.isNotEmpty(param.get("pageSize"))) {
+            pageSize =parseInt((String) param.get("pageSize"));
+        }
+        Page<StuMedia> page=new Page<StuMedia>(pageNo,pageSize);
+        if(user.getIdentify().equals("1")){//是否是教官的身份
+            return mapper.selectPage(page,new EntityWrapper<StuMedia>().eq("OPTUSER",user.getId()).eq("ADDSRC",1).eq("DEL_STATUS",0));
         }
         return  null;
     }
 
+    /**
+     * @Author zjw
+     * @Description 教官删除自己的课程
+     * @Date 15:37 2018-12-6
+     * @Param [stuMedia, user]
+     * @return java.util.List<com.lawschool.beans.StuMedia>
+     **/
+    @Override
+    public int delTchMedia(StuMedia stuMedia, User user) {
 
+        Wrapper<StuMedia> ew = new EntityWrapper<StuMedia>().eq("OPTUSER", user.getId()).eq("DEL_STATUS", 0).eq("ID",stuMedia.getId());
+        StuMedia temp =new StuMedia();
+        int update = mapper.update(temp, ew);
+        return update==1?SUCCESS:ERROR;
+    }
 }

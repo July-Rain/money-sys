@@ -8,12 +8,12 @@
         <param name="target" value="System.out" />  <!-- 输出到控制台 -->
         <layout class="org.apache.log4j.PatternLayout"> <!-- loyout表示输出方式，可以多种，class值区分，PatternLayout表示自定义格式 -->
             <param name="ConversionPattern" value="%d{ISO8601} TIME：%r [logFrom：%-40.40c{3} logType: %-5p content：%m]%n" />  <!-- 输出格式，后面解释 -->
-        </layout>
+            INFO     </layout>
         <!--filter过滤器设置输出的级别:ALL < DEBUG < INFO < WARN < ERROR < FATAL < OFF
             所有下面输出的是debug到warn不会有error和fatal
         -->
         <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="levelMin" value="debug" />
+            <param name="levelMin" value="INFO" />
             <param name="levelMax" value="warn" />
             <param name="AcceptOnMatch" value="true" />  <!-- 答案：http://bbs.csdn.net/topics/350195913 -->
         </filter>

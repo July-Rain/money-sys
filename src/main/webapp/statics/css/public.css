@@ -1,0 +1,26 @@
+@charset "UTF-8";
+[v-cloak]{
+    display: none;
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: MicrosoftYaHei;
+    letter-spacing: 0px;
+    font-size: 14px;
+}
+#app{
+    min-width: 1200px;
+}
+body{
+    background: #efefef;
+}
+a{
+    text-decoration: none;
+    letter-spacing: 0px;
+    color: #ffffff;
+}
+ul li{
+    list-style:none;
+}

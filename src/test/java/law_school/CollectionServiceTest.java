@@ -50,7 +50,7 @@ public class CollectionServiceTest extends SpringTestCase {
     @Test
     public void test2(){
         Collection collection = new Collection();
-        collection.setId("CO20181205161556103717");
+        collection.setId("CO20181205161556103718");
         User user=new User();
         user.setId("U931078457");
         int i = service.delCollection(collection,user);
