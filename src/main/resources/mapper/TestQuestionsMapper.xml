@@ -26,11 +26,11 @@
         <result column="ANSWERVALUE" jdbcType="VARCHAR" property="answerValue"/>
         <result column="QUESTIONDIFFICULTYVALUE" jdbcType="VARCHAR" property="questiondifficultyValue"/>
         <result column="SPECIALKNOWLEDGEVALUE" jdbcType="VARCHAR" property="specialknowledgeValue"/>
-        <result column="OPT_USER" jdbcType="VARCHAR2" property="optUser"/>
+        <result column="OPT_USER" jdbcType="VARCHAR" property="optUser"/>
         <result column="OPT_TIME" jdbcType="TIMESTAMP" property="optTime"/>
-        <result column="CREATE_USER" jdbcType="VARCHAR2" property="createUser"/>
+        <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser"/>
         <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="IS_ENBLE" jdbcType="VARCHAR2" property="isEnble"/>
+        <result column="IS_ENBLE" jdbcType="VARCHAR" property="isEnble"/>
     </resultMap>
 
 
