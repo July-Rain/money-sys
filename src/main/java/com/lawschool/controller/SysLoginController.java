@@ -86,7 +86,7 @@ public class SysLoginController {
 	public String main(Model model) {
 		model.addAttribute("userName","小明");
 		model.addAttribute("userAge",23);
-		return "main1";
+		return "main";
 	}
 
 

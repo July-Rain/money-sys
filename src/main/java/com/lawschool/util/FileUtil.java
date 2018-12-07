@@ -1,5 +1,6 @@
 package com.lawschool.util;
 
+import com.jcraft.jsch.ChannelSftp;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -15,6 +16,8 @@ import java.io.*;
 import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 @Component
@@ -24,16 +27,16 @@ public class FileUtil {
     /**
      * 附件的路径
      */
-    private static String  ftpPath;
+    private static String  ftpPath="192.168.0.208";
     /**
      * 登录名
      */
-    private static String  username;
+    private static String  username="admin";
 
     /**
      * 密码
      */
-    private static String  password;
+    private static String  password="sinorock123";
 
     @Value("${ftp.ftpPath}")
     public static void setFtpPath(String ftpPath) {
@@ -47,7 +50,14 @@ public class FileUtil {
     public static void setPassword(String password) {
         FileUtil.password = password;
     }
-
+    /*public static void main(String[] args)  throws Exception{
+        String src = "D:\\test.doc"; // 本地文件名
+       // String dst = "/home"; // 目标文件名
+        //File f = new File(src);
+        //InputStream in = new FileInputStream(f);
+       // uploadToFTPServer("test",in);
+       // downloadFromFileServer("20181207","test.doc");
+    }*/
 
     /**
      * @Author MengyuWu
@@ -128,68 +138,17 @@ public class FileUtil {
         for(FTPFile ff:fs){
             if(ff.getName().equals(filename)){//如果找到abc.txt则进行下载 ，可以自己设置要下载的文件名称
                 ftp.retrieveFile(ff.getName(), outputStream); //开始下载文件
+                //设置要下载到的目录
+                /*File localFile = new File("D:\\12345678.doc");
+                //得到输出流
+                OutputStream is = new FileOutputStream(localFile);
+                ftp.retrieveFile(ff.getName(), is); //开始下载文件
+                is.close();*/
             }
         }
 
         ftp.logout();
     }
-   /* public ChannelSftp connect(String host, int port, String username,
-                               String password) {
-        ChannelSftp sftp = null;
-        try {
-            JSch jsch = new JSch();
-            jsch.getSession(username, host, port);
-            Session sshSession = jsch.getSession(username, host, port);
-            System.out.println("Session created.");
-            sshSession.setPassword(password);
-            Properties sshConfig = new Properties();
-            sshConfig.put("StrictHostKeyChecking", "no");
-            sshSession.setConfig(sshConfig);
-            sshSession.connect();
-            System.out.println("Session connected.");
-            System.out.println("Opening Channel.");
-            Channel channel = sshSession.openChannel("sftp");
-            channel.connect();
-            sftp = (ChannelSftp) channel;
-            System.out.println("Connected to " + host + ".");
-        } catch (Exception e) {
-
-        }
-        return sftp;
-    }*/
-
-    /**
-     * 上传文件
-     * @param directory 上传的目录
-     * @param uploadFile 要上传的文件
-     * @param sftp
-     */
-    /*public void upload(String directory, String uploadFile, ChannelSftp sftp) {
-        try {
-            sftp.cd(directory);
-            File file=new File(uploadFile);
-            sftp.put(new FileInputStream(file), file.getName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
-    /**
-     * 下载文件
-     * @param directory 下载目录
-     * @param downloadFile 下载的文件
-     * @param saveFile 存在本地的路径
-     * @param sftp
-     */
-    /*public void download(String directory, String downloadFile,String saveFile, ChannelSftp sftp) {
-        try {
-            sftp.cd(directory);
-            File file=new File(saveFile);
-            sftp.get(downloadFile, new FileOutputStream(file));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 
 }
 

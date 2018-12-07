@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.law.LawClassifyLibDao">
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.law.LawClassifyLibEntity">
+    <id column="ID" jdbcType="NVARCHAR" property="id" />
+    <result column="LIB_CODE" jdbcType="NVARCHAR" property="libCode" />
+    <result column="LIB_ID" jdbcType="NVARCHAR" property="libId" />
+    <result column="LIB_NAME" jdbcType="NVARCHAR" property="libName" />
+    <result column="PARENT_ID" jdbcType="DECIMAL" property="parentId" />
+    <result column="DEL_FLAG" jdbcType="DECIMAL" property="delFlag" />
+    <result column="ORDER_NUM" jdbcType="DECIMAL" property="orderNum" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+</mapper>
