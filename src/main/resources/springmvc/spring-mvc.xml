@@ -32,6 +32,7 @@
    <!--资源拦截-->
    <mvc:resources location="/statics/" mapping="/statics/**"/>
    <mvc:resources location="/html/" mapping="/html/**"/>
+
    <!--  Log自定义注解拦截器 -->
    <mvc:interceptors>
       <mvc:interceptor>

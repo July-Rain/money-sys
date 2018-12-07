@@ -37,20 +37,20 @@ public class LoadData {
     public void putDataToRedis(){
 
         //定义一个user类的list
-         List<User> userList=new ArrayList<User>();
+//         List<User> userList=new ArrayList<User>();
+//
+//         User u=new User();
+//         u.setId("412535232532");
+//         userList.add(u);
+//        //将这个项目一加载的list放到redis里面
+//        redisUtil.set("redisFromUserList",userList);
 
-         User u=new User();
-         u.setId("412535232532");
-         userList.add(u);
-        //将这个项目一加载的list放到redis里面
-        redisUtil.set("redisFromUserList",userList);
 
-
-
-        List<Dict> list = dictService.selectAllDict();
-        for(Dict data:list){
-            redisUtil.set("dictInfo",data);
-        }
+//
+//        List<Dict> list = dictService.selectAllDict();
+//        for(Dict data:list){
+//            redisUtil.set("dictInfo",data);
+//        }
 
     }
 
