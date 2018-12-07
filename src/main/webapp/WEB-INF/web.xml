@@ -58,7 +58,7 @@
     
     
     
-    
+    <!-- druid -->
     <filter>
 	    <filter-name>DruidWebStatFilter</filter-name>
 	    <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
