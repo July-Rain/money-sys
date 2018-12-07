@@ -9,7 +9,6 @@ import java.util.List;
 public interface SysConfigDao extends BaseMapper<SysConfig> {
     int deleteByPrimaryKey(String id);
 
-    //int insert(SysConfig record);
 
     int insertSelective(SysConfig record);
 
