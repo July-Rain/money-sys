@@ -72,6 +72,8 @@ public class StuMedia  implements Serializable {
 
     private String addsrc;//添加来源  0-默认-用户  1-教官中心
 
+    private Integer delStatus;
+
     public String[] getDeptId() {
         return deptId;
     }
@@ -270,5 +272,13 @@ public class StuMedia  implements Serializable {
 
     public void setAddsrc(String addsrc) {
         this.addsrc = addsrc;
+    }
+
+    public Integer getDelStatus() {
+        return delStatus;
+    }
+
+    public void setDelStatus(Integer delStatus) {
+        this.delStatus = delStatus;
     }
 }

@@ -166,7 +166,7 @@
 
 
   <!--列表：我收藏的课件-->
-  <select id="listMyCollection" parameterType="map" resultMap="BaseResultMap">
+  <select id="listMyCollection" parameterType="map" resultType="com.lawschool.beans.StuMedia">
     SELECT
     collectionId,
     ID,

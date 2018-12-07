@@ -80,9 +80,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     //登录
     @Override
     public int login(String userCode,String password,HttpServletRequest request) {
-        UserExample example=new UserExample();
-        example.createCriteria().andUserCodeEqualTo(userCode);
-        List<User> users = userMapper.selectByExample(example);
+        List<User> users = userMapper.selectList(new EntityWrapper<User>().eq("USER_CODE",userCode));
         if(users!=null && users.size()>0){
             User user=users.get(0);
             String salt=user.getSalt();

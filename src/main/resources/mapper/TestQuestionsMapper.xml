@@ -206,7 +206,7 @@
   </select>
 
   <!--列表：我收藏的重点试题-->
-  <select id="listMyCollection" parameterType="map" resultMap="BaseResultMap">
+  <select id="listMyCollection" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
     select
     collectionId,
     ID,
@@ -262,7 +262,7 @@
 
 
   <!--收藏试题组卷:随机从我收藏的题目中取num条数据.仅仅取id-->
-  <select id="randomQuestColl" parameterType="map" resultMap="BaseResultMap">
+  <select id="randomQuestColl" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
     SELECT
     ID
     FROM
@@ -295,7 +295,7 @@
 
 
   <!--列表：我做错的题目-->
-  <select id="listMyError" parameterType="map" resultMap="BaseResultMap">
+  <select id="listMyError" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
 
     SELECT
     ID,
@@ -371,7 +371,7 @@
   </select>
 
   <!--做错试题组卷:随机从我做错的题目中取num条数据.仅仅取id-->
-  <select id="randomErrorColl" parameterType="map" resultMap="BaseResultMap">
+  <select id="randomErrorColl" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
   SELECT
   ID
   FROM

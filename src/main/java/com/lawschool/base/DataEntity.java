@@ -18,9 +18,9 @@ public class DataEntity<T> extends BaseEntity<T> {
     @TableField(exist = false)
     protected Date createDate;      //创建时间
     @TableField(exist = false)
-    protected String updateBy;      //更新人
+    protected String updateBy;      //更新人optuser
     @TableField(exist = false)
-    protected Date updateDate;      //更新时间
+    protected Date updateDate;      //更新时间opttime
 
     public DataEntity(){
         super();
