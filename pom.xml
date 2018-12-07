@@ -349,6 +349,13 @@
             <version>2.3.8</version>
         </dependency>
 
+		<!-- 引入druid连接池 -->
+		<dependency>
+	        <groupId>com.alibaba</groupId>
+	        <artifactId>druid</artifactId>
+	        <version>druid-1.1.10</version>
+    	</dependency>
+    	
     </dependencies>
 
 
