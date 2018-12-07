@@ -24,8 +24,10 @@
         var from='${sessionScope.loginUser.id}';
         var fromName='${sessionScope.loginUser.fullName}';
         //接收人编号
-        var to="-1";
-
+//        var to="-1";
+        var to= null;
+        var code=null;
+//        console.info(to);
         // 创建一个Socket实例
         //参数为URL，ws表示WebSocket协议。onopen、onclose和onmessage方法把事件连接到Socket实例上。每个方法都提供了一个事件，以表示Socket的状态。
         var websocket;
@@ -72,16 +74,18 @@
                 $("#contentUl").append("<li><b>"+data.date+"</b><em>系统消息：</em><span>"+data.text+"</span></li>");
                 //刷新在线用户列表
                 $("#chatOnline").html("在线用户("+data.userList.length+")人");
+
                 $("#chatUserList").empty();
 
-
-                console.info("@@@@@@@@@@@");
-                console.info(data.userList);
                 $(data.userList).each(function(){
                     console.info(this);
                     $("#chatUserList").append("<li>"+this.fullName+"</li>");
                 });
 
+                //当收到消息的时候 给人赋值
+
+                console.info(" 收到系统消息，是"+data.to);
+                to=data.to;
 
             }else{
                 //===普通消息
@@ -122,7 +126,7 @@
             //给退出聊天绑定事件
             $("#exitBtn").on("click",function(){
                 closeWebsocket();
-                location.href="${pageContext.request.contextPath}/index.jsp";
+                location.href="${pageContext.request.contextPath}/jsp/login.jsp";
             });
 
             //给输入框绑定事件
@@ -151,6 +155,10 @@
 
         //发送消息
         function sendMsg(){
+
+            console.info("我发消息了,是"+to);
+
+
             //对象为空了
             if(websocket==undefined||websocket==null){
                 //alert('WebSocket connection not established, please connect.');

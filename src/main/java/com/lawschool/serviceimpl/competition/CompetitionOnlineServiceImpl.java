@@ -52,7 +52,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 			{
 				BattleTopicSetting battleTopicSetting =new BattleTopicSetting();
 				battleTopicSetting.setId(IdWorker.getIdStr());
-				battleTopicSetting.setForeignkeyId(competitionOnline.getId());
+				battleTopicSetting.setForeignKeyId(competitionOnline.getId());
 				battleTopicSetting.setHowManySmall((i+1)+"");//第几关
 
 				battleTopicSetting.setKnowledgeId(competitionOnline.getBattleTopicSettingList().get(i).getKnowledgeId());//像这种的数据来源 就是在之前实体里面的取   不一样的配置  所以下标要一致
@@ -64,7 +64,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 			{
 				BattleTopicSetting battleTopicSetting =new BattleTopicSetting();
 				battleTopicSetting.setId(IdWorker.getIdStr());
-				battleTopicSetting.setForeignkeyId(competitionOnline.getId());
+				battleTopicSetting.setForeignKeyId(competitionOnline.getId());
 				battleTopicSetting.setHowManySmall((i+1)+"");//第几关
 				battleTopicSetting.setKnowledgeId(competitionOnline.getBattleTopicSettingList().get(0).getKnowledgeId());//像这种的数据来源 就是在之前实体里面的取   一样的配置  所以下标就找第一个  也就只有一个数据
 				//还要加type   后面来区分这条数据是属于对战的  还是擂台的   元数据现在还没有  没法设置

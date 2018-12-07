@@ -4,9 +4,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="keywords" content="Java培训,Android培训,安卓培训,PHP培训,C++培训,iOS培训,网页设计培训,平面设计培训,UI设计培训,游戏开发培训,移动开发培训,网络营销培训,web前端培训">
-    <meta name="description" content="传智播客专注Java培训,Android培训,安卓培训,PHP培训,C++培训,iOS培训,网页设计培训,平面设计培训,UI设计培训,游戏开发培训,移动开发培训,网络营销培训,web前端培训。">
-    <title>传智播客在线留言系统</title>
+    <title>在线聊天系统</title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/lbt.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
@@ -26,7 +24,7 @@
 <!--顶部end-->
 <!--头部开始-->
 <div class="header">
-    <h1>传智播客聊天室系统</h1>
+    <h1>聊天室系统</h1>
 </div>
 <!--头部end-->
 <!--登陆区域开始-->
@@ -58,7 +56,7 @@
 
     <div class="loginArea">
         <h2>欢迎登陆</h2>
-        <p>欢迎您来到传智播客的聊天空间！</p>
+        <p>欢迎您来到聊天空间！</p>
 
         <form action="${pageContext.request.contextPath }/socket/login"  method="post">
             <input type="text" value="请输入您想显示的昵称" name="fullName" id="myText" />

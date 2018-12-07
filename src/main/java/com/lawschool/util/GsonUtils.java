@@ -11,7 +11,7 @@ public class GsonUtils {
 	private static final Gson GSON;
 	static{
 		GSON = new GsonBuilder()
-				.excludeFieldsWithoutExposeAnnotation()//打开Export注解，但打开了这个注解,副作用，要转换和不转换都要加注解
+//				.excludeFieldsWithoutExposeAnnotation()//打开Export注解，但打开了这个注解,副作用，要转换和不转换都要加注解
 //	            .serializeNulls()  //是否序列化空值 
 	            .setDateFormat("yyyy-MM-dd HH:mm:ss")//序列化日期格式  "yyyy-MM-dd"
 //	            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)//会把字段首字母大写

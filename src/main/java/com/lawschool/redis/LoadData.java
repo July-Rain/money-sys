@@ -2,6 +2,7 @@ package com.lawschool.redis;
 
 import com.lawschool.beans.Dict;
 import com.lawschool.beans.User;
+import com.lawschool.beans.competition.BattlePlatform;
 import com.lawschool.service.DictService;
 import com.lawschool.service.competition.BattlePlatformService;
 import com.lawschool.util.RedisUtil;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -36,14 +39,11 @@ public class LoadData {
     @PostConstruct
     public void putDataToRedis(){
 
-        //定义一个user类的list
-         List<User> userList=new ArrayList<User>();
+        //定义 map对应的K到时候存 比武台的 id   和 实体
+        Map<String,BattlePlatform> battlePlatformMap=new HashMap<String,BattlePlatform>();
 
-         User u=new User();
-         u.setId("412535232532");
-         userList.add(u);
         //将这个项目一加载的list放到redis里面
-        redisUtil.set("redisFromUserList",userList);
+        redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);
 
 
 

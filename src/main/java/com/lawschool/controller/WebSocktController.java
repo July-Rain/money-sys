@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.User;
 import jdk.nashorn.internal.ir.RuntimeNode;
 import org.springframework.http.HttpRequest;
@@ -45,7 +46,7 @@ public class WebSocktController {
         }
         // 新登录，需要构建一个用户
         // 随机生成一个用户
-        String id = UUID.randomUUID().toString();
+        String id = IdWorker.getIdStr();
         loginUser.setId(id);
         // 将用户放入session
         session.setAttribute("loginUser", loginUser);

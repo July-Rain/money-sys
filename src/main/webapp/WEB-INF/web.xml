@@ -60,6 +60,11 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+    <listener>
+        <listener-class>
+            org.springframework.web.context.request.RequestContextListener
+        </listener-class>
+    </listener>
     <!-- springMVC核心配置 -->
     <servlet>
         <servlet-name>dispatcherServlet</servlet-name>
@@ -76,6 +81,14 @@
         <servlet-name>dispatcherServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+
+
+
+
+
+
+
 
     <!-- 错误跳转页面 -->
     <error-page>

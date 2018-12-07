@@ -2,6 +2,7 @@ package com.lawschool.service.competition;
 
 
 import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.beans.User;
 import com.lawschool.beans.competition.BattlePlatform;
 
 /**
@@ -14,5 +15,7 @@ import com.lawschool.beans.competition.BattlePlatform;
  */
 public interface BattlePlatformService extends IService<BattlePlatform> {
 
+        public BattlePlatform save(User u);
 
+        public void updata(BattlePlatform battlePlatform,String play2Id);
 }
