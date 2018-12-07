@@ -349,7 +349,7 @@
             <version>2.3.8</version>
         </dependency>
 
-		<!-- 引入druid连接池 -->
+		<!-- 引入druid -->
 		<dependency>
 	        <groupId>com.alibaba</groupId>
 	        <artifactId>druid</artifactId>
