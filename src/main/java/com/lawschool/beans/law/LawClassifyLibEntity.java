@@ -12,7 +12,7 @@ import java.util.Date;
  * @author MengyuWu
  * @since JDK 1.8
  */
-@TableName("law_classify")
+@TableName("law_classify_lib")
 public class LawClassifyLibEntity implements Serializable {
     private String id;//库的id
 
