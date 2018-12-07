@@ -1,4 +1,4 @@
-package com.lawschool.persistence.datasources;
+package com.lawschool.util.persistence.datasources;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 

@@ -1,8 +1,8 @@
-package com.lawschool.persistence.interceptor;
+package com.lawschool.util.persistence.interceptor;
 
 import com.lawschool.base.Page;
-import com.lawschool.persistence.datasources.DynamicDataSource;
-import com.lawschool.persistence.toolkit.Reflections;
+import com.lawschool.util.persistence.datasources.DynamicDataSource;
+import com.lawschool.util.persistence.toolkit.Reflections;
 import org.apache.ibatis.executor.statement.BaseStatementHandler;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;

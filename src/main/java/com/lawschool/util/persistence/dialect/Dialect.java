@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2014 <a href="http://www.dhc.com.cn">DHC</a> All rights reserved.
  */
-package com.lawschool.persistence.dialect;
+package com.lawschool.util.persistence.dialect;
 
 /**
  * 数据库方言接口，新增分页sql

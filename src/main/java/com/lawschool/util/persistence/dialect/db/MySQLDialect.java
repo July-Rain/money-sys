@@ -1,29 +1,29 @@
 /**
  * Copyright &copy; 2012-2014 <a href="http://www.dhc.com.cn">DHC</a> All rights reserved.
  */
-package com.lawschool.persistence.dialect.db;
+package com.lawschool.util.persistence.dialect.db;
 
 
-import com.lawschool.persistence.dialect.Dialect;
+import com.lawschool.util.persistence.dialect.Dialect;
 
 /**
- * Sybase数据库分页方言实现。
- * 还未实现
+ * Mysql方言的实现
  *
  * @author xupeng
  * @version 2018-10-29
  * @since JDK 1.5
  */
-public class SybaseDialect implements Dialect {
-
-    public boolean supportsLimit() {
-        return false;
-    }
+public class MySQLDialect implements Dialect {
 
 
     @Override
     public String getLimitString(String sql, int offset, int limit) {
-        return null;
+        return getLimitString(sql, offset, Integer.toString(offset),
+                Integer.toString(limit));
+    }
+
+    public boolean supportsLimit() {
+        return true;
     }
 
     /**
@@ -37,12 +37,18 @@ public class SybaseDialect implements Dialect {
      * @param sql               实际SQL语句
      * @param offset            分页开始纪录条数
      * @param offsetPlaceholder 分页开始纪录条数－占位符号
-     * @param limit             分页每页显示纪录条数
      * @param limitPlaceholder  分页纪录条数占位符号
      * @return 包含占位符的分页sql
      */
-    public String getLimitString(String sql, int offset, String offsetPlaceholder, int limit, String limitPlaceholder) {
-        throw new UnsupportedOperationException("paged queries not supported");
+    public String getLimitString(String sql, int offset, String offsetPlaceholder, String limitPlaceholder) {
+        StringBuilder stringBuilder = new StringBuilder(sql);
+        stringBuilder.append(" limit ");
+        if (offset > 0) {
+            stringBuilder.append(offsetPlaceholder).append(",").append(limitPlaceholder);
+        } else {
+            stringBuilder.append(limitPlaceholder);
+        }
+        return stringBuilder.toString();
     }
 
 }

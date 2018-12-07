@@ -9,6 +9,6 @@
     </settings>
 
     <plugins>
-        <plugin interceptor="com.lawschool.persistence.interceptor.PreparePaginationInterceptor"/>
+        <plugin interceptor="com.lawschool.util.persistence.interceptor.PreparePaginationInterceptor"/>
     </plugins>
 </configuration>

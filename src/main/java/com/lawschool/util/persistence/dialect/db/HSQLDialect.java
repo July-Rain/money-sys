@@ -1,26 +1,28 @@
 /**
  * Copyright &copy; 2012-2014 <a href="http://www.dhc.com.cn">DHC</a> All rights reserved.
  */
-package com.lawschool.persistence.dialect.db;
+package com.lawschool.util.persistence.dialect.db;
 
 
-import com.lawschool.persistence.dialect.Dialect;
+import com.lawschool.util.persistence.dialect.Dialect;
 
 /**
+ * Dialect for HSQLDB
+ *
  * @author xupeng
  * @version 2018-10-29
  * @since JDK 1.5
  */
-public class DerbyDialect implements Dialect {
+public class HSQLDialect implements Dialect {
     @Override
     public boolean supportsLimit() {
-        return false;
-	}
+        return true;
+    }
 
     @Override
     public String getLimitString(String sql, int offset, int limit) {
-//        return getLimitString(sql,offset,Integer.toString(offset),limit,Integer.toString(limit));
-        throw new UnsupportedOperationException("paged queries not supported");
+        return getLimitString(sql, offset, Integer.toString(offset),
+                Integer.toString(limit));
     }
 
     /**
@@ -34,12 +36,16 @@ public class DerbyDialect implements Dialect {
      * @param sql               实际SQL语句
      * @param offset            分页开始纪录条数
      * @param offsetPlaceholder 分页开始纪录条数－占位符号
-     * @param limit             分页每页显示纪录条数
      * @param limitPlaceholder  分页纪录条数占位符号
      * @return 包含占位符的分页sql
      */
-	public String getLimitString(String sql, int offset,String offsetPlaceholder, int limit, String limitPlaceholder) {
-		throw new UnsupportedOperationException( "paged queries not supported" );
-	}
+    public String getLimitString(String sql, int offset, String offsetPlaceholder, String limitPlaceholder) {
+        boolean hasOffset = offset > 0;
+        return
+                new StringBuffer(sql.length() + 10)
+                        .append(sql)
+                        .insert(sql.toLowerCase().indexOf("select") + 6, hasOffset ? " limit " + offsetPlaceholder + " " + limitPlaceholder : " top " + limitPlaceholder)
+                        .toString();
+    }
 
 }
