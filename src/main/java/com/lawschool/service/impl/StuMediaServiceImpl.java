@@ -93,11 +93,7 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
     @Transactional(rollbackFor = Exception.class)
     public void insertStuMedia(StuMedia stuMedia,User user) {
         //存学习管理基本信息
-        if(user.getIdentify().equals("1")){//教官
-            stuMedia.setId(GetUUID.getUUIDs("TM"));
-        }else{
-            stuMedia.setId(GetUUID.getUUIDs("SM"));
-        }
+
         stuMedia.setOptuser(user.getId());
         stuMedia.setOpttime(new Date());
         mapper.insert(stuMedia);

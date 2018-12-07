@@ -2,6 +2,7 @@ package com.lawschool.controller;
 
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.StuMedia;
+import com.lawschool.beans.User;
 import com.lawschool.service.StuMediaService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
@@ -58,11 +59,16 @@ public class StuMediaController extends AbstractController {
      **/
     @RequestMapping("/insertStuMedia")
     public Result insertStuMedia(@RequestBody StuMedia stuMedia){
-        stuMedia.setId(GetUUID.getUUIDs("SM"));
-        stuMediaService.insertStuMedia(stuMedia);
+        User user=getUser();
+        if(user.getIdentify().equals("1")){//教官
+            stuMedia.setId(GetUUID.getUUIDs("TM"));
+        }else{
+            stuMedia.setId(GetUUID.getUUIDs("SM"));
+        }
+        stuMediaService.insertStuMedia(stuMedia,getUser());
         return Result.ok().put("id",stuMedia.getId());
     }
-}
+
 
     /**
      * @Author zjw
