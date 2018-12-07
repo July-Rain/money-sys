@@ -34,10 +34,10 @@ public class TestQuestionController extends AbstractController {
 
         Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params),
                 new EntityWrapper<TestQuestions>()
-                        .eq("TYPEID", typeId)
-                        .eq("QUESTIONDIFFICULTY", questionDifficulty)
-                        .eq("QUESTIONTYPE", questionType)
-                        .eq("ISENBLE", isEnble));
+                        .eq("TYPE_ID", typeId)
+                        .eq("QUESTION_DIFFICULTY", questionDifficulty)
+                        .eq("QUESTION_TYPE", questionType)
+                        .eq("IS_ENBLE", isEnble));
         return Result.ok().put("page", page);
     }
 
@@ -63,8 +63,7 @@ public class TestQuestionController extends AbstractController {
      * 禁用启用
      */
     @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
-    public Result modifyStatus(String id, String isEnble) {
-
+    public Result updateStatus(String id, String isEnble) {
         testQuestionService.updateStatus(id, isEnble);
         return Result.ok();
     }
