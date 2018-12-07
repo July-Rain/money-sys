@@ -1,13 +1,10 @@
-/**
- * Copyright &copy; 2012-2014 <a href="http://www.dhc.com.cn">DHC</a> All rights reserved.
- */
 package com.lawschool.util.persistence.interceptor;
 
 
 import com.lawschool.base.Page;
+import com.lawschool.util.persistence.dialect.db.OracleDialect;
 import com.lawschool.util.persistence.toolkit.Reflections;
 import com.lawschool.util.persistence.dialect.Dialect;
-import com.lawschool.util.persistence.dialect.db.*;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.plugin.Interceptor;
@@ -64,24 +61,8 @@ public abstract class BaseInterceptor implements Interceptor, Serializable {
     protected void initProperties(Properties p) {
     	Dialect dialect = null;
         String dbType = "oracle";//根据数据库类型选择方言，这里写死oracle
-        if ("db2".equals(dbType)){
-        	dialect = new DB2Dialect();
-        }else if("derby".equals(dbType)){
-        	dialect = new DerbyDialect();
-        }else if("h2".equals(dbType)){
-        	dialect = new H2Dialect();
-        }else if("hsql".equals(dbType)){
-        	dialect = new HSQLDialect();
-        }else if("mysql".equals(dbType)){
-        	dialect = new MySQLDialect();
-        }else if("oracle".equals(dbType)){
+        if("oracle".equals(dbType)){
         	dialect = new OracleDialect();
-        }else if("postgre".equals(dbType)){
-        	dialect = new PostgreSQLDialect();
-        }else if("mssql".equals(dbType) || "sqlserver".equals(dbType)){
-        	dialect = new SQLServer2005Dialect();
-        }else if("sybase".equals(dbType)){
-        	dialect = new SybaseDialect();
         }
         if (dialect == null) {
             throw new RuntimeException("mybatis dialect error.");

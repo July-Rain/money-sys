@@ -1,6 +1,3 @@
-/**
- * Copyright (c) 2005-2012 springside.org.cn
- */
 package com.lawschool.util.persistence.toolkit;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +14,6 @@ import java.lang.reflect.*;
  * @author DHC
  * @version 2013-01-15
  */
-@SuppressWarnings("rawtypes")
 public class Reflections {
 	
 	private static final String SETTER_PREFIX = "set";

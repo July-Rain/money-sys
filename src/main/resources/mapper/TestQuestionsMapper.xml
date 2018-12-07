@@ -312,8 +312,18 @@
         FROM law_testquestions a
         <where>
             a.is_enble = #{isEnble}
-            AND a.specialKnowledgeId = #{specialKnowledgeId}
-            AND a.questionType = #{questionType}
+            <if test="specialKnowledgeId != null and specialKnowledgeId.size > 0">
+                AND a.specialKnowledgeId IN
+                <foreach collection="specialKnowledgeId" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="questionType != null and questionType.size > 0">
+                AND a.questionType IN
+                <foreach collection="questionType" index="index" item="item" open="(" separator="," close=")">
+                    #{questionType}
+                </foreach>
+            </if>
         </where>
         ORDER BY SYS_GUID()
     </select>

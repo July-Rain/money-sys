@@ -40,7 +40,6 @@ public class SQLHelper {
      * @param parameterObject 参数对象
      * @throws SQLException 数据库异常
      */
-    @SuppressWarnings("unchecked")
     public static void setParameters(PreparedStatement ps, MappedStatement mappedStatement, BoundSql boundSql, Object parameterObject) throws SQLException {
         ErrorContext.instance().activity("setting parameters").object(mappedStatement.getParameterMap().getId());
         List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
