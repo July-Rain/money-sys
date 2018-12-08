@@ -407,6 +407,12 @@ var vm = new Vue({
                 parent.location.href =baseURL+item.list[0].url;
             }
 
+        },
+        // 查询
+        inToCompetition: function () {
+         alert("我要跳转了");
+             parent.location.href ='main.html';
         }
+
     }
 });

@@ -4,95 +4,25 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <title></title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel = "Shortcut Icon" href="${rc.contextPath}/statics/img/favicon.ico">
-    <link rel="stylesheet" href="${rc.contextPath}/statics/plugins/froala_editor/css/font-awesome.min.css">
 
-    <!-- 引入element-ui样式 -->
-    <link rel="stylesheet" href="${rc.contextPath}/statics/plugins/element/element.css">
 
-    <!-- AdminLTE Skins. Choose a skin from the css/skins
-         folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="${rc.contextPath}/statics/css/login.css">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
 
     <script>
-        //document.createElement('video');
     </script>
     <![endif]-->
-    <!--<script src="/statics/js/common.js"></script>-->
 </head>
 <body class="hold-transition login-page">
 
 
-<div class="login-box" id="rrapp" v-cloak>
-    <!-- /.login-logo -->
-    <div class="login-box-body">
-        <div class="pull-left">
-            <div class="left-con">
-                <p><img src="${rc.contextPath}/statics/img/login.png"></p>
-                <p class="logintit"></p>
-            </div>
-        </div>
-        <div class="pull-right">
-            <div class="right-con">
-                <p class="login-box-msg">用户登录</p>
-                <!--<div v-if="error" class="alert alert-danger alert-dismissible">-->
-                <!--<h4 style="margin-bottom: 0px;"><i class="fa fa-exclamation-triangle"></i> {{errorMsg}}</h4>-->
-                <!--</div>-->
-                <div class="form-group has-feedback">
-                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                    <input type="text" class="form-control" v-model="username" value="" placeholder="账号">
-                </div>
-                <div class="form-group has-feedback">
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    <input type="password" class="form-control" v-model="password" value="" placeholder="密码">
-                </div>
-                <!--<div class="form-group has-feedback">-->
-                <!--<input type="text" class="form-control" v-model="captcha" @keyup.enter="login" placeholder="验证码">-->
-                <!--<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>-->
-                <!--</div>-->
-                <!--<div class="form-group has-feedback">-->
-                <!--<img alt="如果看不清楚，请单击图片刷新！" class="pointer" :src="src" @click="refreshCode">-->
-                <!--&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" @click="refreshCode">点击刷新</a>-->
-                <!--</div>-->
 
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <el-checkbox v-model="checked" style="padding-left: 0px;margin-bottom: 10px">记住密码12</el-checkbox>
-                    </div>
-                </div>
-                <div class="row" style="margin-top: 20px;">
-                    <div class="col-lg-12">
-                        <button type="button" class="btn login-key btn-primary btn-block btn-flat" @click="login">登录</button>
-                    </div>
-                    <!-- /.col -->
-                </div>
-            </div>
-        </div>
 
-        <!-- /.social-auth-links -->
-    </div>
-    <div class="footer">
-        <span>CopyRight @2018 STATE ADMINISTRATION OF WORK SAFETY ALL Rights Reserved</span>
-    </div>
-    <!-- /.login-box-body -->
-</div>
-
-<p class="login-browser-msg">本系统建议使用Chrome浏览器，点击 <a href="https://sm.myapp.com/original/Browser/69.0.3497.92_chrome_installer_x64.exe">下载</a></p>
-<!-- /.login-box -->
 <script src="${rc.contextPath}/statics/plugins/IE9/html5shiv.min.js"></script>
 <script src="${rc.contextPath}/statics/plugins/IE9/respond.min.js"></script>
 <script src="${rc.contextPath}/statics/plugins/jQuery/jquery-1.11.2.min.js"></script>
-<!--dev -->
+
 <script src="${rc.contextPath}/statics/plugins/vue/Vue.v2.5.17.dev.js"></script>
 
-<!--prod -->
-<!--<script src="${rc.contextPath}/statics/plugins/vue/Vue.v2.5.17.prod.js"></script>-->
 
 <!-- 引入element-ui组件库 -->
 <script src="${rc.contextPath}/statics/plugins/element/element.js"></script>
