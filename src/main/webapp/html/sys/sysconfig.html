@@ -61,12 +61,15 @@
                                         prop="code"
                                         label="参数编码"
                                         width="280"
-                                >
+                                        header-align="center"
+                                        align="center">
                                 </el-table-column>
                                 <el-table-column
                                         prop="value"
                                         label="参数值"
                                         width="280"
+                                        header-align="center"
+                                        align="center"
                                         >
                                 </el-table-column>
 
@@ -74,14 +77,29 @@
                                         prop="status"
                                         label="状态"
                                         width="180"
+                                        header-align="center"
+                                        align="center"
+                                        width="100"
                                         >
+                                    <template slot-scope="scope">
+                                        <el-tag v-if="scope.row.status === '0'" size="small" type="danger">无效</el-tag>
+                                        <el-tag v-else size="small">有效</el-tag>
+                                    </template>
+
                                 </el-table-column>
                                 <el-table-column
                                         prop="remark"
                                         label="备注"
+                                        header-align="center"
+                                        align="center"
+                                        :show-overflow-tooltip="true"
                                         >
                                 </el-table-column>
-                                <el-table-column label="操作" width="180">
+                                <el-table-column
+                                        label="操作"
+                                        header-align="center"
+                                        align="center"
+                                        width="180">
                                     <template slot-scope="scope">
                                         <el-button
                                                 size="mini"
