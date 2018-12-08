@@ -10,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -52,6 +51,7 @@ public class SysLoginController {
 		int code = userService.login(username,password,request);
 		if(Constant.SUCCESS==code){
 			return Result.ok();
+			//hhh
 		} else if (Constant.ERROR_PSW==code) {
 			return Result.error("密码错误");
 		}else if(Constant.IS_NOT_EXIST==code){
@@ -90,4 +90,8 @@ public class SysLoginController {
 	}
 
 
+	@RequestMapping(value = "{pageName}.html")
+	public String enterPage(@PathVariable String pageName) {
+		return pageName;
+	}
 }
