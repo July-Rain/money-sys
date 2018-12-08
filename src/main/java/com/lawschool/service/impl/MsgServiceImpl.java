@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 @Service
-public class MsgServiceImpl extends AbstractServiceImpl implements MsgService {
+public class MsgServiceImpl implements MsgService {
 
     @Autowired
     MsgDao msgDao;

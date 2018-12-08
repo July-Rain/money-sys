@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface MsgService extends AbstractService {
+public interface MsgService {
     /**
      * 新增消息
      * @param msg

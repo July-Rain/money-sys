@@ -14,7 +14,7 @@ import java.util.Map;
  * @Time  2018/11/28
  *
  */
-public interface DictService extends AbstractService {
+public interface DictService {
     /**
      * 查询用户字典表
      * @param id
