@@ -16,7 +16,7 @@ import java.util.Map;
  * @version
  * @Time 2018/12/04
  */
-public interface PracticeConfigurationService extends AbstractService {
+public interface PracticeConfigurationService {
     /**
      * 显示所有练习卷配置
      */
@@ -48,5 +48,10 @@ public interface PracticeConfigurationService extends AbstractService {
      * @param prefix
      */
     public Result createPaperName(String prefix);
+
+    /**
+     * 信息
+     */
+    public PracticeConfiguration selectById(String id);
 
 }
