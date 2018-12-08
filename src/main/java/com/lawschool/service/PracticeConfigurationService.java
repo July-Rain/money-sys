@@ -49,4 +49,9 @@ public interface PracticeConfigurationService {
      */
     public Result createPaperName(String prefix);
 
+    /**
+     * 信息
+     */
+    public PracticeConfiguration selectById(String id);
+
 }

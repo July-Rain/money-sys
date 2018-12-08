@@ -107,6 +107,11 @@ public class PracticeConfigurationServiceImpl implements PracticeConfigurationSe
         return Result.ok().put("paperName", sb+ sysNum );
     }
 
+    @Override
+    public PracticeConfiguration selectById(String id) {
+        return practiceConfigurationDao.selectById(id);
+    }
+
     /**
      * 自定义练习卷
      *
