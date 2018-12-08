@@ -1,5 +1,6 @@
 package com.lawschool.service.impl;
 
+import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.Dict;
 import com.lawschool.dao.DictDao;
 import com.lawschool.service.DictService;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class DictServiceImpl implements DictService {
+public class DictServiceImpl extends AbstractServiceImpl implements DictService {
 
     @Autowired
     DictDao dictDao;

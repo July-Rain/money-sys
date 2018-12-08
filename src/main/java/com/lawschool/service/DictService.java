@@ -1,5 +1,6 @@
 package com.lawschool.service;
 
+import com.lawschool.base.AbstractService;
 import com.lawschool.beans.Dict;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  * @Time  2018/11/28
  *
  */
-public interface DictService {
+public interface DictService extends AbstractService {
     /**
      * 查询用户字典表
      * @param id
