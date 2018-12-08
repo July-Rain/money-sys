@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface MsgService extends AbstractService {
+public interface MsgService {
     /**
      * 新增消息
      * @param msg
@@ -43,5 +43,5 @@ public interface MsgService extends AbstractService {
      * 删除多条数据
      * @param ids
      */
-    //public void deleteBatchIds(String[] ids);
+    public void deleteBatchIds(String[] ids);
 }

@@ -25,7 +25,7 @@ import java.util.*;
  * @Time 2018/12/04
  */
 @Service
-public class PracticeConfigurationServiceImpl extends AbstractServiceImpl implements PracticeConfigurationService {
+public class PracticeConfigurationServiceImpl implements PracticeConfigurationService {
 
     @Autowired
     PracticeConfigurationDao practiceConfigurationDao;
@@ -105,6 +105,11 @@ public class PracticeConfigurationServiceImpl extends AbstractServiceImpl implem
         }
 
         return Result.ok().put("paperName", sb+ sysNum );
+    }
+
+    @Override
+    public PracticeConfiguration selectById(String id) {
+        return practiceConfigurationDao.selectById(id);
     }
 
     /**

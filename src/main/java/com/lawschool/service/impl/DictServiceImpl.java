@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class DictServiceImpl extends AbstractServiceImpl implements DictService {
+public class DictServiceImpl implements DictService {
 
     @Autowired
     DictDao dictDao;

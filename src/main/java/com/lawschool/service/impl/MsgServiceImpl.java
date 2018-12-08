@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 @Service
-public class MsgServiceImpl extends AbstractServiceImpl implements MsgService {
+public class MsgServiceImpl implements MsgService {
 
     @Autowired
     MsgDao msgDao;
@@ -66,6 +66,11 @@ public class MsgServiceImpl extends AbstractServiceImpl implements MsgService {
     @Override
     public void deleteByMsgId(String id) {
         msgDao.deleteByMsgId(id);
+    }
+
+    @Override
+    public void deleteBatchIds(String[] ids) {
+        msgDao.deleteBatchIds(Arrays.asList(ids));
     }
 
     //删除多条数据
