@@ -30,7 +30,7 @@ a{ text-decoration:none;}
 
 .header{
 	height:59px;
-	background:url(../images/header_bg.gif) repeat-x;
+	background:url(../../images/header_bg.gif) repeat-x;
 	border-bottom:#0567a2 solid 3px;
 	overflow:hidden;
 	}
@@ -38,7 +38,7 @@ a{ text-decoration:none;}
 	height:59px;
 	width:1200px;
 	margin:0 auto;
-	background:url(../images/logo0.gif) no-repeat;
+	background:url(../../images/logo0.gif) no-repeat;
 	text-indent:-9999px;
 	}
 
@@ -77,10 +77,10 @@ a{ text-decoration:none;}
 	top:200px;
 	cursor:pointer;
 	}
-.left{left:0; background:url(../images/left0.png) no-repeat;}
-.right{ right:0;background:url(../images/right0.png) no-repeat;}
-.left:hover{background:url(../images/left1.png) no-repeat;}
-.right:hover{background:url(../images/right1.png) no-repeat;}
+.left{left:0; background:url(../../images/left0.png) no-repeat;}
+.right{ right:0;background:url(../../images/right0.png) no-repeat;}
+.left:hover{background:url(../../images/left1.png) no-repeat;}
+.right:hover{background:url(../../images/right1.png) no-repeat;}
 .btnList{
 	position:absolute;
 	bottom:10px;

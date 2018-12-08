@@ -12,10 +12,10 @@
     <meta name="keywords" content="Java培训,Android培训,安卓培训,PHP培训,C++培训,iOS培训,网页设计培训,平面设计培训,UI设计培训,游戏开发培训,移动开发培训,网络营销培训,web前端培训">
     <meta name="description" content="传智播客专注Java培训,Android培训,安卓培训,PHP培训,C++培训,iOS培训,网页设计培训,平面设计培训,UI设计培训,游戏开发培训,移动开发培训,网络营销培训,web前端培训。">
     <title>传智播客在线留言系统</title>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/sockjs.min.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chat.css" type="text/css" media="all" />
+    <script type="text/javascript" src="${pageContext.request.contextPath}/sun-jsp/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/sun-jsp/js/sockjs.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/sun-jsp/css/style.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/sun-jsp/css/chat.css" type="text/css" media="all" />
     <script type="text/javascript">
         var path = '<%=basePath%>';
 
@@ -126,7 +126,7 @@
             //给退出聊天绑定事件
             $("#exitBtn").on("click",function(){
                 closeWebsocket();
-                location.href="${pageContext.request.contextPath}/jsp/login.jsp";
+                location.href="login.jsp";
             });
 
             //给输入框绑定事件

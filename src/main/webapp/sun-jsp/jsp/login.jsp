@@ -5,9 +5,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>在线聊天系统</title>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/lbt.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/sun-jsp/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/sun-jsp/js/lbt.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/sun-jsp/css/style.css" type="text/css"/>
     <script type="text/javascript">
 
     </script>
@@ -32,13 +32,13 @@
     <div class="con">
         <div class="inCon">
             <ul class="imgList">
-                <li><img src="${pageContext.request.contextPath}/images/1.png" width="680" height="494" /></li>
-                <li><img src="${pageContext.request.contextPath}/images/2.png" width="680" height="494" /></li>
-                <li><img src="${pageContext.request.contextPath}/images/3.png" width="680" height="494" /></li>
-                <li><img src="${pageContext.request.contextPath}/images/4.png" width="680" height="494" /></li>
-                <li><img src="${pageContext.request.contextPath}/images/5.png" width="680" height="494" /></li>
-                <li><img src="${pageContext.request.contextPath}/images/6.png" width="680" height="494" /></li>
-                <li><img src="${pageContext.request.contextPath}/images/7.png" width="680" height="494" /></li>
+                <li><img src="${pageContext.request.contextPath}/sun-jsp/images/1.png" width="680" height="494" /></li>
+                <li><img src="${pageContext.request.contextPath}/sun-jsp/images/2.png" width="680" height="494" /></li>
+                <li><img src="${pageContext.request.contextPath}/sun-jsp/images/3.png" width="680" height="494" /></li>
+                <li><img src="${pageContext.request.contextPath}/sun-jsp/images/4.png" width="680" height="494" /></li>
+                <li><img src="${pageContext.request.contextPath}/sun-jsp/images/5.png" width="680" height="494" /></li>
+                <li><img src="${pageContext.request.contextPath}/sun-jsp/images/6.png" width="680" height="494" /></li>
+                <li><img src="${pageContext.request.contextPath}/sun-jsp/images/7.png" width="680" height="494" /></li>
             </ul>
         </div>
         <ol class="btnList">
