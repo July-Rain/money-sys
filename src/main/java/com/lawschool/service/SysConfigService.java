@@ -77,5 +77,13 @@ public interface SysConfigService extends IService<SysConfig> {
     
     public SysConfig queryConfig(SysConfig sysConfig);
 
+    /**
+     * @Author MengyuWu
+     * @Description 分页查询
+     * @Date 13:55 2018-12-8
+     * @Param [params]
+     * @return com.lawschool.util.PageUtils
+     **/
+    
     PageUtils queryPage(Map<String, Object> params);
 }

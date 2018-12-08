@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.beans.StuMedia;
+import com.lawschool.beans.SysConfig;
 import com.lawschool.beans.User;
 import com.lawschool.beans.auth.AuthRelationBean;
 import com.lawschool.dao.StuMediaDao;
@@ -13,6 +14,7 @@ import com.lawschool.service.StuMediaService;
 import com.lawschool.service.auth.AuthRelationService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
+import com.lawschool.util.Query;
 import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -187,5 +189,27 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
         StuMedia temp =new StuMedia();
         int update = mapper.update(temp, ew);
         return update==1?SUCCESS:ERROR;
+    }
+
+    @Override
+    public PageUtils queryPage(Map<String, Object> params) {
+        String stuTitle = (String)params.get("stuTitle");
+        String comContent = (String)params.get("comContent");
+        String stuPoliceclass = (String)params.get("stuPoliceclass");
+        EntityWrapper<StuMedia> ew = new EntityWrapper<>();
+
+        if(UtilValidate.isNotEmpty(stuTitle)){
+            ew.like("stu_title",stuTitle);
+        }
+        if(UtilValidate.isNotEmpty(comContent)){
+            ew.like("com_content",comContent);
+        }
+        if(UtilValidate.isNotEmpty(stuPoliceclass)){
+            ew.like("stu_policeclass",stuPoliceclass);
+        }
+        Page<StuMedia> page = this.selectPage(
+                new Query<StuMedia>(params).getPage(),ew);
+
+        return new PageUtils(page);
     }
 }

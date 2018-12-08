@@ -405,7 +405,7 @@ var vm = new Vue({
             if(item.list.length==0){
                 alert("暂无子菜单");
             }else{
-                parent.location.href =baseURL+item.list[0].url;
+                parent.location.href =baseURL+item.list[0].url+"?id="+item.id;
             }
 
         }

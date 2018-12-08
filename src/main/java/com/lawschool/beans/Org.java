@@ -1,11 +1,15 @@
 package com.lawschool.beans;
 
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Org implements Serializable{
+@TableName("law_org")
+public class Org implements Serializable,Comparable<Org>{
     /**
 	 * 
 	 */
@@ -27,7 +31,7 @@ public class Org implements Serializable{
 
     private String oldOrgCode;	//旧部门编号
 
-    private String ordercode;	// 排序
+    private Integer ordercode;	// 排序
 
     private String orgCode;// 机构代码
 
@@ -70,7 +74,10 @@ public class Org implements Serializable{
     
     private List<User> list;
 
-    public Org(String id, Date addTime, String addUser, Date updateTime, String updateUser, String dictionaryName, String fullName, String oldOrgCode, String ordercode, String orgCode, Date orgEnddate, String orgId, Date orgIndate, Short orgLevel, String orgName, String orgShortname, Date orgStartdate, Integer orgStatus, Integer orgType, String otherName, String parentCode, String parentId, Short synFlag, String localOrgCode, String localOrgName, String localParentOrgId, String localOrgType, String localPoliceType) {
+    @TableField(exist = false)
+    private List child;//子集
+
+    public Org(String id, Date addTime, String addUser, Date updateTime, String updateUser, String dictionaryName, String fullName, String oldOrgCode, Integer ordercode, String orgCode, Date orgEnddate, String orgId, Date orgIndate, Short orgLevel, String orgName, String orgShortname, Date orgStartdate, Integer orgStatus, Integer orgType, String otherName, String parentCode, String parentId, Short synFlag, String localOrgCode, String localOrgName, String localParentOrgId, String localOrgType, String localPoliceType) {
         this.id = id;
         this.addTime = addTime;
         this.addUser = addUser;
@@ -169,12 +176,12 @@ public class Org implements Serializable{
         this.oldOrgCode = oldOrgCode == null ? null : oldOrgCode.trim();
     }
 
-    public String getOrdercode() {
+    public Integer getOrdercode() {
         return ordercode;
     }
 
-    public void setOrdercode(String ordercode) {
-        this.ordercode = ordercode == null ? null : ordercode.trim();
+    public void setOrdercode(Integer ordercode) {
+        this.ordercode = ordercode == null ? null : ordercode;
     }
 
     public String getOrgCode() {
@@ -336,6 +343,20 @@ public class Org implements Serializable{
 	public void setList(List<User> list) {
 		this.list = list;
 	}
-    
-    
+
+    public List getChild() {
+        return child;
+    }
+
+    public void setChild(List child) {
+        this.child = child;
+    }
+
+    @Override
+    public int compareTo(Org o) {
+        if(o.ordercode!=null&&this.ordercode!=null){
+            return -o.ordercode + this.ordercode;
+        }
+        return -1;
+    }
 }

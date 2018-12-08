@@ -39,10 +39,19 @@ public class SysMenuController {
      **/
     
     @RequestMapping("/nav")
-    public Result nav(){
-        List<SysMenu> menuList = sysMenuService.selectList(new EntityWrapper<SysMenu>()
+    public Result nav(String id){
+        EntityWrapper<SysMenu> ew = new EntityWrapper<SysMenu>();
+        if(UtilValidate.isNotEmpty(id)){
+            ew.eq("parent_id",id);
+        }
+        List<SysMenu> menuList = sysMenuService.selectList(ew
                 .ne("type","2").eq("is_show","1"));
-        return Result.ok().put("menuList", bulidDeptTree(menuList));
+        if(UtilValidate.isNotEmpty(id)){
+            return Result.ok().put("menuList", menuList);
+        }else{
+            return Result.ok().put("menuList", bulidDeptTree(menuList));
+        }
+
     }
     /**
      * 两层循环实现建树

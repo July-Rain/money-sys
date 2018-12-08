@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<style>
+
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="header">
+        <div class="header-left">
+            <img src="${rc.contextPath}/statics/img/logo.png">
+            <a href="javascript:;">江苏省公安厅法律学校</a>
+            <input style="display: none" id="menuId" value="${menuId}">
+        </div>
+        <div class="header-right">
+            <ul>
+                <li v-for="item in navData">
+                    <a>
+                        <i :class="item.icon"></i>
+                        <p><a href="javascript:;">{{item.name}}</a></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <el-row :gutter="24">
+            <el-col :span="4">
+                <!--对于同一级的节点，每次只能展开一个-->
+                <el-tree
+                        :data="treeData"
+                        :props="defaultProps"
+                        accordion
+                        @node-click="handleNodeClick">
+                </el-tree>
+            </el-col>
+            <el-col :span="20">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="检索">
+                        <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+
+                            <el-form-item prop="code">
+                                <el-input v-model="formInline.code" placeholder="参数编码" size="mini"></el-input>
+                            </el-form-item>
+                            <el-form-item prop="value">
+                                <el-input v-model="formInline.value" placeholder="参数值" size="mini"></el-input>
+                            </el-form-item>
+
+                            <el-form-item prop="status">
+                                <el-select v-model="formInline.status" placeholder="状态" size="mini">
+                                    <el-option label="有效" value="1"></el-option>
+                                    <el-option label="无效" value="0"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
+                                <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
+
+                            </el-form-item>
+                        </el-form>
+                        <div>
+                            <el-button type="primary" @click="addConfig" size="mini">新增</el-button>
+                            <el-table
+                                    :data="tableData"
+                                    border
+                                    style="width: 100%">
+                                <el-table-column
+                                        prop="stuTitle"
+                                        label="标题"
+                                        width="280"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="stuCount"
+                                        label="观看次数"
+                                        width="280"
+                                >
+                                </el-table-column>
+
+                                <el-table-column
+                                        prop="stuIssuer"
+                                        label="发布人"
+                                        width="180"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="stuPoliceclass"
+                                        label="警种"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="stuType"
+                                        label="课件类型"
+                                >
+                                </el-table-column>
+                                <el-table-column label="操作" width="180">
+                                    <template slot-scope="scope">
+                                        <el-button
+                                                size="mini"
+                                                @click="handleEdit(scope.$index, scope.row)">编辑
+                                        </el-button>
+                                        <el-button
+                                                size="mini"
+                                                @click="handleDel(scope.$index, scope.row)">删除
+                                        </el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="formInline.currPage"
+                                    :page-sizes="[10, 20, 30, 40]"
+                                    :page-size="formInline.pageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="formInline.totalCount">
+                            </el-pagination>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
+
+
+
+
+        <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
+            <el-row>
+                <el-col :span="12">
+                    <el-form :model="stuMedia" :rules="rules" ref="stuMedia" label-width="100px" class="demo-stuMedia" size="mini">
+                        <el-form-item label="资料类型" prop="stuType">
+                            <el-radio-group v-model="stuMedia.stuType">
+                                <el-radio label="文字" value="1"></el-radio>
+                                <el-radio label="音频" value="2"></el-radio>
+                                <el-radio label="视频" value="3"></el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                        <el-form-item label="标题" prop="stuTitle">
+                            <el-input v-model="stuMedia.stuTitle" placeholder="请输入标题" clearable></el-input>
+                        </el-form-item>
+                        <template v-if="stuMedia.stuType=='1'">
+                            <el-form-item label="内容" prop="comContent">
+                                <el-input type="textarea" maxlength="200" v-model="stuMedia.comContent"></el-input>
+                            </el-form-item>
+                        </template>
+                        <template v-if="stuMedia.stuType!='1'">
+                            <el-form-item label="请上传资料" prop="comContent">
+                                <el-upload
+                                        class="upload-demo"
+                                        :action="importFileUrl"
+                                        multiple
+                                        name="importfile"
+                                        :file-list="fileList"
+                                        :on-error="uploadError"
+                                        show-file-list="false"
+                                        :on-success="uploadSuccess"
+                                        :before-upload="beforeAvatarUpload"
+                                        :limit="3">
+                                    <el-button size="small" type="primary" >选择...</el-button>
+                                </el-upload>
+                            </el-form-item>
+                        </template>
+                        <el-form-item label="使用部门" prop="deptId">
+                            <el-input v-model="stuMedia.deptId" placeholder="请选择使用部门" clearable></el-input>
+                        </el-form-item>
+                        <el-form-item label="使用人员" prop="userId">
+                            <el-input v-model="stuMedia.userId" placeholder="请选择使用人员" clearable></el-input>
+                        </el-form-item>
+                        <el-form-item label="描述" prop="stuDescribe">
+                            <el-input type="textarea" maxlength="200" v-model="stuMedia.stuDescribe"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="saveOrUpdate('stuMedia')">保存</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-col>
+            </el-row>
+        </el-dialog>
+
+    </div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/stu/stumedia.js?_${.now?long}"></script>
+</html>

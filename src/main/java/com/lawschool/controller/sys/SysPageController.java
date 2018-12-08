@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SysPageController {
 
 	@RequestMapping("modules/{module}/{url}.html")
-	public String module(@PathVariable("module") String module, @PathVariable("url") String url){
+	public String module(@PathVariable("module") String module, @PathVariable("url") String url,String id,Model model){
+		model.addAttribute("menuId",id);
 		return  module + "/" + url;
 	}
 

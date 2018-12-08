@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/stuMedia")
+@RequestMapping("/stumedia")
 public class StuMediaController extends AbstractController {
 
     @Autowired
@@ -84,6 +84,20 @@ public class StuMediaController extends AbstractController {
             return Result.error("身份错误或数据为空");
         }
         return Result.ok().put("list",stuMedias);
+    }
+
+    /**
+     * @Author MengyuWu
+     * @Description 课程列表查询
+     * @Date 14:01 2018-12-8
+     * @Param [params]
+     * @return com.lawschool.util.Result
+     **/
+    
+    @RequestMapping("/list")
+    public Result list(@RequestParam Map<String,Object> params){
+        PageUtils page = stuMediaService.queryPage(params);
+        return Result.ok().put("page", page);
     }
 
 }
