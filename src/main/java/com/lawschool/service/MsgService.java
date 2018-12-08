@@ -43,5 +43,5 @@ public interface MsgService {
      * 删除多条数据
      * @param ids
      */
-    //public void deleteBatchIds(String[] ids);
+    public void deleteBatchIds(String[] ids);
 }

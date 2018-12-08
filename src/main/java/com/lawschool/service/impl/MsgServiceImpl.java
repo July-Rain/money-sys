@@ -68,6 +68,11 @@ public class MsgServiceImpl implements MsgService {
         msgDao.deleteByMsgId(id);
     }
 
+    @Override
+    public void deleteBatchIds(String[] ids) {
+        msgDao.deleteBatchIds(Arrays.asList(ids));
+    }
+
     //删除多条数据
     /*public void deleteBatchIds(String[] ids){
         //msgDao.deleteBatchIds(Arrays.asList(ids));
