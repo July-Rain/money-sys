@@ -16,12 +16,6 @@
         </div>
         <div class="header-right">
             <ul>
-                <li>
-                    <a>
-                        <i class="el-icon-tickets"></i>
-                        <p><a href="javascript:;">首页</a></p>
-                    </a>
-                </li>
                 <li v-for="item in navData" @click="toChild(item)" :data-id="item.id" :data-url="item.url">
                     <a>
                         <i :class="item.icon"></i>
@@ -38,7 +32,7 @@
                     <el-col :span="12">
                         <div class="small-box bg-blue">
                             <div class="inner">
-                                <h3>每日一题1111222222</h3>
+                                <h3>每日一题</h3>
                                 <div>
                                     <p>已完成</p>
                                 </div>
@@ -511,7 +505,7 @@
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/statics/js/index.js"></script>
+<script src="${rc.contextPath}/js/index.js?_${.now?long}"></script>
 <script>
     $(function () {
         // $('#app').css('background','#f00')
