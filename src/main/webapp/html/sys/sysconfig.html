@@ -33,26 +33,26 @@
                         <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
                             <el-form-item prop="code">
-                                <el-input v-model="formInline.code" placeholder="参数编码" size="mini"></el-input>
+                                <el-input v-model="formInline.code" placeholder="参数编码" size="mini" clearable></el-input>
                             </el-form-item>
                             <el-form-item prop="value">
-                                <el-input v-model="formInline.value" placeholder="参数值" size="mini"></el-input>
+                                <el-input v-model="formInline.value" placeholder="参数值" size="mini" clearable></el-input>
                             </el-form-item>
 
                             <el-form-item prop="status">
-                                <el-select v-model="formInline.status" placeholder="状态" size="mini">
+                                <el-select v-model="formInline.status" placeholder="状态" size="mini" clearable>
                                     <el-option label="有效" value="1"></el-option>
                                     <el-option label="无效" value="0"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                                <el-button @click="resetForm('formInline')">重置</el-button>
+                                <el-button size="mini" @click="resetForm('formInline')">重置</el-button>
 
                             </el-form-item>
                         </el-form>
                         <div>
-                            <el-button type="primary" @click="addConfig" >新增</el-button>
+                            <el-button size="mini" type="primary" @click="addConfig" >新增</el-button>
                             <el-table
                                     :data="tableData"
                                     border
@@ -88,6 +88,8 @@
                                                 @click="handleEdit(scope.$index, scope.row)">编辑
                                         </el-button>
                                         <el-button
+                                                plain
+                                                type="danger"
                                                 size="mini"
                                                 @click="handleDel(scope.$index, scope.row)">删除
                                         </el-button>
@@ -142,5 +144,5 @@
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/statics/js/sys/sysconfig.js"></script>
+<script src="${rc.contextPath}/js/sys/sysconfig.js?_${.now?long}"></script>
 </html>

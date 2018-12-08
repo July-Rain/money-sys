@@ -86,10 +86,12 @@ var vm = new Vue({
                         data: JSON.stringify(vm.sysConfig),
                         success: function(result){
                             if(result.code === 0){
-                                alert('操作成功', function(index){
-                                    vm.dialogConfig=false;
-                                    vm.reload();
-
+                                vm.$alert('操作成功', '提示', {
+                                    confirmButtonText: '确定',
+                                    callback: function () {
+                                        vm.dialogConfig=false;
+                                        vm.reload();
+                                    }
                                 });
                             }else{
                                 alert(result.msg);
@@ -135,13 +137,11 @@ var vm = new Vue({
         },
         handleDel: function (index, row){
             vm.delIdArr.push(row.id);
-            var that = this
             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(function () {
-                debugger
                 $.ajax({
                     type: "POST",
                     url: baseURL + 'sysconfig/delete' ,
@@ -150,7 +150,7 @@ var vm = new Vue({
                     contentType: "application/json",
                     success: function (result) {
                         vm.reload();
-                        that.$message({
+                        vm.$message({
                             type: 'success',
                             message: '删除成功!'
                         });

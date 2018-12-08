@@ -239,11 +239,12 @@ var vm = new Vue({
     created: function () {
         console.log("进入页面触发一次")
         this.$nextTick(function () {
-            var myPlayer = videojs('my-video');
-            videojs("my-video").ready(function () {
-                myPlayer = this;
-                myPlayer.play();
-            });
+            // 视频播放
+            // var myPlayer = videojs('my-video');
+            // videojs("my-video").ready(function () {
+            //     myPlayer = this;
+            //     myPlayer.play();
+            // });
         })
 
         this.$nextTick(function () {
@@ -407,12 +408,6 @@ var vm = new Vue({
                 parent.location.href =baseURL+item.list[0].url;
             }
 
-        },
-        // 查询
-        inToCompetition: function () {
-         alert("我要跳转了");
-             parent.location.href ='main.html';
         }
-
     }
 });
