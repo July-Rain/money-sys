@@ -1,11 +1,13 @@
 package com.lawschool.service;
 
+import com.lawschool.base.AbstractService;
 import com.lawschool.beans.Msg;
+import com.lawschool.util.PageUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface MsgService {
+public interface MsgService extends AbstractService {
     /**
      * 新增消息
      * @param msg
@@ -16,7 +18,7 @@ public interface MsgService {
      * 展示所有消息
      * @return
      */
-    public List<Msg> selectAllMsg();
+    public PageUtils selectAllMsg();
 
     /**
      * 根据id查询单条消息
@@ -36,4 +38,10 @@ public interface MsgService {
      * @param id
      */
     public void deleteByMsgId(String id);
+
+    /**
+     * 删除多条数据
+     * @param ids
+     */
+    //public void deleteBatchIds(String[] ids);
 }

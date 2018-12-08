@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.PracticeConfigurationDao">
+    <resultMap id="BaseResultMap" type="com.lawschool.beans.PracticeConfiguration">
+        <id column="ID" jdbcType="VARCHAR" property="id" />
+        <result column="PREFIX" jdbcType="VARCHAR" property="prefix" />
+        <result column="QUESTION_TYPE" jdbcType="VARCHAR" property="questionType" />
+        <result column="RANGE" jdbcType="VARCHAR" property="range" />
+        <result column="TOTAL_OUNT" jdbcType="DECIMAL" property="totalCount" />
+        <result column="SYS_NUM" jdbcType="DECIMAL" property="sysNum" />
+        <result column="PRACTITIONERS" jdbcType="VARCHAR" property="practitioners" />
+        <result column="ADD_USER" jdbcType="VARCHAR" property="addUser" />
+        <result column="ADD_DATE" jdbcType="DATE" property="addDate" />
+        <result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+        <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+        <result column="PRIMARY_COUNT" jdbcType="DECIMAL" property="primaryCount"/>
+        <result column="INTERMEDIATE_COUNT" jdbcType="DECIMAL" property="intermediateCount"/>
+        <result column="SENIOR_COUNT" jdbcType="DECIMAL" property="seniorCount"/>
+    </resultMap>
+    <!--根据专业知识查询-->
+    <select id="selectQuestionsByKnowledgeId" parameterType="java.lang.String" resultType="java.util.Map">
+          select * from LAW_TESTQUESTIONS where
+        <if test="SPECIAL_KNOWLEDGE_ID!=null||SPECIAL_KNOWLEDGE_ID!='' ">
+            and SPECIAL_KNOWLEDGE_ID in
+            <foreach item="item" index="index" collection="list" open="("  close=")" separator=",">
+                #{specialKnowledgeId}
+            </foreach>
+        </if>
+        <if test="QUESTION_DIFFICULTY!=null||QUESTION_DIFFICULTY!='' ">
+            and QUESTION_DIFFICULTY in
+            <foreach item="item" index="index" collection="list" open="(" close=")" separator=",">
+                #{questionDifficulty}
+            </foreach>
+        </if>
+    </select>
+
+    <!--随机一定数量题目-->
+    <select id="queryRandom" parameterType="java.util.Map" resultType="com.lawschool.beans.TestQuestions">
+        select id from (select ID,DIFFICULTY from LAW_TESTQUESTIONS where SPECIAL_KNOWLEDGE_ID=#{knowledgeID} order by dbms_random.random) where rownum &lt;= #{row_count}
+        <if test="QUESTION_DIFFICULTY!=null||QUESTION_DIFFICULTY!='' ">
+        and QUESTION_DIFFICULTY = #{difficulty}
+        </if>
+    </select>
+
+    <!--根据传入ids查询试题-->
+    <select id="selectByIds" parameterType="java.util.Map" resultType="java.util.Map">
+        select * from LAW_TESTQUESTION where id = #{id}
+    </select>
+</mapper>
+
+
+

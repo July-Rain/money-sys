@@ -2,27 +2,18 @@ package com.lawschool.controller;
 
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.PracticeConfiguration;
-import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
 import com.lawschool.service.OrgService;
 import com.lawschool.service.PracticeConfigurationService;
 import com.lawschool.service.UserService;
-import com.lawschool.util.GetUUID;
+import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
-import com.lawschool.util.UtilValidate;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-
 
 /**
  * @Author liuhuan
@@ -48,7 +39,7 @@ public class PracticeConfigurationController extends AbstractController {
     @RequestMapping("/listAll")
     public Result selectListAll(){
         Result result = Result.ok();
-        List<PracticeConfiguration> list = practiceConfigurationService.listAll();
+        PageUtils list = practiceConfigurationService.listAll();
         return result.put("list",list);
     }
 
@@ -65,67 +56,45 @@ public class PracticeConfigurationController extends AbstractController {
      * 部门展示
      */
     @RequestMapping("/deptInfo")
-    public Result showDept(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException {
+    public Result showDept(HttpServletResponse response){
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
-
-        Result result = Result.ok();
-
         //根据当前用户权限查询
         User user = getUser();
         String orgCode = user.getOrgCode();
         List<Map<String,Object>> orgList = orgService.findUserByOrg(orgCode);
-        /*String jsonStr = JSONArray.toJSONString(orgList);
-        PrintWriter out = response.getWriter();
-        out.print(jsonStr);
-        out.flush();
-        out.close();*/
-        return result.put("orglist",orgList);
+
+        return Result.ok().put("orglist",orgList);
     }
 
     /**
      * 生成卷名
      */
     @RequestMapping("/createPracName")
-    public Result createPracName(@Param(value = "prefix") String prefix){
-        String sysNum = GetUUID.getRom(5);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd");
-        String date = sdf.format(new Date());
+    public Result createPracName(@RequestParam String prefix){
 
-        return Result.ok().put("pracName",sysNum+date+prefix);
+        Result paperName = practiceConfigurationService.createPaperName(prefix);
+        return Result.ok().put("paperName",paperName);
     }
 
     /**
-     * 自定义练习配置
+     * 生成练习卷
+     * @param paramsList,user
+     * @return
      */
-    @RequestMapping("/createPracPaper")
-    public Result createPaper(@PathVariable(value="PracticeConfiguration")PracticeConfiguration params){
-        Result result = Result.ok();
-        Map map = new HashMap();
-        String questionType = params.getQuestionType();//题目类型
-        String specialKnowledgeId = params.getSpecialKnowledgeId();//知识点ID
+    public Result createPracPaper(@RequestParam List<PracticeConfiguration>paramsList,User user){
 
-        Integer countEasy = params.getPrimaryCount();
-        Integer countMid = params.getIntermediateCount();
-        Integer countHard = params.getSeniorCount();
-        if(UtilValidate.isNotEmpty(countEasy)||!countEasy.equals(0)){
-            map.put("countEasy",countEasy);
-            map.put("questionDifficulty1",1);
-        }
-        if(UtilValidate.isNotEmpty(countMid)||!countMid.equals(0)){
-            map.put("countMid",countMid);
-            map.put("questionDifficulty2",2);
-        }
-        if(UtilValidate.isNotEmpty(countHard)||!countHard.equals(0)){
-            map.put("countHard",countHard);
-            map.put("questionDifficulty3",3);
-        }
-
-        //查询专项知识点ID下的所有题目
-        List<TestQuestions> list = practiceConfigurationService.selectByKnowledgeId(map);
-
-        return Result.ok();
+        Result paper = practiceConfigurationService.createPracticePaper(paramsList,user);
+        return Result.ok().put("paper",paper);
     }
 
-
+    /**
+     * 信息
+     * @param id
+     */
+    @RequestMapping("/info/{ids}")
+    public Result info(String id){
+        PracticeConfiguration config = (PracticeConfiguration) practiceConfigurationService.selectById(id);
+        return Result.ok().put("pracConfig",config);
+    }
 }
