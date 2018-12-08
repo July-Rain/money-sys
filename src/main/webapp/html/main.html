@@ -16,8 +16,14 @@
         </div>
         <div class="header-right">
             <ul>
-                <li v-for="item in navData">
+                <li>
                     <a>
+                        <i class="el-icon-tickets"></i>
+                        <p><a href="javascript:;">首页</a></p>
+                    </a>
+                </li>
+                <li v-for="item in navData" @click="toChild(item)" :data-id="item.id" :data-url="item.url">
+                    <a >
                         <i :class="item.icon"></i>
                         <p><a href="javascript:;">{{item.name}}</a></p>
                     </a>
@@ -473,7 +479,7 @@
             <i class="el-icon-info"></i>
             <el-button type="primary" icon="el-icon-search">搜索</el-button>
         </p>
-        <div class="m">
+        <!--<div class="m">
             <video id="my-video" class="video-js" controls preload="auto" width="960" height="400" data-setup="{}">
                 <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
                 <source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm">
@@ -482,7 +488,7 @@
                     browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5
                         video</a></p>
             </video>
-        </div>
+        </div>-->
         <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
             <el-form :model="ruleForm">
                 <el-form-item label="名称" :label-width="formLabelWidth">

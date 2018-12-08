@@ -74,6 +74,19 @@
         <property name="dataSource" ref="dataSource" />
         <property name="mapperLocations" value="classpath:mapper/*.xml"/>
         <property name="globalConfig" ref="globalConfiguration" />
+        <property name="plugins">
+            <array>
+                <!-- 分页插件配置 -->
+                <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
+                    <property name="dialectType" value="oracle" />
+                </bean>
+                <!-- 输出每条SQL语句及其执行时间，生产环境不建议使用该插件 -->
+                <!--<bean class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor">
+                    <property name="format" value="false"/>&lt;!&ndash; 格式化SQL语句 &ndash;&gt;
+                    <property name="maxTime" value="1000"/>&lt;!&ndash; sql执行时间超过value值就会停止执行，单位是毫秒 &ndash;&gt;
+                </bean>-->
+            </array>
+        </property>
     </bean>
     <bean id ="globalConfiguration" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
         <!--映射数据库下划线字段名到数据库实体类的驼峰命名的映射-->

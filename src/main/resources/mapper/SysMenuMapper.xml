@@ -12,7 +12,7 @@
         <result column="PERMS" property="perms" jdbcType="VARCHAR" />
         <result column="TYPE" property="type" jdbcType="VARCHAR" />
         <result column="ICON" property="icon" jdbcType="VARCHAR" />
-        <result column="ORDER_NUM" property="orderNum" jdbcType="VARCHAR" />
+        <result column="ORDER_NUM" property="orderNum" jdbcType="INTEGER" />
 
     </resultMap>
 

@@ -249,6 +249,23 @@ var vm = new Vue({
         this.$nextTick(function () {
             this.initPie1()
         })
+
+        this.$nextTick(function () {
+            //加载菜单
+            $.ajax({
+                type: "POST",
+                url: baseURL + "menu/nav",
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        vm.navData = result.menuList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        })
+
     },
     methods: {
         // 导航栏
@@ -382,6 +399,14 @@ var vm = new Vue({
                     message: '已取消删除'
                 });
             });
+        },
+        toChild: function (item) {
+            if(item.list.length==0){
+                alert("暂无子菜单");
+            }else{
+                parent.location.href =baseURL+item.list[0].url;
+            }
+
         }
     }
 });

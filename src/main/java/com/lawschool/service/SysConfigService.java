@@ -1,9 +1,12 @@
 package com.lawschool.service;
 
+import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.SysConfig;
+import com.lawschool.util.PageUtils;
 
-import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
+
 /**
  * InterfaceName: SysConfigService
  * Description: 系统的配置接口
@@ -12,7 +15,7 @@ import java.util.List;
  * @version
  * @since JDK 1.8
  */
-public interface SysConfigService {
+public interface SysConfigService extends IService<SysConfig> {
 
     /**
      * @Author MengyuWu
@@ -73,4 +76,6 @@ public interface SysConfigService {
      **/
     
     public SysConfig queryConfig(SysConfig sysConfig);
+
+    PageUtils queryPage(Map<String, Object> params);
 }
