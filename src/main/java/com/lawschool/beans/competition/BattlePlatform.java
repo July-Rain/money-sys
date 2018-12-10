@@ -22,7 +22,7 @@ public class BattlePlatform implements Serializable {
 	private String id;
 
 	//比武配置id（可能是在线比武，也可能是 打擂台。存在2种表里的id）
-	private String foreignkeyId;
+	private String foreignKeyId;
 	//对战类型 （来区分是在线比武还是打擂台。来确定反查到哪张表）
 	private String type;
 	//玩家1
@@ -52,12 +52,13 @@ public class BattlePlatform implements Serializable {
 		this.id = id;
 	}
 
-	public String getForeignkeyId() {
-		return foreignkeyId;
+
+	public String getForeignKeyId() {
+		return foreignKeyId;
 	}
 
-	public void setForeignkeyId(String foreignkeyId) {
-		this.foreignkeyId = foreignkeyId;
+	public void setForeignKeyId(String foreignKeyId) {
+		this.foreignKeyId = foreignKeyId;
 	}
 
 	public String getType() {
@@ -136,7 +137,7 @@ public class BattlePlatform implements Serializable {
 	public String toString() {
 		return "battlePlatform{" +
 				"id='" + id + '\'' +
-				", foreignkeyId='" + foreignkeyId + '\'' +
+				", foreignkeyId='" + foreignKeyId + '\'' +
 				", type='" + type + '\'' +
 				", play1='" + play1 + '\'' +
 				", play2='" + play2 + '\'' +

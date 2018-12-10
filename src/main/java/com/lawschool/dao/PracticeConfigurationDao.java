@@ -15,8 +15,11 @@ import java.util.Map;
  */
 public interface PracticeConfigurationDao extends BaseMapper<PracticeConfiguration> {
 
-    public List<TestQuestions> selectQuestionsByKnowledgeId(Map map);
+    public List<TestQuestions> selectQuestionsByKnowledgeId(String id);
 
     //随机查询
-    public List<String> queryRandom(String count);
+    public List<TestQuestions> queryRandom(Map map);
+
+    //根据传入ID数组查询
+    public List<TestQuestions> selectByIds(Map map);
 }

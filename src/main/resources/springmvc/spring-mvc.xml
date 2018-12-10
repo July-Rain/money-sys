@@ -86,4 +86,13 @@
       <property name="suffix" value=".html" />
       <property name="order" value="0"/>
    </bean>
+
+   <!--json转化器，它可以将结果转化-->
+   <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+      <property name="supportedMediaTypes">
+         <list>
+            <value>text/json;charset=UTF-8</value>
+         </list>
+      </property>
+   </bean>
 </beans>

@@ -28,7 +28,11 @@ public class Message {
 	//发送日期
 	@Expose
 	public Date date;
-	
+
+	// 对战平台认证码（其实和id一样 要唯一啊）
+	@Expose
+	public String battleCode;
+
 	//在线用户列表
 	@Expose
 	List<User> userList = new ArrayList<>();
@@ -70,7 +74,12 @@ public class Message {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
-	
 
+	public String getBattleCode() {
+		return battleCode;
+	}
+
+	public void setBattleCode(String battleCode) {
+		this.battleCode = battleCode;
+	}
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.beans.law.LawClassifyEntity;
 import com.lawschool.dao.law.LawClassifyDao;
 import com.lawschool.service.law.LawClassifyService;
+import org.springframework.stereotype.Service;
 
 /**
  * ClassName: LawClassifyServiceImpl
@@ -13,5 +14,6 @@ import com.lawschool.service.law.LawClassifyService;
  * @author MengyuWu
  * @since JDK 1.8
  */
+@Service
 public class LawClassifyServiceImpl extends ServiceImpl<LawClassifyDao,LawClassifyEntity> implements LawClassifyService {
 }

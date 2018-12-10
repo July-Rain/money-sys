@@ -1,11 +1,15 @@
 package com.lawschool.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.Msg;
 import com.lawschool.dao.MsgDao;
 import com.lawschool.service.MsgService;
+import com.lawschool.util.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 @Service
 public class MsgServiceImpl implements MsgService {
@@ -27,8 +31,13 @@ public class MsgServiceImpl implements MsgService {
      * @return
      */
     @Override
-    public List<Msg> selectAllMsg() {
-        return msgDao.selectAllMsg();
+    public PageUtils selectAllMsg() {
+        int pageNo = 1;
+        long pageSize = 10l;
+        int count = msgDao.selectCount(new EntityWrapper<Msg>());
+        List<Msg> msgList = msgDao.selectAllMsg();
+        PageUtils page = new PageUtils(msgList,count,pageSize,pageNo);
+        return page;
     }
 
     /**
@@ -58,4 +67,18 @@ public class MsgServiceImpl implements MsgService {
     public void deleteByMsgId(String id) {
         msgDao.deleteByMsgId(id);
     }
+
+    @Override
+    public void deleteBatchIds(String[] ids) {
+        msgDao.deleteBatchIds(Arrays.asList(ids));
+    }
+
+    //删除多条数据
+    /*public void deleteBatchIds(String[] ids){
+        //msgDao.deleteBatchIds(Arrays.asList(ids));
+        for(String id:ids){
+            msgDao.deleteByMsgId(id);
+        }
+    }*/
 }
+

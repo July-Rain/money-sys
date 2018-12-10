@@ -1,5 +1,6 @@
 package com.lawschool.service.impl;
 
+import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.Dict;
 import com.lawschool.dao.DictDao;
 import com.lawschool.service.DictService;

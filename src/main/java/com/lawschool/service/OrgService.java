@@ -3,8 +3,10 @@ package com.lawschool.service;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.Org;
 import com.lawschool.beans.User;
+import com.lawschool.dao.OrgDao;
 
 /**
  * 
@@ -13,14 +15,14 @@ import com.lawschool.beans.User;
  * @author: 王帅奇
  * @date 2018年11月29日
  */
-public interface OrgService {
+public interface OrgService  extends IService<Org> {
 
 	/**
 	 * 新增部门
 	 * @param record
 	 * @return
 	 */
-	public int insert(Org record);
+	//public int insert(Org record);
 
 	public int insertSelective(Org record);
 

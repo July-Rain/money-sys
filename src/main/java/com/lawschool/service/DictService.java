@@ -1,5 +1,6 @@
 package com.lawschool.service;
 
+import com.lawschool.base.AbstractService;
 import com.lawschool.beans.Dict;
 import org.apache.ibatis.annotations.Param;
 

@@ -1,9 +1,13 @@
 package com.lawschool.beans.law;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.lawschool.beans.SysMenu;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 /**
  * ClassName: LawClassifyEntity
  * Description: 法律主题分类 entity
@@ -13,7 +17,7 @@ import java.util.Date;
  * @since JDK 1.8
  */
 @TableName("law_classify")
-public class LawClassifyEntity implements Serializable {
+public class LawClassifyEntity implements Serializable ,Comparable<LawClassifyEntity>{
     private String id; //id
 
     private String classifyCode;//分类code
@@ -22,13 +26,16 @@ public class LawClassifyEntity implements Serializable {
 
     private String classifyName;//法律分类的名称
 
-    private Long parentId;//上级的法律分类的id
+    private String parentId;//上级的法律分类的id
 
     private Short delFlag;//是否删除  -1：已删除  0：正常
 
-    private Long orderNum;//排序标记
+    private Integer orderNum;//排序标记
 
     private Date createTime;//创建时间
+
+    @TableField(exist=false)
+    private List<?> list;
 
     public String getId() {
         return id;
@@ -62,11 +69,11 @@ public class LawClassifyEntity implements Serializable {
         this.classifyName = classifyName == null ? null : classifyName.trim();
     }
 
-    public Long getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
 
@@ -78,11 +85,11 @@ public class LawClassifyEntity implements Serializable {
         this.delFlag = delFlag;
     }
 
-    public Long getOrderNum() {
+    public Integer getOrderNum() {
         return orderNum;
     }
 
-    public void setOrderNum(Long orderNum) {
+    public void setOrderNum(Integer orderNum) {
         this.orderNum = orderNum;
     }
 
@@ -92,5 +99,21 @@ public class LawClassifyEntity implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public List<?> getList() {
+        return list;
+    }
+
+    public void setList(List<?> list) {
+        this.list = list;
+    }
+
+    @Override
+    public int compareTo(LawClassifyEntity o) {
+        if(o.orderNum!=null&&this.orderNum!=null){
+            return -o.orderNum + this.orderNum;
+        }
+        return -1;
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,6 +38,9 @@ public class RedisUtil {
     public void set(String key, Object value){
         set(key, value, DEFAULT_EXPIRE);
     }
+
+
+
 
     public <T> T get(String key, Class<T> clazz, long expire) {
         ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();

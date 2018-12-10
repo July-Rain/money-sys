@@ -72,4 +72,13 @@ public interface StuMediaService  extends IService<StuMedia> {
     **/
     int delTchMedia(StuMedia stuMedia,User user);
 
+    /**
+     * @Author MengyuWu
+     * @Description 分页查询
+     * @Date 13:56 2018-12-8
+     * @Param [params]
+     * @return com.lawschool.util.PageUtils
+     **/
+    
+    PageUtils queryPage(Map<String, Object> params);
 }

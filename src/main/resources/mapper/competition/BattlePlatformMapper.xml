@@ -6,7 +6,7 @@
 <!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->
     <resultMap id="BaseResultMap" type="com.lawschool.beans.competition.BattlePlatform">
         <id column="ID" property="id" jdbcType="VARCHAR" />
-        <result column="FOREIGN_KEY_ID" property="foreignkeyId" jdbcType="VARCHAR" />
+        <result column="FOREIGN_KEY_ID" property="foreignKeyId" jdbcType="VARCHAR" />
         <result column="TYPE" property="type" jdbcType="VARCHAR" />
         <result column="PLAY1" property="play1" jdbcType="VARCHAR" />
         <result column="PLAY2" property="play2" jdbcType="VARCHAR" />

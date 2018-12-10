@@ -19,7 +19,7 @@ import java.util.Objects;
  * 菜单管理
  */
 @TableName("law_sys_menu")
-public class SysMenu implements Serializable {
+public class SysMenu implements Serializable ,Comparable<SysMenu>{
 	/**
 	 * 菜单ID
 	 */
@@ -60,7 +60,7 @@ public class SysMenu implements Serializable {
 	/**
 	 * 排序
 	 */
-	private String orderNum;
+	private Integer orderNum;
 
 	private String isShow;
 	
@@ -97,11 +97,11 @@ public class SysMenu implements Serializable {
 		this.type = type;
 	}
 
-	public String getOrderNum() {
+	public Integer getOrderNum() {
 		return orderNum;
 	}
 
-	public void setOrderNum(String orderNum) {
+	public void setOrderNum(Integer orderNum) {
 		this.orderNum = orderNum;
 	}
 
@@ -231,5 +231,13 @@ public class SysMenu implements Serializable {
 	public int hashCode() {
 
 		return Objects.hash(id);
+	}
+
+	@Override
+	public int compareTo(SysMenu o) {
+		if(o.orderNum!=null&&this.orderNum!=null){
+			return -o.orderNum + this.orderNum;
+		}
+		return -1;
 	}
 }
