@@ -227,6 +227,8 @@ var vm = new Vue({
                 url: baseURL + "menu/nav",
                 contentType: "application/json",
                 success: function(result){
+                    console.info("asdasfaf");
+                    console.info(result);
                     if(result.code === 0){
                         vm.navData = result.menuList;
                     }else{

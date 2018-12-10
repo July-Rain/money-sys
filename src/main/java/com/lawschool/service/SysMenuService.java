@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.SysLogEntity;
 import com.lawschool.beans.SysMenu;
 import com.lawschool.beans.User;
+import com.lawschool.util.PageUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -27,15 +28,22 @@ public interface SysMenuService   extends IService<SysMenu> {
 	public SysMenu selectById(String id);
 
 
-    //	保存新增菜单
-	//public int insert(SysMenu menu);
-	//修改菜单
-	//public int updateById(SysMenu menu);
 
 	//删除菜单(包含判断是否有子菜单与按钮)
-	public int delete(String id);
+//	public int delete(String id);
 
 	//查找子节点
 	public List<SysMenu> queryListParentId(String id);
 
+
+
+	/**
+	 * @Author
+	 * @Description 分页查询
+	 * @Date 13:55 2018-12-8
+	 * @Param [params]
+	 * @return com.lawschool.util.PageUtils
+	 **/
+
+	PageUtils queryPage(Map<String, Object> params);
 }

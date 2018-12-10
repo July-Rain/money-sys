@@ -17,7 +17,7 @@ public interface SysMenuDao extends BaseMapper<SysMenu> {
 	//public int insert(SysMenu menu);
 	//public int updateById(SysMenu menu);
 
-	public int delete(String id);
+//	public int delete(String id);
 
 	public List<SysMenu> queryListParentId(String id);
 

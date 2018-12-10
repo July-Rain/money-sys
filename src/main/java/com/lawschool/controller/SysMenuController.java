@@ -2,18 +2,22 @@ package com.lawschool.controller;
 
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.lawschool.annotation.SysLog;
+import com.lawschool.base.Page;
 import com.lawschool.beans.SysMenu;
 import com.lawschool.service.SysMenuService;
+import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -30,6 +34,7 @@ public class SysMenuController {
     @Autowired
     private SysMenuService sysMenuService;
 
+    private  String id;
     /**
      * @Author MengyuWu
      * @Description 查询首页的菜单
@@ -44,8 +49,9 @@ public class SysMenuController {
         if(UtilValidate.isNotEmpty(id)){
             ew.eq("parent_id",id);
         }
-        List<SysMenu> menuList = sysMenuService.selectList(ew
-                .ne("type","2").eq("is_show","1"));
+        List<SysMenu> menuList = sysMenuService.selectList(
+                ew.ne("type","2").eq("is_show","1")
+        );
         if(UtilValidate.isNotEmpty(id)){
             return Result.ok().put("menuList", menuList);
         }else{
@@ -83,4 +89,66 @@ public class SysMenuController {
         return finalTrees;
     }
 
+
+
+    @RequestMapping("/list")
+    public Result list(@RequestParam Map<String, Object> params){
+      //条件先不写了
+        PageUtils page = sysMenuService.queryPage(params);
+        return Result.ok().put("page", page);
+    }
+    @SysLog("添加目录")
+    @RequestMapping("/insert")
+    public Result insert(@RequestBody SysMenu sysmenu){
+        sysmenu.setId(IdWorker.getIdStr());
+        sysMenuService.insert(sysmenu);
+        return Result.ok().put("id",sysmenu.getId());
+    }
+
+    @RequestMapping("/info")
+    public Result info(String id){
+        SysMenu sysmenu = sysMenuService.selectById(id);
+        return Result.ok().put("data", sysmenu);
+    }
+
+
+    @SysLog("更新目录")
+    @RequestMapping("/update")
+    public Result update(@RequestBody SysMenu sysmenu){
+         sysMenuService.updateById(sysmenu);
+        return Result.ok().put("id",sysmenu.getId());
+    }
+
+
+    @SysLog("删除参数配置")
+    @RequestMapping("/delete")
+    public Result delete(String id){
+        String str="";
+
+            List<SysMenu> list=   sysMenuService.queryListParentId(id);//先查找子节点
+            if(list.size()>0)
+            {
+//              return Result.ok().put("str","有子节点");
+                str="有子节点";
+            }
+
+        if(str.equals("有子节点"))
+        {
+            return Result.ok().put("str",str);
+        }
+        else {
+            sysMenuService.deleteById(id);
+            str="删除成功！";
+        }
+        return Result.ok().put("str",str);
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

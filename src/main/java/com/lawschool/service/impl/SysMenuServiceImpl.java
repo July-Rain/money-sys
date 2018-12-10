@@ -1,9 +1,15 @@
 package com.lawschool.service.impl;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.lawschool.beans.SysConfig;
 import com.lawschool.beans.SysLogEntity;
 import com.lawschool.beans.SysMenu;
 import com.lawschool.dao.SysMenuDao;
 import com.lawschool.service.SysMenuService;
+import com.lawschool.util.PageUtils;
+import com.lawschool.util.Query;
+import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,20 +45,39 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
 		return sysmenuDao.updateById(menu);
 	}*/
 
-	@Override
-	public int delete(String id) {
-
-		//删除前 要先去查找看看这个节点下是否存在子节点  存在布需删
-		List<SysMenu> list=queryListParentId(id);
-		if(list.size() > 0){
-//			return list.error("请先删除子菜单或按钮");
-			return 0;
-		}
-		return sysmenuDao.delete(id);
-	}
+//	@Override
+//	public int delete(String id) {
+//
+//		//删除前 要先去查找看看这个节点下是否存在子节点  存在布需删
+//		List<SysMenu> list=queryListParentId(id);
+//		if(list.size() > 0){
+////			return list.error("请先删除子菜单或按钮");
+//			return 0;
+//		}
+//		return sysmenuDao.delete(id);
+//	}
 
 	@Override
 	public List<SysMenu> queryListParentId(String id) {
 		return sysmenuDao.queryListParentId(id);
+	}
+
+
+
+	@Override
+	public PageUtils queryPage(Map<String, Object> params) {
+//		String code = (String)params.get("code");
+//		String value = (String)params.get("value");
+//		String status = (String)params.get("status");
+		EntityWrapper<SysMenu> ew = new EntityWrapper<>();
+
+//		if(UtilValidate.isNotEmpty(code)){
+//			ew.like("code",code);
+//		}
+		ew.eq("type","0");//为目录  然且没删除
+		Page<SysMenu> page = this.selectPage(
+				new Query<SysMenu>(params).getPage(),ew);
+
+		return new PageUtils(page);
 	}
 }
