@@ -21,5 +21,5 @@ public interface PracticeConfigurationDao extends BaseMapper<PracticeConfigurati
     public List<TestQuestions> queryRandom(Map map);
 
     //根据传入ID数组查询
-    public List<TestQuestions> selectByIds(Map map);
+//    public List<TestQuestions> selectByIds(Map map);
 }
