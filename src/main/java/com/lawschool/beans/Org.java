@@ -3,19 +3,19 @@ package com.lawschool.beans;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.lawschool.base.BaseEntity;
+import com.lawschool.beans.exam.ExamConfig;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @TableName("law_org")
-public class Org implements Serializable,Comparable<Org>{
+public class Org extends BaseEntity<Org> implements Comparable<Org> {
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = -4751803427555498795L;
-
-	private String id;
 
     private Date addTime;  //添加时间
 

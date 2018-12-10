@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<style>
+
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="header">
+        <div class="header-left">
+            <img src="${rc.contextPath}/statics/img/logo.png">
+            <a href="javascript:;">江苏省公安厅法律学校</a>
+        </div>
+        <div class="header-right">
+            <ul>
+                <li v-for="item in navData">
+                    <a>
+                        <i :class="item.icon"></i>
+                        <p><a href="javascript:;">{{item.name}}</a></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <el-row :gutter="24">
+            <el-col :span="24">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="检索">
+                        <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+
+                            <el-form-item prop="code">
+                                <el-input v-model="formInline.code" placeholder="参数编码" size="mini"></el-input>
+                            </el-form-item>
+                            <el-form-item prop="value">
+                                <el-input v-model="formInline.value" placeholder="参数值" size="mini"></el-input>
+                            </el-form-item>
+
+                            <el-form-item prop="status">
+                                <el-select v-model="formInline.status" placeholder="状态" size="mini">
+                                    <el-option label="有效" value="1"></el-option>
+                                    <el-option label="无效" value="0"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
+                                <el-button @click="resetForm('formInline')">重置</el-button>
+
+                            </el-form-item>
+                        </el-form>
+                        <div>
+                            <el-button type="primary" @click="addConfig" >新增</el-button>
+                            <el-table
+                                    :data="tableData"
+                                    border
+                                    style="width: 100%">
+                                <el-table-column
+                                        prop="examName"
+                                        label="试卷名称"
+                                        width="280"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="examType"
+                                        label="试卷类型"
+                                        width="280"
+                                        >
+                                </el-table-column>
+
+                                <el-table-column
+                                        prop="organizedOrgCode"
+                                        label="组考单位"
+                                        width="180"
+                                        >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="startTime"
+                                        label="考试开始时间"
+                                        >
+                                </el-table-column>
+                                 <el-table-column
+                                        prop="endTime"
+                                        label="考试结束时间"
+                                        >
+                                </el-table-column>
+                                <el-table-column label="操作" width="180">
+                                    <template slot-scope="scope">
+                                        <el-button
+                                                size="mini"
+                                                @click="handleEdit(scope.$index, scope.row)">查看
+                                        </el-button>
+                                        <el-button
+                                                size="mini"
+                                                @click="handleEdit(scope.$index, scope.row)">编辑
+                                        </el-button>
+                                        <el-button
+                                                size="mini"
+                                                @click="handleDel(scope.$index, scope.row)">删除
+                                        </el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="formInline.currPage"
+                                    :page-sizes="[10, 20, 30, 40]"
+                                    :page-size="formInline.pageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="formInline.totalCount">
+                            </el-pagination>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
+
+
+
+
+		<el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
+            <el-row>
+                <el-col :span="12">
+                    <el-form :model="examConfig" :rules="rules" ref="examConfig" label-width="100px" class="demo-examConfig" size="mini">
+                        <el-form-item label="考试名称" prop="examName">
+                            <el-input v-model="examConfig.examName" placeholder="请输入考试名称" clearable></el-input>
+                        </el-form-item>
+                        <el-form-item label="考试类型" prop="examType">
+                            <el-input v-model="examConfig.examType" placeholder="请输入考试名称" clearable></el-input>
+                        </el-form-item>
+                        <el-form-item label="专项知识" prop="value">
+                            <el-input v-model="examConfig.value" placeholder="请输入参数值" clearable></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="状态" prop="status">
+                            <el-switch v-model="examConfig.status" active-text="有效"  inactive-text="无效" active-value="1"  inactive-value="0" ></el-switch>
+                        </el-form-item>
+                        <el-form-item label="备注" prop="remark">
+                            <el-input type="textarea" maxlength="200" v-model="examConfig.remark"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="saveOrUpdate('examConfig')">保存</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-col>
+            </el-row>
+  		</el-dialog> 
+
+    </div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/examCen/exam.js"></script>
+</html>
