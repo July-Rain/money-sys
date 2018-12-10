@@ -371,6 +371,11 @@ var vm = new Vue({
                 parent.location.href =baseURL+item.list[0].url+"?id="+item.id;
             }
 
+        },
+        inToCompetition: function () {
+            //这是要跳转了
+            //     parent.location.href =baseURL+item.list[0].url+"?id="+item.id;
+            alert("wo jinlaile !!!!");
         }
     }
 });
