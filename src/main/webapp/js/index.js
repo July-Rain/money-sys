@@ -18,38 +18,7 @@ var vm = new Vue({
             }
         }
         return {
-            navData: [
-                {
-                    icon: 'el-icon-tickets',
-                    name: ' 首页'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '学习中心'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '练习中心'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '学习中心'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '考试中心'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '竞赛中心'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '学校社区'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '个人中心'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '管理员入口'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '退出'
-                }],//导航
+            navData: [],//导航
             learnTasks: 4,//学习任务
             practiceTasks: 5,//练习任务
             data: [
@@ -390,15 +359,9 @@ var vm = new Vue({
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(function () {
-                that.$message({
-                    type: 'success',
-                    message: '删除成功!'
-                });
+                that.$message.success('恭喜你，这是一条成功消息')
             }).catch(function () {
-                that.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
+                that.$message.error('错了哦，这是一条错误消息')
             });
         },
         toChild: function (item) {

@@ -52,6 +52,8 @@ public class TestQuestions extends DataEntity<TestQuestions> {
 
     private String rigthNumber;//正确次数
 
+    private String isEnble;//正确次数
+
     @TableField(exist = false)
     private String collectId;//收藏id
 
@@ -251,6 +253,14 @@ public class TestQuestions extends DataEntity<TestQuestions> {
 
     public void setTypeValue(String typeValue) {
         this.typeValue = typeValue;
+    }
+
+    public String getIsEnble() {
+        return isEnble;
+    }
+
+    public void setIsEnble(String isEnble) {
+        this.isEnble = isEnble;
     }
 
     @Override

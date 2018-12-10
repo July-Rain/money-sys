@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/dict")
-public class SYSDictController extends AbstractController {
+public class SYSDictController {
 
     @Autowired
     DictService dictService;

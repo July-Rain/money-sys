@@ -3,7 +3,7 @@
  * Date: 2018/12/7
  * Description:参数配置
  */
-var menuId=$("#menuId").val();
+var menuId = $("#menuId").val();
 var vm = new Vue({
     el: '#app',
     data: {
@@ -15,7 +15,7 @@ var vm = new Vue({
             status: "",
             currPage: 1,
             pageSize: 10,
-            totalCount:0
+            totalCount: 0
         },
         tableData: [],//表格数据
         visible: false,
@@ -37,32 +37,26 @@ var vm = new Vue({
             ]
         },
         dialogConfig: false,//table弹出框可见性
-        title:"",//弹窗的名称
+        title: "",//弹窗的名称
         delIdArr: []//删除数据
     },
     created: function () {
-
         this.$nextTick(function () {
-            debugger
-
             //加载菜单
             $.ajax({
                 type: "POST",
-                url: baseURL + "menu/nav?id="+menuId,
+                url: baseURL + "menu/nav?id=" + menuId,
                 contentType: "application/json",
-                success: function(result){
-                    if(result.code === 0){
+                success: function (result) {
+                    if (result.code === 0) {
                         vm.navData = result.menuList;
-                    }else{
+                    } else {
                         alert(result.msg);
                     }
                 }
             });
-        })
-        this.$nextTick(function () {
             this.reload();
         })
-
     },
     methods: {
         // 查询
@@ -70,33 +64,33 @@ var vm = new Vue({
             this.reload();
         },
         handleSizeChange: function (val) {
-            this.formInline.pageSize=val;
+            this.formInline.pageSize = val;
             this.reload();
         },
         handleCurrentChange: function (val) {
-            this.formInline.currPage=val;
+            this.formInline.currPage = val;
             this.reload();
         },
         // 保存和修改
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    var url = vm.sysConfig.id ? "sysconfig/update" :  "sysconfig/insert";
+                    var url = vm.sysConfig.id ? "sysconfig/update" : "sysconfig/insert";
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
                         contentType: "application/json",
                         data: JSON.stringify(vm.sysConfig),
-                        success: function(result){
-                            if(result.code === 0){
+                        success: function (result) {
+                            if (result.code === 0) {
                                 vm.$alert('操作成功', '提示', {
                                     confirmButtonText: '确定',
                                     callback: function () {
-                                        vm.dialogConfig=false;
+                                        vm.dialogConfig = false;
                                         vm.reload();
                                     }
                                 });
-                            }else{
+                            } else {
                                 alert(result.msg);
                             }
                         }
@@ -112,33 +106,33 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         addConfig: function () {
-            this.sysConfig= {
+            this.sysConfig = {
                 id: '',
                 code: '',
                 value: '',
                 remark: '',
                 status: "1"
             };
-            this.title="新增参数";
-            this.dialogConfig=true;
+            this.title = "新增参数";
+            this.dialogConfig = true;
         },
-        handleEdit: function (index, row){
-            this.title="修改参数";
-            this.dialogConfig=true;
+        handleEdit: function (index, row) {
+            this.title = "修改参数";
+            this.dialogConfig = true;
             $.ajax({
                 type: "POST",
                 url: baseURL + 'sysconfig/info?id=' + row.id,
                 contentType: "application/json",
                 success: function (result) {
-                    if(result.code === 0){
+                    if (result.code === 0) {
                         vm.sysConfig = result.data;
-                    }else{
+                    } else {
                         alert(result.msg);
                     }
                 }
             });
         },
-        handleDel: function (index, row){
+        handleDel: function (index, row) {
             vm.delIdArr.push(row.id);
             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -147,8 +141,8 @@ var vm = new Vue({
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: baseURL + 'sysconfig/delete' ,
-                    async:true,
+                    url: baseURL + 'sysconfig/delete',
+                    async: true,
                     data: JSON.stringify(vm.delIdArr),
                     contentType: "application/json",
                     success: function (result) {
@@ -160,21 +154,16 @@ var vm = new Vue({
 
                     }
                 });
-                /*that.$message({
-                    type: 'success',
-                    message: '删除成功!'
-                });*/
-
             }).catch(function () {
-                that.$message({
+                vm.$message({
                     type: 'info',
                     message: '已取消删除'
                 });
             });
 
         },
-        closeDia : function(){
-            this.dialogConfig=false;
+        closeDia: function () {
+            this.dialogConfig = false;
             vm.reload();
         },
         reload: function () {

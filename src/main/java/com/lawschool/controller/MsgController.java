@@ -49,7 +49,7 @@ public class MsgController extends AbstractController {
     @RequestMapping("/delete")
     public Result deleteByMsgId(@RequestBody String[] ids){
         Result result = Result.ok();
-        msgService.deleteBatchIds(Arrays.asList(ids));
+        msgService.deleteBatchIds(ids);
         return result;
     }
 
