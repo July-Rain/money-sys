@@ -311,7 +311,7 @@
         a.id
         FROM law_testquestions a
         <where>
-            a.is_enble = #{isEnble}
+            1 = 1
             <if test="specialKnowledgeId != null and specialKnowledgeId.size > 0">
                 AND a.specialKnowledgeId IN
                 <foreach collection="specialKnowledgeId" index="index" item="item" open="(" separator="," close=")">
@@ -321,7 +321,7 @@
             <if test="questionType != null and questionType.size > 0">
                 AND a.questionType IN
                 <foreach collection="questionType" index="index" item="item" open="(" separator="," close=")">
-                    #{questionType}
+                    #{item}
                 </foreach>
             </if>
         </where>
@@ -331,24 +331,24 @@
     <!--查询某类型的试题id-->
     <select id="findBySpecialKnowledgeId" parameterType="map" resultMap="BaseResultMap">
         SELECT
-        id,
-        type_id,
-        com_content,
-        question_difficulty,
-        question_type,
-        answer_choice_number,
-        answer_id,
-        special_knowledge_id,
-        police_classification,
-        legal_basis,
-        answer_describle,
-        release_status,
-        stu_issuer,
-        stu_issdepartment,
-        stu_isstim,
-        stu_optdepartment,
-        use_number,
-        rigth_number
+            id,
+            type_id,
+            com_content,
+            question_difficulty,
+            question_type,
+            answer_choice_number,
+            answer_id,
+            special_knowledge_id,
+            police_classification,
+            legal_basis,
+            answer_describle,
+            release_status,
+            stu_issuer,
+            stu_issdepartment,
+            stu_isstim,
+            stu_optdepartment,
+            use_number,
+            rigth_number
         FROM law_testquestions a
         <where>
             a.is_enble = #{isEnble}
