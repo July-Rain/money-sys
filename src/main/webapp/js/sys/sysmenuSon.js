@@ -124,9 +124,7 @@ var vm = new Vue({
                 }
             });
         },
-        showSon: function (index, row) {
-            parent.location.href =baseURL+"modules/sys/sysmenuSon.html?id="+row.id;
-        },
+
         handleDel: function (index, row) {
             // vm.delIdArr.push(row.id);
             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
