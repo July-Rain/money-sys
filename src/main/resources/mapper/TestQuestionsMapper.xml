@@ -411,13 +411,13 @@
         <where>
             1 = 1
             <if test="specialKnowledgeId != null and specialKnowledgeId.size > 0">
-                AND a.specialKnowledgeId IN
+                AND a.special_knowledge_id IN
                 <foreach collection="specialKnowledgeId" index="index" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
             <if test="questionType != null and questionType.size > 0">
-                AND a.questionType IN
+                AND a.question_type IN
                 <foreach collection="questionType" index="index" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
