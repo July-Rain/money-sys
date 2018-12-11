@@ -59,11 +59,6 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
         return dao.findBySpecialKnowledgeId(param);
     }
 
-    public List<QuestForm> getQuestionList(){
-
-        return null;
-    }
-
     /**
      * 根据题目的多个id查询题目
      * @param list
