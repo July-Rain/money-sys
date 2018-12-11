@@ -30,8 +30,9 @@
 .header-right{
     float: right;
     height: 70px;
-    padding-top: 10px;
+    /*padding-top: 10px;*/
 }
+
 .header-right ul li{
     display: inline-block;
     padding: 0 8px;
@@ -284,19 +285,24 @@
 .content5-2 .boardCard .header{
 
 }
-/*.content5-2 .boardCard .more .el-date-editor{*/
-    /*width: 147px;*/
-    /*height: 24px;*/
-/*}*/
-/*.boardCard .more .el-date-editor .el-input__inner{*/
-    /*height: 24px;*/
-/*}*/
-/*.boardCard .el-icon-date{*/
-    /*position: relative;*/
-/*}*/
-/*.boardCard .el-icon-date:before {*/
-    /*content: "\e608";*/
-    /*position: absolute;*/
-    /*top: -6px;*/
-    /*left: 1px;*/
-/*}*/
+.span-title{
+    font-size: 16px;
+    color: #1bb4db;
+    height: 20px;
+    line-height: 20px;
+    border-left: 5px solid #1bb4db;
+    padding-left: 4px;
+    margin: 10px 0 0 10px;
+}
+.boardCard .el-tabs__nav div{
+    width: 51%;
+    text-align: center;
+}
+.boardCard .infoCount{
+    height: 245px;
+    background-color: #afddf3;
+    opacity: 0.8;
+}
+.boardCard .rate{
+
+}

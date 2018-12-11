@@ -25,7 +25,7 @@ public class TestQuestionController extends AbstractController {
      * 查询所有的专项知识试题（模糊查询）
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public Result index(@RequestParam Map<String, Object> params) {
+    public Result list(@RequestParam Map<String, Object> params) {
 
         String typeId = (String) params.get("typeId");
         String questionDifficulty = (String) params.get("questionDifficulty");
@@ -49,6 +49,15 @@ public class TestQuestionController extends AbstractController {
     public Result info(@PathVariable("id") String id) {
         TestQuestions testQuestions = testQuestionService.selectById(id);
         return Result.ok().put("testQuestions", testQuestions);
+    }
+
+    /**
+     * 新增试题
+     */
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    public Result insert(TestQuestions testQuestions) {
+        testQuestionService.save(testQuestions);
+        return Result.ok();
     }
 
     /**

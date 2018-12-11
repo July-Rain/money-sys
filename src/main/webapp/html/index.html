@@ -7,10 +7,10 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel = "Shortcut Icon" href="${rc.contextPath}/statics/img/favicon.ico">
-    <link rel="stylesheet" href="${rc.contextPath}/statics/plugins/froala_editor/css/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="${rc.contextPath}/statics/plugins/froala_editor/css/font-awesome.min.css">-->
 
     <!-- 引入element-ui样式 -->
-    <link rel="stylesheet" href="${rc.contextPath}/statics/plugins/element/element.css">
+    <!--<link rel="stylesheet" href="${rc.contextPath}/statics/plugins/element/element.css">-->
 
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
@@ -85,8 +85,8 @@
 
 <p class="login-browser-msg">本系统建议使用Chrome浏览器，点击 <a href="https://sm.myapp.com/original/Browser/69.0.3497.92_chrome_installer_x64.exe">下载</a></p>
 <!-- /.login-box -->
-<script src="${rc.contextPath}/statics/plugins/IE9/html5shiv.min.js"></script>
-<script src="${rc.contextPath}/statics/plugins/IE9/respond.min.js"></script>
+<!--<script src="${rc.contextPath}/statics/plugins/IE9/html5shiv.min.js"></script>-->
+<!--<script src="${rc.contextPath}/statics/plugins/IE9/respond.min.js"></script>-->
 <script src="${rc.contextPath}/statics/plugins/jQuery/jquery-1.11.2.min.js"></script>
 <!--dev -->
 <script src="${rc.contextPath}/statics/plugins/vue/Vue.v2.5.17.dev.js"></script>
@@ -95,8 +95,8 @@
 <!--<script src="${rc.contextPath}/statics/plugins/vue/Vue.v2.5.17.prod.js"></script>-->
 
 <!-- 引入element-ui组件库 -->
-<script src="${rc.contextPath}/statics/plugins/element/element.js"></script>
-<script src="${rc.contextPath}/statics/plugins/layer/layer.js"></script>
+<!--<script src="${rc.contextPath}/statics/plugins/element/element.js"></script>-->
+<!--<script src="${rc.contextPath}/statics/plugins/layer/layer.js"></script>-->
 <script type="text/javascript">
     $(function () {
         if(top!=self){
@@ -192,11 +192,12 @@
                         }else{
 //						vm.error = true;
 //						vm.errorMsg = result.msg;
-                            layer.alert(result.msg, {
-                                icon: 0,
-                                skin: 'layer-ext-moon',
-                                title: "提示"
-                            });
+                            this.$message('提示');
+//                             layer.alert(result.msg, {
+//                                 icon: 0,
+//                                 skin: 'layer-ext-moon',
+//                                 title: "提示"
+//                             });
                             vm.refreshCode();
                         }
                     }

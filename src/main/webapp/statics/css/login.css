@@ -28,7 +28,8 @@ body{
     border-radius: 10px;
 }
 .login-box-body>div{
-    width: 50%;
+    width: 49%;
+    display: inline-block;
 }
 .pull-left{
     margin-top: 5%;

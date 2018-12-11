@@ -10,4 +10,19 @@
     <result column="OPTUSER" jdbcType="VARCHAR" property="optuser" />
     <result column="OPTTIME" jdbcType="TIMESTAMP" property="opttime" />
   </resultMap>
+
+  <!--查询所需要的问题字段-->
+  <select id="findByQuestionIds" resultType="com.lawschool.form.AnswerForm">
+    SELECT
+    id,
+    questionContent
+    FROM law_answer
+    <where>
+      question_id IN
+      <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </where>
+    ORDER BY question_id
+  </select>
 </mapper>

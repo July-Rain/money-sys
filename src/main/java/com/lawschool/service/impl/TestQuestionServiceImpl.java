@@ -4,6 +4,7 @@ import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.constants.StatusConstant;
 import com.lawschool.dao.TestQuestionsDao;
+import com.lawschool.form.QuestForm;
 import com.lawschool.service.TestQuestionService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -56,5 +57,19 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
      */
     public List<TestQuestions> findBySpecialKnowledgeId(Map<String, Object> param) {
         return dao.findBySpecialKnowledgeId(param);
+    }
+
+    public List<QuestForm> getQuestionList(){
+
+        return null;
+    }
+
+    /**
+     * 根据题目的多个id查询题目
+     * @param list
+     * @return
+     */
+    public List<QuestForm> findByIds(List<String> list){
+        return dao.findByIds(list);
     }
 }

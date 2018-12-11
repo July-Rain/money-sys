@@ -49,6 +49,18 @@ public abstract class AbstractServiceImpl<D extends AbstractDao<T>, T extends Da
         return page;
     }
 
+    /**
+     * findPage重载
+     * @param page
+     * @param entity
+     * @return
+     */
+    public Page<T> findPage(Page<T> page, T entity){
+        entity.setPage(page);
+        page.setList(dao.findList(entity));
+        return page;
+    }
+
     public void setDataEntity(DataEntity entity){
 
         String userId = "none";
