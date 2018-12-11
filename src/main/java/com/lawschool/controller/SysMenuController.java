@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.Page;
 import com.lawschool.beans.SysMenu;
+import com.lawschool.beans.SysRoleOrg;
 import com.lawschool.service.SysMenuService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
@@ -93,6 +94,8 @@ public class SysMenuController {
 
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params){
+
+        System.out.println(params);
       //条件先不写了
         PageUtils page = sysMenuService.queryPage(params);
         return Result.ok().put("page", page);

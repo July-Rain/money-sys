@@ -3,17 +3,16 @@
  * Date: 2018
  * Description:
  */
-var menuId = $("#menuId").val();
 
+var menuId =getUrlParam('id');
 
 var vm = new Vue({
     el: '#app',
     data: {
-        //menuId:"",//菜单id
-        navData: [],//导航
         formInline: { // 搜索表单
-            parentId:'0',
-            type:'0',
+
+            parentId:menuId,
+            type:1,
             currPage: 1,
             pageSize: 10,
             totalCount: 0
@@ -21,8 +20,9 @@ var vm = new Vue({
         tableData: [],//表格数据
         visible: false,
         sysConfig: {
-            type: 0,
-            parentId: 0,
+            id: '',
+            code: '',
+            value: '',
             remark: '',
             status: "1"
         },
@@ -45,19 +45,8 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
-            //加载菜单
-            $.ajax({
-                type: "POST",
-                url: baseURL + "menu/nav?id=" + menuId,
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.navData = result.menuList;
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
+
+
             this.reload();
         })
     },
@@ -175,15 +164,13 @@ var vm = new Vue({
             vm.reload();
         },
         reload: function () {
-            console.info("!!!!!!!!!!!!!")
-            console.info(vm.formInline)
-
             $.ajax({
                 type: "POST",
                 url: baseURL + "menu/list",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
+
                     if (result.code === 0) {
                         vm.tableData=result.page.list;
 

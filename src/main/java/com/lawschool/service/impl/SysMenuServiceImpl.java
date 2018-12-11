@@ -66,15 +66,19 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
-//		String code = (String)params.get("code");
-//		String value = (String)params.get("value");
+		String type = (String)params.get("type");
+		String parentId = (String)params.get("parentId");
 //		String status = (String)params.get("status");
 		EntityWrapper<SysMenu> ew = new EntityWrapper<>();
 
-//		if(UtilValidate.isNotEmpty(code)){
-//			ew.like("code",code);
-//		}
-		ew.eq("type","0");//为目录  然且没删除
+		if(UtilValidate.isNotEmpty(type)){
+			ew.eq("TYPE",type);
+		}
+
+		if(UtilValidate.isNotEmpty(parentId)){
+			ew.eq("PARENT_ID",parentId);
+		}
+//		ew.eq("type","0");//为目录  然且没删除
 		Page<SysMenu> page = this.selectPage(
 				new Query<SysMenu>(params).getPage(),ew);
 
