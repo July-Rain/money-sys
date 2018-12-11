@@ -202,7 +202,8 @@ var vm = new Vue({
                 },
             dialogTableVisible: false,//table弹出框可见性
             dialogFormVisible: false,//form弹出框可见性
-            formLabelWidth: '120px'
+            formLabelWidth: '120px',
+            tab: 'learn'
         }
     },
     created: function () {
@@ -218,6 +219,7 @@ var vm = new Vue({
 
         this.$nextTick(function () {
             this.initPie1()
+            this.initBar1()
         })
 
         this.$nextTick(function () {
@@ -274,6 +276,15 @@ var vm = new Vue({
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
         },
+        // ECharts - 绘制图表
+        echartsOption: function (myChart, option) {
+            // this[chartName].clear()
+            myChart.setOption(option)
+            window.addEventListener('resize',function (){
+                myChart.resize()
+            })
+            // this[chartName].hideLoading() // Chart提示关闭
+        },
         //echarts
         initPie1: function () {
             // 基于准备好的dom，初始化echarts实例
@@ -282,7 +293,6 @@ var vm = new Vue({
             var option = {
                 backgroundColor: '#2c343c',
                 title: {
-                    text: 'Customized Pie',
                     left: 'center',
                     top: 20,
                     textStyle: {
@@ -350,7 +360,88 @@ var vm = new Vue({
                 ]
             };
             // 使用刚指定的配置项和数据显示图表。
-            myChart.setOption(option);
+            vm.echartsOption(myChart, option)
+        },
+        initBar1: function () {
+          var myChart = echarts.init(document.getElementById('bar1'));
+          var option = {
+                color: ['#3398DB'],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    // },
+                    // formatter: function (value) {
+                    //     return value[0].axisValue + ':<br/>' + num[value[0].dataIndex] + '人（' + value[0].data + '%）'
+                    }
+                },
+                grid: {
+                    left: '6%',
+                    right: '7%',
+                    bottom: '5%',
+                    top: '10%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['刑法','宪法','民商法','行政法','社会法','经济法','诉讼及非讼程序法'],
+                        axisTick: {
+                            alignWithLabel: true
+                        },
+                        // 设置坐标轴字体颜色和宽度
+                        axisLine: {
+                            lineStyle: {
+                                color: ['#abafb2']
+                            }
+                        },
+                        axisLabel: {
+                            interval: 0,
+                            // rotate: 20,
+                            textStyle: {
+                                fontSize: 12 // 让字体变大
+                            }
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        axisLabel: {
+                            formatter: '{value} %'
+                        },
+                        interval: 25,
+                        max: 100,
+                        min: 0,
+                        // 设置坐标轴字体颜色和宽度
+                        axisLine: {
+                            lineStyle: {
+                                width: 0,
+                                color: ['#abafb2']
+                            }
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        type: 'bar',
+                        barWidth: 25,
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(
+                                    0, 0, 0, 0.3,
+                                    [
+                                        {offset: 0, color: '#1994d7'},
+                                        {offset: 1, color: '#004b95'}
+                                    ]
+                                )
+                            }
+                        },
+                        data: [32,12,22,11,13,3,23]
+                    }
+                ]
+            }
+            vm.echartsOption(myChart, option)
         },
         // 简易提示框
         open2: function () {
