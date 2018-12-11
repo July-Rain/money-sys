@@ -2,6 +2,8 @@ package com.lawschool.base;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
+import java.util.List;
+
 public interface AbstractDao<T> extends BaseMapper<T> {
 
     /**
@@ -17,4 +19,6 @@ public interface AbstractDao<T> extends BaseMapper<T> {
      * @return
      */
     Integer update(T entity);
+
+    List<T> findList(T entity);
 }

@@ -20,6 +20,8 @@ public interface AbstractService<T> extends IService<T> {
      */
     Page<T> findPage(Page<T> page, Wrapper<T> entity);
 
+    Page<T> findPage(Page<T> page, T entity);
+
     /**
      * 保存之前执行方法
      * @param entity
