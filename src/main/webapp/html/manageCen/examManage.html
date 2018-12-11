@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="header">
+        <div class="header-left">
+            <img src="${rc.contextPath}/statics/img/logo.png">
+            <a href="javascript:;">江苏省公安厅法律学校</a>
+        </div>
+    </div>
+    <div class="container">
+
+        <el-row :gutter="24">
+            <el-col :span="24">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="检索">
+                        <el-form :inline="true" class="demo-form-inline">
+
+                            <el-form-item>
+                                <el-button type="primary" @click="addExam()" size="mini">新增试题</el-button>
+                                <el-button type="primary" @click="batchImport()" size="mini">批量导入</el-button>
+                                <el-button type="primary" @click="downloadTemp()" size="mini">下载导入模板</el-button>
+                            </el-form-item>
+                        </el-form>
+                        <div>
+                            <el-table
+                                    :data="tableData"
+                                    border
+                                    style="width: 100%">
+                                <el-table-column
+                                        prop="info"
+                                        label="试题内容">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="type"
+                                        label="类型">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="itemclass"
+                                        label="题库分类">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="answer"
+                                        label="答案">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="project"
+                                        label="答案项">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="difficulty"
+                                        label="难度">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="class"
+                                        label="分类">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="partof"
+                                        label="所属专项">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="active"
+                                        label="操作">
+                                    <template slot-scope="scope">
+                                        <el-button
+                                                size="mini"
+                                                @click="handleWatch(scope.$index, scope.row)">查看
+                                        </el-button>
+                                        <el-button
+                                                size="mini"
+                                                @click="handleEdit(scope.$index, scope.row)">编辑
+                                        </el-button>
+                                        <el-button
+                                                size="mini"
+                                                @click="handleDel(scope.$index, scope.row)">删除
+                                        </el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="currentPage4"
+                                    :page-sizes="[10, 20, 30, 40]"
+                                    :page-size="10"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="40">
+                            </el-pagination>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
+
+
+    </div>
+</div>
+</body>
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/manageCen/examManage.js"></script>
+</html>
