@@ -14,18 +14,11 @@ public class DataEntity<T> extends BaseEntity<T> {
     protected Date createTime;      //创建时间
     protected String optUser;       //操作人
     protected Date optTime;         //操作时间
-    protected String isEnble;       //是否启用（0启用；1禁用）
 
-
-    //======================== 静态常量 ======================
-    //删除标记（0：正常；1：删除；）
-    public static final String DEL_FLAG_NORMAL = "0";
-    public static final String DEL_FLAG_DELETE = "1";
 
 
     public DataEntity(){
         super();
-        this.isEnble = DEL_FLAG_NORMAL;
     }
 
     public DataEntity(String id){
@@ -62,13 +55,5 @@ public class DataEntity<T> extends BaseEntity<T> {
 
     public void setOptTime(Date optTime) {
         this.optTime = optTime;
-    }
-
-    public String getIsEnble() {
-        return isEnble;
-    }
-
-    public void setIsEnble(String isEnble) {
-        this.isEnble = isEnble;
     }
 }

@@ -227,6 +227,8 @@ var vm = new Vue({
                 url: baseURL + "menu/nav",
                 contentType: "application/json",
                 success: function(result){
+                    console.info("asdasfaf");
+                    console.info(result);
                     if(result.code === 0){
                         vm.navData = result.menuList;
                     }else{
@@ -371,6 +373,11 @@ var vm = new Vue({
                 parent.location.href =baseURL+item.list[0].url+"?id="+item.id;
             }
 
+        },
+        inToCompetition: function () {
+            //这是要跳转了
+            //     parent.location.href =baseURL+item.list[0].url+"?id="+item.id;
+            alert("wo jinlaile !!!!");
         }
     }
 });

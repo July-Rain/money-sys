@@ -1,23 +1,25 @@
 package com.lawschool.beans.exam;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
-
+import com.lawschool.base.BaseEntity;
+import com.lawschool.base.DataEntity;
+/**
+ * 
+ * @Title:ExamConfig.java
+ * @Description: 考试配置主表
+ * @author: 王帅奇
+ * @date 2018年12月7日
+ */
 @TableName("LAW_EXAM_CONFIG")
-public class ExamConfig implements Serializable {
+public class ExamConfig extends DataEntity<ExamConfig> {
 	/**
 	* 
 	*/
 	private static final long serialVersionUID = -4298322751587715208L;
-
-	/**
-	 * 主键
-	 */
-	private String id;
 
 	/**
 	 * 考试名称
@@ -663,4 +665,21 @@ public class ExamConfig implements Serializable {
 	public void setConfigState(String configState) {
 		this.configState = configState == null ? null : configState.trim();
 	}
+
+	public String[] getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(String[] deptId) {
+		this.deptId = deptId;
+	}
+
+	public String[] getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String[] userId) {
+		this.userId = userId;
+	}
+	
 }

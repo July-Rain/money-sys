@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 /**
@@ -63,7 +64,11 @@ public class SysMenu implements Serializable ,Comparable<SysMenu>{
 	private Integer orderNum;
 
 	private String isShow;
-	
+
+	protected String createUser;    //创建人
+	protected Date createTime;      //创建时间
+	protected String optUser;       //操作人
+	protected Date optTime;         //操作时间
 	/**
 	 * ztree属性
 	 */
@@ -113,6 +118,37 @@ public class SysMenu implements Serializable ,Comparable<SysMenu>{
 		this.isShow = isShow;
 	}
 
+	public String getCreateUser() {
+		return createUser;
+	}
+
+	public void setCreateUser(String createUser) {
+		this.createUser = createUser;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getOptUser() {
+		return optUser;
+	}
+
+	public void setOptUser(String optUser) {
+		this.optUser = optUser;
+	}
+
+	public Date getOptTime() {
+		return optTime;
+	}
+
+	public void setOptTime(Date optTime) {
+		this.optTime = optTime;
+	}
 
 /**
 	 * 设置：父菜单ID，一级菜单为0

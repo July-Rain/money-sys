@@ -16,7 +16,9 @@
         </div>
         <div class="header-right">
             <ul>
+
                 <li v-for="item in navData" @click="toChild(item)" :data-id="item.id" :data-url="item.url">
+
                     <a>
                         <i :class="item.icon"></i>
                         <p><a href="javascript:;">{{item.name}}</a></p>
