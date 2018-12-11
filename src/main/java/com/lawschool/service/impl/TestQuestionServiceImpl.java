@@ -63,4 +63,13 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
 
         return null;
     }
+
+    /**
+     * 根据题目的多个id查询题目
+     * @param list
+     * @return
+     */
+    public List<QuestForm> findByIds(List<String> list){
+        return dao.findByIds(list);
+    }
 }

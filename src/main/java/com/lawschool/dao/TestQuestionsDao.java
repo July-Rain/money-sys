@@ -2,6 +2,7 @@ package com.lawschool.dao;
 
 import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.form.QuestForm;
 
 import java.util.List;
 import java.util.Map;
@@ -45,5 +46,12 @@ public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
      * @return
      */
     List<TestQuestions> findBySpecialKnowledgeId(Map<String, Object> param);
+
+    /**
+     * 根据题目的多个id查询题目
+     * @param list
+     * @return
+     */
+    List<QuestForm> findByIds(List<String> list);
 
 }

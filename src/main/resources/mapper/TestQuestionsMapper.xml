@@ -466,5 +466,25 @@
         WHERE id = #{id}
     </delete>
 
+    <!--查询所需要的问题字段-->
+    <select id="findByIds" resultType="com.lawschool.form.QuestForm">
+        SELECT
+        id,
+        com_content,
+        question_difficulty,
+        question_type,
+        answer_id,
+        legal_basis,
+        answer_describle
+        FROM law_testquestions
+        <where>
+            id IN
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+              #{item}
+            </foreach>
+        </where>
+        ORDER BY id
+    </select>
+
 
 </mapper>

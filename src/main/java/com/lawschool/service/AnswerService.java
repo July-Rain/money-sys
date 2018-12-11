@@ -1,6 +1,7 @@
 package com.lawschool.service;
 
 import com.lawschool.beans.Answer;
+import com.lawschool.form.AnswerForm;
 
 import java.util.List;
 
@@ -14,4 +15,11 @@ import java.util.List;
 
 public interface AnswerService {
     List<Answer>  getAnswerByQid(String id);
+
+    /**
+     * 根据题目的多个id查询题目
+     * @param list
+     * @return
+     */
+    List<AnswerForm> findByQuestionIds(List<String> list);
 }
