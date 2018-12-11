@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<style>
+
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="header">
+        <div class="header-left">
+            <img src="${rc.contextPath}/statics/img/logo.png">
+            <a href="javascript:;">江苏省公安厅法律学校</a>
+        </div>
+        <div class="header-right">
+            <ul>
+                <li v-for="item in navData">
+                    <a>
+                        <i :class="item.icon"></i>
+                        <p><a href="javascript:;">{{item.name}}</a></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <el-table
+                :data="tableData"
+                style="width: 100%"
+                stripe>
+            <el-table-column
+                    prop="typeName"
+                    label="主题类型"
+                    width="480"
+                    header-align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="total"
+                    label="总题数"
+                    width="200"
+                    header-align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="answerNum"
+                    label="已答题"
+                    width="200"
+                    header-align="center">
+            </el-table-column>
+            <el-table-column
+                    label="操作"
+                    header-align="center"
+                    align="center"
+                    prop="status">
+                <template slot-scope="scope">
+                    <el-button v-if="scope.row.status == 0"
+                            type="primary"
+                            size="mini"
+                            @click="start(scope.row.id, scope.row.status, scope.row.typeId, scope.row.typeName)"
+                            >开始练习
+                    </el-button>
+                    <el-button
+                            plain
+                            type="success"
+                            size="mini"
+                            v-if="scope.row.status == 1"
+                            @click="continues(scope.row.id, scope.row.typeId)"
+                            >继续练习
+                    </el-button>
+                    <el-button
+                            plain
+                            type="danger"
+                            size="mini"
+                            v-if="scope.row.status == 1 || scope.row.status == 2"
+                            >错题回顾
+                    </el-button>
+                    <el-button
+                            plain
+                            type="warning"
+                            size="mini"
+                            v-if="scope.row.status == 2"
+                            >清空重做
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+</div>
+</body>
+
+<script src="${rc.contextPath}/js/practiceCen/theme.js?_${.now?long}"></script>
+</html>
