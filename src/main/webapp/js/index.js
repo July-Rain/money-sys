@@ -117,7 +117,51 @@ var vm = new Vue({
                 delivery: false,//配送状态
                 type: [],//活动性质
                 resource: '',//特殊资源
-                desc: ''//活动形式
+                desc: '',//活动形式
+                visible: false,
+                parentId: 0,
+                parentName: '',
+            },
+            menuId: '',
+            menuList: [
+                {// el-tree数据
+                    label: '一级 1',
+                    children: [{
+                        label: '二级 1-1',
+                        children: [{
+                            label: '三级 1-1-1'
+                        }]
+                    }]
+                }, {
+                    label: '一级 2',
+                    children: [{
+                        label: '二级 2-1',
+                        children: [{
+                            label: '三级 2-1-1'
+                        }]
+                    }, {
+                        label: '二级 2-2',
+                        children: [{
+                            label: '三级 2-2-1'
+                        }]
+                    }]
+                }, {
+                    label: '一级 3',
+                    children: [{
+                        label: '二级 3-1',
+                        children: [{
+                            label: '三级 3-1-1'
+                        }]
+                    }, {
+                        label: '二级 3-2',
+                        children: [{
+                            label: '三级 3-2-1'
+                        }]
+                    }]
+                }],
+            menuListTreeProps: {
+                children: 'children',
+                label: 'label'
             },
             rules: {//表单验证规则
                 name: [
@@ -462,12 +506,24 @@ var vm = new Vue({
             }else{
                 parent.location.href =baseURL+item.list[0].url+"?id="+item.id;
             }
-
         },
         inToCompetition: function () {
             //这是要跳转了
             //     parent.location.href =baseURL+item.list[0].url+"?id="+item.id;
             alert("wo jinlaile !!!!");
-        }
+        },
+        // 菜单树选中
+        menuListTreeCurrentChangeHandle: function (data) {
+            // debugger
+            // var that = this
+            // this.ruleForm.parentId = data.menuId
+            vm.ruleForm.parentName = data.label
+            vm.ruleForm.visible = false
+        },
+        // 菜单树设置当前选中节点
+        // menuListTreeSetCurrentNode: function () {
+        //     this.$refs.menuListTree.setCurrentKey(this.ruleForm.parentId)
+        //     this.ruleForm.parentName = (this.$refs.menuListTree.getCurrentNode() || {})['name']
+        // }
     }
 });

@@ -359,6 +359,25 @@
         <el-row>
             <el-col :span="12">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" size="mini">
+                    <el-form-item label="上级菜单" prop="parentName">
+                        <el-popover
+                                ref="menuListPopover"
+                                placement="bottom-start"
+                                trigger="click"
+                                v-model="ruleForm.visible">
+                        <el-tree
+                                :data="menuList"
+                                :props="menuListTreeProps"
+                                node-key="menuId"
+                                ref="menuListTree"
+                                @current-change="menuListTreeCurrentChangeHandle"
+                                :default-expand-all="true"
+                                :highlight-current="true"
+                                :expand-on-click-node="false">
+                        </el-tree>
+                            <el-input v-model="ruleForm.parentName" v-popover:menuListPopover slot="reference" :readonly="true"  placeholder="点击选择上级菜单"></el-input>
+                        </el-popover>
+                    </el-form-item>
                     <el-form-item label="活动名称" prop="name">
                         <el-input v-model="ruleForm.name" placeholder="提示语句" clearable></el-input>
                     </el-form-item>
