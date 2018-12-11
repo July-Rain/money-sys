@@ -175,9 +175,6 @@ var vm = new Vue({
             vm.reload();
         },
         reload: function () {
-            console.info("!!!!!!!!!!!!!")
-            console.info(vm.formInline)
-
             $.ajax({
                 type: "POST",
                 url: baseURL + "menu/list",

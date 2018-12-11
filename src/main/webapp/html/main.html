@@ -229,21 +229,25 @@
                             <!--</el-form>-->
                         </div>
                     </div>
-                    <div class="content board">
+                    <div class="content board" style="padding-top: 17px;">
                         <el-row :gutter="20">
                             <el-col :span="6">
-                                <el-radio-group v-model="echartsTab">
-                                    <el-radio-button label="学习知识点分布">
+                                <el-tabs type="border-card">
+                                    <el-tab-pane label="学习知识点分布">
                                         <div id="pie1" style="width: 300px;height:220px;"></div>
-                                    </el-radio-button>
-                                    <el-radio-button label="练习知识点分布">练习知识点分布</el-radio-button>
-                                </el-radio-group>
+                                    </el-tab-pane>
+                                    <el-tab-pane label="练习知识点分布">练习知识点分布</el-tab-pane>
+                                </el-tabs>
                             </el-col>
-                            <el-col :span="6">
+                            <el-col :span="6" class="infoCount">
+                                <div class="span-title">学情统计</div>
+                                <div>
 
+                                </div>
                             </el-col>
-                            <el-col :span="12">
-
+                            <el-col :span="12" class="rate">
+                                <div class="span-title">练习正确率</div>
+                                <div id="bar1" style="width: 640px;height:220px;"></div>
                             </el-col>
                         </el-row>
                     </div>

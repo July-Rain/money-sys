@@ -48,7 +48,7 @@
                         </el-form>
                         <div>
 
-                            <el-button size="mini" type="primary" @click="addConfig" >新增目录</el-button>
+                            <el-button size="mini" type="primary" @click="addMenu" >新增</el-button>
 
                             <el-table
                                     :data="tableData"
@@ -124,10 +124,7 @@
                                                 size="mini"
                                                 @click="handleEdit(scope.$index, scope.row)">编辑
                                         </el-button>
-                                        <el-button
-                                                size="mini"
-                                                @click="showSon(scope.$index, scope.row)">查看子菜单
-                                        </el-button>
+
                                         <el-button
                                                 plain
                                                 type="danger"
@@ -171,6 +168,10 @@
                         </el-form-item>
                         <el-form-item label="排序号" prop="orderNum">
                             <el-input v-model="sysMenu.orderNum" placeholder="排序号" ></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="菜单url" prop="url">
+                            <el-input v-model="sysMenu.url" placeholder="菜单url" ></el-input>
                         </el-form-item>
 
                         <el-form-item label="状态" prop="isShow">

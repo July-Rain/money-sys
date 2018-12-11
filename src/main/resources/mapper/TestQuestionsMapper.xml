@@ -26,11 +26,10 @@
         <result column="ANSWERVALUE" jdbcType="VARCHAR" property="answerValue"/>
         <result column="QUESTIONDIFFICULTYVALUE" jdbcType="VARCHAR" property="questiondifficultyValue"/>
         <result column="SPECIALKNOWLEDGEVALUE" jdbcType="VARCHAR" property="specialknowledgeValue"/>
-        <result column="OPT_USER" jdbcType="VARCHAR" property="optUser"/>
-        <result column="OPT_TIME" jdbcType="TIMESTAMP" property="optTime"/>
         <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser"/>
         <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="IS_ENBLE" jdbcType="VARCHAR" property="isEnble"/>
+        <result column="OPT_USER" jdbcType="VARCHAR" property="optUser"/>
+        <result column="OPT_TIME" jdbcType="TIMESTAMP" property="optTime"/>
     </resultMap>
 
 
@@ -53,13 +52,14 @@
              stu_issuer,
              stu_issdepartment,
              stu_isstim,
-             optuser,
-             opttime,
              stu_optdepartment,
              use_number,
-             rigth_number
-         )
-        values (
+             rigth_number,
+             create_user,
+             create_time,
+             opt_user,
+             opt_time
+        ) values (
             #{id},
             #{typeId},
             #{comContent},
@@ -76,13 +76,41 @@
             #{stuIssuer},
             #{stuIssdepartment},
             #{stuIsstim},
-            #{optuser},
-            #{opttime},
             #{stuOptdepartment},
             #{useNumber},
-            #{rigthNumber}
-            )
+            #{rigthNumber},
+            #{createUser},
+            #{createTime},
+            #{optuser},
+            #{opttime}
+        )
     </insert>
+
+    <update id="update" parameterType="com.lawschool.beans.TestQuestions">
+        update LAW_TESTQUESTIONS
+        SET
+            type_id                 = #{typeId},
+            com_content             = #{comContent},
+            question_difficulty     = #{questionDifficulty},
+            question_type           = #{questionType},
+            answer_choice_number    = #{answerChoiceNumber},
+            answer_id               = #{answerId},
+            special_knowledge_id    = #{specialKnowledgeId},
+            police_classification   = #{policeClassification},
+            legal_basis             = #{legalBasis},
+            answer_describle        = #{answerDescrible},
+            release_status          = #{releaseStatus},
+            disable_status          = #{disableStatus},
+            stu_issuer              = #{stuIssuer},
+            stu_issdepartment       = #{stuIssdepartment},
+            stu_isstim              = #{stuIsstim},
+            stu_optdepartment       = #{stuOptdepartment},
+            use_number              = #{useNumber},
+            rigth_number            = #{rigthNumber},
+            opt_user                = #{optuser},
+            opt_time                = #{opttime}
+        WHERE id = #{id}
+    </update>
 
     <!--计数：我收藏的重点试题-->
     <select id="cntMyCollection" parameterType="map" resultType="java.lang.Integer">
@@ -106,149 +134,148 @@
         </if>
     </select>
 
-  <!--列表：我收藏的重点试题-->
-  <select id="listMyCollection" parameterType="map"  resultType="com.lawschool.beans.TestQuestions">
-    select
-    collectionId,
-    ID,
-    COM_CONTENT,
-    QUESTION_TYPE,
-    questiontypeValue,
-    ANSWER_ID,
-    answerValue,
-    QUESTION_DIFFICULTY,
-    questiondifficultyValue,
-    TYPE_ID,
-    typeValue,
-    SPECIAL_KNOWLEDGE_ID,
-    specialknowledgeValue
-    from
-    (
-    SELECT
-    LAW_COLLECTION. ID as collectionId,
-    LAW_TESTQUESTIONS. ID,
-    LAW_TESTQUESTIONS.COM_CONTENT,
-    LAW_TESTQUESTIONS.QUESTION_TYPE,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
-    LAW_TESTQUESTIONS.ANSWER_ID,
-    (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
-    LAW_TESTQUESTIONS.QUESTION_DIFFICULTY,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
-    LAW_TESTQUESTIONS.TYPE_ID,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
-    LAW_TESTQUESTIONS.SPECIAL_KNOWLEDGE_ID,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
-    ROWNUM AS rowno
-    FROM
-    LAW_COLLECTION
-    LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
-    WHERE
-    LAW_COLLECTION.COM_USERID = #{userId}
-    And LAW_COLLECTION.DEL_STATUS=0
-    And ROWNUM &lt;= #{endPage}
-    AND LAW_COLLECTION. TYPE = 20
-    <if test="questionType != null">
-      AND QUESTION_TYPE=#{questionType}
-    </if>
-    <if test="typeId != null">
-      AND TYPE_ID=#{typeId}
-    </if>
-    <if test="questionDifficulty != null">
-      AND QUESTION_DIFFICULTY=#{questionDifficulty}
-    </if>
-    )
-    WHERE
-    rowno &gt; #{startPage}
-  </select>
+    <!--列表：我收藏的重点试题-->
+    <select id="listMyCollection" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
+        select
+        collectionId,
+        ID,
+        COM_CONTENT,
+        QUESTION_TYPE,
+        questiontypeValue,
+        ANSWER_ID,
+        answerValue,
+        QUESTION_DIFFICULTY,
+        questiondifficultyValue,
+        TYPE_ID,
+        typeValue,
+        SPECIAL_KNOWLEDGE_ID,
+        specialknowledgeValue
+        from
+        (
+        SELECT
+        LAW_COLLECTION. ID as collectionId,
+        LAW_TESTQUESTIONS. ID,
+        LAW_TESTQUESTIONS.COM_CONTENT,
+        LAW_TESTQUESTIONS.QUESTION_TYPE,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
+        LAW_TESTQUESTIONS.ANSWER_ID,
+        (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
+        LAW_TESTQUESTIONS.QUESTION_DIFFICULTY,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
+        LAW_TESTQUESTIONS.TYPE_ID,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
+        LAW_TESTQUESTIONS.SPECIAL_KNOWLEDGE_ID,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
+        ROWNUM AS rowno
+        FROM
+        LAW_COLLECTION
+        LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
+        WHERE
+        LAW_COLLECTION.COM_USERID = #{userId}
+        And LAW_COLLECTION.DEL_STATUS=0
+        And ROWNUM &lt;= #{endPage}
+        AND LAW_COLLECTION. TYPE = 20
+        <if test="questionType != null">
+            AND QUESTION_TYPE=#{questionType}
+        </if>
+        <if test="typeId != null">
+            AND TYPE_ID=#{typeId}
+        </if>
+        <if test="questionDifficulty != null">
+            AND QUESTION_DIFFICULTY=#{questionDifficulty}
+        </if>
+        )
+        WHERE
+        rowno &gt; #{startPage}
+    </select>
 
 
-  <!--收藏试题组卷:随机从我收藏的题目中取num条数据.仅仅取id-->
-  <select id="randomQuestColl" parameterType="map"  resultType="com.lawschool.beans.TestQuestions">
-    SELECT
-    ID
-    FROM
-    (
-    SELECT
-    LAW_TESTQUESTIONS. ID
-    FROM
-    LAW_COLLECTION
-    LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
-    WHERE
-    LAW_COLLECTION.COM_USERID = #{userId}
-    AND LAW_COLLECTION. TYPE = 10
-    AND LAW_COLLECTION.DEL_STATUS = 0
-    <if test="questionType != null">
-      AND QUESTION_TYPE=#{questionType}
-    </if>
-    <if test="typeId != null">
-      AND TYPE_ID=#{typeId}
-    </if>
-    <if test="questionDifficulty != null">
-      AND QUESTION_DIFFICULTY=#{questionDifficulty}
-    </if>
-    ORDER BY
-    dbms_random.VALUE
-    )
-    WHERE
-    ROWNUM &lt;= #{num}
-  </select>
+    <!--收藏试题组卷:随机从我收藏的题目中取num条数据.仅仅取id-->
+    <select id="randomQuestColl" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
+        SELECT
+        ID
+        FROM
+        (
+        SELECT
+        LAW_TESTQUESTIONS. ID
+        FROM
+        LAW_COLLECTION
+        LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
+        WHERE
+        LAW_COLLECTION.COM_USERID = #{userId}
+        AND LAW_COLLECTION. TYPE = 10
+        AND LAW_COLLECTION.DEL_STATUS = 0
+        <if test="questionType != null">
+            AND QUESTION_TYPE=#{questionType}
+        </if>
+        <if test="typeId != null">
+            AND TYPE_ID=#{typeId}
+        </if>
+        <if test="questionDifficulty != null">
+            AND QUESTION_DIFFICULTY=#{questionDifficulty}
+        </if>
+        ORDER BY
+        dbms_random.VALUE
+        )
+        WHERE
+        ROWNUM &lt;= #{num}
+    </select>
 
 
+    <!--列表：我做错的题目-->
+    <select id="listMyError" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
 
-  <!--列表：我做错的题目-->
-  <select id="listMyError" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
-
-    SELECT
-    ID,
-    recordId,
-    COM_CONTENT,
-    QUESTION_TYPE,
-      questiontypeValue,
-    ANSWER_ID,
-      answerValue,
-    QUESTION_DIFFICULTY,
-      questiondifficultyValue,
-    TYPE_ID,
-      typeValue,
-    SPECIAL_KNOWLEDGE_ID,
-      specialknowledgeValue
-    from
-    (
-    SELECT
-    T . ID,
-    r. ID recordId,
-    T .COM_CONTENT,
-    T .QUESTION_TYPE,
-      (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
-    T .ANSWER_ID,
-      (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
-    T .QUESTION_DIFFICULTY,
-      (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
-    T .TYPE_ID,
-      (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
-    T .SPECIAL_KNOWLEDGE_ID,
-      (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
-    ROWNUM AS rowno
-    FROM
-    LAW_USER_QUESTION_RECORD r
-    INNER JOIN LAW_TESTQUESTIONS T ON r.QUEST_ID = T . ID
-    WHERE
-    r.USER_ID = #{userId}
-    And ROWNUM &lt;= #{endPage}
-    AND r.MY_ASWER_ID != T .ANSWER_ID
-    <if test="questionType != null">
-      AND T .QUESTION_DIFFICULTY =#{questionType}
-    </if>
-    <if test="typeId != null">
-      AND T .SPECIAL_KNOWLEDGE_ID = #{typeId}
-    </if>
-    <if test="questionDifficulty != null">
-      AND QUESTION_TYPE = #{questionDifficulty}
-    </if>
-    )
-    WHERE
-    rowno &gt; #{startPage}
-  </select>
+        SELECT
+        ID,
+        recordId,
+        COM_CONTENT,
+        QUESTION_TYPE,
+        questiontypeValue,
+        ANSWER_ID,
+        answerValue,
+        QUESTION_DIFFICULTY,
+        questiondifficultyValue,
+        TYPE_ID,
+        typeValue,
+        SPECIAL_KNOWLEDGE_ID,
+        specialknowledgeValue
+        from
+        (
+        SELECT
+        T . ID,
+        r. ID recordId,
+        T .COM_CONTENT,
+        T .QUESTION_TYPE,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
+        T .ANSWER_ID,
+        (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
+        T .QUESTION_DIFFICULTY,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
+        T .TYPE_ID,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
+        T .SPECIAL_KNOWLEDGE_ID,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
+        ROWNUM AS rowno
+        FROM
+        LAW_USER_QUESTION_RECORD r
+        INNER JOIN LAW_TESTQUESTIONS T ON r.QUEST_ID = T . ID
+        WHERE
+        r.USER_ID = #{userId}
+        And ROWNUM &lt;= #{endPage}
+        AND r.MY_ASWER_ID != T .ANSWER_ID
+        <if test="questionType != null">
+            AND T .QUESTION_DIFFICULTY =#{questionType}
+        </if>
+        <if test="typeId != null">
+            AND T .SPECIAL_KNOWLEDGE_ID = #{typeId}
+        </if>
+        <if test="questionDifficulty != null">
+            AND QUESTION_TYPE = #{questionDifficulty}
+        </if>
+        )
+        WHERE
+        rowno &gt; #{startPage}
+    </select>
 
     <!--计数：我做错的题目-->
     <select id="cntMyError" parameterType="map" resultType="java.lang.Integer">
@@ -271,38 +298,109 @@
         </if>
     </select>
 
-  <!--做错试题组卷:随机从我做错的题目中取num条数据.仅仅取id-->
-  <select id="randomErrorColl" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
-  SELECT
-  ID
-  FROM
-  (
-    SELECT
-    T . ID
-    FROM
-    LAW_USER_QUESTION_RECORD r
-    INNER JOIN LAW_TESTQUESTIONS T ON r.QUEST_ID = T . ID
-    WHERE
-    r.USER_ID = #{userId}
-    AND r.MY_ASWER_ID != T .ANSWER_ID
-    <if test="questionType != null">
-    AND QUESTION_TYPE=#{questionType}
-  </if>
-  <if test="typeId != null">
-    AND TYPE_ID=#{typeId}
-  </if>
-  <if test="questionDifficulty != null">
-    AND QUESTION_DIFFICULTY=#{questionDifficulty}
-  </if>
-  ORDER BY
-  dbms_random.VALUE
-  )
-  WHERE
-  ROWNUM &lt;= #{num}
-  </select>
+    <!--做错试题组卷:随机从我做错的题目中取num条数据.仅仅取id-->
+    <select id="randomErrorColl" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
+        SELECT
+        ID
+        FROM
+        (
+        SELECT
+        T . ID
+        FROM
+        LAW_USER_QUESTION_RECORD r
+        INNER JOIN LAW_TESTQUESTIONS T ON r.QUEST_ID = T . ID
+        WHERE
+        r.USER_ID = #{userId}
+        AND r.MY_ASWER_ID != T .ANSWER_ID
+        <if test="questionType != null">
+            AND QUESTION_TYPE=#{questionType}
+        </if>
+        <if test="typeId != null">
+            AND TYPE_ID=#{typeId}
+        </if>
+        <if test="questionDifficulty != null">
+            AND QUESTION_DIFFICULTY=#{questionDifficulty}
+        </if>
+        ORDER BY
+        dbms_random.VALUE
+        )
+        WHERE
+        ROWNUM &lt;= #{num}
+    </select>
 
+    <!--查询试题列表-->
+    <select id="selectList" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        id,
+        type_id,
+        com_content,
+        question_difficulty,
+        question_type,
+        answer_choice_number,
+        answer_id,
+        special_knowledge_id,
+        police_classification,
+        legal_basis,
+        answer_describle,
+        release_status,
+        stu_issuer,
+        stu_issdepartment,
+        stu_isstim,
+        stu_optdepartment,
+        use_number,
+        rigth_number
+        FROM law_testquestions a
+        <where>
+            1 = 1
+            <if test="typeId != null and typeId != ''">
+                AND a.type_id = #{typeId}
+            </if>
+            <if test="questionDifficulty != null and questionDifficulty != ''">
+                AND a.question_difficulty = #{questionDifficulty}
+            </if>
+            <if test="questionType != null and questionType != ''">
+                AND a.question_type = #{questionType}
+            </if>
+            <if test="isEnble != null and isEnble != ''">
+                AND a.is_enble = #{isEnble}
+            </if>
+        </where>
+        ORDER BY SYS_GUID()
+    </select>
+
+    <!--根据ID查询试题-->
+    <select id="selectById" parameterType="string" resultMap="BaseResultMap">
+        SELECT
+        id,
+        type_id,
+        com_content,
+        question_difficulty,
+        question_type,
+        answer_choice_number,
+        answer_id,
+        special_knowledge_id,
+        police_classification,
+        legal_basis,
+        answer_describle,
+        release_status,
+        stu_issuer,
+        stu_issdepartment,
+        stu_isstim,
+        stu_optdepartment,
+        use_number,
+        rigth_number
+        FROM law_testquestions a
+        <where>
+            a.id = #{id}
+        </where>
+        ORDER BY SYS_GUID()
+    </select>
+
+    <!--更新启用禁用状态-->
     <update id="updateStatus">
-        UPDATE law_testquestions SET is_enable = #{isEnble}  WHERE id = #{id}
+        UPDATE law_testquestions
+        SET is_enable = #{isEnble}
+        WHERE id = #{id}
     </update>
 
     <!--查询某类型的试题id-->
@@ -331,27 +429,27 @@
     <!--查询某类型的试题id-->
     <select id="findBySpecialKnowledgeId" parameterType="map" resultMap="BaseResultMap">
         SELECT
-            id,
-            type_id,
-            com_content,
-            question_difficulty,
-            question_type,
-            answer_choice_number,
-            answer_id,
-            special_knowledge_id,
-            police_classification,
-            legal_basis,
-            answer_describle,
-            release_status,
-            stu_issuer,
-            stu_issdepartment,
-            stu_isstim,
-            stu_optdepartment,
-            use_number,
-            rigth_number
+        id,
+        type_id,
+        com_content,
+        question_difficulty,
+        question_type,
+        answer_choice_number,
+        answer_id,
+        special_knowledge_id,
+        police_classification,
+        legal_basis,
+        answer_describle,
+        release_status,
+        stu_issuer,
+        stu_issdepartment,
+        stu_isstim,
+        stu_optdepartment,
+        use_number,
+        rigth_number
         FROM law_testquestions a
         <where>
-            a.is_enble = #{isEnble}
+             1 = 1
             <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
                 AND a.specialKnowledgeId = #{specialKnowledgeId}
             </if>
@@ -361,6 +459,12 @@
         </where>
         ORDER BY SYS_GUID()
     </select>
+
+    <delete id="deleteBatchIds" parameterType="map">
+        DELETE
+        FROM law_testquestions
+        WHERE id = #{id}
+    </delete>
 
 
 </mapper>

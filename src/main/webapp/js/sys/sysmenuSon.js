@@ -98,12 +98,11 @@ var vm = new Vue({
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
         },
-        addConfig: function () {
+        addMenu: function () {
             vm.sysMenu = {
                 id:'',
-                parentId:"0",
-
-                type:"0",
+                parentId:menuId,
+                type:"1",
 
             };
             this.title = "新增";
@@ -125,9 +124,7 @@ var vm = new Vue({
                 }
             });
         },
-        showSon: function (index, row) {
-            parent.location.href =baseURL+"modules/sys/sysmenuSon.html?id="+row.id;
-        },
+
         handleDel: function (index, row) {
             // vm.delIdArr.push(row.id);
             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
