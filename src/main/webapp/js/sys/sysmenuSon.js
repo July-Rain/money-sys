@@ -98,12 +98,11 @@ var vm = new Vue({
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
         },
-        addConfig: function () {
+        addMenu: function () {
             vm.sysMenu = {
                 id:'',
-                parentId:"0",
-
-                type:"0",
+                parentId:menuId,
+                type:"1",
 
             };
             this.title = "新增";
