@@ -52,7 +52,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
 
     private String rigthNumber;//正确次数
 
-    private String isEnble;//正确次数
+    private String isEnble;//启用禁用
 
     @TableField(exist = false)
     private String collectId;//收藏id
@@ -277,24 +277,24 @@ public class TestQuestions extends DataEntity<TestQuestions> {
                 ", policeClassification='" + policeClassification + '\'' +
                 ", legalBasis='" + legalBasis + '\'' +
                 ", answerDescrible='" + answerDescrible + '\'' +
-                ", releaseStatus=" + releaseStatus +
+                ", releaseStatus=" + releaseStatus + '\'' +
                 ", stuIssuer='" + stuIssuer + '\'' +
                 ", stuIssdepartment='" + stuIssdepartment + '\'' +
-                ", stuIsstim=" + stuIsstim +
+                ", stuIsstim=" + stuIsstim + '\'' +
                 ", stuOptdepartment='" + stuOptdepartment + '\'' +
-                ", useNumber=" + useNumber +
-                ", rigthNumber=" + rigthNumber +
+                ", useNumber=" + useNumber + '\'' +
+                ", rigthNumber=" + rigthNumber + '\'' +
+                ", isEnble=" + isEnble + '\'' +
                 ", collectId='" + collectId + '\'' +
                 ", questiontypeValue='" + questiontypeValue + '\'' +
                 ", answerValue='" + answerValue + '\'' +
                 ", questiondifficultyValue='" + questiondifficultyValue + '\'' +
                 ", specialknowledgeValue='" + specialknowledgeValue + '\'' +
                 ", typeValue='" + typeValue + '\'' +
+                ", createUser='" + createUser + '\'' +
+                ", createTime=" + createTime + '\'' +
                 ", optUser='" + optUser + '\'' +
                 ", optTime=" + optTime +
-                ", createUser='" + createUser + '\'' +
-                ", createTime=" + createTime +
-                ", isEnble=" + isEnble +
                 '}';
     }
 }
