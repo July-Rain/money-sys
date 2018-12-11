@@ -51,7 +51,7 @@ public class SysMenuController {
             ew.eq("parent_id",id);
         }
         List<SysMenu> menuList = sysMenuService.selectList(
-                ew.ne("type","2").eq("is_show","1")
+                ew.ne("type","2").eq("is_show","1").orderBy("ORDER_NUM", true)
         );
         if(UtilValidate.isNotEmpty(id)){
             return Result.ok().put("menuList", menuList);
@@ -90,6 +90,13 @@ public class SysMenuController {
         return finalTrees;
     }
 
+//实现实体类里面list包 下级  下级list在包下级的 树结构数据
+    @RequestMapping("/listAllMenuTree")
+    public Result listAllMenuTree(){
+     List<SysMenu>  SysMenuList= sysMenuService.listAllMenuTree();
+        return Result.ok().put("listAllMenuTree", SysMenuList);
+    }
+
 
 
     @RequestMapping("/list")
@@ -100,6 +107,8 @@ public class SysMenuController {
         PageUtils page = sysMenuService.queryPage(params);
         return Result.ok().put("page", page);
     }
+
+
     @SysLog("添加目录")
     @RequestMapping("/insert")
     public Result insert(@RequestBody SysMenu sysmenu){
@@ -145,8 +154,26 @@ public class SysMenuController {
         }
         return Result.ok().put("str",str);
     }
+    @RequestMapping("/list2")
+    public Object list2(){
+        List<Map<String, Object>> maps = sysMenuService.queryForZtree();
+        System.out.println(maps);
+        return maps;
+    }
 
-
+    @RequestMapping("/select")
+    public Result select(){
+        //查询列表数据
+        List<SysMenu> menuList = sysMenuService.queryNotButtonList();
+        //添加顶级菜单
+        SysMenu root = new SysMenu();
+        root.setId(IdWorker.getIdStr());
+        root.setName("一级菜单");
+        root.setParentId("-1");
+        root.setOpen(true);
+        menuList.add(root);
+        return Result.ok().put("menuList", menuList);
+    }
     public String getId() {
         return id;
     }

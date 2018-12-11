@@ -22,4 +22,5 @@ public interface SysMenuDao extends BaseMapper<SysMenu> {
 	public List<SysMenu> queryListParentId(String id);
 
 	public List<SysMenu> listMenuAuth(String roleId);
+	List<SysMenu> queryNotButtonList();
 }

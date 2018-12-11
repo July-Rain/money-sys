@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -76,7 +77,7 @@ public class SysMenu implements Serializable ,Comparable<SysMenu>{
 	private Boolean open;
 
 	@TableField(exist=false)
-	private List<?> list;
+	private List<SysMenu> list=new ArrayList<SysMenu>();
 
 	public String getId() {
 		return id;
@@ -213,16 +214,17 @@ public class SysMenu implements Serializable ,Comparable<SysMenu>{
 	public String getIcon() {
 		return icon;
 	}
-	
 
+
+	public void setList(List<SysMenu> list) {
+		this.list = list;
+	}
 
 	public List<?> getList() {
 		return list;
 	}
 
-	public void setList(List<?> list) {
-		this.list = list;
-	}
+
 
 	public String getParentName() {
 		return parentName;
