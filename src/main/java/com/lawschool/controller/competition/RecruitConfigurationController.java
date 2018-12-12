@@ -2,10 +2,12 @@ package com.lawschool.controller.competition;
 
 import com.lawschool.beans.competition.RecruitConfiguration;
 import com.lawschool.service.competition.RecruitConfigurationService;
+import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
@@ -26,13 +28,6 @@ public class RecruitConfigurationController {
     private RecruitConfigurationService recruitConfigurationService;
 
 
-    //查询
-    @RequestMapping("/list")
-    public Result list(@RequestParam Map<String, Object> params){
-        RecruitConfiguration recruitConfiguration = new RecruitConfiguration();
-
-        return Result.ok().put("comOnlineList", recruitConfigurationService.findAll());
-    }
 
     //根据id来找数据
     @RequestMapping("/info")

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 /**
  *
@@ -24,7 +25,7 @@ public class RecruitConfiguration implements Serializable {
 	@TableId
 	private String id;
 	//第几大关顺序   1.2.3.4.5.6 这个样子
-	private String markNumOrder;
+	private int markNumOrder;
 
 	//小关数量
 	private String smallNum;
@@ -44,7 +45,7 @@ public class RecruitConfiguration implements Serializable {
 
 //小关信息集合
    @TableField(exist = false)
-	private List<RecruitCheckpointConfiguration>  recruitCheckpointConfigurationList;
+	private List<RecruitCheckpointConfiguration>  recruitCheckpointConfigurationList =new ArrayList<RecruitCheckpointConfiguration>();
 
 
 
@@ -117,11 +118,11 @@ public class RecruitConfiguration implements Serializable {
 		this.backup5 = backup5;
 	}
 
-	public String getMarkNumOrder() {
+	public int getMarkNumOrder() {
 		return markNumOrder;
 	}
 
-	public void setMarkNumOrder(String markNumOrder) {
+	public void setMarkNumOrder(int markNumOrder) {
 		this.markNumOrder = markNumOrder;
 	}
 

@@ -6,7 +6,7 @@
 <!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->
     <resultMap id="BaseResultMap" type="com.lawschool.beans.competition.RecruitConfiguration">
         <id column="ID" property="id" jdbcType="VARCHAR" />
-        <result column="MARK_NUM_ORDER" property="markNumOrder" jdbcType="VARCHAR" />
+        <result column="MARK_NUM_ORDER" property="markNumOrder" jdbcType="INTEGER" />
         <result column="SMALL_NUM" property="smallNum" jdbcType="VARCHAR" />
         <result column="STATUS" property="status" jdbcType="VARCHAR" />
         <result column="BACKUP1" property="backup1" jdbcType="VARCHAR" />

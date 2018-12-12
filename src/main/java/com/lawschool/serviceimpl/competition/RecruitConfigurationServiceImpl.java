@@ -1,5 +1,6 @@
 package com.lawschool.serviceimpl.competition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
@@ -7,11 +8,15 @@ import com.lawschool.beans.competition.RecruitConfiguration;
 import com.lawschool.dao.competition.RecruitConfigurationDao;
 import com.lawschool.service.competition.RecruitCheckpointConfigurationService;
 import com.lawschool.service.competition.RecruitConfigurationService;
+import com.lawschool.util.PageUtils;
+import com.lawschool.util.Query;
+import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigurationDao, RecruitConfiguration> implements RecruitConfigurationService {
@@ -62,7 +67,7 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 		{
 			RecruitConfiguration reConfation=list.get(i);
 			reConfation.setId(IdWorker.getIdStr());
-			reConfation.setMarkNumOrder((i+1)+"");
+			reConfation.setMarkNumOrder(i+1);
 
 			this.insert(reConfation);
 			//甲烷大关信息  不要忘了小关
@@ -106,4 +111,7 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 		recruitCheckpointConfigurationService.delete(new EntityWrapper<RecruitCheckpointConfiguration>());
 
 	}
+
+
+
 }
