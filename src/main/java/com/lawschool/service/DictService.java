@@ -1,7 +1,9 @@
 package com.lawschool.service;
 
+import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.base.AbstractService;
 import com.lawschool.beans.Dict;
+import com.lawschool.beans.competition.RecruitConfiguration;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.Map;
  * @Time  2018/11/28
  *
  */
-public interface DictService {
+public interface DictService extends IService<Dict> {
     /**
      * 查询用户字典表
      * @param id

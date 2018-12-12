@@ -98,6 +98,22 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         add: function () {
+            //每次打开添加按钮时候 取后台获取 字典表中大关和小关数量的配置
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                data: {type:"BIGCHECKNUM",Parentcode:"99997"},
+                success: function (result) {
+
+                    console.info(result);
+                    if (result.code == 0) {
+
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
 
             vm.daguan= {
 
