@@ -5,9 +5,6 @@ import com.lawschool.util.persistence.dialect.Dialect;
 
 /**
  * Oracle的方言实现
- * @author xupeng
- * @version 2018-10-29
- * @since JDK 1.5
  */
 public class OracleDialect implements Dialect {
     @Override

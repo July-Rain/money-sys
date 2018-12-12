@@ -410,15 +410,12 @@
         FROM law_testquestions a
         <where>
             1 = 1
-            <if test="specialKnowledgeId != null and specialKnowledgeId.size > 0">
-                AND a.specialKnowledgeId IN
-                <foreach collection="specialKnowledgeId" index="index" item="item" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
+            <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
+                AND a.special_knowledge_id = #{specialKnowledgeId}
             </if>
-            <if test="questionType != null and questionType.size > 0">
-                AND a.questionType IN
-                <foreach collection="questionType" index="index" item="item" open="(" separator="," close=")">
+            <if test="list != null and list.size > 0">
+                AND a.question_type IN
+                <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
@@ -426,7 +423,7 @@
         ORDER BY SYS_GUID()
     </select>
 
-    <!--查询某类型的试题id-->
+    <!--查询某类型的试题-->
     <select id="findBySpecialKnowledgeId" parameterType="map" resultMap="BaseResultMap">
         SELECT
         id,
@@ -447,14 +444,17 @@
         stu_optdepartment,
         use_number,
         rigth_number
-        FROM law_testquestions a
+        FROM law_testquestions
         <where>
              1 = 1
             <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
-                AND a.specialKnowledgeId = #{specialKnowledgeId}
+                AND a.special_knowledge_id = #{specialKnowledgeId}
             </if>
-            <if test="questionType != null and questionType != ''">
-                AND a.questionType = #{questionType}
+            <if test="list != null and list.size > 0">
+                AND a.question_type IN
+                <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
             </if>
         </where>
         ORDER BY SYS_GUID()

@@ -2,6 +2,9 @@ package com.lawschool.service.system;
 
 import com.lawschool.base.AbstractService;
 import com.lawschool.beans.system.TopicTypeEntity;
+import com.lawschool.form.CommonForm;
+
+import java.util.List;
 
 /**
  * @version V1.0
@@ -14,4 +17,11 @@ public interface TopicTypeService extends AbstractService<TopicTypeEntity> {
     boolean mysave(TopicTypeEntity entity);
 
     boolean updateDelFlag(String id);
+
+    /**
+     * 获取所有信息，除list
+     * @param list
+     * @return
+     */
+    List<CommonForm> findAll(List<String> list);
 }

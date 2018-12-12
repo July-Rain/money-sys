@@ -62,4 +62,22 @@
 			ID = #{id}
 		</where>
 	</update>
+
+	<select id="findAll" resultType="com.lawschool.form.CommonForm">
+		SELECT
+			id AS "key",
+		    name AS "value"
+		FROM
+			LAW_SYS_TOPIC
+		<where>
+			DEL_FLAG = 0
+			AND IS_ENABLE = 1
+			<if test="list != null and list.size > 0">
+				AND id not in
+				<foreach collection="list" open="(" close=")" separator="," item="item">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
 </mapper>
