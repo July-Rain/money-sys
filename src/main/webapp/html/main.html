@@ -366,10 +366,10 @@
                                 trigger="click"
                                 v-model="ruleForm.visible">
                         <el-tree
-                                :data="menuList"
+                                :data="ruleForm.menuList"
                                 :props="menuListTreeProps"
-                                node-key="menuId"
-                                ref="menuListTree"
+                                node-key="ruleForm.menuId"
+                                ref="ruleForm.menuListTree"
                                 @current-change="menuListTreeCurrentChangeHandle"
                                 :default-expand-all="true"
                                 :highlight-current="true"

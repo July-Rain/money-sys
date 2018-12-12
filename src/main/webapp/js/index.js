@@ -121,47 +121,47 @@ var vm = new Vue({
                 visible: false,
                 parentId: 0,
                 parentName: '',
-            },
-            menuId: '',
-            menuList: [
-                {// el-tree数据
-                    label: '一级 1',
-                    children: [{
-                        label: '二级 1-1',
+                menuId: '',
+                menuList: [
+                    {// el-tree数据
+                        label: '一级 1',
                         children: [{
-                            label: '三级 1-1-1'
-                        }]
-                    }]
-                }, {
-                    label: '一级 2',
-                    children: [{
-                        label: '二级 2-1',
-                        children: [{
-                            label: '三级 2-1-1'
+                            label: '二级 1-1',
+                            children: [{
+                                label: '三级 1-1-1'
+                            }]
                         }]
                     }, {
-                        label: '二级 2-2',
+                        label: '一级 2',
                         children: [{
-                            label: '三级 2-2-1'
-                        }]
-                    }]
-                }, {
-                    label: '一级 3',
-                    children: [{
-                        label: '二级 3-1',
-                        children: [{
-                            label: '三级 3-1-1'
+                            label: '二级 2-1',
+                            children: [{
+                                label: '三级 2-1-1'
+                            }]
+                        }, {
+                            label: '二级 2-2',
+                            children: [{
+                                label: '三级 2-2-1'
+                            }]
                         }]
                     }, {
-                        label: '二级 3-2',
+                        label: '一级 3',
                         children: [{
-                            label: '三级 3-2-1'
+                            label: '二级 3-1',
+                            children: [{
+                                label: '三级 3-1-1'
+                            }]
+                        }, {
+                            label: '二级 3-2',
+                            children: [{
+                                label: '三级 3-2-1'
+                            }]
                         }]
-                    }]
-                }],
-            menuListTreeProps: {
-                children: 'children',
-                label: 'label'
+                    }],
+                menuListTreeProps: {
+                    children: 'children',
+                    label: 'label'
+                }
             },
             rules: {//表单验证规则
                 name: [
@@ -514,8 +514,6 @@ var vm = new Vue({
         },
         // 菜单树选中
         menuListTreeCurrentChangeHandle: function (data) {
-            // debugger
-            // var that = this
             // this.ruleForm.parentId = data.menuId
             vm.ruleForm.parentName = data.label
             vm.ruleForm.visible = false
