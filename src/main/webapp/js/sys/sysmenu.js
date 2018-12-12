@@ -66,15 +66,7 @@ var vm = new Vue({
                 }
             });
 
-            $.ajax({
-                type: "POST",
-                url: baseURL + "menu/listAllMenuTree",
-                dataType: "json",
-                success: function (result) {
-                    // console.info(result.listAllMenuTree);
-                    vm.menuList=result.listAllMenuTree;
-                }
-            });
+
             this.reload();
         })
     },
@@ -145,6 +137,19 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         addConfig: function () {
+
+
+            $.ajax({
+                type: "POST",
+                url: baseURL + "menu/listAllMenuTree",
+                dataType: "json",
+                success: function (result) {
+                    // console.info(result.listAllMenuTree);
+                    vm.menuList=result.listAllMenuTree;
+                }
+            });
+
+
 
             console.info(vm.menuList);
             vm.sysMenu = {
