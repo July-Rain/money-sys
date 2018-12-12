@@ -2,10 +2,6 @@ package com.lawschool.util.persistence.dialect;
 
 /**
  * 数据库方言接口，新增分页sql
- *
- * @author xupeng
- * @version 2018-10-29
- * @since JDK 1.5
  */
 public interface Dialect {
 
