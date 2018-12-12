@@ -2,7 +2,10 @@ package com.lawschool.dao.system;
 
 import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.system.TopicTypeEntity;
+import com.lawschool.form.CommonForm;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @version V1.0
@@ -14,4 +17,6 @@ public interface TopicTypeDao extends AbstractDao<TopicTypeEntity> {
     boolean mysave(TopicTypeEntity entity);
 
     boolean updateDelFlag(@Param("id") String id);
+
+    List<CommonForm> findAll(@Param("list") List<String> list);
 }

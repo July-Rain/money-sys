@@ -24,6 +24,9 @@ public interface SysMenuService   extends IService<SysMenu> {
 	//list。包含所有的目录，菜单，按钮
 	public List<Map<String,Object>> queryForZtree();
 
+
+	List<SysMenu> queryNotButtonList();
+
 	//根据菜单id 找 详情
 	public SysMenu selectById(String id);
 
@@ -46,4 +49,10 @@ public interface SysMenuService   extends IService<SysMenu> {
 	 **/
 
 	PageUtils queryPage(Map<String, Object> params);
+
+
+	List<SysMenu> listAllMenuTree();
+
+
+
 }

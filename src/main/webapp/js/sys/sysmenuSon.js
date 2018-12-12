@@ -38,6 +38,11 @@ var vm = new Vue({
                 {required: true, message: '请输入排序号', trigger: 'blur'},
                 {max: 50, message: '最大长度50', trigger: 'blur'}
             ]
+            ,
+            url: [
+                {required: true, message: '请输入url', trigger: 'blur'},
+                {max: 50, message: '最大长度50', trigger: 'blur'}
+            ]
         },
         dialogConfig: false,//table弹出框可见性
         title: "",//弹窗的名称
@@ -105,7 +110,7 @@ var vm = new Vue({
                 type:"1",
 
             };
-            this.title = "新增";
+            this.title = "新22222增";
             this.dialogConfig = true;
         },
         handleEdit: function (index, row) {

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>主题练习</title>
+    <#include "/header.html">
+</head>
+<body>
+    <div id="app" v-cloak>
+    <div class="header">
+        <div class="header-left">
+            <img src="${rc.contextPath}/statics/img/logo.png">
+            <a href="javascript:;">江苏省公安厅法律学校</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="swiper-container swiper-no-swiping">
+            <div class="swiper-wrapper">
+                <div v-for="item in dataList" class="swiper-slide">
+                    [{{item.questionType}}] {{item.comContent}}
+                    <br/>
+                    <br/>
+                        <div v-for="(item2,index) in item.answer" class="swiper-slide">
+                            {{index}}、{{item2.questionContent}}
+                        </div>
+                    <br/>
+                    {{item.questionDifficulty}}
+                </div>
+            </div>
+        </div>
+        <el-button-group>
+            <el-button type="primary" icon="el-icon-arrow-left">上一页</el-button>
+            <el-button type="primary">下一页<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
+        </el-button-group>
+    </div>
+</div>
+</body>
+
+    <script src="${rc.contextPath}/js/practiceCen/theme_answer.js?_${.now?long}"></script>
+</html>

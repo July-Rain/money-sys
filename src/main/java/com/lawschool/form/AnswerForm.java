@@ -9,6 +9,7 @@ package com.lawschool.form;
 public class AnswerForm {
     private String id;// 答案 ID
     private String questionContent;// 答案内容
+    private String questionId;// 题目ID
 
     public String getId() {
         return id;
@@ -24,5 +25,13 @@ public class AnswerForm {
 
     public void setQuestionContent(String questionContent) {
         this.questionContent = questionContent;
+    }
+
+    public String getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
     }
 }

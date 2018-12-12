@@ -5,7 +5,7 @@
  */
 var menuId = $("#menuId").val();
 
-
+var ztree;
 var vm = new Vue({
     el: '#app',
     data: {
@@ -20,15 +20,49 @@ var vm = new Vue({
         },
         tableData: [],//表格数据
         visible: false,
-        sysConfig: {
-            type: 0,
-            parentId: 0,
-            remark: '',
-            status: "1"
-        },
-        sysMenu: {
 
+        sysMenu: {
+            parentName:null,
+            parentId:0,
+            type:1,
+            orderNum:0
         },
+        data: [
+            {// el-tree数据
+                label: '一级 1',
+                children: [{
+                    label: '二级 1-1',
+                    children: [{
+                        label: '三级 1-1-1'
+                    }]
+                }]
+            }, {
+                label: '一级 2',
+                children: [{
+                    label: '二级 2-1',
+                    children: [{
+                        label: '三级 2-1-1'
+                    }]
+                }, {
+                    label: '二级 2-2',
+                    children: [{
+                        label: '三级 2-2-1'
+                    }]
+                }]
+            }, {
+                label: '一级 3',
+                children: [{
+                    label: '二级 3-1',
+                    children: [{
+                        label: '三级 3-1-1'
+                    }]
+                }, {
+                    label: '二级 3-2',
+                    children: [{
+                        label: '三级 3-2-1'
+                    }]
+                }]
+            }],
         rules: {//表单验证规则
             name: [
                 {required: true, message: '请输入目录名', trigger: 'blur'},
@@ -58,10 +92,24 @@ var vm = new Vue({
                     }
                 }
             });
+
+            $.ajax({
+                type: "POST",
+                url: baseURL + "menu/listAllMenuTree",
+                dataType: "json",
+                success: function (result) {
+                    console.info(result);
+                }
+            });
             this.reload();
         })
     },
     methods: {
+        menuTree: function () {
+
+
+
+        },
         // 查询
         onSubmit: function () {
             this.reload();
@@ -118,6 +166,7 @@ var vm = new Vue({
 
             };
             this.title = "新增";
+
             this.dialogConfig = true;
         },
         handleEdit: function (index, row) {
@@ -175,23 +224,70 @@ var vm = new Vue({
             vm.reload();
         },
         reload: function () {
-            $.ajax({
-                type: "POST",
-                url: baseURL + "menu/list",
-                dataType: "json",
-                data: vm.formInline,
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.tableData=result.page.list;
-
-                        vm.formInline.currPage = result.page.currPage;
-                        vm.formInline.pageSize = result.page.pageSize;
-                        vm.formInline.totalCount = parseInt(result.page.totalCount);
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
+            // $.ajax({
+            //     type: "POST",
+            //     url: baseURL + "menu/list",
+            //     dataType: "json",
+            //     data: vm.formInline,
+            //     success: function (result) {
+            //         if (result.code === 0) {
+            //             vm.tableData=result.page.list;
+            //
+            //             vm.formInline.currPage = result.page.currPage;
+            //             vm.formInline.pageSize = result.page.pageSize;
+            //             vm.formInline.totalCount = parseInt(result.page.totalCount);
+            //         } else {
+            //             alert(result.msg);
+            //         }
+            //     }
+            // });
         }
     }
+});
+var Menu = {
+    id: "menuTable",
+    table: null,
+    layerIndex: -1
+};
+/**
+ * 初始化表格的列
+ */
+Menu.initColumn = function () {
+    var columns = [
+        {field: 'selectItem', radio: true},
+        {title: '菜单ID', field: 'id', visible: false, align: 'center', valign: 'middle', width: '180px'},
+        {title: '菜单名称', field: 'name', align: 'center', valign: 'middle', sortable: true, width: '180px'},
+        {title: '上级菜单', field: 'parentName', align: 'center', valign: 'middle', sortable: true, width: '100px'},
+        {title: '图标', field: 'icon', align: 'center', valign: 'middle', sortable: true, width: '60px', formatter: function(item, index){
+            return item.icon == null ? '' : '<i class="'+item.icon+' fa-lg"></i>';
+        }},
+        {title: '类型', field: 'type', align: 'center', valign: 'middle', sortable: true, width: '80px', formatter: function(item, index){
+
+
+            if(item.type == 0){
+                return '<span class="label label-primary">目录</span>';
+            }
+            if(item.type == 1){
+                return '<span class="label label-success">菜单</span>';
+            }
+            if(item.type == 2){
+                return '<span class="label label-warning">按钮</span>';
+            }
+        }},
+        {title: '排序号', field: 'orderNum', align: 'center', valign: 'middle', sortable: true, width: '70px'},
+        {title: '菜单URL', field: 'url', align: 'center', valign: 'middle', sortable: true, width: '160px'},
+        {title: '授权标识', field: 'perms', align: 'center', valign: 'middle', sortable: true}]
+    return columns;
+};
+
+$(function () {
+    var colunms = Menu.initColumn();
+    var table = new TreeTable(Menu.id, baseURL + "menu/list2", colunms);
+    table.setExpandColumn(2);
+    table.setIdField("id");
+    table.setCodeField("id");
+    table.setParentCodeField("parentId");
+    table.setExpandAll(false);
+    table.init();
+    Menu.table = table;
 });

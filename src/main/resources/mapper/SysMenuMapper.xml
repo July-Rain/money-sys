@@ -25,14 +25,15 @@
 
     <!-- 查询多条条记录 -->
     <select id="queryForZtree" resultType="java.util.Map">
-        select s1.menu_id menuId,s1.parent_id parentId,s1.name name,
-        s1.url url,s1.perms perms,s1.type type,
-        s1.icon icon,s1.order_num orderNum,
-        s1.is_show isShow ,s2.`name` parentName from sys_menu s1
-        left join sys_menu s2
-        on s1.parent_id = s2.menu_id
-        where s1.parent_id is not NULL
-        order by s1.order_num asc
+        SELECT
+        S1."ID" AS "id",S1.PARENT_ID AS "parentId",S1."NAME" AS "name", S1.URL AS "url",S1.PERMS AS "perms",S1."TYPE" AS "type",
+        S1.ICON AS "icon",S1.ORDER_NUM AS "orderNum",S1.IS_SHOW AS "isShow",S2."NAME" AS "parentName"
+        from
+        LAW_SYS_MENU s1
+        LEFT JOIN LAW_SYS_MENU s2
+        ON S2."ID"=S1.PARENT_ID
+        WHERE S1.PARENT_ID is NOT NULL
+        ORDER BY S1.ORDER_NUM ASC
     </select>
 
     <!-- 查询权限下数据 -->
@@ -64,6 +65,10 @@
            values (#{id},#{parentId},#{name},#{url},#{perms},#{type},#{icon},#{orderNum},#{isShow})
     </insert>
 
+
+    <select id="queryNotButtonList" resultType="com.lawschool.beans.SysMenu">
+        select * from LAW_SYS_MENU where type != 2 order by order_num asc
+    </select>
     <!-- 修改一条记录 -->
 
     <!--<update id="updateById"  parameterType="com.lawschool.beans.SysMenu">-->

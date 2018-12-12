@@ -14,8 +14,9 @@
   <!--查询所需要的问题字段-->
   <select id="findByQuestionIds" resultType="com.lawschool.form.AnswerForm">
     SELECT
-    id,
-    questionContent
+      id AS "id",
+      question_content AS "questionContent",
+      QUESTION_ID AS "questionId"
     FROM law_answer
     <where>
       question_id IN

@@ -84,4 +84,35 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
 
 		return new PageUtils(page);
 	}
+
+	@Override
+	public List<SysMenu> queryNotButtonList() {
+		return baseMapper.queryNotButtonList();
+	}
+
+	@Override
+	public List<SysMenu> listAllMenuTree() {
+		//先获得一级目录
+		 List<SysMenu> SysMenuOne= this.selectList(new EntityWrapper<SysMenu>().eq("TYPE","0"));
+		 for(SysMenu menu:SysMenuOne)
+		 {
+			//去找有没有子菜单
+			 listAllMenuTree2(menu,menu.getList());
+		 }
+		return SysMenuOne;
+	}
+
+	public  void listAllMenuTree2(SysMenu menu, List menuList)
+	{
+
+
+		List<SysMenu> SysMenuSon= this.selectList(new EntityWrapper<SysMenu>().eq("PARENT_ID",menu.getId()));
+		for(SysMenu menuSon:SysMenuSon)
+		{
+			listAllMenuTree2(menuSon,menuSon.getList());
+
+			menuList.add(menuSon);
+		}
+
+	}
 }
