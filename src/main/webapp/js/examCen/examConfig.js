@@ -36,7 +36,28 @@ var vm = new Vue({
         randomQuesModal: false,//table弹出框可见性
         autonomyQuesModal: false,
         title: "",//弹窗的名称
-        delIdArr: []//删除数据
+        delIdArr: [],//删除数据
+        data11:[],//题型data
+        typeOptions: [
+            {
+                value: 0,
+                label: '单选'
+            },
+            {
+                value: 1,
+                label: '多选'
+            },
+            {
+                value: 0,
+                label: '填空'
+            },
+            {
+                value: 1,
+                label: '主观'
+            }
+        ],
+        dataListSelections: [],//选中行
+        deleteIds:[]
     },
     created: function () {
         this.$nextTick(function () {
@@ -85,7 +106,7 @@ var vm = new Vue({
         randomQues : function(){
             this.title = "随机出题配置";
             this.randomQuesModal = true;
-            alert(111);
+            // alert(111);
         },
         // 保存和修改
         saveOrUpdate: function (formName) {
@@ -117,90 +138,90 @@ var vm = new Vue({
                 }
             });
         },
-        loadData(oid) {
-            this.axios.get('/ServiceAction/com.eweaver.workflow.workflow.servlet.WorkflowRelateAction?action=load&oid=' + oid).then(response => {
-                this.details = response.data.detail;
-                this.flowName = response.data.flowName;
-            }).catch(err => {
-                console.log(err)
-            })
-        },
-        handleAdd() {
-            this.details.push({
-                id: null,
-                workflowid: null,
-                workflowName: null,
-                formType: null,
-                formid: null,
-                formName: null,
-                fieldid: null,
-                fieldName: null,
-                condition: null
-            });
-            alert(111);
-        },
-        handleDelete() {
-            this.multipleSelection.forEach(element => {
-                if (element.id && this.deleteIds.indexOf(element.id) === -1) {
-                    this.deleteIds.push(element.id);
-                }
-                this.details.splice(this.details.indexOf(element), 1)
-            });
-        },
-        handleSelectionChange(val) {
-            this.multipleSelection = val;
-        },
-        handleWorkflowBrowserClick(index) {
-            this.$store.commit('switch_workflowDialog');
-            this.currentIndex = index;
-        },
-        handleFormBrowserClick(index) {
-            this.$store.commit('switch_FormDialog', {
-                workflowid: this.details[index].workflowid,
-                formType: this.details[index].formType
-            });
-            this.currentIndex = index;
-        },
-        handleFieldBrowserClick(index) {
-            this.$store.commit('switch_FieldDialog', this.details[index].formid);
-            this.currentIndex = index;
-        },
-        handleSave() {
-            if (this.details.length > 0 || this.deleteIds.length > 0) {
-                let params = new URLSearchParams();
-                params.append('workflowid', this.$store.state.globalStore.workflowid);
-                params.append('list', JSON.stringify(this.details));
-                params.append('deleteList', JSON.stringify(this.deleteIds));
-                this.axios.post('/ServiceAction/com.eweaver.workflow.workflow.servlet.WorkflowRelateAction?action=save', params,
-                    {headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}}).then(response => {
-                    this.$message.info("主人，保存成功！");
-                }).catch(error => {
-                    console.log(error);
-                })
-            } else {
-                this.showMessage()
-            }
-        },
-        showMessage() {
-            this.$message.error('主人，小的发现无数据可提交哦');
-        }
-    },
-        watch: {
-            workflowRowData: function (newData, oldData) {
-                this.details[this.currentIndex].workflowid = newData.workflowid;
-                this.details[this.currentIndex].workflowName = newData.workflowName;
-            },
-            formRowData: function (newData, oldData) {
-                this.details[this.currentIndex].formid = newData.formid;
-                this.details[this.currentIndex].formName = newData.formName;
-            },
-            fieldRowData: function (newData, oldData) {
-                this.details[this.currentIndex].fieldid = newData.fieldid;
-                this.details[this.currentIndex].fieldName = newData.fieldName;
-            },
-            oid: function (newData, oldData) {
-                this.loadData(newData);
-            },
+        // loadData(oid) {
+        //     this.axios.get('/ServiceAction/com.eweaver.workflow.workflow.servlet.WorkflowRelateAction?action=load&oid=' + oid).then(response => {
+        //         this.details = response.data.detail;
+        //         this.flowName = response.data.flowName;
+        //     }).catch(err => {
+        //         console.log(err)
+        //     })
+        // },
+    //     handleAdd() {
+    //         this.details.push({
+    //             id: null,
+    //             workflowid: null,
+    //             workflowName: null,
+    //             formType: null,
+    //             formid: null,
+    //             formName: null,
+    //             fieldid: null,
+    //             fieldName: null,
+    //             condition: null
+    //         });
+    //         // alert(111);
+    //     },
+    //     handleDelete() {
+    //         this.multipleSelection.forEach(element => {
+    //             if (element.id && this.deleteIds.indexOf(element.id) === -1) {
+    //                 this.deleteIds.push(element.id);
+    //             }
+    //             this.details.splice(this.details.indexOf(element), 1)
+    //         });
+    //     },
+    //     handleSelectionChange(val) {
+    //         this.multipleSelection = val;
+    //     },
+    //     handleWorkflowBrowserClick(index) {
+    //         this.$store.commit('switch_workflowDialog');
+    //         this.currentIndex = index;
+    //     },
+    //     handleFormBrowserClick(index) {
+    //         this.$store.commit('switch_FormDialog', {
+    //             workflowid: this.details[index].workflowid,
+    //             formType: this.details[index].formType
+    //         });
+    //         this.currentIndex = index;
+    //     },
+    //     handleFieldBrowserClick(index) {
+    //         this.$store.commit('switch_FieldDialog', this.details[index].formid);
+    //         this.currentIndex = index;
+    //     },
+    //     handleSave() {
+    //         if (this.details.length > 0 || this.deleteIds.length > 0) {
+    //             let params = new URLSearchParams();
+    //             params.append('workflowid', this.$store.state.globalStore.workflowid);
+    //             params.append('list', JSON.stringify(this.details));
+    //             params.append('deleteList', JSON.stringify(this.deleteIds));
+    //             this.axios.post('/ServiceAction/com.eweaver.workflow.workflow.servlet.WorkflowRelateAction?action=save', params,
+    //                 {headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}}).then(response => {
+    //                 this.$message.info("主人，保存成功！");
+    //             }).catch(error => {
+    //                 console.log(error);
+    //             })
+    //         } else {
+    //             this.showMessage()
+    //         }
+    //     },
+    //     showMessage() {
+    //         this.$message.error('主人，小的发现无数据可提交哦');
+    //     }
+    // },
+    //     watch: {
+    //         workflowRowData: function (newData, oldData) {
+    //             this.details[this.currentIndex].workflowid = newData.workflowid;
+    //             this.details[this.currentIndex].workflowName = newData.workflowName;
+    //         },
+    //         formRowData: function (newData, oldData) {
+    //             this.details[this.currentIndex].formid = newData.formid;
+    //             this.details[this.currentIndex].formName = newData.formName;
+    //         },
+    //         fieldRowData: function (newData, oldData) {
+    //             this.details[this.currentIndex].fieldid = newData.fieldid;
+    //             this.details[this.currentIndex].fieldName = newData.fieldName;
+    //         },
+    //         oid: function (newData, oldData) {
+    //             this.loadData(newData);
+    //         },
         closeDia: function () {
             this.randomQuesModal = false;
             vm.reload();
@@ -222,6 +243,22 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+        // 多选
+        selectionChangeHandle: function (val) {
+            this.dataListSelections = val
+        },
+        //新增行
+        handleAdd: function () {
+            this.data11.push({
+                type: null,
+                num: null,
+                score: null
+            })
+        },
+        //批量删除
+        handleDelete: function () {
+            alert('批量删除')
         }
     }
 });
