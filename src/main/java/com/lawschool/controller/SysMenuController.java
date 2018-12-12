@@ -93,7 +93,19 @@ public class SysMenuController {
 //实现实体类里面list包 下级  下级list在包下级的 树结构数据
     @RequestMapping("/listAllMenuTree")
     public Result listAllMenuTree(){
-     List<SysMenu>  SysMenuList= sysMenuService.listAllMenuTree();
+
+        List<SysMenu>  SysMenuList=new ArrayList<SysMenu>();
+        SysMenu SysMenu=new SysMenu();
+        SysMenu.setId("0");
+        SysMenu.setParentId("-1");
+        SysMenu.setName("一级菜单");
+        SysMenuList.add(SysMenu);
+        SysMenuList.addAll( sysMenuService.listAllMenuTree());
+//     List<SysMenu>  SysMenuList=
+
+
+
+
         return Result.ok().put("listAllMenuTree", SysMenuList);
     }
 
@@ -120,6 +132,16 @@ public class SysMenuController {
     @RequestMapping("/info")
     public Result info(String id){
         SysMenu sysmenu = sysMenuService.selectById(id);
+        if(sysmenu.getParentId().equals("0"))
+        {
+            sysmenu.setParentName("一级菜单");
+        }
+        else{
+            SysMenu sysmenuBaBa = sysMenuService.selectById(sysmenu.getParentId());
+
+            sysmenu.setParentName(sysmenuBaBa.getName());
+        }
+
         return Result.ok().put("data", sysmenu);
     }
 

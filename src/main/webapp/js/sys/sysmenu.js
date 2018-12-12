@@ -23,55 +23,28 @@ var vm = new Vue({
 
         sysMenu: {
             parentName:null,
-            parentId:0,
-            type:1,
-            orderNum:0
+            parentId:'',
+
+            orderNum:0,
+            visible: false,
+            type:'',
+
         },
-        data: [
-            {// el-tree数据
-                label: '一级 1',
-                children: [{
-                    label: '二级 1-1',
-                    children: [{
-                        label: '三级 1-1-1'
-                    }]
-                }]
-            }, {
-                label: '一级 2',
-                children: [{
-                    label: '二级 2-1',
-                    children: [{
-                        label: '三级 2-1-1'
-                    }]
-                }, {
-                    label: '二级 2-2',
-                    children: [{
-                        label: '三级 2-2-1'
-                    }]
-                }]
-            }, {
-                label: '一级 3',
-                children: [{
-                    label: '二级 3-1',
-                    children: [{
-                        label: '三级 3-1-1'
-                    }]
-                }, {
-                    label: '二级 3-2',
-                    children: [{
-                        label: '三级 3-2-1'
-                    }]
-                }]
-            }],
+        menuList:[],
+        menuListTreeProps: {
+            children: 'list',
+            label: 'name'
+        },
+
         rules: {//表单验证规则
             name: [
                 {required: true, message: '请输入目录名', trigger: 'blur'},
                 {max: 50, message: '最大长度50', trigger: 'blur'}
-            ],
-            orderNum: [
-                {required: true, message: '请输入排序号', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
             ]
+            // orderNum: [
+            //     {required: true, message: '请输入排序号', trigger: 'blur'},
+            //     {max: 50, message: '最大长度50', trigger: 'blur'}
+            // ]
         },
         dialogConfig: false,//table弹出框可见性
         title: "",//弹窗的名称
@@ -98,16 +71,29 @@ var vm = new Vue({
                 url: baseURL + "menu/listAllMenuTree",
                 dataType: "json",
                 success: function (result) {
-                    console.info(result);
+                    // console.info(result.listAllMenuTree);
+                    vm.menuList=result.listAllMenuTree;
                 }
             });
             this.reload();
         })
     },
     methods: {
-        menuTree: function () {
+        // 菜单树选中
+        menuListTreeCurrentChangeHandle: function (data) {
 
+            vm.sysMenu.parentName = data.name;//选中后把name给页面显示
+            vm.sysMenu.parentId = data.id;//选中后把父节点id拿到
 
+            if(data.parentId=="-1")
+            {
+                vm.sysMenu.type ="0";//选中后把父节点id拿到
+            }
+            else
+                {
+                    vm.sysMenu.type ="1";//选中后把父节点id拿到
+                }
+            vm.sysMenu.visible = false
 
         },
         // 查询
@@ -124,6 +110,7 @@ var vm = new Vue({
         },
         // 保存和修改
         saveOrUpdate: function (formName) {
+            console.info(vm.sysMenu);
 
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
@@ -158,23 +145,25 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         addConfig: function () {
+
+            console.info(vm.menuList);
             vm.sysMenu = {
                 id:'',
-                parentId:"0",
-
                 type:"0",
-
             };
             this.title = "新增";
 
             this.dialogConfig = true;
         },
-        handleEdit: function (index, row) {
-            this.title = "修改目录";
+        handleEdit: function () {
+            var id = getMenuId();
+            this.title = "修改";
+
             this.dialogConfig = true;
+
             $.ajax({
                 type: "POST",
-                url: baseURL + 'menu/info?id=' + row.id,
+                url: baseURL + 'menu/info?id=' + id,
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
@@ -188,8 +177,10 @@ var vm = new Vue({
         showSon: function (index, row) {
             parent.location.href =baseURL+"modules/sys/sysmenuSon.html?id="+row.id;
         },
-        handleDel: function (index, row) {
-            // vm.delIdArr.push(row.id);
+        handleDel: function () {
+
+            var id = getMenuId();
+
             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -197,7 +188,7 @@ var vm = new Vue({
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: baseURL + 'menu/delete?id='+row.id,
+                    url: baseURL + 'menu/delete?id='+id,
                     async: true,
                     // data: JSON.stringify(row.id),
                     contentType: "application/json",
@@ -224,23 +215,9 @@ var vm = new Vue({
             vm.reload();
         },
         reload: function () {
-            // $.ajax({
-            //     type: "POST",
-            //     url: baseURL + "menu/list",
-            //     dataType: "json",
-            //     data: vm.formInline,
-            //     success: function (result) {
-            //         if (result.code === 0) {
-            //             vm.tableData=result.page.list;
-            //
-            //             vm.formInline.currPage = result.page.currPage;
-            //             vm.formInline.pageSize = result.page.pageSize;
-            //             vm.formInline.totalCount = parseInt(result.page.totalCount);
-            //         } else {
-            //             alert(result.msg);
-            //         }
-            //     }
-            // });
+
+                Menu.table.refresh();
+
         }
     }
 });
@@ -279,6 +256,18 @@ Menu.initColumn = function () {
         {title: '授权标识', field: 'perms', align: 'center', valign: 'middle', sortable: true}]
     return columns;
 };
+
+
+function getMenuId () {
+    var selected = $('#menuTable').bootstrapTreeTable('getSelections');
+    if (selected.length == 0) {
+        alert("请选择一条记录");
+        return false;
+    } else {
+        return selected[0].id;
+    }
+}
+
 
 $(function () {
     var colunms = Menu.initColumn();

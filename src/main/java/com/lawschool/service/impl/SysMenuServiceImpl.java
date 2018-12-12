@@ -93,7 +93,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
 	@Override
 	public List<SysMenu> listAllMenuTree() {
 		//先获得一级目录
-		 List<SysMenu> SysMenuOne= this.selectList(new EntityWrapper<SysMenu>().eq("TYPE","0"));
+		 List<SysMenu> SysMenuOne= this.selectList(new EntityWrapper<SysMenu>().eq("TYPE","0").orderBy("ORDER_NUM", true));
 		 for(SysMenu menu:SysMenuOne)
 		 {
 			//去找有没有子菜单
@@ -106,7 +106,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
 	{
 
 
-		List<SysMenu> SysMenuSon= this.selectList(new EntityWrapper<SysMenu>().eq("PARENT_ID",menu.getId()));
+		List<SysMenu> SysMenuSon= this.selectList(
+				new EntityWrapper<SysMenu>().eq("PARENT_ID",menu.getId()).orderBy("ORDER_NUM", true)
+		);
 		for(SysMenu menuSon:SysMenuSon)
 		{
 			listAllMenuTree2(menuSon,menuSon.getList());
