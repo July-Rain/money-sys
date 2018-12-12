@@ -52,7 +52,7 @@
                             </el-form-item>
                         </el-form>
                         <div>
-                            <el-button type="primary" @click="addConfig" >新增</el-button>
+                            <el-button type="primary" @click="addConfig">新增</el-button>
                             <el-table
                                     :data="tableData"
                                     border
@@ -66,27 +66,27 @@
                                 <el-table-column
                                         prop="examType"
                                         label="试卷类型"
-                                        width="280"
-                                        >
+                                        width="130"
+                                >
                                 </el-table-column>
 
                                 <el-table-column
                                         prop="organizedOrgCode"
                                         label="组考单位"
-                                        width="180"
-                                        >
+                                        width="150"
+                                >
                                 </el-table-column>
                                 <el-table-column
                                         prop="startTime"
                                         label="考试开始时间"
-                                        >
+                                >
                                 </el-table-column>
-                                 <el-table-column
+                                <el-table-column
                                         prop="endTime"
                                         label="考试结束时间"
-                                        >
+                                >
                                 </el-table-column>
-                                <el-table-column label="操作" width="180">
+                                <el-table-column label="操作" width="300">
                                     <template slot-scope="scope">
                                         <el-button
                                                 size="mini"
@@ -119,35 +119,192 @@
         </el-row>
 
 
-
-
-		<el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
-            <el-row>
-                <el-col :span="12">
-                    <el-form :model="examConfig" :rules="rules" ref="examConfig" label-width="100px" class="demo-examConfig" size="mini">
-                        <el-form-item label="考试名称" prop="examName">
-                            <el-input v-model="examConfig.examName" placeholder="请输入考试名称" clearable></el-input>
+        <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
+            <el-form :model="examConfig" :rules="rules" ref="examConfig" label-width="100px" class="demo-examConfig"
+                     size="mini">
+                <el-row>
+                    <el-col :span="22">
+                        <el-form-item label="考试名称：" prop="examName">
+                            <el-input v-model="examConfig.examName" placeholder="请输入考试名称" clearable
+                            ></el-input>
                         </el-form-item>
-                        <el-form-item label="考试类型" prop="examType">
+                    </el-col>
+
+                    <el-col :span="11">
+                        <el-form-item label="考试类型：" prop="examType">
                             <el-input v-model="examConfig.examType" placeholder="请输入考试名称" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="专项知识" prop="value">
-                            <el-input v-model="examConfig.value" placeholder="请输入参数值" clearable></el-input>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="专项知识：" prop="specialKnowledgeId">
+                            <el-select
+                                    v-model="formInline.specialKnowledgeId"
+                                    size="mini"
+                                    multiple
+                                    collapse-tags
+                                    style="width: auto"
+                                    placeholder="多选">
+                                <el-option
+                                        v-for="item in formInline.options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                            </el-select>
                         </el-form-item>
-
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="是否必考：" prop="isMustTest">
+                            <el-radio-group v-model="examConfig.isMustTest">
+                                <el-radio label="0">是</el-radio>
+                                <el-radio label="1">否</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="出题方式：" prop="questionWay">
+                            <el-select v-model="examConfig.questionWay"
+                                       collapse-tags
+                                       style="width: auto"
+                                       placeholder="请选择出題方式" size="mini">
+                                <el-option label="随机出题" value="0"></el-option>
+                                <el-option label="自主出题" value="1"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="题目顺序：" prop="topicOrderType">
+                            <el-radio-group v-model="examConfig.topicOrderType">
+                                <el-radio label="0">打乱</el-radio>
+                                <el-radio label="1">不打乱</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="选项顺序：" prop="optionOrderType">
+                            <el-radio-group v-model="examConfig.optionOrderType">
+                                <el-radio label="0">打乱</el-radio>
+                                <el-radio label="1">不打乱</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="开始时间：" prop="startTime">
+                            <el-date-picker
+                                    v-model="examConfig.startTime"
+                                    type="datetime"
+                                    placeholder="选择考试开始时间"
+                                    style="width: auto">
+                            </el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="结束时间：" prop="endTime">
+                            <el-date-picker
+                                    v-model="examConfig.endTime"
+                                    type="datetime"
+                                    placeholder="选择考试结束时间"
+                                    style="width: auto">
+                            </el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="考试时长：" prop="examTime">
+                            <template>
+                                <el-input-number v-model="examConfig.examTime" @change="handleChange" :min="1" :max="1000" label="请输入考试时长">
+                                </el-input-number>分钟
+                            </template>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="显示答案：" prop="answerShowRule" style="width: auto">
+                            <el-select v-model="examConfig.answerShowRule"
+                                       collapse-tags
+                                       style="width: auto"
+                                       placeholder="请选择显示答案规则" size="mini">
+                                <el-option label="不显示" value="0"></el-option>
+                                <el-option label="答题完显示" value="1"></el-option>
+                                <el-option label="考试结束" value="2"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="考试总分：" prop="examScore">
+                            <template>
+                                <el-input-number v-model="examConfig.examScore" @change="handleChange" :min="1" :max="1000" label="请输入考试时长">
+                                </el-input-number>分
+                            </template>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="达标线：" prop="passPnt">
+                            <template>
+                                <el-input-number v-model="examConfig.passPnt" @change="handleChange" :min="1" :max="1000" label="请输入考试时长">
+                                </el-input-number>分
+                            </template>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="达标奖励：" prop="reachRewardType">
+                            <el-select v-model="examConfig.reachRewardType"
+                                       collapse-tags
+                                       style="width: auto"
+                                       placeholder="请选择奖励内容" size="mini">
+                                <el-option label="无" value="0"></el-option>
+                                <el-option label="学分" value="1"></el-option>
+                                <el-option label="积分" value="2"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col span="11">
+                        <el-form-item label="奖励分数：" prop="reachReward">
+                            <template>
+                                <el-input-number v-model="examConfig.reachReward" @change="handleChange" :min="0" :max="1000" label="请输入">
+                                </el-input-number>分
+                            </template>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="组考单位：" prop="organizedOrgCode">
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="阅卷方式：" prop="reachRewardType">
+                            <el-select v-model="examConfig.reachRewardType"
+                                       collapse-tags
+                                       style="width: auto"
+                                       placeholder="请选择阅卷方式" size="mini">
+                                <el-option label="民警阅卷" value="0"></el-option>
+                                <el-option label="统一阅卷" value="1"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col span="24">
                         <el-form-item label="状态" prop="status">
-                            <el-switch v-model="examConfig.status" active-text="有效"  inactive-text="无效" active-value="1"  inactive-value="0" ></el-switch>
+                            <el-switch v-model="examConfig.status" active-text="有效" inactive-text="无效" active-value="1"
+                                       inactive-value="0"></el-switch>
                         </el-form-item>
+                    </el-col>
+                    <el-col :span="24">
                         <el-form-item label="备注" prop="remark">
                             <el-input type="textarea" maxlength="200" v-model="examConfig.remark"></el-input>
                         </el-form-item>
+                    </el-col>
+
+                    <el-col :span="24">
                         <el-form-item>
-                            <el-button type="primary" @click="saveOrUpdate('examConfig')">保存</el-button>
+                            <el-button type="primary" @click="preview('examConfig')">预览</el-button>
                         </el-form-item>
-                    </el-form>
-                </el-col>
-            </el-row>
-  		</el-dialog> 
+                        <el-form-item>
+                            <el-button type="primary" @click="generate('examConfig')">生成</el-button>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+
+
+            </el-form>
+
+        </el-dialog>
 
     </div>
 </div>
