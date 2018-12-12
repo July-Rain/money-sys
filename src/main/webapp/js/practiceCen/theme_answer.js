@@ -6,6 +6,7 @@ var vm = new Vue({
         dataList:[],
         answers:[],
         radio_disabled: false,
+        obj: null
     },
     methods: {
         radioCheck: function (id, answerId, typeName) {
@@ -17,7 +18,7 @@ var vm = new Vue({
                 right = 1;
             }
 
-            var obj = {
+            vm.obj = {
                 id: params.substring(4),
                 status: 1,
                 list: [{
@@ -27,11 +28,13 @@ var vm = new Vue({
                     typeName: typeName
                 }]
             };
-            console.log("2222222")
+
+        },
+        next: function(){
             $.ajax({
                 type: "POST",
                 url: baseURL + "exercise/theme/questions",
-                data: JSON.stringify(obj),
+                data: JSON.stringify(vm.obj),
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
@@ -41,6 +44,7 @@ var vm = new Vue({
                             vm.dataList = result.list;
                             vm.answers = [];
                             vm.radio_disabled = false;
+                            vm.obj.list = [];
                         }
 
                     } else {
@@ -48,12 +52,34 @@ var vm = new Vue({
                     }
                 }
             });
-
+        },
+        commit: function(){
+            if(vm.obj == null){
+                vm.obj = {
+                    id: params.substring(4),
+                    status: 2
+                };
+            }
+            $.ajax({
+                type: "POST",
+                url: baseURL + "exercise/theme/commit",
+                data: JSON.stringify(vm.obj),
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        var str = "总题数：" + result.form.total;
+                        str += "     做对题数：" + result.form.rightNum;
+                        str += " list中为各类型题目答题信息，不一一表述";
+                        alert(str);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         }
     },
     created: function(){
         this.$nextTick(function () {
-            console.log("11111111")
             var id = params.substring(4);
 
             $.ajax({
@@ -66,6 +92,9 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.dataList = result.list;
+                        if(result.list.length == 0){
+                            alert('本次练习已全部结束，请直接提交本次练习');
+                        }
                     } else {
                         alert(result.msg);
                     }
