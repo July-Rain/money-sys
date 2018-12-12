@@ -3,6 +3,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.lawschool.beans.SysConfig;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
 import com.lawschool.dao.competition.RecruitConfigurationDao;
@@ -112,6 +113,26 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 
 	}
 
+	@Override
+	public PageUtils queryPage(Map<String, Object> params) {
+//		String code = (String)params.get("code");
+//		String value = (String)params.get("value");
+//		String status = (String)params.get("status");
+		EntityWrapper<RecruitConfiguration> ew = new EntityWrapper<>();
 
+//		if(UtilValidate.isNotEmpty(code)){
+//			ew.like("code",code);
+//		}
+//		if(UtilValidate.isNotEmpty(value)){
+//			ew.like("value",value);
+//		}
+//		if(UtilValidate.isNotEmpty(status)){
+//			ew.like("status",status);
+//		}
+		Page<RecruitConfiguration> page = this.selectPage(
+				new Query<RecruitConfiguration>(params).getPage(),ew);
+
+		return new PageUtils(page);
+	}
 
 }

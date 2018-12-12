@@ -28,6 +28,6 @@ public interface RecruitConfigurationService  extends IService<RecruitConfigurat
 
     public void deleteAll();
 
-
+    PageUtils queryPage(Map<String, Object> params);
 
 }

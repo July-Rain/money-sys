@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -20,7 +21,7 @@ import java.util.Map;
  * @Time        2018/11/29
  *
  */
-@Controller
+@RestController
 @RequestMapping("/recruitConfiguration")
 public class RecruitConfigurationController {
 
@@ -34,6 +35,8 @@ public class RecruitConfigurationController {
     public Result info(@RequestParam String id){
 
         RecruitConfiguration recruitConfiguration=recruitConfigurationService.info(id);
+
+
         return Result.ok().put("recruitConfiguration", recruitConfiguration);
     }
 //
@@ -49,7 +52,17 @@ public class RecruitConfigurationController {
         return Result.ok();
     }
 
-//    /**
+
+
+    @RequestMapping("/list")
+    public Result list(@RequestParam Map<String, Object> params){
+        PageUtils page = recruitConfigurationService.queryPage(params);
+        System.out.println(page);
+        return Result.ok().put("page", page);
+    }
+
+
+    //    /**
 //     * 删除
 //     */
     @RequestMapping("/delete")

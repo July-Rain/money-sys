@@ -167,6 +167,7 @@ public class SysMenuController {
         }
         return Result.ok().put("str",str);
     }
+
     @RequestMapping("/list2")
     public Object list2(){
         List<Map<String, Object>> maps = sysMenuService.queryForZtree();

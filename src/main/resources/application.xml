@@ -81,10 +81,10 @@
                     <property name="dialectType" value="oracle" />
                 </bean>
                 <!-- 输出每条SQL语句及其执行时间，生产环境不建议使用该插件 -->
-                <!--<bean class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor">
-                    <property name="format" value="false"/>&lt;!&ndash; 格式化SQL语句 &ndash;&gt;
-                    <property name="maxTime" value="1000"/>&lt;!&ndash; sql执行时间超过value值就会停止执行，单位是毫秒 &ndash;&gt;
-                </bean>-->
+                <bean class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor">
+                    <property name="format" value="false"/><!-- 格式化SQL语句 -->
+                    <property name="maxTime" value="1000"/><!-- sql执行时间超过value值就会停止执行，单位是毫秒 -->
+                </bean>
             </array>
         </property>
     </bean>

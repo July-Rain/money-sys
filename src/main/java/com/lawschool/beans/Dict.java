@@ -59,7 +59,7 @@ public class Dict implements Serializable {
     private Date addTime;
 
     /**
-     * 删除状态 1：已删除，0：未删除
+     * 删除状态 0：已删除，1：未删除
      */
     private String delFlag;
 

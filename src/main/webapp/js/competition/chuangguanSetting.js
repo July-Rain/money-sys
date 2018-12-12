@@ -27,6 +27,9 @@ var vm = new Vue({
             remark: '',
             status: "1"
         },
+        daguan: {
+
+        },
         rules: {//表单验证规则
             value: [
                 {required: true, message: '请输入参数名', trigger: 'blur'},
@@ -94,18 +97,17 @@ var vm = new Vue({
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
         },
-        addConfig: function () {
-            this.sysConfig = {
-                id: '',
-                code: '',
-                value: '',
-                remark: '',
-                status: "1"
+        add: function () {
+
+            vm.daguan= {
+
             };
-            this.title = "新增参数";
+
+            this.title = "新增闯关配置";
             this.dialogConfig = true;
+
         },
-        handleEdit: function (index, row) {
+        look: function (index, row) {
             this.title = "修改参数";
             this.dialogConfig = true;
             $.ajax({
@@ -121,7 +123,7 @@ var vm = new Vue({
                 }
             });
         },
-        handleDel: function (index, row) {
+        del: function (index, row) {
             vm.delIdArr.push(row.id);
             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -158,7 +160,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sysconfig/list",
+                url: baseURL + "recruitConfiguration/list",
                 dataType: "json",
                 // data: vm.formInline,
                 success: function (result) {
