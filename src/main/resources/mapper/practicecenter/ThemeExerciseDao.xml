@@ -61,10 +61,10 @@
 
 	<update id="updateAnswerRecord">
 		UPDATE law_theme_exercise
-		SET right_number = #{rightNumber},
-		    answer_number = #{answerNumber},
+		SET right_num = #{rightNum},
+		    answer_num = #{answerNum},
 		    status = #{status},
-		    update_date = #{updateDate}
+		    opt_time = #{optTime}
 		<where>
 			ID = #{id}
 		</where>
