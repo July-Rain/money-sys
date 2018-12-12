@@ -247,7 +247,28 @@ var vm = new Vue({
             dialogTableVisible: false,//table弹出框可见性
             dialogFormVisible: false,//form弹出框可见性
             formLabelWidth: '120px',
-            tab: 'learn'
+            tab: 'learn',
+            data11:[],//题型data
+            typeOptions: [
+                {
+                    value: 0,
+                    label: '单选'
+                },
+                {
+                    value: 1,
+                    label: '多选'
+                },
+                {
+                    value: 0,
+                    label: '填空'
+                },
+                {
+                    value: 1,
+                    label: '主观'
+                }
+            ],
+            dataListSelections: [],//选中行
+            deleteIds:[]
         }
     },
     created: function () {
@@ -272,11 +293,11 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "menu/nav",
                 contentType: "application/json",
-                success: function(result){
+                success: function (result) {
 
-                    if(result.code === 0){
+                    if (result.code === 0) {
                         vm.navData = result.menuList;
-                    }else{
+                    } else {
                         alert(result.msg);
                     }
                 }
@@ -324,7 +345,7 @@ var vm = new Vue({
         echartsOption: function (myChart, option) {
             // this[chartName].clear()
             myChart.setOption(option)
-            window.addEventListener('resize',function (){
+            window.addEventListener('resize', function () {
                 myChart.resize()
             })
             // this[chartName].hideLoading() // Chart提示关闭
@@ -407,16 +428,16 @@ var vm = new Vue({
             vm.echartsOption(myChart, option)
         },
         initBar1: function () {
-          var myChart = echarts.init(document.getElementById('bar1'));
-          var option = {
+            var myChart = echarts.init(document.getElementById('bar1'));
+            var option = {
                 color: ['#3398DB'],
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                    // },
-                    // formatter: function (value) {
-                    //     return value[0].axisValue + ':<br/>' + num[value[0].dataIndex] + '人（' + value[0].data + '%）'
+                        // },
+                        // formatter: function (value) {
+                        //     return value[0].axisValue + ':<br/>' + num[value[0].dataIndex] + '人（' + value[0].data + '%）'
                     }
                 },
                 grid: {
@@ -429,7 +450,7 @@ var vm = new Vue({
                 xAxis: [
                     {
                         type: 'category',
-                        data: ['刑法','宪法','民商法','行政法','社会法','经济法','诉讼及非讼程序法'],
+                        data: ['刑法', '宪法', '民商法', '行政法', '社会法', '经济法', '诉讼及非讼程序法'],
                         axisTick: {
                             alignWithLabel: true
                         },
@@ -481,7 +502,7 @@ var vm = new Vue({
                                 )
                             }
                         },
-                        data: [32,12,22,11,13,3,23]
+                        data: [32, 12, 22, 11, 13, 3, 23]
                     }
                 ]
             }
@@ -501,10 +522,10 @@ var vm = new Vue({
             });
         },
         toChild: function (item) {
-            if(item.list.length==0){
+            if (item.list.length == 0) {
                 alert("暂无子菜单");
-            }else{
-                parent.location.href =baseURL+item.list[0].url+"?id="+item.id;
+            } else {
+                parent.location.href = baseURL + item.list[0].url + "?id=" + item.id;
             }
         },
         inToCompetition: function () {
@@ -522,6 +543,21 @@ var vm = new Vue({
         // menuListTreeSetCurrentNode: function () {
         //     this.$refs.menuListTree.setCurrentKey(this.ruleForm.parentId)
         //     this.ruleForm.parentName = (this.$refs.menuListTree.getCurrentNode() || {})['name']
-        // }
+        // }，
+        // 多选
+        selectionChangeHandle: function (val) {
+            this.dataListSelections = val
+        },
+        //新增行
+        handleAdd: function () {
+            this.data11.push({
+                type: null,
+                num: null,
+                score: null
+            })
+        },
+        handleDelete: function () {
+            alert('批量删除')
+        },
     }
 });
