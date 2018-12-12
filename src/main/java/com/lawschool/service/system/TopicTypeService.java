@@ -18,5 +18,10 @@ public interface TopicTypeService extends AbstractService<TopicTypeEntity> {
 
     boolean updateDelFlag(String id);
 
+    /**
+     * 获取所有信息，除list
+     * @param list
+     * @return
+     */
     List<CommonForm> findAll(List<String> list);
 }
