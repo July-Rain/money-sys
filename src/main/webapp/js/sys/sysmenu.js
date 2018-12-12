@@ -88,18 +88,18 @@ var vm = new Vue({
             vm.sysMenu.visible = false
 
         },
-        // 查询
-        onSubmit: function () {
-            this.reload();
-        },
-        handleSizeChange: function (val) {
-            this.formInline.pageSize = val;
-            this.reload();
-        },
-        handleCurrentChange: function (val) {
-            this.formInline.currPage = val;
-            this.reload();
-        },
+        // // 查询
+        // onSubmit: function () {
+        //     this.reload();
+        // },
+        // handleSizeChange: function (val) {
+        //     this.formInline.pageSize = val;
+        //     this.reload();
+        // },
+        // handleCurrentChange: function (val) {
+        //     this.formInline.currPage = val;
+        //     this.reload();
+        // },
         // 保存和修改
         saveOrUpdate: function (formName) {
             console.info(vm.sysMenu);
@@ -133,12 +133,10 @@ var vm = new Vue({
             });
         },
         // 表单重置
-        resetForm: function (formName) {
-            this.$refs[formName].resetFields();
-        },
+        // resetForm: function (formName) {
+        //     this.$refs[formName].resetFields();
+        // },
         addConfig: function () {
-
-
             $.ajax({
                 type: "POST",
                 url: baseURL + "menu/listAllMenuTree",
@@ -148,24 +146,20 @@ var vm = new Vue({
                     vm.menuList=result.listAllMenuTree;
                 }
             });
-
-
-
-            console.info(vm.menuList);
             vm.sysMenu = {
                 id:'',
                 type:"0",
             };
             this.title = "新增";
-
             this.dialogConfig = true;
         },
+
+
+
         handleEdit: function () {
             var id = getMenuId();
             this.title = "修改";
-
             this.dialogConfig = true;
-
             $.ajax({
                 type: "POST",
                 url: baseURL + 'menu/info?id=' + id,
@@ -179,9 +173,9 @@ var vm = new Vue({
                 }
             });
         },
-        showSon: function (index, row) {
-            parent.location.href =baseURL+"modules/sys/sysmenuSon.html?id="+row.id;
-        },
+
+
+
         handleDel: function () {
 
             var id = getMenuId();
@@ -220,7 +214,6 @@ var vm = new Vue({
             vm.reload();
         },
         reload: function () {
-
                 Menu.table.refresh();
 
         }

@@ -1,4 +1,7 @@
-var menuId = $("#menuId").val();
+// var menuId = $("#menuId").val();
+
+var menuId =getUrlParam('id');
+
 var vm = new Vue({
     el: '#app',
     data: {
@@ -181,6 +184,13 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+
+
+        toChild: function (item) {
+
+            parent.location.href =baseURL+item.url+"?id="+item.id;
+
         }
     }
 });
