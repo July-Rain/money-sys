@@ -16,20 +16,33 @@
         <div class="swiper-container swiper-no-swiping">
             <div class="swiper-wrapper">
                 <div v-for="item in dataList" class="swiper-slide">
-                    [{{item.questionType}}] {{item.comContent}}
+                    [{{item.questionType==4?'单选题':item.questionType==5?'多选题':'判断题'}}] {{item.comContent}}
                     <br/>
                     <br/>
-                        <div v-for="(item2,index) in item.answer" class="swiper-slide">
-                            {{index}}、{{item2.questionContent}}
-                        </div>
+                        <el-checkbox-group v-model="answers" v-if="item.questionType==5">
+                            <el-checkbox :label="item2.id" v-for="item2 in item.answer">{{item2.questionContent}}</el-checkbox>
+                            <br/>
+                        </el-checkbox-group>
+
+                        <el-radio-group v-model="answers"
+                                        v-if="item.questionType==4 || item.questionType==6"
+                                        :disabled="radio_disabled">
+                            <el-radio :label="item2.id" v-for="item2 in item.answer"
+                                      @change="radioCheck(item.id, item.answerId, item.questionType)">
+                                {{item2.questionContent}}
+                            </el-radio>
+                            <br/>
+                        </el-radio-group>
                     <br/>
-                    {{item.questionDifficulty}}
+                    难度系数：{{item.questionDifficulty}}
                 </div>
             </div>
         </div>
         <el-button-group>
             <el-button type="primary" icon="el-icon-arrow-left">上一页</el-button>
             <el-button type="primary">下一页<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
+            <el-button type="primary">保存<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
+            <el-button type="primary">提交本次练习<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
         </el-button-group>
     </div>
 </div>

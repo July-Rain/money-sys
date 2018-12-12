@@ -31,9 +31,9 @@ public interface ThemeExerciseService extends AbstractService<ThemeExerciseEntit
      */
     List<QuestForm> saveAndGetQuestions(ThemeForm form);
 
-    List<QuestForm> getQuestions(String id, String userId);
+    List<QuestForm> getQuestions(String id, String userId, List<String> list);
 
-    void preserve(ThemeForm form);
+    List<String> preserve(ThemeForm form);
 
     AnalysisForm commit(ThemeForm form);
 
