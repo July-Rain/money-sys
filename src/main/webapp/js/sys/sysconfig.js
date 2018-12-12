@@ -4,6 +4,8 @@
  * Description:参数配置
  */
 var menuId = $("#menuId").val();
+
+
 var vm = new Vue({
     el: '#app',
     data: {

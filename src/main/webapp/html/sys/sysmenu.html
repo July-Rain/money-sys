@@ -57,87 +57,10 @@
                         <div>
 
                             <el-button size="mini" type="primary" @click="addConfig" >新增目录</el-button>
+                            <el-button size="mini" type="primary" @click="handleEdit" >修改</el-button>
+                            <el-button size="mini" type="primary" @click="handleDel" >删除</el-button>
 
-                            <!--<el-table-->
-                                    <!--:data="tableData"-->
-                                    <!--border-->
-                                    <!--style="width: 100%">-->
-                                <!--<el-table-column-->
-                                        <!--prop="name"-->
-                                        <!--label="目录名称"-->
-                                        <!--width="280"-->
-                                        <!--header-align="center"-->
-                                        <!--align="center">-->
-                                <!--</el-table-column>-->
 
-                                <!--<el-table-column-->
-                                        <!--prop="type"-->
-                                        <!--label="类型"-->
-                                        <!--width="280"-->
-                                        <!--header-align="center"-->
-                                        <!--align="center"-->
-                                <!--&gt;-->
-                                    <!--<template slot-scope="scope">-->
-                                        <!--<el-tag v-if="scope.row.type === '0'" size="small" >目录</el-tag>-->
-                                        <!--<el-tag v-if="scope.row.type === '1'" size="small" >菜单</el-tag>-->
-                                        <!--<el-tag v-if="scope.row.type === '2'" size="small" >按钮</el-tag>-->
-                                        <!--&lt;!&ndash;<el-tag v-else size="small">有效</el-tag>&ndash;&gt;-->
-                                    <!--</template>-->
-                                <!--</el-table-column>-->
-                                <!--<el-table-column-->
-                                        <!--prop="orderNum"-->
-                                        <!--label="排序号"-->
-                                        <!--width="280"-->
-                                        <!--header-align="center"-->
-                                        <!--align="center"-->
-                                <!--&gt;-->
-                                <!--</el-table-column>-->
-                                <!--<el-table-column-->
-                                        <!--prop="url"-->
-                                        <!--label="菜单url"-->
-                                        <!--width="280"-->
-                                        <!--header-align="center"-->
-                                        <!--align="center"-->
-                                <!--&gt;-->
-                                <!--</el-table-column>-->
-                                <!--<el-table-column-->
-                                        <!--prop="isShow"-->
-                                        <!--label="状态"-->
-                                        <!--width="180"-->
-                                        <!--header-align="center"-->
-                                        <!--align="center"-->
-                                        <!--width="100"-->
-                                        <!--&gt;-->
-                                    <!--<template slot-scope="scope">-->
-                                        <!--<el-tag v-if="scope.row.isShow === '1'" size="small" >有效</el-tag>-->
-                                        <!--<el-tag v-else size="small" type="danger">无效</el-tag>-->
-                                    <!--</template>-->
-
-                                <!--</el-table-column>-->
-
-                                <!--<el-table-column-->
-                                        <!--label="操作"-->
-                                        <!--header-align="center"-->
-                                        <!--align="center"-->
-                                        <!--width="380">-->
-                                    <!--<template slot-scope="scope">-->
-                                        <!--<el-button-->
-                                                <!--size="mini"-->
-                                                <!--@click="handleEdit(scope.$index, scope.row)">编辑-->
-                                        <!--</el-button>-->
-                                        <!--<el-button-->
-                                                <!--size="mini"-->
-                                                <!--@click="showSon(scope.$index, scope.row)">查看子菜单-->
-                                        <!--</el-button>-->
-                                        <!--<el-button-->
-                                                <!--plain-->
-                                                <!--type="danger"-->
-                                                <!--size="mini"-->
-                                                <!--@click="handleDel(scope.$index, scope.row)">删除-->
-                                        <!--</el-button>-->
-                                    <!--</template>-->
-                                <!--</el-table-column>-->
-                            <!--</el-table>-->
                             <table id="menuTable" data-mobile-responsive="true" data-click-to-select="true">
                                 <thead>
                                 <tr>
@@ -145,15 +68,7 @@
                                 </tr>
                                 </thead>
                             </table>
-                            <!--<el-pagination-->
-                                    <!--@size-change="handleSizeChange"-->
-                                    <!--@current-change="handleCurrentChange"-->
-                                    <!--:current-page="formInline.currPage"-->
-                                    <!--:page-sizes="[10, 20, 30, 40]"-->
-                                    <!--:page-size="formInline.pageSize"-->
-                                    <!--layout="total, sizes, prev, pager, next, jumper"-->
-                                    <!--:total="formInline.totalCount">-->
-                            <!--</el-pagination>-->
+
                         </div>
                     </el-tab-pane>
                 </el-tabs>
@@ -170,11 +85,29 @@
                         <el-form-item label="菜单名称" prop="name">
                             <el-input v-model="sysMenu.name" placeholder="请输入菜单名称" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="上级菜单" prop="parentId">
-                            <el-input v-model="sysMenu.parentId"  @click="menuTree" readonly></el-input>
-                            <!--<input type="text" class="form-control" style="cursor:pointer;" v-model="sysMenu.parentName" @click="menuTree" readonly="readonly" placeholder="一级菜单"/>-->
-                        </el-form-item>
 
+                        <el-form-item label="上级菜单" prop="parentName">
+                            <el-popover
+                                    ref="menuListPopover"
+                                    placement="bottom-start"
+                                    trigger="click"
+                                    v-model="sysMenu.visible">
+                                <el-tree
+                                        :data="menuList"
+                                        :props="menuListTreeProps"
+                                        node-key="sysMenu.parentId"
+                                        ref="menuListTree"
+                                        @current-change="menuListTreeCurrentChangeHandle"
+                                        :default-expand-all="false"
+                                        :highlight-current="true"
+                                        :expand-on-click-node="false">
+                                </el-tree>
+                                <el-input v-model="sysMenu.parentName" v-popover:menuListPopover slot="reference" :readonly="true"  placeholder="点击选择上级菜单"></el-input>
+                            </el-popover>
+                        </el-form-item>
+                        <el-form-item label="菜单url" prop="url">
+                            <el-input v-model="sysMenu.url" placeholder="菜单url" ></el-input>
+                        </el-form-item>
                         <el-form-item label="授权标识" prop="perms">
                             <el-input v-model="sysMenu.perms" placeholder="授权标识" ></el-input>
                         </el-form-item>
@@ -199,13 +132,7 @@
 
     </div>
 
-    <!-- 选择菜单 -->
-    <el-tree
-            :data="data"
-            :props="defaultProps"
-            accordion
-            @node-click="handleNodeClick">
-    </el-tree>
+
 
 </div>
 

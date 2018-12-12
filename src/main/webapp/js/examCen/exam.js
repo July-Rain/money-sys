@@ -1,4 +1,4 @@
-var menuId = $("#menuId").val();
+var menuId =getUrlParam('id');
 var vm = new Vue({
     el: '#app',
     data: {
@@ -104,15 +104,7 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         addConfig: function () {
-            this.sysConfig = {
-                id: '',
-                code: '',
-                value: '',
-                remark: '',
-                status: "1"
-            };
-            this.title = "新增参数";
-            this.dialogConfig = true;
+            parent.location.href =baseURL+"modules/examCen/examConfig.html";
         },
         handleEdit: function (index, row) {
             this.title = "修改参数";
@@ -181,6 +173,13 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+
+
+        toChild: function (item) {
+
+            parent.location.href =baseURL+item.url+"?id="+item.id;
+
         }
     }
 });

@@ -33,7 +33,7 @@
         LEFT JOIN LAW_SYS_MENU s2
         ON S2."ID"=S1.PARENT_ID
         WHERE S1.PARENT_ID is NOT NULL
-        ORDER BY S1.ORDER_NUM ASC
+        ORDER BY S1.ORDER_NUM+0
     </select>
 
     <!-- 查询权限下数据 -->

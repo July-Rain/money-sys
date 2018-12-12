@@ -1,5 +1,6 @@
 package com.lawschool.controller.exam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +43,6 @@ public class ExamConfigController {
 	
 	@RequestMapping("/list")
 	public Result list(@RequestParam Map<String, Object> params) {
-
 //        String typeId = (String) params.get("typeId");
 //        String questionDifficulty = (String) params.get("questionDifficulty");
 //        String questionType = (String) params.get("questionType");

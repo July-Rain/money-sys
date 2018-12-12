@@ -4,15 +4,12 @@ package com.lawschool.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.annotation.SysLog;
-import com.lawschool.base.Page;
 import com.lawschool.beans.SysMenu;
-import com.lawschool.beans.SysRoleOrg;
 import com.lawschool.service.SysMenuService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -93,10 +90,16 @@ public class SysMenuController {
 //实现实体类里面list包 下级  下级list在包下级的 树结构数据
     @RequestMapping("/listAllMenuTree")
     public Result listAllMenuTree(){
-     List<SysMenu>  SysMenuList= sysMenuService.listAllMenuTree();
+
+        List<SysMenu>  SysMenuList=new ArrayList<SysMenu>();
+        SysMenu SysMenu=new SysMenu();
+        SysMenu.setId("0");
+        SysMenu.setParentId("-1");
+        SysMenu.setName("一级菜单");
+        SysMenuList.add(SysMenu);
+        SysMenuList.addAll( sysMenuService.listAllMenuTree());
         return Result.ok().put("listAllMenuTree", SysMenuList);
     }
-
 
 
     @RequestMapping("/list")
@@ -120,6 +123,16 @@ public class SysMenuController {
     @RequestMapping("/info")
     public Result info(String id){
         SysMenu sysmenu = sysMenuService.selectById(id);
+        if(sysmenu.getParentId().equals("0"))
+        {
+            sysmenu.setParentName("一级菜单");
+        }
+        else{
+            SysMenu sysmenuBaBa = sysMenuService.selectById(sysmenu.getParentId());
+
+            sysmenu.setParentName(sysmenuBaBa.getName());
+        }
+
         return Result.ok().put("data", sysmenu);
     }
 
@@ -161,19 +174,7 @@ public class SysMenuController {
         return maps;
     }
 
-    @RequestMapping("/select")
-    public Result select(){
-        //查询列表数据
-        List<SysMenu> menuList = sysMenuService.queryNotButtonList();
-        //添加顶级菜单
-        SysMenu root = new SysMenu();
-        root.setId(IdWorker.getIdStr());
-        root.setName("一级菜单");
-        root.setParentId("-1");
-        root.setOpen(true);
-        menuList.add(root);
-        return Result.ok().put("menuList", menuList);
-    }
+
     public String getId() {
         return id;
     }
