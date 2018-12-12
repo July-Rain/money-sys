@@ -10,6 +10,9 @@ var vm = new Vue({
     data: {
         //menuId:"",//菜单id
         navData: [],//导航
+
+        bigcheckNum:[],//大关数量数据
+
         formInline: { // 搜索表单
             value: '',
             name: '',
@@ -27,9 +30,9 @@ var vm = new Vue({
             remark: '',
             status: "1"
         },
-        daguan: {
+        daguanArray: [
 
-        },
+        ],
         rules: {//表单验证规则
             value: [
                 {required: true, message: '请输入参数名', trigger: 'blur'},
@@ -105,10 +108,17 @@ var vm = new Vue({
                 dataType: "json",
                 data: {type:"BIGCHECKNUM",Parentcode:"99997"},
                 success: function (result) {
-
-                    console.info(result);
                     if (result.code == 0) {
-
+                        //区间也就2个值 也排序过了
+                        var bigchecknum1 =  result.dictlist[0].value;
+                        var bigchecknum2 =  result.dictlist[1].value;
+                        for(var i=bigchecknum1;i<=bigchecknum2;i++)
+                        {
+                           vm.bigcheckNum.push({
+                               value: i,
+                               label: i+'大关'
+                           })
+                        }
                     } else {
                         alert(result.msg);
                     }
