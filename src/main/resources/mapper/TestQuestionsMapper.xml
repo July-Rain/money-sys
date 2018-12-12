@@ -447,7 +447,7 @@
         FROM law_testquestions
         <where>
              1 = 1
-            <if test="specialKnowledgeId != null and specialKnowledgeId.size > 0">
+            <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
                 AND a.special_knowledge_id = #{specialKnowledgeId}
             </if>
             <if test="list != null and list.size > 0">
