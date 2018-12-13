@@ -53,4 +53,18 @@ public interface DictService extends IService<Dict> {
      * @param id
      */
     public  void deleteByDictId(@Param(value="id") String id);
+
+    /**
+     * 查询字典表结合父子节点
+     */
+    List<Map<String,Object>> queryForZtree();
+
+    /**
+     * 查询当前节点下是否还有节点
+     */
+    List<Dict> queryListParentCode(String code);
+
+    void deleteByCode(String code);
+
+    Dict selectByCode(String code);
 }

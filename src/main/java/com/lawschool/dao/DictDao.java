@@ -8,15 +8,23 @@ import java.util.Map;
 
 public interface DictDao extends BaseMapper<Dict> {
 
-    public Dict selectByDictId(String id);
+     Dict selectByDictId(String id);
 
-    public List<Dict> selectAllDict();
+     List<Dict> selectAllDict();
 
-    public void addDict(Dict dict);
+     void addDict(Dict dict);
 
-    public void updateByDictId(Dict dict);
+     void updateByDictId(Dict dict);
 
-    public void deleteByDictIds(Map ids);
+     void deleteByDictIds(Map ids);
 
-    public void deleteByDictId(String id);
+    void deleteByDictId(String id);
+
+    List<Map<String,Object>> queryForZtree();
+
+    List<Dict> queryListParentCode(String code);
+
+    void deleteByCode(String code);
+
+    Dict selectByCode(String code);
 }

@@ -48,4 +48,24 @@ public class DictServiceImpl extends ServiceImpl<DictDao, Dict> implements DictS
     public void deleteByDictId(String id) {
         dictDao.deleteByDictId(id);
     }
+
+    @Override
+    public List<Map<String, Object>> queryForZtree() {
+        return dictDao.queryForZtree();
+    }
+
+    @Override
+    public List<Dict> queryListParentCode(String code) {
+        return dictDao.queryListParentCode(code);
+    }
+
+    @Override
+    public void deleteByCode(String code) {
+        dictDao.deleteByCode(code);
+    }
+
+    @Override
+    public Dict selectByCode(String code) {
+        return dictDao.selectByCode(code);
+    }
 }

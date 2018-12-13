@@ -63,4 +63,35 @@
     <delete id="deleteByDictId" parameterType="java.lang.String">
         delete from LAW_SYS_DICT where ID=#{id}
     </delete>
+
+    <!--查询所有字典数据根据(父类子类)-->
+    <select id="queryForZtree" resultType="java.util.Map">
+        select
+            l1.ID AS "id",
+            l1.NAME as "parentName",
+            l1.TYPE as "type",
+            l1.PARENT_CODE AS "parentCode",
+            l1.CODE AS "code",
+            l1.value AS "name",
+						l1.ORDER_NUM AS "orderNum",
+						l1.REMARK AS "remark"
+        from
+        LAW_SYS_DICT l1
+        where l1.ID is not NULL
+        ORDER BY L1.ORDER_NUM
+    </select>
+
+    <!-- 查找子节点记录 -->
+    <select id="queryListParentCode" resultType="java.util.Map">
+        select * from LAW_SYS_DICT where parent_code = #{code} order by order_num asc
+    </select>
+
+    <delete id="deleteByCode" parameterType="java.lang.String">
+      delete from LAW_SYS_DICT where code = {#code}
+    </delete>
+
+    <!--通过code查询字典-->
+    <select id="selectByCode" parameterType="java.lang.String" resultType="com.lawschool.beans.Dict">
+        select * from LAW_SYS_DICT where code = {#code}
+    </select>
 </mapper>
