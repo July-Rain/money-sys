@@ -204,21 +204,52 @@
                                 <el-form-item label="每关积分" prop="crossingPoints">
                                     <el-input v-model="item2.crossingPoints" placeholder="每关积分" clearable></el-input>
                                 </el-form-item>
-                                <el-form-item label="试题难度 初中高" prop="itemDifficulty">
-                                    <el-input v-model="item2.itemDifficulty" placeholder="试题难度" clearable></el-input>
+
+
+                                <el-form-item label="试题难度" prop="itemDifficulty">
+                                    <el-radio-group v-model="item2.itemDifficulty">
+                                        <el-radio :label="item.code" v-for="item in itemjibie">
+                                            {{item.value}}
+                                        </el-radio>
+                                    </el-radio-group>
                                 </el-form-item>
 
-                                <el-form-item label="专项知识 选择的" prop="specialKnowledgeId">
-                                    <el-input v-model="item2.specialKnowledgeId" placeholder="专项知识" clearable></el-input>
+
+                                <el-form-item label="专项知识" prop="specialKnowledgeId">
+                                    <el-select  v-model="item2.specialKnowledgeId"
+                                               size="mini"
+                                               style="margin-left: 20px;"
+                                               placeholder="专项知识">
+                                        <el-option
+                                                v-for="item in zhuanxiangzhishiList"
+                                                :key="item.key"
+                                                :label="item.value"
+                                                :value="item.key">
+                                        </el-option>
+                                    </el-select>
                                 </el-form-item>
 
-                                <el-form-item label="试题类型 选择的" prop="itemType">
-                                    <el-input v-model="item2.itemType" placeholder="试题类型" clearable></el-input>
+
+                                <el-form-item label="试题类型" prop="itemType">
+                                    <el-select  v-model="item2.itemType"
+                                                size="mini"
+                                                style="margin-left: 20px;"
+                                                placeholder="试题类型">
+                                        <el-option
+                                                v-for="item in itemtype"
+                                                :key="item.code"
+                                                :label="item.value"
+                                                :value="item.code">
+                                        </el-option>
+                                    </el-select>
                                 </el-form-item>
 
-                                <el-form-item label="大关是否奖励 是否" prop="markReward">
-                                <el-input v-model="item2.markReward" placeholder="大关是否奖励" clearable></el-input>
+
+
+                                <el-form-item label="大关是否奖励" prop="markReward">
+                                    <el-switch v-model="item2.markReward" active-text="是"  inactive-text="否" active-value="1"  inactive-value="0" ></el-switch>
                                 </el-form-item>
+
                                 <el-form-item label="大关奖励分值 " prop="rewardScore">
                                     <el-input v-model="item2.rewardScore" placeholder="大关奖励分值" clearable></el-input>
                                 </el-form-item>
@@ -242,7 +273,7 @@
         <el-dialog :title="title" :visible.sync="dialog2" :before-close="closedialog2">
             <el-row>
                 <el-col :span="12">
-                    <el-form :model="xiaoguanList" :rules="rules" ref="xiaoguanList" label-width="100px" class="demo-xiaoguanList" size="mini">
+                    <el-form :model="xiaoguanList" ref="xiaoguanList" label-width="100px" class="demo-xiaoguanList" size="mini">
 
                     <div v-for="item in xiaoguanList">
 
@@ -266,8 +297,8 @@
                             <tr>
                                 <td>奖励分值</td>
                                 <td>{{item.rewardScore}}</td>
-                                <td>没了？</td>
-                                <td>没了！</td>
+                                <td>试题类型？</td>
+                                <td>{{item.itemType}}</td>
                             </tr>
                         </table>
                         <!--<el-form-item label="第几小关">-->

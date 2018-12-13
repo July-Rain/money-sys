@@ -34,21 +34,28 @@ var vm = new Vue({
         daguanArray: [
         ],
         rules: {//表单验证规则
-            value: [
-                {required: true, message: '请输入参数名', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ],
-            code: [
-                {required: true, message: '请输入参数值', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ]
+            // smallNum: [
+            //     {required: true, message: '请输入参数名', trigger: 'blur'},
+            //     {max: 3, message: '最大长度3', trigger: 'blur'}
+            // ],
+            // code: [
+            //     {required: true, message: '请输入参数值', trigger: 'blur'},
+            //     {max: 50, message: '最大长度50', trigger: 'blur'}
+            // ]
         },
         dialogConfig: false,//table弹出框可见性
         dialog2:false,//查看小关详情弹出框
         title: "",//弹窗的名称
         delIdArr: [],//删除数据
-
+ //小关集合
         xiaoguanList:[],
+
+//专项知识
+        zhuanxiangzhishiList:[],
+//试题类型
+        itemtype:[],
+//试题难度
+        itemjibie:[],
     },
     created: function () {
         this.$nextTick(function () {
@@ -57,6 +64,8 @@ var vm = new Vue({
         })
     },
     methods: {
+
+
         // 查询
         onSubmit: function () {
             this.reload();
@@ -131,6 +140,40 @@ var vm = new Vue({
                 }
             });
 
+            //专项知识
+            $.ajax({
+                type: "POST",
+                url: baseURL + "recruitConfiguration/findAllTopic",
+                dataType: "json",
+                success: function (result) {
+
+                    vm.zhuanxiangzhishiList=result.data;
+                }
+            });
+
+            // 试题类型
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                data: {type:"QUESTION_TYPE",Parentcode:"0"},
+                success: function (result) {
+
+
+                    vm.itemtype=result.dictlist;
+                }
+            });
+
+            //试题难度
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                data: {type:"QUESTION_DIFF",Parentcode:"0"},
+                success: function (result) {
+                    vm.itemjibie=result.dictlist;
+                }
+            });
             this.title = "新增闯关配置";
             this.dialogConfig = true;
 

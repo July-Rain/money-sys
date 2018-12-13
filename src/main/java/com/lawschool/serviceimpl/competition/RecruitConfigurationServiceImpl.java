@@ -6,9 +6,12 @@ import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.SysConfig;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
+import com.lawschool.beans.system.TopicTypeEntity;
 import com.lawschool.dao.competition.RecruitConfigurationDao;
+import com.lawschool.form.CommonForm;
 import com.lawschool.service.competition.RecruitCheckpointConfigurationService;
 import com.lawschool.service.competition.RecruitConfigurationService;
+import com.lawschool.service.system.TopicTypeService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;
 import com.lawschool.util.UtilValidate;
@@ -26,6 +29,8 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 	private RecruitConfigurationDao recruitconfigurationDao;
 	@Autowired
 	private RecruitCheckpointConfigurationService recruitCheckpointConfigurationService;
+	@Autowired
+	private TopicTypeService topicTypeService;
 	@Override
 	public List<RecruitConfiguration> findAll() {
 			List<RecruitConfiguration>  list=this.selectList(new EntityWrapper<RecruitConfiguration>());//得到闯关配置大关的list
@@ -150,5 +155,13 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 		 List<RecruitCheckpointConfiguration> list= recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",id).orderBy("HOW_MANY_SMALL",true));
 
 		return list;
+	}
+
+
+	@Override
+	public List<CommonForm> findAllTopic() {
+			List list=new ArrayList();
+		List<CommonForm> CommonFormList= topicTypeService.findAll(list);
+		return CommonFormList;
 	}
 }
