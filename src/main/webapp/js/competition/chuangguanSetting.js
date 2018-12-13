@@ -152,16 +152,20 @@ var vm = new Vue({
         },
         look: function (index, row) {
             vm.title = "查看关卡配置";
-            vm.dialog2 = true;
+            vm.xiaoguanList =[];//每次打开前 都删一边
             $.ajax({
                 type: "POST",
                 url: baseURL + 'recruitConfiguration/getSonList',
-                contentType: "application/json",
+                dataType: "json",
                 data:{"id": row.id},
                 success: function (result) {
+
+                    console.info(result)
                     if (result.code === 0) {
                         // 返回的是一个集合   不想做成在翻页   直接做成循环table
                         vm.xiaoguanList = result.data;
+
+                        vm.dialog2 = true;
                     } else {
                         alert(result.msg);
                     }
@@ -201,6 +205,10 @@ var vm = new Vue({
         closeDia: function () {
             this.dialogConfig = false;
             vm.reload();
+        },
+        closedialog2: function () {
+            vm.dialog2 = false;
+            // vm.reload();
         },
         reload: function () {
             $.ajax({

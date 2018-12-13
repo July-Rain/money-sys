@@ -47,7 +47,7 @@ public class RecruitConfigurationController {
 //        System.out.println(params);
 //        System.out.println("sads");
         //前提 要前端 传过来  (看 是不是统一配置)  先不考虑统一配置
-        RecruitConfiguration recruitConfiguration=new RecruitConfiguration();
+
         recruitConfigurationService.save(list);//这边到时候和前端商量  传个json串
         return Result.ok();
     }
@@ -64,7 +64,7 @@ public class RecruitConfigurationController {
 
 
     @RequestMapping("/getSonList")
-    public Result getSonList(@RequestBody String id){
+    public Result getSonList(String id){
         List<RecruitCheckpointConfiguration> list= recruitConfigurationService.getSonList(id);
 
         return Result.ok().put("data", list);

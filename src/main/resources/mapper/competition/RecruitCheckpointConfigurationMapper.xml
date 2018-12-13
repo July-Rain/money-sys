@@ -13,11 +13,12 @@
            <result column="UNIFY_CONFIGURATION" property="unifyConfiguration" jdbcType="VARCHAR" />
            <!--<result column="SMALL_NUM" property="smallNum" jdbcType="VARCHAR" />-->
            <result column="HOW_MANY_SMALL" property="howManySmall" jdbcType="INTEGER" />
+           <result column="ITEM_TYPE" property="itemType" jdbcType="VARCHAR" />
            <result column="ITEM_DIFFICULTY" property="itemDifficulty" jdbcType="VARCHAR" />
            <result column="CROSSING_POINTS" property="crossingPoints" jdbcType="VARCHAR" />
            <result column="MARK_REWARD" property="markReward" jdbcType="VARCHAR" />
            <result column="REWARD_SCORE" property="rewardScore" jdbcType="VARCHAR" />
-           <result column="CREATE" property="create" jdbcType="VARCHAR" />
+           <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
            <result column="CREATE_DEPT" property="createDept" jdbcType="VARCHAR" />
            <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
            <result column="STATUS" property="status" jdbcType="VARCHAR" />

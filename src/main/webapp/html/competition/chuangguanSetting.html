@@ -201,16 +201,28 @@
                             </el-form-item>
 
                             <div v-for="item2 in item.recruitCheckpointConfigurationList" class="swiper-slide">
-                                <el-form-item label="每关积分" prop="rewardScore">
-                                    <el-input v-model="item2.rewardScore" placeholder="每关积分" clearable></el-input>
+                                <el-form-item label="每关积分" prop="crossingPoints">
+                                    <el-input v-model="item2.crossingPoints" placeholder="每关积分" clearable></el-input>
                                 </el-form-item>
-                                <el-form-item label="试题难度" prop="itemDifficulty">
+                                <el-form-item label="试题难度 初中高" prop="itemDifficulty">
                                     <el-input v-model="item2.itemDifficulty" placeholder="试题难度" clearable></el-input>
                                 </el-form-item>
 
-                                <el-form-item label="专项知识" prop="specialKnowledgeId">
+                                <el-form-item label="专项知识 选择的" prop="specialKnowledgeId">
                                     <el-input v-model="item2.specialKnowledgeId" placeholder="专项知识" clearable></el-input>
                                 </el-form-item>
+
+                                <el-form-item label="试题类型 选择的" prop="itemType">
+                                    <el-input v-model="item2.itemType" placeholder="试题类型" clearable></el-input>
+                                </el-form-item>
+
+                                <el-form-item label="大关是否奖励 是否" prop="markReward">
+                                <el-input v-model="item2.markReward" placeholder="大关是否奖励" clearable></el-input>
+                                </el-form-item>
+                                <el-form-item label="大关奖励分值 " prop="rewardScore">
+                                    <el-input v-model="item2.rewardScore" placeholder="大关奖励分值" clearable></el-input>
+                                </el-form-item>
+
                             </div>
                         </div>
 
@@ -227,15 +239,40 @@
 
 
 
-        <el-dialog :title="title" :visible.sync="dialog2" :before-close="closeDia">
+        <el-dialog :title="title" :visible.sync="dialog2" :before-close="closedialog2">
             <el-row>
                 <el-col :span="12">
-                    <!--<el-form :model="daguanArray" :rules="rules" ref="daguanArray" label-width="100px" class="demo-daguanArray" size="mini">-->
+                    <el-form :model="xiaoguanList" :rules="rules" ref="xiaoguanList" label-width="100px" class="demo-xiaoguanList" size="mini">
 
                     <div v-for="item in xiaoguanList">
-                        <el-form-item label="第几小关">
-                            <el-input v-model="item.howManySmall" placeholder="第几小关" clearable></el-input>
-                        </el-form-item>
+
+                        <table style="width: 100%;height: 100%">
+                            <tr>
+                                <td colspan="4">第{{item.howManySmall}}小关</td>
+
+                            </tr>
+                            <tr>
+                                <td>专项知识ID</td>
+                                <td>{{item.specialKnowledgeId}}</td>
+                                <td>试题难度</td>
+                                <td>{{item.itemDifficulty}}</td>
+                            </tr>
+                            <tr>
+                                <td>关卡积分</td>
+                                <td>{{item.crossingPoints}}</td>
+                                <td>大关是否奖励</td>
+                                <td>{{item.markReward}}</td>
+                            </tr>
+                            <tr>
+                                <td>奖励分值</td>
+                                <td>{{item.rewardScore}}</td>
+                                <td>没了？</td>
+                                <td>没了！</td>
+                            </tr>
+                        </table>
+                        <!--<el-form-item label="第几小关">-->
+                            <!--<el-input v-model="item.howManySmall" placeholder="第几小关" clearable></el-input>-->
+                        <!--</el-form-item>-->
 
 
                     </div>
@@ -244,7 +281,7 @@
 
 
 
-                    <!--</el-form>-->
+                    </el-form>
                 </el-col>
             </el-row>
         </el-dialog>

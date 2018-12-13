@@ -37,6 +37,10 @@ public class RecruitCheckpointConfiguration implements Serializable {
 //	private String smallNum;
 	//当前第几小关
 	private int howManySmall;
+
+	//试题类型
+	private int itemType;
+
 	//试题难度
 	private String itemDifficulty;
 	//关卡积分
@@ -46,7 +50,7 @@ public class RecruitCheckpointConfiguration implements Serializable {
 	//奖励分值
 	private String rewardScore;
 	//操作人
-	private String create;
+	private String createPeople;
 	//操作单位
 	private String createDept;
 	//操作时间
@@ -100,7 +104,13 @@ public class RecruitCheckpointConfiguration implements Serializable {
 		this.unifyConfiguration = unifyConfiguration;
 	}
 
+	public int getItemType() {
+		return itemType;
+	}
 
+	public void setItemType(int itemType) {
+		this.itemType = itemType;
+	}
 
 	public String getItemDifficulty() {
 		return itemDifficulty;
@@ -142,12 +152,12 @@ public class RecruitCheckpointConfiguration implements Serializable {
 		this.rewardScore = rewardScore;
 	}
 
-	public String getCreate() {
-		return create;
+	public String getCreatePeople() {
+		return createPeople;
 	}
 
-	public void setCreate(String create) {
-		this.create = create;
+	public void setCreatePeople(String createPeople) {
+		this.createPeople = createPeople;
 	}
 
 	public String getCreateDept() {
