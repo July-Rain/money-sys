@@ -72,12 +72,12 @@ public class SysCommonController extends AbstractController {
      **/
     
     @RequestMapping("/download")
-    public void downLoad(@RequestParam(value = "filePath") String filePath,@RequestParam(value = "filename") String filename, HttpServletResponse response) throws IOException {
-        if (UtilValidate.isEmpty(filePath)) {
+    public void downLoad(@RequestParam(value = "accessoryId") String accessoryId, HttpServletResponse response) throws IOException {
+        if (UtilValidate.isEmpty(accessoryId)) {
             throw new RuntimeException("文件路径错误");
         }
         ServletOutputStream outputStream = response.getOutputStream();
-        FileUtil.downloadFromFileServer(filePath,filename,outputStream);
+        FileUtil.downloadFromFileServer(accessoryId,outputStream);
         outputStream.close();
     }
 
