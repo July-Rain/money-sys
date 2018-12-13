@@ -11,8 +11,7 @@ var vm = new Vue({
             pageNo: 1,
             pageSize: 1,
             limit : 10,
-            count: 0,
-            defaultPageSize :10
+            count: 0
         },
         tableData: [],//表格数据
         visible: false,

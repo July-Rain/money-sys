@@ -2,7 +2,7 @@ package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserExample;
 import com.lawschool.dao.UserMapper;
@@ -19,7 +19,7 @@ import java.util.Map;
 import static com.lawschool.util.Constant.*;
 
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> implements UserService {
 
     @Autowired
     UserMapper userMapper;

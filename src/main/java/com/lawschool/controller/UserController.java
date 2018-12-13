@@ -1,12 +1,17 @@
 package com.lawschool.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.base.AbstractController;
+import com.lawschool.base.Page;
 import com.lawschool.beans.User;
+import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.service.UserService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
+import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,9 +37,16 @@ public class UserController extends AbstractController {
 
     //列表
     @RequestMapping("/getAllUsers")
-    public Result selectAllUsers(Map<String,Object> params){
+    public Result selectAllUsers(@RequestParam Map<String,Object> params){
         Result result=Result.ok();
-        PageUtils pageUtils = userService.selectAllUsers(params);
+        if(UtilValidate.isEmpty(params.get("orgCode"))){
+            params.put("orgCode","32");
+        }
+        System.out.println(params.get("orgCode"));
+        User user = new User();
+        user.setOrgCode(params.get("orgCode").toString());
+        Page<User> pageUtils =userService.findPage(new Page<User>(params),user);
+        pageUtils.setCount(pageUtils.getList().size());
         result.put("users",pageUtils);
         return result;
     }
