@@ -17,6 +17,7 @@ public class QuestForm {
     private String legalBasis;// 法律依据
     private String answerDescrible;// 答案描述
     private List<AnswerForm> answer;//选项
+    private Integer answerChoiceNumber;// 选项数量
 
     public String getId() {
         return id;
@@ -80,5 +81,13 @@ public class QuestForm {
 
     public void setAnswer(List<AnswerForm> answer) {
         this.answer = answer;
+    }
+
+    public Integer getAnswerChoiceNumber() {
+        return answerChoiceNumber;
+    }
+
+    public void setAnswerChoiceNumber(Integer answerChoiceNumber) {
+        this.answerChoiceNumber = answerChoiceNumber;
     }
 }

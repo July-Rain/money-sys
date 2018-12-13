@@ -14,6 +14,7 @@ import com.lawschool.util.RedisUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.lawschool.beans.practicecenter.ThemeExerciseEntity;
@@ -133,6 +134,7 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 		entity.setOptUser(userId);
 		entity.setOptTime(new Date());
 		entity.setAnswerNum(0);
+		entity.setRightNum(0);
 		entity.setTypeName(typeName);
 
 		entity.setStatus(ThemeExerciseEntity.STATUS_ON);
@@ -174,18 +176,34 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 	 * @param userId 用户ID
 	 * @return
 	 */
-	public List<QuestForm> getQuestions(String id, String userId){
+	public List<QuestForm> getQuestions(String id, String userId, List<String> removeList){
 
 		// 先从redis中取剩余的题目ID，然后去取题目具体信息
 		String key = "theme" + userId + id;
 		List<String> ids = redisUtil.get(key, List.class, -1);
 
-		List<QuestForm> result = new ArrayList<>();
+		if(CollectionUtils.isNotEmpty(ids) && CollectionUtils.isNotEmpty(removeList)){
+			ids.removeAll(removeList);
+		}
 
+		List<String> questList = new ArrayList<>();
+
+		// 根据系统配置题目数量取题目，如果没有配置，默认取50
 		if(CollectionUtils.isNotEmpty(ids)){
-			result	= testQuestionService.findByIds(ids);
+			String qid = ids.get(0);
+			questList.add(qid);
+		}
 
-			List<AnswerForm> answerForms = answerService.findByQuestionIds(ids);
+		List<QuestForm> result = new ArrayList<>();
+		if(CollectionUtils.isNotEmpty(removeList)){
+			redisUtil.set(key, ids, -1);
+		}
+
+		if(CollectionUtils.isNotEmpty(questList)){
+
+			result	= testQuestionService.findByIds(questList);
+
+			List<AnswerForm> answerForms = answerService.findByQuestionIds(questList);
 			// 遍历处理选项信息
 			for(QuestForm qf : result){
 				String qid = qf.getId();
@@ -213,20 +231,25 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 	 */
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public void preserve(ThemeForm form){
+	public List<String> preserve(ThemeForm form){
+		List<String> removeList = new ArrayList<>();
 		// 答题记录
 		List<ThemeAnswerForm> list = form.getList();
 		String themeId = form.getId();
 
-		if(CollectionUtils.isNotEmpty(list) && StringUtils.isNotBlank(themeId)){
-			// 若无答题记录或主题ID为空，不做任何操作
+		ThemeExerciseEntity theme = null;
 
+		if(CollectionUtils.isNotEmpty(list) && StringUtils.isNotBlank(themeId)){
+
+			// 若无答题记录或主题ID为空，不做任何操作
 			int total = list.size();// 本次总答题数
 			List<ThemeAnswerRecordEntity> saveList = new ArrayList<>(total);
 			// 回答正确数
 			int rightNum = 0;
 
 			for(ThemeAnswerForm af : list){
+				removeList.add(af.getqId());
+
 				ThemeAnswerRecordEntity entity = new ThemeAnswerRecordEntity();
 				entity.setId(IdWorker.getIdStr());
 				entity.setAnswer(af.getAnswer());
@@ -234,6 +257,7 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 				entity.setRight(af.getRight());
 				entity.setThemeId(themeId);
 				entity.setTypeName(af.getTypeName());
+				entity.setAnswerTime(new Date());
 				saveList.add(entity);
 
 				if(af.getRight().intValue() == 1){
@@ -245,15 +269,24 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 			themeAnswerRecordService.saveBatch(saveList);
 
 			// 更新主题任务
-			ThemeExerciseEntity theme = dao.selectById(themeId);
+			theme = dao.selectById(themeId);
 			Integer right = theme.getRightNum();
 			theme.setRightNum(right + rightNum);
 			theme.setAnswerNum(total + theme.getAnswerNum());
 			theme.setStatus(form.getStatus());
+			theme.setOptTime(new Date());
 
+		} else if(StringUtils.isNotBlank(themeId)){
+			// 特殊情况，未答题直接提交，更新主题任务
+			theme = dao.selectById(themeId);
+			theme.setStatus(form.getStatus());
+		}
+
+		if(theme != null){
 			dao.updateAnswerRecord(theme);
 		}
 
+		return removeList;
 	}
 
 	/**
@@ -305,12 +338,14 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 	@Override
 	public List<QuestForm> saveAndGetQuestions(ThemeForm form){
 
+		List<String> removeList = new ArrayList<>();
+
 		if(CollectionUtils.isNotEmpty(form.getList())){
 			// 保存答题信息
-			this.preserve(form);
+			removeList = this.preserve(form);
 		}
 
-		List<QuestForm> questions = this.getQuestions(form.getId(), form.getUserId());
+		List<QuestForm> questions = this.getQuestions(form.getId(), form.getUserId(), removeList);
 
 		return questions;
 	}
@@ -333,12 +368,7 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 		questionType.add("6");
 
 		paramsMap.put("questionType", questionType);
-
-		// 专项知识IDS
-		List<String> specialKnowledgeId = new ArrayList<>();
-		// TODO xuxiang 此处参数需要根据实际情况修改
-		specialKnowledgeId.add(konwId);
-		paramsMap.put("specialKnowledgeId", specialKnowledgeId);
+		paramsMap.put("specialKnowledgeId", konwId);
 
 		resultList = testQuestionService.findIdBySpecialKnowledgeId(paramsMap);
 

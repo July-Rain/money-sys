@@ -18,38 +18,7 @@ var vm = new Vue({
             }
         }
         return {
-            navData: [
-                {
-                    icon: 'el-icon-tickets',
-                    name: ' 首页'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '学习中心'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '练习中心'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '学习中心'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '考试中心'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '竞赛中心'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '学校社区'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '个人中心'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '管理员入口'
-                }, {
-                    icon: 'el-icon-tickets',
-                    name: '退出'
-                }],//导航
+            navData: [],//导航
             learnTasks: 4,//学习任务
             practiceTasks: 5,//练习任务
             data: [
@@ -148,7 +117,51 @@ var vm = new Vue({
                 delivery: false,//配送状态
                 type: [],//活动性质
                 resource: '',//特殊资源
-                desc: ''//活动形式
+                desc: '',//活动形式
+                visible: false,
+                parentId: 0,
+                parentName: '',
+                menuId: '',
+                menuList: [
+                    {// el-tree数据
+                        label: '一级 1',
+                        children: [{
+                            label: '二级 1-1',
+                            children: [{
+                                label: '三级 1-1-1'
+                            }]
+                        }]
+                    }, {
+                        label: '一级 2',
+                        children: [{
+                            label: '二级 2-1',
+                            children: [{
+                                label: '三级 2-1-1'
+                            }]
+                        }, {
+                            label: '二级 2-2',
+                            children: [{
+                                label: '三级 2-2-1'
+                            }]
+                        }]
+                    }, {
+                        label: '一级 3',
+                        children: [{
+                            label: '二级 3-1',
+                            children: [{
+                                label: '三级 3-1-1'
+                            }]
+                        }, {
+                            label: '二级 3-2',
+                            children: [{
+                                label: '三级 3-2-1'
+                            }]
+                        }]
+                    }],
+                menuListTreeProps: {
+                    children: 'children',
+                    label: 'label'
+                }
             },
             rules: {//表单验证规则
                 name: [
@@ -233,21 +246,45 @@ var vm = new Vue({
                 },
             dialogTableVisible: false,//table弹出框可见性
             dialogFormVisible: false,//form弹出框可见性
-            formLabelWidth: '120px'
+            formLabelWidth: '120px',
+            tab: 'learn',
+            data11:[],//题型data
+            typeOptions: [
+                {
+                    value: 0,
+                    label: '单选'
+                },
+                {
+                    value: 1,
+                    label: '多选'
+                },
+                {
+                    value: 0,
+                    label: '填空'
+                },
+                {
+                    value: 1,
+                    label: '主观'
+                }
+            ],
+            dataListSelections: [],//选中行
+            deleteIds:[]
         }
     },
     created: function () {
-        console.log("进入页面触发一次")
+        console.log("container加载")
         this.$nextTick(function () {
-            var myPlayer = videojs('my-video');
-            videojs("my-video").ready(function () {
-                myPlayer = this;
-                myPlayer.play();
-            });
+            // 视频播放
+            // var myPlayer = videojs('my-video');
+            // videojs("my-video").ready(function () {
+            //     myPlayer = this;
+            //     myPlayer.play();
+            // });
         })
 
         this.$nextTick(function () {
             this.initPie1()
+            this.initBar1()
         })
 
         this.$nextTick(function () {
@@ -256,10 +293,11 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "menu/nav",
                 contentType: "application/json",
-                success: function(result){
-                    if(result.code === 0){
+                success: function (result) {
+
+                    if (result.code === 0) {
                         vm.navData = result.menuList;
-                    }else{
+                    } else {
                         alert(result.msg);
                     }
                 }
@@ -303,6 +341,15 @@ var vm = new Vue({
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
         },
+        // ECharts - 绘制图表
+        echartsOption: function (myChart, option) {
+            // this[chartName].clear()
+            myChart.setOption(option)
+            window.addEventListener('resize', function () {
+                myChart.resize()
+            })
+            // this[chartName].hideLoading() // Chart提示关闭
+        },
         //echarts
         initPie1: function () {
             // 基于准备好的dom，初始化echarts实例
@@ -311,7 +358,6 @@ var vm = new Vue({
             var option = {
                 backgroundColor: '#2c343c',
                 title: {
-                    text: 'Customized Pie',
                     left: 'center',
                     top: 20,
                     textStyle: {
@@ -379,7 +425,88 @@ var vm = new Vue({
                 ]
             };
             // 使用刚指定的配置项和数据显示图表。
-            myChart.setOption(option);
+            vm.echartsOption(myChart, option)
+        },
+        initBar1: function () {
+            var myChart = echarts.init(document.getElementById('bar1'));
+            var option = {
+                color: ['#3398DB'],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        // },
+                        // formatter: function (value) {
+                        //     return value[0].axisValue + ':<br/>' + num[value[0].dataIndex] + '人（' + value[0].data + '%）'
+                    }
+                },
+                grid: {
+                    left: '6%',
+                    right: '7%',
+                    bottom: '5%',
+                    top: '10%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['刑法', '宪法', '民商法', '行政法', '社会法', '经济法', '诉讼及非讼程序法'],
+                        axisTick: {
+                            alignWithLabel: true
+                        },
+                        // 设置坐标轴字体颜色和宽度
+                        axisLine: {
+                            lineStyle: {
+                                color: ['#abafb2']
+                            }
+                        },
+                        axisLabel: {
+                            interval: 0,
+                            // rotate: 20,
+                            textStyle: {
+                                fontSize: 12 // 让字体变大
+                            }
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        axisLabel: {
+                            formatter: '{value} %'
+                        },
+                        interval: 25,
+                        max: 100,
+                        min: 0,
+                        // 设置坐标轴字体颜色和宽度
+                        axisLine: {
+                            lineStyle: {
+                                width: 0,
+                                color: ['#abafb2']
+                            }
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        type: 'bar',
+                        barWidth: 25,
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(
+                                    0, 0, 0, 0.3,
+                                    [
+                                        {offset: 0, color: '#1994d7'},
+                                        {offset: 1, color: '#004b95'}
+                                    ]
+                                )
+                            }
+                        },
+                        data: [32, 12, 22, 11, 13, 3, 23]
+                    }
+                ]
+            }
+            vm.echartsOption(myChart, option)
         },
         // 简易提示框
         open2: function () {
@@ -389,24 +516,48 @@ var vm = new Vue({
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(function () {
-                that.$message({
-                    type: 'success',
-                    message: '删除成功!'
-                });
+                that.$message.success('恭喜你，这是一条成功消息')
             }).catch(function () {
-                that.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
+                that.$message.error('错了哦，这是一条错误消息')
             });
         },
         toChild: function (item) {
-            if(item.list.length==0){
+            if (item.list.length == 0) {
                 alert("暂无子菜单");
-            }else{
-                parent.location.href =baseURL+item.list[0].url;
+            } else {
+                parent.location.href = baseURL + item.list[0].url + "?id=" + item.id;
             }
-
-        }
+        },
+        inToCompetition: function () {
+            //这是要跳转了
+            //     parent.location.href =baseURL+item.list[0].url+"?id="+item.id;
+            alert("wo jinlaile !!!!");
+        },
+        // 菜单树选中
+        menuListTreeCurrentChangeHandle: function (data) {
+            // this.ruleForm.parentId = data.menuId
+            vm.ruleForm.parentName = data.label
+            vm.ruleForm.visible = false
+        },
+        // 菜单树设置当前选中节点
+        // menuListTreeSetCurrentNode: function () {
+        //     this.$refs.menuListTree.setCurrentKey(this.ruleForm.parentId)
+        //     this.ruleForm.parentName = (this.$refs.menuListTree.getCurrentNode() || {})['name']
+        // }，
+        // 多选
+        selectionChangeHandle: function (val) {
+            this.dataListSelections = val
+        },
+        //新增行
+        handleAdd: function () {
+            this.data11.push({
+                type: null,
+                num: null,
+                score: null
+            })
+        },
+        handleDelete: function () {
+            alert('批量删除')
+        },
     }
 });

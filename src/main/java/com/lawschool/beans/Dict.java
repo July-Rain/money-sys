@@ -1,11 +1,15 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+
+@TableName("LAW_SYS_DICT")
 public class Dict implements Serializable {
     /**
      * 字典表ID
@@ -56,10 +60,11 @@ public class Dict implements Serializable {
     /**
      * 添加时间
      */
+    @TableField(exist = false)
     private Date addTime;
 
     /**
-     * 删除状态 1：已删除，0：未删除
+     * 删除状态 0：已删除，1：未删除
      */
     private String delFlag;
 

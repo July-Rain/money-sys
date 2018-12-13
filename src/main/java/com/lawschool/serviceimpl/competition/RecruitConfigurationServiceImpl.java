@@ -1,17 +1,23 @@
 package com.lawschool.serviceimpl.competition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.lawschool.beans.SysConfig;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
 import com.lawschool.dao.competition.RecruitConfigurationDao;
 import com.lawschool.service.competition.RecruitCheckpointConfigurationService;
 import com.lawschool.service.competition.RecruitConfigurationService;
+import com.lawschool.util.PageUtils;
+import com.lawschool.util.Query;
+import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigurationDao, RecruitConfiguration> implements RecruitConfigurationService {
@@ -48,10 +54,10 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 
 
 	@Override
-	public void save() {
+	public void save(List<RecruitConfiguration> list) {
 
 		//这边假如我已经得到json串了  已经处理了json  得到了一个list<RecruitConfiguration>集合
-		List<RecruitConfiguration> list=new ArrayList<RecruitConfiguration>();
+//		List<RecruitConfiguration> list=new ArrayList<RecruitConfiguration>();
 
 		//还有一步确定是不是统一配置
 		Boolean flag=true;//现在给个死值  默认为true
@@ -62,7 +68,7 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 		{
 			RecruitConfiguration reConfation=list.get(i);
 			reConfation.setId(IdWorker.getIdStr());
-			reConfation.setMarkNumOrder((i+1)+"");
+			reConfation.setMarkNumOrder(i+1);
 
 			this.insert(reConfation);
 			//甲烷大关信息  不要忘了小关
@@ -76,7 +82,7 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 					RecruitCheckpointConfiguration recruitCheckpointConfiguratio=new RecruitCheckpointConfiguration();
 					recruitCheckpointConfiguratio.setId(IdWorker.getIdStr());
 					recruitCheckpointConfiguratio.setRecruitConfigurationId(reConfation.getId());//设置闯关配置对应的大关的id
-					recruitCheckpointConfiguratio.setHowManySmall((k+1)+"");//第几小关
+					recruitCheckpointConfiguratio.setHowManySmall(k+1);//第几小关
 //					reConfation.getRecruitCheckpointConfigurationList().get(0);   其他的属性 在这里面取   因为是统一 配置   就一个 默认下标0
 					recruitCheckpointConfigurationService.insert(recruitCheckpointConfiguratio);//存吧
 				}
@@ -88,7 +94,7 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 					RecruitCheckpointConfiguration recruitCheckpointConfiguratio=new RecruitCheckpointConfiguration();
 					recruitCheckpointConfiguratio.setId(IdWorker.getIdStr());
 					recruitCheckpointConfiguratio.setRecruitConfigurationId(reConfation.getId());//设置闯关配置对应的大关的id
-					recruitCheckpointConfiguratio.setHowManySmall((k+1)+"");//第几小关
+					recruitCheckpointConfiguratio.setHowManySmall(k+1);//第几小关
 //					reConfation.getRecruitCheckpointConfigurationList().get(k);   其他的属性 在这里面取   因为不是统一 配置  数量和 小关数量是一样的  下表页数一样的   可以通用
 					recruitCheckpointConfigurationService.insert(recruitCheckpointConfiguratio);//存吧
 				}
@@ -105,5 +111,38 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 		//删完自己的 还要删关联的 小关表啊
 		recruitCheckpointConfigurationService.delete(new EntityWrapper<RecruitCheckpointConfiguration>());
 
+	}
+
+	@Override
+	public PageUtils queryPage(Map<String, Object> params) {
+//		String code = (String)params.get("code");
+//		String value = (String)params.get("value");
+//		String status = (String)params.get("status");
+		EntityWrapper<RecruitConfiguration> ew = new EntityWrapper<>();
+		ew.orderBy("MARK_NUM_ORDER",true);
+//		if(UtilValidate.isNotEmpty(code)){
+//			ew.like("code",code);
+//		}
+//		if(UtilValidate.isNotEmpty(value)){
+//			ew.like("value",value);
+//		}
+//		if(UtilValidate.isNotEmpty(status)){
+//			ew.like("status",status);
+//		}
+		Page<RecruitConfiguration> page = this.selectPage(
+				new Query<RecruitConfiguration>(params).getPage(),ew);
+
+		return new PageUtils(page);
+	}
+
+
+	//根据id来找子类数据集合
+	@Override
+	public List<RecruitCheckpointConfiguration> getSonList(String id) {
+		EntityWrapper<RecruitCheckpointConfiguration> ew = new EntityWrapper<>();
+		ew.eq("RECRUIT_CONFIGURATION_ID",id).orderBy("HOW_MANY_SMALL",true);//再根据第几小关来排序
+		 List<RecruitCheckpointConfiguration> list=    recruitCheckpointConfigurationService.selectList(ew);
+
+		return list;
 	}
 }

@@ -11,16 +11,16 @@
 			theme_id,
 			answer,
 			is_right,
-        	user_id,
-        	answer_time
+        	answer_time,
+         	type_name
         ) VALUES (
         	#{id},
         	#{questionId},
         	#{themeId},
         	#{answer},
         	#{right},
-        	#{userId},
-        	#{answerTime}
+        	#{answerTime},
+            #{typeName}
         )
 	</insert>
 
