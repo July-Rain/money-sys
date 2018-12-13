@@ -12,7 +12,7 @@
            <!--<result column="HOW_MANY_MARK" property="howManyMark" jdbcType="VARCHAR" />-->
            <result column="UNIFY_CONFIGURATION" property="unifyConfiguration" jdbcType="VARCHAR" />
            <!--<result column="SMALL_NUM" property="smallNum" jdbcType="VARCHAR" />-->
-           <result column="HOW_MANY_SMALL" property="howManySmall" jdbcType="VARCHAR" />
+           <result column="HOW_MANY_SMALL" property="howManySmall" jdbcType="INTEGER" />
            <result column="ITEM_DIFFICULTY" property="itemDifficulty" jdbcType="VARCHAR" />
            <result column="CROSSING_POINTS" property="crossingPoints" jdbcType="VARCHAR" />
            <result column="MARK_REWARD" property="markReward" jdbcType="VARCHAR" />

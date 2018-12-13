@@ -475,7 +475,8 @@
         question_type,
         answer_id,
         legal_basis,
-        answer_describle
+        answer_describle,
+        answer_choice_number
         FROM law_testquestions
         <where>
             id IN
