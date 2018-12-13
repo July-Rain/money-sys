@@ -23,6 +23,7 @@ var vm = new Vue({
         },
         tableData: [],//表格数据
         visible: false,
+        daguannum:'',
         sysConfig: {
             id: '',
             code: '',
@@ -31,7 +32,6 @@ var vm = new Vue({
             status: "1"
         },
         daguanArray: [
-
         ],
         rules: {//表单验证规则
             value: [
@@ -68,14 +68,15 @@ var vm = new Vue({
         },
         // 保存和修改
         saveOrUpdate: function (formName) {
+            console.info(vm.daguanArray);
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    var url = vm.sysConfig.id ? "sysconfig/update" : "sysconfig/insert";
+                    var url ="recruitConfiguration/save";
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
                         contentType: "application/json",
-                        data: JSON.stringify(vm.sysConfig),
+                        data: JSON.stringify(vm.daguanArray),
                         success: function (result) {
                             if (result.code === 0) {
                                 vm.$alert('操作成功', '提示', {
@@ -101,6 +102,8 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         add: function () {
+            vm.daguanArray=[];
+            vm.bigcheckNum=[];
             //每次打开添加按钮时候 取后台获取 字典表中大关和小关数量的配置
             $.ajax({
                 type: "POST",
@@ -125,13 +128,24 @@ var vm = new Vue({
                 }
             });
 
-            vm.daguan= {
-
-            };
-
             this.title = "新增闯关配置";
             this.dialogConfig = true;
 
+        },
+        onselect:function (num) {//点完选择大关触发事件
+            // alert(vId);
+            vm.daguanArray=[];
+            for(var k=0;k<num;k++)
+            {
+                vm.daguanArray.push(
+                    {
+                        id:'',
+                        markNumOrder:k+1,
+                        smallNum:'',
+                        recruitCheckpointConfigurationList:[{id:'',}]
+                    }
+                )
+            }
         },
         look: function (index, row) {
             this.title = "修改参数";

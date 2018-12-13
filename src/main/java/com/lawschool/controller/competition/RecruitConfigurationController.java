@@ -6,11 +6,9 @@ import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,12 +41,13 @@ public class RecruitConfigurationController {
 //
     //保存
     @RequestMapping("/save")
-    public Result save(){
+    public Result save(@RequestBody List<RecruitConfiguration> params){
 
-
-        //前提 要前端 传过来  看 是不是统一配置
-        RecruitConfiguration recruitConfiguration=new RecruitConfiguration();
-        recruitConfigurationService.save();//这边到时候和前端商量  传个json串
+        System.out.println(params);
+        System.out.println("sads");
+//        //前提 要前端 传过来  看 是不是统一配置
+//        RecruitConfiguration recruitConfiguration=new RecruitConfiguration();
+//        recruitConfigurationService.save();//这边到时候和前端商量  传个json串
         return Result.ok();
     }
 
@@ -70,7 +69,7 @@ public class RecruitConfigurationController {
 
         //因为数据库的结构  设计为有多少条数据 就是多少个 大关   没有一点多余数据    所以要删除的话 就是  全删   不存在 删一条的说法
         recruitConfigurationService.deleteAll();
-System.out.println();
+
         return Result.ok();
     }
 //
