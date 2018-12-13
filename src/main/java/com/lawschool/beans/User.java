@@ -1,10 +1,9 @@
 package com.lawschool.beans;
 
 import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.lawschool.base.DataEntity;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -18,18 +17,7 @@ import java.util.List;
  *
  */
 @TableName("law_user")
-public class User implements Serializable {
-
-    @TableId
-    private String id;//id
-
-    private Date addTime;//添加时间
-
-    private String addUser;//不用
-
-    private Date updateTime;//更细时间
-
-    private String updateUser;//不用
+public class User extends DataEntity<User> {
 
     private String fullName;//用户全名
 
@@ -124,44 +112,15 @@ public class User implements Serializable {
     @TableField(exist = false) //角色list
     private List<Role> roleList;
 
-    public String getId() {
-        return id;
+    @TableField(exist = false)
+    private String orgName;
+
+    public String getOrgName() {
+        return orgName;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Date getAddTime() {
-        return addTime;
-    }
-
-    public void setAddTime(Date addTime) {
-        this.addTime = addTime;
-    }
-
-    public String getAddUser() {
-        return addUser;
-    }
-
-    public void setAddUser(String addUser) {
-        this.addUser = addUser == null ? null : addUser.trim();
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser == null ? null : updateUser.trim();
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 
     public String getFullName() {
@@ -496,10 +455,6 @@ public class User implements Serializable {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", addTime=" + addTime +
-                ", addUser='" + addUser + '\'' +
-                ", updateTime=" + updateTime +
-                ", updateUser='" + updateUser + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", orgCode='" + orgCode + '\'' +
                 ", synFlag=" + synFlag +

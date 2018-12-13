@@ -272,12 +272,19 @@ var vm = new Vue({
         }
     },
     created: function () {
-        console.log("进入页面触发一次")
-
+        console.log("container加载")
+        this.$nextTick(function () {
+            // 视频播放
+            // var myPlayer = videojs('my-video');
+            // videojs("my-video").ready(function () {
+            //     myPlayer = this;
+            //     myPlayer.play();
+            // });
+        })
 
         this.$nextTick(function () {
-            // this.initPie1()
-            // this.initBar1()
+            this.initPie1()
+            this.initBar1()
         })
 
         this.$nextTick(function () {

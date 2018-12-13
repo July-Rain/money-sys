@@ -127,8 +127,6 @@
                                     border
                                     style="width: 100%">
 
-
-
                                 <el-table-column
                                         prop="markNumOrder"
                                         label="第几大关"
@@ -145,28 +143,7 @@
                                 >
                                 </el-table-column>
 
-                                <!--<el-table-column-->
-                                        <!--prop="status"-->
-                                        <!--label="状态"-->
-                                        <!--width="180"-->
-                                        <!--header-align="center"-->
-                                        <!--align="center"-->
-                                        <!--width="100"-->
-                                <!--&gt;-->
-                                    <!--<template slot-scope="scope">-->
-                                        <!--<el-tag v-if="scope.row.status === '0'" size="small" type="danger">无效</el-tag>-->
-                                        <!--<el-tag v-else size="small">有效</el-tag>-->
-                                    <!--</template>-->
 
-                                <!--</el-table-column>-->
-                                <!--<el-table-column-->
-                                        <!--prop="remark"-->
-                                        <!--label="备注"-->
-                                        <!--header-align="center"-->
-                                        <!--align="center"-->
-                                        <!--:show-overflow-tooltip="true"-->
-                                <!--&gt;-->
-                                <!--</el-table-column>-->
                                 <el-table-column
                                         label="操作"
                                         header-align="center"
@@ -201,10 +178,10 @@
         <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
             <el-row>
                 <el-col :span="12">
-                    <el-form :model="sysConfig" :rules="rules" ref="sysConfig" label-width="100px" class="demo-sysConfig" size="mini">
+                    <el-form :model="daguanArray" :rules="rules" ref="daguanArray" label-width="100px" class="demo-daguanArray" size="mini">
 
                         <el-form-item label="设置大关" prop="value11">
-                            <el-select v-model="daguan.value11"
+                            <el-select @change="onselect" v-model="daguannum"
                                        size="mini"
                                        style="margin-left: 20px;"
                                        placeholder="大关数量">
@@ -217,22 +194,26 @@
                             </el-select>
                         </el-form-item>
 
+                        <div v-for="item in daguanArray" class="swiper-slide">
+                            第{{item.markNumOrder}}关
+                            <el-form-item label="小关数量" prop="smallNum">
+                            <el-input v-model="item.smallNum" placeholder="小关数量" clearable></el-input>
+                            </el-form-item>
 
+                            <div v-for="item2 in item.recruitCheckpointConfigurationList" class="swiper-slide">
+                                <el-form-item label="每关积分" prop="rewardScore">
+                                    <el-input v-model="item2.rewardScore" placeholder="每关积分" clearable></el-input>
+                                </el-form-item>
+                                <el-form-item label="试题难度" prop="itemDifficulty">
+                                    <el-input v-model="item2.itemDifficulty" placeholder="试题难度" clearable></el-input>
+                                </el-form-item>
 
+                                <el-form-item label="专项知识" prop="specialKnowledgeId">
+                                    <el-input v-model="item2.specialKnowledgeId" placeholder="专项知识" clearable></el-input>
+                                </el-form-item>
+                            </div>
+                        </div>
 
-                        <!--<el-form-item label="参数编码" prop="code">-->
-                            <!--<el-input v-model="sysConfig.code" placeholder="请输入参数编码" clearable></el-input>-->
-                        <!--</el-form-item>-->
-                        <!--<el-form-item label="参数值" prop="value">-->
-                            <!--<el-input v-model="sysConfig.value" placeholder="请输入参数值" clearable></el-input>-->
-                        <!--</el-form-item>-->
-
-                        <!--<el-form-item label="状态" prop="status">-->
-                            <!--<el-switch v-model="sysConfig.status" active-text="有效"  inactive-text="无效" active-value="1"  inactive-value="0" ></el-switch>-->
-                        <!--</el-form-item>-->
-                        <!--<el-form-item label="备注" prop="remark">-->
-                            <!--<el-input type="textarea" maxlength="200" v-model="sysConfig.remark"></el-input>-->
-                        <!--</el-form-item>-->
                         <el-form-item>
                             <el-button type="primary" @click="saveOrUpdate('sysConfig')">保存</el-button>
                         </el-form-item>
@@ -241,6 +222,32 @@
             </el-row>
         </el-dialog>
 
+
+
+
+
+
+        <el-dialog :title="title" :visible.sync="dialog2" :before-close="closeDia">
+            <el-row>
+                <el-col :span="12">
+                    <!--<el-form :model="daguanArray" :rules="rules" ref="daguanArray" label-width="100px" class="demo-daguanArray" size="mini">-->
+
+                    <div v-for="item in xiaoguanList">
+                        <el-form-item label="第几小关">
+                            <el-input v-model="item.howManySmall" placeholder="第几小关" clearable></el-input>
+                        </el-form-item>
+
+
+                    </div>
+
+
+
+
+
+                    <!--</el-form>-->
+                </el-col>
+            </el-row>
+        </el-dialog>
     </div>
 </div>
 </body>
