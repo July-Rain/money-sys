@@ -32,13 +32,13 @@ public class TestQuestionController extends AbstractController {
         String questionType = (String) params.get("questionType");
         String isEnble = (String) params.get("isEnble");
 
-        EntityWrapper<TestQuestions> ew = new EntityWrapper<>();
-        TestQuestions testQuestions = new TestQuestions();
-        ew.setEntity(testQuestions);
+        TestQuestions entity = new TestQuestions();
+        entity.setTypeId(typeId);
+        entity.setQuestionDifficulty(questionDifficulty);
+        entity.setQuestionType(questionType);
+        entity.setIsEnble(isEnble);
 
-        ew.eq("TYPE_ID", typeId).eq("QUESTION_DIFFICULTY", questionDifficulty).eq("QUESTION_TYPE", questionType).eq("IS_ENBLE", isEnble);
-
-        Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), ew);
+        Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), entity);
         return Result.ok().put("page", page);
     }
 

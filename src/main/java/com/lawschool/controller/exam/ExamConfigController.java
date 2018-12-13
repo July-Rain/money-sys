@@ -47,10 +47,8 @@ public class ExamConfigController {
 //        String questionDifficulty = (String) params.get("questionDifficulty");
 //        String questionType = (String) params.get("questionType");
 //        String isEnble = (String) params.get("isEnble");
-		EntityWrapper<ExamConfig> ew = new EntityWrapper<>();
-		ExamConfig ec = new ExamConfig();
-		ew.setEntity(ec);
-        Page<ExamConfig> page = examConfigService.findPage(new Page<ExamConfig>(params), ew);
+		ExamConfig entity = new ExamConfig();
+        Page<ExamConfig> page = examConfigService.findPage(new Page<ExamConfig>(params), entity);
 		return Result.ok().put("page", page);
 	}
 	
