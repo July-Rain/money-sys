@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.base.AbstractService;
 import com.lawschool.beans.Dict;
 import com.lawschool.beans.competition.RecruitConfiguration;
+import com.lawschool.form.CommonForm;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,35 +23,42 @@ public interface DictService extends IService<Dict> {
      * @param id
      * @return
      */
-    public Dict selectByDictId(String id);
+    Dict selectByDictId(String id);
 
     /**
      * 获取全部字典集合
      * @return
      */
-    public List<Dict> selectAllDict();
+    List<Dict> selectAllDict();
 
     /**
      * 新增数据字典
      * @param dict
      */
-    public void addDict(Dict dict);
+    void addDict(Dict dict);
 
     /**
      * 修改数据字典
      * @param dict
      */
-    public void updateByDict(Dict dict);
+    void updateByDict(Dict dict);
 
     /**
      * 批量删除数据字典
      * @param ids
      */
-    public void deleteByDictIds(Map ids);
+    void deleteByDictIds(Map ids);
 
     /**
      * 删除数据字典表
      * @param id
      */
-    public  void deleteByDictId(@Param(value="id") String id);
+    void deleteByDictId(String id);
+
+    /**
+     * 根据类型获取字典值list
+     * @param type
+     * @return
+     */
+    List<CommonForm> findByType(String type);
 }
