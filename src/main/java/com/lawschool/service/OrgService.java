@@ -5,8 +5,6 @@ import java.util.Map;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.Org;
-import com.lawschool.beans.User;
-import com.lawschool.dao.OrgDao;
 
 /**
  * 
@@ -58,4 +56,6 @@ public interface OrgService  extends IService<Org> {
 	 * @return
 	 */
 	public List<Map<String, Object>> findUserByOrg(String orgCode);
+
+	public List<Org> queryForTree(String orgCode);
 }
