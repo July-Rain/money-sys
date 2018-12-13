@@ -1,6 +1,7 @@
 package com.lawschool.service.competition;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
 import com.lawschool.util.PageUtils;
 
@@ -24,10 +25,11 @@ public interface RecruitConfigurationService  extends IService<RecruitConfigurat
 
     public RecruitConfiguration info(String id);
 
-    public void save();
+    public void save(List<RecruitConfiguration> list);
 
     public void deleteAll();
 
     PageUtils queryPage(Map<String, Object> params);
 
+    public List<RecruitCheckpointConfiguration> getSonList(String id);
 }

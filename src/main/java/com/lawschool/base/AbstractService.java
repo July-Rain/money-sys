@@ -18,8 +18,6 @@ public interface AbstractService<T> extends IService<T> {
      * @param entity
      * @return
      */
-    Page<T> findPage(Page<T> page, Wrapper<T> entity);
-
     Page<T> findPage(Page<T> page, T entity);
 
     /**
