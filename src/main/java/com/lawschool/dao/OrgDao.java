@@ -20,4 +20,6 @@ public interface OrgDao extends BaseMapper<Org> {
 	public List<Org> findOrgByParentId(Long orgId);
 	
 	public List<Map<String,Object>> findUserByOrg(String orgCode);
+
+	public List<Org> queryForTree(String orgCode);
 }

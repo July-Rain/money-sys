@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lawschool.beans.Org;
-import com.lawschool.beans.User;
 import com.lawschool.dao.OrgDao;
 import com.lawschool.service.OrgService;
 
@@ -56,5 +55,10 @@ public class OrgServiceImpl extends ServiceImpl<OrgDao,Org> implements OrgServic
 	public List<Map<String, Object>> findUserByOrg(String orgCode) {
 		return orgDao.findUserByOrg(orgCode);
 	}
-	
+
+	@Override
+	public List<Org> queryForTree(String orgCode) {
+
+		return	orgDao.queryForTree(orgCode);
+	}
 }

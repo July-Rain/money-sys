@@ -63,4 +63,16 @@
     <delete id="deleteByDictId" parameterType="java.lang.String">
         delete from LAW_SYS_DICT where ID=#{id}
     </delete>
+
+    <select id="findByType" resultType="com.lawschool.form.CommonForm">
+        SELECT
+            id AS "key",
+            value AS "value"
+        FROM LAW_SYS_DICT
+        <where>
+            type = #{type}
+            AND del_flag = 0
+        </where>
+        ORDER BY order_num
+    </select>
 </mapper>

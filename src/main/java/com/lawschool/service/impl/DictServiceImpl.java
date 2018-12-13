@@ -6,7 +6,9 @@ import com.lawschool.beans.Dict;
 import com.lawschool.beans.competition.RecruitConfiguration;
 import com.lawschool.dao.DictDao;
 import com.lawschool.dao.competition.RecruitConfigurationDao;
+import com.lawschool.form.CommonForm;
 import com.lawschool.service.DictService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +49,12 @@ public class DictServiceImpl extends ServiceImpl<DictDao, Dict> implements DictS
     @Override
     public void deleteByDictId(String id) {
         dictDao.deleteByDictId(id);
+    }
+
+    @Override
+    public List<CommonForm> findByType(String type){
+        List<CommonForm> list = dictDao.findByType(type);
+
+        return list;
     }
 }

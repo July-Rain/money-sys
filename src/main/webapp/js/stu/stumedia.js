@@ -221,7 +221,7 @@ var vm = new Vue({
             console.log(data);
         },
         uploadSuccess: function (response, file, fileList) {
-            vm.stuMedia.comContent=response.filePath;
+            vm.stuMedia.comContent=response.accessoryId;
         },
         uploadError: function () {
 
