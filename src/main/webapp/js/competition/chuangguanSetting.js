@@ -44,8 +44,11 @@ var vm = new Vue({
             ]
         },
         dialogConfig: false,//table弹出框可见性
+        dialog2:false,//查看小关详情弹出框
         title: "",//弹窗的名称
-        delIdArr: []//删除数据
+        delIdArr: [],//删除数据
+
+        xiaoguanList:[],
     },
     created: function () {
         this.$nextTick(function () {
@@ -69,8 +72,8 @@ var vm = new Vue({
         // 保存和修改
         saveOrUpdate: function (formName) {
             console.info(vm.daguanArray);
-            this.$refs[formName].validate(function (valid) {
-                if (valid) {
+            // this.$refs[formName].validate(function (valid) {
+            //     if (valid) {
                     var url ="recruitConfiguration/save";
                     $.ajax({
                         type: "POST",
@@ -91,11 +94,11 @@ var vm = new Vue({
                             }
                         }
                     });
-                } else {
-                    console.log('error submit!!');
-                    return false;
-                }
-            });
+                // } else {
+                //     console.log('error submit!!');
+                //     return false;
+                // }
+            // });
         },
         // 表单重置
         resetForm: function (formName) {
@@ -148,15 +151,17 @@ var vm = new Vue({
             }
         },
         look: function (index, row) {
-            this.title = "修改参数";
-            this.dialogConfig = true;
+            vm.title = "查看关卡配置";
+            vm.dialog2 = true;
             $.ajax({
                 type: "POST",
-                url: baseURL + 'sysconfig/info?id=' + row.id,
+                url: baseURL + 'recruitConfiguration/getSonList',
                 contentType: "application/json",
+                data:{"id": row.id},
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.sysConfig = result.data;
+                        // 返回的是一个集合   不想做成在翻页   直接做成循环table
+                        vm.xiaoguanList = result.data;
                     } else {
                         alert(result.msg);
                     }

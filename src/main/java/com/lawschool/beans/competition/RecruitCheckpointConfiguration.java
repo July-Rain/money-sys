@@ -36,7 +36,7 @@ public class RecruitCheckpointConfiguration implements Serializable {
 //	//小关数量
 //	private String smallNum;
 	//当前第几小关
-	private String howManySmall;
+	private int howManySmall;
 	//试题难度
 	private String itemDifficulty;
 	//关卡积分
@@ -110,15 +110,13 @@ public class RecruitCheckpointConfiguration implements Serializable {
 		this.itemDifficulty = itemDifficulty;
 	}
 
-	public String getHowManySmall() {
+	public int getHowManySmall() {
 		return howManySmall;
 	}
 
-	public void setHowManySmall(String howManySmall) {
+	public void setHowManySmall(int howManySmall) {
 		this.howManySmall = howManySmall;
 	}
-
-
 
 	public String getCrossingPoints() {
 		return crossingPoints;
