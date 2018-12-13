@@ -195,11 +195,11 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 		}
 
 		List<QuestForm> result = new ArrayList<>();
+		if(CollectionUtils.isNotEmpty(removeList)){
+			redisUtil.set(key, ids, -1);
+		}
 
 		if(CollectionUtils.isNotEmpty(questList)){
-			if(CollectionUtils.isNotEmpty(removeList)){
-				redisUtil.set(key, ids, -1);
-			}
 
 			result	= testQuestionService.findByIds(questList);
 
@@ -237,6 +237,8 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 		List<ThemeAnswerForm> list = form.getList();
 		String themeId = form.getId();
 
+		ThemeExerciseEntity theme = null;
+
 		if(CollectionUtils.isNotEmpty(list) && StringUtils.isNotBlank(themeId)){
 
 			// 若无答题记录或主题ID为空，不做任何操作
@@ -267,13 +269,20 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 			themeAnswerRecordService.saveBatch(saveList);
 
 			// 更新主题任务
-			ThemeExerciseEntity theme = dao.selectById(themeId);
+			theme = dao.selectById(themeId);
 			Integer right = theme.getRightNum();
 			theme.setRightNum(right + rightNum);
 			theme.setAnswerNum(total + theme.getAnswerNum());
 			theme.setStatus(form.getStatus());
 			theme.setOptTime(new Date());
 
+		} else if(StringUtils.isNotBlank(themeId)){
+			// 特殊情况，未答题直接提交，更新主题任务
+			theme = dao.selectById(themeId);
+			theme.setStatus(form.getStatus());
+		}
+
+		if(theme != null){
 			dao.updateAnswerRecord(theme);
 		}
 
