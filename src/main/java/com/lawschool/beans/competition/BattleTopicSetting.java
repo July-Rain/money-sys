@@ -35,9 +35,10 @@ public class BattleTopicSetting implements Serializable {
 	private String knowledgeId;
 
 	//当前第几小关
-	private String howManySmall;
+	private int howManySmall;
 
-
+	//试题类型
+	private String questionType;
 	//备用字段1
 	private String backup1;
 	//备用字段2
@@ -146,13 +147,18 @@ public class BattleTopicSetting implements Serializable {
 		this.backup5 = backup5;
 	}
 
-	public String getHowManySmall() {
-		return howManySmall;
-	}
-
-	public void setHowManySmall(String howManySmall) {
+	public void setHowManySmall(int howManySmall) {
 		this.howManySmall = howManySmall;
 	}
+
+	public String getQuestionType() {
+		return questionType;
+	}
+
+	public void setQuestionType(String questionType) {
+		this.questionType = questionType;
+	}
+
 
 	@Override
 	public String toString() {

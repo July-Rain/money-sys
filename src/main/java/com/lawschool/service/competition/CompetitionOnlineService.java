@@ -3,8 +3,10 @@ package com.lawschool.service.competition;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.competition.CompetitionOnline;
+import com.lawschool.util.PageUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -26,4 +28,6 @@ public interface CompetitionOnlineService extends IService<CompetitionOnline> {
     public  void deleteComOnline(String id);
 
     public void  updateComOnline();
+
+    PageUtils queryPage(Map<String, Object> params);
 }

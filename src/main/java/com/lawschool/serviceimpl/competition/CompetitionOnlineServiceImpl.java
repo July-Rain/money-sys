@@ -1,16 +1,21 @@
 package com.lawschool.serviceimpl.competition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.competition.BattleTopicSetting;
 import com.lawschool.beans.competition.CompetitionOnline;
+import com.lawschool.beans.competition.RecruitConfiguration;
 import com.lawschool.dao.competition.CompetitionOnlineDao;
 import com.lawschool.service.competition.BattleTopicSettingService;
 import com.lawschool.service.competition.CompetitionOnlineService;
+import com.lawschool.util.PageUtils;
+import com.lawschool.util.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineDao, CompetitionOnline> implements CompetitionOnlineService {
@@ -53,7 +58,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 				BattleTopicSetting battleTopicSetting =new BattleTopicSetting();
 				battleTopicSetting.setId(IdWorker.getIdStr());
 				battleTopicSetting.setForeignKeyId(competitionOnline.getId());
-				battleTopicSetting.setHowManySmall((i+1)+"");//第几关
+				battleTopicSetting.setHowManySmall((i+1));//第几关
 
 				battleTopicSetting.setKnowledgeId(competitionOnline.getBattleTopicSettingList().get(i).getKnowledgeId());//像这种的数据来源 就是在之前实体里面的取   不一样的配置  所以下标要一致
 				//还要加type   后面来区分这条数据是属于对战的  还是擂台的   元数据现在还没有  没法设置
@@ -65,7 +70,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 				BattleTopicSetting battleTopicSetting =new BattleTopicSetting();
 				battleTopicSetting.setId(IdWorker.getIdStr());
 				battleTopicSetting.setForeignKeyId(competitionOnline.getId());
-				battleTopicSetting.setHowManySmall((i+1)+"");//第几关
+				battleTopicSetting.setHowManySmall(i+1);//第几关
 				battleTopicSetting.setKnowledgeId(competitionOnline.getBattleTopicSettingList().get(0).getKnowledgeId());//像这种的数据来源 就是在之前实体里面的取   一样的配置  所以下标就找第一个  也就只有一个数据
 				//还要加type   后面来区分这条数据是属于对战的  还是擂台的   元数据现在还没有  没法设置
 			}
@@ -92,5 +97,14 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 		competitionOnline.setTopicNum("32");
 		competitionOnline.setUniformRules("555");
 		this.updateById(competitionOnline);
+	}
+
+
+	@Override
+	public PageUtils queryPage(Map<String, Object> params) {
+		EntityWrapper<CompetitionOnline> ew = new EntityWrapper<>();
+		Page<CompetitionOnline> page = this.selectPage(
+				new Query<CompetitionOnline>(params).getPage(),ew);
+		return new PageUtils(page);
 	}
 }

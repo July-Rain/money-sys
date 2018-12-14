@@ -8,12 +8,11 @@
 var vm = new Vue({
     el: '#app',
     data: {
-        bigcheckNum:[],//大关数量数据
+
         tableData: [],//表格数据
         daguannum:'',
         daguanArray: [],
         formInline: { // 搜索表单
-
             currPage: 1,
             pageSize: 10,
             totalCount: 0
@@ -40,6 +39,14 @@ var vm = new Vue({
         itemtype:[],
 //试题难度
         itemjibie:[],
+ //在线比武实体
+        competitionOnline:
+       {
+           id:'',
+           battleTopicSettingList:[],
+       },
+//选择题量数据
+        checkNum:[],
     },
     created: function () {
         this.$nextTick(function () {
@@ -92,44 +99,33 @@ var vm = new Vue({
         },
         add: function () {
 
-            $.ajax({
-                type: "POST",
-                url: baseURL + 'recruitConfiguration/findAll',
-                dataType: "json",
-                success: function (result) {
-                        if(result.data.length!="0")
-                        {
-
-                            vm.$alert('请先删除原有配置，在添加新的配置');
-                            vm.dialogConfig = false;
-                        }
-                        else
-                        {
-                            vm.title = "新增闯关配置";
-                            vm.dialogConfig = true;
-                        }
-
-                }
-            });
-
-            vm.daguanArray=[];
-            vm.bigcheckNum=[];
+            // 每次进来先制空
+            vm.checkNum=[];
+            vm.competitionOnline=
+                {
+                    id:'',
+                    battleTopicSettingList:[],
+                };
             //每次打开添加按钮时候 取后台获取 字典表中大关和小关数量的配置
             $.ajax({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
-                data: {type:"BIGCHECKNUM",Parentcode:"99997"},
+                async:false,
+                data: {type:"LITCHECKNUM",Parentcode:"99994"},
                 success: function (result) {
                     if (result.code == 0) {
+                        console.info(result);
+                        console.info(result.dictlist[0].value);
                         //区间也就2个值 也排序过了
-                        var bigchecknum1 =  result.dictlist[0].value;
-                        var bigchecknum2 =  result.dictlist[1].value;
-                        for(var i=bigchecknum1;i<=bigchecknum2;i++)
+                        var checknum1 =  Number(result.dictlist[0].value);
+                        var checknum2 =  Number(result.dictlist[1].value);
+
+                        for(var i=checknum1;i<=checknum2;i++)
                         {
-                           vm.bigcheckNum.push({
+                            vm.checkNum.push({
                                value: i,
-                               label: i+'大关'
+                               label: i
                            })
                         }
                     } else {
@@ -143,6 +139,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "recruitConfiguration/findAllTopic",
                 dataType: "json",
+                async:false,
                 success: function (result) {
 
                     vm.zhuanxiangzhishiList=result.data;
@@ -154,6 +151,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
+                async:false,
                 data: {type:"QUESTION_TYPE",Parentcode:"0"},
                 success: function (result) {
 
@@ -167,26 +165,46 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
+                async:false,
                 data: {type:"QUESTION_DIFF",Parentcode:"0"},
                 success: function (result) {
                     vm.itemjibie=result.dictlist;
                 }
             });
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'competitionOnline/list',
+                dataType: "json",
+                async:false,
+                success: function (result) {
+                    if(result.page.list.length!="0")
+                    {
 
+                        vm.$alert('请先删除原有配置，在添加新的配置');
+                        vm.dialogConfig = false;
+                    }
+                    else
+                    {
+                        vm.title = "新增在线比武配置";
+                        vm.dialogConfig = true;
+                    }
+
+                }
+            });
 
         },
-        onselect:function (num) {//点完选择大关触发事件
-            // alert(vId);
-            vm.daguanArray=[];
+        onselect:function (num) {//点完选择选择题量事件
+            vm.competitionOnline=
+            {
+                id:'',
+                topicNum:num,
+                battleTopicSettingList:[],
+            };
             for(var k=0;k<num;k++)
             {
-                vm.daguanArray.push(
+                vm.competitionOnline.battleTopicSettingList.push(
                     {
                         id:'',
-                        markNumOrder:k+1,
-                        smallNum:'',
-                        rewardScore:'0',
-                        recruitCheckpointConfigurationList:[{id:'',unifyConfiguration:'1'}]
                     }
                 )
             }
@@ -290,8 +308,8 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         //区间也就2个值 也排序过了
-                        var bigchecknum1 = Number( result.dictlist[0].value);
-                        var bigchecknum2 = Number( result.dictlist[1].value);
+                        var bigchecknum1 =  result.dictlist[0].value;
+                        var bigchecknum2 =  result.dictlist[1].value;
                         for(var i=bigchecknum1;i<=bigchecknum2;i++)
                         {
                             vm.bigcheckNum.push({
@@ -377,7 +395,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "recruitConfiguration/list",
+                url: baseURL + "competitionOnline/list",
                 dataType: "json",
                 success: function (result) {
                     if (result.code == 0) {

@@ -66,7 +66,7 @@ public class RecruitConfigurationController {
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params){
         PageUtils page = recruitConfigurationService.queryPage(params);
-        System.out.println(page);
+
         return Result.ok().put("page", page);
     }
 

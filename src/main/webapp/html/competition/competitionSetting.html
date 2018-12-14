@@ -13,10 +13,10 @@
 
 <!--</div>-->
 <div style="height: 100px;width: 100px">
-    <button id="a" onclick="tiao(1)">闯关配置 </button>
+    <button id="a" onclick="tiao('1')">闯关配置 </button>
 </div>
 <div>
-    <button id="b">在线比武配置 </button>
+    <button id="b" onclick="tiao('2')">在线比武配置 </button>
 </div>
 <div>
     <button id="c">擂台配置 </button>
@@ -33,7 +33,10 @@ function tiao(a)
     if(a=="1")
     {
         parent.location.href =baseURL+"modules/competition/chuangguanSetting.html";
-//        parent.location.href =baseURL+"modules/sys/sysmenuSon.html?id="+row.id;
+    }
+    if(a=="2")
+    {
+        parent.location.href =baseURL+"modules/competition/pkOnlSetting.html";
     }
 }
 
