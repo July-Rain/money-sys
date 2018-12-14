@@ -18,6 +18,7 @@ var vm = new Vue({
             }
         }
         return {
+            childUrl: 'container.html',
             navData: [],//导航
             learnTasks: 4,//学习任务
             practiceTasks: 5,//练习任务
@@ -273,7 +274,14 @@ var vm = new Vue({
     },
     created: function () {
         console.log("进入页面触发一次")
-
+        this.$nextTick(function () {
+            // 视频播放
+            // var myPlayer = videojs('my-video');
+            // videojs("my-video").ready(function () {
+            //     myPlayer = this;
+            //     myPlayer.play();
+            // });
+        })
 
         this.$nextTick(function () {
             // this.initPie1()
@@ -290,6 +298,7 @@ var vm = new Vue({
 
                     if (result.code === 0) {
                         vm.navData = result.menuList;
+                        console.info("infoinfo",result)
                     } else {
                         alert(result.msg);
                     }
@@ -298,7 +307,25 @@ var vm = new Vue({
         })
 
     },
+
     methods: {
+
+        // 加载菜单
+        loadNav: function(menuId){
+            $.ajax({
+                type: "POST",
+                url: baseURL + "menu/nav?id=" + menuId,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.navData = result.menuList;
+                        console.info("info",result)
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
         // 导航栏
         handleSelect: function (key, keyPath) {
             console.log(key, keyPath);
@@ -515,11 +542,20 @@ var vm = new Vue({
             });
         },
         toChild: function (item) {
-            if (item.list.length == 0) {
-                alert("暂无子菜单");
-            } else {
-                parent.location.href = baseURL + item.list[0].url + "?id=" + item.id;
+            console.info("item!!!",item)
+
+            // parent.location.href = baseURL + item.list[0].url + "?id=" + item.id;
+            if(item.url){
+                vm.childUrl = item.url+ "?id=" + item.id;
+                // this.loadNav(item.id)
+                // 并不需要更新菜单
+            }else {
+                if(item.list.length == 0){
+                    alert("暂无链接")
+                }
+
             }
+
         },
         inToCompetition: function () {
             //这是要跳转了

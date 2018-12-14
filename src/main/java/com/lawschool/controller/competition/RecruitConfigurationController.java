@@ -2,6 +2,7 @@ package com.lawschool.controller.competition;
 
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
+import com.lawschool.form.CommonForm;
 import com.lawschool.service.competition.RecruitConfigurationService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
@@ -44,10 +45,8 @@ public class RecruitConfigurationController {
     @RequestMapping("/save")
     public Result save(@RequestBody List<RecruitConfiguration> list){
 
-//        System.out.println(params);
-//        System.out.println("sads");
         //前提 要前端 传过来  (看 是不是统一配置)  先不考虑统一配置
-        RecruitConfiguration recruitConfiguration=new RecruitConfiguration();
+
         recruitConfigurationService.save(list);//这边到时候和前端商量  传个json串
         return Result.ok();
     }
@@ -64,7 +63,7 @@ public class RecruitConfigurationController {
 
 
     @RequestMapping("/getSonList")
-    public Result getSonList(@RequestBody String id){
+    public Result getSonList(String id){
         List<RecruitCheckpointConfiguration> list= recruitConfigurationService.getSonList(id);
 
         return Result.ok().put("data", list);
@@ -84,15 +83,14 @@ public class RecruitConfigurationController {
 
         return Result.ok();
     }
-//
-//    //根据id来找数据    //修改功能待定
-//    @RequestMapping("/update")
-//    public Result update(@RequestParam Map<String, Object> params){
-//
-//        //不要更改
-//        recruitConfigurationService.updateAll();
-//        return Result.ok();
-//    }
 
+    @RequestMapping("/findAllTopic")
+    public Result findAllTopic(){
+
+
+        List<CommonForm> CommonFormList= recruitConfigurationService.findAllTopic();
+
+        return Result.ok().put("data",CommonFormList);
+    }
 
 }

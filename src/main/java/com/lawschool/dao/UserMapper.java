@@ -1,13 +1,13 @@
 package com.lawschool.dao;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserExample;
 import java.math.BigDecimal;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface UserMapper  extends BaseMapper<User> {
+public interface UserMapper  extends AbstractDao<User> {
     long countByExample(UserExample example);
 
     int deleteByExample(UserExample example);

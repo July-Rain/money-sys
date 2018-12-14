@@ -1,17 +1,13 @@
 package com.lawschool.service;
 
-import com.baomidou.mybatisplus.service.IService;
-import com.lawschool.beans.SysLogEntity;
+import com.lawschool.base.AbstractService;
 import com.lawschool.beans.User;
-import com.lawschool.beans.UserTest;
 import com.lawschool.util.PageUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
-import java.util.List;
 import java.util.Map;
 
-public interface UserService  extends IService<User> {
+public interface UserService  extends AbstractService<User> {
     /**
      * 根据userId查询用户信息
 	 * @param userId

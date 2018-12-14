@@ -5,7 +5,80 @@
     <#include "/header.html">
 </head>
 <style>
-
+    .header-right ul{
+        background: transparent;
+    }
+    .header-right ul li:after{
+        content: '';
+    }
+    .el-menu--horizontal .el-menu-item,
+    .el-menu--horizontal .el-submenu{
+        float: left;
+        height: 70px;
+        /*line-height: 70px;*/
+        margin: 0;
+        border-bottom: 2px solid transparent;
+        color: #fff;
+    }
+    .el-menu--horizontal>.el-submenu .el-submenu__title {
+        height: 70px;
+        /* line-height: 70px; */
+        border-bottom: 2px solid transparent;
+        color: #909399;
+    }
+    .header-right ul li a{
+        text-align: center;
+        padding: 0;
+        /*margin: 10px 0;*/
+        box-sizing: border-box;
+        height: auto;
+        display: inline-block;
+    }
+    .header-right .el-menu-item [class^=el-icon-],
+    .header-right .el-submenu [class^=el-icon-],
+    .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
+        font-size: 30px;
+        color: #fff;
+    }
+    /*.header-right .el-submenu [class^=el-icon-]*/
+    .header-right ul li a span{
+        display: block;
+        margin-top: -10px;
+        line-height: 10px;
+    }
+    .header-right .el-menu-item:hover a,
+    .header-right .el-submenu:hover a,
+    .header-right .el-menu-item:hover [class^=el-icon-],
+    .header-right .el-submenu:hover [class^=el-icon-],
+    .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
+        color: #909399;
+    }
+    .el-submenu__icon-arrow{
+        margin-top: 16px;
+    }
+    .el-menu--horizontal .el-menu .el-menu-item a{
+        color: #909399;
+    }
+    .el-menu--horizontal .el-menu .el-menu-item a:hover{
+        color: #000;
+    }
+    .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+        background-color: #fff;
+        float: none;
+        height: 36px;
+        line-height: 36px;
+        color: #909399;
+        display: inline-block;//悬浮块横向显示
+    }
+    .el-submenu__icon-arrow {
+        display: none;
+    }
+    .el-submenu__title{
+        padding: 0;
+    }
+    .spel a{
+        margin-top: -10px;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -15,20 +88,46 @@
             <a href="javascript:;">江苏省公安厅法律学校</a>
         </div>
         <div class="header-right">
+
             <ul>
 
                 <li v-for="item in navData" @click="toChild(item)" :data-id="item.id" :data-url="item.url">
+                    <div class="spel" v-if="!item.list.length">
+                        <a>
+                            <i :class="item.icon"></i>
+                            <p><a href="javascript:;">{{item.name}}</a></p>
+                        </a>
+                    </div>
+                    <div v-if="item.list.length">
+                        <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect">
+                            <el-submenu index="1">
+                                <template slot="title">
+                                    <a href="javascript:;">
+                                        <i class="el-icon-tickets"></i>
+                                        <span>{{item.name}}</span>
+                                    </a>
+                                </template>
+                                <el-menu-item index="1" v-for="child in item.list">
+                                    <a href="javascript:;" @click="toChild(child)">
+                                        <i class="el-icon-tickets"></i>
+                                        <span>{{child.name}}</span>
+                                    </a>
+                                </el-menu-item>
 
-                    <a>
-                        <i :class="item.icon"></i>
-                        <p><a href="javascript:;">{{item.name}}</a></p>
-                    </a>
+                            </el-submenu>
+
+                        </el-menu>
+                    </div>
+
+
                 </li>
             </ul>
         </div>
     </div>
+
+
     <div class="container-layout" style="height: calc(100vh - 70px)">
-        <iframe src="./container.html" frameborder="0" width="100%" height="100%"></iframe>
+        <iframe :src="[(childUrl)]" frameborder="0" width="100%" height="100%"></iframe>
     </div>
 </div>
 </body>

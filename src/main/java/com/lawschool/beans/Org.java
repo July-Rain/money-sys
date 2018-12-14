@@ -4,14 +4,12 @@ package com.lawschool.beans;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.BaseEntity;
-import com.lawschool.beans.exam.ExamConfig;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @TableName("law_org")
-public class Org extends BaseEntity<Org> implements Comparable<Org> {
+public class Org extends BaseEntity<Org>  {
     /**
 	 * 
 	 */
@@ -31,7 +29,7 @@ public class Org extends BaseEntity<Org> implements Comparable<Org> {
 
     private String oldOrgCode;	//旧部门编号
 
-    private Integer ordercode;	// 排序
+    private String ordercode;	// 排序
 
     private String orgCode;// 机构代码
 
@@ -71,13 +69,14 @@ public class Org extends BaseEntity<Org> implements Comparable<Org> {
     private String localOrgType; // 部门分类：勤务机构、综合单位、派出所、其他
 
     private String localPoliceType;// 警种
-    
+
+    @TableField(exist = false)
     private List<User> list;
 
     @TableField(exist = false)
     private List child;//子集
 
-    public Org(String id, Date addTime, String addUser, Date updateTime, String updateUser, String dictionaryName, String fullName, String oldOrgCode, Integer ordercode, String orgCode, Date orgEnddate, String orgId, Date orgIndate, Short orgLevel, String orgName, String orgShortname, Date orgStartdate, Integer orgStatus, Integer orgType, String otherName, String parentCode, String parentId, Short synFlag, String localOrgCode, String localOrgName, String localParentOrgId, String localOrgType, String localPoliceType) {
+    public Org(String id, Date addTime, String addUser, Date updateTime, String updateUser, String dictionaryName, String fullName, String oldOrgCode, String ordercode, String orgCode, Date orgEnddate, String orgId, Date orgIndate, Short orgLevel, String orgName, String orgShortname, Date orgStartdate, Integer orgStatus, Integer orgType, String otherName, String parentCode, String parentId, Short synFlag, String localOrgCode, String localOrgName, String localParentOrgId, String localOrgType, String localPoliceType) {
         this.id = id;
         this.addTime = addTime;
         this.addUser = addUser;
@@ -176,11 +175,11 @@ public class Org extends BaseEntity<Org> implements Comparable<Org> {
         this.oldOrgCode = oldOrgCode == null ? null : oldOrgCode.trim();
     }
 
-    public Integer getOrdercode() {
+    public String getOrdercode() {
         return ordercode;
     }
 
-    public void setOrdercode(Integer ordercode) {
+    public void setOrdercode(String ordercode) {
         this.ordercode = ordercode == null ? null : ordercode;
     }
 
@@ -352,11 +351,11 @@ public class Org extends BaseEntity<Org> implements Comparable<Org> {
         this.child = child;
     }
 
-    @Override
-    public int compareTo(Org o) {
-        if(o.ordercode!=null&&this.ordercode!=null){
-            return -o.ordercode + this.ordercode;
-        }
-        return -1;
-    }
+//    @Override
+//    public int compareTo(Org o) {
+//        if(o.ordercode!=null&&this.ordercode!=null){
+//            return -o.ordercode + this.ordercode;
+//        }
+//        return -1;
+//    }
 }

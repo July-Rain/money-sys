@@ -858,4 +858,24 @@
       IS_ONLINE = #{isOnline,jdbcType=CHAR}
     where ID = #{id,jdbcType=DECIMAL}
   </update>
+
+  <select id="findList" parameterType="map" resultType="com.lawschool.beans.User">
+    SELECT
+	U.*,
+	O.ORG_NAME
+  FROM
+	LAW_USER U
+INNER JOIN (
+	SELECT
+		*
+	FROM
+		LAW_ORG START WITH LOCAL_ORG_CODE = #{orgCode} CONNECT BY PRIOR ORG_ID = LOCAL_PARENT_ORG_ID
+) O ON U .LOCAL_ORG_CODE = O.LOCAL_ORG_CODE
+where 1=1
+<if test="userName!=null">
+  and U.user_name  CONCAT('%',#{userName},'%')
+</if>
+<if test="userCode!=null">
+  and U.USER_CODE   CONCAT ('%',#{userCode},'%')</if>
+  </select>
 </mapper>
