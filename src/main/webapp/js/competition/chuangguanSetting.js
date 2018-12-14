@@ -279,6 +279,8 @@ var vm = new Vue({
 
         },
         update: function () {
+            vm.daguanArray=[];
+            vm.bigcheckNum=[];
             //每次打开添加按钮时候 取后台获取 字典表中大关和小关数量的配置
             $.ajax({
                 type: "POST",
@@ -355,7 +357,7 @@ var vm = new Vue({
                             vm.title = "编辑";
                             vm.dialogConfig = true;
                             vm.daguanArray = result.data;
-                            vm.daguannum  = result.data.length;
+                            vm.daguannum = result.data.length;
                         }
 
                     } else {
