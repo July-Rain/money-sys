@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lawschool.dao.RoleDao">
-    <resultMap id="BaseResultMap" type="com.lawschool.beans.Role">
+<mapper namespace="com.lawschool.dao.system.SysRoleDao">
+    <resultMap id="BaseResultMap" type="com.lawschool.beans.system.SysRoleEntity">
         <id column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
         <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
         <result column="REMARK" property="remark" jdbcType="VARCHAR" />
         <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.lawschool.beans.Role">
+    <insert id="insert" parameterType="com.lawschool.beans.system.SysRoleEntity">
     insert
     into
     LAW_SYS_ROLE
@@ -25,7 +25,7 @@
         ROLE_ID = #{roleId}
   </delete>
 
-    <update id="update" parameterType="com.lawschool.beans.Role">
+    <update id="update" parameterType="com.lawschool.beans.system.SysRoleEntity">
     update
     LAW_SYS_ROLE
     set

@@ -1,4 +1,4 @@
-package com.lawschool.controller.sys;
+package com.lawschool.controller.system;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

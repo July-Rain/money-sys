@@ -1,36 +1,40 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.sinorock</groupId>
-  <artifactId>law_school</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
-  <build>
-  	<plugins>
-  		<plugin>
-  			<artifactId>maven-war-plugin</artifactId>
-  			<configuration>
-  				<!--<version>3.0</version>-->
-  			</configuration>
-  		</plugin>
-  	</plugins>
-  </build>
-   
-  <profiles>
-    <profile>
-        <id>jdk-1.8</id>
-        <!-- 另外一种激活方式 -->
-        <activation>
-            <activeByDefault>true</activeByDefault>
-            <jdk>1.8</jdk>
-        </activation>
-        <properties>
-            <maven.compiler.source>1.8</maven.compiler.source>
-            <maven.compiler.target>1.8</maven.compiler.target>
-<maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
-        </properties>
-    </profile>
-</profiles>
-   <properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.sinorock</groupId>
+    <artifactId>law_school</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>jdk-1.8</id>
+            <!-- 另外一种激活方式 -->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <jdk>1.8</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>1.8</maven.compiler.source>
+                <maven.compiler.target>1.8</maven.compiler.target>
+                <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+            </properties>
+        </profile>
+    </profiles>
+    <properties>
         <!-- spring版本号 -->
         <spring.version>4.1.5.RELEASE</spring.version>
         <!-- log4j日志文件管理包版本 -->
@@ -40,14 +44,16 @@
         <junit.version>4.10</junit.version>
         <!-- mybatis版本号 -->
         <mybatis.version>3.2.1</mybatis.version>
-       <commons.lang.version>3.7</commons.lang.version>
-       <commons.fileupload.version>1.3.3</commons.fileupload.version>
-       <commons.io.version>2.6</commons.io.version>
-       <commons.codec.version>1.11</commons.codec.version>
-       <commons.configuration.version>1.10</commons.configuration.version>
-       <fastjson.version>1.2.46</fastjson.version>
-       <mybatisplus.version>2.1.9</mybatisplus.version>
-       <commons.configuration.version>1.10</commons.configuration.version>
+        <commons.lang.version>3.7</commons.lang.version>
+        <commons.fileupload.version>1.3.3</commons.fileupload.version>
+        <commons.io.version>2.6</commons.io.version>
+        <commons.codec.version>1.11</commons.codec.version>
+        <commons.configuration.version>1.10</commons.configuration.version>
+        <fastjson.version>1.2.46</fastjson.version>
+        <mybatisplus.version>2.1.9</mybatisplus.version>
+        <commons.configuration.version>1.10</commons.configuration.version>
+        <!-- shiro 版本号-->
+        <shiro.version>1.4.0</shiro.version>
     </properties>
 
     <dependencies>
@@ -157,6 +163,16 @@
         </dependency>
 
         <!--mybatis依赖 -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.4.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>1.3.2</version>
+        </dependency>
         <!--<dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
@@ -177,24 +193,23 @@
             <version>5.1.29</version>
         </dependency>
         -->
-        
+
         <!-- oracle 驱动 -->
         <dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc7</artifactId>
-			<version>12.1.0.2.0</version>
-		</dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc7</artifactId>
+            <version>12.1.0.2.0</version>
+        </dependency>
         <!--<dependency>-->
-            <!--<groupId>ojdbc</groupId>-->
-            <!--<artifactId>ojdbc</artifactId>-->
-            <!--<version>14</version>-->
+        <!--<groupId>ojdbc</groupId>-->
+        <!--<artifactId>ojdbc</artifactId>-->
+        <!--<version>14</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>ojdbc</groupId>-->
-            <!--<artifactId>ojdbc</artifactId>-->
-            <!--<version>6</version>-->
+        <!--<groupId>ojdbc</groupId>-->
+        <!--<artifactId>ojdbc</artifactId>-->
+        <!--<version>6</version>-->
         <!--</dependency>-->
-
 
 
         <!--WebSocket通信-->
@@ -220,28 +235,21 @@
         </dependency>
 
 
-
-
-
-
-
-
-
         <!-- javaee-api包 注意和项目使用的JDK版本对应 -->
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>6.0</version>
-			<scope>provided</scope>
-		</dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>6.0</version>
+            <scope>provided</scope>
+        </dependency>
 
-		<!-- javaee-web-api包 注意和项目使用的JDK版本对应 -->
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-web-api</artifactId>
-			<version>6.0</version>
-			<scope>provided</scope>
-		</dependency>
+        <!-- javaee-web-api包 注意和项目使用的JDK版本对应 -->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>6.0</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -304,7 +312,7 @@
             <artifactId>mybatis-plus</artifactId>
             <version>${mybatisplus.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-engine-core</artifactId>
@@ -316,19 +324,19 @@
             <artifactId>commons-configuration</artifactId>
             <version>${commons.configuration.version}</version>
         </dependency>
-        
+
         <!-- 集成redis -->
         <dependency>
-		    <groupId>org.springframework.data</groupId>
-		    <artifactId>spring-data-redis</artifactId>
-		    <version>1.6.0.RELEASE</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>redis.clients</groupId>
-		    <artifactId>jedis</artifactId>
-		    <version>2.7.3</version>
-		</dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>1.6.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.7.3</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
         <dependency>
@@ -360,22 +368,44 @@
             <version>2.3.8</version>
         </dependency>
 
-		<!-- 引入druid -->
-		<dependency>
-	        <groupId>com.alibaba</groupId>
-	        <artifactId>druid</artifactId>
-	        <version>1.1.10</version>
-    	</dependency>
-    	
-    	
-    	<dependency>
-			  <groupId>org.quartz-scheduler</groupId>
-			  <artifactId>quartz</artifactId>
-			  <version>2.2.1</version>
-		</dependency>
+        <!-- 引入druid -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.10</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.2.1</version>
+        </dependency>
+
+
+        <!-- shiro begin -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <!-- shiro end -->
     </dependencies>
 
 
-
-  
 </project>

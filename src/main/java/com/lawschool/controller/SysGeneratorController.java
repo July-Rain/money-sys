@@ -30,7 +30,7 @@ public class SysGeneratorController {
 	
 	@ResponseBody
 	@RequestMapping("/list")
-	//@RequiresPermissions("sys:generator:list")
+	//@RequiresPermissions("system:generator:list")
 	public Result list(@RequestParam Map<String, Object> params){
 		//查询列表数据
 		Query query = new Query(params);
@@ -44,7 +44,7 @@ public class SysGeneratorController {
 		return "generator";
 	}
 	@RequestMapping("/code")
-	//@RequiresPermissions("sys:generator:create")
+	//@RequiresPermissions("system:generator:create")
 	public void code(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		String[] tableNames = new String[]{};
 		String tables = request.getParameter("tables");
