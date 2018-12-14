@@ -8,31 +8,16 @@
 var vm = new Vue({
     el: '#app',
     data: {
-        //menuId:"",//菜单id
-        navData: [],//导航
-
         bigcheckNum:[],//大关数量数据
-
+        tableData: [],//表格数据
+        daguannum:'',
+        daguanArray: [],
         formInline: { // 搜索表单
-            value: '',
-            name: '',
-            status: "",
+
             currPage: 1,
             pageSize: 10,
             totalCount: 0
         },
-        tableData: [],//表格数据
-        visible: false,
-        daguannum:'',
-        sysConfig: {
-            id: '',
-            code: '',
-            value: '',
-            remark: '',
-            status: "1"
-        },
-        daguanArray: [
-        ],
         rules: {//表单验证规则
             // smallNum: [
             //     {required: true, message: '请输入参数名', trigger: 'blur'},
@@ -46,10 +31,9 @@ var vm = new Vue({
         dialogConfig: false,//table弹出框可见性
         dialog2:false,//查看小关详情弹出框
         title: "",//弹窗的名称
-        delIdArr: [],//删除数据
+
  //小关集合
         xiaoguanList:[],
-
 //专项知识
         zhuanxiangzhishiList:[],
 //试题类型
@@ -59,17 +43,10 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
-            //加载菜单
             this.reload();
         })
     },
     methods: {
-
-
-        // 查询
-        onSubmit: function () {
-            this.reload();
-        },
         handleSizeChange: function (val) {
             this.formInline.pageSize = val;
             this.reload();
@@ -80,9 +57,14 @@ var vm = new Vue({
         },
         // 保存和修改
         saveOrUpdate: function () {
-            console.info(vm.daguanArray);
-            // this.$refs[formName].validate(function (valid) {
-            //     if (valid) {
+
+            //保存前默认先删除一波
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'recruitConfiguration/delete',
+                async: true,
+                dataType: "json",
+                success: function (result) {
                     var url ="recruitConfiguration/save";
                     $.ajax({
                         type: "POST",
@@ -103,17 +85,29 @@ var vm = new Vue({
                             }
                         }
                     });
-                // } else {
-                //     console.log('error submit!!');
-                //     return false;
-                // }
-            // });
-        },
-        // 表单重置
-        resetForm: function (formName) {
-            this.$refs[formName].resetFields();
+                }
+            });
+
+
         },
         add: function () {
+            vm.title = "新增闯关配置";
+            vm.dialogConfig = true;
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'recruitConfiguration/findAll',
+                dataType: "json",
+                success: function (result) {
+                        if(result.data.length!="0")
+                        {
+
+                            vm.$alert('请先删除原有配置，在添加新的配置');
+                            vm.dialogConfig = false;
+                        }
+
+                }
+            });
+
             vm.daguanArray=[];
             vm.bigcheckNum=[];
             //每次打开添加按钮时候 取后台获取 字典表中大关和小关数量的配置
@@ -174,8 +168,7 @@ var vm = new Vue({
                     vm.itemjibie=result.dictlist;
                 }
             });
-            this.title = "新增闯关配置";
-            this.dialogConfig = true;
+
 
         },
         onselect:function (num) {//点完选择大关触发事件
@@ -230,7 +223,6 @@ var vm = new Vue({
           }
             console.info(num);
         },
-
         look: function (index, row) {
             vm.title = "查看关卡配置";
             vm.xiaoguanList =[];//每次打开前 都删一边
@@ -253,19 +245,18 @@ var vm = new Vue({
                 }
             });
         },
-        del: function (index, row) {
-            vm.delIdArr.push(row.id);
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        del: function () {
+
+            this.$confirm('此操作将永久删除竞赛配置, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: baseURL + 'sysconfig/delete',
+                    url: baseURL + 'recruitConfiguration/delete',
                     async: true,
-                    data: JSON.stringify(vm.delIdArr),
-                    contentType: "application/json",
+                    dataType: "json",
                     success: function (result) {
                         vm.reload();
                         vm.$message({
@@ -283,6 +274,92 @@ var vm = new Vue({
             });
 
         },
+        update: function () {
+            //每次打开添加按钮时候 取后台获取 字典表中大关和小关数量的配置
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                data: {type:"BIGCHECKNUM",Parentcode:"99997"},
+                success: function (result) {
+                    if (result.code == 0) {
+                        //区间也就2个值 也排序过了
+                        var bigchecknum1 =  result.dictlist[0].value;
+                        var bigchecknum2 =  result.dictlist[1].value;
+                        for(var i=bigchecknum1;i<=bigchecknum2;i++)
+                        {
+                            vm.bigcheckNum.push({
+                                value: i,
+                                label: i+'大关'
+                            })
+                        }
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+            //专项知识
+            $.ajax({
+                type: "POST",
+                url: baseURL + "recruitConfiguration/findAllTopic",
+                dataType: "json",
+                success: function (result) {
+
+                    vm.zhuanxiangzhishiList=result.data;
+                }
+            });
+
+            // 试题类型
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                data: {type:"QUESTION_TYPE",Parentcode:"0"},
+                success: function (result) {
+
+
+                    vm.itemtype=result.dictlist;
+                }
+            });
+
+            //试题难度
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                data: {type:"QUESTION_DIFF",Parentcode:"0"},
+                success: function (result) {
+                    vm.itemjibie=result.dictlist;
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'recruitConfiguration/findAll',
+                dataType: "json",
+                success: function (result) {
+                    console.info(result);
+                    console.info(result.data.length);
+                    if (result.code === 0) {
+                        if(result.data.length=="0")
+                        {
+                            vm.$alert('暂无数据');
+
+                        }
+                        else
+                        {
+                            vm.title = "编辑";
+                            vm.dialogConfig = true;
+                            vm.daguanArray = result.data;
+                            vm.daguannum  = result.data.length;
+                        }
+
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
         closeDia: function () {
             this.dialogConfig = false;
             vm.reload();
@@ -296,10 +373,8 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "recruitConfiguration/list",
                 dataType: "json",
-                // data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
-                        console.info(result)
                         vm.tableData = result.page.list;
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;

@@ -36,10 +36,27 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 			List<RecruitConfiguration>  list=this.selectList(new EntityWrapper<RecruitConfiguration>());//得到闯关配置大关的list
 			for(int i=0;i<list.size();i++)
 			{
-				//通过配置大关的id找到关联的小关配置信息,其实条件里面还有个应该是第几小题排序，懒的写
-				List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationList =recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",list.get(0).getId()));
-				//将小关信息放入对应的大关里面  一起返回给前端
-				list.get(0).setRecruitCheckpointConfigurationList(recruitCheckpointConfigurationList);
+
+				//通过配置大关的id找到关联的小关配置信息,
+//			     	List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationList =recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",list.get(i).getId()).orderBy("HOW_MANY_SMALL",true));
+			        	List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationList =recruitCheckpointConfigurationService.selectListByBaBaId(list.get(i).getId());
+			     		List<RecruitCheckpointConfiguration> list2=new ArrayList();
+			     	if(recruitCheckpointConfigurationList.size()==0)
+			     	{
+						return null;
+					}
+			     	if(list.get(i).getUnifyConfiguration().equals("1"))//如果这个大关是统一配置  那么就存一个在list
+					{
+						list2.add(recruitCheckpointConfigurationList.get(0));
+						//将小关信息放入对应的大关里面  一起返回给前端
+						list.get(i).setRecruitCheckpointConfigurationList(list2);
+					}
+					else
+					{
+						//将小关信息放入对应的大关里面  一起返回给前端
+						list.get(i).setRecruitCheckpointConfigurationList(recruitCheckpointConfigurationList);
+					}
+
 			}
 		 	return list;
 	}

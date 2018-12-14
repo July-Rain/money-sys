@@ -39,6 +39,16 @@ public class RecruitConfigurationController {
 
         return Result.ok().put("recruitConfiguration", recruitConfiguration);
     }
+
+
+    //查找所有数据
+    @RequestMapping("/findAll")
+    public Result findAll(){
+
+         List<RecruitConfiguration> list=  recruitConfigurationService.findAll();
+
+        return Result.ok().put("data", list);
+    }
 //
 //
     //保存
@@ -76,7 +86,7 @@ public class RecruitConfigurationController {
 //     * 删除
 //     */
     @RequestMapping("/delete")
-    public Result delete(@RequestParam String id){
+    public Result delete(){
 
         //因为数据库的结构  设计为有多少条数据 就是多少个 大关   没有一点多余数据    所以要删除的话 就是  全删   不存在 删一条的说法
         recruitConfigurationService.deleteAll();
