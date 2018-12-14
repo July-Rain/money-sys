@@ -3,6 +3,8 @@ package com.lawschool.service.competition;
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
+import com.lawschool.beans.system.TopicTypeEntity;
+import com.lawschool.form.CommonForm;
 import com.lawschool.util.PageUtils;
 
 import java.util.List;
@@ -32,4 +34,5 @@ public interface RecruitConfigurationService  extends IService<RecruitConfigurat
     PageUtils queryPage(Map<String, Object> params);
 
     public List<RecruitCheckpointConfiguration> getSonList(String id);
+    public List<CommonForm> findAllTopic();
 }

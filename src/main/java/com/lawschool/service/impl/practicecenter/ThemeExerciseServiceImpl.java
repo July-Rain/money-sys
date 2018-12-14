@@ -367,7 +367,7 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 		questionType.add("5");
 		questionType.add("6");
 
-		paramsMap.put("questionType", questionType);
+		paramsMap.put("list", questionType);
 		paramsMap.put("specialKnowledgeId", konwId);
 
 		resultList = testQuestionService.findIdBySpecialKnowledgeId(paramsMap);

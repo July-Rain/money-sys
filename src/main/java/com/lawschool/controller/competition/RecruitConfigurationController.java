@@ -2,6 +2,7 @@ package com.lawschool.controller.competition;
 
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
+import com.lawschool.form.CommonForm;
 import com.lawschool.service.competition.RecruitConfigurationService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
@@ -38,14 +39,22 @@ public class RecruitConfigurationController {
 
         return Result.ok().put("recruitConfiguration", recruitConfiguration);
     }
+
+
+    //查找所有数据
+    @RequestMapping("/findAll")
+    public Result findAll(){
+
+         List<RecruitConfiguration> list=  recruitConfigurationService.findAll();
+
+        return Result.ok().put("data", list);
+    }
 //
 //
     //保存
     @RequestMapping("/save")
     public Result save(@RequestBody List<RecruitConfiguration> list){
 
-//        System.out.println(params);
-//        System.out.println("sads");
         //前提 要前端 传过来  (看 是不是统一配置)  先不考虑统一配置
 
         recruitConfigurationService.save(list);//这边到时候和前端商量  传个json串
@@ -77,22 +86,21 @@ public class RecruitConfigurationController {
 //     * 删除
 //     */
     @RequestMapping("/delete")
-    public Result delete(@RequestParam String id){
+    public Result delete(){
 
         //因为数据库的结构  设计为有多少条数据 就是多少个 大关   没有一点多余数据    所以要删除的话 就是  全删   不存在 删一条的说法
         recruitConfigurationService.deleteAll();
 
         return Result.ok();
     }
-//
-//    //根据id来找数据    //修改功能待定
-//    @RequestMapping("/update")
-//    public Result update(@RequestParam Map<String, Object> params){
-//
-//        //不要更改
-//        recruitConfigurationService.updateAll();
-//        return Result.ok();
-//    }
 
+    @RequestMapping("/findAllTopic")
+    public Result findAllTopic(){
+
+
+        List<CommonForm> CommonFormList= recruitConfigurationService.findAllTopic();
+
+        return Result.ok().put("data",CommonFormList);
+    }
 
 }

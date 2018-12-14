@@ -8,6 +8,9 @@
         <id column="ID" property="id" jdbcType="VARCHAR" />
         <result column="MARK_NUM_ORDER" property="markNumOrder" jdbcType="INTEGER" />
         <result column="SMALL_NUM" property="smallNum" jdbcType="VARCHAR" />
+        <result column="UNIFY_CONFIGURATION" property="unifyConfiguration" jdbcType="VARCHAR" />
+        <result column="MARK_REWARD" property="markReward" jdbcType="VARCHAR" />
+        <result column="REWARD_SCORE" property="rewardScore" jdbcType="VARCHAR" />
         <result column="STATUS" property="status" jdbcType="VARCHAR" />
         <result column="BACKUP1" property="backup1" jdbcType="VARCHAR" />
         <result column="BACKUP2" property="backup2" jdbcType="VARCHAR" />
