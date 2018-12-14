@@ -91,8 +91,7 @@ var vm = new Vue({
 
         },
         add: function () {
-            vm.title = "新增闯关配置";
-            vm.dialogConfig = true;
+
             $.ajax({
                 type: "POST",
                 url: baseURL + 'recruitConfiguration/findAll',
@@ -103,6 +102,11 @@ var vm = new Vue({
 
                             vm.$alert('请先删除原有配置，在添加新的配置');
                             vm.dialogConfig = false;
+                        }
+                        else
+                        {
+                            vm.title = "新增闯关配置";
+                            vm.dialogConfig = true;
                         }
 
                 }
