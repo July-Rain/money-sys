@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.practicecenter.ExerciseAnswerRecordDao">
+
+	<!-- 创建练习信息 -->
+	<insert id="save">
+		INSERT INTO law_exercise_record
+        (
+        	id,
+        	question_id,
+			exercise_id,
+			answer,
+			is_right,
+        	answer_time,
+         	type_name
+        ) VALUES (
+        	#{id},
+        	#{questionId},
+        	#{exerciseId},
+        	#{answer},
+        	#{right},
+        	#{answerTime},
+            #{typeName}
+        )
+	</insert>
+
+	<!-- 分组统计答题情况 -->
+	<select id="analysisAnswer" resultType="com.lawschool.form.ThemeAnswerForm">
+		SELECT
+		       type_name AS "typeName",
+		       is_right AS "right",
+		       count(*) AS "rightNum"
+		FROM law_exercise_record
+		<where>
+			exercise_id = #{exerciseId}
+		</where>
+		GROUP BY type_name, is_right
+		ORDER BY type_name
+	</select>
+</mapper>

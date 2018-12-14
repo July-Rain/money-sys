@@ -1,5 +1,7 @@
 package com.lawschool.form;
 
+import java.util.Date;
+
 /**
  * @version V1.0
  * @Description: 随机练习提交Form
@@ -7,43 +9,46 @@ package com.lawschool.form;
  * @date: 2018-12-07 15:42
  */
 public class RandomExerciseForm {
-    private String questionDifficulty;// 试题难度
-    private String typeId;// 试题分类
-    private String questionType;// 试题类型
-    private String specialKnowledgeId;// 专项知识库ID
+    private String difficulty;// 试题难度
+    private String classify;// 试题分类
+    private String type;// 试题类型
+    private String topic;// 专项知识库ID
 
-    private String userId;// 用户ID
+    private String userId;// 用户
 
-    public String getQuestionDifficulty() {
-        return questionDifficulty;
+    private String id;
+    private Date date;
+
+    public String getDifficulty() {
+        return difficulty;
     }
 
-    public void setQuestionDifficulty(String questionDifficulty) {
-        this.questionDifficulty = questionDifficulty;
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 
-    public String getTypeId() {
-        return typeId;
+    public String getClassify() {
+        return classify;
     }
 
-    public void setTypeId(String typeId) {
-        this.typeId = typeId;
+    public void setClassify(String classify) {
+        this.classify = classify;
     }
 
-    public String getQuestionType() {
-        return questionType;
+    public String getType() {
+        return type;
     }
 
-    public void setQuestionType(String questionType) {
-        this.questionType = questionType;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getSpecialKnowledgeId() {
-        return specialKnowledgeId;
+    public String getTopic() {
+        return topic;
     }
 
-    public void setSpecialKnowledgeId(String specialKnowledgeId) {
-        this.specialKnowledgeId = specialKnowledgeId;
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     public String getUserId() {
@@ -52,5 +57,21 @@ public class RandomExerciseForm {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
