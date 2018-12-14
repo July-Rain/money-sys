@@ -66,14 +66,14 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 		{
 			RecruitConfiguration reConfation=list.get(i);
 			reConfation.setId(IdWorker.getIdStr());
-			reConfation.setMarkNumOrder(i+1);
+//			reConfation.setMarkNumOrder(i+1);
 
 			this.insert(reConfation);
 			//甲烷大关信息  不要忘了小关
 
 			//得到小关数量
 			int smallNum= Integer.parseInt(reConfation.getSmallNum());
-			if(flag)
+			if(reConfation.getUnifyConfiguration().equals("1"))
 			{
 				for(int k=0;k<smallNum;k++)
 				{
@@ -81,13 +81,13 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 					recruitCheckpointConfiguratio.setId(IdWorker.getIdStr());
 					recruitCheckpointConfiguratio.setRecruitConfigurationId(reConfation.getId());//设置闯关配置对应的大关的id
 					recruitCheckpointConfiguratio.setHowManySmall(k+1);//第几小关
-
+					recruitCheckpointConfiguratio.setUnifyConfiguration("1");//是统一配置
 					recruitCheckpointConfiguratio.setSpecialKnowledgeId(reConfation.getRecruitCheckpointConfigurationList().get(0).getSpecialKnowledgeId());//专项知识id
 					recruitCheckpointConfiguratio.setItemType(reConfation.getRecruitCheckpointConfigurationList().get(0).getItemType());//试题类型
 					recruitCheckpointConfiguratio.setItemDifficulty(reConfation.getRecruitCheckpointConfigurationList().get(0).getItemDifficulty());//试题难度
 					recruitCheckpointConfiguratio.setCrossingPoints(reConfation.getRecruitCheckpointConfigurationList().get(0).getCrossingPoints());//关卡积分
-					recruitCheckpointConfiguratio.setMarkReward(reConfation.getRecruitCheckpointConfigurationList().get(0).getMarkReward());//大关是否奖励
-					recruitCheckpointConfiguratio.setRewardScore(reConfation.getRecruitCheckpointConfigurationList().get(0).getRewardScore());//大关奖励分值
+					recruitCheckpointConfiguratio.setMarkReward(reConfation.getMarkReward());//大关是否奖励
+					recruitCheckpointConfiguratio.setRewardScore(reConfation.getRewardScore());//大关奖励分值
 
 //					reConfation.getRecruitCheckpointConfigurationList().get(0);   其他的属性 在这里面取   因为是统一 配置   就一个 默认下标0
 					recruitCheckpointConfigurationService.insert(recruitCheckpointConfiguratio);//存吧
@@ -101,13 +101,14 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 					recruitCheckpointConfiguratio.setId(IdWorker.getIdStr());
 					recruitCheckpointConfiguratio.setRecruitConfigurationId(reConfation.getId());//设置闯关配置对应的大关的id
 					recruitCheckpointConfiguratio.setHowManySmall(k+1);//第几小关
+					recruitCheckpointConfiguratio.setUnifyConfiguration("0");//不是统一配置
 //					reConfation.getRecruitCheckpointConfigurationList().get(k);   其他的属性 在这里面取   因为不是统一 配置  数量和 小关数量是一样的  下表页数一样的   可以通用
 					recruitCheckpointConfiguratio.setSpecialKnowledgeId(reConfation.getRecruitCheckpointConfigurationList().get(k).getSpecialKnowledgeId());//专项知识id
 					recruitCheckpointConfiguratio.setItemType(reConfation.getRecruitCheckpointConfigurationList().get(k).getItemType());//试题类型
 					recruitCheckpointConfiguratio.setItemDifficulty(reConfation.getRecruitCheckpointConfigurationList().get(k).getItemDifficulty());//试题难度
 					recruitCheckpointConfiguratio.setCrossingPoints(reConfation.getRecruitCheckpointConfigurationList().get(k).getCrossingPoints());//关卡积分
-					recruitCheckpointConfiguratio.setMarkReward(reConfation.getRecruitCheckpointConfigurationList().get(k).getMarkReward());//大关是否奖励
-					recruitCheckpointConfiguratio.setRewardScore(reConfation.getRecruitCheckpointConfigurationList().get(k).getRewardScore());//大关奖励分值
+					recruitCheckpointConfiguratio.setMarkReward(reConfation.getMarkReward());//大关是否奖励
+					recruitCheckpointConfiguratio.setRewardScore(reConfation.getRewardScore());//大关奖励分值
 					recruitCheckpointConfigurationService.insert(recruitCheckpointConfiguratio);//存吧
 				}
 			}
@@ -127,20 +128,9 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
-//		String code = (String)params.get("code");
-//		String value = (String)params.get("value");
-//		String status = (String)params.get("status");
 		EntityWrapper<RecruitConfiguration> ew = new EntityWrapper<>();
 		ew.orderBy("MARK_NUM_ORDER",true);
-//		if(UtilValidate.isNotEmpty(code)){
-//			ew.like("code",code);
-//		}
-//		if(UtilValidate.isNotEmpty(value)){
-//			ew.like("value",value);
-//		}
-//		if(UtilValidate.isNotEmpty(status)){
-//			ew.like("status",status);
-//		}
+
 		Page<RecruitConfiguration> page = this.selectPage(
 				new Query<RecruitConfiguration>(params).getPage(),ew);
 
@@ -152,8 +142,9 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 	@Override
 	public List<RecruitCheckpointConfiguration> getSonList(String id) {
 
-		 List<RecruitCheckpointConfiguration> list= recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",id).orderBy("HOW_MANY_SMALL",true));
-
+//		 List<RecruitCheckpointConfiguration> list= recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",id).orderBy("HOW_MANY_SMALL",true));
+		//通过他爸爸的id找数据
+		List<RecruitCheckpointConfiguration> list= recruitCheckpointConfigurationService.selectListByBaBaId(id);
 		return list;
 	}
 

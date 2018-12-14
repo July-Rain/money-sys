@@ -1,5 +1,6 @@
 package com.lawschool.beans.competition;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -29,24 +30,46 @@ public class RecruitCheckpointConfiguration implements Serializable {
 	private String recruitConfigurationId;
 	//专项知识ID
 	private String specialKnowledgeId;
+
+	//专项知识name
+	@TableField(exist = false)
+	private String specialKnowledgeName;
 //	//第几大关
 //	private String howManyMark;
 	//是否统一设置  0否  1 是
 	private String unifyConfiguration;
-//	//小关数量
-//	private String smallNum;
+
+//	是佛统一配置name
+	@TableField(exist = false)
+	private String unifyConfigurationName;
+
 	//当前第几小关
 	private int howManySmall;
 
 	//试题类型
-	private int itemType;
+	private String itemType;
+
+	////试题类型中文
+	@TableField(exist = false)
+	private String itemTypeName;
+
 
 	//试题难度
 	private String itemDifficulty;
+
+	//试题难度中文
+	@TableField(exist = false)
+	private String itemDifficultyName;
+
 	//关卡积分
 	private String crossingPoints;
 	//大关是否奖励   0否  1是
 	private String markReward;
+
+	//	大关是否奖励name
+	@TableField(exist = false)
+	private String markRewardName;
+
 	//奖励分值
 	private String rewardScore;
 	//操作人
@@ -104,12 +127,28 @@ public class RecruitCheckpointConfiguration implements Serializable {
 		this.unifyConfiguration = unifyConfiguration;
 	}
 
-	public int getItemType() {
+	public String getSpecialKnowledgeName() {
+		return specialKnowledgeName;
+	}
+
+	public void setSpecialKnowledgeName(String specialKnowledgeName) {
+		this.specialKnowledgeName = specialKnowledgeName;
+	}
+
+	public String getItemType() {
 		return itemType;
 	}
 
-	public void setItemType(int itemType) {
+	public void setItemType(String itemType) {
 		this.itemType = itemType;
+	}
+
+	public String getItemTypeName() {
+		return itemTypeName;
+	}
+
+	public void setItemTypeName(String itemTypeName) {
+		this.itemTypeName = itemTypeName;
 	}
 
 	public String getItemDifficulty() {
@@ -224,6 +263,27 @@ public class RecruitCheckpointConfiguration implements Serializable {
 		this.backup5 = backup5;
 	}
 
+	public String getItemDifficultyName() {
+		return itemDifficultyName;
+	}
 
+	public void setItemDifficultyName(String itemDifficultyName) {
+		this.itemDifficultyName = itemDifficultyName;
+	}
 
+	public String getUnifyConfigurationName() {
+		return unifyConfigurationName;
+	}
+
+	public void setUnifyConfigurationName(String unifyConfigurationName) {
+		this.unifyConfigurationName = unifyConfigurationName;
+	}
+
+	public String getMarkRewardName() {
+		return markRewardName;
+	}
+
+	public void setMarkRewardName(String markRewardName) {
+		this.markRewardName = markRewardName;
+	}
 }

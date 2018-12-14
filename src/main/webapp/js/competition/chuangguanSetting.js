@@ -79,7 +79,7 @@ var vm = new Vue({
             this.reload();
         },
         // 保存和修改
-        saveOrUpdate: function (formName) {
+        saveOrUpdate: function () {
             console.info(vm.daguanArray);
             // this.$refs[formName].validate(function (valid) {
             //     if (valid) {
@@ -188,11 +188,49 @@ var vm = new Vue({
                         id:'',
                         markNumOrder:k+1,
                         smallNum:'',
-                        recruitCheckpointConfigurationList:[{id:'',}]
+                        rewardScore:'0',
+                        recruitCheckpointConfigurationList:[{id:'',unifyConfiguration:'1'}]
                     }
                 )
             }
         },
+        onselectunifyConfiguration:function (num) {//点完是否统一配置触发事件
+
+          var xiaoguannum=  num.markNumOrder;
+
+          var unifyConfiguration=num.unifyConfiguration
+            var smallNum=num.smallNum;
+          if(!smallNum)
+          {
+              vm.$message({
+                  type: 'info',
+                  message: '请先设置小关数量!'
+              });
+              return;
+          }
+          //不管选的是是还是否  都先清除一遍  在加
+            num.recruitCheckpointConfigurationList=[];
+          if(unifyConfiguration=="0")//0不是统一配置
+          {
+                for(var p=0;p<smallNum;p++)
+                {
+                    num.recruitCheckpointConfigurationList.push
+                    (
+                        {id:'',howManySmall:p+1,unifyConfiguration:'0'}
+                    )
+                }
+
+          }
+          else if(unifyConfiguration=="1")//1是  是统一
+          {
+              num.recruitCheckpointConfigurationList.push
+              (
+                  {id:'',unifyConfiguration:'1'}
+              )
+          }
+            console.info(num);
+        },
+
         look: function (index, row) {
             vm.title = "查看关卡配置";
             vm.xiaoguanList =[];//每次打开前 都删一边
