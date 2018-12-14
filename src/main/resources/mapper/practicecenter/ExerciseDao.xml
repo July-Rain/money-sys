@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.practicecenter.ExerciseDao">
+    <sql id="randomColumns">
+        id AS "id",
+        answer_num AS "answerNum",
+        right_num AS "rightNum",
+        difficulty AS "difficulty",
+        classify AS "classify",
+        type AS "type",
+        topic_type AS "topicType",
+        create_time AS "createTime"
+    </sql>
+
+    <!-- list分页查询语句，关联的字典表属性，都从redis缓存中取 -->
+    <select id="findList" resultType="com.lawschool.beans.practicecenter.ExerciseEntity">
+        SELECT
+        <include refid="randomColumns"/>
+        FROM law_exercise_random
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY create_time DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="saveForm" parameterType="com.lawschool.form.RandomExerciseForm">
+        INSERT INTO law_exercise_random
+            (
+              id,
+              difficulty,
+              classify,
+              type,
+              topic_type,
+              create_user,
+              create_time,
+              opt_user,
+              opt_time
+
+            ) VALUES (
+                      #{id},
+                      #{difficulty},
+                      #{classify},
+                      #{type},
+                      #{topic},
+                      #{userId},
+                      #{date},
+                      #{userId},
+                      #{date}
+            )
+    </insert>
+
+    <update id="updateAnswerRecord">
+        UPDATE law_exercise_random
+        SET right_num = #{rightNum},
+        answer_num = #{answerNum},
+        opt_time = #{optTime}
+        <where>
+            ID = #{id}
+        </where>
+    </update>
+</mapper>
