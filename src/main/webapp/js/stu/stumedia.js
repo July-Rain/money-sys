@@ -1,7 +1,7 @@
 /**
  * Author: MengyuWu
  * Date: 2018/12/7
- * Description:参数配置
+ * Description:配置
  */
 var menuId=$("#menuId").val();
 var vm = new Vue({
@@ -20,23 +20,30 @@ var vm = new Vue({
         tableData: [],//表格数据
         visible: false,
         stuMedia: {
-            id: '',
-            code: '',
-            value: '',
-            remark: '',
-            status: "1"
+            id:"",
+            stuType: "1",
+            stuTitle: "",
+            comContent: "",
+            deptIds: "",
+            userIds: "",
+            stuDescribe:""
         },
         rules: {//表单验证规则
-            value: [
-                {required: true, message: '请输入参数名', trigger: 'blur'},
+            stuType: [
+                {required: true, message: '请选择资料类型', trigger: 'blur'}
+            ],
+            stuTitle: [
+                {required: true, message: '请输入标题', trigger: 'blur'},
                 {max: 50, message: '最大长度50', trigger: 'blur'}
             ],
-            code: [
-                {required: true, message: '请输入参数值', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
+            deptIds: [
+                {required: true, message: '请选择适用部门', trigger: 'blur'}
+            ],
+            userIds: [
+                {required: true, message: '请选择适用人员', trigger: 'blur'}
             ]
         },
-        dialogConfig: false,//table弹出框可见性
+        dialogStuMedia: false,//table弹出框可见性
         title:"",//弹窗的名称
         delIdArr: [],//删除数据
         treeData: [],//法律知识库分类树
@@ -46,12 +53,19 @@ var vm = new Vue({
         },
         fileList:[],//文件列表
         importFileUrl:baseURL+"sys/upload",//文件上传url
+        dialogDept: false,//部门的弹窗
+        dialogUser: false,//人员的弹窗
+        deptData:[],//部门树数据
+        userData:[],//人员树数据
+        defaultDeptProps:{
+            children: 'child',
+            label: 'orgName'
+        },//部门树的默认格式
     },
     created: function () {
 
         this.$nextTick(function () {
-            debugger
-
+            console.log(vm.deptData);
             //加载菜单
             $.ajax({
                 type: "POST",
@@ -65,15 +79,30 @@ var vm = new Vue({
                     }
                 }
             });
-            //加载菜单
+            //法律分类树数据
             $.ajax({
                 type: "POST",
                 url: baseURL + "law/tree",
                 contentType: "application/json",
                 success: function(result){
-                    debugger
                     if(result.code === 0){
                         vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+
+            //加载部门数据
+            $.ajax({
+                type: "POST",
+                url: baseURL + "org/tree",
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        debugger
+                        vm.deptData = result.orgList;
+                        console.log(vm.deptData);
                     }else{
                         alert(result.msg);
                     }
@@ -102,7 +131,11 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    var url = vm.stuMedia.id ? "sysconfig/update" :  "sysconfig/insert";
+                    var url = vm.stuMedia.id?"stumedia/updateStuMedia": "stumedia/insertStuMedia";
+                    var deptArr = vm.stuMedia.deptIds.split(",");
+                    var userArr = vm.stuMedia.userIds.split(",");
+                    vm.stuMedia.deptArr=deptArr;
+                    vm.stuMedia.userArr=userArr;
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
@@ -111,7 +144,8 @@ var vm = new Vue({
                         success: function(result){
                             if(result.code === 0){
                                 alert('操作成功', function(index){
-                                    vm.dialogConfig=false;
+                                    vm.stuMedia.id=result.id;
+                                    vm.dialogStuMedia=false;
                                     vm.reload();
 
                                 });
@@ -130,20 +164,22 @@ var vm = new Vue({
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
         },
-        addConfig: function () {
+        addStuMedia: function () {
             this.stuMedia= {
-                id: '',
-                code: '',
-                value: '',
-                remark: '',
-                status: "1"
-            };
-            this.title="新增参数";
-            this.dialogConfig=true;
+                id:"",
+                stuType: "1",
+                stuTitle: "",
+                comContent: "",
+                deptIds: "",
+                userIds: "",
+                stuDescribe:""
+            },
+            this.title="新增";
+            this.dialogStuMedia=true;
         },
         handleEdit: function (index, row){
-            this.title="修改参数";
-            this.dialogConfig=true;
+            this.title="修改";
+            this.dialogStuMedia=true;
             $.ajax({
                 type: "POST",
                 url: baseURL + 'sysconfig/info?id=' + row.id,
@@ -165,7 +201,6 @@ var vm = new Vue({
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(function () {
-                debugger
                 $.ajax({
                     type: "POST",
                     url: baseURL + 'sysconfig/delete' ,
@@ -195,7 +230,7 @@ var vm = new Vue({
 
         },
         closeDia : function(){
-            this.dialogConfig=false;
+            this.dialogStuMedia=false;
             vm.reload();
         },
         reload: function () {
@@ -220,14 +255,39 @@ var vm = new Vue({
         handleNodeClick: function (data) {
             console.log(data);
         },
+        handleCheckChange: function (data, checked, indeterminate) {
+            console.log(data);
+        },
         uploadSuccess: function (response, file, fileList) {
             vm.stuMedia.comContent=response.accessoryId;
         },
         uploadError: function () {
 
         },
-        beforeAvatarUpload: function () {
-            if(!checkFile(file)) return false;
+        beforeAvatarUpload: function (file) {
+            /*if(!checkFile(file)) return false;*/
         },
+        changeStuType: function () {
+            //修改资料类型
+            console.log(vm.stuMedia.stuType);
+            vm.stuMedia.comContent="";
+        },
+        chooseDept: function () {
+            //选择部门
+            console.log(vm.deptData);
+            this.dialogDept=true;
+
+        },
+        chooseUser: function () {
+            //选择人员
+            this.dialogUser=true;
+
+        },
+        confimDept: function () {
+            this.dialogDept=false;
+        },
+        cancelDept: function () {
+            this.dialogDept=false;
+        }
     }
 });

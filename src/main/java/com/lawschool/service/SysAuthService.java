@@ -1,11 +1,8 @@
 package com.lawschool.service;
 
-import com.baomidou.mybatisplus.service.IService;
-import com.lawschool.beans.Org;
-import com.lawschool.beans.Role;
+import com.lawschool.beans.system.SysRoleEntity;
 import com.lawschool.beans.SysMenu;
 import com.lawschool.beans.User;
-import com.lawschool.beans.auth.AuthRelationBean;
 
 import java.util.List;
 
@@ -55,10 +52,10 @@ public interface SysAuthService  {
      * @Description 获取用户的角色列表
      * @Date 11:07 2018-11-29
      * @Param [userId]
-     * @return java.util.List<com.lawschool.beans.Role>
+     * @return java.util.List<com.lawschool.beans.system.SysRoleEntity>
      **/
     
-    public List<Role> listAllRole(String userId);
+    public List<SysRoleEntity> listAllRole(String userId);
 
     /**
      * @Author MengyuWu
@@ -78,6 +75,6 @@ public interface SysAuthService  {
      * @return int
      **/
     
-    //public int insertAuth(Role role);
+    //public int insertAuth(SysRoleEntity role);
 
 }

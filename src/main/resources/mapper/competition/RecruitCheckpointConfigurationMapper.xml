@@ -13,11 +13,12 @@
            <result column="UNIFY_CONFIGURATION" property="unifyConfiguration" jdbcType="VARCHAR" />
            <!--<result column="SMALL_NUM" property="smallNum" jdbcType="VARCHAR" />-->
            <result column="HOW_MANY_SMALL" property="howManySmall" jdbcType="INTEGER" />
+           <result column="ITEM_TYPE" property="itemType" jdbcType="VARCHAR" />
            <result column="ITEM_DIFFICULTY" property="itemDifficulty" jdbcType="VARCHAR" />
            <result column="CROSSING_POINTS" property="crossingPoints" jdbcType="VARCHAR" />
            <result column="MARK_REWARD" property="markReward" jdbcType="VARCHAR" />
            <result column="REWARD_SCORE" property="rewardScore" jdbcType="VARCHAR" />
-           <result column="CREATE" property="create" jdbcType="VARCHAR" />
+           <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
            <result column="CREATE_DEPT" property="createDept" jdbcType="VARCHAR" />
            <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
            <result column="STATUS" property="status" jdbcType="VARCHAR" />
@@ -29,5 +30,39 @@
 
        </resultMap>
     <!--   //  对应数据库	LAW_RECRUIT_CHECK_CON   太长了 存不了  所以删减了表名字！-->
+
+
+
+    <select id="selectListByBaBaId" resultType="com.lawschool.beans.competition.RecruitCheckpointConfiguration">
+
+         SELECT
+            LAW_RECRUIT_CHECK_CON.id as "id",
+            LAW_RECRUIT_CHECK_CON.RECRUIT_CONFIGURATION_ID as "recruitConfigurationId",
+            LAW_RECRUIT_CHECK_CON.SPECIAL_KNOWLEDGE_ID as "specialKnowledgeId",
+            topicId2name(LAW_RECRUIT_CHECK_CON.SPECIAL_KNOWLEDGE_ID) as "specialKnowledgeName",
+            LAW_RECRUIT_CHECK_CON.UNIFY_CONFIGURATION as "unifyConfiguration",
+            CASE LAW_RECRUIT_CHECK_CON.UNIFY_CONFIGURATION WHEN '1' THEN '是'
+            　　ELSE '否'
+            END AS "unifyConfigurationName" ,
+            LAW_RECRUIT_CHECK_CON.HOW_MANY_SMALL as "howManySmall",
+            LAW_RECRUIT_CHECK_CON.ITEM_TYPE as "itemType",
+            DICTCODE2VALE(LAW_RECRUIT_CHECK_CON.ITEM_TYPE) as "itemTypeName",
+            LAW_RECRUIT_CHECK_CON.ITEM_DIFFICULTY as "itemDifficulty",
+            DICTCODE2VALE(LAW_RECRUIT_CHECK_CON.ITEM_DIFFICULTY) as "itemDifficultyName",
+
+            LAW_RECRUIT_CHECK_CON.CROSSING_POINTS as "crossingPoints",
+            LAW_RECRUIT_CHECK_CON.MARK_REWARD as "markReward",
+            CASE LAW_RECRUIT_CHECK_CON.MARK_REWARD WHEN '1' THEN '是'
+            　　ELSE '否'
+            END AS "markRewardName" ,
+
+            LAW_RECRUIT_CHECK_CON.REWARD_SCORE as "rewardScore"
+         FROM
+            LAW_RECRUIT_CHECK_CON
+          WHERE  LAW_RECRUIT_CHECK_CON.RECRUIT_CONFIGURATION_ID=#{id}
+        ORDER BY LAW_RECRUIT_CHECK_CON.HOW_MANY_SMALL
+
+    </select>
+
 
    </mapper>

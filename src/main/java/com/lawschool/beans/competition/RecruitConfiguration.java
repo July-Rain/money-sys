@@ -29,9 +29,15 @@ public class RecruitConfiguration implements Serializable {
 
 	//小关数量
 	private String smallNum;
-
+	//是否统一设置  0否  1 是
+	private String unifyConfiguration;
 	//配置状态      0禁用    1启用
 	private String status;
+
+	//大关是否奖励   0否  1是
+	private String markReward;
+	//奖励分值
+	private String rewardScore;
 	//备用字段1
 	private String backup1;
 	//备用字段2
@@ -48,11 +54,13 @@ public class RecruitConfiguration implements Serializable {
 	private List<RecruitCheckpointConfiguration>  recruitCheckpointConfigurationList =new ArrayList<RecruitCheckpointConfiguration>();
 
 
+	public String getUnifyConfiguration() {
+		return unifyConfiguration;
+	}
 
-
-
-
-
+	public void setUnifyConfiguration(String unifyConfiguration) {
+		this.unifyConfiguration = unifyConfiguration;
+	}
 
 	public String getId() {
 		return id;
@@ -132,5 +140,21 @@ public class RecruitConfiguration implements Serializable {
 
 	public void setSmallNum(String smallNum) {
 		this.smallNum = smallNum;
+	}
+
+	public String getMarkReward() {
+		return markReward;
+	}
+
+	public void setMarkReward(String markReward) {
+		this.markReward = markReward;
+	}
+
+	public String getRewardScore() {
+		return rewardScore;
+	}
+
+	public void setRewardScore(String rewardScore) {
+		this.rewardScore = rewardScore;
 	}
 }

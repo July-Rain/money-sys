@@ -1,12 +1,23 @@
 package com.lawschool.controller.practicecenter;
 
 import com.lawschool.base.AbstractController;
-import com.lawschool.form.RandomExerciseForm;
-import com.lawschool.form.ThemeAnswerForm;
+import com.lawschool.base.Page;
+import com.lawschool.beans.User;
+import com.lawschool.beans.practicecenter.ExerciseEntity;
+import com.lawschool.form.*;
+import com.lawschool.service.DictService;
 import com.lawschool.service.practicecenter.ExerciseService;
+import com.lawschool.service.system.TopicTypeService;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @version V1.0
@@ -21,6 +32,49 @@ public class RandomExerciseController extends AbstractController {
     @Autowired
     private ExerciseService exerciseService;
 
+    @Autowired
+    private DictService dictService;
+
+    @Autowired
+    private TopicTypeService topicTypeService;
+
+    /**
+     * 随机练习主页列表信息
+     * @param params 分页信息
+     * @return
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public Result list(@RequestParam Map<String, Object> params){
+
+        Page<ExerciseEntity> page = exerciseService.findPage(new Page<ExerciseEntity>(params), new ExerciseEntity());
+
+        return Result.ok().put("page", page);
+    }
+
+    /**
+     * 随机练习，获取各字典表的值
+     * @return
+     */
+    @RequestMapping(value = "/dict", method = RequestMethod.GET)
+    public Result dict(){
+
+        // 获取试题难度字典list
+        List<CommonForm> diffList = dictService.findByType("QUESTION_DIFF");
+
+        // 获取试题分类list
+        List<CommonForm> typeList = dictService.findByType("TYPE");
+
+        // 获取试题类型list
+        List<CommonForm> qtList = dictService.findByType("QUESTION_TYPE");
+
+        List<CommonForm> topicList = topicTypeService.findAll(new ArrayList<String>());
+
+        return Result.ok().put("diffList", diffList)
+                .put("typeList", typeList)
+                .put("qtList", qtList)
+                .put("topicList", topicList);
+    }
+
     /**
      * 开始随机练习
      *  生成随机练习任务，并返回试题
@@ -30,20 +84,47 @@ public class RandomExerciseController extends AbstractController {
     @RequestMapping(value = "/start", method = RequestMethod.POST)
     public Result startExercise(@RequestBody RandomExerciseForm form){
 
-        exerciseService.startExercise(form);
+        User user = this.getUser();
+        if(user == null){
+            throw new RuntimeException("用户信息异常，请重新登录...");
+        }
+        String userId = user.getId();
+        form.setUserId(userId);
+        form.setDate(new Date());
 
-        return Result.ok();
+        String id = exerciseService.startExercise(form);
+
+        return Result.ok().put("id", id);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/questions", method = RequestMethod.POST)
+    public Result getQuestions(@RequestBody ThemeForm form){
+
+        List<QuestForm> list = exerciseService.saveAndGetQuestions(form);
+        // 返回题目list
+        return Result.ok().put("list", list);
+    }
+
+    @RequestMapping(value = "/answer", method = RequestMethod.GET)
+    public ModelAndView answer(@RequestParam String id){
+        ModelAndView mv = new ModelAndView("/exerciseCenter/random_answer");
+
+        mv.addObject("id", id);
+        return mv;
     }
 
     /**
-     * 随机练习获取题目
-     * @param form 答题结果信息，用于更新随机任务信息
+     * 提交主题练习
+     * @param form
      * @return
      */
-    public Result getQuestion(@RequestBody ThemeAnswerForm form){
+    @RequestMapping(value = "/commit", method = RequestMethod.POST)
+    public Result commit(@RequestBody ThemeForm form){
 
+        AnalysisForm resultForm = exerciseService.commit(form);
 
-        return Result.ok();
+        return Result.ok().put("form", resultForm);
     }
 
 }

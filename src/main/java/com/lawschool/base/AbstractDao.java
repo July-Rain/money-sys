@@ -20,5 +20,10 @@ public interface AbstractDao<T> extends BaseMapper<T> {
      */
     Integer update(T entity);
 
+    /**
+     * 查询多条数据
+     * @param entity
+     * @return
+     */
     List<T> findList(T entity);
 }

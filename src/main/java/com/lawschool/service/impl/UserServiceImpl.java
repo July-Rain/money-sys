@@ -2,7 +2,7 @@ package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserExample;
 import com.lawschool.dao.UserMapper;
@@ -11,6 +11,7 @@ import com.lawschool.util.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.security.util.Password;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.Map;
 import static com.lawschool.util.Constant.*;
 
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> implements UserService {
 
     @Autowired
     UserMapper userMapper;
@@ -111,6 +112,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         return rst;//-2    -1
 
+    }
+
+    @Override
+    public int resetPassword(String id) {
+        User user = dao.selectById(id);
+        int result = 0;
+        if(UtilValidate.isNotEmpty(user)){
+            String salt = RandomStringUtils.randomAlphanumeric(20);//生成盐
+            String pass2=MD5Util.Md5Hex("123456"+salt);//数据库中新密码
+            user.setSalt(salt);
+            user.setPassword(pass2);
+            result = userMapper.updateById(user);
+            return result;
+        }
+        return result;
     }
 
     //添加用户/教官

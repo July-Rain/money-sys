@@ -3,6 +3,7 @@ package com.lawschool.beans;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
+import com.lawschool.beans.system.SysRoleEntity;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -110,7 +111,7 @@ public class User extends DataEntity<User> {
     private List<SysMenu> menuAuth;
 
     @TableField(exist = false) //角色list
-    private List<Role> roleList;
+    private List<SysRoleEntity> roleList;
 
     @TableField(exist = false)
     private String orgName;
@@ -451,54 +452,6 @@ public class User extends DataEntity<User> {
         this.isOnline = isOnline == null ? null : isOnline.trim();
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", fullName='" + fullName + '\'' +
-                ", orgCode='" + orgCode + '\'' +
-                ", synFlag=" + synFlag +
-                ", userCode='" + userCode + '\'' +
-                ", userId='" + userId + '\'' +
-                ", userIndate=" + userIndate +
-                ", userJob=" + userJob +
-                ", userJobLevel=" + userJobLevel +
-                ", userMobileLong='" + userMobileLong + '\'' +
-                ", userMobileShort='" + userMobileShort + '\'' +
-                ", userName='" + userName + '\'' +
-                ", userOverdate=" + userOverdate +
-                ", userPartType=" + userPartType +
-                ", userPoliceId='" + userPoliceId + '\'' +
-                ", userPoliceType=" + userPoliceType +
-                ", userQuater=" + userQuater +
-                ", userSex=" + userSex +
-                ", userStartdate=" + userStartdate +
-                ", userStatus=" + userStatus +
-                ", userType=" + userType +
-                ", password='" + password + '\'' +
-                ", salt='" + salt + '\'' +
-                ", sort=" + sort +
-                ", corrosionFile=" + corrosionFile +
-                ", isBasicCorrosion=" + isBasicCorrosion +
-                ", isMiddleRequired=" + isMiddleRequired +
-                ", isPassedJudicia=" + isPassedJudicia +
-                ", quaLevel='" + quaLevel + '\'' +
-                ", localJobActual='" + localJobActual + '\'' +
-                ", localJobLevel='" + localJobLevel + '\'' +
-                ", localJobStand='" + localJobStand + '\'' +
-                ", middleRequiredType='" + middleRequiredType + '\'' +
-                ", photo=" + photo +
-                ", workPoliceTime=" + workPoliceTime +
-                ", workTime=" + workTime +
-                ", roles='" + roles + '\'' +
-                ", quaStartTime=" + quaStartTime +
-                ", quaEndTime=" + quaEndTime +
-                ", birthday=" + birthday +
-                ", localOrgCode='" + localOrgCode + '\'' +
-                ", isOnline='" + isOnline + '\'' +
-                '}';
-    }
-
     public List<String> getOrgDataAuth() {
         return orgDataAuth;
     }
@@ -515,11 +468,11 @@ public class User extends DataEntity<User> {
         this.menuAuth = menuAuth;
     }
 
-    public List<Role> getRoleList() {
+    public List<SysRoleEntity> getRoleList() {
         return roleList;
     }
 
-    public void setRoleList(List<Role> roleList) {
+    public void setRoleList(List<SysRoleEntity> roleList) {
         this.roleList = roleList;
     }
 

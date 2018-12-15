@@ -6,6 +6,7 @@ import com.lawschool.base.DataEntity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -55,7 +56,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     private String isEnble;//启用禁用
 
     @TableField(exist = false)
-    private String collectId;//收藏id
+    private String collectionId;//收藏id
 
     @TableField(exist = false)
     private String questiontypeValue;
@@ -71,6 +72,8 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     @TableField(exist = false)
     private String typeValue;
 
+    @TableField(exist = false)
+    private List<Answer> answerList;
     public String getTypeId() {
         return typeId;
     }
@@ -207,12 +210,12 @@ public class TestQuestions extends DataEntity<TestQuestions> {
         this.rigthNumber = rigthNumber;
     }
 
-    public String getCollectId() {
-        return collectId;
+    public String getCollectionId() {
+        return collectionId;
     }
 
-    public void setCollectId(String collectId) {
-        this.collectId = collectId;
+    public void setCollectionId(String collectionId) {
+        this.collectionId = collectionId;
     }
 
     public String getQuestiontypeValue() {
@@ -263,6 +266,14 @@ public class TestQuestions extends DataEntity<TestQuestions> {
         this.isEnble = isEnble;
     }
 
+    public List<Answer> getAnswerList() {
+        return answerList;
+    }
+
+    public void setAnswerList(List<Answer> answerList) {
+        this.answerList = answerList;
+    }
+
     @Override
     public String toString() {
         return "TestQuestions{" +
@@ -285,7 +296,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
                 ", useNumber=" + useNumber + '\'' +
                 ", rigthNumber=" + rigthNumber + '\'' +
                 ", isEnble=" + isEnble + '\'' +
-                ", collectId='" + collectId + '\'' +
+                ", collectionId='" + collectionId + '\'' +
                 ", questiontypeValue='" + questiontypeValue + '\'' +
                 ", answerValue='" + answerValue + '\'' +
                 ", questiondifficultyValue='" + questiondifficultyValue + '\'' +

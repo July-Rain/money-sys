@@ -2,7 +2,9 @@ package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.beans.*;
+import com.lawschool.beans.system.SysRoleEntity;
 import com.lawschool.dao.*;
+import com.lawschool.dao.system.SysRoleDao;
 import com.lawschool.service.SysAuthService;
 import com.lawschool.util.UtilMisc;
 import com.lawschool.util.UtilValidate;
@@ -32,7 +34,7 @@ public class SysAuthServiceImpl implements SysAuthService {
     private SysUserRoleDao userRoleMapper;
 
     @Resource
-    private RoleDao roleDao;
+    private SysRoleDao sysRoleDao;
 
     @Resource
     private SysMenuDao sysMenuDao;
@@ -44,7 +46,7 @@ public class SysAuthServiceImpl implements SysAuthService {
         List<SysUserRole> userRoleList=userRoleMapper.selectList(new EntityWrapper<SysUserRole>().eq("user_id",userId));
         List<String> orgDataAuth = new ArrayList<>();
         List<SysMenu> menuAuth =new ArrayList<>();
-        List<Role> roleList=listAllRole(userId);
+        List<SysRoleEntity> roleList=listAllRole(userId);
         for(SysUserRole userRole: userRoleList){
             orgDataAuth.addAll(listAllOrgAuth(userRole.getRoleId()));
             menuAuth.addAll(listAllMenuAuth(userRole.getRoleId()));
@@ -79,8 +81,8 @@ public class SysAuthServiceImpl implements SysAuthService {
     }
 
     @Override
-    public List<Role> listAllRole(String userId) {
-        List<Role> roleList= roleDao.listRoleByUserId(userId);
+    public List<SysRoleEntity> listAllRole(String userId) {
+        List<SysRoleEntity> roleList= sysRoleDao.listRoleByUserId(userId);
         return roleList;
     }
 

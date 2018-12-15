@@ -31,4 +31,10 @@ public class RecruitCheckpointConfigurationServiceImpl extends ServiceImpl<Recru
 	public void save(RecruitCheckpointConfiguration recruitCheckpointConfiguration) {
 
 	}
+
+	@Override
+	public List<RecruitCheckpointConfiguration> selectListByBaBaId(String id) {
+		List<RecruitCheckpointConfiguration> list= recruitcheckpointconfigurationDao.selectListByBaBaId(id);
+		return list;
+	}
 }

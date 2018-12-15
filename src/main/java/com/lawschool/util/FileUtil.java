@@ -9,9 +9,14 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.ServletOutputStream;
 import java.io.*;
 import java.net.SocketException;
@@ -22,6 +27,7 @@ import java.util.Date;
 public class FileUtil {
     private static Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
+    //private static FileUtil fileUtil;
     /**
      * 附件的路径
      */
@@ -57,6 +63,18 @@ public class FileUtil {
        // uploadToFTPServer("test",in);
        // downloadFromFileServer("20181207","test.doc");
     }*/
+    /*@Autowired
+    public  AccessoryService accessoryService ;
+
+    public void setAccessoryService(AccessoryService accessoryService) {
+        this.accessoryService = accessoryService;
+    }
+
+    @PostConstruct
+    public void init(){
+        fileUtil = this;
+        fileUtil.accessoryService=this.accessoryService;// 初使化时将已静态化的testService实例化
+    }*/
 
     /**
      * @Author MengyuWu
@@ -72,7 +90,8 @@ public class FileUtil {
         int start =filename.lastIndexOf(".");
         String type=filename.substring(start + 1, filename.length());//后缀名
         //获取附件servcie
-        AccessoryService accessoryService = SpringContextUtils.getBean("accessoryService", AccessoryService.class);
+        //AccessoryService accessoryService = SpringContextUtils.getBean("accessoryService", AccessoryService.class);
+        AccessoryService accessoryService =(AccessoryService)ContextLoaderListener.getCurrentWebApplicationContext().getBean ("accessoryService");
 
         AccessoryEntity accessoryEntity = new AccessoryEntity();
         accessoryEntity.setId(GetUUID.getUUIDs("AE"));//设置id
@@ -106,7 +125,7 @@ public class FileUtil {
             accessoryEntity.setFilePath(filePath);//设置文件路径
             accessoryService.insert(accessoryEntity);//保存文件信息
             result.put("accessoryId",accessoryEntity.getId());
-            return result.ok();
+            return result;
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

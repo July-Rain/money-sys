@@ -21,4 +21,6 @@ public interface RecruitCheckpointConfigurationService extends IService<RecruitC
     public RecruitCheckpointConfiguration info(String id);
 
     public void save(RecruitCheckpointConfiguration recruitCheckpointConfiguration);
+
+    public List<RecruitCheckpointConfiguration> selectListByBaBaId(String id);
 }
