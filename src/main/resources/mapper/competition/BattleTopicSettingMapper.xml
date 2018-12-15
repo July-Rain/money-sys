@@ -10,9 +10,10 @@
         <result column="TYPE" property="type" jdbcType="VARCHAR" />
         <result column="QUESTION_DIFFICULTY" property="questionDifficulty" jdbcType="VARCHAR" />
         <result column="WHETHER_GET_INTEGRAL" property="whetherGetIntegral" jdbcType="VARCHAR" />
+        <result column="QUESTION_TYPE" property="questionType" jdbcType="VARCHAR" />
         <result column="SCORE" property="score" jdbcType="VARCHAR" />
         <result column="KNOWLEDGE_ID" property="knowledgeId" jdbcType="VARCHAR" />
-        <result column="HOW_MANY_SMALL" property="howManySmall" jdbcType="VARCHAR" />
+        <result column="HOW_MANY_SMALL" property="howManySmall" jdbcType="INTEGER" />
         <result column="BACKUP1" property="backup1" jdbcType="VARCHAR" />
         <result column="BACKUP2" property="backup2" jdbcType="VARCHAR" />
         <result column="BACKUP3" property="backup3" jdbcType="VARCHAR" />
