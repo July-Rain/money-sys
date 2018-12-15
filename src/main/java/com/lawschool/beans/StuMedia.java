@@ -29,7 +29,7 @@ public class StuMedia  implements Serializable {
 
     private String stuTime;//时长
 
-    private BigDecimal stuCount;//观看次数
+    private Integer stuCount;//观看次数
 
     private Date stuCreat;//制作时间
 
@@ -65,29 +65,50 @@ public class StuMedia  implements Serializable {
     private String stuTypeValue;//课件类型
 
     @TableField(exist = false)
-    private String[] deptId;//适用部门
+    private String[] deptArr;//适用部门
 
     @TableField(exist = false)
-    private String[] userId;//适用人员
+    private String[] userArr;//适用人员
+    @TableField(exist = false)
+    private String deptIds;//适用部门
 
+    @TableField(exist = false)
+    private String userIds;//适用人员
     private String addsrc;//添加来源  0-默认-用户  1-教官中心
 
     private Integer delStatus;
 
-    public String[] getDeptId() {
-        return deptId;
+
+    public String[] getDeptArr() {
+        return deptArr;
     }
 
-    public void setDeptId(String[] deptId) {
-        this.deptId = deptId;
+    public void setDeptArr(String[] deptArr) {
+        this.deptArr = deptArr;
     }
 
-    public String[] getUserId() {
-        return userId;
+    public String[] getUserArr() {
+        return userArr;
     }
 
-    public void setUserId(String[] userId) {
-        this.userId = userId;
+    public void setUserArr(String[] userArr) {
+        this.userArr = userArr;
+    }
+
+    public String getDeptIds() {
+        return deptIds;
+    }
+
+    public void setDeptIds(String deptIds) {
+        this.deptIds = deptIds;
+    }
+
+    public String getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(String userIds) {
+        this.userIds = userIds;
     }
 
     public String getId() {
@@ -138,11 +159,11 @@ public class StuMedia  implements Serializable {
         this.stuTime = stuTime == null ? null : stuTime.trim();
     }
 
-    public BigDecimal getStuCount() {
+    public Integer getStuCount() {
         return stuCount;
     }
 
-    public void setStuCount(BigDecimal stuCount) {
+    public void setStuCount(Integer stuCount) {
         this.stuCount = stuCount;
     }
 

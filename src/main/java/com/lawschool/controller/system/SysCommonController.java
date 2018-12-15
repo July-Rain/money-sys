@@ -4,10 +4,12 @@ import com.lawschool.base.AbstractController;
 import com.lawschool.util.FileUtil;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -38,7 +40,7 @@ public class SysCommonController extends AbstractController {
      * @Param [request]
      * @return com.lawschool.util.Result
      **/
-    
+    @ResponseBody
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public Result upload(MultipartHttpServletRequest request) throws IOException {
         Result result = new Result();
@@ -54,8 +56,8 @@ public class SysCommonController extends AbstractController {
             }
             InputStream inputStream = multipartFile.getInputStream();//输入流
             Result uploadResult = FileUtil.uploadToFTPServer(originalFilename,inputStream);
-            if("0".equals(uploadResult.get("code"))){
-                return result.ok();
+            if("success".equals(uploadResult.get("msg"))){
+                return uploadResult;
             }else{
                 return result.error("上传失败");
             }

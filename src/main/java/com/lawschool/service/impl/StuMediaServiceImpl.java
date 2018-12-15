@@ -98,10 +98,16 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
 
         stuMedia.setOptuser(user.getId());
         stuMedia.setOpttime(new Date());
+        stuMedia.setStuCode(GetUUID.getUUIDs("SC"));
+        stuMedia.setStuCount(0);
+        stuMedia.setStuCreat(new Date());
+        stuMedia.setStuIssuer(user.getUserName());
+        stuMedia.setStuIssdepartment(user.getOrgName());
+        stuMedia.setStuIsstime(new Date());
         mapper.insert(stuMedia);
         //存权限表
-        String[] deptIdArr=stuMedia.getDeptId();
-        String[] userIdArr=stuMedia.getUserId();
+        String[] deptIdArr=stuMedia.getDeptArr();
+        String[] userIdArr=stuMedia.getUserArr();
         authService.insertAuthRelation(deptIdArr,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getOptuser());
     }
     
@@ -131,7 +137,7 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
                 for(int i=0;i<userAuth.size();i++){
                     userIdArr[i]=userAuth.get(i).getAuthId();
                 }
-                stuMedia.setUserId(userIdArr);
+                stuMedia.setUserArr(userIdArr);
             }
             //获取适用部门的id
             List<AuthRelationBean> deptAuth = authService
@@ -144,7 +150,7 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
                 for(int i=0;i<userAuth.size();i++){
                     deptIdArr[i]=userAuth.get(i).getAuthId();
                 }
-                stuMedia.setUserId(deptIdArr);
+                stuMedia.setDeptArr(deptIdArr);
             }
 
         }
@@ -211,5 +217,25 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
                 new Query<StuMedia>(params).getPage(),ew);
 
         return new PageUtils(page);
+    }
+
+    /**
+     * @Author MengyuWu
+     * @Description 学习管理修改
+     * @Date 17:08 2018-12-13
+     * @Param [stuMedia, user]
+     * @return void
+     **/
+    
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateStuMedia(StuMedia stuMedia, User user) {
+        mapper.updateById(stuMedia);
+        authService.delete(new EntityWrapper<AuthRelationBean>().eq("function_flag","STUMEDIA").eq("function_Id",stuMedia.getId()));
+        //存权限表
+        String[] deptIdArr=stuMedia.getDeptArr();
+        String[] userIdArr=stuMedia.getUserArr();
+        authService.insertAuthRelation(deptIdArr,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getOptuser());
+
     }
 }
