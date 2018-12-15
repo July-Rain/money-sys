@@ -23,11 +23,12 @@ public interface CompetitionOnlineService extends IService<CompetitionOnline> {
     public CompetitionOnline info(String id);
 
 
-    public void save();
+    public void save(CompetitionOnline competitionOnline);
 
     public  void deleteComOnline(String id);
 
     public void  updateComOnline();
 
     PageUtils queryPage(Map<String, Object> params);
+    public  void deleteAll();
 }

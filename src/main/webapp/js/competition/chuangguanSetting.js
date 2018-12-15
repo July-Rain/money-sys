@@ -193,10 +193,10 @@ var vm = new Vue({
         },
         onselectunifyConfiguration:function (num) {//点完是否统一配置触发事件
 
-          var xiaoguannum=  num.markNumOrder;
+          // var xiaoguannum=   Number(num.markNumOrder);
 
           var unifyConfiguration=num.unifyConfiguration
-            var smallNum=num.smallNum;
+            var smallNum= Number(num.smallNum);
           if(!smallNum)
           {
               vm.$message({

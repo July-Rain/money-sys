@@ -68,16 +68,16 @@ var vm = new Vue({
             //保存前默认先删除一波
             $.ajax({
                 type: "POST",
-                url: baseURL + 'recruitConfiguration/delete',
+                url: baseURL + 'competitionOnline/deleteAll',
                 async: true,
                 dataType: "json",
                 success: function (result) {
-                    var url ="recruitConfiguration/save";
+                    var url ="competitionOnline/save";
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
                         contentType: "application/json",
-                        data: JSON.stringify(vm.daguanArray),
+                        data: JSON.stringify(vm.competitionOnline),
                         success: function (result) {
                             if (result.code === 0) {
                                 vm.$alert('操作成功', '提示', {
@@ -198,52 +198,46 @@ var vm = new Vue({
             {
                 id:'',
                 topicNum:num,
-                battleTopicSettingList:[],
+                battleTopicSettingList:[
+                    {id:'',},
+                ],
             };
-            for(var k=0;k<num;k++)
-            {
-                vm.competitionOnline.battleTopicSettingList.push(
-                    {
-                        id:'',
-                    }
-                )
-            }
         },
-        onselectunifyConfiguration:function (num) {//点完是否统一配置触发事件
+        onselectuniformRules:function (num) {//点完是否统一配置触发事件
 
-          var xiaoguannum=  num.markNumOrder;
+          var topicnum=  Number(num.topicNum);  //题目数量
 
-          var unifyConfiguration=num.unifyConfiguration
-            var smallNum=num.smallNum;
-          if(!smallNum)
+          var uniformRules=num.uniformRules  //是否统一配置
+
+          if(!topicnum)
           {
               vm.$message({
                   type: 'info',
-                  message: '请先设置小关数量!'
+                  message: '请先设置题目数量!'
               });
               return;
           }
           //不管选的是是还是否  都先清除一遍  在加
-            num.recruitCheckpointConfigurationList=[];
-          if(unifyConfiguration=="0")//0不是统一配置
+            num.battleTopicSettingList=[];
+          if(uniformRules=="0")//0不是统一配置
           {
-                for(var p=0;p<smallNum;p++)
+                for(var p=0;p<topicnum;p++)
                 {
-                    num.recruitCheckpointConfigurationList.push
+                    num.battleTopicSettingList.push
                     (
-                        {id:'',howManySmall:p+1,unifyConfiguration:'0'}
+                        {id:'',howManySmall:p+1,}
                     )
                 }
 
           }
-          else if(unifyConfiguration=="1")//1是  是统一
+          else if(uniformRules=="1")//1是  是统一
           {
-              num.recruitCheckpointConfigurationList.push
+              num.battleTopicSettingList.push
               (
-                  {id:'',unifyConfiguration:'1'}
+                  {id:'',}
               )
           }
-            console.info(num);
+
         },
         look: function (index, row) {
             vm.title = "查看关卡配置";
@@ -269,14 +263,14 @@ var vm = new Vue({
         },
         del: function () {
 
-            this.$confirm('此操作将永久删除竞赛配置, 是否继续?', '提示', {
+            this.$confirm('此操作将永久删除在线比武配置, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: baseURL + 'recruitConfiguration/delete',
+                    url: baseURL + 'competitionOnline/deleteAll',
                     async: true,
                     dataType: "json",
                     success: function (result) {

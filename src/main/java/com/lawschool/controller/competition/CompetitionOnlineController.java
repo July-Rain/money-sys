@@ -5,6 +5,7 @@ import com.lawschool.service.competition.CompetitionOnlineService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,9 +44,9 @@ public class CompetitionOnlineController {
 
     //根据id来找数据
     @RequestMapping("/save")
-    public Result save(@RequestParam Map<String, Object> params){
+    public Result save(@RequestBody CompetitionOnline competitionOnline){
 
-        competitionOnlineService.save();
+        competitionOnlineService.save(competitionOnline);
         return Result.ok();
     }
 
@@ -56,6 +57,16 @@ public class CompetitionOnlineController {
     public Result delete(@RequestParam String id){
 
         competitionOnlineService.deleteComOnline(id);
+
+        return Result.ok();
+    }
+    /**
+     * 删除
+     */
+    @RequestMapping("/deleteAll")
+    public Result deleteAll(){
+
+        competitionOnlineService.deleteAll();
 
         return Result.ok();
     }
