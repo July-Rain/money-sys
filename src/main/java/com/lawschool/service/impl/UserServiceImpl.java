@@ -11,6 +11,7 @@ import com.lawschool.util.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.security.util.Password;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -111,6 +112,21 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         }
         return rst;//-2    -1
 
+    }
+
+    @Override
+    public int resetPassword(String id) {
+        User user = dao.selectById(id);
+        int result = 0;
+        if(UtilValidate.isNotEmpty(user)){
+            String salt = RandomStringUtils.randomAlphanumeric(20);//生成盐
+            String pass2=MD5Util.Md5Hex("123456"+salt);//数据库中新密码
+            user.setSalt(salt);
+            user.setPassword(pass2);
+            result = userMapper.updateById(user);
+            return result;
+        }
+        return result;
     }
 
     //添加用户/教官

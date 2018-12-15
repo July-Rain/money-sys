@@ -469,12 +469,6 @@
         ORDER BY SYS_GUID()
     </select>
 
-    <delete id="deleteBatchIds" parameterType="map">
-        DELETE
-        FROM law_testquestions
-        WHERE id = #{id}
-    </delete>
-
     <!--查询所需要的问题字段-->
     <select id="findByIds" resultType="com.lawschool.form.QuestForm">
         SELECT

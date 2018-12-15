@@ -1,4 +1,4 @@
-package com.lawschool.controller.sys;
+package com.lawschool.controller.system;
 
 import com.lawschool.base.AbstractController;
 import com.lawschool.util.FileUtil;

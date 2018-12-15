@@ -2,7 +2,6 @@ package com.lawschool.controller.competition;
 
 import com.lawschool.beans.competition.CompetitionOnline;
 import com.lawschool.service.competition.CompetitionOnlineService;
-import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,10 +26,12 @@ public class CompetitionOnlineController {
     @Autowired
     private CompetitionOnlineService competitionOnlineService;
 
+    //查询
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params){
-        PageUtils page = competitionOnlineService.queryPage(params);
-        return Result.ok().put("page", page);
+        CompetitionOnline competitionOnline = new CompetitionOnline();
+
+        return Result.ok().put("comOnlineList", competitionOnlineService.list());
     }
 
     //根据id来找数据

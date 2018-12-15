@@ -70,7 +70,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sys/getAllUsers",
+                url: baseURL + "system/getAllUsers",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {

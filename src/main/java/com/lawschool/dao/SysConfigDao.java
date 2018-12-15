@@ -1,12 +1,11 @@
 package com.lawschool.dao;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.SysConfig;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-public interface SysConfigDao extends BaseMapper<SysConfig> {
+public interface SysConfigDao extends AbstractDao<SysConfig> {
     int deleteByPrimaryKey(String id);
 
 

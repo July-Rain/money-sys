@@ -1,11 +1,12 @@
 package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.lawschool.beans.Role;
+import com.lawschool.base.AbstractServiceImpl;
+import com.lawschool.beans.system.SysRoleEntity;
 import com.lawschool.beans.SysRoleMenu;
 import com.lawschool.beans.SysRoleOrg;
-import com.lawschool.dao.RoleDao;
-import com.lawschool.service.RoleService;
+import com.lawschool.dao.system.SysRoleDao;
+import com.lawschool.service.system.SysRoleService;
 import com.lawschool.service.SysAuthService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.UtilValidate;
@@ -24,10 +25,7 @@ import java.util.List;
  *
  */
 @Service
-public class RoleServiceImpl implements RoleService {
-
-    @Autowired
-    private RoleDao roleDao;
+public class SysRoleServiceImpl extends AbstractServiceImpl<SysRoleDao, SysRoleEntity> implements SysRoleService {
 
     @Autowired
     private SysAuthService authService;
@@ -41,8 +39,8 @@ public class RoleServiceImpl implements RoleService {
      * 增加角色
      */
     @Override
-    public void add(Role role) {
-        roleDao.insert(role);
+    public void add(SysRoleEntity role) {
+        dao.insert(role);
         //新增时添加相关的权限
         insertAuth(role);
 
@@ -55,7 +53,7 @@ public class RoleServiceImpl implements RoleService {
      * @return void
      **/
     
-    public void insertAuth(Role role){
+    public void insertAuth(SysRoleEntity role){
         //新增完角色后需要新增相关的数据权限和菜单权限
         String menuIds=role.getMenuIds();
         String orgIds=role.getOrgIds();
@@ -66,7 +64,7 @@ public class RoleServiceImpl implements RoleService {
                 SysRoleMenu roleMenu=new SysRoleMenu();
                 roleMenu.setId(GetUUID.getUUIDs("RM"));
                 roleMenu.setMenuId(id);
-                roleMenu.setRoleId(role.getRoleId().toString());
+                roleMenu.setRoleId(role.getId());
                 roleMenus.add(roleMenu);
             }
             roleMenuService.insertBatch(roleMenus);
@@ -78,7 +76,7 @@ public class RoleServiceImpl implements RoleService {
                 SysRoleOrg roleOrg=new SysRoleOrg();
                 roleOrg.setId(GetUUID.getUUIDs("RO"));
                 roleOrg.setOrgId(id);
-                roleOrg.setRoleId(role.getRoleId().toString());
+                roleOrg.setRoleId(role.getId());
                 roleOrgs.add(roleOrg);
             }
             roleOrgService.insertBatch(roleOrgs);
@@ -89,18 +87,18 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public void deleteById(String roleId) {
-        roleDao.deleteRoleById(roleId);
+        dao.deleteRoleById(roleId);
         //删除角色对应的相关权限
-        authService.deleteAuth(roleId.toString());
+        authService.deleteAuth(roleId);
     }
     /**
      * 修改角色
      */
     @Override
-    public void updaterRole(Role role) {
-        roleDao.update(role);
+    public void updaterRole(SysRoleEntity role) {
+        dao.update(role);
         //删除角色对应的相关权限
-        authService.deleteAuth(role.getRoleId().toString());
+        authService.deleteAuth(role.getId());
         //新增权限
         insertAuth(role);
     }
@@ -108,15 +106,15 @@ public class RoleServiceImpl implements RoleService {
      * 查找角色
      */
     @Override
-    public Role findByRoleId(String roleId) {
-        return roleDao.selectRoleById(roleId);
+    public SysRoleEntity findByRoleId(String roleId) {
+        return dao.selectRoleById(roleId);
     }
 
 
     @Override
-    public List<Role> findAll() {
+    public List<SysRoleEntity> findAll() {
 
-        return roleDao.selectList(new EntityWrapper<Role>());
+        return dao.selectList(new EntityWrapper<SysRoleEntity>());
 
     }
 }

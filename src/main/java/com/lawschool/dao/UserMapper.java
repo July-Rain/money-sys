@@ -28,5 +28,4 @@ public interface UserMapper  extends AbstractDao<User> {
 
     int updateByPrimaryKeySelective(User record);
 
-    int updateByPrimaryKey(User record);
 }

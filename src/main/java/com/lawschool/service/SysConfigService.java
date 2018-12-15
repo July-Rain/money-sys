@@ -1,6 +1,6 @@
 package com.lawschool.service;
 
-import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.base.AbstractService;
 import com.lawschool.beans.SysConfig;
 import com.lawschool.util.PageUtils;
 
@@ -15,7 +15,7 @@ import java.util.Map;
  * @version
  * @since JDK 1.8
  */
-public interface SysConfigService extends IService<SysConfig> {
+public interface SysConfigService extends AbstractService<SysConfig> {
 
     /**
      * @Author MengyuWu

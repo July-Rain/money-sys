@@ -36,6 +36,9 @@ public class PreparePaginationInterceptor extends BaseInterceptor {
 
     @Override
     public Object intercept(Invocation ivk) throws Throwable {
+        Object o = ivk.getTarget();
+        Class c = o.getClass();
+        Boolean b = c.isAssignableFrom(RoutingStatementHandler.class);
         if (ivk.getTarget().getClass().isAssignableFrom(RoutingStatementHandler.class)) {
 
             //初始化参数

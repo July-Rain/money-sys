@@ -290,8 +290,8 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         //区间也就2个值 也排序过了
-                        var bigchecknum1 = Number( result.dictlist[0].value);
-                        var bigchecknum2 = Number( result.dictlist[1].value);
+                        var bigchecknum1 =  result.dictlist[0].value;
+                        var bigchecknum2 =  result.dictlist[1].value;
                         for(var i=bigchecknum1;i<=bigchecknum2;i++)
                         {
                             vm.bigcheckNum.push({
