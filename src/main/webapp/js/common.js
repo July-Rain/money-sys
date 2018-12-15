@@ -32,3 +32,35 @@ function getUrlParam(name) {
     var r = window.location.search.substr(1).match(reg);  //匹配目标参数
     if (r != null) return unescape(r[2]); return null; //返回参数值
 }
+//格式化时间为年月日
+function formatTime(scope,cellvalue) {
+    var currentdate = "";
+    if (cellvalue) {
+        //cellvalue=cellvalue.replace(new RegExp(/-/gm) ,"/")
+        var date = new Date(cellvalue);
+        console.log(date);
+        console.log(date.getMonth())
+        var month = date.getMonth() + 1;
+
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+
+        currentdate = date.getFullYear() + "年" + month + "月" + strDate + "日";
+    }
+
+    return currentdate;
+}
+
+
+function openWindow(url, title, w, h) {
+    var iWidth = w;
+    var iHeight = h;
+    var iTop = (window.screen.availHeight-30-iHeight)/2;       //获得窗口的垂直位置;
+    var iLeft = (window.screen.availWidth-10-iWidth)/2;           //获得窗口的水平位置;
+    myWindow  = window.open( url, title, 'height=' + iHeight + ',innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ', toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no, titlebar=yes, alwaysRaised=yes');
+}

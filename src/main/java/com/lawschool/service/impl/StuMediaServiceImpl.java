@@ -80,7 +80,9 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
     **/
     @Override
     public StuMedia getStuMedia(StuMedia stuMedia) {
-        return mapper.selectById(stuMedia.getId());
+        StuMedia stuMedia1 = mapper.selectById(stuMedia.getId());
+
+        return stuMedia;
     }
 
     /**

@@ -56,7 +56,7 @@ public class StuMedia  implements Serializable {
     private String stuLawid;//专项知识ID
 
     @TableField(exist = false)
-    private String collectId;//收藏id
+    private String collectionId;//收藏id
 
     @TableField(exist = false)
     private Date collecttime;//收藏时间
@@ -242,12 +242,12 @@ public class StuMedia  implements Serializable {
         this.stuLawid = stuLawid == null ? null : stuLawid.trim();
     }
 
-    public String getCollectId() {
-        return collectId;
+    public String getCollectionId() {
+        return collectionId;
     }
 
-    public void setCollectId(String collectId) {
-        this.collectId = collectId;
+    public void setCollectionId(String collectionId) {
+        this.collectionId = collectionId;
     }
 
     public Date getCollecttime() {

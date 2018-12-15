@@ -24,9 +24,9 @@ public class Collection {
 
     private Date opttime;//操作时间
 
-    private int type;//类型  10-课程 20-试卷
+    private Integer type;//类型  10-课程 20-试卷
 
-    private int delStatus ;//状态
+    private Integer delStatus ;//状态
 
     public String getId() {
         return id;
@@ -68,7 +68,7 @@ public class Collection {
         this.opttime = opttime;
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
@@ -76,7 +76,7 @@ public class Collection {
         this.type = type;
     }
 
-    public int getDelStatus() {
+    public Integer getDelStatus() {
         return delStatus;
     }
 
