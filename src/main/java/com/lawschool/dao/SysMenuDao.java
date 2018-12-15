@@ -1,10 +1,7 @@
 package com.lawschool.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.lawschool.beans.Role;
 import com.lawschool.beans.SysMenu;
-import com.lawschool.beans.User;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;

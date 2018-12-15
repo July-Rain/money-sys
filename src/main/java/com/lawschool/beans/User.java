@@ -3,6 +3,7 @@ package com.lawschool.beans;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
+import com.lawschool.beans.system.SysRoleEntity;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -110,7 +111,7 @@ public class User extends DataEntity<User> {
     private List<SysMenu> menuAuth;
 
     @TableField(exist = false) //角色list
-    private List<Role> roleList;
+    private List<SysRoleEntity> roleList;
 
     @TableField(exist = false)
     private String orgName;
@@ -467,11 +468,11 @@ public class User extends DataEntity<User> {
         this.menuAuth = menuAuth;
     }
 
-    public List<Role> getRoleList() {
+    public List<SysRoleEntity> getRoleList() {
         return roleList;
     }
 
-    public void setRoleList(List<Role> roleList) {
+    public void setRoleList(List<SysRoleEntity> roleList) {
         this.roleList = roleList;
     }
 

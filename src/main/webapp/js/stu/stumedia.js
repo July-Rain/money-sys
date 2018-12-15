@@ -45,7 +45,7 @@ var vm = new Vue({
             label: 'classifyName'
         },
         fileList:[],//文件列表
-        importFileUrl:baseURL+"sys/upload",//文件上传url
+        importFileUrl:baseURL+"system/upload",//文件上传url
     },
     created: function () {
 

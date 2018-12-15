@@ -1,19 +1,17 @@
 package com.lawschool.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.beans.SysConfig;
 import com.lawschool.service.SysConfigService;
-import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -67,8 +65,8 @@ public class SysConfigController {
     @SysLog("添加参数配置")
     @RequestMapping("/insert")
     public Result insert(@RequestBody SysConfig config){
-        config.setId(GetUUID.getUUIDs("SC"));
-        configService.insert(config);
+//        config.setId(GetUUID.getUUIDs("SC"));
+        configService.save(config);
         return Result.ok().put("id",config.getId());
     }
 

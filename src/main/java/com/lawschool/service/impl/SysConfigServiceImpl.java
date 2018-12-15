@@ -3,6 +3,7 @@ package com.lawschool.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.SysConfig;
 import com.lawschool.beans.SysLogEntity;
 import com.lawschool.dao.SysConfigDao;
@@ -27,7 +28,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Service
-public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfig> implements SysConfigService {
+public class SysConfigServiceImpl extends AbstractServiceImpl<SysConfigDao, SysConfig> implements SysConfigService {
     @Resource
     private SysConfigDao configMapper;
     @Override

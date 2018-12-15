@@ -119,4 +119,5 @@
     <context:property-placeholder location="classpath:properties/sys.properties" ignore-unresolvable="true"/>
 
     <import resource="classpath:redis/spring-redis.xml"/>
+    <import resource="classpath:shiro/spring-context-shiro.xml"/>
 </beans>

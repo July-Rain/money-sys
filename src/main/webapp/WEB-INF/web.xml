@@ -133,4 +133,7 @@
         <error-code>500</error-code>
         <location>/WEB-INF/errorpage/500.jsp</location>
     </error-page>
+
+    <!-- shiro -->
+
 </web-app>

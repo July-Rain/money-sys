@@ -1,29 +1,27 @@
 package law_school;
 
-import com.lawschool.service.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 public class RoleServiceTest extends AbstractJUnit4SpringContextTests {
 
 //    @Autowired
-//    private RoleService roleService;
+//    private SysRoleService roleService;
 //
 //    @Test
 //    public void findByRoleId(){
-//        Role role = roleService.findByRoleId("1");
+//        SysRoleEntity role = roleService.findByRoleId("1");
 //        System.out.println(role);
 //    }
 //
 //    @Test
 //    public void deleteById(){
-////        Role role = roleService.deleteById();
+////        SysRoleEntity role = roleService.deleteById();
 ////        System.out.println(role);
 //    }
 //
 //    @Test
 //    public void add(){
-//        Role role =  new Role();
+//        SysRoleEntity role =  new SysRoleEntity();
 //        role.setRoleId("1");
 //        role.setRoleName("zhangqqi");
 //        role.setCreateTime(new Date());
@@ -34,7 +32,7 @@ public class RoleServiceTest extends AbstractJUnit4SpringContextTests {
 //
 //    @Test
 //    public void updaterRole(){
-////        Role role = new Role();
+////        SysRoleEntity role = new SysRoleEntity();
 ////        roleService.updaterRole("");
 ////        System.out.println(role);
 //    }
