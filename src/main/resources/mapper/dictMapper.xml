@@ -66,7 +66,7 @@
 
     <select id="findByType" resultType="com.lawschool.form.CommonForm">
         SELECT
-            id AS "key",
+            code AS "key",
             value AS "value"
         FROM LAW_SYS_DICT
         <where>

@@ -8,12 +8,11 @@
 var vm = new Vue({
     el: '#app',
     data: {
-        bigcheckNum:[],//大关数量数据
+
         tableData: [],//表格数据
         daguannum:'',
         daguanArray: [],
         formInline: { // 搜索表单
-
             currPage: 1,
             pageSize: 10,
             totalCount: 0
@@ -40,6 +39,14 @@ var vm = new Vue({
         itemtype:[],
 //试题难度
         itemjibie:[],
+ //在线比武实体
+        competitionOnline:
+       {
+           id:'',
+           battleTopicSettingList:[],
+       },
+//选择题量数据
+        checkNum:[],
     },
     created: function () {
         this.$nextTick(function () {
@@ -61,16 +68,16 @@ var vm = new Vue({
             //保存前默认先删除一波
             $.ajax({
                 type: "POST",
-                url: baseURL + 'recruitConfiguration/delete',
+                url: baseURL + 'competitionOnline/deleteAll',
                 async: true,
                 dataType: "json",
                 success: function (result) {
-                    var url ="recruitConfiguration/save";
+                    var url ="competitionOnline/save";
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
                         contentType: "application/json",
-                        data: JSON.stringify(vm.daguanArray),
+                        data: JSON.stringify(vm.competitionOnline),
                         success: function (result) {
                             if (result.code === 0) {
                                 vm.$alert('操作成功', '提示', {
@@ -92,44 +99,33 @@ var vm = new Vue({
         },
         add: function () {
 
-            $.ajax({
-                type: "POST",
-                url: baseURL + 'recruitConfiguration/findAll',
-                dataType: "json",
-                success: function (result) {
-                        if(result.data.length!="0")
-                        {
-
-                            vm.$alert('请先删除原有配置，在添加新的配置');
-                            vm.dialogConfig = false;
-                        }
-                        else
-                        {
-                            vm.title = "新增闯关配置";
-                            vm.dialogConfig = true;
-                        }
-
-                }
-            });
-
-            vm.daguanArray=[];
-            vm.bigcheckNum=[];
+            // 每次进来先制空
+            vm.checkNum=[];
+            vm.competitionOnline=
+                {
+                    id:'',
+                    battleTopicSettingList:[],
+                };
             //每次打开添加按钮时候 取后台获取 字典表中大关和小关数量的配置
             $.ajax({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
-                data: {type:"BIGCHECKNUM",Parentcode:"99997"},
+                async:false,
+                data: {type:"LITCHECKNUM",Parentcode:"99994"},
                 success: function (result) {
                     if (result.code == 0) {
+                        console.info(result);
+                        console.info(result.dictlist[0].value);
                         //区间也就2个值 也排序过了
-                        var bigchecknum1 =  result.dictlist[0].value;
-                        var bigchecknum2 =  result.dictlist[1].value;
-                        for(var i=bigchecknum1;i<=bigchecknum2;i++)
+                        var checknum1 =  Number(result.dictlist[0].value);
+                        var checknum2 =  Number(result.dictlist[1].value);
+
+                        for(var i=checknum1;i<=checknum2;i++)
                         {
-                           vm.bigcheckNum.push({
+                            vm.checkNum.push({
                                value: i,
-                               label: i+'大关'
+                               label: i
                            })
                         }
                     } else {
@@ -143,6 +139,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "recruitConfiguration/findAllTopic",
                 dataType: "json",
+                async:false,
                 success: function (result) {
 
                     vm.zhuanxiangzhishiList=result.data;
@@ -154,6 +151,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
+                async:false,
                 data: {type:"QUESTION_TYPE",Parentcode:"0"},
                 success: function (result) {
 
@@ -167,65 +165,79 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
+                async:false,
                 data: {type:"QUESTION_DIFF",Parentcode:"0"},
                 success: function (result) {
                     vm.itemjibie=result.dictlist;
                 }
             });
-
-
-        },
-        onselect:function (num) {//点完选择大关触发事件
-            // alert(vId);
-            vm.daguanArray=[];
-            for(var k=0;k<num;k++)
-            {
-                vm.daguanArray.push(
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'competitionOnline/list',
+                dataType: "json",
+                async:false,
+                success: function (result) {
+                    if(result.page.list.length!="0")
                     {
-                        id:'',
-                        markNumOrder:k+1,
-                        smallNum:'',
-                        rewardScore:'0',
-                        recruitCheckpointConfigurationList:[{id:'',unifyConfiguration:'1'}]
+
+                        vm.$alert('请先删除原有配置，在添加新的配置');
+                        vm.dialogConfig = false;
                     }
-                )
-            }
+                    else
+                    {
+                        vm.title = "新增在线比武配置";
+                        vm.dialogConfig = true;
+                    }
+
+                }
+            });
+
         },
-        onselectunifyConfiguration:function (num) {//点完是否统一配置触发事件
+        onselect:function (num) {//点完选择选择题量事件
+            vm.competitionOnline=
+            {
+                id:'',
+                topicNum:num,
+                battleTopicSettingList:[
+                    {id:'',},
+                ],
+            };
+        },
+        onselectuniformRules:function (num) {//点完是否统一配置触发事件
 
-          // var xiaoguannum=   Number(num.markNumOrder);
+          var topicnum=  Number(num.topicNum);  //题目数量
 
-          var unifyConfiguration=num.unifyConfiguration
-            var smallNum= Number(num.smallNum);
-          if(!smallNum)
+          var uniformRules=num.uniformRules  //是否统一配置
+
+          if(!topicnum)
           {
               vm.$message({
                   type: 'info',
-                  message: '请先设置小关数量!'
+                  message: '请先设置题目数量!'
               });
               return;
           }
           //不管选的是是还是否  都先清除一遍  在加
-            num.recruitCheckpointConfigurationList=[];
-          if(unifyConfiguration=="0")//0不是统一配置
+            num.battleTopicSettingList=[];
+          if(uniformRules=="0")//0不是统一配置
           {
-                for(var p=0;p<smallNum;p++)
+                for(var p=0;p<topicnum;p++)
                 {
-                    num.recruitCheckpointConfigurationList.push
+                    num.battleTopicSettingList.push
                     (
-                        {id:'',howManySmall:p+1,unifyConfiguration:'0'}
+                        {id:'',howManySmall:p+1,}
                     )
                 }
 
           }
-          else if(unifyConfiguration=="1")//1是  是统一
+          else if(uniformRules=="1")//1是  是统一
           {
-              num.recruitCheckpointConfigurationList.push
+              num.battleTopicSettingList.push
               (
-                  {id:'',unifyConfiguration:'1'}
+                  {id:'',}
               )
           }
-            console.info(num);
+
         },
         look: function (index, row) {
             vm.title = "查看关卡配置";
@@ -251,14 +263,14 @@ var vm = new Vue({
         },
         del: function () {
 
-            this.$confirm('此操作将永久删除竞赛配置, 是否继续?', '提示', {
+            this.$confirm('此操作将永久删除在线比武配置, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: baseURL + 'recruitConfiguration/delete',
+                    url: baseURL + 'competitionOnline/deleteAll',
                     async: true,
                     dataType: "json",
                     success: function (result) {
@@ -377,7 +389,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "recruitConfiguration/list",
+                url: baseURL + "competitionOnline/list",
                 dataType: "json",
                 success: function (result) {
                     if (result.code == 0) {
