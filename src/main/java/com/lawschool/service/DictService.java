@@ -61,4 +61,5 @@ public interface DictService extends IService<Dict> {
      * @return
      */
     List<CommonForm> findByType(String type);
+
 }

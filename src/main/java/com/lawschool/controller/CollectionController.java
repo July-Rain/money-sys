@@ -87,7 +87,7 @@ public class CollectionController extends AbstractController {
 
         Result result=collectionService.randomQuestColl(params,getUser());
 
-        return Result.ok().put("result",result);
+        return result;
     }
 
 

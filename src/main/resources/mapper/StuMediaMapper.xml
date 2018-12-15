@@ -190,6 +190,7 @@
     WHERE
     LAW_COLLECTION.COM_USERID = #{userId}
     AND LAW_COLLECTION. TYPE = 10
+    and LAW_STU_MEDIA. ID is not null
     AND ROWNUM &lt;= #{endPage}
     And LAW_COLLECTION.DEL_STATUS=0
     )
