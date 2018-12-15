@@ -5,24 +5,10 @@ var vm = new Vue({
         //menuId:"",//菜单id
         navData: [],//导航
         details: [],
-        formInline: { // 搜索表单
-            value: '',
-            name: '',
-            status: "",
-            pageNo: 1,
-            pageSize: 1,
-            limit: 10,
-            count: 0,
-            defaultPageSize: 10,
-            options: []
-        },
+        options: [],
         tableData: [],//表格数据
         visible: false,
-        examConfig: {
-            id: '',
-            examName: '',
-            examType: '',
-        },
+        examConfig: {},
         rules: {//表单验证规则
             value: [
                 {required: true, message: '请输入参数名', trigger: 'blur'},
@@ -37,27 +23,20 @@ var vm = new Vue({
         autonomyQuesModal: false,
         title: "",//弹窗的名称
         delIdArr: [],//删除数据
-        data11:[],//题型data
-        typeOptions: [
-            {
-                value: 0,
-                label: '单选'
-            },
-            {
-                value: 1,
-                label: '多选'
-            },
-            {
-                value: 0,
-                label: '填空'
-            },
-            {
-                value: 1,
-                label: '主观'
-            }
-        ],
+        data:[],//题型data
         dataListSelections: [],//选中行
-        deleteIds:[]
+        deleteIds:[],
+        etOption:[],
+        gfOption:[],
+        imtOption:[],
+        qwOption:[],
+        otOption:[],
+        asuOption:[],
+        rrtOption:[],
+        ctOption:[],
+        skOption:[],
+        randomQuesData:[],
+        qtOption:[]
     },
     created: function () {
         this.$nextTick(function () {
@@ -74,21 +53,32 @@ var vm = new Vue({
                     }
                 }
             });
-            this.reload();
-        })
-
+        }),
         this.$nextTick(function () {
             //下拉框选项
             $.ajax({
                 type: "GET",
-                url: baseURL + "topic/list?pageSize=-1",
+                url: baseURL + "exam/config/dict",
                 contentType: "application/json",
                 success: function (result) {
-                    vm.formInline.options = result.page.list;
+                    if (result.code === 0) {
+                        vm.etOption = result.etOption;
+                        vm.gfOption = result.gfOption;
+                        vm.imtOption = result.imtOption;
+                        vm.qwOption = result.qwOption;
+                        vm.otOption = result.otOption;
+                        vm.asuOption = result.asuOption;
+                        vm.rrtOption = result.rrtOption;
+                        vm.ctOption = result.ctOption;
+                        vm.skOption = result.skOption;
+                        vm.qtOption = result.qtOption;
+                    } else {
+                        alert(result.msg);
+                    }
                 }
             });
-            this.reload();
-        })
+        });
+
     },
     methods: {
         // 查询
@@ -103,10 +93,17 @@ var vm = new Vue({
             this.formInline.currPage = val;
             this.reload();
         },*/
+        openDiffModal : function(){
+            if(vm.examConfig.questionWay=='10033'){
+                this.randomQues();
+            }
+        },
         randomQues : function(){
             this.title = "随机出题配置";
             this.randomQuesModal = true;
-            // alert(111);
+        },
+        handleSave:function(){
+
         },
         // 保存和修改
         saveOrUpdate: function (formName) {
@@ -117,7 +114,8 @@ var vm = new Vue({
                         type: "POST",
                         url: baseURL + url,
                         contentType: "application/json",
-                        data: JSON.stringify(vm.sysConfig),
+                        data: JSON.stringify(vm.data11),
+
                         success: function (result) {
                             if (result.code === 0) {
                                 vm.$alert('操作成功', '提示', {
@@ -138,127 +136,42 @@ var vm = new Vue({
                 }
             });
         },
-        // loadData(oid) {
-        //     this.axios.get('/ServiceAction/com.eweaver.workflow.workflow.servlet.WorkflowRelateAction?action=load&oid=' + oid).then(response => {
-        //         this.details = response.data.detail;
-        //         this.flowName = response.data.flowName;
-        //     }).catch(err => {
-        //         console.log(err)
-        //     })
-        // },
-    //     handleAdd() {
-    //         this.details.push({
-    //             id: null,
-    //             workflowid: null,
-    //             workflowName: null,
-    //             formType: null,
-    //             formid: null,
-    //             formName: null,
-    //             fieldid: null,
-    //             fieldName: null,
-    //             condition: null
-    //         });
-    //         // alert(111);
-    //     },
-    //     handleDelete() {
-    //         this.multipleSelection.forEach(element => {
-    //             if (element.id && this.deleteIds.indexOf(element.id) === -1) {
-    //                 this.deleteIds.push(element.id);
-    //             }
-    //             this.details.splice(this.details.indexOf(element), 1)
-    //         });
-    //     },
-    //     handleSelectionChange(val) {
-    //         this.multipleSelection = val;
-    //     },
-    //     handleWorkflowBrowserClick(index) {
-    //         this.$store.commit('switch_workflowDialog');
-    //         this.currentIndex = index;
-    //     },
-    //     handleFormBrowserClick(index) {
-    //         this.$store.commit('switch_FormDialog', {
-    //             workflowid: this.details[index].workflowid,
-    //             formType: this.details[index].formType
-    //         });
-    //         this.currentIndex = index;
-    //     },
-    //     handleFieldBrowserClick(index) {
-    //         this.$store.commit('switch_FieldDialog', this.details[index].formid);
-    //         this.currentIndex = index;
-    //     },
-    //     handleSave() {
-    //         if (this.details.length > 0 || this.deleteIds.length > 0) {
-    //             let params = new URLSearchParams();
-    //             params.append('workflowid', this.$store.state.globalStore.workflowid);
-    //             params.append('list', JSON.stringify(this.details));
-    //             params.append('deleteList', JSON.stringify(this.deleteIds));
-    //             this.axios.post('/ServiceAction/com.eweaver.workflow.workflow.servlet.WorkflowRelateAction?action=save', params,
-    //                 {headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}}).then(response => {
-    //                 this.$message.info("主人，保存成功！");
-    //             }).catch(error => {
-    //                 console.log(error);
-    //             })
-    //         } else {
-    //             this.showMessage()
-    //         }
-    //     },
-    //     showMessage() {
-    //         this.$message.error('主人，小的发现无数据可提交哦');
-    //     }
-    // },
-    //     watch: {
-    //         workflowRowData: function (newData, oldData) {
-    //             this.details[this.currentIndex].workflowid = newData.workflowid;
-    //             this.details[this.currentIndex].workflowName = newData.workflowName;
-    //         },
-    //         formRowData: function (newData, oldData) {
-    //             this.details[this.currentIndex].formid = newData.formid;
-    //             this.details[this.currentIndex].formName = newData.formName;
-    //         },
-    //         fieldRowData: function (newData, oldData) {
-    //             this.details[this.currentIndex].fieldid = newData.fieldid;
-    //             this.details[this.currentIndex].fieldName = newData.fieldName;
-    //         },
-    //         oid: function (newData, oldData) {
-    //             this.loadData(newData);
-    //         },
         closeDia: function () {
             this.randomQuesModal = false;
             vm.reload();
         },
-        reload: function () {
-            $.ajax({
-                type: "POST",
-                url: baseURL + "exam/config/list",
-                dataType: "json",
-                data: vm.formInline,
-                success: function (result) {
-                    if (result.code == 0) {
-                        vm.tableData = result.page.list;
-                        vm.formInline.currPage = result.page.pageNo;
-                        vm.formInline.pageSize = result.page.pageSize;
-                        vm.formInline.totalCount = parseInt(result.page.count)+1;
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
-        },
         // 多选
         selectionChangeHandle: function (val) {
-            this.dataListSelections = val
+            this.dataListSelections = val;
         },
         //新增行
         handleAdd: function () {
-            this.data11.push({
+            var index = this.randomQuesData.length;
+            this.randomQuesData.push({
+                knowledge:null,
                 type: null,
                 num: null,
-                score: null
+                score: null,
+                index: index
             })
         },
+        handleDel : function(index,row){
+            row.splice(index,1);
+        },
         //批量删除
-        handleDelete: function () {
-            alert('批量删除')
+        handleDelete: function (dataListSelections) {
+            this.dataListSelections=dataListSelections;
+            var arr = [];
+            for(var i=0; i<dataListSelections.length; i++){
+                arr.push(dataListSelections[i].index);
+            }
+            var arr2=[];
+            for(var i=0;i<vm.randomQuesData.length;i++){
+                if(arr.indexOf(i)==-1){
+                    arr2.push(vm.randomQuesData[i]);
+                }
+            }
+            vm.randomQuesData = arr2;
         }
     }
 });
