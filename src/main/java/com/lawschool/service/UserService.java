@@ -58,6 +58,12 @@ public interface UserService  extends AbstractService<User> {
     public int updatePassword(String userCode, String password, String newPassword,HttpServletRequest request);
 
     /**
+     * 密码重置
+     * @param id
+     * @return
+     */
+    public int resetPassword(String id);
+    /**
      * 添加用户
      * @param user
      * @return
