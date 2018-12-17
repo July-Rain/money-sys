@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.competition.BattleTopicSetting;
 import com.lawschool.beans.competition.CompetitionOnline;
+import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
 import com.lawschool.dao.competition.CompetitionOnlineDao;
 import com.lawschool.service.competition.BattleTopicSettingService;
@@ -14,6 +15,7 @@ import com.lawschool.util.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,36 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	@Override
 	public List<CompetitionOnline> list() {
 		return this.selectList(new EntityWrapper<CompetitionOnline>());
+	}
+
+	@Override
+	public CompetitionOnline findAll() {
+		CompetitionOnline  competitionOnline=this.selectOne(new EntityWrapper<CompetitionOnline>());//得到在线比武的的list
+//		for(int i=0;i<list.size();i++)
+//		{
+
+			//通过配置大关的id找到关联的小关配置信息,
+//			     	List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationList =recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",list.get(i).getId()).orderBy("HOW_MANY_SMALL",true));
+			List<BattleTopicSetting> battleTopicSettingList =battleTopicSettingService.selectListByBaBaId(competitionOnline.getId());
+			List<BattleTopicSetting> list2=new ArrayList();
+			if(battleTopicSettingList.size()==0)
+			{
+				return null;
+			}
+			if(competitionOnline.getUniformRules().equals("1"))//如果这个大关是统一配置  那么就存一个在list
+			{
+				list2.add(battleTopicSettingList.get(0));
+				//将小关信息放入对应的大关里面  一起返回给前端
+				competitionOnline.setBattleTopicSettingList(list2);
+			}
+			else
+			{
+				//将小关信息放入对应的大关里面  一起返回给前端
+				competitionOnline.setBattleTopicSettingList(battleTopicSettingList);
+			}
+
+//		}
+		return competitionOnline;
 	}
 
 	@Override
@@ -140,5 +172,16 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 		  	return;
 		  }
 
+	}
+
+
+	//根据id来找子类数据集合
+	@Override
+	public List<BattleTopicSetting> getSonList(String id) {
+
+//		 List<RecruitCheckpointConfiguration> list= recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",id).orderBy("HOW_MANY_SMALL",true));
+		//通过他爸爸的id找数据
+		List<BattleTopicSetting> list= battleTopicSettingService.selectListByBaBaId(id);
+		return list;
 	}
 }

@@ -50,7 +50,7 @@ public class LoadData {
 
         //将这个项目一加载的list放到redis里面
         redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);
-//把数据存缓存中
+        //把数据存缓存中
         if(!redisUtil.hasKey("orgList")){
             //对象为空说明redis中没有orgList
             List<Org> orgList = orgService.queryForTree("32");

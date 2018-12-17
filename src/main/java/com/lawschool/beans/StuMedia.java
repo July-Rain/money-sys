@@ -69,8 +69,15 @@ public class StuMedia  implements Serializable {
 
     @TableField(exist = false)
     private String[] userArr;//适用人员
+
+    @TableField(exist = false)
+    private String userName;//适用人员名称
+
     @TableField(exist = false)
     private String deptIds;//适用部门
+
+    @TableField(exist = false)
+    private String deptName;//适用部门名称
 
     @TableField(exist = false)
     private String userIds;//适用人员
@@ -301,5 +308,22 @@ public class StuMedia  implements Serializable {
 
     public void setDelStatus(Integer delStatus) {
         this.delStatus = delStatus;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 }

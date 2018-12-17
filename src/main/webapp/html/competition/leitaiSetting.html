@@ -85,7 +85,7 @@
         <el-row :gutter="24">
             <el-col :span="24">
                 <el-tabs type="border-card">
-                    <el-tab-pane label="在线比武配置">
+                    <el-tab-pane label="擂台比武配置">
                         <div>
                             <el-button size="mini" type="primary" @click="add" >新增</el-button>
                             <el-button size="mini" type="primary" @click="update" >编辑</el-button>
@@ -105,10 +105,22 @@
                                         align="center"
                                 >
                                 </el-table-column>
+
+                                <el-table-column
+                                        prop="winName"
+                                        label="当前擂主"
+                                        width="280"
+                                        header-align="center"
+                                        align="center"
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.winName==null ?"占无擂主":scope.row.winName == "" ?"占无擂主":scope.row.winName}}
+                                    </template>
+                                </el-table-column>
                                 <el-table-column
                                         prop="winReward"
                                         label="获胜者奖励"
-                                        width="280"
+                                        width="270"
                                         header-align="center"
                                         align="center"
                                 >
@@ -116,7 +128,7 @@
                                 <el-table-column
                                         prop="loserReward"
                                         label="失败者奖励"
-                                        width="280"
+                                        width="270"
                                         header-align="center"
                                         align="center"
                                 >
@@ -124,7 +136,7 @@
                                 <el-table-column
                                         prop="answerTime"
                                         label="答题时间"
-                                        width="280"
+                                        width="270"
                                         header-align="center"
                                         align="center"
                                 >
@@ -154,15 +166,7 @@
                                     </template>
                                 </el-table-column>
                             </el-table>
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
-                            </el-pagination>
+
                         </div>
                     </el-tab-pane>
                 </el-tabs>
@@ -174,13 +178,13 @@
         <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
             <el-row>
                 <el-col :span="12">
-                    <el-form :model="competitionOnline" :rules="rules" ref="competitionOnline" label-width="100px" class="demo-competitionOnline" size="mini">
+                    <el-form :model="matchSetting" :rules="rules" ref="matchSetting" label-width="100px" class="demo-matchSetting" size="mini">
                         <table style="border: solid 2px black;width: 200%">
 
                             <tr>
                                 <th>
                                     <el-form-item  label="设置题量" prop="topicNum">
-                                        <el-select  @change="onselect" v-model="competitionOnline.topicNum"
+                                        <el-select  @change="onselect" v-model="matchSetting.topicNum"
                                                     size="mini"
                                                     style="margin-left: 20px;"
                                                     placeholder="设置题量">
@@ -195,7 +199,7 @@
                                 </th>
                                <th>
                                     <el-form-item label="是否统一配置" prop="uniformRules">
-                                        <el-select v-model="competitionOnline.uniformRules" @change="onselectuniformRules(competitionOnline)" placeholder="是否统一配置" clearable>
+                                        <el-select v-model="matchSetting.uniformRules" @change="onselectuniformRules(matchSetting)" placeholder="是否统一配置" clearable>
                                             <el-option label="是" value="1"></el-option>
                                             <el-option label="否" value="0"></el-option>
                                         </el-select>
@@ -206,21 +210,21 @@
 
                                 <th>
                                     <el-form-item label="获胜者奖励" prop="winReward">
-                                        <el-input type="number" v-model="competitionOnline.winReward" placeholder="获胜者奖励" clearable></el-input>
+                                        <el-input type="number" v-model="matchSetting.winReward" placeholder="获胜者奖励" clearable></el-input>
                                     </el-form-item>
                                 </th>
                                 <th>
                                     <el-form-item label="失败者奖励" prop="loserReward">
-                                        <el-input type="number" v-model="competitionOnline.loserReward" placeholder="失败者奖励" clearable></el-input>
+                                        <el-input type="number" v-model="matchSetting.loserReward" placeholder="失败者奖励" clearable></el-input>
                                     </el-form-item>
                                 </th>
                             </tr>
                         </table>
-                        <div v-for="item in competitionOnline.battleTopicSettingList" class="swiper-slide"  style="border: solid 1px #f00;width: 200%;">
+                        <div v-for="item in matchSetting.battleTopicSettingList" class="swiper-slide"  style="border: solid 1px #f00;width: 200%;">
                             <table style="border: solid 2px black;width: 100%">
                                 <tr>
                                     <th colspan="2">
-                                        <el-form-item label="" v-if="competitionOnline.uniformRules==0" prop="crossingPoints">
+                                        <el-form-item label="" v-if="matchSetting.uniformRules==0" prop="crossingPoints">
                                             第{{item.howManySmall}}题
                                         </el-form-item>
                                     </th>
@@ -342,5 +346,5 @@
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/competition/pkOnlSetting.js?_${.now?long}"></script>
+<script src="${rc.contextPath}/js/competition/leitaiSetting.js?_${.now?long}"></script>
 </html>

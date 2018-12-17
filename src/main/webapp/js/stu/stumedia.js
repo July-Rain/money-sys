@@ -26,7 +26,9 @@ var vm = new Vue({
             comContent: "",
             deptIds: "",
             userIds: "",
-            stuDescribe:""
+            stuDescribe:"",
+            userName:"",//适用人员姓名
+            deptName:"",//适用部门姓名
         },
         rules: {//表单验证规则
             stuType: [
@@ -61,6 +63,22 @@ var vm = new Vue({
             children: 'child',
             label: 'orgName'
         },//部门树的默认格式
+        defaultUserProps:{
+            children: 'child',
+            label: 'orgName'
+        },//部门人员的默认格式
+        userForm:{
+            userCode:"",
+            userName:"",
+            orgCode:"",
+            currPage: 1,
+            pageSize: 10,
+            totalCount:0
+
+        },//人员查询
+        userTableData:[],//人员表格信息
+        multipleSelection:[],//选中人员信息
+        multipleDeptSelection:[]//选中部门信息
     },
     created: function () {
 
@@ -100,9 +118,11 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
-                        debugger
+                        //debugger
+                        //console.log(result.orgList);
                         vm.deptData = result.orgList;
-                        console.log(vm.deptData);
+                        vm.userData = result.orgList;
+                        //console.log(vm.deptData);
                     }else{
                         alert(result.msg);
                     }
@@ -111,6 +131,7 @@ var vm = new Vue({
         })
         this.$nextTick(function () {
             this.reload();
+            this.reloadUser();
         })
 
     },
@@ -176,6 +197,7 @@ var vm = new Vue({
             },
             this.title="新增";
             this.dialogStuMedia=true;
+            //vm.getDept();
         },
         handleEdit: function (index, row){
             this.title="修改";
@@ -216,11 +238,6 @@ var vm = new Vue({
 
                     }
                 });
-                /*that.$message({
-                    type: 'success',
-                    message: '删除成功!'
-                });*/
-
             }).catch(function () {
                 that.$message({
                     type: 'info',
@@ -255,8 +272,14 @@ var vm = new Vue({
         handleNodeClick: function (data) {
             console.log(data);
         },
+        //部门人员控件中点击事件
+        handleDeptNodeClick: function (data) {
+            this.userForm.orgCode=data.orgCode;
+            this.reloadUser();
+        },
         handleCheckChange: function (data, checked, indeterminate) {
             console.log(data);
+
         },
         uploadSuccess: function (response, file, fileList) {
             vm.stuMedia.comContent=response.accessoryId;
@@ -284,10 +307,80 @@ var vm = new Vue({
 
         },
         confimDept: function () {
+            this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
+            for(var i=0;i<this.multipleDeptSelection.length;i++){
+                if (this.stuMedia.deptIds == "") {
+                    this.stuMedia.deptIds=this.multipleDeptSelection[i].id;
+                    this.stuMedia.deptName=this.multipleDeptSelection[i].orgName;
+                }else{
+                    this.stuMedia.deptIds+=","+this.multipleDeptSelection[i].id;
+                    this.stuMedia.deptName+=","+this.multipleDeptSelection[i].orgName;
+                }
+            }
             this.dialogDept=false;
         },
         cancelDept: function () {
             this.dialogDept=false;
+        },
+        confimUser: function () {
+            this.dialogUser=false;
+        },
+        cancelUser: function () {
+            this.dialogUser=false;
+        },
+        searchUser: function () {
+            //查询人员信息
+            vm.reloadUser();
+        },
+        reloadUser: function () {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "sys/getAllUsers",
+                dataType: "json",
+                data: vm.userForm,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.userTableData = result.page.list;
+                        vm.userForm.currPage = result.page.currPage;
+                        vm.userForm.pageSize = result.page.pageSize;
+                        vm.userForm.totalCount = parseInt(result.page.count);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        userHandleSizeChange: function (val) {
+            this.userForm.pageSize=val;
+            this.reloadUser();
+        },
+        userHandleCurrentChange: function (val) {
+            this.userForm.currPage=val;
+            this.reloadUser();
+        },
+        toggleSelection(rows) {
+            if (rows) {
+                rows.forEach(row => {
+                    this.$refs.multipleTable.toggleRowSelection(row);
+            });
+            } else {
+                this.$refs.multipleTable.clearSelection();
+            }
+        },
+        handleSelectionChange(val) {
+            //选择人员信息
+            this.multipleSelection = val;
+            //遍历最终的人员信息
+            for (var i=0;i<val.length;i++){
+                if (this.stuMedia.userIds == "") {
+                    this.stuMedia.userIds=val[i].id;
+                    this.stuMedia.userName=val[i].userName;
+                }else{
+                    this.stuMedia.userIds+=","+val[i].id;
+                    this.stuMedia.userName+=","+val[i].userName;
+                }
+            }
+
         }
     }
 });

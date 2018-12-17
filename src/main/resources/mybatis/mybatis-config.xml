@@ -3,12 +3,7 @@
 <configuration>
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
-
         <setting name="logImpl" value="STDOUT_LOGGING"/>
         <setting name="jdbcTypeForNull" value="NULL" />
     </settings>
-
-    <plugins>
-        <plugin interceptor="com.lawschool.util.persistence.interceptor.PreparePaginationInterceptor"/>
-    </plugins>
 </configuration>

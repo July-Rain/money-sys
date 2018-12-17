@@ -69,7 +69,6 @@
 
     <!-- 配置Mybatis的文件 ，mapperLocations配置**Mapper.xml文件位置，configLocation配置mybatis-config文件位置-->
     <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
-        
         <property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
         <property name="dataSource" ref="dataSource" />
         <property name="mapperLocations" value="classpath:mapper/**/*.xml"/>
@@ -85,22 +84,17 @@
                     <property name="format" value="false"/><!-- 格式化SQL语句 -->
                     <property name="maxTime" value="50000"/><!-- sql执行时间超过value值就会停止执行，单位是毫秒 -->
                 </bean>
+
+                <!--<bean id="paginationInterceptor" class="com.lawschool.util.persistence.interceptor.PreparePaginationInterceptor"/>-->
             </array>
         </property>
     </bean>
+
+
     <bean id ="globalConfiguration" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
         <!--映射数据库下划线字段名到数据库实体类的驼峰命名的映射-->
         <property name="dbColumnUnderline" value="true"></property>
-        <!-- 全局的主键策略 -->
-        <!--
-             AUTO->`0`("数据库ID自增")
-             INPUT->`1`(用户输入ID")
-             ID_WORKER->`2`("全局唯一ID")
-             UUID->`3`("全局唯一ID")
-        -->
         <property name="idType" value="1"></property>
-        <!-- 全局的表前缀策略配置 -->
-       <!-- <property name="tablePrefix" value="tbl_"></property>-->
     </bean>
     
     
@@ -119,5 +113,5 @@
     <context:property-placeholder location="classpath:properties/sys.properties" ignore-unresolvable="true"/>
 
     <import resource="classpath:redis/spring-redis.xml"/>
-    <import resource="classpath:shiro/spring-context-shiro.xml"/>
+    <import resource="classpath:shiro/spring-shiro.xml"/>
 </beans>

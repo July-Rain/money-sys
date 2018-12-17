@@ -1,5 +1,6 @@
 package com.lawschool.beans.competition;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -38,6 +39,25 @@ public class BattleTopicSetting implements Serializable {
 	private int howManySmall;
 	//试题类型
 	private String questionType;
+
+
+	//中文
+	@TableField(exist = false)
+	private String typeName;
+	//中文
+	@TableField(exist = false)
+	private String questionDifficultyName;
+	//中文
+	@TableField(exist = false)
+	private String whetherGetIntegralName;
+	//中文
+	@TableField(exist = false)
+	private String knowledgeName;
+	//中文
+	@TableField(exist = false)
+	private String questionTypeName;
+
+
 
 	//备用字段1
 	private String backup1;
@@ -161,6 +181,46 @@ public class BattleTopicSetting implements Serializable {
 
 	public void setQuestionType(String questionType) {
 		this.questionType = questionType;
+	}
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public String getQuestionDifficultyName() {
+		return questionDifficultyName;
+	}
+
+	public void setQuestionDifficultyName(String questionDifficultyName) {
+		this.questionDifficultyName = questionDifficultyName;
+	}
+
+	public String getWhetherGetIntegralName() {
+		return whetherGetIntegralName;
+	}
+
+	public void setWhetherGetIntegralName(String whetherGetIntegralName) {
+		this.whetherGetIntegralName = whetherGetIntegralName;
+	}
+
+	public String getKnowledgeName() {
+		return knowledgeName;
+	}
+
+	public void setKnowledgeName(String knowledgeName) {
+		this.knowledgeName = knowledgeName;
+	}
+
+	public String getQuestionTypeName() {
+		return questionTypeName;
+	}
+
+	public void setQuestionTypeName(String questionTypeName) {
+		this.questionTypeName = questionTypeName;
 	}
 
 	@Override

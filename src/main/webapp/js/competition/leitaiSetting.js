@@ -10,13 +10,7 @@ var vm = new Vue({
     data: {
 
         tableData: [],//表格数据
-        daguannum:'',
-        daguanArray: [],
-        formInline: { // 搜索表单
-            currPage: 1,
-            pageSize: 10,
-            totalCount: 0
-        },
+
         rules: {//表单验证规则
             // smallNum: [
             //     {required: true, message: '请输入参数名', trigger: 'blur'},
@@ -40,7 +34,7 @@ var vm = new Vue({
 //试题难度
         itemjibie:[],
  //在线比武实体
-        competitionOnline:
+        matchSetting:
        {
            id:'',
            battleTopicSettingList:[],
@@ -68,16 +62,16 @@ var vm = new Vue({
             //保存前默认先删除一波
             $.ajax({
                 type: "POST",
-                url: baseURL + 'competitionOnline/deleteAll',
+                url: baseURL + 'matchSetting/deleteAll',
                 async:false,
                 dataType: "json",
                 success: function (result) {
-                    var url ="competitionOnline/save";
+                    var url ="matchSetting/save";
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
                         contentType: "application/json",
-                        data: JSON.stringify(vm.competitionOnline),
+                        data: JSON.stringify(vm.matchSetting),
                         success: function (result) {
                             if (result.code === 0) {
                                 vm.$alert('操作成功', '提示', {
@@ -101,7 +95,7 @@ var vm = new Vue({
 
             // 每次进来先制空
             vm.checkNum=[];
-            vm.competitionOnline=
+            vm.matchSetting=
                 {
                     id:'',
                     battleTopicSettingList:[],
@@ -173,11 +167,11 @@ var vm = new Vue({
             });
             $.ajax({
                 type: "POST",
-                url: baseURL + 'competitionOnline/list',
+                url: baseURL + 'matchSetting/list',
                 dataType: "json",
                 async:false,
                 success: function (result) {
-                    if(result.page.list.length!="0")
+                    if(result.data.length!="0")
                     {
 
                         vm.$alert('请先删除原有配置，在添加新的配置');
@@ -194,7 +188,7 @@ var vm = new Vue({
 
         },
         onselect:function (num) {//点完选择选择题量事件
-            vm.competitionOnline=
+            vm.matchSetting=
             {
                 id:'',
                 topicNum:num,
@@ -244,7 +238,7 @@ var vm = new Vue({
             vm.guankaList =[];//每次打开前 都删一边
             $.ajax({
                 type: "POST",
-                url: baseURL + 'competitionOnline/getSonList',
+                url: baseURL + 'matchSetting/getSonList',
                 dataType: "json",
                 async:false,
                 data:{"id": row.id},
@@ -263,14 +257,14 @@ var vm = new Vue({
         },
         del: function () {
 
-            this.$confirm('此操作将永久删除在线比武配置, 是否继续?', '提示', {
+            this.$confirm('此操作将永久删除擂台比武配置, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: baseURL + 'competitionOnline/deleteAll',
+                    url: baseURL + 'matchSetting/deleteAll',
                     async:false,
                     dataType: "json",
                     success: function (result) {
@@ -293,7 +287,7 @@ var vm = new Vue({
         update: function () {
             // 每次进来先制空
             vm.checkNum=[];
-            vm.competitionOnline=[];
+            vm.matchSetting=[];
                 // {
                 //     id:'',
                 //     battleTopicSettingList:[],
@@ -364,7 +358,7 @@ var vm = new Vue({
 
             $.ajax({
                 type: "POST",
-                url: baseURL + 'competitionOnline/findAll',
+                url: baseURL + 'matchSetting/findAll',
                 dataType: "json",
                 async:false,
                 success: function (result) {
@@ -380,7 +374,7 @@ var vm = new Vue({
                         {
                             vm.title = "编辑";
 
-                            vm.competitionOnline = result.data;
+                            vm.matchSetting = result.data;
                             vm.dialogConfig = true;
                             // vm.daguannum = result.data.length;
                         }
@@ -391,7 +385,7 @@ var vm = new Vue({
                 }
             });
 
-            console.info(vm.competitionOnline);
+            console.info(vm.matchSetting);
         },
         closeDia: function () {
             this.dialogConfig = false;
@@ -404,14 +398,14 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "competitionOnline/list",
+                url: baseURL + "matchSetting/list",
                 dataType: "json",
                 success: function (result) {
+
+                    console.info(result);
                     if (result.code == 0) {
-                        vm.tableData = result.page.list;
-                        vm.formInline.currPage = result.page.currPage;
-                        vm.formInline.pageSize = result.page.pageSize;
-                        vm.formInline.totalCount = parseInt(result.page.totalCount);
+                        vm.tableData = result.data;
+
                     } else {
                         alert(result.msg);
                     }
