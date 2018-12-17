@@ -30,15 +30,13 @@ public class TestQuestionController extends AbstractController {
         String typeId = (String) params.get("typeId");
         String questionDifficulty = (String) params.get("questionDifficulty");
         String questionType = (String) params.get("questionType");
-        String isEnble = (String) params.get("isEnble");
 
-        EntityWrapper<TestQuestions> ew = new EntityWrapper<>();
         TestQuestions testQuestions = new TestQuestions();
-        ew.setEntity(testQuestions);
+        testQuestions.setTypeId(typeId);
+        testQuestions.setQuestionDifficulty(questionDifficulty);
+        testQuestions.setQuestionType(questionType);
 
-        ew.eq("TYPE_ID", typeId).eq("QUESTION_DIFFICULTY", questionDifficulty).eq("QUESTION_TYPE", questionType).eq("IS_ENBLE", isEnble);
-
-        Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), ew);
+        Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), testQuestions);
         return Result.ok().put("page", page);
     }
 
@@ -47,15 +45,15 @@ public class TestQuestionController extends AbstractController {
      */
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
     public Result info(@PathVariable("id") String id) {
-        TestQuestions testQuestions = testQuestionService.selectById(id);
+        TestQuestions testQuestions = testQuestionService.findOne(id);
         return Result.ok().put("testQuestions", testQuestions);
     }
 
     /**
      * 保存试题
      */
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public Result insert(TestQuestions testQuestions) {
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public Result save(@RequestBody TestQuestions testQuestions) {
         testQuestionService.save(testQuestions);
         return Result.ok();
     }
@@ -64,7 +62,7 @@ public class TestQuestionController extends AbstractController {
      * 禁用启用
      */
     @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
-    public Result updateStatus(String id, String isEnble) {
+    public Result updateStatus(@RequestBody String id, @RequestBody String isEnble) {
         testQuestionService.updateStatus(id, isEnble);
         return Result.ok();
     }
@@ -73,8 +71,8 @@ public class TestQuestionController extends AbstractController {
      * 删除专项知识试题
      */
     @RequestMapping(value = "delete", method = RequestMethod.GET)
-    public Result deleteById(List<String> idList) {
-        testQuestionService.deleteBatchIds(idList);
+    public Result deleteById(@RequestBody List<String> idList) {
+        testQuestionService.delete(idList);
         return Result.ok();
     }
 
