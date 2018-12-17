@@ -47,7 +47,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 		this.insert(competitionOnline);
 
 		//加完之后  还要循环加对战题目配置
-		int topicNum = Integer.parseInt(competitionOnline.getTopicNum());//得到题量   决定循环对战题目的次数，其实和 对象里面的 对战题目的集合是一个数字
+		int topicNum = Integer.parseInt(competitionOnline.getTopicNum());//得到题量   决定循环对战题目的次数，其实和 对象里面的 对战题目的集合是一个数字.
 		for (int i=0;i<topicNum;i++)
 		{
 			//判断是否统一配置
