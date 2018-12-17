@@ -19,7 +19,7 @@
     <button id="b" onclick="tiao('2')">在线比武配置 </button>
 </div>
 <div>
-    <button id="c">擂台配置 </button>
+    <button id="c" onclick="tiao('3')">擂台配置 </button>
 </div>
 </body>
 <script type="text/javascript">
@@ -38,6 +38,11 @@ function tiao(a)
     {
         parent.location.href =baseURL+"modules/competition/pkOnlSetting.html";
     }
+    if(a=="3")
+    {
+        parent.location.href =baseURL+"modules/competition/leitaiSetting.html";
+    }
+
 }
 
 </script>
