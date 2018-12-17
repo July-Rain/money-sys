@@ -34,7 +34,7 @@ public class SysAuthServiceImpl implements SysAuthService {
     private SysUserRoleDao userRoleMapper;
 
     @Resource
-    private SysRoleDao roleDao;
+    private SysRoleDao sysRoleDao;
 
     @Resource
     private SysMenuDao sysMenuDao;
@@ -82,7 +82,7 @@ public class SysAuthServiceImpl implements SysAuthService {
 
     @Override
     public List<SysRoleEntity> listAllRole(String userId) {
-        List<SysRoleEntity> roleList= roleDao.listRoleByUserId(userId);
+        List<SysRoleEntity> roleList= sysRoleDao.listRoleByUserId(userId);
         return roleList;
     }
 

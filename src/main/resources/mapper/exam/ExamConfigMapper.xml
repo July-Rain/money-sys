@@ -284,4 +284,7 @@
 				AND function_flag = 'ExamConfig'
 			)
  	</select>
+    <select id="findList" resultType="com.lawschool.beans.exam.ExamConfig" parameterType="com.lawschool.beans.exam.ExamConfig">
+      select  * from LAW_EXAM_CONFIG
+    </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.lawschool.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.*;
@@ -10,6 +11,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
@@ -89,7 +91,7 @@ public class CollectionServiceImpl implements CollectionService {
             collection.setDelStatus(1);
             ew.eq("DEL_STATUS",0);
         }else {//1-》0 重新收藏
-            collection.setDelStatus((short)0);
+            collection.setDelStatus(0);
             ew.eq("DEL_STATUS",1);
         }
         return collectionDao.update(collection,ew)==1?SUCCESS:ERROR;//1 改变成功 0 改变失败
@@ -124,20 +126,20 @@ public class CollectionServiceImpl implements CollectionService {
     //重点试题-组卷-zjw
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result randomQuestColl(Map<String, Object> param, User user) {
+    public Result randomQuestColl( Map<String, Object> params, User user) {
         int num=10;
         //1,生成题目
-        Map<TestQuestions,List<Answer>> map=new HashedMap();
-        if(UtilValidate.isNotEmpty(param.get("num"))){
+        Map<String,TestQuestions> map=new HashedMap();
+        if(UtilValidate.isNotEmpty(params.get("num"))){
             try{
-                num= parseInt(param.get("num").toString());
+                num= parseInt(params.get("num").toString());
             }catch(Exception e){
                 return Result.error("题目个数要为整型");
             }
         }
-        param.put("num",num);//获取组成10题
-        param.put("userId",user.getId());
-        List<TestQuestions> testQuestions = testQuestionsMapper.randomQuestColl(param);//仅仅只有id,提高效率
+        params.put("num",num);//获取组成10题
+        params.put("userId",user.getId());
+        List<TestQuestions> testQuestions = testQuestionsMapper.randomQuestColl(params);//仅仅只有id,提高效率
 
         //2。生成练习
         String pid = GetUUID.getUUIDs("PP");
@@ -147,7 +149,7 @@ public class CollectionServiceImpl implements CollectionService {
         practicePaper.setPracCreatUser(UtilValidate.isNotEmpty(user.getUserName())?user.getUserName():"");
         practicePaper.setPracCreatTime(new Date());
 
-        practicePaper.setPracticeName(UtilValidate.isNotEmpty(param.get("pname"))? param.get("pname").toString():"收藏练习");
+        practicePaper.setPracticeName(UtilValidate.isNotEmpty(params.get("pname"))? params.get("pname").toString():"收藏练习");
 
         if(UtilValidate.isNotEmpty(user.getOrgCode())){
             List<Org> org_code = orgDao.selectList(new EntityWrapper<Org>().setSqlSelect("DICTIONARY_NAME").eq("ORG_CODE", user.getOrgCode()));
@@ -156,8 +158,8 @@ public class CollectionServiceImpl implements CollectionService {
         practicePaper.setOptuser(UtilValidate.isNotEmpty(user.getUserName())?user.getUserName():"");
         practicePaper.setOpttime(new Date());
 
-        if(UtilValidate.isNotEmpty(param.get("knowledge"))){
-            practicePaper.setStuKnowledge(param.get("knowledge").toString());
+        if(UtilValidate.isNotEmpty(params.get("knowledge"))){
+            practicePaper.setStuKnowledge(params.get("knowledge").toString());
         }
 
         practicePaper.setCount(num);
@@ -180,7 +182,8 @@ public class CollectionServiceImpl implements CollectionService {
 
             practiceRelevanceDao.insert(relevance);
 
-            map.put(question,answers);
+            question.setAnswerList(answers);
+            map.put(question.getId(),question);
         });
 
 

@@ -89,4 +89,22 @@ public class RedisUtil {
     private <T> T fromJson(String json, Class<T> clazz){
         return gson.fromJson(json, clazz);
     }
+
+    /**
+     * @Author MengyuWu
+     * @Description 判断key是否存在
+     * @Date 16:28 2018-12-15
+     * @Param [key]
+     * @return boolean
+     **/
+    
+    public boolean hasKey(String key) {
+        try {
+            return redisTemplate.hasKey(key);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

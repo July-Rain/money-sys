@@ -81,4 +81,15 @@ public interface StuMediaService  extends IService<StuMedia> {
      **/
     
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * @Author MengyuWu
+     * @Description 学习管理修改
+     * @Date 17:08 2018-12-13
+     * @Param [stuMedia, user]
+     * @return void
+     **/
+    
+
+    void updateStuMedia(StuMedia stuMedia,User user);
 }
