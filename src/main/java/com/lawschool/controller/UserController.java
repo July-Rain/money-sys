@@ -52,9 +52,8 @@ public class UserController extends AbstractController {
         System.out.println(params.get("orgCode"));
 
         user.setOrgCode(String.valueOf(params.get("orgCode")));
-        Page<User> pageUtils =userService.findPage(new Page<User>(params),user);
-        pageUtils.setCount(pageUtils.getList().size());
-        result.put("users",pageUtils);
+        Page<User> page = userService.findPage(new Page<User>(params),user);
+        result.put("page", page);
         return result;
     }
 

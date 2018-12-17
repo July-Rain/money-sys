@@ -1,7 +1,7 @@
 package com.lawschool.util.persistence.interceptor;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.lawschool.base.Page;
-import com.lawschool.util.persistence.datasources.DynamicDataSource;
 import com.lawschool.util.persistence.toolkit.Reflections;
 import org.apache.ibatis.executor.statement.BaseStatementHandler;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
@@ -13,7 +13,6 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.sql.Connection;
 import java.util.Properties;
 
@@ -28,7 +27,7 @@ public class PreparePaginationInterceptor extends BaseInterceptor {
     private static final long serialVersionUID = 1L;
 
     @Autowired
-    private DynamicDataSource dataSource;
+    private DruidDataSource dataSource;
 
     public PreparePaginationInterceptor() {
         super();
