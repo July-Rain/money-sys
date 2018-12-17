@@ -100,6 +100,11 @@ public class RandomExerciseController extends AbstractController {
     @ResponseBody
     @RequestMapping(value = "/questions", method = RequestMethod.POST)
     public Result getQuestions(@RequestBody ThemeForm form){
+        User user = getUser();
+        if(user == null){
+            throw new RuntimeException("用户信息获取失败，请重新登陆");
+        }
+        form.setUserId(form.getId());
 
         List<QuestForm> list = exerciseService.saveAndGetQuestions(form);
         // 返回题目list
@@ -121,6 +126,11 @@ public class RandomExerciseController extends AbstractController {
      */
     @RequestMapping(value = "/commit", method = RequestMethod.POST)
     public Result commit(@RequestBody ThemeForm form){
+        User user = getUser();
+        if(user == null){
+            throw new RuntimeException("用户信息获取失败，请重新登陆");
+        }
+        form.setUserId(form.getId());
 
         AnalysisForm resultForm = exerciseService.commit(form);
 
