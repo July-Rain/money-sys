@@ -300,32 +300,31 @@
         <el-dialog :title="title" :visible.sync="dialog2" :before-close="closedialog2">
             <el-row>
                 <el-col :span="12">
-                    <el-form :model="xiaoguanList" ref="xiaoguanList" label-width="100px" class="demo-xiaoguanList" size="mini">
+                    <el-form :model="guankaList" ref="guankaList" label-width="100px" class="demo-guankaList" size="mini">
 
-                    <div v-for="item in xiaoguanList">
+                    <div v-for="item in guankaList">
 
                         <table style="width: 100%;height: 100%">
                             <tr>
-                                <td colspan="4">第{{item.howManySmall}}小关</td>
+                                <td colspan="4">第{{item.howManySmall}}题</td>
 
                             </tr>
                             <tr>
                                 <td>专项知识ID</td>
-                                <td>{{item.specialKnowledgeName}}</td>
+                                <td>{{item.knowledgeName}}</td>
                                 <td>试题难度</td>
-                                <td>{{item.itemDifficultyName}}</td>
+                                <td>{{item.questionDifficultyName}}</td>
                             </tr>
                             <tr>
-                                <td>关卡积分</td>
-                                <td>{{item.crossingPoints}}</td>
-                                <td>大关是否奖励</td>
-                                <td>{{item.markRewardName}}</td>
+
+                                <td>是否获得积分</td>
+                                <td>{{item.whetherGetIntegralName}}</td>
                             </tr>
                             <tr>
-                                <td>奖励分值</td>
-                                <td>{{item.rewardScore}}</td>
-                                <td>试题类型？</td>
-                                <td>{{item.itemTypeName}}</td>
+                                <td>获得分值</td>
+                                <td>{{item.score}}</td>
+                                <td>试题类型</td>
+                                <td>{{item.questionTypeName}}</td>
                             </tr>
                         </table>
                     </div>

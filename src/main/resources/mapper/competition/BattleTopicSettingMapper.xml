@@ -22,5 +22,33 @@
 
     </resultMap>
 
+    <select id="selectListByBaBaId" resultType="com.lawschool.beans.competition.BattleTopicSetting">
+
+        SELECT
+        LAW_BATTLE_TOPIC_SETTING.id as "id",
+        LAW_BATTLE_TOPIC_SETTING.FOREIGN_KEY_ID as "foreignKeyId",
+        LAW_BATTLE_TOPIC_SETTING.TYPE as "type",
+				DICTCODE2VALE(LAW_BATTLE_TOPIC_SETTING.TYPE) as "typeName",
+
+        LAW_BATTLE_TOPIC_SETTING.QUESTION_DIFFICULTY as "questionDifficulty",
+				DICTCODE2VALE(LAW_BATTLE_TOPIC_SETTING.QUESTION_DIFFICULTY) as "questionDifficultyName",
+
+        LAW_BATTLE_TOPIC_SETTING.WHETHER_GET_INTEGRAL as "whetherGetIntegral",
+				CASE LAW_BATTLE_TOPIC_SETTING.WHETHER_GET_INTEGRAL WHEN '1' THEN '是'
+        　　ELSE '否'
+        END AS "whetherGetIntegralName" ,
+
+        LAW_BATTLE_TOPIC_SETTING.SCORE as "score",
+        LAW_BATTLE_TOPIC_SETTING.KNOWLEDGE_ID as "knowledgeId",
+        topicId2name(LAW_BATTLE_TOPIC_SETTING.KNOWLEDGE_ID) as "knowledgeName",
+        LAW_BATTLE_TOPIC_SETTING.HOW_MANY_SMALL as "howManySmall",
+        LAW_BATTLE_TOPIC_SETTING.QUESTION_TYPE as "questionType",
+				DICTCODE2VALE(LAW_BATTLE_TOPIC_SETTING.QUESTION_TYPE) as "questionTypeName"
+        FROM
+        LAW_BATTLE_TOPIC_SETTING
+        WHERE  LAW_BATTLE_TOPIC_SETTING.FOREIGN_KEY_ID=#{id}
+        ORDER BY LAW_BATTLE_TOPIC_SETTING.HOW_MANY_SMALL
+
+    </select>
 
 </mapper>
