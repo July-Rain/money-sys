@@ -34,11 +34,49 @@ var vm = new Vue({
                 active: '1'
             }],//表格数据
         currentPage4: 1,//分页：当前页
+        dialogFormVisible: false,
+        form: {
+            class: '',
+            type: '',
+            title: '',
+            info: '',
+            belong: '',
+            level: '',
+            basis: '',
+            judgement: '',
+            radio: '',
+            check: [],
+            notes: '',
+            upload: '',
+            disable: '',
+            remarks: '',
+            person: '',
+            department: ''
+        },
+        formLabelWidth: '120px',
+        fileList: []
     },
     mounted: function () {
 
     },
     methods:{
+        layFn(){
+            $(".el-dialog").css("height","auto")
+        },
+        // 文件上传
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePreview(file) {
+            console.log(file);
+        },
+        handleExceed(files, fileList) {
+            this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+        },
+        beforeRemove(file, fileList) {
+            return this.$confirm(`确定移除 ${ file.name }？`);
+        },
+
         handleSizeChange: function (val) {
             console.log('每页' + val + '条');
         },
@@ -46,7 +84,8 @@ var vm = new Vue({
             console.log('当前页:' + val);
         },
         addExam: function () {
-            console.log(111)
+            console.log(22)
+            vm.dialogFormVisible = true
         },
         batchImport: function () {
             
