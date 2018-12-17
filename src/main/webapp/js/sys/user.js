@@ -5,6 +5,7 @@ var vm = new Vue({
         //menuId:"",//菜单id
         navData: [],//导航
         formInline: { // 搜索表单
+            id:'',
             userName: '',
             userCode: '',
             orgCode:'',
@@ -27,7 +28,7 @@ var vm = new Vue({
 
         this.$nextTick(function () {
             //加载菜单
-            /*$.ajax({
+            $.ajax({
                 type: "POST",
                 url: baseURL + "org/tree",
                 contentType: "application/json",
@@ -39,7 +40,7 @@ var vm = new Vue({
                         alert(result.msg);
                     }
                 }
-            });*/
+            });
         })
         this.$nextTick(function () {
             this.reload();
@@ -50,6 +51,20 @@ var vm = new Vue({
         // 查询
         onSubmit: function () {
             this.reload();
+        },
+        handleEdit : function(index,row){
+          $.ajax({
+              type : "POST",
+              url: baseURL + "sys/resetPassword?id="+row.id,
+              contentType: "application/json",
+              success:function (result) {
+                  if(result.code==0){
+                      alert("密码重置成功");
+                  }else{
+                      alert(result.msg);
+                  }
+              }
+          })
         },
         handleSizeChange: function (val) {
             this.formInline.pageSize=val;
@@ -76,9 +91,9 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.users.list;
-                        vm.formInline.pageNo = result.page.pageNo;
-                        vm.formInline.pageSize = result.page.pageSize;
-                        vm.formInline.totalCount = parseInt(result.page.totalCount);
+                        vm.formInline.pageNo = result.users.pageNo;
+                        vm.formInline.pageSize = result.users.pageSize;
+                        vm.formInline.count = parseInt(result.users.count);
                     } else {
                         alert(result.msg);
                     }
@@ -87,7 +102,8 @@ var vm = new Vue({
         },
         // el-tree节点点击事件
         handleNodeClick: function (data) {
-            formInline.orgCode= data.localOrgCode;
+            vm.formInline.orgCode= data.localOrgCode;
+            this.reload();
         },
         uploadSuccess: function (response, file, fileList) {
             vm.stuMedia.comContent=response.filePath;

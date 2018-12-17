@@ -68,6 +68,12 @@ public class StuMediaController extends AbstractController {
         stuMediaService.insertStuMedia(stuMedia,getUser());
         return Result.ok().put("id",stuMedia.getId());
     }
+    @RequestMapping("/updateStuMedia")
+    public Result updateStuMedia(@RequestBody StuMedia stuMedia){
+        User user=getUser();
+        stuMediaService.updateStuMedia(stuMedia,getUser());
+        return Result.ok().put("id",stuMedia.getId());
+    }
 
 
     /**

@@ -3,6 +3,8 @@ package com.lawschool.service.impl.accessory;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.beans.accessory.AccessoryEntity;
 import com.lawschool.dao.accessory.AccessoryDao;
+import com.lawschool.service.accessory.AccessoryService;
+import org.springframework.stereotype.Service;
 
 /**
  * ClassName: AccessoryService
@@ -12,5 +14,6 @@ import com.lawschool.dao.accessory.AccessoryDao;
  * @author MengyuWu
  * @since JDK 1.8
  */
-public class AccessoryServiceImpl extends ServiceImpl<AccessoryDao,AccessoryEntity> {
+@Service(value = "accessoryService")
+public class AccessoryServiceImpl extends ServiceImpl<AccessoryDao,AccessoryEntity> implements AccessoryService {
 }

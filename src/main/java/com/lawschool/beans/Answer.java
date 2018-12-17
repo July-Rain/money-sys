@@ -1,5 +1,6 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -18,9 +19,10 @@ public class Answer {
 
     private BigDecimal score;
 
-    private String optuser;
+    private String optUser;
 
-    private Date opttime;
+    @TableField(exist = false)
+    private Date optTime;
 
     public String getId() {
         return id;
@@ -62,20 +64,21 @@ public class Answer {
         this.score = score;
     }
 
-    public String getOptuser() {
-        return optuser;
+
+    public String getOptUser() {
+        return optUser;
     }
 
-    public void setOptuser(String optuser) {
-        this.optuser = optuser == null ? null : optuser.trim();
+    public void setOptUser(String optUser) {
+        this.optUser = optUser;
     }
 
-    public Date getOpttime() {
-        return opttime;
+    public Date getOptTime() {
+        return optTime;
     }
 
-    public void setOpttime(Date opttime) {
-        this.opttime = opttime;
+    public void setOptTime(Date optTime) {
+        this.optTime = optTime;
     }
 
     @Override
@@ -86,8 +89,8 @@ public class Answer {
                 ", questionContent='" + questionContent + '\'' +
                 ", ordersort=" + ordersort +
                 ", score=" + score +
-                ", optuser='" + optuser + '\'' +
-                ", opttime=" + opttime +
+                ", optuser='" + optUser + '\'' +
+                ", opttime=" + optTime +
                 '}';
     }
 }
