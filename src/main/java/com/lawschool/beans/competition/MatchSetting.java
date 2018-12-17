@@ -1,10 +1,13 @@
 package com.lawschool.beans.competition;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -23,15 +26,23 @@ public class MatchSetting implements Serializable {
 	private String id;
 	//擂主用户id
 	private String winId;
+
+	//擂主用户id
+	@TableField(exist = false)
+	private String winName;
+
 	//题量
 	private String topicNum;
 	//是否统一规则  0 不是  1是
 	private String uniformRules;
+
+
 	//获胜奖励
 	private String winReward;
 	//失败奖励
 	private String loserReward;
 	//答题时间
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date answerTime;
 
 
@@ -46,6 +57,18 @@ public class MatchSetting implements Serializable {
 	//备用字段5
 	private String backup5;
 
+	//题目信息集合
+	@TableField(exist = false)
+	private List<BattleTopicSetting> battleTopicSettingList;
+
+
+	public String getWinName() {
+		return winName;
+	}
+
+	public void setWinName(String winName) {
+		this.winName = winName;
+	}
 
 	public String getId() {
 		return id;
@@ -142,6 +165,14 @@ public class MatchSetting implements Serializable {
 
 	public void setBackup5(String backup5) {
 		this.backup5 = backup5;
+	}
+
+	public List<BattleTopicSetting> getBattleTopicSettingList() {
+		return battleTopicSettingList;
+	}
+
+	public void setBattleTopicSettingList(List<BattleTopicSetting> battleTopicSettingList) {
+		this.battleTopicSettingList = battleTopicSettingList;
 	}
 
 	@Override

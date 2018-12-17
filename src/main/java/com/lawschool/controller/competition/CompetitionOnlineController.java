@@ -50,7 +50,7 @@ public class CompetitionOnlineController {
     }
 
 
-    //根据id来找数据
+
     @RequestMapping("/save")
     public Result save(@RequestBody CompetitionOnline competitionOnline){
 

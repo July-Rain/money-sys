@@ -3,6 +3,7 @@ package com.lawschool.beans.competition;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawschool.beans.competition.BattleTopicSetting;
 
 import java.io.Serializable;
@@ -33,7 +34,9 @@ public class CompetitionOnline implements Serializable {
 	private String winReward;
 	//失败奖励
 	private String loserReward;
+
 	//答题时间
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date answerTime;
 
 	//备用字段1
