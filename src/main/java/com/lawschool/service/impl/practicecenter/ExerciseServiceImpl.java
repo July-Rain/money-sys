@@ -116,6 +116,7 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
                 entity.setExerciseId(themeId);
                 entity.setAnswerTime(new Date());
                 entity.setTypeName(af.getTypeName());
+                entity.setCreateUser(form.getUserId());
                 saveList.add(entity);
 
                 if(af.getRight().intValue() == 1){
@@ -215,7 +216,7 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
 
     /**
      * 获取主题任务的分析统计信息
-     * @param themeId
+     * @param exerciseId
      * @return
      */
     @Override
@@ -232,6 +233,16 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
         result.setList(answerList);
 
         return result;
+    }
+
+    /**
+     * 获取本月练习答题情况
+     * @return
+     */
+    public List<AnalysisForm> analysis(String month, String userId){
+
+
+        return null;
     }
 
 }
