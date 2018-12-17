@@ -31,8 +31,8 @@ var vm = new Vue({
         dialog2:false,//查看小关详情弹出框
         title: "",//弹窗的名称
 
- //小关集合
-        xiaoguanList:[],
+ //关卡集合
+        guankaList:[],
 //专项知识
         zhuanxiangzhishiList:[],
 //试题类型
@@ -69,7 +69,7 @@ var vm = new Vue({
             $.ajax({
                 type: "POST",
                 url: baseURL + 'competitionOnline/deleteAll',
-                async: true,
+                async:false,
                 dataType: "json",
                 success: function (result) {
                     var url ="competitionOnline/save";
@@ -240,20 +240,20 @@ var vm = new Vue({
 
         },
         look: function (index, row) {
-            vm.title = "查看关卡配置";
-            vm.xiaoguanList =[];//每次打开前 都删一边
+            vm.title = "查看题目配置";
+            vm.guankaList =[];//每次打开前 都删一边
             $.ajax({
                 type: "POST",
-                url: baseURL + 'recruitConfiguration/getSonList',
+                url: baseURL + 'competitionOnline/getSonList',
                 dataType: "json",
+                async:false,
                 data:{"id": row.id},
                 success: function (result) {
 
-                    console.info(result)
+
                     if (result.code === 0) {
                         // 返回的是一个集合   不想做成在翻页   直接做成循环table
-                        vm.xiaoguanList = result.data;
-
+                        vm.guankaList = result.data;
                         vm.dialog2 = true;
                     } else {
                         alert(result.msg);
@@ -271,7 +271,7 @@ var vm = new Vue({
                 $.ajax({
                     type: "POST",
                     url: baseURL + 'competitionOnline/deleteAll',
-                    async: true,
+                    async:false,
                     dataType: "json",
                     success: function (result) {
                         vm.reload();
@@ -291,24 +291,32 @@ var vm = new Vue({
 
         },
         update: function () {
-            vm.daguanArray=[];
-            vm.bigcheckNum=[];
+            // 每次进来先制空
+            vm.checkNum=[];
+            vm.competitionOnline=[];
+                // {
+                //     id:'',
+                //     battleTopicSettingList:[],
+                // };
             //每次打开添加按钮时候 取后台获取 字典表中大关和小关数量的配置
             $.ajax({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
-                data: {type:"BIGCHECKNUM",Parentcode:"99997"},
+                async:false,
+                data: {type:"LITCHECKNUM",Parentcode:"99994"},
                 success: function (result) {
                     if (result.code == 0) {
+
                         //区间也就2个值 也排序过了
-                        var bigchecknum1 =  result.dictlist[0].value;
-                        var bigchecknum2 =  result.dictlist[1].value;
-                        for(var i=bigchecknum1;i<=bigchecknum2;i++)
+                        var checknum1 =  Number(result.dictlist[0].value);
+                        var checknum2 =  Number(result.dictlist[1].value);
+
+                        for(var i=checknum1;i<=checknum2;i++)
                         {
-                            vm.bigcheckNum.push({
+                            vm.checkNum.push({
                                 value: i,
-                                label: i+'大关'
+                                label: i
                             })
                         }
                     } else {
@@ -321,6 +329,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "recruitConfiguration/findAllTopic",
                 dataType: "json",
+                async:false,
                 success: function (result) {
 
                     vm.zhuanxiangzhishiList=result.data;
@@ -332,6 +341,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
+                async:false,
                 data: {type:"QUESTION_TYPE",Parentcode:"0"},
                 success: function (result) {
 
@@ -345,6 +355,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
+                async:false,
                 data: {type:"QUESTION_DIFF",Parentcode:"0"},
                 success: function (result) {
                     vm.itemjibie=result.dictlist;
@@ -353,8 +364,9 @@ var vm = new Vue({
 
             $.ajax({
                 type: "POST",
-                url: baseURL + 'recruitConfiguration/findAll',
+                url: baseURL + 'competitionOnline/findAll',
                 dataType: "json",
+                async:false,
                 success: function (result) {
                     console.info(result);
                     console.info(result.data.length);
@@ -367,9 +379,10 @@ var vm = new Vue({
                         else
                         {
                             vm.title = "编辑";
+
+                            vm.competitionOnline = result.data;
                             vm.dialogConfig = true;
-                            vm.daguanArray = result.data;
-                            vm.daguannum = result.data.length;
+                            // vm.daguannum = result.data.length;
                         }
 
                     } else {
@@ -377,6 +390,8 @@ var vm = new Vue({
                     }
                 }
             });
+
+            console.info(vm.competitionOnline);
         },
         closeDia: function () {
             this.dialogConfig = false;

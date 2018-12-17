@@ -2,7 +2,9 @@ package com.lawschool.service.competition;
 
 
 import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.beans.competition.BattleTopicSetting;
 import com.lawschool.beans.competition.CompetitionOnline;
+import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.util.PageUtils;
 
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.Map;
  *
  */
 public interface CompetitionOnlineService extends IService<CompetitionOnline> {
-
+    public CompetitionOnline findAll();
     public List<CompetitionOnline>  list();
 
     public CompetitionOnline info(String id);
@@ -30,5 +32,8 @@ public interface CompetitionOnlineService extends IService<CompetitionOnline> {
     public void  updateComOnline();
 
     PageUtils queryPage(Map<String, Object> params);
+
+    public List<BattleTopicSetting> getSonList(String id);
+
     public  void deleteAll();
 }

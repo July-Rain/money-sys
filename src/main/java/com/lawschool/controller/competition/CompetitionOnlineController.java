@@ -1,7 +1,12 @@
 package com.lawschool.controller.competition;
 
+import com.baomidou.mybatisplus.plugins.Page;
+import com.lawschool.beans.competition.BattleTopicSetting;
 import com.lawschool.beans.competition.CompetitionOnline;
+import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
+import com.lawschool.beans.competition.RecruitConfiguration;
 import com.lawschool.service.competition.CompetitionOnlineService;
+import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,9 +35,10 @@ public class CompetitionOnlineController {
     //查询
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params){
-        CompetitionOnline competitionOnline = new CompetitionOnline();
 
-        return Result.ok().put("comOnlineList", competitionOnlineService.list());
+        PageUtils page = competitionOnlineService.queryPage(params);
+
+        return Result.ok().put("page", page);
     }
 
     //根据id来找数据
@@ -70,6 +77,22 @@ public class CompetitionOnlineController {
         competitionOnlineService.deleteAll();
 
         return Result.ok();
+    }
+
+    //查找所有数据
+    @RequestMapping("/findAll")
+    public Result findAll(){
+
+        CompetitionOnline competitionOnline=  competitionOnlineService.findAll();
+
+        return Result.ok().put("data", competitionOnline);
+    }
+
+    @RequestMapping("/getSonList")
+    public Result getSonList(String id){
+        List<BattleTopicSetting> list= competitionOnlineService.getSonList(id);
+
+        return Result.ok().put("data", list);
     }
 //先不考虑修改
 //    //根据id来找数据

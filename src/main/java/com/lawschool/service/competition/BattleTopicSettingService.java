@@ -4,6 +4,8 @@ package com.lawschool.service.competition;
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.competition.BattleTopicSetting;
 
+import java.util.List;
+
 /**
  * 
  * @Descriptin  对战题目配置service接口
@@ -14,5 +16,5 @@ import com.lawschool.beans.competition.BattleTopicSetting;
  */
 public interface BattleTopicSettingService extends IService<BattleTopicSetting> {
 
-
+    public List<BattleTopicSetting> selectListByBaBaId(String id);
 }
