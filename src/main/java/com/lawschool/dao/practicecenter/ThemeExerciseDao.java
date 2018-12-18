@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.practicecenter.ThemeExerciseEntity;
+import com.lawschool.form.AnalysisForm;
 import com.lawschool.form.ThemeExerciseForm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -25,4 +26,6 @@ public interface ThemeExerciseDao extends AbstractDao<ThemeExerciseEntity> {
      * @param entity
      */
     void updateAnswerRecord(ThemeExerciseEntity entity);
+
+    AnalysisForm analysis(@Param("month") String month, @Param("userId") String userId);
 }

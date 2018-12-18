@@ -24,5 +24,5 @@ public interface ExerciseDao extends AbstractDao<ExerciseEntity> {
      */
     void updateAnswerRecord(ExerciseEntity entity);
 
-    List<AnalysisForm> analysis(@Param("month") String month, @Param("userId") String userId);
+    AnalysisForm analysis(@Param("month") String month, @Param("userId") String userId);
 }
