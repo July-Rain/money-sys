@@ -43,5 +43,5 @@ public interface ThemeExerciseService extends AbstractService<ThemeExerciseEntit
      * 统计分析(某月的练习情况)
      * @return
      */
-    List<AnalysisForm> analysis(String month, String userId);
+    AnalysisForm analysis(String month, String userId);
 }
