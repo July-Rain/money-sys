@@ -20,6 +20,9 @@
         border-bottom: 2px solid transparent;
         color: #fff;
     }
+    .el-submenu{
+        margin-top: -57px;
+    }
     .el-menu--horizontal>.el-submenu .el-submenu__title {
         height: 70px;
         /* line-height: 70px; */
@@ -79,6 +82,9 @@
     .spel a{
         margin-top: -10px;
     }
+    .el-menu--horizontal .el-submenu{
+        height: 99px;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -92,13 +98,13 @@
             <ul>
 
                 <li v-for="item in navData" @click="toChild(item)" :data-id="item.id" :data-url="item.url">
-                    <div class="spel" v-if="!item.list.length">
+                    <div class="spel" v-if="item.url">
                         <a>
                             <i :class="item.icon"></i>
                             <p><a href="javascript:;">{{item.name}}</a></p>
                         </a>
                     </div>
-                    <div v-if="item.list.length">
+                    <div v-if="!item.url">
                         <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect">
                             <el-submenu index="1">
                                 <template slot="title">
@@ -127,7 +133,7 @@
 
 
     <div class="container-layout" style="height: calc(100vh - 70px)">
-        <iframe :src="[(childUrl)]" frameborder="0" width="100%" height="100%"></iframe>
+        <iframe id="container" @load="loadFrame(this)" :src="[(childUrl)]" frameborder="0" width="100%" height="100%"></iframe>
     </div>
 </div>
 </body>
