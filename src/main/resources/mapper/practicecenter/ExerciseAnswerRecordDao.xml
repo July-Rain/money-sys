@@ -12,7 +12,8 @@
 			answer,
 			is_right,
         	answer_time,
-         	type_name
+         	type_name,
+         	create_user
         ) VALUES (
         	#{id},
         	#{questionId},
@@ -20,7 +21,8 @@
         	#{answer},
         	#{right},
         	#{answerTime},
-            #{typeName}
+            #{typeName},
+            #{createUser}
         )
 	</insert>
 

@@ -20,5 +20,19 @@
 
     </resultMap>
 
+    <select id="list" resultType="com.lawschool.beans.competition.MatchSetting">
 
+        SELECT
+            LAW_MATCH_SETTING.ID as "id",
+            LAW_MATCH_SETTING.WIN_ID as "winId",
+            USERID2NAME(LAW_MATCH_SETTING.WIN_ID) as "winName",
+            LAW_MATCH_SETTING.TOPIC_NUM as "topicNum",
+            LAW_MATCH_SETTING.UNIFORM_RULES as "uniformRules",
+            LAW_MATCH_SETTING.WIN_REWARD as "winReward",
+            LAW_MATCH_SETTING.LOSER_REWARD as "loserReward",
+            LAW_MATCH_SETTING.ANSWER_TIME as "answerTime"
+        FROM
+            LAW_MATCH_SETTING
+
+    </select>
 </mapper>

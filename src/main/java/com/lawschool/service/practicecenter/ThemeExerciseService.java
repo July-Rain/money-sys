@@ -38,4 +38,10 @@ public interface ThemeExerciseService extends AbstractService<ThemeExerciseEntit
     AnalysisForm commit(ThemeForm form);
 
     AnalysisForm analysisAnswer(String themeId);
+
+    /**
+     * 统计分析(某月的练习情况)
+     * @return
+     */
+    AnalysisForm analysis(String month, String userId);
 }

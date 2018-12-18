@@ -1,5 +1,6 @@
 package com.lawschool.beans.competition;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -41,14 +42,19 @@ public class BattleTopicSetting implements Serializable {
 
 
 	//中文
+	@TableField(exist = false)
 	private String typeName;
 	//中文
+	@TableField(exist = false)
 	private String questionDifficultyName;
 	//中文
+	@TableField(exist = false)
 	private String whetherGetIntegralName;
 	//中文
+	@TableField(exist = false)
 	private String knowledgeName;
 	//中文
+	@TableField(exist = false)
 	private String questionTypeName;
 
 

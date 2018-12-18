@@ -2,7 +2,12 @@ package com.lawschool.service.competition;
 
 
 import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.beans.competition.BattleTopicSetting;
+import com.lawschool.beans.competition.CompetitionOnline;
 import com.lawschool.beans.competition.MatchSetting;
+
+import java.util.List;
+
 
 /**
  * 
@@ -13,6 +18,9 @@ import com.lawschool.beans.competition.MatchSetting;
  *
  */
 public interface MatchSettingService extends IService<MatchSetting> {
-
-
+    public List<MatchSetting>  list();
+    public  void deleteAll();
+    public void save(MatchSetting matchSetting);
+    public List<BattleTopicSetting> getSonList(String id);
+    public MatchSetting findAll();
 }
