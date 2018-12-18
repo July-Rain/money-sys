@@ -239,10 +239,11 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
      * 获取本月练习答题情况
      * @return
      */
-    public List<AnalysisForm> analysis(String month, String userId){
+    @Override
+    public AnalysisForm analysis(String month, String userId){
+        AnalysisForm form = dao.analysis(month, userId);
 
-
-        return null;
+        return form;
     }
 
 }
