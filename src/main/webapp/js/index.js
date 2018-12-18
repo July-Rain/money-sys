@@ -34,6 +34,23 @@ var vm = new Vue({
         })
     },
     mounted(){
+        //加载菜单
+        $.ajax({
+            type: "POST",
+            url: baseURL + "menu/nav",
+            contentType: "application/json",
+            success: function (result) {
+
+                if (result.code === 0) {
+                    vm.navData = result.menuList;
+                    console.info("infoinfo", result)
+                } else {
+                    alert(result.msg);
+                }
+            }
+        });
+    },
+    activated(){
 
     },
 
@@ -41,7 +58,12 @@ var vm = new Vue({
     methods: {
 
         loadFrame: function (obj) {
-            console.info("src>>",$("#container").attr("src"))
+            var _src = $("#container").attr("src");
+            if(_src === vm.iframeSrc){
+                window.location.reload()
+            }
+            vm.iframeSrc = _src;
+
         },
 
         // 加载菜单
