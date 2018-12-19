@@ -1,10 +1,13 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @TableName("LAW_PRACTICE_CONFIGURATION")
 public class PracticeConfiguration implements Serializable {
@@ -20,8 +23,9 @@ public class PracticeConfiguration implements Serializable {
     private String prefix;
 
     /**
-     * 练习卷试题类型
+     * 练习卷试题类型 选择、判断、主观题
      */
+    @TableField(exist = false)
     private String questionType;
 
     /**
@@ -32,22 +36,8 @@ public class PracticeConfiguration implements Serializable {
     /**
      * 题型数量
      */
+
     private Integer totalCount;
-
-    /**
-     * 初级题目数
-     */
-    private Integer primaryCount;
-
-    /**
-     * 中级题目数
-     */
-    private Integer intermediateCount;
-
-    /**
-     * 高级题目数
-     */
-    private Integer seniorCount;
 
     /**
      * 练习人员
@@ -57,27 +47,36 @@ public class PracticeConfiguration implements Serializable {
     /**
      * 创建人
      */
-    private String addUser;
+    private String createUser;
 
     /**
      * 创建时间
      */
-    private Date addDate;
+    private Date createTime;
 
     /**
      * 操作人
      */
-    private String updateUser;
+    private String optUser;
 
     /**
      * 操作时间
      */
-    private Date updateDate;
+    private Date optTime;
+
+    @TableField(exist = false)
+    private List<PracticeConfiguration02> list =new ArrayList<PracticeConfiguration02>();
+
+    //知识点ID中文
+    @TableField(exist = false)
+    private String specialKnowledgeName;
+
+    private String questionId;
 
     /**
-     *知识点ID
+     *练习卷名称（前缀+日期+系统编号）
      */
-    private String specialKnowledgeId;
+    private String practiceName;
 
     public String getId() {
         return id;
@@ -119,30 +118,6 @@ public class PracticeConfiguration implements Serializable {
         this.totalCount = totalCount;
     }
 
-    public Integer getPrimaryCount() {
-        return primaryCount;
-    }
-
-    public void setPrimaryCount(Integer primaryCount) {
-        this.primaryCount = primaryCount;
-    }
-
-    public Integer getIntermediateCount() {
-        return intermediateCount;
-    }
-
-    public void setIntermediateCount(Integer intermediateCount) {
-        this.intermediateCount = intermediateCount;
-    }
-
-    public Integer getSeniorCount() {
-        return seniorCount;
-    }
-
-    public void setSeniorCount(Integer seniorCount) {
-        this.seniorCount = seniorCount;
-    }
-
     public String getPractitioners() {
         return practitioners;
     }
@@ -151,44 +126,68 @@ public class PracticeConfiguration implements Serializable {
         this.practitioners = practitioners;
     }
 
-    public String getAddUser() {
-        return addUser;
+    public String getCreateUser() {
+        return createUser;
     }
 
-    public void setAddUser(String addUser) {
-        this.addUser = addUser;
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
     }
 
-    public Date getAddDate() {
-        return addDate;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setAddDate(Date addDate) {
-        this.addDate = addDate;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public String getUpdateUser() {
-        return updateUser;
+    public String getOptUser() {
+        return optUser;
     }
 
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
+    public void setOptUser(String optUser) {
+        this.optUser = optUser;
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public Date getOptTime() {
+        return optTime;
     }
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setOptTime(Date optTime) {
+        this.optTime = optTime;
     }
 
-    public String getSpecialKnowledgeId() {
-        return specialKnowledgeId;
+    public String getQuestionId() {
+        return questionId;
     }
 
-    public void setSpecialKnowledgeId(String specialKnowledgeId) {
-        this.specialKnowledgeId = specialKnowledgeId;
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
+    }
+
+    public String getSpecialKnowledgeName() {
+        return specialKnowledgeName;
+    }
+
+    public void setSpecialKnowledgeName(String specialKnowledgeName) {
+        this.specialKnowledgeName = specialKnowledgeName;
+    }
+
+    public List<PracticeConfiguration02> getList() {
+        return list;
+    }
+
+    public void setList(List<PracticeConfiguration02> list) {
+        this.list = list;
+    }
+
+    public String getPracticeName() {
+        return practiceName;
+    }
+
+    public void setPracticeName(String practiceName) {
+        this.practiceName = practiceName;
     }
 
     @Override
@@ -199,15 +198,15 @@ public class PracticeConfiguration implements Serializable {
                 ", questionType='" + questionType + '\'' +
                 ", range='" + range + '\'' +
                 ", totalCount=" + totalCount +
-                ", primaryCount=" + primaryCount +
-                ", intermediateCount=" + intermediateCount +
-                ", seniorCount=" + seniorCount +
                 ", practitioners='" + practitioners + '\'' +
-                ", addUser='" + addUser + '\'' +
-                ", addDate=" + addDate +
-                ", updateUser='" + updateUser + '\'' +
-                ", updateDate=" + updateDate +
-                ", specialKnowledgeId='" + specialKnowledgeId + '\'' +
+                ", createUser='" + createUser + '\'' +
+                ", createTime=" + createTime +
+                ", optUser='" + optUser + '\'' +
+                ", optTime=" + optTime +
+                ", list=" + list +
+                ", specialKnowledgeName='" + specialKnowledgeName + '\'' +
+                ", questionId='" + questionId + '\'' +
+                ", practiceName='" + practiceName + '\'' +
                 '}';
     }
 }

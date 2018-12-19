@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://java.sun.com/jsf/html">
+<head>
+    <title>自定义练习</title>
+    <#include "/header.html">
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="header">
+        <div class="header-left">
+            <img src="${rc.contextPath}/statics/img/logo.png">
+            <a href="javascript:;">江苏省公安厅法律学校</a>
+        </div>
+    </div>
+                <div>
+                    <el-row  v-for="item in dataList">
+                        <el-col >
+                            <p>题目：{{item.comContent}}</p>
+                            <el-col v-for="item2 in item.answer"></el-col>
+                            <el-checkbox-group v-model="item.answer">
+                                <el-checkbox :label="item2.id" v-for="item2 in item.answer">答案：{{item2.questionContent}}</el-checkbox>
+                                <br/>
+                            </el-checkbox-group>
+                                <span>描述：{{item.answerDescrible}}</span>
+                            </p>
+                        </el-col>
+                    </el-row>
+                </div>
+                <!--<div v-for="item in dataList" class="swiper-slide">
+                    [{{item.questionType==4?'单选题':item.questionType==5?'多选题':'判断题'}}] {{item.comContent}}
+                    <br/>
+                    <br/>
+                    <el-checkbox-group v-model="answers" v-if="item.questionType==5">
+                        <el-checkbox :label="item2.id" v-for="item2 in item.answer">{{item2.questionContent}}</el-checkbox>
+                        <br/>
+                    </el-checkbox-group>
+                    <br/>
+                    难度系数：{{item.questionDifficulty}}
+                </div>-->
+            </div>
+        </div>
+        <el-button-group>
+            <el-button type="primary" icon="el-icon-arrow-left">上一页</el-button>
+            <el-button type="primary" @click="next">下一页<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
+            <el-button type="primary">保存<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
+            <el-button type="primary" @click="commit">提交本次练习<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
+        </el-button-group>
+    </div>
+</div>
+</body>
+<script src="${rc.contextPath}/js/personalCen/pracPaper.js?_${.now?long}"></script>
+</html>
