@@ -1,9 +1,10 @@
-package com.lawschool.beans.competition;
+package com.lawschool.beans.competition.bak;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lawschool.beans.competition.BattleTopicSetting;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ import java.util.List;
  */
 
 
-@TableName("LAW_MATCH_SETTING")
-public class MatchSetting implements Serializable {
+@TableName("LAW_MATCH_SETTING_BAK")
+public class MatchSettingBak implements Serializable {
 	//id主键
 	@TableId
 	private String id;
@@ -42,9 +43,10 @@ public class MatchSetting implements Serializable {
 	private String winReward;
 	//失败奖励
 	private String loserReward;
-	//答题时间
+//	//答题时间
 //	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 //	private Date answerTime;
+	//答题时间
 	private String answerTime;
 
 	//备用字段1
@@ -63,6 +65,7 @@ public class MatchSetting implements Serializable {
 	private List<BattleTopicSetting> battleTopicSettingList=new ArrayList<BattleTopicSetting>();
 
 
+
 	//操作人
 	private String createPeople;
 	//操作单位
@@ -73,10 +76,8 @@ public class MatchSetting implements Serializable {
 
 
 	//最后删除人
-	@TableField(exist = false)
 	private String delPeople;
 	//最后删除时间
-	@TableField(exist = false)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date delTime;
 

@@ -1,4 +1,4 @@
-package com.lawschool.beans.competition;
+package com.lawschool.beans.competition.bak;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 /**
  *
- * @Descriptin  闯关关卡配置实体类
+ * @Descriptin  闯关关卡配置实体类 备份
  * @author      孙小康
  * @version     v1.0
  * @Time        2018/11/29
@@ -19,8 +19,8 @@ import java.util.Date;
 /**
  * 闯关关卡配置
  */
-@TableName("LAW_RECRUIT_CHECK_CON")
-public class RecruitCheckpointConfiguration implements Serializable {
+@TableName("LAW_RECRUIT_CHECK_CON_BAK")
+public class RecruitCheckpointConfigurationBak implements Serializable {
 //  对应数据库	LAW_RECRUIT_CHECK_CON   太长了 存不了  所以删减了表名字
 
 
@@ -94,11 +94,10 @@ public class RecruitCheckpointConfiguration implements Serializable {
 	//备用字段5
 	private String backup5;
 
-	//最后删除人//为的是bak表 结构一样   好转
-	@TableField(exist = false)
+	//最后删除人
 	private String delPeople;
-	//最后删除时间//为的是bak表 结构一样   好转
-	@TableField(exist = false)
+	//最后删除时间
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date delTime;
 
 
@@ -108,6 +107,14 @@ public class RecruitCheckpointConfiguration implements Serializable {
 
 	public void setDelPeople(String delPeople) {
 		this.delPeople = delPeople;
+	}
+
+	public Date getDelTime() {
+		return delTime;
+	}
+
+	public void setDelTime(Date delTime) {
+		this.delTime = delTime;
 	}
 
 	public String getId() {

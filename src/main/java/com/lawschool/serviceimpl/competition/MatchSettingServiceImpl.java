@@ -2,17 +2,32 @@ package com.lawschool.serviceimpl.competition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.lawschool.annotation.SysLog;
+import com.lawschool.beans.User;
 import com.lawschool.beans.competition.BattleTopicSetting;
 import com.lawschool.beans.competition.CompetitionOnline;
 import com.lawschool.beans.competition.MatchSetting;
+import com.lawschool.beans.competition.bak.BattleTopicSettingBak;
+import com.lawschool.beans.competition.bak.CompetitionOnlineBak;
+import com.lawschool.beans.competition.bak.MatchSettingBak;
 import com.lawschool.dao.competition.MatchSettingDao;
 import com.lawschool.service.competition.BattleTopicSettingService;
 import com.lawschool.service.competition.MatchSettingService;
+import com.lawschool.service.competition.bak.BattleTopicSettingBakService;
+import com.lawschool.service.competition.bak.CompetitionOnlineBakService;
+import com.lawschool.service.competition.bak.MatchSettingBakService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -20,8 +35,21 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 
 	@Autowired
 	private MatchSettingDao matchSettingDao;
+
 	@Autowired
 	private BattleTopicSettingService battleTopicSettingService;
+
+	@Autowired
+	private HttpSession session;
+
+	@Autowired
+	private HttpServletRequest request;
+
+	@Autowired
+	private MatchSettingBakService matchSettingBakService;
+
+	@Autowired
+	private BattleTopicSettingBakService battleTopicSettingBakService;
 
 	@Override
 	public List<MatchSetting> list() {
@@ -33,18 +61,51 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 
 
 	@Override
+	@SysLog("查询,添加，删除")
+	@Transactional(rollbackFor = Exception.class)
 	public void deleteAll() {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		User u= (User) request.getSession().getAttribute("user");
 		//因为对战题目配置表里面的 数据 还有的是  打擂台的  数据 ，不仅仅是属于在线比武配置的，所以 要反查，先根据在线比武设置表id去找对战题目配置表数据，先删题目配置 再删在线比武配置
+
+		List<MatchSettingBak> MatchSettingbakList=new ArrayList<MatchSettingBak>();
+		List<BattleTopicSettingBak> battleTopicSettingbakList=new ArrayList<BattleTopicSettingBak>();
+
 		EntityWrapper<MatchSetting> ew = new EntityWrapper<>();
-		ew.setSqlSelect("id");
+//		ew.setSqlSelect("id");
 		List<MatchSetting> matchSettinglist=this.selectList(ew);
 		if(matchSettinglist.size()!=0)
 		{
+			for(MatchSetting matchSetting:matchSettinglist)
+			{
+				MatchSettingBak matchSettingBakBak=new MatchSettingBak();
+				BeanUtils.copyProperties(matchSetting, matchSettingBakBak);
+				matchSettingBakBak.setDelPeople(u.getId());
+				matchSettingBakBak.setDelTime(new Date());
+				MatchSettingbakList.add(matchSettingBakBak);
+			}
+//插
+			matchSettingBakService.insertBatch(MatchSettingbakList);
+
 			String[] ids=new String[matchSettinglist.size()];
 			for(int i=0;i<matchSettinglist.size();i++)
 			{
 				ids[i]=matchSettinglist.get(i).getId();
 			}
+
+			//查
+			List<BattleTopicSetting> battleTopicSettinglist=	  battleTopicSettingService.selectList(new EntityWrapper<BattleTopicSetting>().in("FOREIGN_KEY_ID",Arrays.asList(ids)));
+			for(BattleTopicSetting battleTopicSetting:battleTopicSettinglist)
+			{
+				BattleTopicSettingBak battleTopicSettingBak=new BattleTopicSettingBak();
+				BeanUtils.copyProperties(battleTopicSetting, battleTopicSettingBak);
+				battleTopicSettingBak.setDelPeople(u.getId());
+				battleTopicSettingBak.setDelTime(new Date());
+				battleTopicSettingbakList.add(battleTopicSettingBak);
+			}
+			//插
+			battleTopicSettingBakService.insertBatch(battleTopicSettingbakList);
+
 			battleTopicSettingService.delete(new EntityWrapper<BattleTopicSetting>().in("FOREIGN_KEY_ID", Arrays.asList(ids)));
 			this.delete(new EntityWrapper<MatchSetting>());
 		}
@@ -57,9 +118,21 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 
 
 	@Override
+	@SysLog("保存")
+	@Transactional(rollbackFor = Exception.class)
 	public void save(MatchSetting matchSetting) {
+
+		//去作用域中取user
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		User u= (User) request.getSession().getAttribute("user");
+
 		matchSetting.setId(IdWorker.getIdStr());
-		System.out.println(matchSetting);
+
+		matchSetting.setCreatePeople(u.getId());     //创建人id
+		matchSetting.setCreateTime(new Date());   	//创建时间
+		matchSetting.setCreateDept(u.getOrgCode());  //所属部门code
+
+
 
 		this.insert(matchSetting);
 
@@ -76,6 +149,11 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 				battleTopicSetting.setForeignKeyId(matchSetting.getId());
 				battleTopicSetting.setType("99991");  //存字典掉的code //加type   后面来区分这条数据是属于对战的  还是擂台的   元数据现在还没有  没法设置
 				battleTopicSetting.setHowManySmall((i+1));//第几关
+				battleTopicSetting.setCreatePeople(u.getId());     //创建人id
+				battleTopicSetting.setCreateTime(new Date());   	//创建时间
+				battleTopicSetting.setCreateDept(u.getOrgCode());  //所属部门code
+
+
 
 				battleTopicSetting.setKnowledgeId(matchSetting.getBattleTopicSettingList().get(i).getKnowledgeId());   //知识点 //像这种的数据来源 就是在之前实体里面的取   不一样的配置  所以下标要一致
 				battleTopicSetting.setQuestionDifficulty(matchSetting.getBattleTopicSettingList().get(i).getQuestionDifficulty());//试题难度
@@ -93,6 +171,9 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 				battleTopicSetting.setForeignKeyId(matchSetting.getId());
 				battleTopicSetting.setType("99991");  //存字典掉的code //加type   后面来区分这条数据是属于对战的  还是擂台的   元数据现在还没有  没法设置
 				battleTopicSetting.setHowManySmall(i+1);//第几关
+				battleTopicSetting.setCreatePeople(u.getId());     //创建人id
+				battleTopicSetting.setCreateTime(new Date());   	//创建时间
+				battleTopicSetting.setCreateDept(u.getOrgCode());  //所属部门code
 
 				battleTopicSetting.setKnowledgeId(matchSetting.getBattleTopicSettingList().get(0).getKnowledgeId());//像这种的数据来源 就是在之前实体里面的取   一样的配置  所以下标就找第一个  也就只有一个数据
 				battleTopicSetting.setQuestionDifficulty(matchSetting.getBattleTopicSettingList().get(0).getQuestionDifficulty());//试题难度
@@ -106,6 +187,8 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 	}
 	//根据id来找子类数据集合
 	@Override
+	@SysLog("查询")
+	@Transactional(rollbackFor = Exception.class)
 	public List<BattleTopicSetting> getSonList(String id) {
 
 //		 List<RecruitCheckpointConfiguration> list= recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",id).orderBy("HOW_MANY_SMALL",true));

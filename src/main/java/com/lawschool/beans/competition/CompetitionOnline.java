@@ -36,9 +36,9 @@ public class CompetitionOnline implements Serializable {
 	private String loserReward;
 
 	//答题时间
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	private Date answerTime;
-
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+//	private Date answerTime;
+	private String answerTime;
 	//备用字段1
 	private String backup1;
 	//备用字段2
@@ -50,11 +50,66 @@ public class CompetitionOnline implements Serializable {
 	//备用字段5
 	private String backup5;
 
+	//操作人
+	private String createPeople;
+	//操作单位
+	private String createDept;
+	//操作时间
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date createTime;
+
+
+	//最后删除人
+	@TableField(exist = false)
+	private String delPeople;
+	//最后删除时间
+	@TableField(exist = false)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date delTime;
 
 	//题目信息集合
 	@TableField(exist = false)
 	private List<BattleTopicSetting> battleTopicSettingList;
 
+	public String getCreatePeople() {
+		return createPeople;
+	}
+
+	public void setCreatePeople(String createPeople) {
+		this.createPeople = createPeople;
+	}
+
+	public String getCreateDept() {
+		return createDept;
+	}
+
+	public void setCreateDept(String createDept) {
+		this.createDept = createDept;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getDelPeople() {
+		return delPeople;
+	}
+
+	public void setDelPeople(String delPeople) {
+		this.delPeople = delPeople;
+	}
+
+	public Date getDelTime() {
+		return delTime;
+	}
+
+	public void setDelTime(Date delTime) {
+		this.delTime = delTime;
+	}
 
 	public String getId() {
 		return id;
@@ -96,11 +151,19 @@ public class CompetitionOnline implements Serializable {
 		this.loserReward = loserReward;
 	}
 
-	public Date getAnswerTime() {
+//	public Date getAnswerTime() {
+//		return answerTime;
+//	}
+//
+//	public void setAnswerTime(Date answerTime) {
+//		this.answerTime = answerTime;
+//	}
+
+	public String getAnswerTime() {
 		return answerTime;
 	}
 
-	public void setAnswerTime(Date answerTime) {
+	public void setAnswerTime(String answerTime) {
 		this.answerTime = answerTime;
 	}
 

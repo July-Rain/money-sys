@@ -3,6 +3,7 @@ package com.lawschool.service.competition;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
+import com.lawschool.form.QuestForm;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface RecruitCheckpointConfigurationService extends IService<RecruitC
     public void save(RecruitCheckpointConfiguration recruitCheckpointConfiguration);
 
     public List<RecruitCheckpointConfiguration> selectListByBaBaId(String id);
+
+    public List<QuestForm> getQuestByids();
 }

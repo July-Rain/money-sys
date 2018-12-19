@@ -215,6 +215,26 @@
                                     </el-form-item>
                                 </th>
                             </tr>
+                            <tr>
+                                <th colspan="2">
+                                    <el-form-item label="答题时间" prop="answerTime">
+                                        <el-time-picker
+                                                v-model="competitionOnline.answerTime"
+                                                type="date"
+                                                value-format="HH:mm:ss"
+                                                format="HH:mm:ss"
+                                                :picker-options="{
+
+                                                selectableRange:'00:00:00 - 23:59:00'
+
+                                                    }"
+                                                placeholder="任意时间点">
+                                        </el-time-picker>
+
+                                    </el-form-item>
+
+                                </th>
+                            </tr>
                         </table>
                         <div v-for="item in competitionOnline.battleTopicSettingList" class="swiper-slide"  style="border: solid 1px #f00;width: 200%;">
                             <table style="border: solid 2px black;width: 100%">
