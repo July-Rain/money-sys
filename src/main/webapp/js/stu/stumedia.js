@@ -38,11 +38,8 @@ var vm = new Vue({
                 {required: true, message: '请输入标题', trigger: 'blur'},
                 {max: 50, message: '最大长度50', trigger: 'blur'}
             ],
-            deptIds: [
-                {required: true, message: '请选择适用部门', trigger: 'blur'}
-            ],
-            userIds: [
-                {required: true, message: '请选择适用人员', trigger: 'blur'}
+            comContent: [
+                {required: true, message: '请添加内容', trigger: 'blur'}
             ]
         },
         dialogStuMedia: false,//table弹出框可见性
@@ -118,11 +115,8 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
-                        //debugger
-                        //console.log(result.orgList);
                         vm.deptData = result.orgList;
                         vm.userData = result.orgList;
-                        //console.log(vm.deptData);
                     }else{
                         alert(result.msg);
                     }
@@ -153,8 +147,8 @@ var vm = new Vue({
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
                     var url = vm.stuMedia.id?"stumedia/updateStuMedia": "stumedia/insertStuMedia";
-                    var deptArr = vm.stuMedia.deptIds.split(",");
-                    var userArr = vm.stuMedia.userIds.split(",");
+                    var deptArr = vm.stuMedia.deptIds?vm.stuMedia.deptIds.split(","):[];
+                    var userArr = vm.stuMedia.userIds?vm.stuMedia.userIds.split(","):[];
                     vm.stuMedia.deptArr=deptArr;
                     vm.stuMedia.userArr=userArr;
                     $.ajax({
@@ -164,11 +158,13 @@ var vm = new Vue({
                         data: JSON.stringify(vm.stuMedia),
                         success: function(result){
                             if(result.code === 0){
-                                alert('操作成功', function(index){
-                                    vm.stuMedia.id=result.id;
-                                    vm.dialogStuMedia=false;
-                                    vm.reload();
-
+                                vm.$alert('操作成功', '提示', {
+                                    confirmButtonText: '确定',
+                                    callback: function () {
+                                        vm.stuMedia.id=result.id;
+                                        vm.dialogStuMedia=false;
+                                        vm.reload();
+                                    }
                                 });
                             }else{
                                 alert(result.msg);
@@ -197,14 +193,13 @@ var vm = new Vue({
             },
             this.title="新增";
             this.dialogStuMedia=true;
-            //vm.getDept();
         },
         handleEdit: function (index, row){
             this.title="修改";
             this.dialogStuMedia=true;
             $.ajax({
                 type: "POST",
-                url: baseURL + 'sysconfig/info?id=' + row.id,
+                url: baseURL + 'stumedia/info?id=' + row.id,
                 contentType: "application/json",
                 success: function (result) {
                     if(result.code === 0){

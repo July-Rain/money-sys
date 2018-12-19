@@ -12,11 +12,11 @@ var vm = new Vue({
             value: '',
             name: '',
             status: "",
+            stuType:"3",
             currPage: 1,
             pageSize: 10,
             totalCount:0
         },
-        tableData: [],//表格数据
         visible: false,
         stuMedia: {
             id:"",
@@ -54,21 +54,25 @@ var vm = new Vue({
             });
 
             //获取信息
-            $.ajax({
+           /* $.ajax({
                 type: "POST",
                 url: baseURL + "stumedia/list",
                 contentType: "application/json",
                 success: function(result){
+                    debugger
                     if(result.code === 0){
                         vm.videoData = result.page.list;
                         for(var i=0;i<vm.videoData.length;i++){
                             vm.videoData[i].comContent=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
                         }
+                        vm.formInline.currPage = result.page.currPage;
+                        vm.formInline.pageSize = result.page.pageSize;
+                        vm.formInline.totalCount = parseInt(result.page.totalCount);
                     }else{
                         alert(result.msg);
                     }
                 }
-            });
+            });*/
         })
         this.$nextTick(function () {
             this.reload();
@@ -99,8 +103,12 @@ var vm = new Vue({
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
+                    debugger
                     if (result.code == 0) {
-                        vm.tableData = result.page.list;
+                        vm.videoData = result.page.list;
+                        for(var i=0;i<vm.videoData.length;i++){
+                            vm.videoData[i].comContent=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
+                        }
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
                         vm.formInline.totalCount = parseInt(result.page.totalCount);
