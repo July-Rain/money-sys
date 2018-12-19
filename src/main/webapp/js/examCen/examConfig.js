@@ -83,7 +83,7 @@ var vm = new Vue({
     methods: {
         // 查询
         onSubmit: function () {
-            this.reload();
+            // this.reload();
         },
         /*handleSizeChange: function (val) {
             this.formInline.pageSize = val;
@@ -93,8 +93,8 @@ var vm = new Vue({
             this.formInline.currPage = val;
             this.reload();
         },*/
-        openDiffModal : function(){
-            if(vm.examConfig.questionWay=='10033'){
+        openDiffModal : function(e){
+            if(e === "10033"){
                 this.randomQues();
             }
         },
@@ -102,43 +102,48 @@ var vm = new Vue({
             this.title = "随机出题配置";
             this.randomQuesModal = true;
         },
-        handleSave:function(){
-
+        handleSave:function(randomQuesData){
+            vm.examConfig.randomQuesData=randomQuesData;
+            vm.randomQuesModal = false;
         },
-        // 保存和修改
-        saveOrUpdate: function (formName) {
-            this.$refs[formName].validate(function (valid) {
-                if (valid) {
-                    var url = vm.sysConfig.id ? "sysconfig/update" : "sysconfig/insert";
-                    $.ajax({
-                        type: "POST",
-                        url: baseURL + url,
-                        contentType: "application/json",
-                        data: JSON.stringify(vm.data11),
+        preview:function(){
+            $.ajax({
+                type: "POST",
+                url: baseURL + "exam/config/examConfig/1",
+                data: JSON.stringify(
+                    vm.examConfig
+                ),
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
 
-                        success: function (result) {
-                            if (result.code === 0) {
-                                vm.$alert('操作成功', '提示', {
-                                    confirmButtonText: '确定',
-                                    callback: function () {
-                                        vm.dialogConfig = false;
-                                        vm.reload();
-                                    }
-                                });
-                            } else {
-                                alert(result.msg);
-                            }
-                        }
-                    });
-                } else {
-                    console.log('error submit!!');
-                    return false;
+
+                    } else {
+                        alert(result.msg);
+                    }
                 }
             });
+
+            // $.ajax({
+            //     type : "POST",
+            //     url: baseURL + "exam/config/examConfig",
+            //     datatype:"json",
+            //     data:{
+            //         examConfig: vm.examConfig
+            //     },
+            //     success: function (result) {
+            //         if (result.code === 0) {
+            //             alert("添加成功");
+            //         }else{
+            //             alert(result.msg);
+            //         }
+            //     }
+            // })
         },
+
         closeDia: function () {
             this.randomQuesModal = false;
-            vm.reload();
+            // vm.reload();
         },
         // 多选
         selectionChangeHandle: function (val) {
@@ -161,16 +166,17 @@ var vm = new Vue({
         //批量删除
         handleDelete: function (dataListSelections) {
             this.dataListSelections=dataListSelections;
-            var arr = [];
-            for(var i=0; i<dataListSelections.length; i++){
-                arr.push(dataListSelections[i].index);
-            }
-            var arr2=[];
-            for(var i=0;i<vm.randomQuesData.length;i++){
-                if(arr.indexOf(i)==-1){
-                    arr2.push(vm.randomQuesData[i]);
+            let arr = [];
+
+            this.dataListSelections.map((index)=>{
+                arr.push(index)
+            })
+            let arr2=[];
+            vm.randomQuesData.map((item,index)=>{
+                if(arr.indexOf(index)==-1){
+                    arr2.push(item)
                 }
-            }
+            })
             vm.randomQuesData = arr2;
         }
     }

@@ -356,18 +356,22 @@ var vm = new Vue({
             var myChart = echarts.init(document.getElementById('pie1'));
             // 指定图表的配置项和数据
             var option = {
-                backgroundColor: '#2c343c',
+                backgroundColor: '#fff',
+
                 title: {
+                    text: '',
                     left: 'center',
                     top: 20,
                     textStyle: {
                         color: '#ccc'
                     }
                 },
-                tooltip: {
+
+                tooltip : {
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
                 },
+
                 visualMap: {
                     show: false,
                     min: 80,
@@ -376,33 +380,31 @@ var vm = new Vue({
                         colorLightness: [0, 1]
                     }
                 },
-                series: [
+                series : [
                     {
-                        name: '访问来源',
-                        type: 'pie',
-                        radius: '55%',
+                        name:'访问来源',
+                        type:'pie',
+                        radius : '55%',
                         center: ['50%', '50%'],
-                        data: [
-                            {value: 335, name: '直接访问'},
-                            {value: 310, name: '邮件营销'},
-                            {value: 274, name: '联盟广告'},
-                            {value: 235, name: '视频广告'},
-                            {value: 400, name: '搜索引擎'}
-                        ].sort(function (a, b) {
-                            return a.value - b.value;
-                        }),
+                        data:[
+                            {value:335, name:'直接访问'},
+                            {value:310, name:'邮件营销'},
+                            {value:274, name:'联盟广告'},
+                            {value:235, name:'视频广告'},
+                            {value:400, name:'搜索引擎'}
+                        ].sort(function (a, b) { return a.value - b.value; }),
                         roseType: 'radius',
                         label: {
                             normal: {
                                 textStyle: {
-                                    color: 'rgba(255, 255, 255, 0.3)'
+                                    color: '#666'
                                 }
                             }
                         },
                         labelLine: {
                             normal: {
                                 lineStyle: {
-                                    color: 'rgba(255, 255, 255, 0.3)'
+                                    color: '#666'
                                 },
                                 smooth: 0.2,
                                 length: 10,
@@ -411,11 +413,14 @@ var vm = new Vue({
                         },
                         itemStyle: {
                             normal: {
-                                color: '#c23531',
-                                shadowBlur: 200,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
+                                // 定制显示（按顺序）
+                                color: function(params) {
+                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
+                                    return colorList[params.dataIndex]
+                                }
+                            },
                         },
+
                         animationType: 'scale',
                         animationEasing: 'elasticOut',
                         animationDelay: function (idx) {
@@ -491,18 +496,27 @@ var vm = new Vue({
                     {
                         type: 'bar',
                         barWidth: 25,
+                        // itemStyle: {
+                        //     normal: {
+                        //         color: new echarts.graphic.LinearGradient(
+                        //             0, 0, 0, 0.3,
+                        //             [
+                        //                 {offset: 0, color: '#1994d7'},
+                        //                 {offset: 1, color: '#004b95'}
+                        //             ]
+                        //         )
+                        //     }
+                        // },
                         itemStyle: {
                             normal: {
-                                color: new echarts.graphic.LinearGradient(
-                                    0, 0, 0, 0.3,
-                                    [
-                                        {offset: 0, color: '#1994d7'},
-                                        {offset: 1, color: '#004b95'}
-                                    ]
-                                )
-                            }
+                                // 定制显示（按顺序）
+                                color: function(params) {
+                                    var colorList = ["#36aae0","#feae24","#de6870","#1381e3","#81bdd8","#f97a1f","#5ebd5c"];
+                                    return colorList[params.dataIndex]
+                                }
+                            },
                         },
-                        data: [32, 12, 22, 11, 13, 3, 23]
+                        data: [82, 52, 62, 41, 93, 63, 43]
                     }
                 ]
             }

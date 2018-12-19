@@ -258,6 +258,7 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 				entity.setThemeId(themeId);
 				entity.setTypeName(af.getTypeName());
 				entity.setAnswerTime(new Date());
+				entity.setCreateUser(form.getId());
 				saveList.add(entity);
 
 				if(af.getRight().intValue() == 1){
@@ -373,5 +374,12 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 		resultList = testQuestionService.findIdBySpecialKnowledgeId(paramsMap);
 
 		return resultList;
+	}
+
+	@Override
+	public AnalysisForm analysis(String month, String userId){
+		AnalysisForm form = dao.analysis(month, userId);
+
+		return form;
 	}
 }

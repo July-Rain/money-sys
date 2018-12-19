@@ -69,4 +69,16 @@
 			ID = #{id}
 		</where>
 	</update>
+
+	<select id="analysis" resultType="com.lawschool.form.AnalysisForm">
+		SELECT
+	        count(DISTINCT exercise_id) as typeNum,
+	        COUNT (*) AS total,
+	        SUM (IS_RIGHT) AS rightNum
+        FROM
+	        law_theme_record
+        WHERE
+	        TO_CHAR (ANSWER_TIME, 'YYYY-MM') = #{month}
+	        AND create_user = #{userId}
+	</select>
 </mapper>

@@ -33,4 +33,6 @@ public interface ExerciseService extends AbstractService<ExerciseEntity> {
 
     AnalysisForm analysisAnswer(String themeId);
 
+    AnalysisForm analysis(String month, String userId);
+
 }

@@ -20,7 +20,7 @@
         <result column="STU_OPTDEPARTMENT" jdbcType="VARCHAR" property="stuOptdepartment"/>
         <result column="USE_NUMBER" jdbcType="DECIMAL" property="useNumber"/>
         <result column="RIGTH_NUMBER" jdbcType="DECIMAL" property="rigthNumber"/>
-        <result column="COLLECTIONID" jdbcType="VARCHAR" property="collectId"/>
+        <result column="COLLECTIONID" jdbcType="VARCHAR" property="collectionId"/>
         <result column="QUESTIONTYPEVALUE" jdbcType="VARCHAR" property="questiontypeValue"/>
         <result column="TYPEVALUE" jdbcType="VARCHAR" property="typeValue"/>
         <result column="ANSWERVALUE" jdbcType="VARCHAR" property="answerValue"/>
@@ -48,13 +48,13 @@
              legal_basis,
              answer_describle,
              release_status,
-             disable_status,
              stu_issuer,
              stu_issdepartment,
              stu_isstim,
              stu_optdepartment,
              use_number,
              rigth_number,
+             is_enble,
              create_user,
              create_time,
              opt_user,
@@ -72,17 +72,17 @@
             #{legalBasis},
             #{answerDescrible},
             #{releaseStatus},
-            #{disableStatus},
             #{stuIssuer},
             #{stuIssdepartment},
             #{stuIsstim},
             #{stuOptdepartment},
             #{useNumber},
             #{rigthNumber},
+            #{isEnble},
             #{createUser},
             #{createTime},
-            #{optuser},
-            #{opttime}
+            #{optUser},
+            #{optTime}
         )
     </insert>
 
@@ -331,7 +331,7 @@
   </select>
 
     <!--根据ID查询试题-->
-    <select id="selectById" parameterType="string" resultMap="BaseResultMap">
+    <select id="findOne" parameterType="string" resultMap="BaseResultMap">
         SELECT
         id,
         type_id,
@@ -452,5 +452,52 @@
         ORDER BY id
     </select>
 
+
+    <!--查询某类型的试题-->
+    <select id="findList" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        id,
+        type_id,
+        com_content,
+        question_difficulty,
+        question_type,
+        answer_choice_number,
+        answer_id,
+        special_knowledge_id,
+        police_classification,
+        legal_basis,
+        answer_describle,
+        release_status,
+        stu_issuer,
+        stu_issdepartment,
+        stu_isstim,
+        stu_optdepartment,
+        use_number,
+        rigth_number
+        FROM law_testquestions a
+        <where>
+            1 = 1
+            <if test="typeId != null and typeId != ''">
+                AND a.type_id = #{typeId}
+            </if>
+            <if test="questionDifficulty != null and questionDifficulty != ''">
+                AND a.question_difficulty = #{questionDifficulty}
+            </if>
+            <if test="questionType != null and questionType != ''">
+                AND a.question_type = #{questionType}
+            </if>
+            <if test="isEnble != null and isEnble != ''">
+                AND a.is_enble = #{isEnble}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.id
+            </otherwise>
+        </choose>
+    </select>
 
 </mapper>

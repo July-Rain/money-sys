@@ -8,7 +8,6 @@ import com.lawschool.dao.DictDao;
 import com.lawschool.dao.competition.RecruitConfigurationDao;
 import com.lawschool.form.CommonForm;
 import com.lawschool.service.DictService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +48,26 @@ public class DictServiceImpl extends ServiceImpl<DictDao, Dict> implements DictS
     @Override
     public void deleteByDictId(String id) {
         dictDao.deleteByDictId(id);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryForZtree() {
+        return dictDao.queryForZtree();
+    }
+
+    @Override
+    public List<Dict> queryListParentCode(String code) {
+        return dictDao.queryListParentCode(code);
+    }
+
+    @Override
+    public void deleteByCode(String code) {
+        dictDao.deleteByCode(code);
+    }
+
+    @Override
+    public Dict selectByCode(String code) {
+        return dictDao.selectByCode(code);
     }
 
     @Override

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<style>
+#app{
+    background-color:#efefef;
+    width: 100vw;
+    height: 100vh;
+}
+#paper{
+    width: 1180px;
+    background: #fff;
+    margin: 54px auto 47px;
+    padding: 165px 0 90px;
+}
+#paper h2{
+    height: 48px;
+    line-height: 48px;
+    font-family: MicrosoftYaHei;
+    font-size: 48px;
+    font-weight: normal;
+    font-stretch: normal;
+    letter-spacing: 0px;
+    color: #2a2a2a;
+    text-align: center;
+    margin-bottom: 70px;
+}
+#paper .smg{
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 19px;
+
+}
+p,span{
+    font-size: 24px;
+    color: #2a2a2a;
+}
+#paper .smg .name{
+    float: left;
+    padding-left: 149px;
+}
+#paper .smg .set{
+    float: right;
+    padding-right: 164px;
+}
+.text_s{
+    cursor:pointer;
+    font-size: 16px;
+}
+.text_m{
+    cursor:pointer;
+    font-size: 18px;
+}
+.text_l{
+    cursor:pointer;
+    font-size: 24px;
+    font-weight: bolder;
+}
+.subTitle{
+    padding: 20px 90px 0;
+}
+.question_area{
+    padding-top: 47px;
+    width: 935px;
+    margin: 0 auto;
+}
+.ques_name{
+
+}
+.el-form-item__content{
+    line-height: 25px;
+
+}
+.el-radio,.el-radio__label,.el-checkbox,.el-checkbox__label{
+    font-size: 24px;
+    margin: 0!important;
+}
+.el-radio,.el-checkbox{
+    margin-top: 29px!important;
+}
+.el-radio-group label,.el-checkbox-group label{
+    display: block;
+}
+.timing{
+    position: fixed;
+    left: 10px;
+    top: 10px;
+}
+</style>
+<body>
+<div id="app" v-cloak>
+    <div id="paper">
+        <h2>2018年第四季度执法资格考试</h2>
+        <div class="smg">
+            <p class="name">姓名:<span>王小明</span></p>
+            <p class="set">字体设置( <span class="text_s" @click="fontS">小</span> <span class="text_m" @click="fontM">中</span> <span class="text_l" @click="fontL">大</span>)</p>
+        </div>
+        <el-form :model="form">
+            <div class="subTitle">
+                <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题1分，共50分。</p>
+            </div>
+            <div class="question_area">
+                <p class="ques_name">1.全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?</p>
+                <el-form-item>
+                    <el-radio-group v-model="form.radio1">
+                        <el-radio label="A.从实际出发不能因循守旧、墨守成规，法治建设可适当超越社会发展阶段"></el-radio>
+                        <el-radio label="B.全面依法治国的制度基础是中华法系，实践基础是中国传统社会的治理经验"></el-radio>
+                        <el-radio label="C.从中国实际出发不等于“关起门来搞法治”，应移植外国法律制度和法律文化"></el-radio>
+                        <el-radio label="D.从实际出发要求凸显法治的中国特色，坚持中国特色社会主义道路、理论体系和制度"></el-radio>
+                    </el-radio-group>
+                </el-form-item>
+            </div>
+            <div class="question_area">
+                <p class="ques_name">2.全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?</p>
+                <el-form-item>
+                    <el-radio-group v-model="form.radio2">
+                        <el-radio label="A.从实际出发不能因循守旧、墨守成规，法治建设可适当超越社会发展阶段"></el-radio>
+                        <el-radio label="B.全面依法治国的制度基础是中华法系，实践基础是中国传统社会的治理经验"></el-radio>
+                        <el-radio label="C.从中国实际出发不等于“关起门来搞法治”，应移植外国法律制度和法律文化"></el-radio>
+                        <el-radio label="D.从实际出发要求凸显法治的中国特色，坚持中国特色社会主义道路、理论体系和制度"></el-radio>
+                    </el-radio-group>
+                </el-form-item>
+            </div>
+            <div class="subTitle">
+                <p>二、多选题。多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题</p>
+            </div>
+            <div class="question_area">
+                <p class="ques_name">3.这是一道多选题</p>
+
+                <el-form-item label="">
+                    <el-checkbox-group v-model="form.checkbox1">
+                        <el-checkbox label="A.从实际出发不能因循守旧、墨守成规，法治建设可适当超越社会发展阶段" name="type"></el-checkbox>
+                        <el-checkbox label="B.全面依法治国的制度基础是中华法系，实践基础是中国传统社会的治理经验" name="type"></el-checkbox>
+                        <el-checkbox label="C.从中国实际出发不等于“关起门来搞法治”，应移植外国法律制度和法律文化" name="type"></el-checkbox>
+                        <el-checkbox label="D.从实际出发要求凸显法治的中国特色，坚持中国特色社会主义道路、理论体系和制度" name="type"></el-checkbox>
+                    </el-checkbox-group>
+                </el-form-item>
+            </div>
+            <div class="subTitle">
+                <p>三、判断题。判断题判断题判断题</p>
+            </div>
+            <div class="question_area">
+                <p class="ques_name">4.这是一道判断题这是一道判断题这是一道判断题这是一道判断题这是一道判断题</p>
+                <el-form-item class="judgement">
+                    <el-radio-group v-model="form.judgement1">
+                        <el-radio label="正确"></el-radio>
+                        <el-radio label="错误"></el-radio>
+                    </el-radio-group>
+                </el-form-item>
+            </div>
+        </el-form>
+        <el-button @click="submit" type="success" style="float: right;">交卷</el-button>
+    </div>
+    <div class="timing">考试时间剩余<span>29</span>min<span>59</span>s</div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/examCen/testPaper.js"></script>
+</html>
