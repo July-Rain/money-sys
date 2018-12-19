@@ -454,7 +454,7 @@
 
 
     <!--查询某类型的试题-->
-    <select id="findList" parameterType="map" resultMap="BaseResultMap">
+    <select id="findList" resultMap="BaseResultMap">
         SELECT
         id,
         type_id,
