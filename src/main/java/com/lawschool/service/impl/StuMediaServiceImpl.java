@@ -221,7 +221,12 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
         }
         Page<StuMedia> page = this.selectPage(
                 new Query<StuMedia>(params).getPage(),ew);
+       /* List<StuMedia> stuList = page.getRecords();
+        for(StuMedia stu : stuList){
+            if("3".equals(stu.getStuType())){
 
+            }
+        }*/
         return new PageUtils(page);
     }
 

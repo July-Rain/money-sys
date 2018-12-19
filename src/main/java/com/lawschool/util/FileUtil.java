@@ -118,15 +118,17 @@ public class FileUtil {
             //设置文件名字的编码格式为iso-8859-1，因为FTP上传的时候默认编码为iso-8859-1，解决文件名字乱码的问题
            // filename = new String(filename.getBytes("GBK"),"iso-8859-1"); accessoryEntity.getId()
             // 附件的id作为文件的名称  唯一标识
-            ftp.storeFile(accessoryEntity.getId(), input); //开始上传文件
+            ftp.storeFile(accessoryEntity.getId()+"."+type, input); //开始上传文件
             input.close();//关闭文件输入流
             ftp.logout();//断开和ftp服务器之间的连接
-            String filePath=ftpPath+"/"+curDate;
+            String filePath="/"+curDate;
             accessoryEntity.setFilePath(filePath);//设置文件路径
             accessoryService.insert(accessoryEntity);//保存文件信息
             result.put("accessoryId",accessoryEntity.getId());
             return result;
         } catch (IOException e) {
+
+
             e.printStackTrace();
         } finally {
             if (ftp.isConnected()) {
