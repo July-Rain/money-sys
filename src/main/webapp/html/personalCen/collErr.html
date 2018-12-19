@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<style>
+    .header-right ul{
+        background: transparent;
+    }
+    .header-right ul li:after{
+        content: '';
+    }
+    .el-menu--horizontal .el-menu-item,
+    .el-menu--horizontal .el-submenu{
+        float: left;
+        height: 70px;
+        /*line-height: 70px;*/
+        margin: 0;
+        border-bottom: 2px solid transparent;
+        color: #fff;
+    }
+    .el-menu--horizontal>.el-submenu .el-submenu__title {
+        height: 70px;
+        /* line-height: 70px; */
+        border-bottom: 2px solid transparent;
+        color: #909399;
+    }
+    .header-right ul li a{
+        text-align: center;
+        padding: 0;
+        /*margin: 10px 0;*/
+        box-sizing: border-box;
+        height: auto;
+        display: inline-block;
+    }
+    .header-right .el-menu-item [class^=el-icon-],
+    .header-right .el-submenu [class^=el-icon-],
+    .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
+        font-size: 30px;
+        color: #fff;
+    }
+    /*.header-right .el-submenu [class^=el-icon-]*/
+    .header-right ul li a span{
+        display: block;
+        margin-top: -10px;
+        line-height: 10px;
+    }
+    .header-right .el-menu-item:hover a,
+    .header-right .el-submenu:hover a,
+    .header-right .el-menu-item:hover [class^=el-icon-],
+    .header-right .el-submenu:hover [class^=el-icon-],
+    .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
+        color: #909399;
+    }
+    .el-submenu__icon-arrow{
+        margin-top: 16px;
+    }
+    .el-menu--horizontal .el-menu .el-menu-item a{
+        color: #909399;
+    }
+    .el-menu--horizontal .el-menu .el-menu-item a:hover{
+        color: #000;
+    }
+    .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+        background-color: #fff;
+        float: none;
+        height: 36px;
+        line-height: 36px;
+        padding: 0 10px;
+        color: #909399;
+        display: inline-block;//悬浮块横向显示
+    }
+    .green{
+        color:green;
+    }
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="header">
+        <div class="header-left">
+            <img src="${rc.contextPath}/statics/img/logo.png">
+            <a href="javascript:;">江苏省公安厅法律学校</a>
+            <input style="display: none" id="menuId" value="${menuId}">
+        </div>
+    </div>
+    <div class="container">
+        <el-row :gutter="24">
+            <el-col :span="24">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="我的错题">
+                        <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+
+                            <el-form-item prop="specialKnowledgeId">
+                                <el-button size="mini" type="primary">所属专项</el-button>
+                                <el-select v-model="formInline.specialKnowledgeId" size="mini">
+                                    <el-option v-for="(item,index) in sks" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
+                                </el-select>
+                            </el-form-item>
+
+                            <el-form-item prop="questionDifficulty">
+                                <el-button size="mini" type="primary">难度</el-button>
+                                <el-select v-model="formInline.questionDifficulty"  size="mini">
+                                    <el-option v-for="(item,index) in qds" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item prop="questionType">
+                                <el-button size="mini" type="primary">试题类型</el-button>
+                                <el-select v-model="formInline.questionType"  size="mini">
+                                    <el-option v-for="(item,index) in qts" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
+                                </el-select>
+                            </el-form-item>
+
+                            <el-form-item>
+                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
+                                <el-button size="mini" @click="resetForm('formInline')">重置</el-button>
+                            </el-form-item>
+                            </el-form-item>
+
+                        </el-form>
+                        <el-form :inline="true" :model="params" ref="params" class="demo-form-inline">
+
+                            <el-form-item prop="pname">
+                                <el-button size="mini" type="primary">卷名</el-button>
+                                <el-input v-model="params.pname"  clearable size="mini"></el-input>
+                            </el-form-item>
+
+                            <el-form-item prop="num">
+                                <el-button size="mini" type="primary">题数</el-button>
+                                <el-input v-model="params.num" type="number" clearable size="mini"></el-input>
+                            </el-form-item>
+
+                            <el-form-item>
+                                <el-button type="primary" @click="onCom" size="mini">确定</el-button>
+                                <el-button size="mini" @click="resetForm('params')">重置</el-button>
+                            </el-form-item>
+                        </el-form>
+                        <div>
+                            <el-table
+                                    :data="tableData"
+                                    border
+                                    style="width: 100%">
+                                <el-table-column
+                                        prop="comContent"
+                                        label="试题内容"
+                                        width="280"
+                                        header-align="center"
+                                        align="center">
+                                </el-table-column>
+
+                                <el-table-column
+                                        prop="typeValue"
+                                        label="类型"
+                                        header-align="center"
+                                        align="center"
+                                        :show-overflow-tooltip="true"
+                                >
+                                </el-table-column>
+
+
+                                <el-table-column
+                                        prop="questiondifficultyValue"
+                                        label="难度"
+                                        width="280"
+                                        header-align="center"
+                                        align="center"
+                                >
+                                </el-table-column>
+
+                                <el-table-column
+                                        prop="questiontypeValue"
+                                        label="类型"
+                                        width="280"
+                                        header-align="center"
+                                        align="center"
+                                        >
+                                </el-table-column>
+
+                                <el-table-column
+                                        prop="specialknowledgeValue"
+                                        label="专项id"
+                                        width="180"
+                                        header-align="center"
+                                        align="center"
+                                        width="100">
+                                </el-table-column>
+
+                                <el-table-column
+                                        label="操作"
+                                        header-align="center"
+                                        align="center"
+                                        width="180">
+                                    <template slot-scope="scope">
+                                        <el-button
+                                                size="mini"
+                                                @click="handleInfo(scope.$index, scope.row)">查看
+                                        </el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="formInline.currPage"
+                                    :page-sizes="[1, 2, 3, 4]"
+                                    :page-size="formInline.pageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="formInline.totalCount">
+                            </el-pagination>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
+
+
+
+        <el-dialog :title="title" :visible.sync="testInfo" :before-close="closeDia">
+            <el-row>
+            <el-col >
+                <p ><span>题目：({{questObj.questiontypeValue}}) </span>{{questObj.comContent}}</p>
+                <p >
+                    <span v-for="(item,index) in answers" style="margin-right: 20px;display: inline-block" :class="questObj.answerId.indexOf(item.id)!=-1?'green':''" >{{choice[index]}}.{{item.questionContent}} </span>
+                </p>
+                <p>
+                    <span>描述：{{questObj.answerDescrible}}</span>
+                </p>
+            </el-col>
+        </el-row>
+        </el-dialog>
+
+
+        <el-dialog :title="title1" :visible.sync="random" :before-close="closeDia1">
+            <el-row  v-for="(value,key) in exercise">
+                <el-col >
+                    <p ><span>题目：{{value.comContent}}</span></p>
+                    <p >
+                        <span v-for="(item,index) in value.answerList" style="margin-right: 20px;display: inline-block" :class="value.answerId.indexOf(item.id)!=-1?'green':''">{{choice[index]}}.{{item.questionContent}}  </span>
+                    </p>
+                    <p>
+                        <span>描述：{{value.answerDescrible}}</span>
+                    </p>
+                </el-col>
+            </el-row>
+        </el-dialog>
+    </div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/personalCen/collErr.js?_${.now?long}"></script>
+</html>

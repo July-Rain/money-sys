@@ -3,8 +3,10 @@ package com.lawschool.beans.competition;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -70,6 +72,64 @@ public class BattleTopicSetting implements Serializable {
 	//备用字段5
 	private String backup5;
 
+
+	//操作人
+	private String createPeople;
+	//操作单位
+	private String createDept;
+	//操作时间
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date createTime;
+
+
+	//最后删除人
+	@TableField(exist = false)
+	private String delPeople;
+	//最后删除时间
+	@TableField(exist = false)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date delTime;
+
+
+	public String getCreatePeople() {
+		return createPeople;
+	}
+
+	public void setCreatePeople(String createPeople) {
+		this.createPeople = createPeople;
+	}
+
+	public String getCreateDept() {
+		return createDept;
+	}
+
+	public void setCreateDept(String createDept) {
+		this.createDept = createDept;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getDelPeople() {
+		return delPeople;
+	}
+
+	public void setDelPeople(String delPeople) {
+		this.delPeople = delPeople;
+	}
+
+	public Date getDelTime() {
+		return delTime;
+	}
+
+	public void setDelTime(Date delTime) {
+		this.delTime = delTime;
+	}
 
 	public String getId() {
 		return id;

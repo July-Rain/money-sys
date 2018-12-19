@@ -3,22 +3,35 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.lawschool.annotation.SysLog;
 import com.lawschool.beans.SysConfig;
+import com.lawschool.beans.User;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
+import com.lawschool.beans.competition.bak.RecruitCheckpointConfigurationBak;
+import com.lawschool.beans.competition.bak.RecruitConfigurationBak;
 import com.lawschool.beans.system.TopicTypeEntity;
 import com.lawschool.dao.competition.RecruitConfigurationDao;
 import com.lawschool.form.CommonForm;
 import com.lawschool.service.competition.RecruitCheckpointConfigurationService;
 import com.lawschool.service.competition.RecruitConfigurationService;
+import com.lawschool.service.competition.bak.RecruitCheckpointConfigurationBakService;
+import com.lawschool.service.competition.bak.RecruitConfigurationBakService;
 import com.lawschool.service.system.TopicTypeService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;
 import com.lawschool.util.UtilValidate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +44,23 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 	private RecruitCheckpointConfigurationService recruitCheckpointConfigurationService;
 	@Autowired
 	private TopicTypeService topicTypeService;
+
+
+	@Autowired
+	private RecruitConfigurationBakService recruitConfigurationbakService;
+	@Autowired
+	private RecruitCheckpointConfigurationBakService recruitCheckpointConfigurationbakService;
+
+	@Autowired
+	private HttpSession session;
+
+	@Autowired
+	private HttpServletRequest request;
+
+
 	@Override
+	@SysLog("查询")
+	@Transactional(rollbackFor = Exception.class)
 	public List<RecruitConfiguration> findAll() {
 			List<RecruitConfiguration>  list=this.selectList(new EntityWrapper<RecruitConfiguration>());//得到闯关配置大关的list
 			for(int i=0;i<list.size();i++)
@@ -63,6 +92,8 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 
 
 	@Override
+	@SysLog("查询")
+	@Transactional(rollbackFor = Exception.class)
 	public RecruitConfiguration info(String id) {
 		//其实插单个 和 插findall一样  技术少个循环
 
@@ -76,13 +107,20 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 
 
 	@Override
+	@SysLog("保存")
+	@Transactional(rollbackFor = Exception.class)
 	public void save(List<RecruitConfiguration> list) {
-		//确定是不是统一配置
-		Boolean flag=true;//现在给个死值  默认为true
+        //去作用域中取user
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		User u= (User) request.getSession().getAttribute("user");
 		for(int i=0;i<list.size();i++)
 		{
 			RecruitConfiguration reConfation=list.get(i);
 			reConfation.setId(IdWorker.getIdStr());
+			reConfation.setCreatePeople(u.getId());     //创建人id
+			reConfation.setCreateTime(new Date());   	//创建时间
+			reConfation.setCreateDept(u.getOrgCode());  //所属部门code
+
 //			reConfation.setMarkNumOrder(i+1);
 
 			this.insert(reConfation);
@@ -99,6 +137,10 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 					recruitCheckpointConfiguratio.setRecruitConfigurationId(reConfation.getId());//设置闯关配置对应的大关的id
 					recruitCheckpointConfiguratio.setHowManySmall(k+1);//第几小关
 					recruitCheckpointConfiguratio.setUnifyConfiguration("1");//是统一配置
+					recruitCheckpointConfiguratio.setCreatePeople(u.getId());     //创建人id
+					recruitCheckpointConfiguratio.setCreateTime(new Date());   	//创建时间
+					recruitCheckpointConfiguratio.setCreateDept(u.getOrgCode());  //所属部门code
+
 					recruitCheckpointConfiguratio.setSpecialKnowledgeId(reConfation.getRecruitCheckpointConfigurationList().get(0).getSpecialKnowledgeId());//专项知识id
 					recruitCheckpointConfiguratio.setItemType(reConfation.getRecruitCheckpointConfigurationList().get(0).getItemType());//试题类型
 					recruitCheckpointConfiguratio.setItemDifficulty(reConfation.getRecruitCheckpointConfigurationList().get(0).getItemDifficulty());//试题难度
@@ -119,6 +161,11 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 					recruitCheckpointConfiguratio.setRecruitConfigurationId(reConfation.getId());//设置闯关配置对应的大关的id
 					recruitCheckpointConfiguratio.setHowManySmall(k+1);//第几小关
 					recruitCheckpointConfiguratio.setUnifyConfiguration("0");//不是统一配置
+
+					recruitCheckpointConfiguratio.setCreatePeople(u.getId());     //创建人id
+					recruitCheckpointConfiguratio.setCreateTime(new Date());   	//创建时间
+					recruitCheckpointConfiguratio.setCreateDept(u.getOrgCode());  //所属部门code
+
 //					reConfation.getRecruitCheckpointConfigurationList().get(k);   其他的属性 在这里面取   因为不是统一 配置  数量和 小关数量是一样的  下表页数一样的   可以通用
 					recruitCheckpointConfiguratio.setSpecialKnowledgeId(reConfation.getRecruitCheckpointConfigurationList().get(k).getSpecialKnowledgeId());//专项知识id
 					recruitCheckpointConfiguratio.setItemType(reConfation.getRecruitCheckpointConfigurationList().get(k).getItemType());//试题类型
@@ -135,15 +182,51 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 
     //删除
 	@Override
+	@SysLog("查。添加。删除")
+	@Transactional(rollbackFor = Exception.class)
 	public void deleteAll() {
-		this.delete(new EntityWrapper<RecruitConfiguration>());
+		//去作用域中取user
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		User u= (User) request.getSession().getAttribute("user");
+		//删除主表 连附表的数据要一起删除
+		//但是涉及到bak备份表   所以我他妈的 还要先查 在插  在 删   （反正操作的是所有，不用考虑条件）
+		List<RecruitConfigurationBak> recruitConfigurationbakAll=new ArrayList<>();
+		List<RecruitCheckpointConfigurationBak> recruitCheckpointConfigurationbakAll=new ArrayList<>();
 
+		//1.查
+		List<RecruitConfiguration> recruitConfigurationAll=this.selectList(new EntityWrapper<RecruitConfiguration>());
+		List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationAll=recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>());
+		//2.插
+		for(RecruitConfiguration recruitConfiguration:recruitConfigurationAll)
+		{
+			RecruitConfigurationBak recruitConfigurationbak=new RecruitConfigurationBak();
+			BeanUtils.copyProperties(recruitConfiguration, recruitConfigurationbak);
+			recruitConfigurationbak.setDelPeople(u.getId());
+			recruitConfigurationbak.setDelTime(new Date());
+			recruitConfigurationbakAll.add(recruitConfigurationbak);
+		}
+		for(RecruitCheckpointConfiguration recruitCheckpointConfiguration:recruitCheckpointConfigurationAll)
+		{
+			RecruitCheckpointConfigurationBak recruitCheckpointConfigurationbak=new RecruitCheckpointConfigurationBak();
+			BeanUtils.copyProperties(recruitCheckpointConfiguration, recruitCheckpointConfigurationbak);
+			recruitCheckpointConfigurationbak.setDelPeople(u.getId());
+			recruitCheckpointConfigurationbak.setDelTime(new Date());
+			recruitCheckpointConfigurationbakAll.add(recruitCheckpointConfigurationbak);
+		}
+		recruitConfigurationbakService.insertBatch(recruitConfigurationbakAll);
+		recruitCheckpointConfigurationbakService.insertBatch(recruitCheckpointConfigurationbakAll);
+
+
+		//3.删  原来的表
+		this.delete(new EntityWrapper<RecruitConfiguration>());
 		//删完自己的 还要删关联的 小关表啊
 		recruitCheckpointConfigurationService.delete(new EntityWrapper<RecruitCheckpointConfiguration>());
 
 	}
 
 	@Override
+	@SysLog("查询")
+	@Transactional(rollbackFor = Exception.class)
 	public PageUtils queryPage(Map<String, Object> params) {
 		EntityWrapper<RecruitConfiguration> ew = new EntityWrapper<>();
 		ew.orderBy("MARK_NUM_ORDER",true);
@@ -157,6 +240,8 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 
 	//根据id来找子类数据集合
 	@Override
+	@SysLog("查询")
+	@Transactional(rollbackFor = Exception.class)
 	public List<RecruitCheckpointConfiguration> getSonList(String id) {
 
 //		 List<RecruitCheckpointConfiguration> list= recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",id).orderBy("HOW_MANY_SMALL",true));
@@ -167,6 +252,8 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 
 
 	@Override
+	@SysLog("查询")
+	@Transactional(rollbackFor = Exception.class)
 	public List<CommonForm> findAllTopic() {
 			List list=new ArrayList();
 		List<CommonForm> CommonFormList= topicTypeService.findAll(list);

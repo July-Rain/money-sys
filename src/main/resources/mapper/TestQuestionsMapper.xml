@@ -150,11 +150,13 @@
     TYPE_ID,
     typeValue,
     SPECIAL_KNOWLEDGE_ID,
-    specialknowledgeValue
+    specialknowledgeValue,
+      ANSWER_DESCRIBLE
     from
     (
     SELECT
     LAW_COLLECTION. ID as collectionId,
+    LAW_TESTQUESTIONS.ANSWER_DESCRIBLE,
     LAW_TESTQUESTIONS. ID,
     LAW_TESTQUESTIONS.COM_CONTENT,
     LAW_TESTQUESTIONS.QUESTION_TYPE,
@@ -224,111 +226,6 @@
   </select>
 
 
-  <!--列表：我做错的题目zjw-->
-  <select id="listMyError" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
-
-    SELECT
-    ID,
-    recordId,
-    COM_CONTENT,
-    QUESTION_TYPE,
-      questiontypeValue,
-    ANSWER_ID,
-      answerValue,
-    QUESTION_DIFFICULTY,
-      questiondifficultyValue,
-    TYPE_ID,
-      typeValue,
-    SPECIAL_KNOWLEDGE_ID,
-      specialknowledgeValue
-    from
-    (
-    SELECT
-    T . ID,
-    r. ID recordId,
-    T .COM_CONTENT,
-    T .QUESTION_TYPE,
-      (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
-    T .ANSWER_ID,
-      (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
-    T .QUESTION_DIFFICULTY,
-      (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
-    T .TYPE_ID,
-      (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
-    T .SPECIAL_KNOWLEDGE_ID,
-      (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
-    ROWNUM AS rowno
-    FROM
-    LAW_USER_QUESTION_RECORD r
-    INNER JOIN LAW_TESTQUESTIONS T ON r.QUEST_ID = T . ID
-    WHERE
-    r.USER_ID = #{userId}
-    And ROWNUM &lt;= #{endPage}
-    AND r.MY_ASWER_ID != T .ANSWER_ID
-      <if test="questionType != null and questionType!=''">
-          AND QUESTION_TYPE=#{questionType}
-      </if>
-      <if test="specialKnowledgeId != null  and specialKnowledgeId!=''">
-          AND SPECIAL_KNOWLEDGE_ID=#{specialKnowledgeId}
-      </if>
-      <if test="questionDifficulty != null and  questionDifficulty != ''">
-          AND QUESTION_DIFFICULTY=#{questionDifficulty}
-      </if>
-    )
-    WHERE
-    rowno &gt; #{startPage}
-  </select>
-
-    <!--计数：我做错的题目zjw-->
-    <select id="cntMyError" parameterType="map" resultType="java.lang.Integer">
-        SELECT
-        count(T . ID)
-        FROM
-        LAW_USER_QUESTION_RECORD r
-        INNER JOIN LAW_TESTQUESTIONS T ON r.QUEST_ID = T . ID
-        WHERE
-        r.USER_ID = #{userId}
-        AND r.MY_ASWER_ID != T .ANSWER_ID
-        <if test="questionType != null and questionType!=''">
-            AND QUESTION_TYPE=#{questionType}
-        </if>
-        <if test="specialKnowledgeId != null  and specialKnowledgeId!=''">
-            AND SPECIAL_KNOWLEDGE_ID=#{specialKnowledgeId}
-        </if>
-        <if test="questionDifficulty != null and  questionDifficulty != ''">
-            AND QUESTION_DIFFICULTY=#{questionDifficulty}
-        </if>
-    </select>
-
-  <!--做错试题组卷:随机从我做错的题目中取num条数据.仅仅取idzjw-->
-  <select id="randomErrorColl" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
-  SELECT
-  ID
-  FROM
-  (
-    SELECT
-    T . ID
-    FROM
-    LAW_USER_QUESTION_RECORD r
-    INNER JOIN LAW_TESTQUESTIONS T ON r.QUEST_ID = T . ID
-    WHERE
-    r.USER_ID = #{userId}
-    AND r.MY_ASWER_ID != T .ANSWER_ID
-      <if test="questionType != null and questionType!=''">
-          AND QUESTION_TYPE=#{questionType}
-      </if>
-      <if test="specialKnowledgeId != null  and specialKnowledgeId!=''">
-          AND SPECIAL_KNOWLEDGE_ID=#{specialKnowledgeId}
-      </if>
-      <if test="questionDifficulty != null and  questionDifficulty != ''">
-          AND QUESTION_DIFFICULTY=#{questionDifficulty}
-      </if>
-  ORDER BY
-  dbms_random.VALUE
-  )
-  WHERE
-  ROWNUM &lt;= #{num}
-  </select>
 
     <!--根据ID查询试题-->
     <select id="findOne" parameterType="string" resultMap="BaseResultMap">
@@ -450,6 +347,24 @@
             </foreach>
         </where>
         ORDER BY id
+    </select>
+
+
+    <select id="getInfoById" resultType="com.lawschool.beans.TestQuestions" parameterType="com.lawschool.beans.TestQuestions">
+      select
+         ID,COM_CONTENT,
+         QUESTION_TYPE,
+         (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
+         ANSWER_ID,ANSWER_DESCRIBLE,
+        (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
+        QUESTION_DIFFICULTY,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
+        TYPE_ID,
+       (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
+       SPECIAL_KNOWLEDGE_ID,
+       (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue
+    FROM law_testquestions
+    where id=#{id}
     </select>
 
 

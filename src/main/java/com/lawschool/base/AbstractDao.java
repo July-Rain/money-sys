@@ -26,4 +26,25 @@ public interface AbstractDao<T> extends BaseMapper<T> {
      * @return
      */
     List<T> findList(T entity);
+
+    /**
+     * 根据ID查询
+     * @param id
+     * @return
+     */
+    T findOne(String id);
+
+    /**
+     * 根据属性查询
+     * @param entity
+     * @return
+     */
+    T findByEntity(T entity);
+
+    /**
+     * 根据id删除
+     * @param ids
+     * @return
+     */
+    void delete(List<String> ids);
 }

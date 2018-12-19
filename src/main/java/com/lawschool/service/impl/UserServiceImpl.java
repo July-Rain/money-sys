@@ -16,6 +16,7 @@ import sun.security.util.Password;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.lawschool.util.Constant.*;
 
@@ -26,48 +27,89 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
     UserMapper userMapper;
 
 
-    //获取用户用户/教官
+    /**
+     * @Author zjw
+     * @Description 获取用户信息
+     * @Date 10:08 2018/12/19
+     * @Param [id]
+     * @return com.lawschool.beans.User
+    **/
     @Override
     public User selectUserByUserId(String id) {
         return userMapper.selectById(id);
     }
 
-    //查询所有的用户/教官
+    /**
+     * @Author zjw
+     * @Description 查询用户或者教官
+     * @Date 9:21 2018/12/19
+     * @Param [params]
+     * @return com.lawschool.util.PageUtils
+    **/
     @Override
     public PageUtils selectAllUsers(Map<String,Object> params) {
-        int pageNo=1;
-        int pageSize=10;
-        if(UtilValidate.isNotEmpty(params.get("pageNo"))){
-            pageNo=Integer.parseInt((String) params.get("pageNo"));
-        }
-        if(UtilValidate.isNotEmpty(params.get("pageSize"))){
-            pageSize=Integer.parseInt((String) params.get("pageSize"));
-        }
 
-        Page<User> page=new Page<User>(pageNo,pageSize);
+        int pageNo= Integer.parseInt( Optional.ofNullable(params.get("currPage")).orElse("1").toString());
+        int pageSize=Integer.parseInt((String) Optional.ofNullable(params.get("pageSize")).orElse("10").toString());
+
+        Page<User> page=new Page<>(pageNo,pageSize);
 
         EntityWrapper<User> ew = new EntityWrapper<>();//默认所有的用户
+
+
+        //加 max  防止多条数据 报错
+        ew.setSqlSelect("ID,ORG_CODE,USER_NAME,USER_POLICE_ID,USER_CODE,(select max(ORG_NAME) from law_org where ORG_CODE = ORG_CODE) as orgName");
+
         if(UtilValidate.isNotEmpty(params.get("identify"))){
             ew.eq("IDENTIFY",params.get("identify"));// 0-普通用户  1-教官
         }
+
+        if(UtilValidate.isNotEmpty(params.get("orgCode"))){
+            ew.eq("ORG_CODE",params.get("orgCode"));//部门
+        }
+        if(UtilValidate.isNotEmpty(params.get("userName"))){
+            ew.like("USER_NAME", (String) params.get("userName"));//姓名
+
+        }
+
+        if(UtilValidate.isNotEmpty(params.get("userCode"))){
+            ew.like("USER_CODE", (String) params.get("userCode"));//身份证号
+
+        }
+
         List<User> users = userMapper.selectPage(page,ew);
 
-        PageUtils pageUtils=new PageUtils(users,users.size(),pageNo,pageSize);
+        PageUtils pageUtils=new PageUtils(users,users.size(),pageSize,pageNo);
         return pageUtils;
     }
+    
+    
 
-    //修改用户/教官（禁用。恢复）
+    /**
+     * @Author zjw
+     * @Description 修改用户状态
+     * @Date 10:08 2018/12/19
+     * @Param [userId, nowStatus, updateStatus]
+     * @return int
+    **/
     @Override
-    public int updateUserStatus(String userId, Integer nowStatus, Integer updateStatus) {
-        UserExample example=new UserExample();
-        example.createCriteria().andUserIdEqualTo(userId).andUserStatusEqualTo(nowStatus);
+    public int updateUserStatus(String id, Integer nowStatus, Integer updateStatus) {
         User use=new User();
         use.setUserStatus(updateStatus);
-        int res=userMapper.updateByExampleSelective(use,example);
+        EntityWrapper<User> ew=new EntityWrapper<>();
+        ew.eq("ID",id);
+        ew.eq("USER_STATUS",nowStatus);
+        int res=userMapper.update(use,ew);
         return res==1? SUCCESS:ERROR;
     }
 
-    //修改用户在线状态与否
+    /**
+     * @Author zjw
+     * @Description 修改用户在线状态
+     * @Date 10:09 2018/12/19
+     * @Param [userId, nowStatus, updateStatus]
+     * @return int
+    **/
     @Override
     public int updateUserOnlineStatus(String userId, String nowStatus, String updateStatus) {
         EntityWrapper<User> ew=new EntityWrapper<>();
@@ -78,7 +120,13 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         return res==1? SUCCESS:ERROR;
     }
 
-    //登录
+    /**
+     * @Author zjw
+     * @Description 登陆
+     * @Date 10:10 2018/12/19
+     * @Param [userCode, password, request]
+     * @return int
+    **/
     @Override
     public int login(String userCode,String password,HttpServletRequest request) {
         List<User> users = userMapper.selectList(new EntityWrapper<User>().eq("USER_CODE",userCode));
@@ -95,7 +143,13 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         return IS_NOT_EXIST;//用户不存在
     }
 
-    //修改密码
+    /**
+     * @Author zjw
+     * @Description 修改密码
+     * @Date 10:13 2018/12/19
+     * @Param [userCode, password, newPassword, request]
+     * @return int
+    **/
     @Override
     public int updatePassword(String userCode, String password, String newPassword,HttpServletRequest request) {
         int rst = this.login(userCode, password,request);
@@ -114,6 +168,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
 
     }
 
+    //重置密码
     @Override
     public int resetPassword(String id) {
         User user = dao.selectById(id);
@@ -129,7 +184,13 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         return result;
     }
 
-    //添加用户/教官
+    /**
+     * @Author zjw
+     * @Description 添加用户/教官
+     * @Date 10:10 2018/12/19
+     * @Param [user]
+     * @return int
+    **/
     @Override
     public int addUser(User user) {
         String salt = RandomStringUtils.randomAlphanumeric(20);//生成盐
@@ -144,17 +205,18 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         return 0;
     }
 
-    //获取在线用户
+    
+    /**
+     * @Author zjw
+     * @Description 获取在线用户
+     * @Date 10:11 2018/12/19
+     * @Param [params]
+     * @return com.lawschool.util.PageUtils
+    **/
     @Override
     public PageUtils selectOnlineUser(Map<String,Object> params) {
-        int pageNo=1;
-        int pageSize=10;
-        if(UtilValidate.isNotEmpty(params.get("pageNo"))){
-            pageNo=Integer.parseInt((String) params.get("pageNo"));
-        }
-        if(UtilValidate.isNotEmpty(params.get("pageSize"))){
-            pageSize=Integer.parseInt((String) params.get("pageSize"));
-        }
+        int pageNo=Integer.parseInt((String) Optional.ofNullable(params.get("pageNo")).orElse(1));
+        int pageSize=Integer.parseInt((String) Optional.ofNullable(params.get("pageSize")).orElse(10));
 
         Page<User> page=new Page<User>(pageNo,pageSize);
         List<User> users = userMapper.selectPage(page, new EntityWrapper<User>().eq("IS_ONLINE",1).eq("identify",0));

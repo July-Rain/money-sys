@@ -26,7 +26,13 @@ public class UserController extends AbstractController {
     @Autowired
     private UserService userService;
 
-    //当前用户
+    /**
+     * @Author zjw
+     * @Description 获取当前用户
+     * @Date 9:19 2018/12/19
+     * @Param [userId]
+     * @return com.lawschool.util.Result
+    **/
     @RequestMapping("/getUser")
     public Result selectUserByUserId(String userId){
         Result result=Result.ok();
@@ -52,22 +58,54 @@ public class UserController extends AbstractController {
         System.out.println(params.get("orgCode"));
 
         user.setOrgCode(String.valueOf(params.get("orgCode")));
+
+        user.setIdentify("0");//取用户
         Page<User> page = userService.findPage(new Page<User>(params),user);
         result.put("page", page);
         return result;
     }
 
-    //删除用户/
+
+
+
+    /**
+     * @Author zjw
+     * @Description 获取所有用户/教官  根据传入的identify区分
+     * @Date 9:19 2018/12/19
+     * @Param [params]
+     * @return com.lawschool.util.Result
+    **/
+    @RequestMapping("/getUorT")
+    public Result getUorT(@RequestParam Map<String,Object> params){
+        PageUtils pageUtils = userService.selectAllUsers(params);
+        return Result.ok().put("page",pageUtils);
+    }
+
+
+
+   /**
+    * @Author zjw
+    * @Description 删除用户
+    * @Date 9:20 2018/12/19
+    * @Param [userId]
+    * @return com.lawschool.util.Result
+   **/
     @RequestMapping("/deleteUser")
-    public Result deleteUser(String userId){
-        int rst = userService.updateUserStatus(userId, 2000, 800);
+    public Result deleteUser(String id){
+        int rst = userService.updateUserStatus(id, 2000, 800);
         return rst==SUCCESS?Result.ok():Result.error("禁用用户失败");
     }
 
-    //恢复用户
+    /**
+     * @Author zjw
+     * @Description 恢复用户
+     * @Date 9:20 2018/12/19
+     * @Param [userId]
+     * @return com.lawschool.util.Result
+    **/
     @RequestMapping("/recoveryUser")
-    public Result recoveryUser(String userId){
-        int rst = userService.updateUserStatus(userId, 800, 2000);
+    public Result recoveryUser(String id){
+        int rst = userService.updateUserStatus(id, 800, 2000);
         return rst==SUCCESS?Result.ok():Result.error("恢复用户失败");
     }
 
@@ -77,15 +115,26 @@ public class UserController extends AbstractController {
         return result==1?Result.ok():Result.error("重置密码失败");
     }
 
-
-    //更改密码
+    /**
+     * @Author zjw
+     * @Description 修改密码
+     * @Date 10:41 2018/12/19
+     * @Param [password, newPassword, request]
+     * @return com.lawschool.util.Result
+    **/
     @RequestMapping("/udtPsw")
     public Result updatePassword(String password,String newPassword,HttpServletRequest request){
         int rst = userService.updatePassword(getUser().getUserId(), password, newPassword,request);
         return rst==SUCCESS?Result.ok():Result.error("修改密码失败");
     }
 
-    //在线用户
+    /**
+     * @Author zjw
+     * @Description 获取在线用户
+     * @Date 9:20 2018/12/19
+     * @Param [params]
+     * @return com.lawschool.util.Result
+    **/
     @RequestMapping("/getOnlineUsers")
     public Result selectOnlineUser(Map<String,Object> params){
         Result result=Result.ok();
@@ -94,7 +143,13 @@ public class UserController extends AbstractController {
         return result;
     }
 
-    //下线
+    /**
+     * @Author zjw
+     * @Description 下线
+     * @Date 9:22 2018/12/19
+     * @Param [userId]
+     * @return com.lawschool.util.Result
+    **/
     @RequestMapping("/offlineUser")
     public Result offlineUser(String userId){
         int rst = userService.updateUserOnlineStatus(userId, "1", "0");

@@ -12,6 +12,12 @@
         <result column="MARK_REWARD" property="markReward" jdbcType="VARCHAR" />
         <result column="REWARD_SCORE" property="rewardScore" jdbcType="VARCHAR" />
         <result column="STATUS" property="status" jdbcType="VARCHAR" />
+
+        <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
+        <result column="CREATE_DEPT" property="createDept" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+
+
         <result column="BACKUP1" property="backup1" jdbcType="VARCHAR" />
         <result column="BACKUP2" property="backup2" jdbcType="VARCHAR" />
         <result column="BACKUP3" property="backup3" jdbcType="VARCHAR" />
