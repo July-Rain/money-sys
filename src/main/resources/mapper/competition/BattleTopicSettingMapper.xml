@@ -20,6 +20,10 @@
         <result column="BACKUP4" property="backup4" jdbcType="VARCHAR" />
         <result column="BACKUP5" property="backup5" jdbcType="VARCHAR" />
 
+        <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
+        <result column="CREATE_DEPT" property="createDept" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+
     </resultMap>
 
     <select id="selectListByBaBaId" resultType="com.lawschool.beans.competition.BattleTopicSetting">

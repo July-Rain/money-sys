@@ -17,19 +17,28 @@ public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
     //我的收藏-重点试题（我收藏的题目）-zjw
     List<TestQuestions> listMyCollection(Map<String, Object> param);
 
+    //我的收藏-zjw;
     int cntMyCollection(Map<String, Object> param);
 
-    //我收藏的题目-组卷 z
+    //我收藏的题目-组卷 zjw
     List<TestQuestions> randomQuestColl(Map<String, Object> param);
 
-    //我的收藏-我的错题（获取我的所有的错题）z
-    List<TestQuestions> listMyError(Map<String, Object> param);
 
-    //我的错题-组卷 z
-    List<TestQuestions> randomErrorColl(Map<String, Object> param);
+    TestQuestions getInfoById(TestQuestions testQuestions);
 
 
-    int cntMyError(Map<String, Object> param);
+
+//    //我的收藏-我的错题（获取我的所有的错题）z
+//    List<TestQuestions> listMyError(Map<String, Object> param);
+//
+//    //我的错题-组卷 z
+//    List<TestQuestions> randomErrorColl(Map<String, Object> param);
+//
+//
+//    int cntMyError(Map<String, Object> param);
+
+
+
 
 
 

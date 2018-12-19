@@ -2,6 +2,7 @@ package com.lawschool.beans;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawschool.base.DataEntity;
 import com.lawschool.beans.system.SysRoleEntity;
 
@@ -84,10 +85,11 @@ public class User extends DataEntity<User> {
 
     private String middleRequiredType;
 
-    private BigDecimal photo;//照片
+    private String  photo;//照片
 
     private Date workPoliceTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date workTime;
 
     private String roles;
@@ -115,6 +117,8 @@ public class User extends DataEntity<User> {
 
     @TableField(exist = false)
     private String orgName;
+
+
 
     public String getOrgName() {
         return orgName;
@@ -380,11 +384,11 @@ public class User extends DataEntity<User> {
         this.middleRequiredType = middleRequiredType == null ? null : middleRequiredType.trim();
     }
 
-    public BigDecimal getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(BigDecimal photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
 

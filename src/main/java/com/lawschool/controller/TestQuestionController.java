@@ -1,7 +1,6 @@
 package com.lawschool.controller;
 
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.TestQuestions;
@@ -45,7 +44,7 @@ public class TestQuestionController extends AbstractController {
      */
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
     public Result info(@PathVariable("id") String id) {
-       // TestQuestions testQuestions = testQuestionService.findOne(id);
+        TestQuestions testQuestions = testQuestionService.findOne(id);
         return Result.ok().put("testQuestions", null);
     }
 
@@ -72,7 +71,7 @@ public class TestQuestionController extends AbstractController {
      */
     @RequestMapping(value = "delete", method = RequestMethod.GET)
     public Result deleteById(@RequestBody List<String> idList) {
-        //testQuestionService.delete(idList);
+        testQuestionService.delete(idList);
         return Result.ok();
     }
 

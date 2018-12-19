@@ -6,16 +6,14 @@ import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.Dict;
 import com.lawschool.beans.competition.RecruitConfiguration;
+import com.lawschool.form.CommonForm;
 import com.lawschool.service.DictService;
 import com.lawschool.util.RedisUtil;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,9 +85,9 @@ public class SYSDictController {
         return Result.ok().put("data",dict);
     }
 
-        @SysLog("删除参数配置")
-        @RequestMapping("/delete")
-        public Result delete(String id){
+    @SysLog("删除参数配置")
+    @RequestMapping("/delete")
+    public Result delete(String id){
         dictService.deleteByDictId(id);
         /*Dict dict = dictService.selectByDictId(id);
         String str = "";
@@ -108,7 +106,7 @@ public class SYSDictController {
                 dictService.deleteByCode(dict.getCode());
                 str="删除成功！";
             }*/
-            return Result.ok().put("str","删除成功！");
+        return Result.ok().put("str","删除成功！");
     }
 
     @SysLog("更新目录")
@@ -126,4 +124,29 @@ public class SYSDictController {
         return Result.ok().put("id",dict.getId());
     }
 
+    /**
+     * @Author zjw
+     * @Description 获取某一类型的字典值 code
+     * @Date 10:00 2018-12-14
+     * @Param [type]
+     * @return com.lawschool.util.Result
+     **/
+    @RequestMapping("/getbyType/{type}")
+    public Result getbyType(@PathVariable String type){
+        List<CommonForm> forms = dictService.findByType(type);
+        return Result.ok().put("forms",forms);
+    }
+
+    /**
+     * @Author zjw
+     * @Description 获取某一类型的字典值 id
+     * @Date 10:00 2018-12-14
+     * @Param [type]
+     * @return com.lawschool.util.Result
+     **/
+    @RequestMapping("/getIdbyType/{type}")
+    public Result getIdbyType(@PathVariable String type){
+        List<CommonForm> forms = dictService.findIdByType(type);
+        return Result.ok().put("forms",forms);
+    }
 }

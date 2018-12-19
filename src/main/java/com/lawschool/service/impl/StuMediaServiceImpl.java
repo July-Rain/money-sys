@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.lawschool.util.Constant.ERROR;
 import static com.lawschool.util.Constant.SUCCESS;
@@ -49,14 +50,8 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
     **/
     @Override
     public PageUtils listMyCollection(Map<String, Object> param) {
-        int pageNo=1;
-        long pageSize=10l;
-        if(UtilValidate.isNotEmpty(param.get("pageNo"))){
-            pageNo=Integer.parseInt((String) param.get("pageNo"));
-        }
-        if(UtilValidate.isNotEmpty(param.get("pageSize"))){
-            pageSize=Long.parseLong((String) param.get("pageSize"));
-        }
+        int pageNo= parseInt((String)Optional.ofNullable(param.get("currPage")).orElse(1));
+        long pageSize= parseInt((String)Optional.ofNullable(param.get("pageSize")).orElse(10));
 
         int count=mapper.cntMyCollection(param);
 
@@ -219,6 +214,7 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
         if(UtilValidate.isNotEmpty(stuType)){
             ew.eq("stu_type",stuType);
         }
+        ew.orderBy("STU_ISSTIME");
         Page<StuMedia> page = this.selectPage(
                 new Query<StuMedia>(params).getPage(),ew);
         return new PageUtils(page);

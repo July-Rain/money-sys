@@ -9,14 +9,71 @@ import java.util.Date;
 public class UserQuestRecord {
     @TableId
     private String id;
-
+//用户id
     private String userId;
-
+//题目id
     private String questId;
-
-    private Date opttime;
-
+//操作时间
+    private Date optTime;
+//我的答案
     private String myAswerId;
+
+
+
+   //正确的的答案
+    private String rightAnswerId;
+
+    //难度
+    private String  questionDifficulty;
+    //题目类型
+    private String   questionType;
+    //知识点
+    private String  specialKnowledgeId;
+
+
+    //来源     闯关禁赛：Checkpoint   /     谁用到新的来源  更新下备注
+    private String source;
+
+
+    public String getRightAnswerId() {
+        return rightAnswerId;
+    }
+
+    public void setRightAnswerId(String rightAnswerId) {
+        this.rightAnswerId = rightAnswerId;
+    }
+
+    public String getQuestionDifficulty() {
+        return questionDifficulty;
+    }
+
+    public void setQuestionDifficulty(String questionDifficulty) {
+        this.questionDifficulty = questionDifficulty;
+    }
+
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
+    }
+
+    public String getSpecialKnowledgeId() {
+        return specialKnowledgeId;
+    }
+
+    public void setSpecialKnowledgeId(String specialKnowledgeId) {
+        this.specialKnowledgeId = specialKnowledgeId;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 
     public String getId() {
         return id;
@@ -42,12 +99,12 @@ public class UserQuestRecord {
         this.questId = questId == null ? null : questId.trim();
     }
 
-    public Date getOpttime() {
-        return opttime;
+    public Date getOptTime() {
+        return optTime;
     }
 
-    public void setOpttime(Date opttime) {
-        this.opttime = opttime;
+    public void setOptTime(Date optTime) {
+        this.optTime = optTime;
     }
 
     public String getMyAswerId() {

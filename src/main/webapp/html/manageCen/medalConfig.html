@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="container">
+        <el-row :gutter="24">
+            <el-col :span="24">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="勋章列表">
+                        <el-form :inline="true" class="demo-form-inline">
+
+                            <el-form-item>
+                                <el-button type="primary" @click="addMedal()" size="mini">新增头衔</el-button>
+                            </el-form-item>
+                        </el-form>
+                        <div>
+                            <el-table
+                                    :data="tableData"
+                                    border
+                                    style="width: 100%">
+                                <el-table-column
+                                        type="index"
+                                        :index="indexMethod">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="name"
+                                        label="头衔名称">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="integral"
+                                        label="获取条件（积分）">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="credit"
+                                        label="获取条件（学分）">
+                                </el-table-column>
+                                </el-table-column>
+                                <el-table-column
+                                        prop="active"
+                                        label="操作">
+                                    <template slot-scope="scope">
+                                        <el-button
+                                                size="mini"
+                                                @click="handleEdit(scope.$index, scope.row)">编辑
+                                        </el-button>
+                                        <el-button
+                                                size="mini"
+                                                @click="handleDel(scope.$index, scope.row)">删除
+                                        </el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="currentPage4"
+                                    :page-sizes="[10, 20, 30, 40]"
+                                    :page-size="10"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="40">
+                            </el-pagination>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
+
+        <el-dialog title="试题编辑" :visible.sync="dialogFormVisible">
+
+            <el-form :model="form">
+                <el-row>
+
+                    <el-col :span="24">
+                        <el-form-item label="勋章名称" :label-width="formLabelWidthS">
+                            <el-input v-model="form.info" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="获取条件（积分）" :label-width="formLabelWidth">
+                            <el-input v-model="form.info" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="获取条件（学分）" :label-width="formLabelWidth">
+                            <el-input v-model="form.info" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="24">
+                        <el-form-item label="参与人员" :label-width="formLabelWidthS">
+                            <el-input v-model="form.info" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="24">
+                        <el-form-item label="参与部门" :label-width="formLabelWidthS">
+                            <el-input v-model="form.info" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+
+
+
+            </el-form>
+            <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">设置完成</el-button>
+            </div>
+
+        </el-dialog>
+
+    </div>
+</div>
+</body>
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/manageCen/medalConfig.js"></script>
+</html>

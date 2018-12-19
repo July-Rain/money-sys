@@ -71,8 +71,8 @@
         color: #909399;
         display: inline-block;//悬浮块横向显示
     }
-    .red{
-        color:red;
+    .green{
+        color:green;
     }
 </style>
 <body>
@@ -208,7 +208,7 @@
                                     @size-change="handleSizeChange"
                                     @current-change="handleCurrentChange"
                                     :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
+                                    :page-sizes="[1, 2, 3, 4]"
                                     :page-size="formInline.pageSize"
                                     layout="total, sizes, prev, pager, next, jumper"
                                     :total="formInline.totalCount">
@@ -226,7 +226,7 @@
             <el-col >
                 <p ><span>题目：({{questObj.questiontypeValue}}) </span>{{questObj.comContent}}</p>
                 <p >
-                    <span v-for="(item,index) in answers" style="margin-right: 20px;display: inline-block" :class="questObj.answerId==item.id?'red':''">{{choice[index]}}.{{item.questionContent}}</span>
+                    <span v-for="(item,index) in answers" style="margin-right: 20px;display: inline-block" :class="questObj.answerId.indexOf(item.id)!=-1?'green':''">{{choice[index]}}.{{item.questionContent}}</span>
                 </p>
                 <p>
                     <span>描述：{{questObj.answerDescrible}}</span>
@@ -241,7 +241,7 @@
                 <el-col >
                     <p ><span>题目：{{value.comContent}}</span></p>
                     <p >
-                        <span v-for="(item,index) in value.answerList" style="margin-right: 20px;display: inline-block" :class="value.answerId==item.id?'red':''">{{choice[index]}}.{{item.questionContent}}</span>
+                        <span v-for="(item,index) in value.answerList" style="margin-right: 20px;display: inline-block" :class="value.answerId.indexOf(item.id)!=-1?'green':''">{{choice[index]}}.{{item.questionContent}}  </span>
                     </p>
                     <p>
                         <span>描述：{{value.answerDescrible}}</span>

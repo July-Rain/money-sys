@@ -329,7 +329,10 @@
     color: #36a9e0;
 }
 .content.exam .minContent p a{
-    color: #36a9e0;
+    background: #1381e3;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 4px;
 }
 /*学年目标*/
 .box-card .content.target{
@@ -394,7 +397,7 @@
     line-height: 30px;
 }
 .content.fast li .title{
-    color: #439cbd;
+    color: #333;
     display: inline-block;
     max-width: 400px;
     overflow: hidden;
@@ -402,7 +405,7 @@
     white-space: nowrap;
 }
 .content.fast li .date{
-    color: #94b3be;
+    color: #333;
     float: right;
 }
 /*学情看板*/
@@ -429,11 +432,11 @@
 }
 .span-title{
     font-size: 16px;
-    color: #1bb4db;
+    color: #333;
     height: 20px;
     line-height: 20px;
-    border-left: 5px solid #1bb4db;
-    padding-left: 4px;
+    border-left: 5px solid #1381e3;
+    padding-left: 7px;
     margin: 10px 0 0 10px;
 }
 .boardCard .el-tabs__nav div{
@@ -442,9 +445,71 @@
 }
 .boardCard .infoCount{
     height: 245px;
-    background-color: #afddf3;
+    background-color: #ecf4fb;
     opacity: 0.8;
+}
+.infoCount .infoMsg ul li{
+    padding: 20px 0 0 72px;
+}
+.infoCount .infoMsg .info{
+    font-size: 14px;
+
+}
+.infoCount .infoMsg .info i{
+    display: inline-block;
+    width: 20px;
+    height: 10px;
+    background: #1381e3;
+    border-radius: 2px;
+    margin-right: 4px;
+}
+.infoCount .infoMsg .info span{
+    font-size: 16px;
+    color: #1381e3;
+}
+.infoCount .infoMsg .contrast{
+    text-align: right;
+    padding-top: 10px;
+    font-size: 16px;
+    color: #666;
+    padding-right: 30px;
+}
+.infoCount .infoMsg ul li:nth-child(2) .info i{
+    background: #feaf25;
+}
+.infoCount .infoMsg ul li:nth-child(2) .info span{
+    color: #feaf25;
+}
+.infoCount .infoMsg ul li:nth-child(3) .info i{
+    background: #5ebd5c;
+}
+.infoCount .infoMsg ul li:nth-child(3) .info span{
+    color: #5ebd5c;
 }
 .boardCard .rate{
 
+}
+
+.el-progress{
+    border: #5ebc5c 1px solid;
+    padding: 2px;
+    border-radius: 4px;
+}
+.el-progress-bar__inner{
+    border-radius: 4px;
+}
+.content.target span{
+    color: #333;
+}
+.content.target .title > span > span:nth-child(1){
+
+}
+.content.target .title > span > span:nth-child(2){
+    color: #999;
+}
+.el-progress-bar__outer{
+    background: transparent;
+}
+.content.target .target-div:nth-child(2) .el-progress{
+    border: #feae23 1px solid;
 }

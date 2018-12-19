@@ -1,5 +1,7 @@
 package com.lawschool.controller.competition;
 
+import com.lawschool.base.AbstractController;
+import com.lawschool.beans.User;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
 import com.lawschool.form.CommonForm;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.AbstractCollection;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +26,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/recruitConfiguration")
-public class RecruitConfigurationController {
+public class RecruitConfigurationController{
 
     @Autowired
     private RecruitConfigurationService recruitConfigurationService;
@@ -56,7 +59,6 @@ public class RecruitConfigurationController {
     public Result save(@RequestBody List<RecruitConfiguration> list){
 
         //前提 要前端 传过来  (看 是不是统一配置)  先不考虑统一配置
-
         recruitConfigurationService.save(list);//这边到时候和前端商量  传个json串
         return Result.ok();
     }

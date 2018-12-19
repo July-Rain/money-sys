@@ -3,9 +3,11 @@ package com.lawschool.beans.competition;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 /**
  *
@@ -34,6 +36,18 @@ public class RecruitConfiguration implements Serializable {
 	//配置状态      0禁用    1启用
 	private String status;
 
+	//操作人
+	private String createPeople;
+	//操作单位
+	private String createDept;
+	//操作时间
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date createTime;
+
+
+
+
+
 	//大关是否奖励   0否  1是
 	private String markReward;
 	//奖励分值
@@ -52,7 +66,53 @@ public class RecruitConfiguration implements Serializable {
 //小关信息集合
    @TableField(exist = false)
 	private List<RecruitCheckpointConfiguration>  recruitCheckpointConfigurationList =new ArrayList<RecruitCheckpointConfiguration>();
+	//最后删除人//为的是bak表 结构一样   好转
+	@TableField(exist = false)
+	private String delPeople;
+	//最后删除时间//为的是bak表 结构一样   好转
+	@TableField(exist = false)
+	private Date delTime;
 
+
+	public String getCreatePeople() {
+		return createPeople;
+	}
+
+	public void setCreatePeople(String createPeople) {
+		this.createPeople = createPeople;
+	}
+
+	public String getCreateDept() {
+		return createDept;
+	}
+
+	public void setCreateDept(String createDept) {
+		this.createDept = createDept;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getDelTime() {
+		return delTime;
+	}
+
+	public void setDelTime(Date delTime) {
+		this.delTime = delTime;
+	}
+
+	public String getDelPeople() {
+		return delPeople;
+	}
+
+	public void setDelPeople(String delPeople) {
+		this.delPeople = delPeople;
+	}
 
 	public String getUnifyConfiguration() {
 		return unifyConfiguration;

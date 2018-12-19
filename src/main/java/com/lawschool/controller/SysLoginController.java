@@ -91,7 +91,12 @@ public class SysLoginController {
 
 
 	@RequestMapping(value = "{pageName}.html")
-	public String enterPage(@PathVariable String pageName) {
+	public String enterPage1(@PathVariable String pageName) {
 		return pageName;
+	}
+
+	@RequestMapping(value = "{path}/{pageName}.html")
+	public String enterPage2(@PathVariable String pageName,@PathVariable String path) {
+		return path+"/"+pageName;
 	}
 }
