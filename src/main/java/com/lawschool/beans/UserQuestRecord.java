@@ -35,7 +35,45 @@ public class UserQuestRecord {
     private String source;
 
 
+    public String getRightAnswerId() {
+        return rightAnswerId;
+    }
 
+    public void setRightAnswerId(String rightAnswerId) {
+        this.rightAnswerId = rightAnswerId;
+    }
+
+    public String getQuestionDifficulty() {
+        return questionDifficulty;
+    }
+
+    public void setQuestionDifficulty(String questionDifficulty) {
+        this.questionDifficulty = questionDifficulty;
+    }
+
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
+    }
+
+    public String getSpecialKnowledgeId() {
+        return specialKnowledgeId;
+    }
+
+    public void setSpecialKnowledgeId(String specialKnowledgeId) {
+        this.specialKnowledgeId = specialKnowledgeId;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 
     public String getId() {
         return id;
