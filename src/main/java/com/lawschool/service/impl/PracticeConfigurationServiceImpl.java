@@ -2,7 +2,6 @@ package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.toolkit.IdWorker;
 
 import com.lawschool.beans.*;
 import com.lawschool.dao.*;
@@ -10,7 +9,7 @@ import com.lawschool.form.AnswerForm;
 import com.lawschool.form.DiyPracPaperForm;
 import com.lawschool.form.QuestForm;
 import com.lawschool.service.AnswerService;
-import com.lawschool.service.PracticeConfiguration02Service;
+import com.lawschool.service.PracticeConfigurationSonService;
 import com.lawschool.service.PracticeConfigurationService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.util.GetUUID;
@@ -20,10 +19,7 @@ import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -50,7 +46,7 @@ public class PracticeConfigurationServiceImpl extends ServiceImpl<PracticeConfig
     @Autowired
     PracticePaperDao practicePaperDao;
     @Autowired
-    private PracticeConfiguration02Service practiceConfiguration02Service;
+    private PracticeConfigurationSonService practiceConfigurationSonService;
     @Autowired
     private TestQuestionService testQuestionService;
     @Autowired
@@ -156,7 +152,7 @@ public class PracticeConfigurationServiceImpl extends ServiceImpl<PracticeConfig
         //根据主表id 找从表数据
 
 
-        List<PracticeConfiguration02> listSon = practiceConfiguration02Service.selectList(new EntityWrapper<PracticeConfiguration02>().eq("CONFIGURATION_ID",configId));
+        List<PracticeConfiguration02> listSon = practiceConfigurationSonService.selectList(new EntityWrapper<PracticeConfiguration02>().eq("CONFIGURATION_ID",configId));
 
 
 

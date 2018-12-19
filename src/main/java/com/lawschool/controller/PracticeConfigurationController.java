@@ -6,10 +6,9 @@ import com.lawschool.annotation.SysLog;
 import com.lawschool.beans.PracticeConfiguration;
 import com.lawschool.beans.PracticeConfiguration02;
 import com.lawschool.beans.system.TopicTypeEntity;
-import com.lawschool.form.DiyPracPaperForm;
 import com.lawschool.form.QuestForm;
 import com.lawschool.service.OrgService;
-import com.lawschool.service.PracticeConfiguration02Service;
+import com.lawschool.service.PracticeConfigurationSonService;
 import com.lawschool.service.PracticeConfigurationService;
 import com.lawschool.service.UserService;
 import com.lawschool.service.system.TopicTypeService;
@@ -33,7 +32,7 @@ public class PracticeConfigurationController{
     PracticeConfigurationService practiceConfigurationService;
 
     @Autowired
-    PracticeConfiguration02Service practiceConfiguration02Service;
+    PracticeConfigurationSonService practiceConfigurationSonService;
 
     @Autowired
     OrgService orgService;
@@ -101,7 +100,7 @@ public class PracticeConfigurationController{
             configSon.setPrimaryCount(config.getPrimaryCount());
             configSon.setIntermediateCount(config.getIntermediateCount());
             configSon.setSeniorCount(config.getSeniorCount());
-            practiceConfiguration02Service.insertConfig(configSon);
+            practiceConfigurationSonService.insertConfig(configSon);
         }
         return Result.ok().put("id",practiceConfiguration.getId());//把该条记录返回到前端--根据id查询展示试题
     }
