@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.*;
+import com.lawschool.beans.Collection;
 import com.lawschool.dao.*;
 import com.lawschool.service.CollectionService;
 import com.lawschool.util.*;
@@ -13,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.lawschool.util.Constant.*;
 import static java.lang.Integer.parseInt;
@@ -40,6 +39,9 @@ public class CollectionServiceImpl implements CollectionService {
 
     @Autowired
     AnswerDao answerDao;
+
+    @Autowired
+    UserQuestRecordDao userQuestRecordDao;
 
     @Override
     //1 删  0 留  取消收藏
@@ -100,14 +102,9 @@ public class CollectionServiceImpl implements CollectionService {
     //我的收藏-重点试题（我收藏的题目）-zjw
     @Override
     public PageUtils listMyCollection(Map<String, Object> param) {
-        int pageNo = 1;
-        long pageSize = 10l;
-        if (UtilValidate.isNotEmpty(param.get("pageNo"))) {
-            pageNo = parseInt((String) param.get("pageNo"));
-        }
-        if (UtilValidate.isNotEmpty(param.get("pageSize"))) {
-            pageSize = Long.parseLong((String) param.get("pageSize"));
-        }
+
+        int pageNo= parseInt((String)Optional.ofNullable(param.get("currPage")).orElse(1));
+        long pageSize= parseInt((String)Optional.ofNullable(param.get("pageSize")).orElse(10));
 
         //总个数
         int count = testQuestionsMapper.cntMyCollection(param);
@@ -152,8 +149,8 @@ public class CollectionServiceImpl implements CollectionService {
         practicePaper.setPracticeName(UtilValidate.isNotEmpty(params.get("pname"))? params.get("pname").toString():"收藏练习");
 
         if(UtilValidate.isNotEmpty(user.getOrgCode())){
-            List<Org> org_code = orgDao.selectList(new EntityWrapper<Org>().setSqlSelect("DICTIONARY_NAME").eq("ORG_CODE", user.getOrgCode()));
-            practicePaper.setPracCreatDepartment(UtilValidate.isNotEmpty(org_code)?org_code.get(0).getDictionaryName():"");
+            List<Org> org_code = orgDao.selectList(new EntityWrapper<Org>().setSqlSelect("ORG_NAME").eq("ORG_CODE", user.getOrgCode()));
+            practicePaper.setPracCreatDepartment(UtilValidate.isNotEmpty(org_code) && UtilValidate.isNotEmpty(org_code.get(0).getDictionaryName())?org_code.get(0).getDictionaryName():"");
         }
         practicePaper.setOptuser(UtilValidate.isNotEmpty(user.getUserName())?user.getUserName():"");
         practicePaper.setOpttime(new Date());
@@ -193,34 +190,33 @@ public class CollectionServiceImpl implements CollectionService {
     //我的收藏-我的错题（获取我的所有的错题）-zjw
     @Override
     public PageUtils listMyErrorQuestion(Map<String, Object> param) {
-        int pageNo=1;
-        long pageSize=10l;
-        if(UtilValidate.isNotEmpty(param.get("pageNo"))){
-            pageNo= parseInt((String) param.get("pageNo"));
-        }
-        if (UtilValidate.isNotEmpty(param.get("pageSize"))) {
-            pageSize = Long.parseLong((String) param.get("pageSize"));
-        }
-
+        int pageNo= parseInt((String)Optional.ofNullable(param.get("currPage")).orElse(1));
+        long pageSize= parseInt((String)Optional.ofNullable(param.get("pageSize")).orElse(10));
         //总个数
-        int count = testQuestionsMapper.cntMyError(param);
+        int count = userQuestRecordDao.cntMyError(param);
 
         param.put("startPage", (pageNo - 1) * pageSize);
         param.put("endPage", pageNo * pageSize);
-        List<TestQuestions> testQuestions = testQuestionsMapper.listMyError(param);
+        List<TestQuestions> testQuestions = userQuestRecordDao.listMyError(param);
 
-        PageUtils page = new PageUtils(testQuestions, count, pageSize, pageNo);
+        List<TestQuestions> lst=new ArrayList<>();
+
+        testQuestions.stream().forEach(e->{
+            lst.add(testQuestionsMapper.getInfoById(e));
+        });
+
+        PageUtils page = new PageUtils(lst, count, pageSize, pageNo);
 
         return page;
     }
 
-    //重点试题-组卷-zjw
+    //错题试题-组卷-zjw
     @Override
     @Transactional(rollbackFor = Exception.class)
     public  Result randomErrorColl(Map<String, Object> param,User user) {
         int num=10;
         //1,生成题目
-        Map<TestQuestions,List<Answer>> map=new HashedMap();
+        Map<String,TestQuestions> map=new HashedMap();
         if(UtilValidate.isNotEmpty(param.get("num"))){
             try{
                 num= parseInt(param.get("num").toString());
@@ -230,7 +226,7 @@ public class CollectionServiceImpl implements CollectionService {
         }
         param.put("num",num);//获取组成10题
         param.put("userId",user.getId());
-        List<TestQuestions> testQuestions = testQuestionsMapper.randomErrorColl(param);//仅仅只有id,提高效率
+        List<TestQuestions> testQuestions = userQuestRecordDao.randomErrorColl(param);//仅仅只有id,提高效率
 
         //2。生成练习
         String pid = IdWorker.get32UUID();
@@ -243,7 +239,7 @@ public class CollectionServiceImpl implements CollectionService {
         practicePaper.setPracticeName(UtilValidate.isNotEmpty(param.get("pname"))? param.get("pname").toString():"错题练习");
 
         if(UtilValidate.isNotEmpty(user.getOrgCode())){
-            List<Org> org_code = orgDao.selectList(new EntityWrapper<Org>().setSqlSelect("DICTIONARY_NAME").eq("ORG_CODE", user.getOrgCode()));
+            List<Org> org_code = orgDao.selectList(new EntityWrapper<Org>().setSqlSelect("ORG_NAME").eq("ORG_CODE", user.getOrgCode()));
             practicePaper.setPracCreatDepartment(UtilValidate.isNotEmpty(org_code)?org_code.get(0).getDictionaryName():"");
         }
         practicePaper.setOptuser(UtilValidate.isNotEmpty(user.getUserName())?user.getUserName():"");
@@ -270,7 +266,9 @@ public class CollectionServiceImpl implements CollectionService {
             relevance.setQuestionId(qid);
 
             practiceRelevanceDao.insert(relevance);
-            map.put(question,answers);
+
+            question.setAnswerList(answers);
+            map.put(question.getId(),question);
         });
         return Result.ok().put("pid",pid).put("data",map);
     }
@@ -278,7 +276,7 @@ public class CollectionServiceImpl implements CollectionService {
     //详情-zjw
     @Override
     public TestQuestions getTestQuestions(TestQuestions testQuestions) {
-        TestQuestions testQuestions1 = testQuestionsMapper.selectById(testQuestions.getId());
+        TestQuestions testQuestions1 = testQuestionsMapper.getInfoById(testQuestions);
         return testQuestions1;
     }
 

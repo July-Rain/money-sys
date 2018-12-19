@@ -18,7 +18,8 @@ public class UserTestServiceImpl implements UserTestService{
 	
 	public UserTest selectUserById(Integer userId) {
 		// TODO Auto-generated method stub
-		return userDao.selectUserById(userId);
+//		return userDao.selectUserById(userId);
+		return null;
 	}
 
 	public List<UserTest> selectAllUsers() {

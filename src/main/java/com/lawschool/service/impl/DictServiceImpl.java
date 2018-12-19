@@ -76,4 +76,10 @@ public class DictServiceImpl extends ServiceImpl<DictDao, Dict> implements DictS
 
         return list;
     }
+
+    @Override
+    public List<CommonForm> findIdByType(String type) {
+        List<CommonForm> list = dictDao.findIdByType(type);
+        return list;
+    }
 }

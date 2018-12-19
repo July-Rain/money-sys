@@ -14,7 +14,7 @@ public class UserQuestRecord {
 //题目id
     private String questId;
 //操作时间
-    private Date opttime;
+    private Date optTime;
 //我的答案
     private String myAswerId;
 
@@ -61,12 +61,12 @@ public class UserQuestRecord {
         this.questId = questId == null ? null : questId.trim();
     }
 
-    public Date getOpttime() {
-        return opttime;
+    public Date getOptTime() {
+        return optTime;
     }
 
-    public void setOpttime(Date opttime) {
-        this.opttime = opttime;
+    public void setOptTime(Date optTime) {
+        this.optTime = optTime;
     }
 
     public String getMyAswerId() {

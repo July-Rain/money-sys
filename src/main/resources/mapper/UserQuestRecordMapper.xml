@@ -46,4 +46,82 @@
     </trim>
   </insert>
 
+
+  <!--列表：我做错的题目zjw-->
+  <select id="listMyError" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
+  select id from (
+  SELECT DISTINCT QUEST_ID as ID,
+  ROWNUM AS rowno
+  FROM
+  LAW_USER_QUESTION_RECORD
+  WHERE
+  USER_ID = #{userId}
+  AND MY_ASWER_ID != RIGHT_ANSWER_ID
+  <if test="questionType != null and questionType!=''">
+    AND QUESTION_TYPE=#{questionType}
+  </if>
+  <if test="specialKnowledgeId != null  and specialKnowledgeId!=''">
+    AND SPECIAL_KNOWLEDGE_ID=#{specialKnowledgeId}
+  </if>
+  <if test="questionDifficulty != null and  questionDifficulty != ''">
+    AND QUESTION_DIFFICULTY=#{questionDifficulty}
+  </if>
+  And ROWNUM &lt;= #{endPage}
+  )
+  where
+  rowno &gt; #{startPage}
+</select>
+
+  <!--计数：我做错的题目zjw-->
+  <select id="cntMyError" parameterType="map" resultType="java.lang.Integer">
+    SELECT
+    count(DISTINCT QUEST_ID)
+    FROM
+    LAW_USER_QUESTION_RECORD
+    WHERE
+    USER_ID = #{userId}
+    AND MY_ASWER_ID != RIGHT_ANSWER_ID
+    <if test="questionType != null and questionType!=''">
+      AND QUESTION_TYPE=#{questionType}
+    </if>
+    <if test="specialKnowledgeId != null  and specialKnowledgeId!=''">
+      AND SPECIAL_KNOWLEDGE_ID=#{specialKnowledgeId}
+    </if>
+    <if test="questionDifficulty != null and  questionDifficulty != ''">
+      AND QUESTION_DIFFICULTY=#{questionDifficulty}
+    </if>
+  </select>
+
+  <select id="randomErrorColl" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
+    SELECT
+    ID
+    FROM
+    (
+    SELECT
+    T . ID
+    FROM
+    LAW_USER_QUESTION_RECORD r
+    INNER JOIN LAW_TESTQUESTIONS T ON r.QUEST_ID = T . ID
+    WHERE
+    r.USER_ID = #{userId}
+    AND r.MY_ASWER_ID != T .ANSWER_ID
+    <if test="questionType != null and questionType!=''">
+      AND QUESTION_TYPE=#{questionType}
+    </if>
+    <if test="specialKnowledgeId != null  and specialKnowledgeId!=''">
+      AND SPECIAL_KNOWLEDGE_ID=#{specialKnowledgeId}
+    </if>
+    <if test="questionDifficulty != null and  questionDifficulty != ''">
+      AND QUESTION_DIFFICULTY=#{questionDifficulty}
+    </if>
+    ORDER BY
+    dbms_random.VALUE
+    )
+    WHERE
+    ROWNUM &lt;= #{num}
+  </select>
+
+
+
+
 </mapper>
