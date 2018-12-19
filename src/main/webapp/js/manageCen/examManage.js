@@ -1,60 +1,30 @@
 var vm = new Vue({
     el: '#app',
     data: {
-        tableData: [
-            {
-                info: '法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规',
-                type: '选择题',
-                itemclass: '11',
-                answer: 'a',
-                project:'a:111 b:111;c:222;d:222',
-                difficulty: 'bb,',
-                class: 'cals',
-                partof: 'qq',
-                active: '1'
-            },{
-                info: '法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规',
-                type: '选择题',
-                itemclass: '11',
-                answer: 'a',
-                project:'a:111;b:111;c:222;d:222',
-                difficulty: 'bb,',
-                class: 'cals',
-                partof: 'qq',
-                active: '1'
-            },{
-                info: '法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规法律法规',
-                type: '选择题',
-                itemclass: '11',
-                answer: 'a',
-                project:'a:111;b:111;c:222;d:222',
-                difficulty: 'bb,',
-                class: 'cals',
-                partof: 'qq',
-                active: '1'
-            }],//表格数据
-        currentPage4: 1,//分页：当前页
+        tableData: [],//表格数据
+        pageNo: 1,//分页：当前页
         dialogFormVisible: false,
         form: {
-            class: '',
-            type: '',
-            title: '',
-            info: '',
-            belong: '',
-            level: '',
-            basis: '',
-            judgement: '',
-            radio: '',
-            check: [],
-            notes: '',
-            upload: '',
-            disable: '',
-            remarks: '',
-            person: '',
-            department: ''
+            typeId: '',
+            questionType: '',
+            comContent: '',
+            specialKnowledgeId: '',
+            questionDifficulty: '',
+            legalBasis: '',
+            answerId: '',
+            isEnble: true,
+            optUser: '',
+            stuOptdepartment: '',
+            pageNo: 1,
+            limit:10,
+            count: 0
         },
         formLabelWidth: '120px',
-        fileList: []
+        fileList: [],
+        diffList: [],
+        typeList: [],
+        qtList: [],
+        topicList: [],
     },
     mounted: function () {
 
@@ -101,7 +71,85 @@ var vm = new Vue({
         },
         handleDel: function () {
 
-        }
+        },
+        save: function () {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "testQuestion/save",
+                contentType: "application/json",
+                data: JSON.stringify(vm.form),
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.$alert('操作成功', '提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                                vm.dialogFormVisible = false;
+                                vm.reload();
+                            }
+                        });
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        reload: function () {
+            $.ajax({
+                type: "GET",
+                url: baseURL + "testQuestion/list",
+                dataType: "json",
+                data: {
+                    pageNo: 1,
+                    limit: 10
+                },
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.tableData = result.page.list;
+                        vm.form.pageNo = result.page.pageNo;
+                        vm.form.pageSize = result.page.pageSize;
+                        vm.form.count = parseInt(result.page.count);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+    },
+    created: function(){
+        this.$nextTick(function () {
+            $.ajax({
+                type: "GET",
+                url: baseURL + "testQuestion/list",
+                contentType: "application/json",
+                data:vm.form,
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.tableData = result.page.list;
+                        vm.form.pageNo = result.page.pageNo;
+                        vm.form.pageSize = result.page.pageSize;
+                        vm.form.count = parseInt(result.page.count);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: baseURL + "exercise/random/dict",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.diffList = result.diffList;
+                        vm.typeList = result.typeList;
+                        vm.qtList = result.qtList;
+                        vm.topicList = result.topicList;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        })
     }
 
 })
