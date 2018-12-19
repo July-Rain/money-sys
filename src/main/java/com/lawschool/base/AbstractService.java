@@ -1,6 +1,5 @@
 package com.lawschool.base;
 
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;

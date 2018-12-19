@@ -1,6 +1,7 @@
 package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.Answer;
 import com.lawschool.dao.AnswerDao;
 import com.lawschool.form.AnswerForm;
@@ -18,15 +19,12 @@ import java.util.List;
  * @date 2018-12-418:22
  */
 @Service
-public class AnswerServiceImpl implements AnswerService {
-
-    @Autowired
-    private AnswerDao answerDao;
+public class AnswerServiceImpl extends AbstractServiceImpl<AnswerDao, Answer> implements AnswerService {
 
     //获取题目的答案
     @Override
     public List<Answer> getAnswerByQid(String id) {
-        List<Answer> answers = answerDao.selectList(new EntityWrapper<Answer>().eq("QUESTION_ID", id));
+        List<Answer> answers = dao.selectList(new EntityWrapper<Answer>().eq("QUESTION_ID", id));
         return answers;
     }
 
@@ -36,6 +34,10 @@ public class AnswerServiceImpl implements AnswerService {
      * @return
      */
     public List<AnswerForm> findByQuestionIds(List<String> list){
-        return answerDao.findByQuestionIds(list);
+        return dao.findByQuestionIds(list);
+    }
+
+    public void deleteByQuestionId(String questionId){
+        dao.deleteByQuestionId(questionId);
     }
 }
