@@ -1,15 +1,11 @@
 package com.lawschool.beans;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.lawschool.base.DataEntity;
 
 import java.math.BigDecimal;
-import java.util.Date;
 @TableName("LAW_ANSWER")
-public class Answer {
-    @TableId
-    private String id;
+public class Answer extends DataEntity<Answer> {
 
     private String questionId;
 
@@ -19,18 +15,6 @@ public class Answer {
 
     private BigDecimal score;
 
-    private String optUser;
-
-    @TableField(exist = false)
-    private Date optTime;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
 
     public String getQuestionId() {
         return questionId;
@@ -62,23 +46,6 @@ public class Answer {
 
     public void setScore(BigDecimal score) {
         this.score = score;
-    }
-
-
-    public String getOptUser() {
-        return optUser;
-    }
-
-    public void setOptUser(String optUser) {
-        this.optUser = optUser;
-    }
-
-    public Date getOptTime() {
-        return optTime;
-    }
-
-    public void setOptTime(Date optTime) {
-        this.optTime = optTime;
     }
 
     @Override

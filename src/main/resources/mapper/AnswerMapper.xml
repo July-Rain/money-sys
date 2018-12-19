@@ -7,8 +7,10 @@
     <result column="QUESTION_CONTENT" jdbcType="VARCHAR" property="questionContent" />
     <result column="ORDERSORT" jdbcType="DECIMAL" property="ordersort" />
     <result column="SCORE" jdbcType="DECIMAL" property="score" />
-    <result column="OPTUSER" jdbcType="VARCHAR" property="optuser" />
-    <result column="OPTTIME" jdbcType="TIMESTAMP" property="opttime" />
+    <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser"/>
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="OPT_USER" jdbcType="VARCHAR" property="optUser" />
+    <result column="OPT_TIME" jdbcType="TIMESTAMP" property="optTime" />
   </resultMap>
 
   <!--查询所需要的问题字段-->
@@ -16,7 +18,7 @@
     SELECT
       id AS "id",
       question_content AS "questionContent",
-      QUESTION_ID AS "questionId"
+      question_id AS "questionId"
     FROM law_answer
     <where>
       question_id IN
@@ -26,4 +28,10 @@
     </where>
     ORDER BY question_id
   </select>
+
+  <delete id="deleteByQuestionId">
+    DELETE FROM law_answer
+    WHERE question_id = #{questionId}
+  </delete>
+
 </mapper>
