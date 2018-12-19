@@ -452,4 +452,11 @@
         </where>
     </select>
 
+    <delete id="delete">
+        DELETE FROM law_testquestions
+        WHERE id IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>
