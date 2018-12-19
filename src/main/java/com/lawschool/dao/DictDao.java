@@ -2,6 +2,7 @@ package com.lawschool.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.lawschool.beans.Dict;
+import com.lawschool.form.CommonForm;
 
 import java.util.List;
 import java.util.Map;
@@ -27,4 +28,6 @@ public interface DictDao extends BaseMapper<Dict> {
     void deleteByCode(String code);
 
     Dict selectByCode(String code);
+
+    List<CommonForm> findByType(String type);
 }

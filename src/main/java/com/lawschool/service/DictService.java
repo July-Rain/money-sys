@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.base.AbstractService;
 import com.lawschool.beans.Dict;
 import com.lawschool.beans.competition.RecruitConfiguration;
+import com.lawschool.form.CommonForm;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -67,4 +68,6 @@ public interface DictService extends IService<Dict> {
     void deleteByCode(String code);
 
     Dict selectByCode(String code);
+
+    List<CommonForm> findByType(String type);
 }
