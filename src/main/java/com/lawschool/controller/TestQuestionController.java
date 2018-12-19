@@ -1,7 +1,6 @@
 package com.lawschool.controller;
 
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.TestQuestions;

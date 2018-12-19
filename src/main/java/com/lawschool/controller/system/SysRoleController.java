@@ -32,13 +32,7 @@ public class SysRoleController {
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result list(@RequestParam Map<String, Object> params){
-
-
-        EntityWrapper<SysRoleEntity> ew = new EntityWrapper<>();
-        SysRoleEntity sysRoleEntity = new SysRoleEntity();
-        ew.setEntity(sysRoleEntity);
-
-        Page<SysRoleEntity> page = roleService.findPage(new Page<SysRoleEntity>(params), ew);
+        Page<SysRoleEntity> page = roleService.findPage(new Page<SysRoleEntity>(params), new SysRoleEntity());
         return Result.ok().put("page", page);
     }
 
