@@ -103,7 +103,7 @@ var vm = new Vue({
         onCom:function(){
             $.ajax({
                 type: "POST",
-                url: baseURL + 'coll/randomQuestColl',
+                url: baseURL + 'coll/randomErrorColl',
                 dataType: "json",
                 async:false,
                 data: vm.params,
@@ -111,6 +111,7 @@ var vm = new Vue({
                     if (result.code === 0) {
                         vm.random = true;
                         vm.exercise=result.data;
+                        console.log(vm.exercise)
                     } else {
                         alert(result.msg);
                     }
@@ -129,6 +130,7 @@ var vm = new Vue({
                 data: JSON.stringify(vm.questObj),
                 success: function (result) {
                     if (result.code === 0) {
+                        questObj=result.qustion;
                         vm.answers=result.answer;
                     } else {
                         alert(result.msg);
@@ -136,37 +138,6 @@ var vm = new Vue({
                 }
             });
             console.log(vm.answers)
-        },
-        handleDel: function (index, row) {
-            questObj=row;
-            vm.questObj.id=row.collectionId;
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(function () {
-                $.ajax({
-                    type: "POST",
-                    url: baseURL + 'coll/delColl',
-                    async: true,
-                    data: JSON.stringify(vm.questObj),
-                    contentType: "application/json",
-                    success: function (result) {
-                        vm.reload();
-                        vm.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
-
-                    }
-                });
-            }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
-            });
-
         },
         closeDia: function () {
             this.testInfo = false;
@@ -179,7 +150,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "coll/testQuestion",
+                url: baseURL + "coll/errorTestQuestion",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {

@@ -88,7 +88,7 @@
         <el-row :gutter="24">
             <el-col :span="24">
                 <el-tabs type="border-card">
-                    <el-tab-pane label="重点试题">
+                    <el-tab-pane label="我的错题">
                         <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
                             <el-form-item prop="specialKnowledgeId">
@@ -195,12 +195,6 @@
                                                 size="mini"
                                                 @click="handleInfo(scope.$index, scope.row)">查看
                                         </el-button>
-                                        <el-button
-                                                plain
-                                                type="danger"
-                                                size="mini"
-                                                @click="handleDel(scope.$index, scope.row)">删除
-                                        </el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -226,7 +220,7 @@
             <el-col >
                 <p ><span>题目：({{questObj.questiontypeValue}}) </span>{{questObj.comContent}}</p>
                 <p >
-                    <span v-for="(item,index) in answers" style="margin-right: 20px;display: inline-block" :class="questObj.answerId.indexOf(item.id)!=-1?'green':''">{{choice[index]}}.{{item.questionContent}}</span>
+                    <span v-for="(item,index) in answers" style="margin-right: 20px;display: inline-block" :class="questObj.answerId.indexOf(item.id)!=-1?'green':''" >{{choice[index]}}.{{item.questionContent}} </span>
                 </p>
                 <p>
                     <span>描述：{{questObj.answerDescrible}}</span>
@@ -254,5 +248,5 @@
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/personalCen/collTest.js?_${.now?long}"></script>
+<script src="${rc.contextPath}/js/personalCen/collErr.js?_${.now?long}"></script>
 </html>

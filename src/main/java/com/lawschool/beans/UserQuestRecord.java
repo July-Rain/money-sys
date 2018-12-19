@@ -14,9 +14,15 @@ public class UserQuestRecord {
 
     private String questId;
 
-    private Date opttime;
+    private Date optTime;
 
     private String myAswerId;
+
+    private String  questionDifficulty;
+
+    private String questionType;
+
+    private String specialKnowledgeId;
 
     public String getId() {
         return id;
@@ -42,12 +48,12 @@ public class UserQuestRecord {
         this.questId = questId == null ? null : questId.trim();
     }
 
-    public Date getOpttime() {
-        return opttime;
+    public Date getOptTime() {
+        return optTime;
     }
 
-    public void setOpttime(Date opttime) {
-        this.opttime = opttime;
+    public void setOptTime(Date optTime) {
+        this.optTime = optTime;
     }
 
     public String getMyAswerId() {
@@ -56,5 +62,29 @@ public class UserQuestRecord {
 
     public void setMyAswerId(String myAswerId) {
         this.myAswerId = myAswerId == null ? null : myAswerId.trim();
+    }
+
+    public String getQuestionDifficulty() {
+        return questionDifficulty;
+    }
+
+    public void setQuestionDifficulty(String questionDifficulty) {
+        this.questionDifficulty = questionDifficulty;
+    }
+
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
+    }
+
+    public String getSpecialKnowledgeId() {
+        return specialKnowledgeId;
+    }
+
+    public void setSpecialKnowledgeId(String specialKnowledgeId) {
+        this.specialKnowledgeId = specialKnowledgeId;
     }
 }
