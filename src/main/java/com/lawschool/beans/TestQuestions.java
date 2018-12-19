@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
 
     private String rigthNumber;//正确次数
 
-    private String isEnble;//启用禁用
+    private Boolean isEnble;//启用禁用
 
     @TableField(exist = false)
     private String collectionId;//收藏id
@@ -258,11 +257,11 @@ public class TestQuestions extends DataEntity<TestQuestions> {
         this.typeValue = typeValue;
     }
 
-    public String getIsEnble() {
+    public Boolean getIsEnble() {
         return isEnble;
     }
 
-    public void setIsEnble(String isEnble) {
+    public void setIsEnble(Boolean isEnble) {
         this.isEnble = isEnble;
     }
 

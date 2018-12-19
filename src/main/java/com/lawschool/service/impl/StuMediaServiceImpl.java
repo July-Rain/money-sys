@@ -204,6 +204,7 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
         String stuTitle = (String)params.get("stuTitle");
         String comContent = (String)params.get("comContent");
         String stuPoliceclass = (String)params.get("stuPoliceclass");
+        String stuType = (String)params.get("stuType");
         EntityWrapper<StuMedia> ew = new EntityWrapper<>();
 
         if(UtilValidate.isNotEmpty(stuTitle)){
@@ -214,6 +215,9 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
         }
         if(UtilValidate.isNotEmpty(stuPoliceclass)){
             ew.like("stu_policeclass",stuPoliceclass);
+        }
+        if(UtilValidate.isNotEmpty(stuType)){
+            ew.eq("stu_type",stuType);
         }
         Page<StuMedia> page = this.selectPage(
                 new Query<StuMedia>(params).getPage(),ew);
