@@ -8,13 +8,13 @@
         <result column="PREFIX" jdbcType="VARCHAR" property="prefix" />
         <result column="QUESTION_TYPE" jdbcType="VARCHAR" property="questionType" />
         <result column="RANGE" jdbcType="VARCHAR" property="range" />
-        <result column="TOTAL_OUNT" jdbcType="DECIMAL" property="totalCount" />
+        <result column="TOTAL_COUNT" jdbcType="DECIMAL" property="totalCount" />
         <result column="SYS_NUM" jdbcType="DECIMAL" property="sysNum" />
         <result column="PRACTITIONERS" jdbcType="VARCHAR" property="practitioners" />
-        <result column="ADD_USER" jdbcType="VARCHAR" property="addUser" />
-        <result column="ADD_DATE" jdbcType="DATE" property="addDate" />
-        <result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
-        <result column="UPDATE_DATE" jdbcType="DATE" property="updateDate" />
+        <result column="CREATE_USER" jdbcType="VARCHAR" property="addUser" />
+        <result column="CREATE_TIME" jdbcType="DATE" property="addDate" />
+        <result column="OPT_USER" jdbcType="VARCHAR" property="updateUser" />
+        <result column="OPT_TIME" jdbcType="DATE" property="updateDate" />
         <result column="PRIMARY_COUNT" jdbcType="DECIMAL" property="primaryCount"/>
         <result column="INTERMEDIATE_COUNT" jdbcType="DECIMAL" property="intermediateCount"/>
         <result column="SENIOR_COUNT" jdbcType="DECIMAL" property="seniorCount"/>
@@ -37,20 +37,27 @@
     </select>
 
     <!--随机一定数量题目-->
-    <select id="queryRandom" parameterType="String" resultType="java.util.Map">
-        select * from (select ID from LAW_TESTQUESTIONS order by dbms_random.random) where rownum &lt;= #{row_count}
+    <select id="queryRandom" parameterType="java.util.Map" resultType="java.lang.String">
+        select ID from (select ID,QUESTION_DIFFICULTY,SPECIAL_KNOWLEDGE_ID from LAW_TESTQUESTIONS order by dbms_random.random)l
+        where l.QUESTION_DIFFICULTY = #{difficulty}
+        and l.SPECIAL_KNOWLEDGE_ID = #{knowledgeID}
+        and rownum &lt;=#{row_count}
     </select>
 
-    <!--专业知识查找-->
-    <!--<select id="" parameterType="" resultType="">
-        select * from(select * from LAW_TESTQUESTIONS order by dbms_random.random)l where rownum &lt;= #{countEasy}
-        <if test="PRIMARY_COUNT!=null||PRIMARY_COUNT!='' ">
-            and SPECIAL_KNOWLEDGE_ID = #{questionDifficulty1} and rownum &lt;= #{countEasy}
-        </if>
-        <if test="">
-
-        </if>
-    </select>-->
+    <insert id="insertDiy" parameterType="com.lawschool.beans.PracticeConfiguration">
+    insert into LAW_PRACTICE_CONFIGURATION (ID, PREFIX, QUESTION_TYPE,
+      RANGE, PRACTITIONERS, CREATE_USER,
+      CREATE_TIME, OPT_USER, OPT_TIME,
+      PRIMARY_COUNT, INTERMEDIATE_COUNT, SENIOR_COUNT,
+      TOTAL_COUNT, SPECIAL_KNOWLEDGE_ID, QUESTION_ID
+      )
+    values (#{id,jdbcType=VARCHAR}, #{prefix,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR},
+      #{range,jdbcType=VARCHAR}, #{practitioners,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{optUser,jdbcType=VARCHAR}, #{optTime,jdbcType=TIMESTAMP},
+      #{primaryCount,jdbcType=DECIMAL}, #{intermediateCount,jdbcType=DECIMAL}, #{seniorCount,jdbcType=DECIMAL},
+      #{totalCount,jdbcType=DECIMAL}, #{specialKnowledgeId,jdbcType=VARCHAR}, #{questionId,jdbcType=VARCHAR}
+      )
+  </insert>
 </mapper>
 
 

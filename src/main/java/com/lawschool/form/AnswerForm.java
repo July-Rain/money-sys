@@ -34,4 +34,13 @@ public class AnswerForm {
     public void setQuestionId(String questionId) {
         this.questionId = questionId;
     }
+
+    @Override
+    public String toString() {
+        return "AnswerForm{" +
+                "id='" + id + '\'' +
+                ", questionContent='" + questionContent + '\'' +
+                ", questionId='" + questionId + '\'' +
+                '}';
+    }
 }

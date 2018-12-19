@@ -1,5 +1,6 @@
 package com.lawschool.service;
 
+import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.PracticePaper;
 import com.lawschool.dao.PracticePaperDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.List;
  * @Param
  * @return
  */
-public interface PracticePaperService {
+public interface PracticePaperService extends IService<PracticePaper> {
 
     /**
      * 查询所有练习卷

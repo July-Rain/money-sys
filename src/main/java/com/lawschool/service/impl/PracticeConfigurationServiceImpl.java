@@ -1,11 +1,17 @@
 package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.toolkit.IdWorker;
-import com.lawschool.base.AbstractServiceImpl;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+
 import com.lawschool.beans.*;
 import com.lawschool.dao.*;
+import com.lawschool.form.AnswerForm;
+import com.lawschool.form.DiyPracPaperForm;
+import com.lawschool.form.QuestForm;
+import com.lawschool.service.AnswerService;
+import com.lawschool.service.PracticeConfigurationSonService;
 import com.lawschool.service.PracticeConfigurationService;
+import com.lawschool.service.TestQuestionService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
@@ -13,9 +19,7 @@ import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -25,22 +29,40 @@ import java.util.*;
  * @Time 2018/12/04
  */
 @Service
-public class PracticeConfigurationServiceImpl implements PracticeConfigurationService {
+public class PracticeConfigurationServiceImpl extends ServiceImpl<PracticeConfigurationDao,PracticeConfiguration> implements PracticeConfigurationService {
 
     @Autowired
-    PracticeConfigurationDao practiceConfigurationDao;
+    private PracticeConfigurationDao practiceConfigurationDao;
 
     @Autowired
-    AnswerDao answerDao;
+    private AnswerDao answerDao;
 
     @Autowired
-    TestQuestionsDao testQuestionsDao;
+    private TestQuestionsDao testQuestionsDao;
 
     @Autowired
     PracticeRelevanceDao practiceRelevanceDao;
 
     @Autowired
     PracticePaperDao practicePaperDao;
+    @Autowired
+    private PracticeConfigurationSonService practiceConfigurationSonService;
+    @Autowired
+    private TestQuestionService testQuestionService;
+    @Autowired
+    private AnswerService answerService;
+
+    /**
+     * 展示全部配置列表信息
+     */
+    @Override
+    public List<PracticeConfiguration> list() {
+
+        List<PracticeConfiguration> list = practiceConfigurationDao.selectList(new EntityWrapper<>());
+
+        return list;
+
+    }
 
     /**
      * 展示全部练习配置
@@ -95,16 +117,16 @@ public class PracticeConfigurationServiceImpl implements PracticeConfigurationSe
      */
     public Result createPaperName(String prefix) {
         String sysNum = GetUUID.getUUIDs(prefix);//根据前缀生成系统编号
-        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
-        String date = sdf.format(new Date());
-        //去点日期中间的“-”
-        String[] array = date.split("-");
-        StringBuffer sb = new StringBuffer();
-        for(int i=1;i<array.length;i++){
-            sb.append(array[i]);
-        }
+//        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+//        String date = sdf.format(new Date());
+//        //去点日期中间的“-”
+//        String[] array = date.split("-");
+//        StringBuffer sb = new StringBuffer();
+//        for(int i=1;i<array.length;i++){
+//            sb.append(array[i]);
+//        }
 
-        return Result.ok().put("paperName", sb+ sysNum );
+        return Result.ok().put("paperName",  sysNum );
     }
 
     @Override
@@ -112,68 +134,117 @@ public class PracticeConfigurationServiceImpl implements PracticeConfigurationSe
         return practiceConfigurationDao.selectById(id);
     }
 
+    @Override
+    public void insertDiy(PracticeConfiguration practiceConfiguration) {
+        practiceConfigurationDao.insertDiy(practiceConfiguration);
+    }
+
     /**
      * 自定义练习卷
      *
-     * @param paramsList
+     * @param configId
      * @return
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Result createPracticePaper(@RequestParam List<PracticeConfiguration> paramsList,User user) {
+//    @Transactional(rollbackFor = Exception.class)
+    public List<QuestForm> createPracticePaper(String configId) {
+        PracticeConfiguration params = practiceConfigurationDao.selectById(configId);
+        //根据主表id 找从表数据
+
+
+        List<PracticeConfiguration02> listSon = practiceConfigurationSonService.selectList(new EntityWrapper<PracticeConfiguration02>().eq("CONFIGURATION_ID",configId));
+
+
+
+
+        DiyPracPaperForm recieve = new DiyPracPaperForm();
+        List<DiyPracPaperForm> recieveList = new ArrayList<DiyPracPaperForm>();
         //存储数据传给sql
         Map map = new HashMap();
-        //存储生成试题
-        Map<TestQuestions, List<Answer>> resultMap = new HashMap<>();
-        //生成练习id
-        String practiceId = GetUUID.getUUIDs("Prac");
         PracticePaper newPaper = new PracticePaper();
-        newPaper.setId(practiceId);
+        newPaper.setId(configId);//从前台获取练习卷id
         newPaper.setPracCreatTime(new Date());
         newPaper.setPracPaperType("自定义");
-        newPaper.setOptuser(UtilValidate.isNotEmpty(user.getUserName())?user.getUserName():"");
+        //newPaper.setOptuser(UtilValidate.isNotEmpty(user.getUserName())?user.getUserName():"");
         //存储试题id
-        List<TestQuestions> questionsIdList = new ArrayList<TestQuestions>();
-        for (PracticeConfiguration params : paramsList) {
-            String knowledgeID = params.getSpecialKnowledgeId();
-            Integer easyCount = params.getPrimaryCount();
-            Integer midCount = params.getIntermediateCount();
-            Integer hardCount = params.getSeniorCount();
-            newPaper.setCount(easyCount+midCount+hardCount);
-            map.put("knowledgeID", knowledgeID);
-            map.put("difficulty", 1);
-            map.put("row_count", easyCount);
-            //获取题目ids
-            List list01 = practiceConfigurationDao.queryRandom(map);
-            questionsIdList.addAll(list01);
-
-            map.put("knowledgeID", knowledgeID);
-            map.put("difficulty", 2);
-            map.put("row_count", midCount);
-            List list02 = practiceConfigurationDao.queryRandom(map);
-            questionsIdList.addAll(list02);
-
-            map.put("knowledgeID", knowledgeID);
-            map.put("difficulty", 3);
-            map.put("row_count", hardCount);
-            List list03 = practiceConfigurationDao.queryRandom(map);
-            questionsIdList.addAll(list03);
-        }
+        List<String> questionsIdList = new ArrayList<>();
+//            List<PracticeConfiguration02> listSon = params.getList();
+            for(PracticeConfiguration02 son:listSon){
+                String knowledgeID = son.getSpecialKnowledgeId();
+                String easyCount = String.valueOf(son.getPrimaryCount());
+                String midCount = String.valueOf(son.getIntermediateCount());
+                String hardCount = String.valueOf(son.getSeniorCount());
+                newPaper.setCount(Integer.valueOf(easyCount+midCount+hardCount));
+                if(UtilValidate.isNotEmpty(easyCount)){//只要easyCount存在，则难点，知识点就会存在,只判断一个
+                    map.put("knowledgeID", knowledgeID);
+                    map.put("difficulty", 1);
+                    map.put("row_count", easyCount);
+                    //获取题目ids
+                    List<String> list01 = practiceConfigurationDao.queryRandom(map);
+                    questionsIdList.addAll(list01);
+                }
+                if(UtilValidate.isNotEmpty(midCount)){
+                    map.put("knowledgeID", knowledgeID);
+                    map.put("difficulty", 2);
+                    map.put("row_count", midCount);
+                    List<String> list02 = practiceConfigurationDao.queryRandom(map);
+                    questionsIdList.addAll(list02);
+                }
+                if(UtilValidate.isNotEmpty(hardCount)){
+                    map.put("knowledgeID", knowledgeID);
+                    map.put("difficulty", 3);
+                    map.put("row_count", hardCount);
+                    List<String> list03 = practiceConfigurationDao.queryRandom(map);
+                    questionsIdList.addAll(list03);
+                }
+            }
         //插入练习卷表
         practicePaperDao.insert(newPaper);
-        for (TestQuestions e : questionsIdList) {
-            map.put("id",e.getId());
-            TestQuestions testQuestions = testQuestionsDao.selectById(e.getId());
-            List<Answer> answerList = answerDao.selectList(new EntityWrapper<Answer>().eq("QUESTION_ID", e.getId()));
-            resultMap.put(testQuestions, answerList);
-            //存入试卷题目关联表
-            PracticeRelevance relevance = new PracticeRelevance();
-            relevance.setId(IdWorker.getIdStr());
-            relevance.setPracticeId(practiceId);
-            relevance.setQuestionId(e.getId());
-            practiceRelevanceDao.insert(relevance);
+
+
+        List<QuestForm> Questlist=testQuestionService.findByIds(questionsIdList);
+        List<AnswerForm> answerForms = answerService.findByQuestionIds(questionsIdList);
+// 遍历处理选项信息
+        for(QuestForm quest : Questlist){//遍历题目   我要得到答案啊
+            String questid = quest.getId();
+            List<AnswerForm> tempList = new ArrayList<>();
+            for(AnswerForm af : answerForms){
+                String aqid = af.getQuestionId();
+                if(questid.equals(aqid)){
+                    tempList.add(af);
+                }
+            }
+            quest.setAnswer(tempList);
+            answerForms.removeAll(tempList);
         }
-        return Result.ok().put("data", resultMap);
+
+        System.out.println(Questlist);
+//        return Questlist;
+//        for (TestQuestions e : questionsIdList) {
+//            //存储ID
+//            map.put("id",e.getId());
+//            TestQuestions testQuestions = testQuestionsDao.selectById(e.getId());
+//            List<Answer> answerList = answerDao.selectList(new EntityWrapper<Answer>().eq("QUESTION_ID", e.getId()));
+//            //resultMap.put(testQuestions, answerList);
+//            //存入试卷题目关联表
+//            PracticeRelevance relevance = new PracticeRelevance();
+//            relevance.setId(IdWorker.getIdStr());
+//            relevance.setPracticeId(configId);//练习卷ID
+//            relevance.setQuestionId(e.getId());
+//            practiceRelevanceDao.insert(relevance);
+//
+//            //将数据存储到自定义的返回类型中
+//            recieve.setId(e.getId());//题目id
+//            recieve.setComContent(testQuestions.getComContent());//题目内容
+//            recieve.setQuestionDifficulty(testQuestions.getQuestionDifficulty());//题目难度
+//            recieve.setQuestionType(testQuestions.getQuestionType());//题目类型
+//            recieve.setAnswer(answerList);//答案list
+//            recieve.setAnswerChoiceNumber(testQuestions.getAnswerChoiceNumber());//选项数
+//            recieve.setAnswerDescrible(testQuestions.getAnswerDescrible());//答案描述
+//            recieve.setLegalBasis(testQuestions.getLegalBasis());//法律依据
+//            recieveList.add(recieve);
+//        }
+        return Questlist;
     }
 
 }

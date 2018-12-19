@@ -1,23 +1,22 @@
 package com.lawschool.form;
 
+import com.lawschool.beans.Answer;
+
 import java.util.List;
 
 /**
- * @version V1.0
- * @Description: 获取题目信息接口
- * @author: 中石电子科技 徐祥
- * @date: 2018-12-11 10:33
+ * 接受自定义组卷中每一题的返回值
  */
-public class QuestForm {
-    private String id;// 题目ID
-    private String comContent;// 内容
-    private String questionDifficulty;// 难度ID
-    private String questionType;// 题型
-    private String answerId;// 答案
-    private String legalBasis;// 法律依据
-    private String answerDescrible;// 答案描述
-    private List<AnswerForm> answer;//选项
-    private Integer answerChoiceNumber;// 选项数量
+public class DiyPracPaperForm {
+    private String id;//题目ID
+    private String comContent;//题目内容
+    private String questionDifficulty;//难度
+    private String questionType;//题目类型
+    private String answerId;//答案
+    private String legalBasis;//法律依据
+    private String answerDescrible; //答案描述
+    private List<Answer> answer;//选项
+    private String answerChoiceNumber;//选项数量
 
     public String getId() {
         return id;
@@ -75,35 +74,19 @@ public class QuestForm {
         this.answerDescrible = answerDescrible;
     }
 
-    public List<AnswerForm> getAnswer() {
+    public List<Answer> getAnswer() {
         return answer;
     }
 
-    public void setAnswer(List<AnswerForm> answer) {
+    public void setAnswer(List<Answer> answer) {
         this.answer = answer;
     }
 
-    public Integer getAnswerChoiceNumber() {
+    public String getAnswerChoiceNumber() {
         return answerChoiceNumber;
     }
 
-    public void setAnswerChoiceNumber(Integer answerChoiceNumber) {
+    public void setAnswerChoiceNumber(String answerChoiceNumber) {
         this.answerChoiceNumber = answerChoiceNumber;
-    }
-
-
-    @Override
-    public String toString() {
-        return "QuestForm{" +
-                "id='" + id + '\'' +
-                ", comContent='" + comContent + '\'' +
-                ", questionDifficulty='" + questionDifficulty + '\'' +
-                ", questionType='" + questionType + '\'' +
-                ", answerId='" + answerId + '\'' +
-                ", legalBasis='" + legalBasis + '\'' +
-                ", answerDescrible='" + answerDescrible + '\'' +
-                ", answer=" + answer +
-                ", answerChoiceNumber=" + answerChoiceNumber +
-                '}';
     }
 }

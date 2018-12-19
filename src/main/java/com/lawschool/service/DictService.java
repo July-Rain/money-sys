@@ -23,43 +23,51 @@ public interface DictService extends IService<Dict> {
      * @param id
      * @return
      */
-    Dict selectByDictId(String id);
+    public Dict selectByDictId(String id);
 
     /**
      * 获取全部字典集合
      * @return
      */
-    List<Dict> selectAllDict();
+    public List<Dict> selectAllDict();
 
     /**
      * 新增数据字典
      * @param dict
      */
-    void addDict(Dict dict);
+    public void addDict(Dict dict);
 
     /**
      * 修改数据字典
      * @param dict
      */
-    void updateByDict(Dict dict);
+    public void updateByDict(Dict dict);
 
     /**
      * 批量删除数据字典
      * @param ids
      */
-    void deleteByDictIds(Map ids);
+    public void deleteByDictIds(Map ids);
 
     /**
      * 删除数据字典表
      * @param id
      */
-    void deleteByDictId(String id);
+    public  void deleteByDictId(@Param(value="id") String id);
 
     /**
-     * 根据类型获取字典值list
-     * @param type
-     * @return
+     * 查询字典表结合父子节点
      */
-    List<CommonForm> findByType(String type);
+    List<Map<String,Object>> queryForZtree();
 
+    /**
+     * 查询当前节点下是否还有节点
+     */
+    List<Dict> queryListParentCode(String code);
+
+    void deleteByCode(String code);
+
+    Dict selectByCode(String code);
+
+    List<CommonForm> findByType(String type);
 }
