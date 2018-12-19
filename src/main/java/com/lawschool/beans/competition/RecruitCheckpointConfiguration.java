@@ -3,6 +3,7 @@ package com.lawschool.beans.competition;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -77,6 +78,7 @@ public class RecruitCheckpointConfiguration implements Serializable {
 	//操作单位
 	private String createDept;
 	//操作时间
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date createTime;
 	//状态
 	private String status;
@@ -92,6 +94,21 @@ public class RecruitCheckpointConfiguration implements Serializable {
 	//备用字段5
 	private String backup5;
 
+	//最后删除人//为的是bak表 结构一样   好转
+	@TableField(exist = false)
+	private String delPeople;
+	//最后删除时间//为的是bak表 结构一样   好转
+	@TableField(exist = false)
+	private Date delTime;
+
+
+	public String getDelPeople() {
+		return delPeople;
+	}
+
+	public void setDelPeople(String delPeople) {
+		this.delPeople = delPeople;
+	}
 
 	public String getId() {
 		return id;

@@ -62,7 +62,8 @@ var vm = new Vue({
             $.ajax({
                 type: "POST",
                 url: baseURL + 'recruitConfiguration/delete',
-                async: true,
+
+                async:false,
                 dataType: "json",
                 success: function (result) {
                     var url ="recruitConfiguration/save";
@@ -70,6 +71,7 @@ var vm = new Vue({
                         type: "POST",
                         url: baseURL + url,
                         contentType: "application/json",
+                        async:false,
                         data: JSON.stringify(vm.daguanArray),
                         success: function (result) {
                             if (result.code === 0) {
@@ -96,6 +98,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + 'recruitConfiguration/findAll',
                 dataType: "json",
+                async:false,
                 success: function (result) {
                         if(result.data.length!="0")
                         {
@@ -119,6 +122,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
+                async:false,
                 data: {type:"BIGCHECKNUM",Parentcode:"99997"},
                 success: function (result) {
                     if (result.code == 0) {
@@ -143,6 +147,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "recruitConfiguration/findAllTopic",
                 dataType: "json",
+                async:false,
                 success: function (result) {
 
                     vm.zhuanxiangzhishiList=result.data;
@@ -154,6 +159,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
+                async:false,
                 data: {type:"QUESTION_TYPE",Parentcode:"0"},
                 success: function (result) {
 
@@ -167,6 +173,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
+                async:false,
                 data: {type:"QUESTION_DIFF",Parentcode:"0"},
                 success: function (result) {
                     vm.itemjibie=result.dictlist;
@@ -234,6 +241,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + 'recruitConfiguration/getSonList',
                 dataType: "json",
+                async:false,
                 data:{"id": row.id},
                 success: function (result) {
 
@@ -259,7 +267,7 @@ var vm = new Vue({
                 $.ajax({
                     type: "POST",
                     url: baseURL + 'recruitConfiguration/delete',
-                    async: true,
+                    async:false,
                     dataType: "json",
                     success: function (result) {
                         vm.reload();
@@ -286,6 +294,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
+                async:false,
                 data: {type:"BIGCHECKNUM",Parentcode:"99997"},
                 success: function (result) {
                     if (result.code == 0) {
@@ -309,6 +318,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "recruitConfiguration/findAllTopic",
                 dataType: "json",
+                async:false,
                 success: function (result) {
 
                     vm.zhuanxiangzhishiList=result.data;
@@ -320,6 +330,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
+                async:false,
                 data: {type:"QUESTION_TYPE",Parentcode:"0"},
                 success: function (result) {
 
@@ -333,6 +344,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
+                async:false,
                 data: {type:"QUESTION_DIFF",Parentcode:"0"},
                 success: function (result) {
                     vm.itemjibie=result.dictlist;
@@ -343,6 +355,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + 'recruitConfiguration/findAll',
                 dataType: "json",
+                async:false,
                 success: function (result) {
                     console.info(result);
                     console.info(result.data.length);
@@ -379,6 +392,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "recruitConfiguration/list",
                 dataType: "json",
+                async:false,
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;

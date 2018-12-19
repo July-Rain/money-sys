@@ -3,22 +3,32 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.lawschool.annotation.SysLog;
+import com.lawschool.beans.User;
 import com.lawschool.beans.competition.BattleTopicSetting;
 import com.lawschool.beans.competition.CompetitionOnline;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
+import com.lawschool.beans.competition.bak.BattleTopicSettingBak;
+import com.lawschool.beans.competition.bak.CompetitionOnlineBak;
+import com.lawschool.beans.competition.bak.RecruitConfigurationBak;
 import com.lawschool.dao.competition.CompetitionOnlineDao;
 import com.lawschool.service.competition.BattleTopicSettingService;
 import com.lawschool.service.competition.CompetitionOnlineService;
+import com.lawschool.service.competition.bak.BattleTopicSettingBakService;
+import com.lawschool.service.competition.bak.CompetitionOnlineBakService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 @Service
 public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineDao, CompetitionOnline> implements CompetitionOnlineService {
@@ -29,6 +39,18 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	@Autowired
 	private BattleTopicSettingService battleTopicSettingService;
 
+	@Autowired
+	private HttpSession session;
+
+	@Autowired
+	private HttpServletRequest request;
+	@Autowired
+	private CompetitionOnlineBakService competitionOnlineBakService;
+
+	@Autowired
+	private BattleTopicSettingBakService battleTopicSettingBakService;
+
+
 
 	@Override
 	public List<CompetitionOnline> list() {
@@ -36,6 +58,8 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	}
 
 	@Override
+	@SysLog("查询")
+	@Transactional(rollbackFor = Exception.class)
 	public CompetitionOnline findAll() {
 		CompetitionOnline  competitionOnline=this.selectOne(new EntityWrapper<CompetitionOnline>());//得到在线比武的的list
 //		for(int i=0;i<list.size();i++)
@@ -66,14 +90,28 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	}
 
 	@Override
+	@SysLog("查询")
+	@Transactional(rollbackFor = Exception.class)
 	public CompetitionOnline info(String id) {
 		CompetitionOnline competitiononline=  this.selectOne(new EntityWrapper<CompetitionOnline>().eq("ID",id));
 		return competitiononline;
 	}
 
 	@Override
+	@SysLog("保存")
+	@Transactional(rollbackFor = Exception.class)
 	public void save(CompetitionOnline competitionOnline) {
+
+		//去作用域中取user
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		User u= (User) request.getSession().getAttribute("user");
+
 		competitionOnline.setId(IdWorker.getIdStr());
+
+		competitionOnline.setCreatePeople(u.getId());     //创建人id
+		competitionOnline.setCreateTime(new Date());   	//创建时间
+		competitionOnline.setCreateDept(u.getOrgCode());  //所属部门code
+
 		System.out.println(competitionOnline);
 
 		this.insert(competitionOnline);
@@ -91,6 +129,10 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 				battleTopicSetting.setForeignKeyId(competitionOnline.getId());
 				battleTopicSetting.setType("99992");  //存字典掉的code //加type   后面来区分这条数据是属于对战的  还是擂台的   元数据现在还没有  没法设置
 				battleTopicSetting.setHowManySmall((i+1));//第几关
+				battleTopicSetting.setCreatePeople(u.getId());     //创建人id
+				battleTopicSetting.setCreateTime(new Date());   	//创建时间
+				battleTopicSetting.setCreateDept(u.getOrgCode());  //所属部门code
+
 
 				battleTopicSetting.setKnowledgeId(competitionOnline.getBattleTopicSettingList().get(i).getKnowledgeId());   //知识点 //像这种的数据来源 就是在之前实体里面的取   不一样的配置  所以下标要一致
 				battleTopicSetting.setQuestionDifficulty(competitionOnline.getBattleTopicSettingList().get(i).getQuestionDifficulty());//试题难度
@@ -108,6 +150,10 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 				battleTopicSetting.setForeignKeyId(competitionOnline.getId());
 				battleTopicSetting.setType("99992");  //存字典掉的code //加type   后面来区分这条数据是属于对战的  还是擂台的   元数据现在还没有  没法设置
 				battleTopicSetting.setHowManySmall(i+1);//第几关
+				battleTopicSetting.setCreatePeople(u.getId());     //创建人id
+				battleTopicSetting.setCreateTime(new Date());   	//创建时间
+				battleTopicSetting.setCreateDept(u.getOrgCode());  //所属部门code
+
 
 				battleTopicSetting.setKnowledgeId(competitionOnline.getBattleTopicSettingList().get(0).getKnowledgeId());//像这种的数据来源 就是在之前实体里面的取   一样的配置  所以下标就找第一个  也就只有一个数据
 				battleTopicSetting.setQuestionDifficulty(competitionOnline.getBattleTopicSettingList().get(0).getQuestionDifficulty());//试题难度
@@ -124,9 +170,10 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	}
 
 	@Override
+	@SysLog("查询，添加，删除")//弃用的方法
+	@Transactional(rollbackFor = Exception.class)
 	public void deleteComOnline(String id) {
 		this.deleteById(id);
-
 		//删完还要删关联表
 		battleTopicSettingService.delete(new EntityWrapper<BattleTopicSetting>());
 	}
@@ -152,18 +199,57 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 
 
 	@Override
+	@SysLog("查询，添加，删除")
+	@Transactional(rollbackFor = Exception.class)
 	public void deleteAll() {
 		//因为对战题目配置表里面的 数据 还有的是  打擂台的  数据 ，不仅仅是属于在线比武配置的，所以 要反查，先根据在线比武设置表id去找对战题目配置表数据，先删题目配置 再删在线比武配置
-		EntityWrapper<CompetitionOnline> ew = new EntityWrapper<>();
-		  ew.setSqlSelect("id");
+		//去作用域中取user
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		User u= (User) request.getSession().getAttribute("user");
+		//删除主表 连附表的数据要一起删除
+		//但是涉及到bak备份表   所以我他妈的 还要先查 在插  在 删   （反正操作的是所有，不用考虑条件）
+
+
+		List<CompetitionOnlineBak> competitionOnlinelistbak=new ArrayList<CompetitionOnlineBak>();
+		List<BattleTopicSettingBak> battleTopicSettingbakList=new ArrayList<BattleTopicSettingBak>();
+
+		//1.查
+		  EntityWrapper<CompetitionOnline> ew = new EntityWrapper<>();
+//		  ew.setSqlSelect("id");
 	      List<CompetitionOnline> competitionOnlinelist=this.selectList(ew);
+
 	      if(competitionOnlinelist.size()!=0)
 	      {
+			  for(CompetitionOnline competitionOnline:competitionOnlinelist)
+			  {
+				  CompetitionOnlineBak competitionOnlineBak=new CompetitionOnlineBak();
+				  BeanUtils.copyProperties(competitionOnline, competitionOnlineBak);
+				  competitionOnlineBak.setDelPeople(u.getId());
+				  competitionOnlineBak.setDelTime(new Date());
+				  competitionOnlinelistbak.add(competitionOnlineBak);
+			  }
+//插
+			  competitionOnlineBakService.insertBatch(competitionOnlinelistbak);
+
 			String[] ids=new String[competitionOnlinelist.size()];
 			for(int i=0;i<competitionOnlinelist.size();i++)
 			{
 				ids[i]=competitionOnlinelist.get(i).getId();
 			}
+
+			//查
+			  List<BattleTopicSetting> battleTopicSettinglist=	  battleTopicSettingService.selectList(new EntityWrapper<BattleTopicSetting>().in("FOREIGN_KEY_ID",Arrays.asList(ids)));
+			  for(BattleTopicSetting battleTopicSetting:battleTopicSettinglist)
+			  {
+				  BattleTopicSettingBak battleTopicSettingBak=new BattleTopicSettingBak();
+				  BeanUtils.copyProperties(battleTopicSetting, battleTopicSettingBak);
+				  battleTopicSettingBak.setDelPeople(u.getId());
+				  battleTopicSettingBak.setDelTime(new Date());
+				  battleTopicSettingbakList.add(battleTopicSettingBak);
+			  }
+			  //插
+			  battleTopicSettingBakService.insertBatch(battleTopicSettingbakList);
+//删
 			  battleTopicSettingService.delete(new EntityWrapper<BattleTopicSetting>().in("FOREIGN_KEY_ID",Arrays.asList(ids)));
 			  this.delete(new EntityWrapper<CompetitionOnline>());
 		  }
@@ -177,6 +263,8 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 
 	//根据id来找子类数据集合
 	@Override
+	@SysLog("查询")
+	@Transactional(rollbackFor = Exception.class)
 	public List<BattleTopicSetting> getSonList(String id) {
 
 //		 List<RecruitCheckpointConfiguration> list= recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",id).orderBy("HOW_MANY_SMALL",true));

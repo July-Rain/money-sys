@@ -116,7 +116,7 @@ public class CollectionController extends AbstractController {
     @RequestMapping("/randomErrorColl")
     public Result randomErrorColl(@RequestParam Map<String,Object> params){
         Result result=collectionService.randomErrorColl(params,getUser());
-        return Result.ok().put("result",result);
+        return result;
     }
 
     //获取试题详情z

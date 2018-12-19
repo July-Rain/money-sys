@@ -10,12 +10,19 @@
         <result column="UNIFORM_RULES" property="uniformRules" jdbcType="VARCHAR" />
         <result column="WIN_REWARD" property="winReward" jdbcType="VARCHAR" />
         <result column="LOSER_REWARD" property="loserReward" jdbcType="VARCHAR" />
-        <result column="ANSWER_TIME" property="answerTime" jdbcType="DATE" />
+        <!--<result column="ANSWER_TIME" property="answerTime" jdbcType="DATE" />-->
+        <result column="ANSWER_TIME" property="answerTime" jdbcType="VARCHAR" />
+
         <result column="BACKUP1" property="backup1" jdbcType="VARCHAR" />
         <result column="BACKUP2" property="backup2" jdbcType="VARCHAR" />
         <result column="BACKUP3" property="backup3" jdbcType="VARCHAR" />
         <result column="BACKUP4" property="backup4" jdbcType="VARCHAR" />
         <result column="BACKUP5" property="backup5" jdbcType="VARCHAR" />
+
+        <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
+        <result column="CREATE_DEPT" property="createDept" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+
 
     </resultMap>
 

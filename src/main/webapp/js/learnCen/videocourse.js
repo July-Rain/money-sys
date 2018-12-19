@@ -61,6 +61,9 @@ var vm = new Vue({
                 success: function(result){
                     if(result.code === 0){
                         vm.videoData = result.page.list;
+                        for(var i=0;i<vm.videoData.length;i++){
+                            vm.videoData[i].comContent=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
+                        }
                     }else{
                         alert(result.msg);
                     }

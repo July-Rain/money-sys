@@ -28,7 +28,7 @@ public class AccessoryEntity implements Serializable {
     /**
      * 描述信息
      */
-    private String remark;
+    private String remarks;
     /**
      * 附件名称
      */
@@ -65,12 +65,12 @@ public class AccessoryEntity implements Serializable {
         this.accessoryType = accessoryType;
     }
 
-    public String getRemark() {
-        return remark;
+    public String getRemarks() {
+        return remarks;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     public String getAccessoryName() {

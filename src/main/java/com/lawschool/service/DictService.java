@@ -69,5 +69,19 @@ public interface DictService extends IService<Dict> {
 
     Dict selectByCode(String code);
 
+
+    /**
+     * 根据类型获取字典值list  code
+     * @param type
+     * @return
+     */
     List<CommonForm> findByType(String type);
+
+    /**
+     * 根据类型获取字典值list   id
+     * @param type
+     * @return
+     */
+    List<CommonForm> findIdByType(String type);
+
 }

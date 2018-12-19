@@ -10,6 +10,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Date;
+import java.util.List;
 
 public abstract class AbstractServiceImpl<D extends AbstractDao<T>, T extends DataEntity<T>> extends ServiceImpl<D, T> implements AbstractService<T> {
 
@@ -43,22 +44,37 @@ public abstract class AbstractServiceImpl<D extends AbstractDao<T>, T extends Da
      * @param entity
      * @return
      */
-    public Page<T> findPage(Page<T> page, Wrapper<T> entity){
-        entity.getEntity().setPage(page);
-        page.setList(dao.selectList(entity));
-        return page;
-    }
-
-    /**
-     * findPage重载
-     * @param page
-     * @param entity
-     * @return
-     */
     public Page<T> findPage(Page<T> page, T entity){
         entity.setPage(page);
         page.setList(dao.findList(entity));
         return page;
+    }
+
+    /**
+     * 根据ID查询
+     * @param id
+     * @return
+     */
+    public T findOne(String id){
+        return dao.findOne(id);
+    }
+
+    /**
+     * 根据属性查询
+     * @param entity
+     * @return
+     */
+    public T findByEntity(T entity){
+        return dao.findByEntity(entity);
+    }
+
+    /**
+     * 根据id删除
+     * @param ids
+     * @return
+     */
+    public void delete(List<String> ids){
+        dao.delete(ids);
     }
 
     public void setDataEntity(DataEntity entity){

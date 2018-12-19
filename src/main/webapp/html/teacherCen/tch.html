@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<style>
+
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="header">
+        <div class="header-left">
+            <img src="${rc.contextPath}/statics/img/logo.png">
+            <a href="javascript:;">江苏省公安厅法律学校</a>
+            <input style="display: none" id="menuId" value="${menuId}">
+        </div>
+        <div class="header-right">
+            <ul>
+                <li v-for="item in navData">
+                    <a>
+                        <i :class="item.icon"></i>
+                        <p><a href="javascript:;">{{item.name}}</a></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <el-row :gutter="24">
+
+            <el-col :span="20">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="教官展示">
+                        <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+                            <el-form-item prop="userName">
+                                <el-input v-model="formInline.userName" placeholder="姓名" size="mini"></el-input>
+                            </el-form-item>
+                            <el-form-item prop="userCode">
+                                <el-input v-model="formInline.userCode" placeholder="身份证号" size="mini"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
+                                <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
+                            </el-form-item>
+                        </el-form>
+                        <div>
+
+                            <el-row :gutter="30">
+                                    <el-col :span="6" v-for="(item, index) in tchData">
+                                        <el-card :body-style="{ padding: '0px' }"  v-on:click="toTchvedio(item.id)" >
+                                            <div>
+                                                <img  :src="'${rc.contextPath}/sys/download?accessoryId='+item.photo" >
+                                            </div>
+
+                                            <div style="padding: 14px 14px 0 14px;">
+                                                <p>姓名：{{item.userName}}</p>
+                                                <p>性别：{{item.userSex}}</p>
+                                                <p>工作时间：{{item.workTime}}</p>
+                                            </div>
+                                        </el-card>
+                                    </el-col>
+                                </el-row>
+
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="formInline.currPage"
+                                    :page-sizes="[10, 20, 30, 40]"
+                                    :page-size="formInline.pageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="formInline.totalCount">
+                            </el-pagination>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-col>
+
+
+            <el-col :span="4">
+                <div class="box-card">
+                    <div class="header">
+                        <span>最新课程</span>
+                        <a href="javascript:;" class="more"> 更多>></a>
+                    </div>
+                    <div class="content fast">
+                        <ul>
+                            <li v-for="item in newsData">
+                                <a :href="'${rc.contextPath}/sys/download?accessoryId='+item.comContent" class="title">{{item.stuTitle}}</a>
+                                <span class="date" >{{item.stuIsstime}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </el-col>
+
+        </el-row>
+    </div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/teacherCen/tch.js"></script>
+</html>
