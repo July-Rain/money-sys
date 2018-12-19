@@ -49,13 +49,7 @@
                                 <el-row :gutter="66">
                                     <el-col :span="12" v-for="(item, index) in videoData">
                                         <el-card :body-style="{ padding: '0px' }">
-                                            <audio class="video" controls preload="auto" height="125" style="overflow: hidden" data-setup="{}">
-                                                <source :src="item.comContent" controls="controls">
-                                                <!--<source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm">-->
-                                                <!--<source src="http://vjs.zencdn.net/v/oceans.ogv" type="video/ogg">-->
-                                                <!--<p class="vjs-no-js"> To view this video please enable JavaScript, and consider upgrading to a web-->
-                                                <!--browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5-->
-                                                <!--video</a></p>-->
+                                            <audio controls="controls">
                                             </audio>
                                             <div style="padding: 14px 14px 0 14px;">
                                                 <p>

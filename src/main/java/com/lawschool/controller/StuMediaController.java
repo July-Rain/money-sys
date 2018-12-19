@@ -1,5 +1,6 @@
 package com.lawschool.controller;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +59,7 @@ public class StuMediaController extends AbstractController {
      * @Param [stuMedia]
      * @return com.lawschool.util.Result
      **/
+    @SysLog("添加课程")
     @RequestMapping("/insertStuMedia")
     public Result insertStuMedia(@RequestBody StuMedia stuMedia){
         User user=getUser();
@@ -68,6 +71,16 @@ public class StuMediaController extends AbstractController {
         stuMediaService.insertStuMedia(stuMedia,getUser());
         return Result.ok().put("id",stuMedia.getId());
     }
+
+    /**
+     * @Author MengyuWu
+     * @Description 修改课程
+     * @Date 15:53 2018-12-19
+     * @Param [stuMedia]
+     * @return com.lawschool.util.Result
+     **/
+    
+    @SysLog("修改课程")
     @RequestMapping("/updateStuMedia")
     public Result updateStuMedia(@RequestBody StuMedia stuMedia){
         User user=getUser();
@@ -106,4 +119,34 @@ public class StuMediaController extends AbstractController {
         return Result.ok().put("page", page);
     }
 
+
+    /**
+     * @Author MengyuWu
+     * @Description 获取详情信息
+     * @Date 15:52 2018-12-19
+     * @Param [id]
+     * @return com.lawschool.util.Result
+     **/
+    
+    @RequestMapping("/info")
+    public Result info(String id){
+        StuMedia stuMedia = stuMediaService.selectById(id);
+        return Result.ok().put("data",stuMedia);
+    }
+
+
+    /**
+     * @Author MengyuWu
+     * @Description 删除课程
+     * @Date 15:53 2018-12-19
+     * @Param [ids]
+     * @return com.lawschool.util.Result
+     **/
+    
+    @SysLog("删除课程")
+    @RequestMapping("/delete")
+    public Result delete(@RequestBody String[] ids){
+        stuMediaService.deleteBatchIds(Arrays.asList(ids));
+        return Result.ok();
+    }
 }
