@@ -1,4 +1,4 @@
-package com.lawschool.beans.competition;
+package com.lawschool.beans.competition.bak;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -6,13 +6,12 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  *
- * @Descriptin  擂台配置
+ * @Descriptin  在线比武配置  备份表
  * @author      孙小康
  * @version     v1.0
  * @Time        2018/11/29
@@ -20,33 +19,26 @@ import java.util.List;
  */
 
 
-@TableName("LAW_MATCH_SETTING")
-public class MatchSetting implements Serializable {
+@TableName("LAW_COMPETITION_ONLINE_BAk")
+public class CompetitionOnlineBak implements Serializable {
 	//id主键
 	@TableId
 	private String id;
-	//擂主用户id
-	private String winId;
-
-	//擂主用户id
-	@TableField(exist = false)
-	private String winName;
 
 	//题量
 	private String topicNum;
 	//是否统一规则  0 不是  1是
 	private String uniformRules;
-
-
 	//获胜奖励
 	private String winReward;
 	//失败奖励
 	private String loserReward;
-	//答题时间
+
+//	//答题时间
 //	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 //	private Date answerTime;
+	//答题时间
 	private String answerTime;
-
 	//备用字段1
 	private String backup1;
 	//备用字段2
@@ -58,9 +50,10 @@ public class MatchSetting implements Serializable {
 	//备用字段5
 	private String backup5;
 
+
 	//题目信息集合
 	@TableField(exist = false)
-	private List<BattleTopicSetting> battleTopicSettingList=new ArrayList<BattleTopicSetting>();
+	private List<BattleTopicSettingBak> battleTopicSettingList;
 
 
 	//操作人
@@ -73,12 +66,11 @@ public class MatchSetting implements Serializable {
 
 
 	//最后删除人
-	@TableField(exist = false)
 	private String delPeople;
 	//最后删除时间
-	@TableField(exist = false)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date delTime;
+
 
 	public String getCreatePeople() {
 		return createPeople;
@@ -120,29 +112,12 @@ public class MatchSetting implements Serializable {
 		this.delTime = delTime;
 	}
 
-	public String getWinName() {
-		return winName;
-	}
-
-	public void setWinName(String winName) {
-		this.winName = winName;
-	}
-
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-
-	public String getWinId() {
-		return winId;
-	}
-
-	public void setWinId(String winId) {
-		this.winId = winId;
 	}
 
 	public String getTopicNum() {
@@ -233,19 +208,18 @@ public class MatchSetting implements Serializable {
 		this.backup5 = backup5;
 	}
 
-	public List<BattleTopicSetting> getBattleTopicSettingList() {
+	public List<BattleTopicSettingBak> getBattleTopicSettingList() {
 		return battleTopicSettingList;
 	}
 
-	public void setBattleTopicSettingList(List<BattleTopicSetting> battleTopicSettingList) {
+	public void setBattleTopicSettingList(List<BattleTopicSettingBak> battleTopicSettingList) {
 		this.battleTopicSettingList = battleTopicSettingList;
 	}
 
 	@Override
 	public String toString() {
-		return "MatchSetting{" +
+		return "CompetitionOnline{" +
 				"id='" + id + '\'' +
-				", winId='" + winId + '\'' +
 				", topicNum='" + topicNum + '\'' +
 				", uniformRules='" + uniformRules + '\'' +
 				", winReward='" + winReward + '\'' +

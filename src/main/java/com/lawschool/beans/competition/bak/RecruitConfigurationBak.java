@@ -1,4 +1,4 @@
-package com.lawschool.beans.competition;
+package com.lawschool.beans.competition.bak;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 /**
  *
- * @Descriptin  闯关配置实体类
+ * @Descriptin  闯关配置实体类备份
  * @author      孙小康
  * @version     v1.0
  * @Time        2018/11/29
@@ -21,8 +21,8 @@ import java.util.List;
 /**
  * 闯关配置
  */
-@TableName("LAW_RECRUIT_CONFIGURATION")
-public class RecruitConfiguration implements Serializable {
+@TableName("LAW_RECRUIT_CONFIGURATION_BAK")
+public class RecruitConfigurationBak implements Serializable {
 	//id主键
 	@TableId
 	private String id;
@@ -35,18 +35,6 @@ public class RecruitConfiguration implements Serializable {
 	private String unifyConfiguration;
 	//配置状态      0禁用    1启用
 	private String status;
-
-	//操作人
-	private String createPeople;
-	//操作单位
-	private String createDept;
-	//操作时间
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	private Date createTime;
-
-
-
-
 
 	//大关是否奖励   0否  1是
 	private String markReward;
@@ -63,16 +51,27 @@ public class RecruitConfiguration implements Serializable {
 	//备用字段5
 	private String backup5;
 
-//小关信息集合
-   @TableField(exist = false)
-	private List<RecruitCheckpointConfiguration>  recruitCheckpointConfigurationList =new ArrayList<RecruitCheckpointConfiguration>();
-	//最后删除人//为的是bak表 结构一样   好转
-	@TableField(exist = false)
-	private String delPeople;
-	//最后删除时间//为的是bak表 结构一样   好转
-	@TableField(exist = false)
-	private Date delTime;
+	//操作人
+	private String createPeople;
+	//操作单位
+	private String createDept;
+	//操作时间
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date createTime;
 
+
+
+
+	//小关信息集合
+   @TableField(exist = false)
+	private List<RecruitCheckpointConfigurationBak>  recruitCheckpointConfigurationList =new ArrayList<RecruitCheckpointConfigurationBak>();
+
+
+	//最后删除人
+	private String delPeople;
+	//最后删除时间
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date delTime;
 
 	public String getCreatePeople() {
 		return createPeople;
@@ -130,11 +129,11 @@ public class RecruitConfiguration implements Serializable {
 		this.id = id;
 	}
 
-	public List<RecruitCheckpointConfiguration> getRecruitCheckpointConfigurationList() {
+	public List<RecruitCheckpointConfigurationBak> getRecruitCheckpointConfigurationList() {
 		return recruitCheckpointConfigurationList;
 	}
 
-	public void setRecruitCheckpointConfigurationList(List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationList) {
+	public void setRecruitCheckpointConfigurationList(List<RecruitCheckpointConfigurationBak> recruitCheckpointConfigurationList) {
 		this.recruitCheckpointConfigurationList = recruitCheckpointConfigurationList;
 	}
 

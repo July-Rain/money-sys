@@ -1,4 +1,4 @@
-package com.lawschool.beans.competition;
+package com.lawschool.beans.competition.bak;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  *
- * @Descriptin  对战题目配置
+ * @Descriptin  对战题目配置 备份表
  * @author      孙小康
  * @version     v1.0
  * @Time        2018/11/29
@@ -18,8 +18,8 @@ import java.util.Date;
  */
 
 
-@TableName("LAW_BATTLE_TOPIC_SETTING")
-public class BattleTopicSetting implements Serializable {
+@TableName("LAW_BATTLE_TOPIC_SETTING_bak")
+public class BattleTopicSettingBak implements Serializable {
 	//id主键
 	@TableId
 	private String id;
@@ -72,7 +72,6 @@ public class BattleTopicSetting implements Serializable {
 	//备用字段5
 	private String backup5;
 
-
 	//操作人
 	private String createPeople;
 	//操作单位
@@ -83,10 +82,8 @@ public class BattleTopicSetting implements Serializable {
 
 
 	//最后删除人
-	@TableField(exist = false)
 	private String delPeople;
 	//最后删除时间
-	@TableField(exist = false)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date delTime;
 

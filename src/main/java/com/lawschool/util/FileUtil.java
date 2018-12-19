@@ -121,7 +121,7 @@ public class FileUtil {
             ftp.storeFile(accessoryEntity.getId()+"."+type, input); //开始上传文件
             input.close();//关闭文件输入流
             ftp.logout();//断开和ftp服务器之间的连接
-            String filePath="/"+curDate;
+            String filePath=curDate;
             accessoryEntity.setFilePath(filePath);//设置文件路径
             accessoryService.insert(accessoryEntity);//保存文件信息
             result.put("accessoryId",accessoryEntity.getId());
