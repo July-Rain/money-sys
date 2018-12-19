@@ -25,16 +25,16 @@ public class FileUtil {
     /**
      * 附件的路径
      */
-    private static String  ftpPath;
+    private static String  ftpPath="192.168.0.208";
     /**
      * 登录名
      */
-    private static String  username;
+    private static String  username="admin";
 
     /**
      * 密码
      */
-    private static String  password;
+    private static String  password="sinorock123";
 
 
     @Value("${ftp.ftpPath}")
