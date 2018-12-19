@@ -90,4 +90,20 @@ public class QuestForm {
     public void setAnswerChoiceNumber(Integer answerChoiceNumber) {
         this.answerChoiceNumber = answerChoiceNumber;
     }
+
+
+    @Override
+    public String toString() {
+        return "QuestForm{" +
+                "id='" + id + '\'' +
+                ", comContent='" + comContent + '\'' +
+                ", questionDifficulty='" + questionDifficulty + '\'' +
+                ", questionType='" + questionType + '\'' +
+                ", answerId='" + answerId + '\'' +
+                ", legalBasis='" + legalBasis + '\'' +
+                ", answerDescrible='" + answerDescrible + '\'' +
+                ", answer=" + answer +
+                ", answerChoiceNumber=" + answerChoiceNumber +
+                '}';
+    }
 }
