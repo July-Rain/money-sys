@@ -23,8 +23,10 @@ import java.util.Map;
 public interface RecruitConfigurationService  extends IService<RecruitConfiguration> {
 
     public List<RecruitConfiguration> findAll();
+    public List<RecruitConfiguration> findAll2();
 
 
+    public void saveQuestion(TestQuestions testQuestions,String myanswer);
 
     public RecruitConfiguration info(String id);
 

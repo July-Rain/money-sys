@@ -53,6 +53,14 @@ public class RecruitConfigurationController{
 
         return Result.ok().put("data", list);
     }
+    //查找所有数据
+    @RequestMapping("/findAll2")
+    public Result findAll2(){
+
+        List<RecruitConfiguration> list=  recruitConfigurationService.findAll2();
+
+        return Result.ok().put("data", list);
+    }
 //
 //
     //保存
@@ -116,4 +124,11 @@ public class RecruitConfigurationController{
         return Result.ok().put("data",testQuestionsList);
     }
 
+    //答过的题目入库保存
+    @RequestMapping("/saveQuestion")
+    public void saveQuestion(@RequestBody TestQuestions testQuestions,String myanswer){
+
+        recruitConfigurationService.saveQuestion(testQuestions,myanswer);
+
+    }
 }

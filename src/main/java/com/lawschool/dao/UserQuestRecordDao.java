@@ -1,15 +1,15 @@
 package com.lawschool.dao;
 
+import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.lawschool.beans.SysMenu;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.UserQuestRecord;
 
 import java.util.List;
 import java.util.Map;
 
-public interface UserQuestRecordDao {
-    int insert(UserQuestRecord record);
+public interface UserQuestRecordDao extends BaseMapper<UserQuestRecord> {
 
-    int insertSelective(UserQuestRecord record);
 
     List<TestQuestions> listMyError(Map<String, Object> param);
         //我的错题-组卷 z

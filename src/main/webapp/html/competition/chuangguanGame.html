@@ -94,32 +94,28 @@
                                     <br/>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第{{nowLitnum}}小题
                                     <br/>
-                                    [{{Question.questionType==4?'单选题':Question.questionType==5?'多选题':'判断题'}}] {{Question.comContent}}
+                                    [{{Question.questionType==10004?'单选题':Question.questionType==10005?'多选题':'判断题'}}] {{Question.comContent}}
                                     <br/>
                                     <br/>
-                                    <!--<el-checkbox-group v-model="answers" v-if="Question.questionType==5">-->
-                                    <!--<el-checkbox :label="answer.id" v-for="answer in Question.answer">{{answer.questionContent}}</el-checkbox>-->
-                                    <!--<br/>-->
-                                    <!--</el-checkbox-group>-->
+                                    <el-checkbox-group v-model="answers" v-if="Question.questionType==10005">
+                                        <el-checkbox :label="answer.id" v-for="answer in Question.answerList">
+                                            {{answer.questionContent}}
+                                        </el-checkbox>
+                                    <br/>
+                                    </el-checkbox-group>
 
-                                    <el-radio-group v-model="answers" v-if="Question.questionType==4 || Question.questionType==6"
+                                    <el-button type="primary" v-if="Question.questionType==10005" @click="thisSubmit(Question.answerId)">提交</el-button>
+
+
+                                    <el-radio-group v-model="answers" v-if="Question.questionType==10004 || Question.questionType==10006"
                                                     :disabled="radio_disabled">
-                                        <el-radio :label="answer.id" v-for="answer in Question.answer"
+                                        <el-radio :label="answer.id" v-for="answer in Question.answerList"
                                                   @change="radioCheck(answer.id, Question.answerId, Question.questionType)">
                                             {{answer.questionContent}}
                                         </el-radio>
                                         <br/>
                                     </el-radio-group>
                                     <br/>
-
-
-                                    <el-button-group v-show="afterAnswer">
-
-                                        <el-button type="primary" @click="questionError('over')" icon="el-icon">结束答题</el-button>
-                                        <el-button type="primary"  @click="goon()" icon="el-icon">继续答题</el-button>
-
-                                    </el-button-group>
-
 
 
                                 </div>
@@ -143,7 +139,15 @@
                             <el-button type="primary" @click="begin">挑战</el-button>
                         </div>
         </el-dialog>
-
+        <el-dialog :title="title" :visible.sync="dialogyes"  :show-close="closedialog" :close-on-click-modal="false">
+            <div style="height: 200px;text-align: center">
+                {{textmag}}
+                <br/><br/><br/><br/><br/><br/>
+                <el-button type="primary" @click="questionError('over')" icon="el-icon">结束答题</el-button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <el-button type="primary"  @click="goon()" icon="el-icon">继续答题</el-button>
+            </div>
+        </el-dialog>
         <el-dialog :title="title" :visible.sync="dialogerror"  :show-close="closedialog" :close-on-click-modal="false">
             <div style="height: 200px;text-align: center">
                 {{textmag}}
