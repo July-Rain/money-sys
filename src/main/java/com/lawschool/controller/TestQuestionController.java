@@ -1,6 +1,7 @@
 package com.lawschool.controller;
 
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.Answer;
@@ -56,6 +57,7 @@ public class TestQuestionController extends AbstractController {
     /**
      * 保存试题
      */
+    @SysLog("保存试题")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody TestQuestions testQuestions) {
         testQuestionService.save(testQuestions);
@@ -72,6 +74,7 @@ public class TestQuestionController extends AbstractController {
     /**
      * 禁用启用
      */
+    @SysLog("禁用启用试题")
     @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
     public Result updateStatus(@RequestBody String id, @RequestBody String isEnble) {
         testQuestionService.updateStatus(id, isEnble);
@@ -79,8 +82,9 @@ public class TestQuestionController extends AbstractController {
     }
 
     /**
-     * 删除专项知识试题
+     * 删除试题
      */
+    @SysLog("删除试题")
     @RequestMapping(value = "delete", method = RequestMethod.GET)
     public Result deleteById(@RequestBody List<String> idList) {
         testQuestionService.delete(idList);
@@ -90,6 +94,7 @@ public class TestQuestionController extends AbstractController {
     /**
      * 批量导入试题并查询所有
      */
+    @SysLog("导入试题")
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     public Result importTestQuestions(@RequestBody List<TestQuestions> list) {
         //TODO

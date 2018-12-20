@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Date;
 import java.util.List;
 
+@Transactional(readOnly = true)
 public abstract class AbstractServiceImpl<D extends AbstractDao<T>, T extends DataEntity<T>> extends ServiceImpl<D, T> implements AbstractService<T> {
 
     /**
@@ -25,6 +27,7 @@ public abstract class AbstractServiceImpl<D extends AbstractDao<T>, T extends Da
      * @param entity
      * @return
      */
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
     public Boolean save(T entity){
         int success;
         if(StringUtils.isEmpty(entity.getId())){
@@ -72,6 +75,7 @@ public abstract class AbstractServiceImpl<D extends AbstractDao<T>, T extends Da
      * @param ids
      * @return
      */
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
     public void delete(List<String> ids){
         dao.delete(ids);
     }
