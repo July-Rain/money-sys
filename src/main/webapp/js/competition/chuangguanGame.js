@@ -63,6 +63,24 @@ var vm = new Vue({
             vm.Question={},
 
             $.ajax({
+                    type: "POST",
+                    url: baseURL + 'recruitConfiguration/findAll',
+                    dataType: "json",
+                    async:false,
+                    // data:{"id": row.id},
+                    success: function (result) {
+                        if (result.code === 0) {
+                            console.info(result);
+
+                        } else {
+                            alert(result.msg);
+                        }
+                    }
+             });
+
+
+
+            $.ajax({
                 type: "POST",
                 url: baseURL + 'recruitCheckpointConfiguration/getQuestByids',
                 dataType: "json",
@@ -92,7 +110,7 @@ var vm = new Vue({
 
             vm.Question=vm.QuestionList[Number(vm.nowLitnum)-1];//重题目集合中把题目取出来
 
-            console.info(vm.Question);
+
 
 
         },

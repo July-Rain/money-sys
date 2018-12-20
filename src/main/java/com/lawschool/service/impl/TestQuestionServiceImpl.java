@@ -67,4 +67,10 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
     public List<QuestForm> findByIds(List<String> list){
         return dao.findByIds(list);
     }
+
+
+    @Override
+    public TestQuestions findByEntity(TestQuestions entity) {
+        return dao.findByEntity(entity);
+    }
 }

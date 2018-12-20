@@ -48,4 +48,8 @@ public interface TestQuestionService extends AbstractService<TestQuestions> {
      */
     List<QuestForm> findByIds(List<String> list);
 
+
+
+    TestQuestions findByEntity(TestQuestions t);
+
 }

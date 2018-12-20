@@ -65,7 +65,6 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 			List<RecruitConfiguration>  list=this.selectList(new EntityWrapper<RecruitConfiguration>());//得到闯关配置大关的list
 			for(int i=0;i<list.size();i++)
 			{
-
 				//通过配置大关的id找到关联的小关配置信息,
 //			     	List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationList =recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",list.get(i).getId()).orderBy("HOW_MANY_SMALL",true));
 			        	List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationList =recruitCheckpointConfigurationService.selectListByBaBaId(list.get(i).getId());
@@ -213,8 +212,12 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 			recruitCheckpointConfigurationbak.setDelTime(new Date());
 			recruitCheckpointConfigurationbakAll.add(recruitCheckpointConfigurationbak);
 		}
-		recruitConfigurationbakService.insertBatch(recruitConfigurationbakAll);
-		recruitCheckpointConfigurationbakService.insertBatch(recruitCheckpointConfigurationbakAll);
+		if(recruitConfigurationbakAll.size()>0)
+		{
+			recruitConfigurationbakService.insertBatch(recruitConfigurationbakAll);
+			recruitCheckpointConfigurationbakService.insertBatch(recruitCheckpointConfigurationbakAll);
+		}
+
 
 
 		//3.删  原来的表
