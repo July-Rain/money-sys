@@ -7,6 +7,7 @@ import com.lawschool.annotation.SysLog;
 import com.lawschool.beans.SysConfig;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
+import com.lawschool.beans.UserQuestRecord;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
 import com.lawschool.beans.competition.bak.RecruitCheckpointConfigurationBak;
@@ -14,7 +15,9 @@ import com.lawschool.beans.competition.bak.RecruitConfigurationBak;
 import com.lawschool.beans.system.TopicTypeEntity;
 import com.lawschool.dao.competition.RecruitConfigurationDao;
 import com.lawschool.form.CommonForm;
+import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
+import com.lawschool.service.UserQuestRecordService;
 import com.lawschool.service.competition.RecruitCheckpointConfigurationService;
 import com.lawschool.service.competition.RecruitConfigurationService;
 import com.lawschool.service.competition.bak.RecruitCheckpointConfigurationBakService;
@@ -61,6 +64,11 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 
 	@Autowired
 	private TestQuestionService testQuestionService;
+	@Autowired
+	private AnswerService answerService;
+
+	@Autowired
+	private UserQuestRecordService userQuestRecordService;
 
 	@Override
 	@SysLog("查询")
@@ -93,7 +101,20 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 		 	return list;
 	}
 
-
+	@Override
+	@SysLog("查询")
+	@Transactional(rollbackFor = Exception.class)
+	public List<RecruitConfiguration> findAll2() {
+		List<RecruitConfiguration>  list=this.selectList(new EntityWrapper<RecruitConfiguration>());//得到闯关配置大关的list
+		for(int i=0;i<list.size();i++)
+		{
+			//通过配置大关的id找到关联的小关配置信息,
+//			 List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationList =recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",list.get(i).getId()).orderBy("HOW_MANY_SMALL",true));
+			List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationList =recruitCheckpointConfigurationService.selectListByBaBaId(list.get(i).getId());
+			list.get(i).setRecruitCheckpointConfigurationList(recruitCheckpointConfigurationList);
+		}
+		return list;
+	}
 	@Override
 	@SysLog("查询")
 	@Transactional(rollbackFor = Exception.class)
@@ -284,9 +305,32 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 			tq.setSpecialKnowledgeId(recruitCheckpointConfiguration.getSpecialKnowledgeId());
 
 			TestQuestions testquestions=testQuestionService.findByEntity(tq);
+			testquestions.setAnswerList(answerService.getAnswerByQid(testquestions.getId()));
 			qList.add(testquestions);
 		}
 
 		return qList;
+	}
+
+
+	@Override
+	@SysLog("保存做过的闯关题目")
+	@Transactional(rollbackFor = Exception.class)
+	public void saveQuestion(TestQuestions testQuestions, String myanswer) {
+		//去作用域中取user
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		User u= (User) request.getSession().getAttribute("user");
+		UserQuestRecord userQuestRecord=new UserQuestRecord();
+		userQuestRecord.setId(IdWorker.getIdStr());//id
+		userQuestRecord.setUserId(u.getUserId());//userid
+		userQuestRecord.setQuestId(testQuestions.getId());//题目id
+		userQuestRecord.setOptTime(new Date());//保存时间
+		userQuestRecord.setMyAswerId(myanswer);//对应题目答案表的id
+		userQuestRecord.setRightAnswerId(testQuestions.getAnswerId());//这题的正确答案，对应题目答案表的id
+		userQuestRecord.setQuestionDifficulty(testQuestions.getQuestionDifficulty());//难度
+		userQuestRecord.setQuestionType(testQuestions.getQuestionType());//题目类型
+		userQuestRecord.setSpecialKnowledgeId(testQuestions.getSpecialKnowledgeId());//知识点
+		userQuestRecord.setSource("Checkpoint");//添加来源
+		userQuestRecordService.insert(userQuestRecord);
 	}
 }
