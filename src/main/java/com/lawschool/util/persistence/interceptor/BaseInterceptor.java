@@ -1,6 +1,7 @@
 package com.lawschool.util.persistence.interceptor;
 
 
+import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 import com.lawschool.base.Page;
 import com.lawschool.util.persistence.dialect.db.OracleDialect;
 import com.lawschool.util.persistence.toolkit.Reflections;
@@ -17,7 +18,7 @@ import java.util.Properties;
  * @author xupeng
  * @version 2018-10-28
  */
-public abstract class BaseInterceptor implements Interceptor, Serializable {
+public abstract class BaseInterceptor extends PaginationInterceptor implements Interceptor, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 

@@ -74,20 +74,7 @@
         <property name="mapperLocations" value="classpath:mapper/**/*.xml"/>
         <property name="globalConfig" ref="globalConfiguration" />
         <property name="plugins">
-            <array>
-                <!-- 分页插件配置 -->
-                <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
-                    <property name="dialectType" value="oracle" />
-                </bean>
-                <!-- 输出每条SQL语句及其执行时间，生产环境不建议使用该插件 -->
-                <bean class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor">
-                    <property name="format" value="false"/><!-- 格式化SQL语句 -->
-                    <property name="maxTime" value="50000"/><!-- sql执行时间超过value值就会停止执行，单位是毫秒 -->
-                </bean>
-
-                <!--<bean id="paginationInterceptor" class="com.lawschool.util.persistence.interceptor.PreparePaginationInterceptor"/>-->
-            </array>
-        </property>
+            <bean id="paginationInterceptor" class="com.lawschool.util.persistence.interceptor.PreparePaginationInterceptor"/>        </property>
     </bean>
 
 

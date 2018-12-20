@@ -101,7 +101,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <p><a href="javascript:;">---- ->开始考试</a></p>
+                            <p><a href="javascript:;">开始考试</a></p>
                         </div>
                     </div>
                 </div>
@@ -115,16 +115,16 @@
                         <div class="target-div">
                             <div class="title">
                                 <span>学年积分</span>
-                                <span>1000/2400</span>
+                                <span><span>1000</span>/<span>2400</span></span>
                             </div>
                             <el-progress :show-text="false" :stroke-width="12" :percentage="40" color="rgb(77,180,154)"></el-progress>
                         </div>
                         <div class="target-div">
                             <div class="title">
                                 <span>学年学分</span>
-                                <span>15/20</span>
+                                <span><span>15</span>/<span>20</span></span>
                             </div>
-                            <el-progress :show-text="false" :stroke-width="12" :percentage="50" color="rgb(77,180,154)"></el-progress>
+                            <el-progress :show-text="false" :stroke-width="12" :percentage="50" color="#feae23"></el-progress>
                         </div>
                     </div>
                 </div>
@@ -224,8 +224,21 @@
                             </el-col>
                             <el-col :span="6" class="infoCount">
                                 <div class="span-title">学情统计</div>
-                                <div>
-
+                                <div class="infoMsg">
+                                    <ul>
+                                        <li>
+                                            <p class="info"><i></i>累计学习时长:<span>15h</span></p>
+                                            <p class="contrast">击败了<span>20%</span>的同学</p>
+                                        </li>
+                                        <li>
+                                            <p class="info"><i></i>累计学习时长:<span>15h</span></p>
+                                            <p class="contrast">击败了<span>20%</span>的同学</p>
+                                        </li>
+                                        <li>
+                                            <p class="info"><i></i>累计学习时长:<span>15h</span></p>
+                                            <p class="contrast">击败了<span>20%</span>的同学</p>
+                                        </li>
+                                    </ul>
                                 </div>
                             </el-col>
                             <el-col :span="12" class="rate">

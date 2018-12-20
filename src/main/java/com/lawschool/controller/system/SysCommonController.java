@@ -4,7 +4,6 @@ import com.lawschool.base.AbstractController;
 import com.lawschool.util.FileUtil;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

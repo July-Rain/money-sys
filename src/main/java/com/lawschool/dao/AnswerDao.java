@@ -1,13 +1,12 @@
 package com.lawschool.dao;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.Answer;
 import com.lawschool.form.AnswerForm;
-import com.lawschool.form.QuestForm;
 
 import java.util.List;
 
-public interface AnswerDao extends BaseMapper<Answer> {
+public interface AnswerDao extends AbstractDao<Answer> {
     //int insert(Answer record);
 
     //int insertSelective(Answer record);
@@ -18,4 +17,6 @@ public interface AnswerDao extends BaseMapper<Answer> {
      * @return
      */
     List<AnswerForm> findByQuestionIds(List<String> list);
+
+    void deleteByQuestionId(String questionId);
 }

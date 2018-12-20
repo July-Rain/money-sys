@@ -1,6 +1,5 @@
 package com.lawschool.controller.learn;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
@@ -43,10 +42,7 @@ public class LearnTasksController extends AbstractController {
 
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params){
-        EntityWrapper<LearnTasksEntity> ew = new EntityWrapper<>();
-        LearnTasksEntity tasksEntity = new LearnTasksEntity();
-        ew.setEntity(tasksEntity);
-        Page page = tasksService.findPage(new Page<LearnTasksEntity>(params),ew);
+        Page page = tasksService.findPage(new Page<LearnTasksEntity>(params),new LearnTasksEntity());
         return Result.ok().put("page", page);
     }
 

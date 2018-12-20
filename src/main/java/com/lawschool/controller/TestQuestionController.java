@@ -1,10 +1,11 @@
 package com.lawschool.controller;
 
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
+import com.lawschool.beans.Answer;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class TestQuestionController extends AbstractController {
 
     @Autowired
     private TestQuestionService testQuestionService;
+
+    @Autowired
+    private AnswerService answerService;
 
 
     /**
@@ -45,8 +49,8 @@ public class TestQuestionController extends AbstractController {
      */
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
     public Result info(@PathVariable("id") String id) {
-       // TestQuestions testQuestions = testQuestionService.findOne(id);
-        return Result.ok().put("testQuestions", null);
+        TestQuestions testQuestions = testQuestionService.findOne(id);
+        return Result.ok().put("info", testQuestions);
     }
 
     /**
@@ -55,6 +59,13 @@ public class TestQuestionController extends AbstractController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody TestQuestions testQuestions) {
         testQuestionService.save(testQuestions);
+        //先删除问题下的答案
+        answerService.deleteByQuestionId(testQuestions.getId());
+        //重新保存答案
+        for (Answer answer : testQuestions.getAnswerList()){
+            answer.setQuestionId(testQuestions.getId());
+            answerService.save(answer);
+        }
         return Result.ok();
     }
 
@@ -72,7 +83,7 @@ public class TestQuestionController extends AbstractController {
      */
     @RequestMapping(value = "delete", method = RequestMethod.GET)
     public Result deleteById(@RequestBody List<String> idList) {
-        //testQuestionService.delete(idList);
+        testQuestionService.delete(idList);
         return Result.ok();
     }
 

@@ -1,6 +1,5 @@
 package com.lawschool.base;
 
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.User;
@@ -41,18 +40,6 @@ public abstract class AbstractServiceImpl<D extends AbstractDao<T>, T extends Da
     /**
      * 查询分页数据
      * @param page   分页对象
-     * @param entity
-     * @return
-     */
-    public Page<T> findPage(Page<T> page, Wrapper<T> entity){
-        entity.getEntity().setPage(page);
-        page.setList(dao.selectList(entity));
-        return page;
-    }
-
-    /**
-     * findPage重载
-     * @param page
      * @param entity
      * @return
      */
