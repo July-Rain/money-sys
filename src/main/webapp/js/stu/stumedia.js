@@ -248,7 +248,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "stumedia/list",
+                url: baseURL + "stumedia/list?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
