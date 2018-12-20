@@ -100,7 +100,7 @@
                 <li v-for="item in navData" @click="toChild(item)" :data-id="item.id" :data-url="item.url">
                     <div class="spel" v-if="item.url">
                         <a>
-                            <i :class="item.icon"></i>
+                            <i class="iconfont" :class="item.icon"></i>
                             <p><a href="javascript:;">{{item.name}}</a></p>
                         </a>
                     </div>
@@ -109,7 +109,7 @@
                             <el-submenu index="1">
                                 <template slot="title">
                                     <a href="javascript:;">
-                                        <i class="el-icon-tickets"></i>
+                                        <i class="iconfont" :class="item.icon" style="color: #fff"></i>
                                         <span>{{item.name}}</span>
                                     </a>
                                 </template>
