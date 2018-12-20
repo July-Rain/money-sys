@@ -10,12 +10,13 @@ var vm = new Vue({
         //menuId:"",//菜单id
         navData: [],//导航
         formInline: { // 搜索表单
-            value: '',
-            name: '',
-            status: "",
+            stuTitle: '',
+            stuPoliceclass: '',
+            stuType: "",
             currPage: 1,
             pageSize: 10,
-            totalCount:0
+            totalCount:0,
+            stuLawid:""
         },
         tableData: [],//表格数据
         visible: false,
@@ -29,6 +30,9 @@ var vm = new Vue({
             stuDescribe:"",
             userName:"",//适用人员姓名
             deptName:"",//适用部门姓名
+            stuLawid:"",//专项知识id
+            stuKnowledge:"",//专项知识
+            stuPoliceclass:""//所属警种
         },
         rules: {//表单验证规则
             stuType: [
@@ -75,7 +79,8 @@ var vm = new Vue({
         },//人员查询
         userTableData:[],//人员表格信息
         multipleSelection:[],//选中人员信息
-        multipleDeptSelection:[]//选中部门信息
+        multipleDeptSelection:[],//选中部门信息
+        stuPoliceclassOption:[],//所属警种
     },
     created: function () {
 
@@ -120,6 +125,17 @@ var vm = new Vue({
                     }else{
                         alert(result.msg);
                     }
+                }
+            });
+            // 所属警种
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async:false,
+                data: {type:"POLICACLASS",Parentcode:"0"},
+                success: function (result) {
+                    vm.stuPoliceclassOption=result.dictlist;
                 }
             });
         })
@@ -182,6 +198,12 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         addStuMedia: function () {
+            if(!vm.stuMedia.stuLawid){
+                alert("请选择左侧专项知识");
+                return ;
+            }
+            var lawId=vm.stuMedia.stuLawid;
+            var lawName=vm.stuMedia.stuKnowledge;
             this.stuMedia= {
                 id:"",
                 stuType: "1",
@@ -189,7 +211,11 @@ var vm = new Vue({
                 comContent: "",
                 deptIds: "",
                 userIds: "",
-                stuDescribe:""
+                stuDescribe:"",
+                userName:"",//适用人员姓名
+                deptName:"",//适用部门姓名
+                stuLawid:lawId,//专项知识id
+                stuKnowledge:lawName//专项知识
             },
             this.title="新增";
             this.dialogStuMedia=true;
@@ -265,7 +291,11 @@ var vm = new Vue({
         },
         // el-tree节点点击事件
         handleNodeClick: function (data) {
-            console.log(data);
+            vm.stuMedia.stuLawid=data.id;
+            vm.stuMedia.stuKnowledge=data.classifyName;
+            vm.formInline.stuLawid=data.id;
+            this.reload();
+            //console.log(data);
         },
         //部门人员控件中点击事件
         handleDeptNodeClick: function (data) {

@@ -13,8 +13,8 @@
     <result column="STU_ISSUER" jdbcType="VARCHAR" property="stuIssuer" />
     <result column="STU_ISSDEPARTMENT" jdbcType="VARCHAR" property="stuIssdepartment" />
     <result column="STU_ISSTIME" jdbcType="TIMESTAMP" property="stuIsstime" />
-    <result column="OPTUSER" jdbcType="VARCHAR" property="optuser" />
-    <result column="OPTTIME" jdbcType="TIMESTAMP" property="opttime" />
+    <result column="OPT_USER" jdbcType="VARCHAR" property="optUser" />
+    <result column="OPT_TIME" jdbcType="TIMESTAMP" property="optTime" />
     <result column="STU_OPTDEPARTMENT" jdbcType="VARCHAR" property="stuOptdepartment" />
     <result column="STU_POLICECLASS" jdbcType="VARCHAR" property="stuPoliceclass" />
     <result column="STU_FROM" jdbcType="VARCHAR" property="stuFrom" />
@@ -26,7 +26,7 @@
       <result column="STUTYPEVALUE" property="stuTypeValue" />
     <result column="ADDSRC" property="addsrc" />
   </resultMap>
-  <insert id="insert" parameterType="com.lawschool.beans.StuMedia">
+  <!--<insert id="insert" parameterType="com.lawschool.beans.StuMedia">
     insert into LAW_STU_MEDIA (ID, STU_CODE, STU_TITLE, 
       COM_CONTENT, STU_DESCRIBE, STU_TIME, 
       STU_COUNT, STU_CREAT, STU_ISSUER, 
@@ -41,7 +41,7 @@
       #{opttime,jdbcType=TIMESTAMP}, #{stuOptdepartment,jdbcType=VARCHAR}, #{stuPoliceclass,jdbcType=VARCHAR}, 
       #{stuFrom,jdbcType=VARCHAR}, #{stuType,jdbcType=VARCHAR}, #{stuKnowledge,jdbcType=VARCHAR}, 
       #{stuLawid,jdbcType=VARCHAR})
-  </insert>
+  </insert>-->
   <insert id="insertSelective" parameterType="com.lawschool.beans.StuMedia">
     insert into LAW_STU_MEDIA
     <trim prefix="(" suffix=")" suffixOverrides=",">

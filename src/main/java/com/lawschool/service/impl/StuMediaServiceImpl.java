@@ -201,9 +201,10 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         String stuTitle = (String)params.get("stuTitle");
         String comContent = (String)params.get("comContent");
         String stuPoliceclass = (String)params.get("stuPoliceclass");
+        String stuLawid = (String)params.get("stuLawid");
         String stuType = (String)params.get("stuType");
         EntityWrapper<StuMedia> ew = new EntityWrapper<>();
-        ew.setSqlSelect("ID,STU_CODE,STU_TITLE,COM_CONTENT,STU_TYPE,STU_COUNT,STU_ISSUER,STU_POLICECLASS");
+        ew.setSqlSelect("ID,STU_CODE,STU_TITLE,COM_CONTENT,STU_TYPE,STU_COUNT,STU_ISSUER,STU_POLICECLASS,DICTCODE2VALE(STU_POLICECLASS) as stuPoliceclassName");
         if(UtilValidate.isNotEmpty(stuTitle)){
             ew.like("stu_title",stuTitle);
         }
@@ -216,7 +217,16 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         if(UtilValidate.isNotEmpty(stuType)){
             ew.eq("stu_type",stuType);
         }
+        if(UtilValidate.isNotEmpty(stuLawid)){
+            ew.eq("stu_lawid",stuLawid);
+        }
         ew.orderBy("STU_ISSTIME");
+        //Page<StuMedia> page = new Page<StuMedia>();
+       /* Page<StuMedia> page = new Page<StuMedia>(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
+
+        page.setRecords(mapper.selectListPage(
+                page));
+        page.setTotal(mapper.selectCount(new EntityWrapper<>()));*/
         Page<StuMedia> page = this.selectPage(
                 new Query<StuMedia>(params).getPage(),ew);
         return new PageUtils(page);
