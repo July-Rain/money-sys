@@ -3,6 +3,7 @@ package com.lawschool.beans;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lawschool.base.DataEntity;
 
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -17,7 +18,7 @@ import java.util.Date;
  *
  */
 @TableName("LAW_STU_MEDIA")
-public class StuMedia  implements Serializable {
+public class StuMedia extends DataEntity<StuMedia> implements Serializable {
     private String id;//id
 
     private String stuCode;//课件编码
@@ -41,9 +42,6 @@ public class StuMedia  implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date stuIsstime;//发布时间
 
-    private String optuser;//操作人
-
-    private Date opttime;//操作时间
 
     private String stuOptdepartment;//使用单位
 
@@ -209,21 +207,6 @@ public class StuMedia  implements Serializable {
         this.stuIsstime = stuIsstime;
     }
 
-    public String getOptuser() {
-        return optuser;
-    }
-
-    public void setOptuser(String optuser) {
-        this.optuser = optuser == null ? null : optuser.trim();
-    }
-
-    public Date getOpttime() {
-        return opttime;
-    }
-
-    public void setOpttime(Date opttime) {
-        this.opttime = opttime;
-    }
 
     public String getStuOptdepartment() {
         return stuOptdepartment;

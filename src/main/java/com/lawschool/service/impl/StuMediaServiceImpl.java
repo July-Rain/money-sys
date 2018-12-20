@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.StuMedia;
-import com.lawschool.beans.SysConfig;
 import com.lawschool.beans.User;
 import com.lawschool.beans.auth.AuthRelationBean;
 import com.lawschool.dao.StuMediaDao;
@@ -30,7 +30,7 @@ import static com.lawschool.util.Constant.SUCCESS;
 import static java.lang.Integer.parseInt;
 
 @Service
-public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> implements StuMediaService {
+public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedia> implements StuMediaService {
 
     @Autowired
     private StuMediaDao mapper;
@@ -75,7 +75,7 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
     **/
     @Override
     public StuMedia getStuMedia(StuMedia stuMedia) {
-        StuMedia stuMedia1 = mapper.selectById(stuMedia.getId());
+        stuMedia = mapper.selectById(stuMedia.getId());
 
         return stuMedia;
     }
@@ -93,8 +93,10 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
     public void insertStuMedia(StuMedia stuMedia,User user) {
         //存学习管理基本信息
 
-        stuMedia.setOptuser(user.getId());
-        stuMedia.setOpttime(new Date());
+        stuMedia.setOptUser(user.getId());
+        stuMedia.setOptTime(new Date());
+        stuMedia.setCreateUser(user.getId());
+        stuMedia.setCreateTime(new Date());
         stuMedia.setStuCode(GetUUID.getUUIDs("SC"));
         stuMedia.setStuCount(0);
         stuMedia.setStuCreat(new Date());
@@ -105,7 +107,7 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
         //存权限表
         String[] deptIdArr=stuMedia.getDeptArr();
         String[] userIdArr=stuMedia.getUserArr();
-        authService.insertAuthRelation(deptIdArr,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getOptuser());
+        authService.insertAuthRelation(deptIdArr,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getCreateUser());
     }
     
     /**
@@ -201,7 +203,7 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
         String stuPoliceclass = (String)params.get("stuPoliceclass");
         String stuType = (String)params.get("stuType");
         EntityWrapper<StuMedia> ew = new EntityWrapper<>();
-
+        ew.setSqlSelect("ID,STU_CODE,STU_TITLE,COM_CONTENT,STU_TYPE,STU_COUNT,STU_ISSUER,STU_POLICECLASS");
         if(UtilValidate.isNotEmpty(stuTitle)){
             ew.like("stu_title",stuTitle);
         }
@@ -231,12 +233,14 @@ public class StuMediaServiceImpl extends ServiceImpl<StuMediaDao,StuMedia> imple
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateStuMedia(StuMedia stuMedia, User user) {
+        stuMedia.setCreateUser(user.getId());
+        stuMedia.setCreateTime(new Date());
         mapper.updateById(stuMedia);
         authService.delete(new EntityWrapper<AuthRelationBean>().eq("function_flag","STUMEDIA").eq("function_Id",stuMedia.getId()));
         //存权限表
         String[] deptIdArr=stuMedia.getDeptArr();
         String[] userIdArr=stuMedia.getUserArr();
-        authService.insertAuthRelation(deptIdArr,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getOptuser());
+        authService.insertAuthRelation(deptIdArr,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getOptUser());
 
     }
 }

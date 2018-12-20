@@ -1,10 +1,9 @@
 package com.lawschool.service;
 
-import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.base.AbstractService;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
 import com.lawschool.util.PageUtils;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,7 @@ import java.util.Map;
  * @Time        2018/11/29
  *
  */
-public interface StuMediaService  extends IService<StuMedia> {
+public interface StuMediaService  extends AbstractService<StuMedia> {
 
     /**
      * 我的收藏-重点课件
