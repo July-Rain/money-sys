@@ -1,6 +1,7 @@
 package com.lawschool.controller.competition;
 
 import com.lawschool.base.AbstractController;
+import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
@@ -103,6 +104,16 @@ public class RecruitConfigurationController{
         List<CommonForm> CommonFormList= recruitConfigurationService.findAllTopic();
 
         return Result.ok().put("data",CommonFormList);
+    }
+
+
+    @RequestMapping("/getQuest")
+    public Result getQuest(@RequestBody RecruitConfiguration recruitConfiguration){
+
+
+        List<TestQuestions>  testQuestionsList = recruitConfigurationService.getQuest(recruitConfiguration);
+
+        return Result.ok().put("data",testQuestionsList);
     }
 
 }

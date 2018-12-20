@@ -19,6 +19,9 @@ var vm = new Vue({
         //当前第几小关
         nowLitnum:"1",
 
+        //存放 查出来的 大关信息集合
+        BigGuanList:[],
+
         // tableData: [],//表格数据
         dialogBegin: false,//准备好了吗 提示弹出框
         dialogQuestion:false,//开始答题  弹出
@@ -63,11 +66,43 @@ var vm = new Vue({
             vm.Question={},
 
             $.ajax({
+                    type: "POST",
+                    url: baseURL + 'recruitConfiguration/findAll',
+                    dataType: "json",
+                    async:false,
+                    // data:{"id": row.id},
+                    success: function (result) {
+                        if (result.code === 0) {
+                            console.info(result);
+                            vm.BigGuanList=result.data;
+                            //接下来我要给4个属性赋值
+                            //获得一共几大关
+                            alert("一共"+result.data.length+"关");
+                            //一共几大关
+                            vm.allBignum=result.data.length;
+                            alert("当前一进来肯定第一关，不用想");
+                            //现在第几大关
+                            vm.nowBignum="1";
+                            alert("当前第一关有"+result.data[0].recruitCheckpointConfigurationList.length+"小关");
+                            // 当前大关多少小关
+                            vm.allLitnum=result.data[0].recruitCheckpointConfigurationList.length;
+                            //当前第几小关
+                            alert("当前一进来肯定第一关的第一小关，不用想");
+                            vm.nowLitnum="1";
+                        } else {
+                            alert(result.msg);
+                        }
+                    }
+             });
+
+
+            console.info(vm.BigGuanList[0]);
+            $.ajax({
                 type: "POST",
-                url: baseURL + 'recruitCheckpointConfiguration/getQuestByids',
-                dataType: "json",
+                url: baseURL + 'recruitConfiguration/getQuest',
+                contentType: "application/json",
                 async:false,
-                // data:{"id": row.id},
+                data: JSON.stringify(vm.BigGuanList[0]),
                 success: function (result) {
 
                     if (result.code === 0) {
@@ -79,20 +114,9 @@ var vm = new Vue({
                 }
             });
 
-
-           //接下来我要给4个属性赋值
-            //一共几大关
-            vm.allBignum="1";
-            //现在第几大关
-            vm.nowBignum="1";
-            // 当前大关多少小关
-            vm.allLitnum="2";
-            //当前第几小关
-            vm.nowLitnum="1";
-
             vm.Question=vm.QuestionList[Number(vm.nowLitnum)-1];//重题目集合中把题目取出来
 
-            console.info(vm.Question);
+
 
 
         },

@@ -22,12 +22,6 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
      * @param isEnble
      */
     public void updateStatus(String id, String isEnble) {
-
-        if (isEnble == StatusConstant.PRODUCT_TYPE_STATUS_DISABLE) {
-            isEnble = StatusConstant.PRODUCT_TYPE_STATUS_ENABLE;
-        } else {
-            isEnble = StatusConstant.PRODUCT_TYPE_STATUS_DISABLE;
-        }
         dao.updateStatus(id, isEnble);
     }
 
@@ -66,5 +60,11 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
      */
     public List<QuestForm> findByIds(List<String> list){
         return dao.findByIds(list);
+    }
+
+
+    @Override
+    public TestQuestions findByEntity(TestQuestions entity) {
+        return dao.findByEntity(entity);
     }
 }

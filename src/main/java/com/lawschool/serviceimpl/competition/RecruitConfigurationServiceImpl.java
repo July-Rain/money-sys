@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.beans.SysConfig;
+import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
@@ -13,6 +14,7 @@ import com.lawschool.beans.competition.bak.RecruitConfigurationBak;
 import com.lawschool.beans.system.TopicTypeEntity;
 import com.lawschool.dao.competition.RecruitConfigurationDao;
 import com.lawschool.form.CommonForm;
+import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.competition.RecruitCheckpointConfigurationService;
 import com.lawschool.service.competition.RecruitConfigurationService;
 import com.lawschool.service.competition.bak.RecruitCheckpointConfigurationBakService;
@@ -57,6 +59,8 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 	@Autowired
 	private HttpServletRequest request;
 
+	@Autowired
+	private TestQuestionService testQuestionService;
 
 	@Override
 	@SysLog("查询")
@@ -65,7 +69,6 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 			List<RecruitConfiguration>  list=this.selectList(new EntityWrapper<RecruitConfiguration>());//得到闯关配置大关的list
 			for(int i=0;i<list.size();i++)
 			{
-
 				//通过配置大关的id找到关联的小关配置信息,
 //			     	List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationList =recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",list.get(i).getId()).orderBy("HOW_MANY_SMALL",true));
 			        	List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationList =recruitCheckpointConfigurationService.selectListByBaBaId(list.get(i).getId());
@@ -213,8 +216,12 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 			recruitCheckpointConfigurationbak.setDelTime(new Date());
 			recruitCheckpointConfigurationbakAll.add(recruitCheckpointConfigurationbak);
 		}
-		recruitConfigurationbakService.insertBatch(recruitConfigurationbakAll);
-		recruitCheckpointConfigurationbakService.insertBatch(recruitCheckpointConfigurationbakAll);
+		if(recruitConfigurationbakAll.size()>0)
+		{
+			recruitConfigurationbakService.insertBatch(recruitConfigurationbakAll);
+			recruitCheckpointConfigurationbakService.insertBatch(recruitCheckpointConfigurationbakAll);
+		}
+
 
 
 		//3.删  原来的表
@@ -258,5 +265,28 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 			List list=new ArrayList();
 		List<CommonForm> CommonFormList= topicTypeService.findAll(list);
 		return CommonFormList;
+	}
+
+
+	@Override
+	@SysLog("查询闯关题目")
+	@Transactional(rollbackFor = Exception.class)
+	public List<TestQuestions> getQuest(RecruitConfiguration recruitConfiguration) {
+
+		List<TestQuestions> qList= new ArrayList<TestQuestions>();
+		List<RecruitCheckpointConfiguration> xiaoguanList=recruitConfiguration.getRecruitCheckpointConfigurationList();//获取这个大关里面的所有小关的信息
+		//循环咯
+		for(RecruitCheckpointConfiguration recruitCheckpointConfiguration:xiaoguanList)
+		{
+			TestQuestions tq=new TestQuestions();
+			tq.setQuestionDifficulty(recruitCheckpointConfiguration.getItemDifficulty());
+			tq.setQuestionType(recruitCheckpointConfiguration.getItemType());
+			tq.setSpecialKnowledgeId(recruitCheckpointConfiguration.getSpecialKnowledgeId());
+
+			TestQuestions testquestions=testQuestionService.findByEntity(tq);
+			qList.add(testquestions);
+		}
+
+		return qList;
 	}
 }

@@ -1,6 +1,7 @@
 package com.lawschool.service.competition;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
 import com.lawschool.beans.system.TopicTypeEntity;
@@ -35,4 +36,7 @@ public interface RecruitConfigurationService  extends IService<RecruitConfigurat
 
     public List<RecruitCheckpointConfiguration> getSonList(String id);
     public List<CommonForm> findAllTopic();
+
+    List<TestQuestions> getQuest(RecruitConfiguration recruitConfiguration);
+
 }
