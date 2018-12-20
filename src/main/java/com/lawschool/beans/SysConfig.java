@@ -1,12 +1,11 @@
 package com.lawschool.beans;
 
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.lawschool.base.DataEntity;
 
-import java.math.BigDecimal;
 
 @TableName("law_sys_config")
-public class SysConfig extends DataEntity<SysConfig> {
+public class SysConfig  {
+    private String id;
 
     private String code;
 
@@ -16,6 +15,13 @@ public class SysConfig extends DataEntity<SysConfig> {
 
     private String remark;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getCode() {
         return code;

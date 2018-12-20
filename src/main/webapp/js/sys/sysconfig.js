@@ -171,7 +171,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sysconfig/list",
+                url: baseURL + "sysconfig/list?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {

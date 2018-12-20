@@ -28,7 +28,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Service
-public class SysConfigServiceImpl extends AbstractServiceImpl<SysConfigDao, SysConfig> implements SysConfigService {
+public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfig> implements SysConfigService {
     @Resource
     private SysConfigDao configMapper;
     @Override
@@ -71,7 +71,7 @@ public class SysConfigServiceImpl extends AbstractServiceImpl<SysConfigDao, SysC
         String value = (String)params.get("value");
         String status = (String)params.get("status");
         EntityWrapper<SysConfig> ew = new EntityWrapper<>();
-
+        ew.setSqlSelect("id,code,value,status,remark"); ew.setSqlSelect("id,code,value,status,remarks");
         if(UtilValidate.isNotEmpty(code)){
             ew.like("code",code);
         }

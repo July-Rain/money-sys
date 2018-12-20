@@ -66,7 +66,7 @@ public class SysConfigController {
     @RequestMapping("/insert")
     public Result insert(@RequestBody SysConfig config){
 //        config.setId(GetUUID.getUUIDs("SC"));
-        configService.save(config);
+        configService.insert(config);
         return Result.ok().put("id",config.getId());
     }
 
