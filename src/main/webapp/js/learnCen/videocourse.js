@@ -103,7 +103,7 @@ var vm = new Vue({
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
-                    debugger
+                    // debugger
                     if (result.code == 0) {
                         vm.videoData = result.page.list;
                         for(var i=0;i<vm.videoData.length;i++){
@@ -112,6 +112,7 @@ var vm = new Vue({
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
                         vm.formInline.totalCount = parseInt(result.page.totalCount);
+                        console.info("videoData",vm.videoData)
                     } else {
                         alert(result.msg);
                     }
