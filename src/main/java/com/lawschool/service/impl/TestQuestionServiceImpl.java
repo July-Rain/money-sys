@@ -22,12 +22,6 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
      * @param isEnble
      */
     public void updateStatus(String id, String isEnble) {
-
-        if (isEnble == StatusConstant.PRODUCT_TYPE_STATUS_DISABLE) {
-            isEnble = StatusConstant.PRODUCT_TYPE_STATUS_ENABLE;
-        } else {
-            isEnble = StatusConstant.PRODUCT_TYPE_STATUS_DISABLE;
-        }
         dao.updateStatus(id, isEnble);
     }
 
