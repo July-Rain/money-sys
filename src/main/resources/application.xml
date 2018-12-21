@@ -92,7 +92,7 @@
 		</property>
 		<property name="configLocation" value="classpath:properties/quartz.properties" />
 	</bean>
-    
+
     <!-- 自动扫描注解的bean -->
     <context:component-scan base-package="com.lawschool.service" />
     <context:component-scan base-package="com.lawschool.util" />
@@ -101,4 +101,8 @@
 
     <import resource="classpath:redis/spring-redis.xml"/>
     <import resource="classpath:shiro/spring-shiro.xml"/>
+    <!-- 注入ftp连接池 -->
+    <bean id ="ftpClientPool" class="com.lawschool.util.ftp.FTPClientPool">
+        <property name="configLocation"  value="classpath:properties/ftp-config.properties" />
+    </bean>
 </beans>

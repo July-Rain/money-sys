@@ -2,83 +2,22 @@ package com.lawschool.util;
 
 import com.lawschool.beans.accessory.AccessoryEntity;
 import com.lawschool.service.accessory.AccessoryService;
+import com.lawschool.util.ftp.FTPClientPool;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
-import org.apache.commons.net.ftp.FTPReply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ContextLoaderListener;
 
 import javax.servlet.ServletOutputStream;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
 public class FileUtil {
     private static Logger logger = LoggerFactory.getLogger(FileUtil.class);
-    //ftp服务器端口号默认为21
-    public static Integer port = 21 ;
-    /**
-     * 附件的路径
-     */
-    private static String  ftpPath="192.168.0.208";
-    /**
-     * 登录名
-     */
-    private static String  username="admin";
-
-    /**
-     * 密码
-     */
-    private static String  password="sinorock123";
-
-
-    @Value("${ftp.ftpPath}")
-    public static void setFtpPath(String ftpPath) {
-        FileUtil.ftpPath = ftpPath;
-    }
-    @Value("${ftp.username}")
-    public static void setUsername(String username) {
-        FileUtil.username = username;
-    }
-    @Value("${ftp.password}")
-    public static void setPassword(String password) {
-        FileUtil.password = password;
-    }
-
-    public static FTPClient ftpClient = null;
-
-
-    /**
-     * @Author MengyuWu
-     * @Description 初始化ftp服务器
-     * @Date 19:41 2018-12-19
-     * @Param []
-     * @return void
-     **/
-    
-    public static void initFtpClient() {
-        ftpClient = new FTPClient();
-        ftpClient.setControlEncoding("utf-8");
-        try {
-            System.out.println("connecting...ftp服务器:"+ftpPath+":"+port);
-            ftpClient.connect(ftpPath, port); //连接ftp服务器
-            ftpClient.login(username, password); //登录ftp服务器
-            int replyCode = ftpClient.getReplyCode(); //是否成功登录服务器
-            if(!FTPReply.isPositiveCompletion(replyCode)){
-                System.out.println("connect failed...ftp服务器:"+ftpPath+":"+port);
-            }
-            System.out.println("connect successfu...ftp服务器:"+ftpPath+":"+port);
-        }catch (MalformedURLException e) {
-            e.printStackTrace();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * @Author MengyuWu
@@ -90,7 +29,10 @@ public class FileUtil {
 
     public static Result uploadToFTPServer( String filename,InputStream input){
         Result result = new Result();
+        FTPClientPool ftpClientPool = (FTPClientPool) SpringContextUtils.getBean("ftpClientPool");
+        FTPClient ftpClient = null;
         try{
+            ftpClient = ftpClientPool.borrowObject();
             //根据文件名截取相关的文件类型
             int start =filename.lastIndexOf(".");
             String type=filename.substring(start + 1, filename.length());//后缀名
@@ -105,7 +47,7 @@ public class FileUtil {
 
             System.out.println("开始上传文件");
             //inputStream = new FileInputStream(new File(originfilename));
-            initFtpClient();
+            //initFtpClient();
             ftpClient.setFileType(ftpClient.BINARY_FILE_TYPE);
             String curDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
             //CreateDirecroty(curDate);
@@ -126,13 +68,7 @@ public class FileUtil {
             e.printStackTrace();
             return Result.error("上传文件失败");
         }finally{
-            if(ftpClient.isConnected()){
-                try{
-                    ftpClient.disconnect();
-                }catch(IOException e){
-                    e.printStackTrace();
-                }
-            }
+            ftpClientPool.returnObject(ftpClient);
             if(null != input){
                 try {
                     input.close();
@@ -151,7 +87,7 @@ public class FileUtil {
      * @return boolean
      **/
     
-    public static boolean changeWorkingDirectory(String directory) {
+    public static boolean changeWorkingDirectory(String directory,FTPClient ftpClient) {
         boolean flag = true;
         try {
             flag = ftpClient.changeWorkingDirectory(directory);
@@ -175,11 +111,11 @@ public class FileUtil {
      * @return 
      **/
 
-    public static boolean CreateDirecroty(String remote) throws IOException {
+    public static boolean CreateDirecroty(String remote,FTPClient ftpClient) throws IOException {
         boolean success = true;
         String directory = remote + "/";
         // 如果远程目录不存在，则递归创建远程服务器目录
-        if (!directory.equalsIgnoreCase("/") && !changeWorkingDirectory(new String(directory))) {
+        if (!directory.equalsIgnoreCase("/") && !changeWorkingDirectory(new String(directory),ftpClient)) {
             int start = 0;
             int end = 0;
             if (directory.startsWith("/")) {
@@ -193,15 +129,15 @@ public class FileUtil {
             while (true) {
                 String subDirectory = new String(remote.substring(start, end).getBytes("GBK"), "iso-8859-1");
                 path = path + "/" + subDirectory;
-                if (!existFile(path)) {
-                    if (makeDirectory(subDirectory)) {
-                        changeWorkingDirectory(subDirectory);
+                if (!existFile(path,ftpClient)) {
+                    if (makeDirectory(subDirectory,ftpClient)) {
+                        changeWorkingDirectory(subDirectory,ftpClient);
                     } else {
                         System.out.println("创建目录[" + subDirectory + "]失败");
-                        changeWorkingDirectory(subDirectory);
+                        changeWorkingDirectory(subDirectory,ftpClient);
                     }
                 } else {
-                    changeWorkingDirectory(subDirectory);
+                    changeWorkingDirectory(subDirectory,ftpClient);
                 }
 
                 paths = paths + "/" + subDirectory;
@@ -224,7 +160,7 @@ public class FileUtil {
      * @return boolean
      **/
     
-    public static boolean existFile(String path) throws IOException {
+    public static boolean existFile(String path,FTPClient ftpClient) throws IOException {
         boolean flag = false;
         FTPFile[] ftpFileArr = ftpClient.listFiles(path);
         if (ftpFileArr.length > 0) {
@@ -240,7 +176,7 @@ public class FileUtil {
      * @return boolean
      **/
     
-    public static boolean makeDirectory(String dir) {
+    public static boolean makeDirectory(String dir,FTPClient ftpClient) {
         boolean flag = true;
         try {
             flag = ftpClient.makeDirectory(dir);
@@ -273,11 +209,11 @@ public class FileUtil {
         if(UtilValidate.isEmpty(accessoryEntity)){
             logger.info("文件不存在");
         }
-        try {
+        FTPClientPool ftpClientPool = (FTPClientPool) SpringContextUtils.getBean("ftpClientPool");
+        FTPClient ftpClient = null;
+        try{
+            ftpClient = ftpClientPool.borrowObject();
             System.out.println("开始下载文件");
-            initFtpClient();
-            //切换FTP主目录
-            //ftpClient.changeWorkingDirectory("/");
             //切换FTP对应的文件目录
             boolean test = ftpClient.changeWorkingDirectory(accessoryEntity.getFilePath());
             FTPFile[] ftpFiles = ftpClient.listFiles();
@@ -293,13 +229,7 @@ public class FileUtil {
             System.out.println("下载文件失败");
             e.printStackTrace();
         } finally{
-            if(ftpClient.isConnected()){
-                try{
-                    ftpClient.disconnect();
-                }catch(IOException e){
-                    e.printStackTrace();
-                }
-            }
+            ftpClientPool.returnObject(ftpClient);
             if(null != outputStream){
                 try {
                     outputStream.close();
@@ -320,9 +250,12 @@ public class FileUtil {
     
     public boolean deleteFile(String pathname, String filename){
         boolean flag = false;
+        FTPClientPool ftpClientPool = (FTPClientPool) SpringContextUtils.getBean("ftpClientPool");
+        FTPClient ftpClient = null;
+
         try {
             System.out.println("开始删除文件");
-            initFtpClient();
+            ftpClient = ftpClientPool.borrowObject();
             //切换FTP目录
             ftpClient.changeWorkingDirectory(pathname);
             ftpClient.dele(filename);
@@ -333,13 +266,7 @@ public class FileUtil {
             System.out.println("删除文件失败");
             e.printStackTrace();
         } finally {
-            if(ftpClient.isConnected()){
-                try{
-                    ftpClient.disconnect();
-                }catch(IOException e){
-                    e.printStackTrace();
-                }
-            }
+            ftpClientPool.returnObject(ftpClient);
         }
         return flag;
     }
