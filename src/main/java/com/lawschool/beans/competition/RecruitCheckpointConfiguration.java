@@ -58,11 +58,11 @@ public class RecruitCheckpointConfiguration implements Serializable {
 	//试题难度
 	private String itemDifficulty;
 
-	//试题难度中文
+	//试题难度中文''
 	@TableField(exist = false)
 	private String itemDifficultyName;
 
-	//关卡积分
+	//小关卡积分
 	private String crossingPoints;
 	//大关是否奖励   0否  1是
 	private String markReward;
@@ -71,7 +71,7 @@ public class RecruitCheckpointConfiguration implements Serializable {
 	@TableField(exist = false)
 	private String markRewardName;
 
-	//奖励分值
+	//大关奖励分值
 	private String rewardScore;
 	//操作人
 	private String createPeople;

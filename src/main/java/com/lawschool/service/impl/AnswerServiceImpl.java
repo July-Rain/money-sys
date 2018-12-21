@@ -40,4 +40,8 @@ public class AnswerServiceImpl extends AbstractServiceImpl<AnswerDao, Answer> im
     public void deleteByQuestionId(String questionId){
         dao.deleteByQuestionId(questionId);
     }
+
+    public void deleteByQuestionIds(List<String> questionIds){
+        dao.deleteByQuestionIds(questionIds);
+    }
 }

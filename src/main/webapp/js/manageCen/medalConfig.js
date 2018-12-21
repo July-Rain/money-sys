@@ -1,31 +1,14 @@
 var vm = new Vue({
     el: '#app',
     data: {
-        tableData: [
-            {
-                name: '初试牛刀',
-                integral: '100',
-                credit: '0'
-            },{
-                name: '熟能生巧',
-                integral: '1000',
-                credit: '10'
-            },{
-                name: '炉火纯青',
-                integral: '5200',
-                credit: '20'
-            },{
-                name: '登峰造极',
-                integral: '10000',
-                credit: '25'
-            }],//表格数据
-        currentPage4: 1,//分页：当前页
+        tableData: [],//表格数据
+        pageNo: 1,//分页：当前页
         dialogFormVisible: false,
         form: {
             name: '',
             integral: '',
             credit: '',
-
+            badge:''
         },
         formLabelWidth: '200px',
         formLabelWidthS: '143px',
@@ -70,7 +53,69 @@ var vm = new Vue({
         },
         handleDel: function () {
 
+        },
+        save: function () {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "medal/save",
+                contentType: "application/json",
+                data: JSON.stringify(vm.form),
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.$alert('操作成功', '提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                                vm.dialogFormVisible = false;
+                                vm.reload();
+                            }
+                        });
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        reload: function () {
+            $.ajax({
+                type: "GET",
+                url: baseURL + "medal/list",
+                dataType: "json",
+                data: {
+                    pageNo: 1,
+                    limit: 10
+                },
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.tableData = result.page.list;
+                        vm.form.pageNo = result.page.pageNo;
+                        vm.form.pageSize = result.page.pageSize;
+                        vm.form.count = parseInt(result.page.count);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         }
+    },
+    created: function(){
+        this.$nextTick(function () {
+            $.ajax({
+                type: "GET",
+                url: baseURL + "medal/list",
+                contentType: "application/json",
+                data:vm.form,
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.tableData = result.page.list;
+                        vm.form.pageNo = result.page.pageNo;
+                        vm.form.pageSize = result.page.pageSize;
+                        vm.form.count = parseInt(result.page.count);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        })
     }
 
 })

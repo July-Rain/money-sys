@@ -48,6 +48,9 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
 
     private String stuPoliceclass;//所属警种
 
+    @TableField(exist = false)
+    private String stuPoliceclassName;//所属警种
+
     private String stuFrom;//来源
 
     private String stuType;//课件类型
@@ -312,5 +315,13 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
 
     public void setDeptName(String deptName) {
         this.deptName = deptName;
+    }
+
+    public String getStuPoliceclassName() {
+        return stuPoliceclassName;
+    }
+
+    public void setStuPoliceclassName(String stuPoliceclassName) {
+        this.stuPoliceclassName = stuPoliceclassName;
     }
 }

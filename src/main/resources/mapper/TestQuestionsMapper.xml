@@ -451,7 +451,7 @@
                     AND a.question_type = #{questionType}
                 </if>
             </where>
-            ORDER BY SYS_GUID())
+            ORDER BY dbms_random.random)
             WHERE rownum = 1
     </select>
 

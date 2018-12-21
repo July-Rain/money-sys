@@ -42,17 +42,18 @@
                     <el-tab-pane label="检索">
                         <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                            <el-form-item prop="code">
-                                <el-input v-model="formInline.code" placeholder="参数编码" size="mini"></el-input>
+                            <el-form-item prop="stuTitle">
+                                <el-input v-model="formInline.stuTitle" placeholder="课程标题" size="mini"></el-input>
                             </el-form-item>
-                            <el-form-item prop="value">
-                                <el-input v-model="formInline.value" placeholder="参数值" size="mini"></el-input>
+                            <el-form-item prop="stuPoliceclass">
+                                <el-input v-model="formInline.stuPoliceclass" placeholder="警种" size="mini"></el-input>
                             </el-form-item>
 
-                            <el-form-item prop="status">
-                                <el-select v-model="formInline.status" placeholder="状态" size="mini">
-                                    <el-option label="有效" value="1"></el-option>
-                                    <el-option label="无效" value="0"></el-option>
+                            <el-form-item prop="stuType">
+                                <el-select v-model="formInline.stuType" placeholder="类型" size="mini">
+                                    <el-option label="文字" value="1"></el-option>
+                                    <el-option label="音频" value="2"></el-option>
+                                    <el-option label="视频" value="3"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item>
@@ -87,7 +88,7 @@
                                 >
                                 </el-table-column>
                                 <el-table-column
-                                        prop="stuPoliceclass"
+                                        prop="stuPoliceclassName"
                                         label="警种"
                                 >
                                 </el-table-column>
@@ -95,6 +96,11 @@
                                         prop="stuType"
                                         label="课件类型"
                                 >
+                                    <template slot-scope="scope">
+                                        <el-tag v-if="scope.row.stuType === '1'" size="small" type="success">文字</el-tag>
+                                        <el-tag v-if="scope.row.stuType === '2'" size="small" type="info">音频</el-tag>
+                                        <el-tag v-if="scope.row.stuType === '3'" size="small" type="warning">视频</el-tag>
+                                    </template>
                                 </el-table-column>
                                 <el-table-column label="操作" width="180">
                                     <template slot-scope="scope">
@@ -103,6 +109,8 @@
                                                 @click="handleEdit(scope.$index, scope.row)">编辑
                                         </el-button>
                                         <el-button
+                                                plain
+                                                type="danger"
                                                 size="mini"
                                                 @click="handleDel(scope.$index, scope.row)">删除
                                         </el-button>
@@ -162,6 +170,17 @@
                                 </el-upload>
                             </el-form-item>
                         </template>
+                        <el-form-item label="所属警种" prop="stuPoliceclass">
+                            <el-select v-model="stuMedia.stuPoliceclass" placeholder="所属警种" >
+                                <el-option
+                                        v-for="item in stuPoliceclassOption"
+                                        :key="item.code"
+                                        :label="item.value"
+                                        :value="item.code"
+                                        >
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
                         <el-form-item label="使用部门" prop="deptName">
                             <el-input v-model="stuMedia.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门" clearable></el-input>
                         </el-form-item>

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +23,9 @@ public class TestQuestions extends DataEntity<TestQuestions> {
 
     private String comContent;//内容
 
-    private String questionDifficulty;//难度   id
+    private String questionDifficulty;//难度   id  应该存code
 
-    private String questionType;//题型  选择题，判断
+    private String questionType;//题型  选择题，判断   应该存code
 
     private String answerChoiceNumber;//答案个数
 
@@ -72,7 +73,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     private String typeValue;
 
     @TableField(exist = false)
-    private List<Answer> answerList;
+    private List<Answer> answerList=new ArrayList<Answer>();
     public String getTypeId() {
         return typeId;
     }
