@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+    <title>在线比武</title>
+    <#include "/header.html">
+    <script type="text/javascript" src="${rc.contextPath}/sun-jsp/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="${rc.contextPath}/sun-jsp/js/sockjs.min.js"></script>
+    <link rel="stylesheet" href="${rc.contextPath}/sun-jsp/css/style.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="${rc.contextPath}/sun-jsp/css/chat.css" type="text/css" media="all" />
+    <script type="text/javascript">
+        var path = '<%=basePath%>';
+    </script>
+</head>
+
+<body>
+<div id="app" v-cloak>
+    <div class="header">
+        <div class="header-left">
+            <img src="${rc.contextPath}/statics/img/logo.png">
+            <a href="javascript:;">江苏省公安厅法律学校</a>
+        </div>
+
+    </div>
+    <div class="container">
+        <el-row :gutter="24">
+            <el-col :span="24">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="单人随机在线比武">
+                        <div style="height: 700px;" >
+
+                                                <div class="chatArea" id="chatArea">
+                                                    <div class="inChatArea">
+                                                        <div id="chatSidebar" class="chatSidebar">
+                                                            <h2 id="chatOnline">在线用户(0人)</h2>
+                                                            <ul id="chatUserList">
+                                                                <!--  <li>bobo老师</li>
+                                                                  -->
+                                                            </ul>
+                                                        </div>
+                                                        <div class="chatCon">
+                                                            <div class="up" id="up">
+                                                                <ul id="contentUl">
+                                                                    <!-- <li><b>14:08</b><em>江山如此多娇</em><span>今天天气不大家出来嗨！！！！！</span></li>
+                                                                    -->
+                                                                </ul>
+                                                            </div>
+                                                            <div class="down">
+                                                                <textarea class="textInfo" id="msg" title="按ctrl+enter直接发送"></textarea>
+                                                                <button class="btn" id="sendBtn"></button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ad">
+                                                            <iframe src="http://m.itheimacast.icoc.in/" width="315" height="635" scrolling="no" frameborder="no" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
+
+
+
+
+    </div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/competition/pkGame.js?_${.now?long}"></script>
+</html>
