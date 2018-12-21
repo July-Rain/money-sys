@@ -27,7 +27,7 @@
                                         :index="indexMethod">
                                 </el-table-column>
                                 <el-table-column
-                                        prop="name"
+                                        prop="titleName"
                                         label="头衔名称">
                                 </el-table-column>
                                 <el-table-column
@@ -69,24 +69,24 @@
             </el-col>
         </el-row>
 
-        <el-dialog title="试题编辑" :visible.sync="dialogFormVisible">
+        <el-dialog title="勋章编辑" :visible.sync="dialogFormVisible">
 
             <el-form :model="form">
                 <el-row>
 
                     <el-col :span="24">
                         <el-form-item label="勋章名称" :label-width="formLabelWidthS">
-                            <el-input v-model="form.info" autocomplete="off"></el-input>
+                            <el-input v-model="form.titleName" autocomplete="off"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="获取条件（积分）" :label-width="formLabelWidth">
-                            <el-input v-model="form.info" autocomplete="off"></el-input>
+                            <el-input v-model="form.integral" autocomplete="off"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="获取条件（学分）" :label-width="formLabelWidth">
-                            <el-input v-model="form.info" autocomplete="off"></el-input>
+                            <el-input v-model="form.credit" autocomplete="off"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">

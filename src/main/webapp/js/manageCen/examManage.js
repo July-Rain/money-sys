@@ -113,7 +113,7 @@ var vm = new Vue({
                     }
                 }
             });
-        },
+        }
     },
     created: function(){
         this.$nextTick(function () {
