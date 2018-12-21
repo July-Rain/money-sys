@@ -50,8 +50,8 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
     **/
     @Override
     public PageUtils listMyCollection(Map<String, Object> param) {
-        int pageNo= parseInt((String)Optional.ofNullable(param.get("currPage")).orElse(1));
-        long pageSize= parseInt((String)Optional.ofNullable(param.get("pageSize")).orElse(10));
+        int pageNo= parseInt(Optional.ofNullable(param.get("currPage")).orElse("1").toString());
+        long pageSize= parseInt(Optional.ofNullable(param.get("pageSize")).orElse("10").toString());
 
         int count=mapper.cntMyCollection(param);
 
@@ -204,7 +204,7 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         String stuLawid = (String)params.get("stuLawid");
         String stuType = (String)params.get("stuType");
         EntityWrapper<StuMedia> ew = new EntityWrapper<>();
-        ew.setSqlSelect("ID,STU_CODE,STU_TITLE,COM_CONTENT,STU_TYPE,STU_COUNT,STU_ISSUER,STU_POLICECLASS,DICTCODE2VALE(STU_POLICECLASS) as stuPoliceclassName");
+        ew.setSqlSelect("ID,STU_CODE,STU_TITLE,COM_CONTENT,STU_TYPE,STU_COUNT,STU_ISSUER,STU_ISSTIME,STU_POLICECLASS,DICTCODE2VALE(STU_POLICECLASS) as stuPoliceclassName,VIDEO_PIC_ACC");
         if(UtilValidate.isNotEmpty(stuTitle)){
             ew.like("stu_title",stuTitle);
         }

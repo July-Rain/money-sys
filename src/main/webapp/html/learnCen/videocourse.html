@@ -50,8 +50,8 @@
                                     <el-col :span="6" v-for="(item, index) in videoData">
                                         <el-card :body-style="{ padding: '4px' }">
 
-                                            <video width="300" height="155" controls preload="none" poster="http://temp.im/640x260">
-                                                <source :src="item.comContent" type="video/mp4">
+                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl">
+                                                <source :src="item.contentUrl" type="video/mp4">
                                                 您的浏览器太垃圾
                                             </video>
                                             <div style="padding: 14px 14px 0 14px;">
@@ -61,7 +61,7 @@
                                                 </p>
                                                 <p>
                                                     <span class="stuIssuer">{{item.stuIssuer}}</span>
-                                                    <span class="stuCreat">{{item.stuCreat}}</span>
+                                                    <span class="stuCreat">{{item.stuIsstime}}</span>
                                                 </p>
                                             </div>
                                         </el-card>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.competition.bak.RecruitConfigurationBakDao">
+<!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->
+    <resultMap id="BaseResultMap" type="com.lawschool.beans.competition.bak.RecruitConfigurationBak">
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="MARK_NUM_ORDER" property="markNumOrder" jdbcType="INTEGER" />
+        <result column="SMALL_NUM" property="smallNum" jdbcType="VARCHAR" />
+        <result column="UNIFY_CONFIGURATION" property="unifyConfiguration" jdbcType="VARCHAR" />
+        <result column="MARK_REWARD" property="markReward" jdbcType="VARCHAR" />
+        <result column="REWARD_SCORE" property="rewardScore" jdbcType="VARCHAR" />
+
+
+        <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
+        <result column="CREATE_DEPT" property="createDept" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+
+        <result column="DEL_PEOPLE" property="delPeople" jdbcType="VARCHAR" />
+        <result column="DEL_TIME" property="delTime" jdbcType="DATE" />
+
+
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
+        <result column="BACKUP1" property="backup1" jdbcType="VARCHAR" />
+        <result column="BACKUP2" property="backup2" jdbcType="VARCHAR" />
+        <result column="BACKUP3" property="backup3" jdbcType="VARCHAR" />
+        <result column="BACKUP4" property="backup4" jdbcType="VARCHAR" />
+        <result column="BACKUP5" property="backup5" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+
+</mapper>

@@ -18,7 +18,7 @@ public class MedalController {
     @Autowired
     private MedalService medalService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "list", method = RequestMethod.GET)
     private Result list(@RequestParam Map<String, Object> params){
         Page<MedalEntity> list = medalService.findPage(new Page<MedalEntity>(params), new MedalEntity());
         return Result.ok().put("list", list);

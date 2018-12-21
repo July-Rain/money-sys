@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.User">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser"/>
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="OPT_USER" jdbcType="VARCHAR" property="optUser"/>
+    <result column="OPT_TIME" jdbcType="TIMESTAMP" property="optTime"/>
+    <result column="FULL_NAME" jdbcType="VARCHAR" property="fullName" />
+    <result column="ORG_CODE" jdbcType="VARCHAR" property="orgCode" />
+    <result column="SYN_FLAG" jdbcType="DECIMAL" property="synFlag" />
+    <result column="USER_CODE" jdbcType="VARCHAR" property="userCode" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="USER_INDATE" jdbcType="TIMESTAMP" property="userIndate" />
+    <result column="USER_JOB" jdbcType="DECIMAL" property="userJob" />
+    <result column="USER_JOB_LEVEL" jdbcType="DECIMAL" property="userJobLevel" />
+    <result column="USER_MOBILE_LONG" jdbcType="VARCHAR" property="userMobileLong" />
+    <result column="USER_MOBILE_SHORT" jdbcType="VARCHAR" property="userMobileShort" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="USER_OVERDATE" jdbcType="TIMESTAMP" property="userOverdate" />
+    <result column="USER_PART_TYPE" jdbcType="DECIMAL" property="userPartType" />
+    <result column="USER_POLICE_ID" jdbcType="VARCHAR" property="userPoliceId" />
+    <result column="USER_POLICE_TYPE" jdbcType="DECIMAL" property="userPoliceType" />
+    <result column="USER_QUATER" jdbcType="DECIMAL" property="userQuater" />
+    <result column="USER_SEX" jdbcType="DECIMAL" property="userSex" />
+    <result column="USER_STARTDATE" jdbcType="TIMESTAMP" property="userStartdate" />
+    <result column="USER_STATUS" jdbcType="DECIMAL" property="userStatus" />
+    <result column="USER_TYPE" jdbcType="DECIMAL" property="userType" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="SALT" jdbcType="VARCHAR" property="salt" />
+    <result column="SORT" jdbcType="DECIMAL" property="sort" />
+    <result column="CORROSION_FILE" jdbcType="DECIMAL" property="corrosionFile" />
+    <result column="IS_BASIC_CORROSION" jdbcType="DECIMAL" property="isBasicCorrosion" />
+    <result column="IS_MIDDLE_REQUIRED" jdbcType="DECIMAL" property="isMiddleRequired" />
+    <result column="IS_PASSED_JUDICIA" jdbcType="DECIMAL" property="isPassedJudicia" />
+    <result column="QUA_LEVEL" jdbcType="VARCHAR" property="quaLevel" />
+    <result column="LOCAL_JOB_ACTUAL" jdbcType="VARCHAR" property="localJobActual" />
+    <result column="LOCAL_JOB_LEVEL" jdbcType="VARCHAR" property="localJobLevel" />
+    <result column="LOCAL_JOB_STAND" jdbcType="VARCHAR" property="localJobStand" />
+    <result column="MIDDLE_REQUIRED_TYPE" jdbcType="VARCHAR" property="middleRequiredType" />
+    <result column="PHOTO" jdbcType="DECIMAL" property="photo" />
+    <result column="WORK_POLICE_TIME" jdbcType="TIMESTAMP" property="workPoliceTime" />
+    <result column="WORK_TIME" jdbcType="TIMESTAMP" property="workTime" />
+    <result column="ROLES" jdbcType="VARCHAR" property="roles" />
+    <result column="QUA_START_TIME" jdbcType="TIMESTAMP" property="quaStartTime" />
+    <result column="QUA_END_TIME" jdbcType="TIMESTAMP" property="quaEndTime" />
+    <result column="BIRTHDAY" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="LOCAL_ORG_CODE" jdbcType="VARCHAR" property="localOrgCode" />
+    <result column="IS_ONLINE" jdbcType="CHAR" property="isOnline" />
+    <result column="IDENTIFY" jdbcType="VARCHAR" property="identify" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, ADD_TIME, ADD_USER, UPDATE_TIME, UPDATE_USER, FULL_NAME, ORG_CODE, SYN_FLAG, 
+    USER_CODE, USER_ID, USER_INDATE, USER_JOB, USER_JOB_LEVEL, USER_MOBILE_LONG, USER_MOBILE_SHORT, 
+    USER_NAME, USER_OVERDATE, USER_PART_TYPE, USER_POLICE_ID, USER_POLICE_TYPE, USER_QUATER, 
+    USER_SEX, USER_STARTDATE, USER_STATUS, USER_TYPE, PASSWORD, SALT, SORT, CORROSION_FILE, 
+    IS_BASIC_CORROSION, IS_MIDDLE_REQUIRED, IS_PASSED_JUDICIA, QUA_LEVEL, LOCAL_JOB_ACTUAL, 
+    LOCAL_JOB_LEVEL, LOCAL_JOB_STAND, MIDDLE_REQUIRED_TYPE, PHOTO, WORK_POLICE_TIME, 
+    WORK_TIME, ROLES, QUA_START_TIME, QUA_END_TIME, BIRTHDAY, LOCAL_ORG_CODE, IS_ONLINE
+  </sql>
+  <select id="findList" parameterType="map" resultType="com.lawschool.beans.User">
+    SELECT
+	U.*,
+	O.Full_name as org_name
+  FROM
+	LAW_USER U
+INNER JOIN (
+	SELECT
+		*
+	FROM
+		LAW_ORG START WITH LOCAL_ORG_CODE = #{orgCode} CONNECT BY PRIOR ORG_ID = LOCAL_PARENT_ORG_ID
+) O ON U .LOCAL_ORG_CODE = O.LOCAL_ORG_CODE
+where 1=1
+<if test="userName!=null">
+  and U.user_name like  concat(concat('%',#{userName}),'%')
+  </if>
+<if test="userCode!=null">
+  and U.USER_CODE  like concat(concat('%',#{userCode}),'%')
+  </if>
+  </select>
+</mapper>

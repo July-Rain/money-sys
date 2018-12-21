@@ -27,6 +27,14 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
 
     private String comContent;//内容
 
+    @TableField(exist = false)
+    private String contentUrl;//内容的url
+
+    private String videoPicAcc;//视频主页图片展示
+
+    @TableField(exist = false)
+    private String videoPicAccUrl;//视频主页图片展示地址
+
     private String stuDescribe;//描述
 
     private String stuTime;//时长
@@ -40,6 +48,7 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
     private String stuIssdepartment;//发布单位
 
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+
     private Date stuIsstime;//发布时间
 
 
@@ -322,5 +331,29 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
 
     public void setStuPoliceclassName(String stuPoliceclassName) {
         this.stuPoliceclassName = stuPoliceclassName;
+    }
+
+    public String getContentUrl() {
+        return contentUrl;
+    }
+
+    public void setContentUrl(String contentUrl) {
+        this.contentUrl = contentUrl;
+    }
+
+    public String getVideoPicAcc() {
+        return videoPicAcc;
+    }
+
+    public void setVideoPicAcc(String videoPicAcc) {
+        this.videoPicAcc = videoPicAcc;
+    }
+
+    public String getVideoPicAccUrl() {
+        return videoPicAccUrl;
+    }
+
+    public void setVideoPicAccUrl(String videoPicAccUrl) {
+        this.videoPicAccUrl = videoPicAccUrl;
     }
 }

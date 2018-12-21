@@ -32,7 +32,8 @@ var vm = new Vue({
             deptName:"",//适用部门姓名
             stuLawid:"",//专项知识id
             stuKnowledge:"",//专项知识
-            stuPoliceclass:""//所属警种
+            stuPoliceclass:"",//所属警种
+            videoPicAcc:"",//视频首页
         },
         rules: {//表单验证规则
             stuType: [
@@ -81,6 +82,8 @@ var vm = new Vue({
         multipleSelection:[],//选中人员信息
         multipleDeptSelection:[],//选中部门信息
         stuPoliceclassOption:[],//所属警种
+        videoFlag:false,
+        videoUploadPercent:0,
     },
     created: function () {
 
@@ -215,7 +218,8 @@ var vm = new Vue({
                 userName:"",//适用人员姓名
                 deptName:"",//适用部门姓名
                 stuLawid:lawId,//专项知识id
-                stuKnowledge:lawName//专项知识
+                stuKnowledge:lawName,//专项知识
+                videoPicAcc:"",//视频首页
             },
             this.title="新增";
             this.dialogStuMedia=true;
@@ -230,6 +234,15 @@ var vm = new Vue({
                 success: function (result) {
                     if(result.code === 0){
                         vm.stuMedia = result.data;
+                        for (var i=0;i<vm.stuMedia.length;i++){
+                            debugger
+                            if(vm.stuMedia.stuType!='1'&&vm.stuMedia.comContent){
+                                vm.stuMedia.contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
+                                if(vm.stuMedia.videoPicAcc){
+                                    vm.stuMedia.videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
+                                }
+                            }
+                        }
                     }else{
                         alert(result.msg);
                     }
@@ -307,14 +320,77 @@ var vm = new Vue({
 
         },
         uploadSuccess: function (response, file, fileList) {
-            vm.stuMedia.comContent=response.accessoryId;
+            debugger
+            this.videoFlag = false;
+            this.videoUploadPercent = 0;
+            if(response.code == 0){
+                vm.stuMedia.comContent=response.accessoryId;
+                vm.stuMedia.contentUrl=baseURL+"sys/download?accessoryId="+response.accessoryId;
+            }else{
+                this.$message.error('视频上传失败，请重新上传！');
+            }
+        },
+        handlePicSuccess: function (response, file, fileList) {
+            debugger
+            if(response.code == 0){
+                vm.stuMedia.videoPicAcc=response.accessoryId;
+                vm.stuMedia.videoPicAccUrl=baseURL+"sys/download?accessoryId="+response.accessoryId;
+            }else{
+                this.$message.error('图片上传失败，请重新上传！');
+            }
         },
         uploadError: function () {
 
         },
         beforeAvatarUpload: function (file) {
+            debugger
             /*if(!checkFile(file)) return false;*/
+            var  isLt10M = file.size / 1024 / 1024  < 10;
+            if (['video/mp4', 'video/ogg', 'video/flv','video/avi','video/wmv','video/rmvb'].indexOf(file.type) == -1) {
+                this.$message.error('请上传正确的视频格式');
+                return false;
+            }
+            if (!isLt10M) {
+                this.$message.error('上传视频大小不能超过10MB哦!');
+                return false;
+            }
+
         },
+        beforeAudioUpload: function (file) {
+            debugger
+            /*if(!checkFile(file)) return false;*/
+            var  isLt10M = file.size / 1024 / 1024  < 10;
+            if (['audio/ogg', 'audio/mpeg', 'audio/mp3', 'audio/wav'].indexOf(file.type) == -1) {
+                this.$message.error('请上传正确的音频格式');
+                return false;
+            }
+            if (!isLt10M) {
+                this.$message.error('上传音频大小不能超过10MB哦!');
+                return false;
+            }
+
+        },
+        beforePicUpload: function (file) {
+            //图片上传之前的判断
+            debugger
+            /*if(!checkFile(file)) return false;*/
+            var  isLt10M = file.size / 1024 / 1024  < 10;
+            if (['image/jpeg', 'image/jpg', 'image/png','image/gif','image/bpm'].indexOf(file.type) == -1) {
+                this.$message.error('请上传正确的图片格式');
+                return false;
+            }
+            if (!isLt10M) {
+                this.$message.error('上传图片大小不能超过10MB哦!');
+                return false;
+            }
+
+        },
+        uploadVideoProcess(event, file, fileList){
+            debugger
+            this.videoFlag = true;
+            this.videoUploadPercent = file.percentage;
+        },
+
         changeStuType: function () {
             //修改资料类型
             console.log(vm.stuMedia.stuType);

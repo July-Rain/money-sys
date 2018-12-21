@@ -70,9 +70,4 @@ public interface UserService  extends AbstractService<User> {
      */
     public int addUser(User user);
 
-    /**
-     * 获取所有在线用户
-     * @return
-     */
-    public PageUtils  selectOnlineUser(Map<String,Object> params);
 }

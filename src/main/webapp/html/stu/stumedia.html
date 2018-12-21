@@ -9,23 +9,6 @@
 </style>
 <body>
 <div id="app" v-cloak>
-    <div class="header">
-        <div class="header-left">
-            <img src="${rc.contextPath}/statics/img/logo.png">
-            <a href="javascript:;">江苏省公安厅法律学校</a>
-            <input style="display: none" id="menuId" value="${menuId}">
-        </div>
-        <div class="header-right">
-            <ul>
-                <li v-for="item in navData">
-                    <a>
-                        <i :class="item.icon"></i>
-                        <p><a href="javascript:;">{{item.name}}</a></p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
     <div class="container">
         <el-row :gutter="24">
             <el-col :span="4">
@@ -154,20 +137,39 @@
                                 <el-input type="textarea" maxlength="200" v-model="stuMedia.comContent"></el-input>
                             </el-form-item>
                         </template>
-                        <template v-if="stuMedia.stuType!='1'">
-                            <el-form-item label="请上传资料" prop="comContent">
-                                <el-upload
-                                        class="upload-demo"
-                                        :action="importFileUrl"
-                                        multiple
-                                        name="importfile"
-                                        :file-list="fileList"
-                                        :on-error="uploadError"
-                                        :on-success="uploadSuccess"
-                                        :before-upload="beforeAvatarUpload"
-                                        :limit="3">
-                                    <el-button size="small" type="primary" >选择...</el-button>
+                        <template v-if="stuMedia.stuType=='2'">
+
+                            <el-form-item label="音频上传" prop="comContent">
+                                <!-- action必选参数, 上传的地址 -->
+                                <el-upload name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess" :before-upload="beforeAudioUpload" :on-progress="uploadVideoProcess">
+                                    <audio v-if="stuMedia.comContent !='' && videoFlag == false" :src="stuMedia.contentUrl" class="avatar" controls="controls">您的浏览器不支持视频播放</audio>
+                                    <i v-else-if="stuMedia.comContent =='' && videoFlag == false" class="el-icon-plus avatar-uploader-icon"></i>
+                                    <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
                                 </el-upload>
+                                <P class="text">请保证音频格式正确，且不超过10M</P>
+                            </el-form-item>
+                        </template>
+                        <template v-if="stuMedia.stuType=='3'">
+                            <el-form-item label="视频封面上传" prop="videoPicAcc">
+                                <el-upload
+                                        class="avatar-uploader"
+                                        name="importfile"
+                                        :action="importFileUrl"
+                                        :show-file-list="false"
+                                        :on-success="handlePicSuccess"
+                                        :before-upload="beforePicUpload">
+                                    <img v-if="stuMedia.videoPicAcc !=''" :src="stuMedia.videoPicAccUrl" class="avatar">
+                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                </el-upload>
+                            </el-form-item>
+                            <el-form-item label="视频上传" prop="comContent">
+                                <!-- action必选参数, 上传的地址 -->
+                                <el-upload name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess" :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
+                                    <video v-if="stuMedia.comContent !='' && videoFlag == false" :src="stuMedia.contentUrl" class="avatar" controls="controls">您的浏览器不支持视频播放</video>
+                                    <i v-else-if="stuMedia.comContent =='' && videoFlag == false" class="el-icon-plus avatar-uploader-icon"></i>
+                                    <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
+                                </el-upload>
+                                <P class="text">请保证视频格式正确，且不超过10M</P>
                             </el-form-item>
                         </template>
                         <el-form-item label="所属警种" prop="stuPoliceclass">

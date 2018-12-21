@@ -14,7 +14,7 @@
 
 
     <!-- 配置数据源 -->
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
        <!-- 使用properties来配置 -->
         <property name="driverClassName">
             <value>${jdbc_driverClassName}</value>
@@ -28,6 +28,38 @@
         <property name="password">
             <value>${jdbc_password}</value>
         </property>
+        
+        
+         <!-- 初始化时建立物理连接的个数 -->
+        <property name="initialSize" value="5" /> 
+        <!-- 最小连接池数量 -->
+        <property name="minIdle" value="5" />
+        <!-- 最大连接池数量 -->  
+	    <property name="maxActive" value="20" />
+	    <!-- 获取连接时最大等待时间，单位毫秒。配置了maxWait之后，缺省启用公平锁，并发效率会有所下降，如果需要可以通过配置useUnfairLock属性为true使用非公平锁 --> 
+	    <property name="maxWait" value="60000" />
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" /> 
+		 
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" /> 
+	    
+	    <!-- 用来检测连接是否有效的sql，要求是一个查询语句。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会起作用 -->
+        <property name="validationQuery" value="SELECT 1 FROM DUAL" /> 
+        <!-- 申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效 -->
+		<property name="testWhileIdle" value="true" /> 
+		<!-- 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。 -->
+		<property name="testOnBorrow" value="false" /> 
+		<!-- 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能 -->
+		<property name="testOnReturn" value="false" /> 
+		
+		<!-- 打开PSCache，PSCache对支持游标的数据库性能提升巨大  ,并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="true" /> 
+		<property name="maxPoolPreparedStatementPerConnectionSize" value="20" /> 
+		  
+	    <!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 -->
+	    <property name="filters" value="stat" /> 
+        
     </bean>
 
     <!-- 自动扫描了所有的XxxxMapper.xml对应的mapper接口文件，这样就不用一个一个手动配置Mpper的映射了，只要Mapper接口类和Mapper映射文件对应起来就可以了。 -->
@@ -36,15 +68,37 @@
     </bean>
 
     <!-- 配置Mybatis的文件 ，mapperLocations配置**Mapper.xml文件位置，configLocation配置mybatis-config文件位置-->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        
+    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
         <property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
         <property name="dataSource" ref="dataSource" />
-        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
-        
+        <property name="mapperLocations" value="classpath:mapper/**/*.xml"/>
+        <property name="globalConfig" ref="globalConfiguration" />
+        <property name="plugins">
+            <bean id="paginationInterceptor" class="com.lawschool.util.persistence.interceptor.PreparePaginationInterceptor"/>        </property>
     </bean>
 
+
+    <bean id ="globalConfiguration" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+        <!--映射数据库下划线字段名到数据库实体类的驼峰命名的映射-->
+        <property name="dbColumnUnderline" value="true"></property>
+        <property name="idType" value="1"></property>
+    </bean>
+    
+    
+    <!-- quartz scheduler -->
+    <bean id="schedulerFactoryBean"	class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" /><!-- 数据源引用指向，包含集群所需的所有11张表 -->
+		</property>
+		<property name="configLocation" value="classpath:properties/quartz.properties" />
+	</bean>
+    
     <!-- 自动扫描注解的bean -->
     <context:component-scan base-package="com.lawschool.service" />
+    <context:component-scan base-package="com.lawschool.util" />
+    <!-- 引入redis属性文件 -->
+    <context:property-placeholder location="classpath:properties/sys.properties" ignore-unresolvable="true"/>
 
+    <import resource="classpath:redis/spring-redis.xml"/>
+    <import resource="classpath:shiro/spring-shiro.xml"/>
 </beans>

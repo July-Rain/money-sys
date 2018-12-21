@@ -99,7 +99,7 @@ var vm = new Vue({
                     if (result.code == 0) {
                         vm.videoData = result.page.list;
                         for(var i=0;i<vm.videoData.length;i++){
-                            vm.videoData[i].comContent=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
+                            vm.videoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
                         }
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;

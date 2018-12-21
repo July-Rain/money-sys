@@ -70,7 +70,7 @@ public class UserController extends AbstractController {
 
     /**
      * @Author zjw
-     * @Description 获取所有用户/教官  根据传入的identify区分
+     * @Description 获取所有用户/教官/在线 identify  isOnline
      * @Date 9:19 2018/12/19
      * @Param [params]
      * @return com.lawschool.util.Result
@@ -128,20 +128,6 @@ public class UserController extends AbstractController {
         return rst==SUCCESS?Result.ok():Result.error("修改密码失败");
     }
 
-    /**
-     * @Author zjw
-     * @Description 获取在线用户
-     * @Date 9:20 2018/12/19
-     * @Param [params]
-     * @return com.lawschool.util.Result
-    **/
-    @RequestMapping("/getOnlineUsers")
-    public Result selectOnlineUser(Map<String,Object> params){
-        Result result=Result.ok();
-        PageUtils pageUtils = userService.selectOnlineUser(params);
-        result.put("users",pageUtils);
-        return result;
-    }
 
     /**
      * @Author zjw
@@ -151,9 +137,10 @@ public class UserController extends AbstractController {
      * @return com.lawschool.util.Result
     **/
     @RequestMapping("/offlineUser")
-    public Result offlineUser(String userId){
-        int rst = userService.updateUserOnlineStatus(userId, "1", "0");
-        return rst==0?Result.ok():Result.error("下线失败");
+    public Result offlineUser(String id){
+        int rst = userService.updateUserOnlineStatus(id, "1", "0");
+        return rst==SUCCESS?Result.ok():Result.error("下线失败");
+
     }
 
 }

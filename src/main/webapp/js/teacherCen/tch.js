@@ -19,7 +19,8 @@ var vm = new Vue({
 
         visible: false,
         dialogConfig: false,//table弹出框可见性
-        title:""//弹窗的名称
+        title:"",//弹窗的名称
+        tchId:"",//教官的id
 
     },
     created: function () {
@@ -44,6 +45,10 @@ var vm = new Vue({
 
     },
     methods: {
+        toTchvedio:function(id){
+            vm.tchId=id;
+            alert("1");
+        },
         // 查询
         onSubmit: function () {
             this.reload();

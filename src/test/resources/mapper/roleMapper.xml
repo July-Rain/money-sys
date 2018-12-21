@@ -2,46 +2,56 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lawschool.dao.system.SysRoleDao">
     <resultMap id="BaseResultMap" type="com.lawschool.beans.system.SysRoleEntity">
-        <id column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
-        <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
-        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
     </resultMap>
 
     <insert id="insert" parameterType="com.lawschool.beans.system.SysRoleEntity">
-    insert
-    into
-    LAW_SYS_ROLE
-    (ROLE_ID,ROLE_NAME,REMARK,CREATE_TIME)
-    values
-    (#{roleId},#{roleName},#{remark},#{createTime})
-  </insert>
+        insert
+        into
+            LAW_SYS_ROLE
+            (ROLE_ID, ROLE_NAME, REMARK, CREATE_TIME)
+        values
+            (#{roleId}, #{roleName}, #{remark}, #{createTime})
+    </insert>
 
     <delete id="deleteRoleById" parameterType="java.lang.String">
-    delete
-    from
-     LAW_SYS_ROLE
-    where
-        ROLE_ID = #{roleId}
-  </delete>
+        delete
+        from
+            LAW_SYS_ROLE
+        where
+            ROLE_ID = #{roleId}
+    </delete>
 
     <update id="update" parameterType="com.lawschool.beans.system.SysRoleEntity">
-    update
-    LAW_SYS_ROLE
-    set
-     ROLE_NAME = #{roleName}
-    where
-       ROLE_ID = #{roleId}
-  </update>
+        update
+            LAW_SYS_ROLE
+        set
+            ROLE_NAME = #{roleName}
+        where
+            ROLE_ID = #{roleId}
+    </update>
 
     <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select *
-    from
-      LAW_SYS_ROLE
-    where
-      ROLE_ID = #{roleId}
+        select *
+        from
+            LAW_SYS_ROLE
+        where
+            ROLE_ID = #{roleId}
 
 
-  </select>
+    </select>
 
+    <!-- 查询权限下数据 -->
+    <select id="listRoleByUserId" parameterType="java.lang.String"
+            resultType="com.lawschool.beans.system.SysRoleEntity">
+        select s.role_Id   roleId,
+               s.role_name roleName
+        from LAW_SYS_ROLE s
+                 right join LAW_SYS_USER_ROLE r
+                            on s.role_Id = r.role_Id
+        where r.user_id = #{userId}
+        order by s.CREATE_TIME asc
+    </select>
 </mapper>

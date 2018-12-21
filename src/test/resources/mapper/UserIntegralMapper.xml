@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.UserIntegralDao">
+
+  <!--获取用户积分学分总体信息-->
+  <select id="getInfo" parameterType="com.lawschool.beans.User" resultType="com.lawschool.beans.UserIntegral">
+SELECT
+	USER_ID,
+	INTEGRAL_POINT,
+	CREDIT_POINT,
+	(
+		SELECT
+			allItrRank
+		FROM
+			(
+				SELECT
+					LUI.USER_ID,
+					ROW_NUMBER () OVER (ORDER BY INTEGRAL_POINT) AS allItrRank
+				FROM
+					LAW_USER_INTEGRAL lui
+			)
+		WHERE
+			USER_ID = #{id}
+	) AS allItrRank,
+	(
+		SELECT
+			orgItrRank
+		FROM
+			(
+				SELECT
+					LUI.USER_ID,
+					ROW_NUMBER () OVER (ORDER BY INTEGRAL_POINT) AS orgItrRank
+				FROM
+					LAW_USER_INTEGRAL lui
+				WHERE
+					ORG_CODE = #{orgCode}
+			)
+		WHERE
+			USER_ID = #{id}
+	) AS orgItrRank,
+	(
+		SELECT
+			allCdtRank
+		FROM
+			(
+				SELECT
+					LUI.USER_ID,
+					ROW_NUMBER () OVER (ORDER BY CREDIT_POINT) AS allCdtRank
+				FROM
+					LAW_USER_INTEGRAL lui
+			)
+		WHERE
+			USER_ID = #{id}
+	) AS allCdtRank,
+	(
+		SELECT
+			orgCdtRank
+		FROM
+			(
+				SELECT
+					LUI.USER_ID,
+					ROW_NUMBER () OVER (ORDER BY CREDIT_POINT) AS orgCdtRank
+				FROM
+					LAW_USER_INTEGRAL lui
+				WHERE
+					ORG_CODE = #{orgCode}
+			)
+		WHERE
+			USER_ID = #{id}
+	) AS orgCdtRank
+FROM
+	LAW_USER_INTEGRAL
+WHERE
+	USER_ID = #{id}
+
+  </select>
+</mapper>

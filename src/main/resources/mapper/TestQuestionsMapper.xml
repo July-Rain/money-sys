@@ -32,6 +32,26 @@
         <result column="OPT_TIME" jdbcType="TIMESTAMP" property="optTime"/>
     </resultMap>
 
+    <sql id="question">
+        a.id,
+        a.type_id,
+        a.com_content,
+        a.question_difficulty,
+        a.question_type,
+        a.answer_choice_number,
+        a.answer_id,
+        a.special_knowledge_id,
+        a.police_classification,
+        a.legal_basis,
+        a.answer_describle,
+        a.release_status,
+        a.stu_issuer,
+        a.stu_issdepartment,
+        a.stu_isstim,
+        a.stu_optdepartment,
+        a.use_number,
+        a.rigth_number
+    </sql>
 
     <insert id="insert" parameterType="com.lawschool.beans.TestQuestions">
         insert into LAW_TESTQUESTIONS
@@ -122,7 +142,7 @@
         WHERE
         LAW_COLLECTION.COM_USERID = #{userId}
         AND LAW_COLLECTION. TYPE = 20
-        and  LAW_TESTQUESTIONS. ID is not null
+        and LAW_TESTQUESTIONS. ID is not null
         And LAW_COLLECTION.DEL_STATUS=0
         <if test="questionType != null and questionType!=''">
             AND QUESTION_TYPE=#{questionType}
@@ -135,124 +155,106 @@
         </if>
     </select>
 
-  <!--列表：我收藏的重点试题zjw-->
-  <select id="listMyCollection" parameterType="map"  resultType="com.lawschool.beans.TestQuestions">
-    select
-    collectionId,
-    ID,
-    COM_CONTENT,
-    QUESTION_TYPE,
-    questiontypeValue,
-    ANSWER_ID,
-    answerValue,
-    QUESTION_DIFFICULTY,
-    questiondifficultyValue,
-    TYPE_ID,
-    typeValue,
-    SPECIAL_KNOWLEDGE_ID,
-    specialknowledgeValue,
-      ANSWER_DESCRIBLE
-    from
-    (
-    SELECT
-    LAW_COLLECTION. ID as collectionId,
-    LAW_TESTQUESTIONS.ANSWER_DESCRIBLE,
-    LAW_TESTQUESTIONS. ID,
-    LAW_TESTQUESTIONS.COM_CONTENT,
-    LAW_TESTQUESTIONS.QUESTION_TYPE,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
-    LAW_TESTQUESTIONS.ANSWER_ID,
-    (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
-    LAW_TESTQUESTIONS.QUESTION_DIFFICULTY,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
-    LAW_TESTQUESTIONS.TYPE_ID,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
-    LAW_TESTQUESTIONS.SPECIAL_KNOWLEDGE_ID,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
-    ROWNUM AS rowno
-    FROM
-    LAW_COLLECTION
-    LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
-    WHERE
-    LAW_COLLECTION.COM_USERID = #{userId}
-      and  LAW_TESTQUESTIONS. ID is not null
-    And LAW_COLLECTION.DEL_STATUS=0
-    And ROWNUM &lt;= #{endPage}
-    AND LAW_COLLECTION. TYPE = 20
-    <if test="questionType != null and questionType!=''">
-      AND QUESTION_TYPE=#{questionType}
-    </if>
-      <if test="specialKnowledgeId != null  and specialKnowledgeId!=''">
-          AND SPECIAL_KNOWLEDGE_ID=#{specialKnowledgeId}
-      </if>
-    <if test="questionDifficulty != null and  questionDifficulty != ''">
-      AND QUESTION_DIFFICULTY=#{questionDifficulty}
-    </if>
-    )
-    WHERE
-    rowno &gt; #{startPage}
-  </select>
+    <!--列表：我收藏的重点试题zjw-->
+    <select id="listMyCollection" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
+        select
+        collectionId,
+        ID,
+        COM_CONTENT,
+        QUESTION_TYPE,
+        questiontypeValue,
+        ANSWER_ID,
+        answerValue,
+        QUESTION_DIFFICULTY,
+        questiondifficultyValue,
+        TYPE_ID,
+        typeValue,
+        SPECIAL_KNOWLEDGE_ID,
+        specialknowledgeValue,
+        ANSWER_DESCRIBLE
+        from
+        (
+        SELECT
+        LAW_COLLECTION. ID as collectionId,
+        LAW_TESTQUESTIONS.ANSWER_DESCRIBLE,
+        LAW_TESTQUESTIONS. ID,
+        LAW_TESTQUESTIONS.COM_CONTENT,
+        LAW_TESTQUESTIONS.QUESTION_TYPE,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
+        LAW_TESTQUESTIONS.ANSWER_ID,
+        (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
+        LAW_TESTQUESTIONS.QUESTION_DIFFICULTY,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
+        LAW_TESTQUESTIONS.TYPE_ID,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
+        LAW_TESTQUESTIONS.SPECIAL_KNOWLEDGE_ID,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
+        ROWNUM AS rowno
+        FROM
+        LAW_COLLECTION
+        LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
+        WHERE
+        LAW_COLLECTION.COM_USERID = #{userId}
+        and LAW_TESTQUESTIONS. ID is not null
+        And LAW_COLLECTION.DEL_STATUS=0
+        And ROWNUM &lt;= #{endPage}
+        AND LAW_COLLECTION. TYPE = 20
+        <if test="questionType != null and questionType!=''">
+            AND QUESTION_TYPE=#{questionType}
+        </if>
+        <if test="specialKnowledgeId != null  and specialKnowledgeId!=''">
+            AND SPECIAL_KNOWLEDGE_ID=#{specialKnowledgeId}
+        </if>
+        <if test="questionDifficulty != null and  questionDifficulty != ''">
+            AND QUESTION_DIFFICULTY=#{questionDifficulty}
+        </if>
+        )
+        WHERE
+        rowno &gt; #{startPage}
+    </select>
 
 
-  <!--收藏试题组卷:随机从我收藏的题目中取num条数据.仅仅取idzjw-->
-  <select id="randomQuestColl" parameterType="map"  resultType="com.lawschool.beans.TestQuestions">
-    SELECT
-    ID
-    FROM
-    (
-    SELECT
-    LAW_TESTQUESTIONS. ID
-    FROM
-    LAW_COLLECTION
-    LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
-    WHERE
-    LAW_COLLECTION.COM_USERID = #{userId}
-    AND LAW_COLLECTION. TYPE = 20
-    AND LAW_COLLECTION.DEL_STATUS = 0
-      <if test="questionType != null and questionType!=''">
-          AND QUESTION_TYPE=#{questionType}
-      </if>
-      <if test="specialKnowledgeId != null  and specialKnowledgeId!=''">
-          AND SPECIAL_KNOWLEDGE_ID=#{specialKnowledgeId}
-      </if>
-      <if test="questionDifficulty != null and  questionDifficulty != ''">
-          AND QUESTION_DIFFICULTY=#{questionDifficulty}
-      </if>
-    ORDER BY
-    dbms_random.VALUE
-    )
-    WHERE
-    ROWNUM &lt;= #{num}
-  </select>
-
+    <!--收藏试题组卷:随机从我收藏的题目中取num条数据.仅仅取idzjw-->
+    <select id="randomQuestColl" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
+        SELECT
+        ID
+        FROM
+        (
+        SELECT
+        LAW_TESTQUESTIONS. ID
+        FROM
+        LAW_COLLECTION
+        LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
+        WHERE
+        LAW_COLLECTION.COM_USERID = #{userId}
+        AND LAW_COLLECTION. TYPE = 20
+        AND LAW_COLLECTION.DEL_STATUS = 0
+        <if test="questionType != null and questionType!=''">
+            AND QUESTION_TYPE=#{questionType}
+        </if>
+        <if test="specialKnowledgeId != null  and specialKnowledgeId!=''">
+            AND SPECIAL_KNOWLEDGE_ID=#{specialKnowledgeId}
+        </if>
+        <if test="questionDifficulty != null and  questionDifficulty != ''">
+            AND QUESTION_DIFFICULTY=#{questionDifficulty}
+        </if>
+        ORDER BY
+        dbms_random.VALUE
+        )
+        WHERE
+        ROWNUM &lt;= #{num}
+    </select>
 
 
     <!--根据ID查询试题-->
     <select id="findOne" parameterType="string" resultMap="BaseResultMap">
         SELECT
-        id,
-        type_id,
-        com_content,
-        question_difficulty,
-        question_type,
-        answer_choice_number,
-        answer_id,
-        special_knowledge_id,
-        police_classification,
-        legal_basis,
-        answer_describle,
-        release_status,
-        stu_issuer,
-        stu_issdepartment,
-        stu_isstim,
-        stu_optdepartment,
-        use_number,
-        rigth_number
+        <include refid="question"/>
         FROM law_testquestions a
         <where>
             a.id = #{id}
         </where>
-        ORDER BY SYS_GUID()
+        ORDER BY dbms_random.random
     </select>
 
     <!--更新启用禁用状态-->
@@ -273,14 +275,14 @@
                 AND a.special_knowledge_id = #{specialKnowledgeId}
             </if>
             <if test="questionDifficulty != null and questionDifficulty != ''">
-              AND a.question_difficulty = #{questionDifficulty}
+                AND a.question_difficulty = #{questionDifficulty}
             </if>
             <if test="questionType != null and questionType != ''">
-                 AND a.question_type = #{questionType}
+                AND a.question_type = #{questionType}
             </if>
-             <if test="typeId != null and typeId != ''">
-                 AND a.type_id = #{typeId}
-             </if>
+            <if test="typeId != null and typeId != ''">
+                AND a.type_id = #{typeId}
+            </if>
             <if test="list != null and list.size > 0">
                 AND a.question_type IN
                 <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
@@ -288,33 +290,16 @@
                 </foreach>
             </if>
         </where>
-        ORDER BY SYS_GUID()
+        ORDER BY dbms_random.random
     </select>
 
     <!--查询某类型的试题-->
     <select id="findBySpecialKnowledgeId" parameterType="map" resultMap="BaseResultMap">
         SELECT
-        id,
-        type_id,
-        com_content,
-        question_difficulty,
-        question_type,
-        answer_choice_number,
-        answer_id,
-        special_knowledge_id,
-        police_classification,
-        legal_basis,
-        answer_describle,
-        release_status,
-        stu_issuer,
-        stu_issdepartment,
-        stu_isstim,
-        stu_optdepartment,
-        use_number,
-        rigth_number
-        FROM law_testquestions
+        <include refid="question"/>
+        FROM law_testquestions a
         <where>
-             1 = 1
+            1 = 1
             <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
                 AND a.special_knowledge_id = #{specialKnowledgeId}
             </if>
@@ -325,7 +310,7 @@
                 </foreach>
             </if>
         </where>
-        ORDER BY SYS_GUID()
+        ORDER BY dbms_random.random
     </select>
 
     <!--查询所需要的问题字段-->
@@ -343,14 +328,15 @@
         <where>
             id IN
             <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
-              #{item}
+                #{item}
             </foreach>
         </where>
         ORDER BY id
     </select>
 
 
-    <select id="getInfoById" resultType="com.lawschool.beans.TestQuestions" parameterType="com.lawschool.beans.TestQuestions">
+    <select id="getInfoById" parameterType="com.lawschool.beans.TestQuestions"
+            resultType="com.lawschool.beans.TestQuestions">
       select
          ID,COM_CONTENT,
          QUESTION_TYPE,
@@ -371,24 +357,7 @@
     <!--查询某类型的试题-->
     <select id="findList" resultMap="BaseResultMap">
         SELECT
-        a.id,
-        a.type_id,
-        a.com_content,
-        a.question_difficulty,
-        a.question_type,
-        a.answer_choice_number,
-        a.answer_id,
-        a.special_knowledge_id,
-        a.police_classification,
-        a.legal_basis,
-        a.answer_describle,
-        a.release_status,
-        a.stu_issuer,
-        a.stu_issdepartment,
-        a.stu_isstim,
-        a.stu_optdepartment,
-        a.use_number,
-        a.rigth_number
+        <include refid="question"/>
         FROM law_testquestions a
         <where>
             1 = 1
@@ -418,41 +387,26 @@
 
     <!--查询某类型的试题-->
     <select id="findByEntity" resultMap="BaseResultMap">
-        SELECT * FROM
-            (SELECT
-            a.id,
-            a.type_id,
-            a.com_content,
-            a.question_difficulty,
-            a.question_type,
-            a.answer_choice_number,
-            a.answer_id,
-            a.special_knowledge_id,
-            a.police_classification,
-            a.legal_basis,
-            a.answer_describle,
-            a.release_status,
-            a.stu_issuer,
-            a.stu_issdepartment,
-            a.stu_isstim,
-            a.stu_optdepartment,
-            a.use_number,
-            a.rigth_number
-            FROM law_testquestions a
-            <where>
-                1 = 1
-                <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
-                    AND a.special_knowledge_id = #{specialKnowledgeId}
-                </if>
-                <if test="questionDifficulty != null and questionDifficulty != ''">
-                    AND a.question_difficulty = #{questionDifficulty}
-                </if>
-                <if test="questionType != null and questionType != ''">
-                    AND a.question_type = #{questionType}
-                </if>
-            </where>
-            ORDER BY dbms_random.random)
-            WHERE rownum = 1
+        SELECT
+          *
+        FROM
+        (SELECT
+        <include refid="question"/>
+        FROM law_testquestions a
+        <where>
+            1 = 1
+            <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
+                AND a.special_knowledge_id = #{specialKnowledgeId}
+            </if>
+            <if test="questionDifficulty != null and questionDifficulty != ''">
+                AND a.question_difficulty = #{questionDifficulty}
+            </if>
+            <if test="questionType != null and questionType != ''">
+                AND a.question_type = #{questionType}
+            </if>
+        </where>
+        ORDER BY dbms_random.random)
+        WHERE rownum = 1
     </select>
 
     <delete id="delete">
@@ -462,4 +416,29 @@
             #{item}
         </foreach>
     </delete>
+
+    <select id="findByNum" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
+        SELECT
+          *
+        FROM
+        (SELECT
+        <include refid="question"/>
+        FROM law_law_testquestions a
+        <where>
+            1 = 1
+            <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
+                AND a.special_knowledge_id = #{specialKnowledgeId}
+            </if>
+            <if test="questionType != null and questionType != ''">
+                AND a.question_type = #{questionType}
+            </if>
+        </where>
+        ORDER BY dbms_random.random))
+        <where>
+            1 = 1
+            <if test="num != null and num != ''">
+                AND rownum &lt;= #{num}
+            </if>
+        </where>
+    </select>
 </mapper>

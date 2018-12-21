@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.CollectionDao">
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.Collection">
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="COM_STUCODE" jdbcType="VARCHAR" property="comStucode" />
+    <result column="COM_USERID" jdbcType="VARCHAR" property="comUserid" />
+    <result column="OPTUSER" jdbcType="VARCHAR" property="optuser" />
+    <result column="OPTTIME" jdbcType="TIMESTAMP" property="opttime" />
+    <result column="TYPE" jdbcType="DECIMAL" property="type" />
+  </resultMap>
+  <insert id="insert" parameterType="com.lawschool.beans.Collection">
+    insert into LAW_COLLECTION (ID, COM_STUCODE, COM_USERID, 
+      OPTUSER, OPTTIME, TYPE
+      )
+    values (#{id,jdbcType=VARCHAR}, #{comStucode,jdbcType=VARCHAR}, #{comUserid,jdbcType=VARCHAR}, 
+      #{optuser,jdbcType=VARCHAR}, #{opttime,jdbcType=TIMESTAMP}, #{type,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lawschool.beans.Collection" >
+    insert into LAW_COLLECTION
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="comStucode != null">
+        COM_STUCODE,
+      </if>
+      <if test="comUserid != null">
+        COM_USERID,
+      </if>
+      <if test="optuser != null">
+        OPTUSER,
+      </if>
+      <if test="opttime != null">
+        OPTTIME,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="comStucode != null">
+        #{comStucode,jdbcType=VARCHAR},
+      </if>
+      <if test="comUserid != null">
+        #{comUserid,jdbcType=VARCHAR},
+      </if>
+      <if test="optuser != null">
+        #{optuser,jdbcType=VARCHAR},
+      </if>
+      <if test="opttime != null">
+        #{opttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+</mapper>
