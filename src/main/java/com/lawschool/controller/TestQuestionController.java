@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/testQuestion")
-public class TestQuestionController extends AbstractController {
+public class TestQuestionController {
 
     @Autowired
     private TestQuestionService testQuestionService;
@@ -51,7 +51,8 @@ public class TestQuestionController extends AbstractController {
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
     public Result info(@PathVariable("id") String id) {
         TestQuestions testQuestions = testQuestionService.findOne(id);
-        return Result.ok().put("info", testQuestions);
+        testQuestions.setAnswerList(answerService.getAnswerByQid(testQuestions.getId()));
+        return Result.ok().put("data", testQuestions);
     }
 
     /**
@@ -88,6 +89,8 @@ public class TestQuestionController extends AbstractController {
     @RequestMapping(value = "delete", method = RequestMethod.GET)
     public Result deleteById(@RequestBody List<String> idList) {
         testQuestionService.delete(idList);
+        //删除答案
+        answerService.deleteByQuestionIds(idList);
         return Result.ok();
     }
 
