@@ -435,6 +435,7 @@
         </where>
         ORDER BY dbms_random.random))
         <where>
+            1 = 1
             <if test="num != null and num != ''">
                 AND rownum &lt;= #{num}
             </if>
