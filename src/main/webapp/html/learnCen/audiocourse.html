@@ -49,7 +49,8 @@
                                 <el-row :gutter="66">
                                     <el-col :span="12" v-for="(item, index) in videoData">
                                         <el-card :body-style="{ padding: '0px' }">
-                                            <audio controls="controls">
+                                            <audio controls="controls" preload="none">
+                                                <source :src="item.contentUrl" controls="controls">
                                             </audio>
                                             <div style="padding: 14px 14px 0 14px;">
                                                 <p>
