@@ -86,7 +86,7 @@ public class TestQuestionController {
      * 删除试题
      */
     @SysLog("删除试题")
-    @RequestMapping(value = "delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Result deleteById(@RequestBody List<String> idList) {
         testQuestionService.delete(idList);
         //删除答案

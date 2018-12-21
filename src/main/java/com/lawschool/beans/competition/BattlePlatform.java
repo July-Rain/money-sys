@@ -16,7 +16,7 @@ import java.io.Serializable;
 
 
 @TableName("LAW_BATTLE_PLATFORM")
-public class BattlePlatform implements Serializable {
+public class BattlePlatform{
 	//id主键
 	@TableId
 	private String id;
@@ -43,7 +43,6 @@ public class BattlePlatform implements Serializable {
 	//备用字段5
 	private String backup5;
 
-
 	public String getId() {
 		return id;
 	}
@@ -51,7 +50,6 @@ public class BattlePlatform implements Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
-
 
 	public String getForeignKeyId() {
 		return foreignKeyId;
@@ -135,9 +133,9 @@ public class BattlePlatform implements Serializable {
 
 	@Override
 	public String toString() {
-		return "battlePlatform{" +
+		return "BattlePlatform{" +
 				"id='" + id + '\'' +
-				", foreignkeyId='" + foreignKeyId + '\'' +
+				", foreignKeyId='" + foreignKeyId + '\'' +
 				", type='" + type + '\'' +
 				", play1='" + play1 + '\'' +
 				", play2='" + play2 + '\'' +

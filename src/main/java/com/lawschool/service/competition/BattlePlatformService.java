@@ -13,7 +13,7 @@ import com.lawschool.beans.competition.BattlePlatform;
  * @Time        2018/11/29
  *
  */
-public interface BattlePlatformService extends IService<BattlePlatform> {
+public interface BattlePlatformService extends IService<BattlePlatform>{
 
         public BattlePlatform save(User u);
 
