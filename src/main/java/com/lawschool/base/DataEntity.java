@@ -1,5 +1,7 @@
 package com.lawschool.base;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -11,8 +13,11 @@ public class DataEntity<T> extends BaseEntity<T> {
     private static final long serialVersionUID = 1L;
 
     protected String createUser;    //创建人
+
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     protected Date createTime;      //创建时间
     protected String optUser;       //操作人
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     protected Date optTime;         //操作时间
 
 

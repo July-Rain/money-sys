@@ -41,7 +41,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
 
     /**
      * @Author zjw
-     * @Description 查询用户或者教官
+     * @Description 查询用户或者教官或在线用户
      * @Date 9:21 2018/12/19
      * @Param [params]
      * @return com.lawschool.util.PageUtils
@@ -75,6 +75,10 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         if(UtilValidate.isNotEmpty(params.get("userCode"))){
             ew.like("USER_CODE", (String) params.get("userCode"));//身份证号
 
+        }
+
+        if(UtilValidate.isNotEmpty(params.get("isOnline"))){
+            ew.eq("IS_ONLINE",1);//1  在线
         }
 
         List<User> users = userMapper.selectPage(page,ew);
@@ -111,11 +115,12 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
      * @return int
     **/
     @Override
-    public int updateUserOnlineStatus(String userId, String nowStatus, String updateStatus) {
-        EntityWrapper<User> ew=new EntityWrapper<>();
-        ew.eq("ID",userId).eq("IS_ONLINE",nowStatus).eq("IDENTIFY",0);
+    public int updateUserOnlineStatus(String id, String nowStatus, String updateStatus) {
         User use=new User();
         use.setIsOnline(updateStatus);
+        EntityWrapper<User> ew=new EntityWrapper<>();
+        ew.eq("ID",id);
+        ew.eq("IS_ONLINE",nowStatus);
         int res=userMapper.update(use,ew);
         return res==1? SUCCESS:ERROR;
     }
@@ -203,24 +208,5 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         user.setId(GetUUID.getUUIDs("U"));
         int i = userMapper.insert(user);
         return 0;
-    }
-
-    
-    /**
-     * @Author zjw
-     * @Description 获取在线用户
-     * @Date 10:11 2018/12/19
-     * @Param [params]
-     * @return com.lawschool.util.PageUtils
-    **/
-    @Override
-    public PageUtils selectOnlineUser(Map<String,Object> params) {
-        int pageNo=Integer.parseInt((String) Optional.ofNullable(params.get("pageNo")).orElse(1));
-        int pageSize=Integer.parseInt((String) Optional.ofNullable(params.get("pageSize")).orElse(10));
-
-        Page<User> page=new Page<User>(pageNo,pageSize);
-        List<User> users = userMapper.selectPage(page, new EntityWrapper<User>().eq("IS_ONLINE",1).eq("identify",0));
-        PageUtils pageUtils=new PageUtils(users,users.size(),pageNo,pageSize);
-        return pageUtils;
     }
 }

@@ -103,8 +103,8 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     public PageUtils listMyCollection(Map<String, Object> param) {
 
-        int pageNo= parseInt((String)Optional.ofNullable(param.get("currPage")).orElse(1));
-        long pageSize= parseInt((String)Optional.ofNullable(param.get("pageSize")).orElse(10));
+        int pageNo= parseInt(Optional.ofNullable(param.get("currPage")).orElse("1").toString());
+        long pageSize= parseInt(Optional.ofNullable(param.get("pageSize")).orElse("10").toString());
 
         //总个数
         int count = testQuestionsMapper.cntMyCollection(param);
@@ -190,8 +190,8 @@ public class CollectionServiceImpl implements CollectionService {
     //我的收藏-我的错题（获取我的所有的错题）-zjw
     @Override
     public PageUtils listMyErrorQuestion(Map<String, Object> param) {
-        int pageNo= parseInt((String)Optional.ofNullable(param.get("currPage")).orElse(1));
-        long pageSize= parseInt((String)Optional.ofNullable(param.get("pageSize")).orElse(10));
+        int pageNo= parseInt(Optional.ofNullable(param.get("currPage")).orElse("1").toString());
+        long pageSize= parseInt(Optional.ofNullable(param.get("pageSize")).orElse("10").toString());
         //总个数
         int count = userQuestRecordDao.cntMyError(param);
 

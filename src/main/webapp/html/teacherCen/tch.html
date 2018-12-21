@@ -48,8 +48,8 @@
 
                             <el-row :gutter="30">
                                     <el-col :span="6" v-for="(item, index) in tchData">
-                                        <el-card :body-style="{ padding: '0px' }"  v-on:click="toTchvedio(item.id)" >
-                                            <div>
+                                        <el-card :body-style="{ padding: '0px' }"   >
+                                            <div  @click="toTchvedio(item.id)">
                                                 <img  :src="'${rc.contextPath}/sys/download?accessoryId='+item.photo" >
                                             </div>
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.DailyQuestionConfigurationDao">
+    <resultMap id="BaseResultMap" type="com.lawschool.beans.DailyQuestionConfiguration">
+        <id column="ID" jdbcType="VARCHAR" property="id" />
+        <result column="SPECIAL_KNOWLEDGE_ID" jdbcType="VARCHAR" property="specialKnowledgeId" />
+        <result column="CREATE_RULE" jdbcType="VARCHAR" property="createRule" />
+        <result column="OBTAIN_POINT" jdbcType="DECIMAL" property="obtainPoint" />
+        <result column="IS_SHOW_LEGAL" jdbcType="DECIMAL" property="isShowLegal" />
+        <result column="CREATE_WAY" jdbcType="DECIMAL" property="createWay" />
+        <result column="IS_SHOW_ANSWER" jdbcType="DECIMAL" property="isShowAnswer" />
+        <result column="QUESTION_DIFFICULTY" jdbcType="DECIMAL" property="questionDifficulty" />
+        <result column="JOIN_PEOPLE" jdbcType="VARCHAR" property="joinPeople" />
+        <result column="JOIN_DEPT" jdbcType="VARCHAR" property="joinDept" />
+        <result column="QUESTION_ID" jdbcType="VARCHAR" property="questionId"/>
+    </resultMap>
+    <!--随机一题-->
+    <!--<select id="DailyQuestionConfiguration" parameterType="java.util.Map" resultType="com.lawschool.beans.DailyQuestionConfiguration">
+
+    </select>>-->
+</mapper>

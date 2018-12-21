@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.practicecenter.ThemeExerciseDao">
+
+	<sql id="themeColumns">
+		a.id AS "id",
+		a.total AS "total",
+		a.answer_num AS "answerNum",
+		a.status AS "status",
+		a.type_id AS "typeId",
+		a.type_name AS "typeName"
+	</sql>
+	
+	<!-- 根据条件查询用户进行的练习 -->
+	<select id="findAllByUser" resultType="com.lawschool.form.ThemeExerciseForm">
+		SELECT 
+			<include refid="themeColumns"/>
+		FROM law_theme_exercise a
+		<where>
+			a.create_user = #{createUser}
+			AND a.status &lt;&gt; #{status}
+		</where> 
+	</select>
+
+	<!-- 创建练习信息 -->
+	<insert id="save">
+		INSERT INTO law_theme_exercise
+        (
+        	id,
+        	type_id,
+        	total,
+        	answer_number,
+        	status,
+        	user_id,
+        	answer_time,
+        	update_time,
+         	type_name,
+         	right_num
+        ) VALUES (
+        	#{id},
+        	#{typeId},
+        	#{total},
+        	#{answerNumber},
+        	#{status},
+        	#{userId},
+        	#{answerTime},
+        	#{updateTime},
+            #{typeName},
+            #{rightNum}
+        )
+	</insert>
+
+	<!-- 更新主题任务状态 -->
+	<update id="updateStatus">
+		UPDATE law_theme_exercise
+		SET STATUS = #{status}
+		<where>
+			ID = #{id}
+		</where>
+	</update>
+
+	<update id="updateAnswerRecord">
+		UPDATE law_theme_exercise
+		SET right_num = #{rightNum},
+		    answer_num = #{answerNum},
+		    status = #{status},
+		    opt_time = #{optTime}
+		<where>
+			ID = #{id}
+		</where>
+	</update>
+
+	<select id="analysis" resultType="com.lawschool.form.AnalysisForm">
+		SELECT
+	        count(DISTINCT exercise_id) as typeNum,
+	        COUNT (*) AS total,
+	        SUM (IS_RIGHT) AS rightNum
+        FROM
+	        law_theme_record
+        WHERE
+	        TO_CHAR (ANSWER_TIME, 'YYYY-MM') = #{month}
+	        AND create_user = #{userId}
+	</select>
+</mapper>
