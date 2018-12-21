@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.MedalDao">
+
+    <insert id="insert" parameterType="com.lawschool.beans.MedalEntity">
+        INSERT INTO
+        (
+            id,
+            title_name,
+            integral,
+            credit,
+            badge,
+            opt_user,
+            opt_time,
+            create_user,
+            create_time
+        ) VALUES (
+            #{id},
+            #{titleName},
+            #{integral},
+            #{credit},
+            #{badge},
+            #{optUser},
+            #{optTime},
+            #{createUser},
+            #{createTime}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.lawschool.beans.MedalEntity">
+        UPDATE law_medal SET
+        title_name = #{titleName},
+        integral = #{integral},
+        credit = #{credit},
+        badge = #{badge},
+        opt_user = #{optUser},
+        opt_time = #{optTime}
+        WHERE id = #{id}
+    </update>
+
+    <select id="findOne" parameterType="string">
+        SELECT
+            id,
+            title_name,
+            integral,
+            credit,
+            badge,
+            opt_user,
+            opt_time,
+            create_user,
+            create_time
+        FROM law_medal
+        <where>
+            id = #{id}
+        </where>
+    </select>
+
+    <select id="findList" parameterType="string">
+        SELECT
+            id,
+            title_name,
+            integral,
+            credit,
+            badge,
+            opt_user,
+            opt_time,
+            create_user,
+            create_time
+        FROM law_medal
+    </select>
+
+    <delete id="delete">
+        DELETE FROM law_medal
+        WHERE id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

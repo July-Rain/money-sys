@@ -43,7 +43,7 @@ public class SysRoleController {
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
     public Result info(@PathVariable("id") String id) {
         SysRoleEntity sysRoleEntity = roleService.selectById(id);
-        return Result.ok().put("info", sysRoleEntity);
+        return Result.ok().put("data", sysRoleEntity);
     }
 
     /**
