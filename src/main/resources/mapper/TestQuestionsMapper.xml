@@ -254,7 +254,7 @@
         <where>
             a.id = #{id}
         </where>
-        ORDER BY SYS_GUID()
+        ORDER BY dbms_random.random
     </select>
 
     <!--更新启用禁用状态-->
@@ -290,7 +290,7 @@
                 </foreach>
             </if>
         </where>
-        ORDER BY SYS_GUID()
+        ORDER BY dbms_random.random
     </select>
 
     <!--查询某类型的试题-->
@@ -310,7 +310,7 @@
                 </foreach>
             </if>
         </where>
-        ORDER BY SYS_GUID()
+        ORDER BY dbms_random.random
     </select>
 
     <!--查询所需要的问题字段-->
