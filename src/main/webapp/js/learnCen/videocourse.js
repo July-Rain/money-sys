@@ -103,11 +103,23 @@ var vm = new Vue({
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
-                    // debugger
+                     debugger
                     if (result.code == 0) {
                         vm.videoData = result.page.list;
                         for(var i=0;i<vm.videoData.length;i++){
-                            vm.videoData[i].comContent=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
+                            vm.videoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
+                            if(vm.videoData[i].videoPicAcc){
+                                vm.videoData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
+                            }else{
+                                vm.videoData[i].videoPicAccUrl="http://temp.im/640x260";
+                            }
+                            if(vm.videoData[i].stuType=='1'){
+                                vm.videoData[i].stuType="文字";
+                            }else if(vm.videoData[i].stuType=='2'){
+                                vm.videoData[i].stuType="音频";
+                            }else if(vm.videoData[i].stuType=='3'){
+                                vm.videoData[i].stuType="视频";
+                            }
                         }
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;

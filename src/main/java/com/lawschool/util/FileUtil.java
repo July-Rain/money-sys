@@ -108,7 +108,7 @@ public class FileUtil {
             initFtpClient();
             ftpClient.setFileType(ftpClient.BINARY_FILE_TYPE);
             String curDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-            CreateDirecroty(curDate);
+            //CreateDirecroty(curDate);
             ftpClient.makeDirectory(curDate);
             ftpClient.changeWorkingDirectory(curDate);
             ftpClient.storeFile(accessoryEntity.getId()+"."+type, input);
@@ -276,8 +276,10 @@ public class FileUtil {
         try {
             System.out.println("开始下载文件");
             initFtpClient();
-            //切换FTP目录
-            ftpClient.changeWorkingDirectory(accessoryEntity.getFilePath());
+            //切换FTP主目录
+            //ftpClient.changeWorkingDirectory("/");
+            //切换FTP对应的文件目录
+            boolean test = ftpClient.changeWorkingDirectory(accessoryEntity.getFilePath());
             FTPFile[] ftpFiles = ftpClient.listFiles();
             for(FTPFile file : ftpFiles){
                 if(file.getName().equals(accessoryEntity.getId()+"."+accessoryEntity.getAccessoryType())){
