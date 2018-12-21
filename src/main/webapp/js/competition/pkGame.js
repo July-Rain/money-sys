@@ -3,18 +3,61 @@
  * Date: 2018/12/7
  * Description:
  */
+
+var user=null;
 var vm = new Vue({
     el: '#app',
     data: {
+        u:{},
     },
     created: function () {
         this.$nextTick(function () {
             this.reload();
         })
     },
+
+
     methods: {
+
+         basePath : function(){
+            //获取当前网址，如： http://localhost:8080/ems/Pages/Basic/Person.jsp
+            var curWwwPath = window.document.location.href;
+
+            //获取主机地址之后的目录，如： /ems/Pages/Basic/Person.jsp
+            var pathName = window.document.location.pathname;
+
+            var pos = curWwwPath.indexOf(pathName);
+
+            //获取主机地址，如： http://localhost:8080
+            var localhostPath = curWwwPath.substring(0, pos);
+
+            //获取带"/"的项目名，如：/ems
+            var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
+
+            //获取项目的basePath   http://localhost:8080/ems/
+            var basePath=localhostPath+projectName+"/";
+            return basePath;
+        },
         reload: function () {
 
+            $.ajax({
+                type: "POST",
+                url: baseURL + "websocket/pkAloneByRandom",
+                dataType: "json",
+                async:false,
+                success: function (result) {
+                    // path=vm.basePath();
+                    path= "127.0.0.1:8080/school/"
+                   vm.u=result.user;
+                   user=result.user;
+                    uid=result.user.id;
+//发送人编号
+                    from=result.user.id;
+                    fromName=result.user.fullName;
+                   console.info(vm.u);
+
+                }
+            });
         }
     }
 });
@@ -24,33 +67,59 @@ var vm = new Vue({
 
 var path =null;
 
-var uid='${sessionScope.loginUser.id}';
+var uid=null;
 //发送人编号
-var from='${sessionScope.loginUser.id}';
-var fromName='${sessionScope.loginUser.fullName}';
+var from=null;
+var fromName=null;
 //接收人编号
 //        var to="-1";
 var to= null;
 var code=null;
+
 //        console.info(to);
 // 创建一个Socket实例
 //参数为URL，ws表示WebSocket协议。onopen、onclose和onmessage方法把事件连接到Socket实例上。每个方法都提供了一个事件，以表示Socket的状态。
 var websocket;
 //不同浏览器的WebSocket对象类型不同
 //alert("ws://" + path + "/ws?uid="+uid);
-if ('WebSocket' in window) {
-    websocket = new WebSocket("ws://" + path + "ws");
-    console.log("=============WebSocket");
-    //火狐
-} else if ('MozWebSocket' in window) {
-    websocket = new MozWebSocket("ws://" + path + "ws");
-    console.log("=============MozWebSocket");
-} else {
-    websocket = new SockJS("http://" + path + "ws/sockjs");
-    console.log("=============SockJS");
-}
 
-console.log("ws://" + path + "ws");
+//onload初始化
+$(document).ready(
+    function() {
+
+        if ('WebSocket' in window) {
+            websocket = new WebSocket("ws://" + path+ "ws");
+            console.log("=============WebSocket");
+            //火狐
+        } else if ('MozWebSocket' in window) {
+            websocket = new MozWebSocket("ws://" + path + "ws");
+            console.log("=============MozWebSocket");
+        } else {
+            websocket = new SockJS("http://" + path + "ws/sockjs");
+            console.log("=============SockJS");
+        }
+
+        console.log("ws://" + path + "ws");
+        //发送消息
+        $("#sendBtn").on("click",function(){
+            sendMsg();
+        });
+
+        //给退出聊天绑定事件
+        $("#exitBtn").on("click",function(){
+            closeWebsocket();
+            // location.href="login.jsp";
+        });
+
+        //给输入框绑定事件
+        $("#msg").on("keydown",function(event){
+            keySend(event);
+        });
+
+        // 初始化时如果有消息，则滚动条到最下面：
+        scrollToBottom();
+
+    });
 
 //打开Socket,
 websocket.onopen = function(event) {
@@ -61,8 +130,6 @@ websocket.onopen = function(event) {
 //onmessage事件提供了一个data属性，它可以包含消息的Body部分。消息的Body部分必须是一个字符串，可以进行序列化/反序列化操作，以便传递更多的数据。
 websocket.onmessage = function(event) {
     console.log('Client received a message',event);
-
-
 
     //var data=JSON.parse(event.data);
     var data=$.parseJSON(event.data);
@@ -120,56 +187,8 @@ websocket.onerror = function(event) {
     scrollToBottom();
     console.log("WebSocket:发生错误 ",event);
 };
-function basePath(){
-    //获取当前网址，如： http://localhost:8080/ems/Pages/Basic/Person.jsp
-    var curWwwPath = window.document.location.href;
-    //获取主机地址之后的目录，如： /ems/Pages/Basic/Person.jsp
-    var pathName = window.document.location.pathname;
-    var pos = curWwwPath.indexOf(pathName);
-    //获取主机地址，如： http://localhost:8080
-    var localhostPath = curWwwPath.substring(0, pos);
-    //获取带"/"的项目名，如：/ems
-    var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
-    //获取项目的basePath   http://localhost:8080/ems/
-    var basePath=localhostPath+projectName+"/";
-    return basePath;
-};
 
-//onload初始化
-$(function(){
 
-    path=basePath();
-
-    $.ajax({
-        type: "POST",
-        url: baseURL + "websocket/pkAloneByRandom",
-        dataType: "json",
-        async:false,
-        success: function (result) {
-
-        }
-    });
-
-    //发送消息
-    $("#sendBtn").on("click",function(){
-        sendMsg();
-    });
-
-    //给退出聊天绑定事件
-    $("#exitBtn").on("click",function(){
-        closeWebsocket();
-        location.href="login.jsp";
-    });
-
-    //给输入框绑定事件
-    $("#msg").on("keydown",function(event){
-        keySend(event);
-    });
-
-    //初始化时如果有消息，则滚动条到最下面：
-    scrollToBottom();
-
-});
 
 //使用ctrl+回车快捷键发送消息
 function keySend(e) {
@@ -215,14 +234,12 @@ function sendMsg(){
 }
 
 //关闭Websocket连接
-function closeWebsocket(){
+function closeWebsocket() {
     if (websocket != null) {
         websocket.close();
         websocket = null;
     }
-
 }
-
 //div滚动条(scrollbar)保持在最底部
 function scrollToBottom(){
     //var div = document.getElementById('chatCon');

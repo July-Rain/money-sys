@@ -40,7 +40,6 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 	private BattlePlatformService battlePlatformService;
 
 	@Autowired
-
 	private UserService userService;
 
 

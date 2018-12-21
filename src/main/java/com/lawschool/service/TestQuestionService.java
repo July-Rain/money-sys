@@ -52,4 +52,11 @@ public interface TestQuestionService extends AbstractService<TestQuestions> {
 
     TestQuestions findByEntity(TestQuestions t);
 
+    /**
+     * 根据专项知识ID和题目类型查询指定数量的题目
+     * @param param
+     * @return
+     */
+    List<TestQuestions> findByNum(Map<String, Object> param);
+
 }
