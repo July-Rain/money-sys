@@ -388,9 +388,10 @@
     <!--查询某类型的试题-->
     <select id="findByEntity" resultMap="BaseResultMap">
         SELECT
-        <include refid="question"/>
+          *
         FROM
         (SELECT
+        <include refid="question"/>
         FROM law_testquestions a
         <where>
             1 = 1
@@ -418,18 +419,24 @@
 
     <select id="findByNum" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
         SELECT
+          *
+        FROM
+        (SELECT
         <include refid="question"/>
         FROM law_law_testquestions a
         <where>
             1 = 1
-            <if test="num != null and num != ''">
-                AND rownum &lt;= #{num}
-            </if>
             <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
                 AND a.special_knowledge_id = #{specialKnowledgeId}
             </if>
             <if test="questionType != null and questionType != ''">
                 AND a.question_type = #{questionType}
+            </if>
+        </where>
+        ORDER BY dbms_random.random))
+        <where>
+            <if test="num != null and num != ''">
+                AND rownum &lt;= #{num}
             </if>
         </where>
     </select>
