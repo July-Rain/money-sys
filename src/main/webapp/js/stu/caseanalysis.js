@@ -7,47 +7,50 @@ var menuId=$("#menuId").val();
 var vm = new Vue({
     el: '#app',
     data: {
-        //menuId:"",//菜单id
         navData: [],//导航
         formInline: { // 搜索表单
-            stuTitle: '',
-            stuPoliceclass: '',
-            stuType: "",
+            caseTitle: '',
+            caseType: '',
+            contentType: "",
             currPage: 1,
             pageSize: 10,
             totalCount:0,
-            stuLawid:""
+            caseLawid:""
         },
         tableData: [],//表格数据
         visible: false,
-        stuMedia: {
+        caseAna: {
             id:"",
-            stuType: "1",
-            stuTitle: "",
-            comContent: "",
-            deptIds: "",
-            userIds: "",
-            stuDescribe:"",
+            contentType: "1",//资料类型
+            caseTitle: "",//案例标题
+            caseContent: "",//案例内容
+            caseContentUrl: "",//案例内容的url
+            deptIds: "",//部门ids
+            userIds: "",//人员ids
+            caseDescribe:"",//案件描述
             userName:"",//适用人员姓名
             deptName:"",//适用部门姓名
-            stuLawid:"",//专项知识id
-            stuKnowledge:"",//专项知识
-            stuPoliceclass:"",//所属警种
+            caseLawid:"",//专项知识id
             videoPicAcc:"",//视频首页
+            videoPicAccUrl:"",//视频首页url
+            caseType:"",//案件类型
+            lawLevel:"",//法院层级
+            caseTime:"",//裁决时间
+            caseProcess:""//裁决程序
         },
         rules: {//表单验证规则
-            stuType: [
+            contentType: [
                 {required: true, message: '请选择资料类型', trigger: 'blur'}
             ],
-            stuTitle: [
+            caseTitle: [
                 {required: true, message: '请输入标题', trigger: 'blur'},
                 {max: 50, message: '最大长度50', trigger: 'blur'}
             ],
-            comContent: [
+            caseContent: [
                 {required: true, message: '请添加内容', trigger: 'blur'}
             ]
         },
-        dialogStuMedia: false,//table弹出框可见性
+        dialogCaseAna: false,//table弹出框可见性
         title:"",//弹窗的名称
         delIdArr: [],//删除数据
         treeData: [],//法律知识库分类树
@@ -81,7 +84,9 @@ var vm = new Vue({
         userTableData:[],//人员表格信息
         multipleSelection:[],//选中人员信息
         multipleDeptSelection:[],//选中部门信息
-        stuPoliceclassOption:[],//所属警种
+        caseTypeOption:[],//案件类型
+        lawLevelOption:[],//法院层级
+        caseProcessOption:[],//裁判程序
         videoFlag:false,
         videoUploadPercent:0,
     },
@@ -130,7 +135,7 @@ var vm = new Vue({
                     }
                 }
             });
-            // 所属警种
+            // 案件类型
             $.ajax({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
@@ -138,7 +143,29 @@ var vm = new Vue({
                 async:false,
                 data: {type:"POLICACLASS",Parentcode:"0"},
                 success: function (result) {
-                    vm.stuPoliceclassOption=result.dictlist;
+                    vm.caseTypeOption=result.dictlist;
+                }
+            });
+            // 法院层级
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async:false,
+                data: {type:"POLICACLASS",Parentcode:"0"},
+                success: function (result) {
+                    vm.lawLevelOption=result.dictlist;
+                }
+            });
+            // 审判程序
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async:false,
+                data: {type:"POLICACLASS",Parentcode:"0"},
+                success: function (result) {
+                    vm.caseProcessOption=result.dictlist;
                 }
             });
         })
@@ -165,23 +192,23 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    var url = vm.stuMedia.id?"stumedia/updateStuMedia": "stumedia/insertStuMedia";
-                    var deptArr = vm.stuMedia.deptIds?vm.stuMedia.deptIds.split(","):[];
-                    var userArr = vm.stuMedia.userIds?vm.stuMedia.userIds.split(","):[];
-                    vm.stuMedia.deptArr=deptArr;
-                    vm.stuMedia.userArr=userArr;
+                    var url = vm.caseAna.id?"caseana/updateCaseAna": "caseana/insertCaseAna";
+                    var deptArr = vm.caseAna.deptIds?vm.caseAna.deptIds.split(","):[];
+                    var userArr = vm.caseAna.userIds?vm.caseAna.userIds.split(","):[];
+                    vm.caseAna.deptArr=deptArr;
+                    vm.caseAna.userArr=userArr;
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
                         contentType: "application/json",
-                        data: JSON.stringify(vm.stuMedia),
+                        data: JSON.stringify(vm.caseAna),
                         success: function(result){
                             if(result.code === 0){
                                 vm.$alert('操作成功', '提示', {
                                     confirmButtonText: '确定',
                                     callback: function () {
-                                        vm.stuMedia.id=result.id;
-                                        vm.dialogStuMedia=false;
+                                        vm.caseAna.id=result.id;
+                                        vm.dialogCaseAna=false;
                                         vm.reload();
                                     }
                                 });
@@ -200,46 +227,50 @@ var vm = new Vue({
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
         },
-        addStuMedia: function () {
-            if(!vm.stuMedia.stuLawid){
+        addCaseAna: function () {
+            if(!vm.caseAna.caseLawid){
                 alert("请选择左侧专项知识");
                 return ;
             }
-            var lawId=vm.stuMedia.stuLawid;
-            var lawName=vm.stuMedia.stuKnowledge;
-            this.stuMedia= {
+            var lawId=vm.caseAna.caseLawid;
+            this.caseAna= {
                 id:"",
-                stuType: "1",
-                stuTitle: "",
-                comContent: "",
-                deptIds: "",
-                userIds: "",
-                stuDescribe:"",
+                contentType: "1",//资料类型
+                caseTitle: "",//案例标题
+                caseContent: "",//案例内容
+                caseContentUrl: "",//案例内容的url
+                deptIds: "",//部门ids
+                userIds: "",//人员ids
+                caseDescribe:"",//案件描述
                 userName:"",//适用人员姓名
                 deptName:"",//适用部门姓名
-                stuLawid:lawId,//专项知识id
-                stuKnowledge:lawName,//专项知识
+                caseLawid:lawId,//专项知识id
                 videoPicAcc:"",//视频首页
+                videoPicAccUrl:"",//视频首页url
+                caseType:"",//案件类型
+                lawLevel:"",//法院层级
+                caseTime:"",//裁决时间
+                caseProcess:""//裁决程序
             },
             this.title="新增";
-            this.dialogStuMedia=true;
+            this.dialogCaseAna=true;
         },
         handleEdit: function (index, row){
             this.title="修改";
-            this.dialogStuMedia=true;
+            this.dialogCaseAna=true;
             $.ajax({
                 type: "POST",
-                url: baseURL + 'stumedia/info?id=' + row.id,
+                url: baseURL + 'caseana/info?id=' + row.id,
                 contentType: "application/json",
                 success: function (result) {
                     if(result.code === 0){
-                        vm.stuMedia = result.data;
-                        for (var i=0;i<vm.stuMedia.length;i++){
+                        vm.caseAna = result.data;
+                        for (var i=0;i<vm.caseAna.length;i++){
                             debugger
-                            if(vm.stuMedia.stuType!='1'&&vm.stuMedia.comContent){
-                                vm.stuMedia.contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
-                                if(vm.stuMedia.videoPicAcc){
-                                    vm.stuMedia.videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
+                            if(vm.caseAna.contentType!='1'&&vm.caseAna.caseContent){
+                                vm.caseAna.caseContentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].caseContent;
+                                if(vm.caseAna.videoPicAcc){
+                                    vm.caseAna.videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
                                 }
                             }
                         }
@@ -259,7 +290,7 @@ var vm = new Vue({
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: baseURL + 'stumedia/delete' ,
+                    url: baseURL + 'caseana/delete' ,
                     async:true,
                     data: JSON.stringify(vm.delIdArr),
                     contentType: "application/json",
@@ -281,13 +312,13 @@ var vm = new Vue({
 
         },
         closeDia : function(){
-            this.dialogStuMedia=false;
+            this.dialogCaseAna=false;
             vm.reload();
         },
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "stumedia/list?isMp=true",
+                url: baseURL + "caseana/list?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
@@ -304,9 +335,8 @@ var vm = new Vue({
         },
         // el-tree节点点击事件
         handleNodeClick: function (data) {
-            vm.stuMedia.stuLawid=data.id;
-            vm.stuMedia.stuKnowledge=data.classifyName;
-            vm.formInline.stuLawid=data.id;
+            vm.caseAna.caseLawid=data.id;
+            vm.formInline.caseLawid=data.id;
             this.reload();
             //console.log(data);
         },
@@ -324,8 +354,8 @@ var vm = new Vue({
             this.videoFlag = false;
             this.videoUploadPercent = 0;
             if(response.code == 0){
-                vm.stuMedia.comContent=response.accessoryId;
-                vm.stuMedia.contentUrl=baseURL+"sys/download?accessoryId="+response.accessoryId;
+                vm.caseAna.caseContent=response.accessoryId;
+                vm.caseAna.caseContentUrl=baseURL+"sys/download?accessoryId="+response.accessoryId;
             }else{
                 this.$message.error('视频上传失败，请重新上传！');
             }
@@ -333,8 +363,8 @@ var vm = new Vue({
         handlePicSuccess: function (response, file, fileList) {
             debugger
             if(response.code == 0){
-                vm.stuMedia.videoPicAcc=response.accessoryId;
-                vm.stuMedia.videoPicAccUrl=baseURL+"sys/download?accessoryId="+response.accessoryId;
+                vm.caseAna.videoPicAcc=response.accessoryId;
+                vm.caseAna.videoPicAccUrl=baseURL+"sys/download?accessoryId="+response.accessoryId;
             }else{
                 this.$message.error('图片上传失败，请重新上传！');
             }
@@ -393,8 +423,7 @@ var vm = new Vue({
 
         changeStuType: function () {
             //修改资料类型
-            console.log(vm.stuMedia.stuType);
-            vm.stuMedia.comContent="";
+            vm.caseAna.caseContent="";
         },
         chooseDept: function () {
             //选择部门
@@ -410,12 +439,12 @@ var vm = new Vue({
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
             for(var i=0;i<this.multipleDeptSelection.length;i++){
-                if (this.stuMedia.deptIds == "") {
-                    this.stuMedia.deptIds=this.multipleDeptSelection[i].id;
-                    this.stuMedia.deptName=this.multipleDeptSelection[i].orgName;
+                if (this.caseAna.deptIds == "") {
+                    this.caseAna.deptIds=this.multipleDeptSelection[i].id;
+                    this.caseAna.deptName=this.multipleDeptSelection[i].orgName;
                 }else{
-                    this.stuMedia.deptIds+=","+this.multipleDeptSelection[i].id;
-                    this.stuMedia.deptName+=","+this.multipleDeptSelection[i].orgName;
+                    this.caseAna.deptIds+=","+this.multipleDeptSelection[i].id;
+                    this.caseAna.deptName+=","+this.multipleDeptSelection[i].orgName;
                 }
             }
             this.dialogDept=false;
@@ -473,12 +502,12 @@ var vm = new Vue({
             this.multipleSelection = val;
             //遍历最终的人员信息
             for (var i=0;i<val.length;i++){
-                if (this.stuMedia.userIds == "") {
-                    this.stuMedia.userIds=val[i].id;
-                    this.stuMedia.userName=val[i].userName;
+                if (this.caseAna.userIds == "") {
+                    this.caseAna.userIds=val[i].id;
+                    this.caseAna.userName=val[i].userName;
                 }else{
-                    this.stuMedia.userIds+=","+val[i].id;
-                    this.stuMedia.userName+=","+val[i].userName;
+                    this.caseAna.userIds+=","+val[i].id;
+                    this.caseAna.userName+=","+val[i].userName;
                 }
             }
 
