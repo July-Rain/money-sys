@@ -91,13 +91,14 @@ public class StuMediaController extends AbstractController {
 
     /**
      * @Author zjw
-     * @Description 获取当前登录人的课件（教官）
-     * @Date 14:39 2018-12-6
+     * @Description 获取某教官的课程
+     *      * @Date 14:39 2018-12-6
      * @Param []
      * @return com.lawschool.util.Result
-    **/
+     **/
     @RequestMapping("/listTM")
     public Result listTM(@RequestParam Map<String,Object> params){
+
         List<StuMedia> stuMedias = stuMediaService.selectTchMedia(params,getUser());
         if(UtilValidate.isEmpty(stuMedias)){
             return Result.error("身份错误或数据为空");

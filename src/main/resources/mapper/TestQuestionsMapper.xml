@@ -155,63 +155,61 @@
         </if>
     </select>
 
-    <!--列表：我收藏的重点试题zjw-->
-    <select id="listMyCollection" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
-        select
-        collectionId,
-        ID,
-        COM_CONTENT,
-        QUESTION_TYPE,
-        questiontypeValue,
-        ANSWER_ID,
-        answerValue,
-        QUESTION_DIFFICULTY,
-        questiondifficultyValue,
-        TYPE_ID,
-        typeValue,
-        SPECIAL_KNOWLEDGE_ID,
-        specialknowledgeValue,
-        ANSWER_DESCRIBLE
-        from
-        (
-        SELECT
-        LAW_COLLECTION. ID as collectionId,
-        LAW_TESTQUESTIONS.ANSWER_DESCRIBLE,
-        LAW_TESTQUESTIONS. ID,
-        LAW_TESTQUESTIONS.COM_CONTENT,
-        LAW_TESTQUESTIONS.QUESTION_TYPE,
-        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
-        LAW_TESTQUESTIONS.ANSWER_ID,
-        (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
-        LAW_TESTQUESTIONS.QUESTION_DIFFICULTY,
-        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
-        LAW_TESTQUESTIONS.TYPE_ID,
-        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
-        LAW_TESTQUESTIONS.SPECIAL_KNOWLEDGE_ID,
-        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
-        ROWNUM AS rowno
-        FROM
-        LAW_COLLECTION
-        LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
-        WHERE
-        LAW_COLLECTION.COM_USERID = #{userId}
-        and LAW_TESTQUESTIONS. ID is not null
-        And LAW_COLLECTION.DEL_STATUS=0
-        And ROWNUM &lt;= #{endPage}
-        AND LAW_COLLECTION. TYPE = 20
-        <if test="questionType != null and questionType!=''">
-            AND QUESTION_TYPE=#{questionType}
-        </if>
-        <if test="specialKnowledgeId != null  and specialKnowledgeId!=''">
-            AND SPECIAL_KNOWLEDGE_ID=#{specialKnowledgeId}
-        </if>
-        <if test="questionDifficulty != null and  questionDifficulty != ''">
-            AND QUESTION_DIFFICULTY=#{questionDifficulty}
-        </if>
-        )
-        WHERE
-        rowno &gt; #{startPage}
-    </select>
+  <!--列表：我收藏的重点试题zjw-->
+  <select id="listMyCollection" parameterType="map"  resultType="com.lawschool.beans.TestQuestions">
+    select
+    collectionId,
+    ID,
+    COM_CONTENT,
+    QUESTION_TYPE,
+    questiontypeValue,
+    ANSWER_ID,
+    QUESTION_DIFFICULTY,
+    questiondifficultyValue,
+    TYPE_ID,
+    typeValue,
+    SPECIAL_KNOWLEDGE_ID,
+    specialknowledgeValue,
+      ANSWER_DESCRIBLE
+    from
+    (
+    SELECT
+    LAW_COLLECTION. ID as collectionId,
+    LAW_TESTQUESTIONS.ANSWER_DESCRIBLE,
+    LAW_TESTQUESTIONS. ID,
+    LAW_TESTQUESTIONS.COM_CONTENT,
+    LAW_TESTQUESTIONS.QUESTION_TYPE,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = QUESTION_TYPE )AS questiontypeValue,
+    LAW_TESTQUESTIONS.ANSWER_ID,
+    LAW_TESTQUESTIONS.QUESTION_DIFFICULTY,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = QUESTION_DIFFICULTY )AS questiondifficultyValue,
+    LAW_TESTQUESTIONS.TYPE_ID,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = TYPE_ID )AS typeValue,
+    LAW_TESTQUESTIONS.SPECIAL_KNOWLEDGE_ID,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
+    ROWNUM AS rowno
+    FROM
+    LAW_COLLECTION
+    LEFT JOIN LAW_TESTQUESTIONS ON LAW_COLLECTION.COM_STUCODE = LAW_TESTQUESTIONS. ID
+    WHERE
+    LAW_COLLECTION.COM_USERID = #{userId}
+      and  LAW_TESTQUESTIONS. ID is not null
+    And LAW_COLLECTION.DEL_STATUS=0
+    And ROWNUM &lt;= #{endPage}
+    AND LAW_COLLECTION. TYPE = 20
+    <if test="questionType != null and questionType!=''">
+      AND QUESTION_TYPE=#{questionType}
+    </if>
+      <if test="specialKnowledgeId != null  and specialKnowledgeId!=''">
+          AND SPECIAL_KNOWLEDGE_ID=#{specialKnowledgeId}
+      </if>
+    <if test="questionDifficulty != null and  questionDifficulty != ''">
+      AND QUESTION_DIFFICULTY=#{questionDifficulty}
+    </if>
+    )
+    WHERE
+    rowno &gt; #{startPage}
+  </select>
 
 
     <!--收藏试题组卷:随机从我收藏的题目中取num条数据.仅仅取idzjw-->
@@ -335,21 +333,20 @@
     </select>
 
 
-    <select id="getInfoById" parameterType="com.lawschool.beans.TestQuestions"
-            resultType="com.lawschool.beans.TestQuestions">
-      select
-         ID,COM_CONTENT,
-         QUESTION_TYPE,
-         (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
-         ANSWER_ID,ANSWER_DESCRIBLE,
-        (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
+    <!--获取试题的详细信息zjw-->
+    <select id="getInfoById" resultType="com.lawschool.beans.TestQuestions" parameterType="com.lawschool.beans.TestQuestions">
+    select
+        ID,COM_CONTENT,
+        QUESTION_TYPE,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = QUESTION_TYPE )AS questiontypeValue,
+        ANSWER_ID,ANSWER_DESCRIBLE,
         QUESTION_DIFFICULTY,
-        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = QUESTION_DIFFICULTY )AS questiondifficultyValue,
         TYPE_ID,
-       (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
-       SPECIAL_KNOWLEDGE_ID,
-       (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue
-    FROM law_testquestions
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = TYPE_ID )AS typeValue,
+        SPECIAL_KNOWLEDGE_ID,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue
+      FROM law_testquestions
     where id=#{id}
     </select>
 

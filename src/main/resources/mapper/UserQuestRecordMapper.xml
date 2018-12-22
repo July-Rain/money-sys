@@ -48,6 +48,8 @@
     </if>
   </select>
 
+
+  <!--组卷：我做错的题目zjw-->
   <select id="randomErrorColl" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
     SELECT
     ID
