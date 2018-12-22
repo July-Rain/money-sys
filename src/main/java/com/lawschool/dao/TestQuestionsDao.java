@@ -63,4 +63,11 @@ public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
      */
     List<QuestForm> findByIds(List<String> list);
 
+    /**
+     * 根据专项知识ID和题目类型查询指定数量的题目
+     * @param param
+     * @return
+     */
+    List<TestQuestions> findByNum(Map<String, Object> param);
+
 }

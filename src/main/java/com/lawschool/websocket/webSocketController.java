@@ -47,7 +47,7 @@ public class webSocketController extends AbstractController {
         session.setAttribute("loginUser", u);
         // 将登录信息放入数据库，便于协查跟踪聊天者
         System.out.println("新用户诞生了：" + u);
-        return Result.ok();
+        return Result.ok().put("user",u);
     }
 
 

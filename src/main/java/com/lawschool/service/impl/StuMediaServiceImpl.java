@@ -203,6 +203,9 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         String stuPoliceclass = (String)params.get("stuPoliceclass");
         String stuLawid = (String)params.get("stuLawid");
         String stuType = (String)params.get("stuType");
+        String stuIssuer = (String)params.get("stuIssuer");
+        String startTime = (String)params.get("startTime");
+        String endTime = (String)params.get("endTime");
         String createUser=(String)params.get("createUser");//创建人
         String addsrc=(String)params.get("addsrc");//添加来源  0-其他  1-教官中心
         EntityWrapper<StuMedia> ew = new EntityWrapper<>();
@@ -214,14 +217,25 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
             ew.like("com_content",comContent);
         }
         if(UtilValidate.isNotEmpty(stuPoliceclass)){
-            ew.like("stu_policeclass",stuPoliceclass);
+            ew.eq("stu_policeclass",stuPoliceclass);
         }
         if(UtilValidate.isNotEmpty(stuType)){
             ew.eq("stu_type",stuType);
         }
         if(UtilValidate.isNotEmpty(stuLawid)){
-            ew.eq("stu_lawid",stuLawid);
+            String[] lawArr=stuLawid.split(",");
+            ew.in("stu_lawid",lawArr);
         }
+        if(UtilValidate.isNotEmpty(stuIssuer)){
+            ew.like("stu_issuer",stuIssuer);
+        }
+        if(UtilValidate.isNotEmpty(startTime)){
+            ew.addFilter("(stu_isstime >= TO_DATE('"+startTime+"', 'yyyy-mm-dd'))");
+        }
+        if(UtilValidate.isNotEmpty(endTime)){
+            ew.addFilter("(stu_isstime <= TO_DATE('"+endTime+"', 'yyyy-mm-dd'))");
+        }
+
         if(UtilValidate.isNotEmpty(createUser)){  //创建人
             ew.eq("CREATE_USER",createUser);
         }
@@ -230,8 +244,6 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         }
 
         ew.orderBy("STU_ISSTIME");
-
-
         //Page<StuMedia> page = new Page<StuMedia>();
        /* Page<StuMedia> page = new Page<StuMedia>(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
 

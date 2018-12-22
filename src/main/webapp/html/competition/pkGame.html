@@ -1,6 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>在线比武</title>
     <#include "/header.html">
@@ -9,7 +8,7 @@
     <link rel="stylesheet" href="${rc.contextPath}/sun-jsp/css/style.css" type="text/css" media="all" />
     <link rel="stylesheet" href="${rc.contextPath}/sun-jsp/css/chat.css" type="text/css" media="all" />
     <script type="text/javascript">
-        var path = '<%=basePath%>';
+
     </script>
 </head>
 
@@ -28,33 +27,28 @@
                 <el-tabs type="border-card">
                     <el-tab-pane label="单人随机在线比武">
                         <div style="height: 700px;" >
+                            <p>当前登录用户：{{u.fullName}}</p>
+                            <div class="inChatArea">
+                                <div id="chatSidebar" class="chatSidebar">
+                                    <h2 id="chatOnline">在线用户(0人)</h2>
+                                    <ul id="chatUserList">
 
-                                                <div class="chatArea" id="chatArea">
-                                                    <div class="inChatArea">
-                                                        <div id="chatSidebar" class="chatSidebar">
-                                                            <h2 id="chatOnline">在线用户(0人)</h2>
-                                                            <ul id="chatUserList">
-                                                                <!--  <li>bobo老师</li>
-                                                                  -->
-                                                            </ul>
-                                                        </div>
-                                                        <div class="chatCon">
-                                                            <div class="up" id="up">
-                                                                <ul id="contentUl">
-                                                                    <!-- <li><b>14:08</b><em>江山如此多娇</em><span>今天天气不大家出来嗨！！！！！</span></li>
-                                                                    -->
-                                                                </ul>
-                                                            </div>
-                                                            <div class="down">
-                                                                <textarea class="textInfo" id="msg" title="按ctrl+enter直接发送"></textarea>
-                                                                <button class="btn" id="sendBtn"></button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="ad">
-                                                            <iframe src="http://m.itheimacast.icoc.in/" width="315" height="635" scrolling="no" frameborder="no" />
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                    </ul>
+                                </div>
+                                <div class="chatCon">
+                                    <div class="up" id="up">
+                                        <ul id="contentUl">
+                                            <!-- <li><b>14:08</b><em>江山如此多娇</em><span>今天天气不大家出来嗨！！！！！</span></li>
+                                            -->
+                                        </ul>
+                                    </div>
+                                    <div class="down">
+                                        <textarea class="textInfo" id="msg" title="按ctrl+enter直接发送"></textarea>
+                                        <button class="btn" id="sendBtn"></button>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </el-tab-pane>
                 </el-tabs>

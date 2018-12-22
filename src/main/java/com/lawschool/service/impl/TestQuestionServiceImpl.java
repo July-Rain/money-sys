@@ -67,4 +67,13 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
     public TestQuestions findByEntity(TestQuestions entity) {
         return dao.findByEntity(entity);
     }
+
+    /**
+     * 根据专项知识ID和题目类型查询指定数量的题目
+     * @param param
+     * @return
+     */
+    public List<TestQuestions> findByNum(Map<String, Object> param){
+        return dao.findByNum(param);
+    }
 }

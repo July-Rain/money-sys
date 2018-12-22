@@ -9,13 +9,14 @@ var vm = new Vue({
         videoData: [],//视频列表
         navData: [],//导航
         formInline: { // 搜索表单
-            value: '',
-            name: '',
-            status: "",
             stuType:"2",
             currPage: 1,
             pageSize: 10,
-            totalCount:0
+            totalCount:0,
+            stuLawName:"",
+            stuIssuer:"",
+            startTime:"",
+            endTime:""
         },
         visible: false,
         stuMedia: {
@@ -34,6 +35,8 @@ var vm = new Vue({
             children: 'list',
             label: 'classifyName'
         },
+        dialogLaw:false,//法律分类的弹窗
+        multipleSelection:[]//法律分类弹窗
     },
     created: function () {
 
@@ -87,6 +90,7 @@ var vm = new Vue({
         },
         // 表单重置
         resetForm: function (formName) {
+            this.formInline.stuLawid="";
             this.$refs[formName].resetFields();
         },
         reload: function () {
@@ -112,7 +116,34 @@ var vm = new Vue({
         },
         // el-tree节点点击事件
         handleNodeClick: function (data) {
-            console.log(data);
+            vm.formInline.stuLawid=data.id;
+            this.reload();
+        },
+        handleCheckChange:function(){
+
+        },
+        chooseLaw: function(){
+            this.dialogLaw=true;
+
+            this.multipleSelection=[];
+        },
+        confimLaw: function () {
+            this.formInline.stuLawid="";
+            this.formInline.stuLawName="";
+            this.multipleSelection=this.$refs.lawtree.getCheckedNodes();
+            for(var i=0;i<this.multipleSelection.length;i++){
+                if (this.formInline.stuLawid == "") {
+                    this.formInline.stuLawid=this.multipleSelection[i].id;
+                    this.formInline.stuLawName=this.multipleSelection[i].classifyName;
+                }else{
+                    this.formInline.stuLawid+=","+this.multipleSelection[i].id;
+                    this.formInline.stuLawName+=","+this.multipleSelection[i].classifyName;
+                }
+            }
+            this.dialogLaw=false;
+        },
+        cancelLaw: function () {
+            this.dialogLaw=false;
         },
     }
 });
