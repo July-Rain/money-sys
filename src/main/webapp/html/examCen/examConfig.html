@@ -54,6 +54,7 @@
                         <el-form-item label="专项知识：" prop="specialKnowledgeId">
                             <el-select v-model="examConfig.list" size="mini"
                                        multiple collapse-tags style="width: auto" placeholder="多选">
+                                <el-option :key="null" :label="全部" :value="null">全部</el-option>
                                 <el-option v-for="item in skOption" :key="item.key"
                                            :label="item.value" :value="item.key"></el-option>
                             </el-select>
@@ -184,6 +185,8 @@
                     </el-col>
                     <el-col :span="11">
                         <el-form-item label="组考单位：" prop="organizedOrgCode">
+                            <el-input v-model="examConfig.deptName" readonly @focus="chooseOrgDept" placeholder="请选择使用部门" clearable></el-input>
+                        </el-form-item>
                     </el-col>
                     <el-col :span="11">
                         <el-form-item label="阅卷方式：" prop="checkType">
@@ -205,12 +208,21 @@
                                        inactive-value="0"></el-switch>
                         </el-form-item>
                     </el-col>
+                    <el-col :span="11">
+                    <el-form-item label="使用部门" prop="deptName">
+                        <el-input v-model="examConfig.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门" clearable></el-input>
+                    </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                    <el-form-item label="使用人员" prop="userName">
+                        <el-input v-model="examConfig.userName" readonly @focus="chooseUser" placeholder="请选择使用人员" clearable></el-input>
+                    </el-form-item>
+                    </el-col>
                     <el-col :span="24">
                         <el-form-item label="备注" prop="remark">
                             <el-input type="textarea" maxlength="200" v-model="examConfig.remark"></el-input>
                         </el-form-item>
                     </el-col>
-
                     <el-col :span="24">
                         <el-form-item>
                             <el-button type="primary" @click="preview('testPaper')">预览</el-button>
@@ -242,48 +254,48 @@
                                 width="50">
                         </el-table-column>
                         <el-table-column
-                                prop="knowledge"
+                                prop="specialKnowledgeId"
                                 label="知识点"
                                 width="180">
                             <template slot-scope="scope">
-                                <el-select v-model="scope.row.knowledge" placeholder="请选择" size="mini" clearable>
+                                <el-select v-model="scope.row.specialKnowledgeId" placeholder="请选择" size="mini" clearable>
                                     <el-option
                                             v-for="item in skOption"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value">
+                                            :key="item.key"
+                                            :label="item.value"
+                                            :value="item.key">
                                     </el-option>
                                 </el-select>
                             </template>
                         </el-table-column>
                         <el-table-column
-                                prop="type"
+                                prop="questionType"
                                 label="题型"
                                 width="180">
                             <template slot-scope="scope">
-                                <el-select v-model="scope.row.type" placeholder="请选择" size="mini" clearable>
+                                <el-select v-model="scope.row.questionType" placeholder="请选择" size="mini" clearable>
                                     <el-option
                                             v-for="item in qtOption"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value">
+                                            :key="item.key"
+                                            :label="item.value"
+                                            :value="item.key">
                                     </el-option>
                                 </el-select>
                             </template>
                         </el-table-column>
                         <el-table-column
-                                prop="num"
+                                prop="questionNumber"
                                 label="数量"
                                 width="180">
                             <template slot-scope="scope">
-                                <el-input v-model="scope.row.num" placeholder="请输入内容" size="mini" clearable></el-input>
+                                <el-input v-model="scope.row.questionNumber" placeholder="请输入内容" size="mini" clearable></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
-                                prop="score"
+                                prop="questionScore"
                                 label="分值">
                             <template slot-scope="scope">
-                                <el-input v-model="scope.row.score" placeholder="请输入内容" size="mini" clearable></el-input>
+                                <el-input v-model="scope.row.questionScore" placeholder="请输入内容" size="mini" clearable></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -306,6 +318,95 @@
 
         <el-dialog :title="title" :visible.sync="autonomyQuesModal" :before-close="closeDia">
             自主出题
+        </el-dialog>
+
+        <el-dialog title="选择部门" :visible.sync="dialogDept" >
+            <!--对于同一级的节点，每次只能展开一个-->
+            <el-tree
+                    ref="deptTree"
+                    :data="deptData"
+                    :props="defaultDeptProps"
+                    accordion
+                    show-checkbox
+                    @check-change="handleCheckChange"
+                    node-key="id"
+                    :default-expanded-keys="[2079]"
+            >
+            </el-tree>
+            <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+            <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
+        </el-dialog>
+
+        <el-dialog title="选择人员" :visible.sync="dialogUser" >
+            <!--对于同一级的节点，每次只能展开一个-->
+            <el-row>
+                <el-col :span="4">
+                    <el-tree
+                            :data="userData"
+                            :props="defaultUserProps"
+                            accordion
+                            @node-click="handleDeptNodeClick">
+                    </el-tree>
+                </el-col>
+
+                <el-col :span="20">
+                    <el-tabs type="border-card">
+                        <el-tab-pane label="检索">
+                            <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
+
+                                <el-form-item prop="code">
+                                    <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
+                                </el-form-item>
+                                <el-form-item prop="value">
+                                    <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
+                                </el-form-item>
+
+                                <el-form-item>
+                                    <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
+                                    <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
+
+                                </el-form-item>
+                            </el-form>
+                            <div>
+                                <el-table
+                                        :data="userTableData"
+                                        border
+                                        @selection-change="handleSelectionChange"
+                                        style="width: 100%">
+                                    <el-table-column
+                                            type="selection"
+                                            width="55">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="userCode"
+                                            label="身份证号"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="userName"
+                                            label="姓名"
+                                            width="280"
+                                    >
+                                    </el-table-column>
+
+                                </el-table>
+                                <el-pagination
+                                        @size-change="userHandleSizeChange"
+                                        @current-change="userHandleCurrentChange"
+                                        :current-page="userForm.currPage"
+                                        :page-sizes="[10, 20, 30, 40]"
+                                        :page-size="userForm.pageSize"
+                                        layout="total, sizes, prev, pager, next, jumper"
+                                        :total="userForm.totalCount">
+                                </el-pagination>
+                            </div>
+                        </el-tab-pane>
+                    </el-tabs>
+                    <el-button type="primary" size="mini" @click="confimUser" >保存</el-button>
+                    <el-button type="primary" size="mini" @click="cancelUser">取消</el-button>
+                </el-col>
+            </el-row>
+
         </el-dialog>
     </div>
 </div>

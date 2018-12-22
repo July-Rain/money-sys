@@ -326,7 +326,7 @@
         <where>
             id IN
             <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
-                #{item}
+                #{item.id}
             </foreach>
         </where>
         ORDER BY id
@@ -416,11 +416,11 @@
 
     <select id="findByNum" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
         SELECT
-          *
+          id
         FROM
         (SELECT
         <include refid="question"/>
-        FROM law_law_testquestions a
+        FROM law_testquestions a
         <where>
             1 = 1
             <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
@@ -430,7 +430,7 @@
                 AND a.question_type = #{questionType}
             </if>
         </where>
-        ORDER BY dbms_random.random))
+        ORDER BY dbms_random.random)
         <where>
             1 = 1
             <if test="num != null and num != ''">

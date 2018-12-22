@@ -8,6 +8,7 @@ import com.lawschool.base.AbstractService;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.util.PageUtils;
+import com.lawschool.util.Result;
 
 /***
  * 
@@ -19,4 +20,6 @@ import com.lawschool.util.PageUtils;
 public interface ExamConfigService extends  AbstractService<ExamConfig> {
 
 	 PageUtils queryPage(Map<String, Object> params);
+
+	 public Result examConfig(String type, ExamConfig examConfig) throws Exception  ;
 }

@@ -2,6 +2,7 @@ package com.lawschool.beans.exam;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -161,23 +162,37 @@ public class ExamConfig extends DataEntity<ExamConfig> {
 
 	@TableField(exist = false)
 	private String[] userId;// 适用人员
+	@TableField(exist = false)
+	private List<ExamQueConfig> examQueConfigList;
+	@TableField(exist = false)
+	private List<ExamQuestions> examQuestionsList;
 
-	/**
-	 * 主键
-	 * 
-	 * @return ID 主键
-	 */
-	public String getId() {
-		return id;
+	private List<String> list;
+
+	private String status;
+
+	public String getStatus() {
+		return this.status;
 	}
 
-	/**
-	 * 主键
-	 * 
-	 * @param id 主键
-	 */
-	public void setId(String id) {
-		this.id = id == null ? null : id.trim();
+	public void setStatus(final String status) {
+		this.status = status;
+	}
+
+	public List<ExamQueConfig> getExamQueConfigList() {
+		return this.examQueConfigList;
+	}
+
+	public void setExamQueConfigList(final List<ExamQueConfig> examQueConfigList) {
+		this.examQueConfigList = examQueConfigList;
+	}
+
+	public List<ExamQuestions> getExamQuestionsList() {
+		return this.examQuestionsList;
+	}
+
+	public void setExamQuestionsList(final List<ExamQuestions> examQuestionsList) {
+		this.examQuestionsList = examQuestionsList;
 	}
 
 	/**
@@ -681,5 +696,12 @@ public class ExamConfig extends DataEntity<ExamConfig> {
 	public void setUserId(String[] userId) {
 		this.userId = userId;
 	}
-	
+
+	public List<String> getList() {
+		return this.list;
+	}
+
+	public void setList(final List<String> list) {
+		this.list = list;
+	}
 }

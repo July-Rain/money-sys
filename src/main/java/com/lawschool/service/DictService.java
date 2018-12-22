@@ -84,4 +84,6 @@ public interface DictService extends IService<Dict> {
      */
     List<CommonForm> findIdByType(String type);
 
+    List<CommonForm> findCodeByType(String type);
+
 }

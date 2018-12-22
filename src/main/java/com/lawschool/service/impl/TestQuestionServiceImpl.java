@@ -73,7 +73,7 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
      * @param param
      * @return
      */
-    public List<TestQuestions> findByNum(Map<String, Object> param){
+    public List<String> findByNum(Map<String, Object> param){
         return dao.findByNum(param);
     }
 }

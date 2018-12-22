@@ -23,7 +23,7 @@
     <where>
       question_id IN
       <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
-        #{item}
+        #{item.id}
       </foreach>
     </where>
     ORDER BY question_id

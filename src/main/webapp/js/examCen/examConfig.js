@@ -36,7 +36,32 @@ var vm = new Vue({
         ctOption:[],
         skOption:[],
         randomQuesData:[],
-        qtOption:[]
+        qtOption:[],
+        userTableData:[],//人员表格信息
+        multipleSelection:[],//选中人员信息
+        multipleDeptSelection:[],//选中部门信息
+        dialogOrgDept: false,
+        dialogDept: false,//部门的弹窗
+        dialogUser: false,//人员的弹窗
+        deptData:[],//部门树数据
+        userData:[],//人员树数据
+        defaultDeptProps:{
+            children: 'child',
+            label: 'orgName'
+        },//部门树的默认格式
+        defaultUserProps:{
+            children: 'child',
+            label: 'orgName'
+        },//部门人员的默认格式
+        userForm:{
+            userCode:"",
+            userName:"",
+            orgCode:"",
+            currPage: 1,
+            pageSize: 10,
+            totalCount:0
+
+        }//人员查询
     },
     created: function () {
         this.$nextTick(function () {
@@ -54,6 +79,7 @@ var vm = new Vue({
                 }
             });
         }),
+
         this.$nextTick(function () {
             //下拉框选项
             $.ajax({
@@ -77,6 +103,20 @@ var vm = new Vue({
                     }
                 }
             });
+            //加载部门数据
+            $.ajax({
+                type: "POST",
+                url: baseURL + "org/tree",
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        vm.deptData = result.orgList;
+                        vm.userData = result.orgList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
         });
 
     },
@@ -85,14 +125,6 @@ var vm = new Vue({
         onSubmit: function () {
             // this.reload();
         },
-        /*handleSizeChange: function (val) {
-            this.formInline.pageSize = val;
-            this.reload();
-        },
-        handleCurrentChange: function (val) {
-            this.formInline.currPage = val;
-            this.reload();
-        },*/
         openDiffModal : function(e){
             if(e === "10033"){
                 this.randomQues();
@@ -103,7 +135,7 @@ var vm = new Vue({
             this.randomQuesModal = true;
         },
         handleSave:function(randomQuesData){
-            vm.examConfig.randomQuesData=randomQuesData;
+            vm.examConfig.examQueConfigList=randomQuesData;
             vm.randomQuesModal = false;
         },
         preview:function(){
@@ -123,24 +155,97 @@ var vm = new Vue({
                     }
                 }
             });
-
-            // $.ajax({
-            //     type : "POST",
-            //     url: baseURL + "exam/config/examConfig",
-            //     datatype:"json",
-            //     data:{
-            //         examConfig: vm.examConfig
-            //     },
-            //     success: function (result) {
-            //         if (result.code === 0) {
-            //             alert("添加成功");
-            //         }else{
-            //             alert(result.msg);
-            //         }
-            //     }
-            // })
         },
+        confimDept: function () {
+            this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
+            for(var i=0;i<this.multipleDeptSelection.length;i++){
+                if (this.examConfig.deptIds == "") {
+                    this.examConfig.deptIds=this.multipleDeptSelection[i].id;
+                    this.examConfig.deptName=this.multipleDeptSelection[i].orgName;
+                }else{
+                    this.examConfig.deptIds+=","+this.multipleDeptSelection[i].id;
+                    this.examConfig.deptName+=","+this.multipleDeptSelection[i].orgName;
+                }
+            }
+            this.dialogDept=false;
+        },
+        cancelDept: function () {
+            this.dialogDept=false;
+        },
+        confimUser: function () {
+            this.dialogUser=false;
+        },
+        cancelUser: function () {
+            this.dialogUser=false;
+        },
+        searchUser: function () {
+            //查询人员信息
+            vm.reloadUser();
+        },
+        userHandleSizeChange: function (val) {
+            this.userForm.pageSize=val;
+            this.reloadUser();
+        },
+        userHandleCurrentChange: function (val) {
+            this.userForm.currPage=val;
+            this.reloadUser();
+        },
+        chooseOrgDept: function(){
 
+        },
+        chooseDept: function () {
+            //选择部门
+            console.log(vm.deptData);
+            this.dialogDept=true;
+
+        },
+        //部门人员控件中点击事件
+        handleDeptNodeClick: function (data) {
+            this.userForm.orgCode=data.orgCode;
+            this.reloadUser();
+        },
+        handleCheckChange: function (data, checked, indeterminate) {
+            console.log(data);
+
+        },
+        handleSelectionChange(val) {
+            //选择人员信息
+            this.multipleSelection = val;
+            //遍历最终的人员信息
+            for (var i=0;i<val.length;i++){
+                if (this.examConfig.userIds == "") {
+                    this.examConfig.userIds=val[i].id;
+                    this.examConfig.userName=val[i].userName;
+                }else{
+                    this.examConfig.userIds+=","+val[i].id;
+                    this.examConfig.userName+=","+val[i].userName;
+                }
+            }
+
+        },
+        chooseUser: function () {
+            //选择人员
+            this.dialogUser=true;
+
+        },
+        reloadUser: function () {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "sys/getAllUsers",
+                dataType: "json",
+                data: vm.userForm,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.userTableData = result.page.list;
+                        vm.userForm.currPage = result.page.currPage;
+                        vm.userForm.pageSize = result.page.pageSize;
+                        vm.userForm.totalCount = parseInt(result.page.count);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
         closeDia: function () {
             this.randomQuesModal = false;
             // vm.reload();
@@ -153,10 +258,10 @@ var vm = new Vue({
         handleAdd: function () {
             var index = this.randomQuesData.length;
             this.randomQuesData.push({
-                knowledge:null,
-                type: null,
-                num: null,
-                score: null,
+                specialKnowledgeId:null,
+                questionType: null,
+                questionNumber: null,
+                questionScore: null,
                 index: index
             })
         },

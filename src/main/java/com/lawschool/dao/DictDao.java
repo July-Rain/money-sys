@@ -34,4 +34,6 @@ public interface DictDao extends BaseMapper<Dict> {
     List<CommonForm> findByType( String type);
 
     List<CommonForm> findIdByType( String type);
+
+    List<CommonForm> findCodeByType( String type);
 }

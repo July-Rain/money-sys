@@ -68,6 +68,6 @@ public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
      * @param param
      * @return
      */
-    List<TestQuestions> findByNum(Map<String, Object> param);
+    List<String> findByNum(Map<String, Object> param);
 
 }

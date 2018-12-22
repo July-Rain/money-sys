@@ -107,7 +107,7 @@
         ORDER BY order_num
     </select>
 
-    <select id="findByType" resultType="com.lawschool.form.CommonForm">
+    <select id="findCodeByType" resultType="com.lawschool.form.CommonForm">
         SELECT
         code AS "key",
         value AS "value"
