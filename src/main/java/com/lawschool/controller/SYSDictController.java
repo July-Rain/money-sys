@@ -139,7 +139,7 @@ public class SYSDictController {
 
     /**
      * @Author zjw
-     * @Description 获取某一类型的字典值 id
+     * @Description 获取某一类型的字典值 id(不用了 ，统一使用code)
      * @Date 10:00 2018-12-14
      * @Param [type]
      * @return com.lawschool.util.Result

@@ -1,4 +1,7 @@
+
+
 var menuId =getUrlParam('id');
+
 var vm = new Vue({
     el: '#app',
     data: {
@@ -21,10 +24,8 @@ var vm = new Vue({
         dialogConfig: false,//table弹出框可见性
         title:"",//弹窗的名称
         tchId:"",//教官的id
-
     },
     created: function () {
-
         this.$nextTick(function () {
             $.ajax({
                 type: "POST",
@@ -47,7 +48,7 @@ var vm = new Vue({
     methods: {
         toTchvedio:function(id){
             vm.tchId=id;
-            alert("1");
+            window.location="./tchvideocourse.html?createUser="+id+"&addsrc=1";
         },
         // 查询
         onSubmit: function () {
@@ -103,4 +104,4 @@ var vm = new Vue({
             if(!checkFile(file)) return false;
         },
     }
-});
+}).$mount('#app');

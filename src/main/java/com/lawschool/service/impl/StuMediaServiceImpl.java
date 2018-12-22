@@ -203,6 +203,8 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         String stuPoliceclass = (String)params.get("stuPoliceclass");
         String stuLawid = (String)params.get("stuLawid");
         String stuType = (String)params.get("stuType");
+        String createUser=(String)params.get("createUser");//创建人
+        String addsrc=(String)params.get("addsrc");//添加来源  0-其他  1-教官中心
         EntityWrapper<StuMedia> ew = new EntityWrapper<>();
         ew.setSqlSelect("ID,STU_CODE,STU_TITLE,COM_CONTENT,STU_TYPE,STU_COUNT,STU_ISSUER,STU_ISSTIME,STU_POLICECLASS,DICTCODE2VALE(STU_POLICECLASS) as stuPoliceclassName,VIDEO_PIC_ACC");
         if(UtilValidate.isNotEmpty(stuTitle)){
@@ -220,7 +222,16 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         if(UtilValidate.isNotEmpty(stuLawid)){
             ew.eq("stu_lawid",stuLawid);
         }
+        if(UtilValidate.isNotEmpty(createUser)){  //创建人
+            ew.eq("CREATE_USER",createUser);
+        }
+        if(UtilValidate.isNotEmpty(addsrc)){  //添加来源
+            ew.eq("ADDSRC",addsrc);
+        }
+
         ew.orderBy("STU_ISSTIME");
+
+
         //Page<StuMedia> page = new Page<StuMedia>();
        /* Page<StuMedia> page = new Page<StuMedia>(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
 

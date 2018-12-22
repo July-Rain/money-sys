@@ -43,7 +43,7 @@ var vm = new Vue({
             //加载选项数据
             $.ajax({
                 type: "POST",
-                url: baseURL + "dict/getIdbyType/QUESTION_DIFF",
+                url: baseURL + "dict/getbyType/QUESTION_DIFF",
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
@@ -56,7 +56,7 @@ var vm = new Vue({
 
             $.ajax({
                 type: "POST",
-                url: baseURL + "dict/getIdbyType/SPECIALKNOWLEDGE",
+                url: baseURL + "dict/getbyType/SPECIALKNOWLEDGE",
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
@@ -69,7 +69,7 @@ var vm = new Vue({
 
             $.ajax({
                 type: "POST",
-                url: baseURL + "dict/getIdbyType/QUESTION_TYPE",
+                url: baseURL + "dict/getbyType/QUESTION_TYPE",
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {

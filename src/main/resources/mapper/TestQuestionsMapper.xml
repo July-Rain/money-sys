@@ -144,7 +144,6 @@
     QUESTION_TYPE,
     questiontypeValue,
     ANSWER_ID,
-    answerValue,
     QUESTION_DIFFICULTY,
     questiondifficultyValue,
     TYPE_ID,
@@ -160,15 +159,14 @@
     LAW_TESTQUESTIONS. ID,
     LAW_TESTQUESTIONS.COM_CONTENT,
     LAW_TESTQUESTIONS.QUESTION_TYPE,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = QUESTION_TYPE )AS questiontypeValue,
     LAW_TESTQUESTIONS.ANSWER_ID,
-    (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
     LAW_TESTQUESTIONS.QUESTION_DIFFICULTY,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = QUESTION_DIFFICULTY )AS questiondifficultyValue,
     LAW_TESTQUESTIONS.TYPE_ID,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = TYPE_ID )AS typeValue,
     LAW_TESTQUESTIONS.SPECIAL_KNOWLEDGE_ID,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
+    (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
     ROWNUM AS rowno
     FROM
     LAW_COLLECTION
@@ -350,20 +348,20 @@
     </select>
 
 
+    <!--获取试题的详细信息zjw-->
     <select id="getInfoById" resultType="com.lawschool.beans.TestQuestions" parameterType="com.lawschool.beans.TestQuestions">
-      select
-         ID,COM_CONTENT,
-         QUESTION_TYPE,
-         (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_TYPE )AS questiontypeValue,
-         ANSWER_ID,ANSWER_DESCRIBLE,
-        (SELECT QUESTION_CONTENT FROM LAW_ANSWER WHERE ID = ANSWER_ID )AS answerValue,
+    select
+        ID,COM_CONTENT,
+        QUESTION_TYPE,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = QUESTION_TYPE )AS questiontypeValue,
+        ANSWER_ID,ANSWER_DESCRIBLE,
         QUESTION_DIFFICULTY,
-        (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = QUESTION_DIFFICULTY )AS questiondifficultyValue,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = QUESTION_DIFFICULTY )AS questiondifficultyValue,
         TYPE_ID,
-       (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = TYPE_ID )AS typeValue,
-       SPECIAL_KNOWLEDGE_ID,
-       (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue
-    FROM law_testquestions
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = TYPE_ID )AS typeValue,
+        SPECIAL_KNOWLEDGE_ID,
+        (SELECT VALUE FROM LAW_SYS_DICT WHERE CODE = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue
+      FROM law_testquestions
     where id=#{id}
     </select>
 
