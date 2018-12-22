@@ -203,6 +203,9 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         String stuPoliceclass = (String)params.get("stuPoliceclass");
         String stuLawid = (String)params.get("stuLawid");
         String stuType = (String)params.get("stuType");
+        String stuIssuer = (String)params.get("stuIssuer");
+        String startTime = (String)params.get("startTime");
+        String endTime = (String)params.get("endTime");
         EntityWrapper<StuMedia> ew = new EntityWrapper<>();
         ew.setSqlSelect("ID,STU_CODE,STU_TITLE,COM_CONTENT,STU_TYPE,STU_COUNT,STU_ISSUER,STU_ISSTIME,STU_POLICECLASS,DICTCODE2VALE(STU_POLICECLASS) as stuPoliceclassName,VIDEO_PIC_ACC");
         if(UtilValidate.isNotEmpty(stuTitle)){
@@ -212,14 +215,25 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
             ew.like("com_content",comContent);
         }
         if(UtilValidate.isNotEmpty(stuPoliceclass)){
-            ew.like("stu_policeclass",stuPoliceclass);
+            ew.eq("stu_policeclass",stuPoliceclass);
         }
         if(UtilValidate.isNotEmpty(stuType)){
             ew.eq("stu_type",stuType);
         }
         if(UtilValidate.isNotEmpty(stuLawid)){
-            ew.eq("stu_lawid",stuLawid);
+            String[] lawArr=stuLawid.split(",");
+            ew.in("stu_lawid",lawArr);
         }
+        if(UtilValidate.isNotEmpty(stuIssuer)){
+            ew.like("stu_issuer",stuIssuer);
+        }
+        if(UtilValidate.isNotEmpty(startTime)){
+            ew.addFilter("(stu_isstime >= TO_DATE('"+startTime+"', 'yyyy-mm-dd'))");
+        }
+        if(UtilValidate.isNotEmpty(endTime)){
+            ew.addFilter("(stu_isstime <= TO_DATE('"+endTime+"', 'yyyy-mm-dd'))");
+        }
+
         ew.orderBy("STU_ISSTIME");
         //Page<StuMedia> page = new Page<StuMedia>();
        /* Page<StuMedia> page = new Page<StuMedia>(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
