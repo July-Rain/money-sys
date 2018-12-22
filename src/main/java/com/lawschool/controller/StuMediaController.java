@@ -131,7 +131,7 @@ public class StuMediaController extends AbstractController {
     
     @RequestMapping("/info")
     public Result info(String id){
-        StuMedia stuMedia = stuMediaService.selectById(id);
+        StuMedia stuMedia = stuMediaService.selectStuMediaInfo(id);
         return Result.ok().put("data",stuMedia);
     }
 

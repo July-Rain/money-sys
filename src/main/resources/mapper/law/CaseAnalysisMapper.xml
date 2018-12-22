@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.law.CaseAnalysisDao">
+  <resultMap id="BaseResultMap" type="com.lawschool.beans.law.CaseAnalysisEntity">
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="CASE_CODE" jdbcType="VARCHAR" property="caseCode" />
+    <result column="CASE_TITLE" jdbcType="VARCHAR" property="caseTitle" />
+    <result column="CASE_CONTENT" jdbcType="VARCHAR" property="caseContent" />
+    <result column="CASE_DESCRIBE" jdbcType="VARCHAR" property="caseDescribe" />
+    <result column="CASE_TIME" jdbcType="TIMESTAMP" property="caseTime" />
+    <result column="OPT_USER" jdbcType="VARCHAR" property="optUser" />
+    <result column="OPT_TIME" jdbcType="TIMESTAMP" property="optTime" />
+    <result column="CASE_AREA" jdbcType="VARCHAR" property="caseArea" />
+    <result column="CASE_PROCESS" jdbcType="VARCHAR" property="caseProcess" />
+    <result column="CASE_TYPE" jdbcType="VARCHAR" property="caseType" />
+    <result column="LAW_LEVEL" jdbcType="VARCHAR" property="lawLevel" />
+    <result column="CASE_LAWID" jdbcType="VARCHAR" property="caseLawid" />
+    <result column="DEL_STATUS" jdbcType="VARCHAR" property="delStatus" />
+    <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="VIDEO_PIC_ACC" jdbcType="VARCHAR" property="videoPicAcc" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="DEPT_NAME" jdbcType="VARCHAR" property="deptName" />
+  </resultMap>
+
+</mapper>
