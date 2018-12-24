@@ -42,7 +42,7 @@ public class SYSDictController {
             if(UtilValidate.isNotEmpty(Parentcode)){
 			ew.eq("PARENT_CODE",Parentcode);
 		}
-		ew.eq("DEL_FLAG",1);
+		ew.eq("DEL_FLAG",0);
         ew.orderBy("ORDER_NUM",true);
           List<Dict> list= dictService.selectList(ew);
 
