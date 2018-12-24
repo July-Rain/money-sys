@@ -172,8 +172,12 @@
     ID,
     stu_title,
     stu_type,
-    stuTypeValue,
-    collecttime
+    VIDEO_PIC_ACC,
+    collecttime,
+    STU_ISSTIME,
+    STU_ISSUER,
+    COM_CONTENT,
+    STU_LAWID
     FROM
     (
     SELECT
@@ -181,18 +185,42 @@
     LAW_STU_MEDIA. ID,
     LAW_STU_MEDIA.stu_title,
     LAW_STU_MEDIA.stu_type,
-    (SELECT VALUE FROM LAW_SYS_DICT WHERE ID = stu_type )AS stuTypeValue,
+    LAW_STU_MEDIA.VIDEO_PIC_ACC,
+	LAW_STU_MEDIA.STU_ISSUER,
+	LAW_STU_MEDIA.STU_ISSTIME,
+    LAW_STU_MEDIA.STU_LAWID,
+    LAW_STU_MEDIA.COM_CONTENT,
     LAW_COLLECTION.OPTTIME collecttime,
     ROWNUM AS rowno
     FROM
-    LAW_COLLECTION
-    LEFT JOIN LAW_STU_MEDIA ON LAW_COLLECTION.COM_STUCODE = LAW_STU_MEDIA. ID
+    LAW_COLLECTION,LAW_STU_MEDIA
     WHERE
-    LAW_COLLECTION.COM_USERID = #{userId}
+    LAW_COLLECTION.COM_STUCODE = LAW_STU_MEDIA. ID
+    and LAW_COLLECTION.COM_USERID = #{userId}
     AND LAW_COLLECTION. TYPE = 10
     and LAW_STU_MEDIA. ID is not null
     AND ROWNUM &lt;= #{endPage}
     And LAW_COLLECTION.DEL_STATUS=0
+    <if test="stuTitle != null and stuTitle!=''">
+      and LAW_STU_MEDIA.stu_title like '%' || #{stuTitle} || '%'
+    </if>
+    <if test="stuIssuer != null and stuIssuer!=''">
+      and LAW_STU_MEDIA.STU_ISSUER like '%' || #{stuIssuer} || '%'
+    </if>
+    <if test="stuLawid != null and stuLawid!=''">
+      and LAW_STU_MEDIA.STU_LAWID =  #{stuLawid}
+    </if>
+
+    <if test="startTime != null and startTime!=''">
+      and LAW_COLLECTION.OPTTIME >= TO_DATE(#{startTime}, 'yyyy-mm-dd')
+    </if>
+
+    <if test="endTime != null and endTime!=''">
+      and LAW_COLLECTION.OPTTIME &lt; = TO_DATE(#{endTime}, 'yyyy-mm-dd')
+    </if>
+    <if test="stuType != null and stuType!=''">
+      and LAW_STU_MEDIA.stu_type = #{stuType}
+    </if>
     )
     WHERE
     rowno &gt; #{startPage}
@@ -203,9 +231,29 @@
     SELECT
         count(LAW_STU_MEDIA.ID)
     FROM
-         LAW_COLLECTION
-           LEFT JOIN LAW_STU_MEDIA ON LAW_COLLECTION.COM_STUCODE = LAW_STU_MEDIA.ID
+         LAW_COLLECTION,LAW_STU_MEDIA
     where LAW_COLLECTION.COM_USERID=#{userId}  and LAW_COLLECTION.TYPE=10
     And LAW_COLLECTION.DEL_STATUS=0
+    and LAW_COLLECTION.COM_STUCODE = LAW_STU_MEDIA.ID
+    <if test="stuTitle != null and stuTitle!=''">
+      and LAW_STU_MEDIA.stu_title like '%' || #{stuTitle} || '%'
+    </if>
+    <if test="stuIssuer != null and stuIssuer!=''">
+      and LAW_STU_MEDIA.STU_ISSUER like '%' || #{stuIssuer} || '%'
+    </if>
+    <if test="stuLawid != null and stuLawid!=''">
+      and LAW_STU_MEDIA.STU_LAWID =  #{stuLawid}
+    </if>
+
+    <if test="startTime != null and startTime!=''">
+      and LAW_COLLECTION.OPTTIME >= TO_DATE(#{startTime}, 'yyyy-mm-dd')
+    </if>
+
+    <if test="endTime != null and endTime!=''">
+      and LAW_COLLECTION.OPTTIME &lt; = TO_DATE(#{endTime}, 'yyyy-mm-dd')
+    </if>
+    <if test="stuType != null and stuType!=''">
+      and LAW_STU_MEDIA.stu_type = #{stuType}
+    </if>
   </select>
 </mapper>

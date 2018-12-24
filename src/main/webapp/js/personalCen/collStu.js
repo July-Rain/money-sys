@@ -71,9 +71,12 @@ var vm = new Vue({
         //         }
         //     });
         // },
-        handleDel: function (index, row) {
+        handleStudy:function(id){
+
+        },
+        handleDel: function (id) {
             // vm.delIdArr.push(row.collectionId);
-            vm.delIdArr.id=row.collectionId;
+            vm.delIdArr.id=id;
             console.log(row);
             this.$confirm('此操作将取消收藏, 是否继续?', '提示', {
                 confirmButtonText: '确定',
