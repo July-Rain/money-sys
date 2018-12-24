@@ -52,6 +52,8 @@
                                 <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
                             </el-form-item>
                         </el-form>
+                        <el-button @click="handleAdd">增加</el-button>
+
                         <div>
                             <el-table
                                     :data="tableData"
@@ -82,30 +84,107 @@
                                 </el-table-column>
 
                                 </el-table-column>
-                                <el-table-column label="操作" width="180">
+
+                                <el-table-column label="操作"  prop="userStatus">
                                     <template slot-scope="scope">
                                         <el-button
                                                 size="mini"
                                                 @click="handleEdit(scope.$index, scope.row)">重置密码
                                         </el-button>
+
+
+                                        <el-button
+                                                size="mini" v-if="scope.row.userStatus == '2000'"
+                                                type="danger"
+                                                @click="handleDel(scope.$index, scope.row)">禁用
+                                        </el-button>
+
+                                        <el-button
+                                                size="mini" v-if="scope.row.userStatus == '800'"
+                                                type="primary"
+                                                @click="handleRecovery(scope.$index, scope.row)">恢复
+                                        </el-button>
+
+                                        <el-button @click="handleUpt(scope.$index, scope.row)">修改</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
                             <el-pagination
                                     @size-change="handleSizeChange"
                                     @current-change="handleCurrentChange"
-                                    :current-page="formInline.pageNo"
+                                    :current-page="formInline.currPage"
                                     :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.limit"
+                                    :page-size="formInline.pageSize"
                                     layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.count">
+                                    :total="formInline.totalCount">
                             </el-pagination>
                         </div>
                     </el-tab-pane>
                 </el-tabs>
             </el-col>
         </el-row>
+
+        <el-dialog :title="title" :visible.sync="dialogtch" :before-close="closeTchDia">
+            <el-row>
+                <el-col :span="12">
+                    <el-form :model="teacher" ref="teacher" label-width="100px" class="demo-sysConfig" size="mini">
+                        <el-form-item label="用户名" prop="userName">
+                            <el-input v-model="teacher.userName" placeholder="请输入用户名" clearable></el-input>
+                        </el-form-item>
+                        <el-form-item label="登陆账号" prop="userCode">
+                            <el-input v-model="teacher.userCode" placeholder="请输入登陆账号" clearable></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="警号" prop="userPoliceId">
+                            <el-input v-model="teacher.userPoliceId" placeholder="请输入警号" clearable></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="密码" prop="password">
+                            <el-input v-model="teacher.password" placeholder="请输入密码" clearable></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="照片" prop="photo">
+                            <el-upload name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false"
+                                       :on-success="uploadSuccess" :before-upload="beforeUpload" :on-progress="uploadProcess">
+                                <el-button v-if="teacher.photo ==''">点击上传</el-button>
+                                <img v-if="teacher.photo !=''"
+                                     :src="'${rc.contextPath}/sys/download?accessoryId='+teacher.photo"
+                                     width="50px" height="50px"
+                                />
+                            </el-upload>
+                        </el-form-item>
+
+                        <el-form-item label="部门" prop="orgName">
+                            <el-input type="text" class="form-control" style="cursor:pointer;" v-model="teacher.orgName"
+                                      @focus="deptShow" readonly="readonly" placeholder="所属部门"></el-input>
+                        </el-form-item>
+
+                        <el-form-item>
+                            <el-button type="primary" @click="saveOrUpdate()">保存</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-col>
+            </el-row>
+        </el-dialog>
     </div>
+
+    <el-dialog title="选择部门" :visible.sync="dialogDept"  width="500px" height="500px">
+        <!--对于同一级的节点，每次只能展开一个-->
+        <el-tree
+                ref="treeForm"
+                :data="treeData"
+                :props="defaultProps"
+                show-checkbox
+                @check-change="handleCheckChange"
+                node-key="id"
+                :default-expanded-keys="[2079]"
+        >
+        </el-tree>
+        <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+        <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
+    </el-dialog>
+
+
 </div>
 </body>
 

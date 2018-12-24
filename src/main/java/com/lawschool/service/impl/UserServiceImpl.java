@@ -57,8 +57,8 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         EntityWrapper<User> ew = new EntityWrapper<>();//默认所有的用户
 
 
-        //加 max  防止多条数据 报错
-        ew.setSqlSelect("ID,ORG_CODE,USER_NAME,USER_POLICE_ID,USER_CODE,(select max(ORG_NAME) from law_org where ORG_CODE = ORG_CODE) as orgName");
+
+        ew.setSqlSelect("ID,ORG_CODE,USER_NAME,USER_POLICE_ID,USER_CODE,ORG_NAME");
 
         if(UtilValidate.isNotEmpty(params.get("identify"))){
             ew.eq("IDENTIFY",params.get("identify"));// 0-普通用户  1-教官
@@ -207,6 +207,19 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         }
         user.setId(GetUUID.getUUIDs("U"));
         int i = userMapper.insert(user);
-        return 0;
+        return i==1?SUCCESS:ERROR;
+    }
+
+    /**
+     * @Author zjw
+     * @Description 修改用户
+     * @Date 16:38 2018/12/24
+     * @Param [user]
+     * @return boolean
+    **/
+    @Override
+    public  int updateUser(User user) {
+        int integer = userMapper.update(user, new EntityWrapper<User>().eq("ID", user.getId()));
+        return integer==1?SUCCESS:ERROR;
     }
 }

@@ -10,6 +10,7 @@ import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -81,6 +82,12 @@ public class UserController extends AbstractController {
         return Result.ok().put("page",pageUtils);
     }
 
+    @RequestMapping("/add")
+    public Result addUorT(@RequestBody User user){
+        int result=userService.addUser(user);
+        return result==SUCCESS?Result.ok():Result.error("添加失败");
+    }
+
 
 
    /**
@@ -141,6 +148,19 @@ public class UserController extends AbstractController {
         int rst = userService.updateUserOnlineStatus(id, "1", "0");
         return rst==SUCCESS?Result.ok():Result.error("下线失败");
 
+    }
+
+    /**
+     * @Author zjw
+     * @Description 修改用户信息
+     * @Date 15:46 2018/12/24
+     * @Param [user]
+     * @return com.lawschool.util.Result
+    **/
+    @RequestMapping("/updata")
+    public Result update(@RequestBody User user){
+        int rst = userService.updateUser(user);
+        return rst==SUCCESS?Result.ok():Result.error("修改用户失败");
     }
 
 }

@@ -4,6 +4,7 @@ var vm = new Vue({
     data: {
         //menuId:"",//菜单id
         navData: [],//导航
+
         formInline: { // 搜索表单
             id:'',
             userName: '',
@@ -13,23 +14,38 @@ var vm = new Vue({
             currPage: 1,
             pageSize:10,
             totalCount: 0
-        },
+        },//检索条件
         tableData: [],//表格数据
-        visible: false,
-        dialogConfig: false,//table弹出框可见性
+
         title:"",//弹窗的名称
-        delIdArr: [],//删除数据
-        treeData: [],//法律知识库分类树
+        visible: false,
+        dialogtch: false,//用户可见性
+        dialogDept:false,//部门可见性
+
+
+        treeData: [],//部门数据
+        treeForm:'',
         defaultProps: { // el-tree
             children: 'child',
             label: 'localOrgName'
         },
-        tchId:"",
+        importFileUrl:baseURL+"sys/upload",
+        teacher:{
+            id:"",
+            userName:"",
+            userCode:"",
+            password:"",
+            photo:"",
+            orgCode:"",
+            identify:1,//添加为教官
+            orgName:"",
+            userPoliceId:"",
+
+        }
     },
     created: function () {
-
         this.$nextTick(function () {
-            //加载菜单
+            //加载部门树
             $.ajax({
                 type: "POST",
                 url: baseURL + "org/tree",
@@ -47,13 +63,25 @@ var vm = new Vue({
         this.$nextTick(function () {
             this.reload();
         })
-
     },
+
+
     methods: {
         // 查询
         onSubmit: function () {
             this.reload();
         },
+        //用户添加
+        handleAdd:function(){
+            vm.dialogtch=true;
+        },
+        //用户修改vm.
+        handleUpt:function(index,row){
+            vm.dialogtch=true;
+            vm.teacher=row;
+        },
+
+        //密码重置
         handleEdit : function(index,row){
           $.ajax({
               type : "POST",
@@ -69,6 +97,7 @@ var vm = new Vue({
           })
         },
 
+        //用户禁用
         handleDel : function(index,row){
             $.ajax({
                 type : "POST",
@@ -85,6 +114,7 @@ var vm = new Vue({
             })
         },
 
+        //用户恢复
         handleRecovery : function(index,row){
             $.ajax({
                 type : "POST",
@@ -100,26 +130,59 @@ var vm = new Vue({
                 }
             })
         },
+
+        // 部门点击事件
+        handleNodeClick:function(data){
+            vm.formInline.orgCode=data.localOrgCode;
+            this.reload();
+        },
+
+        //展示部门
+        deptShow:function(){
+            vm.dialogDept=true;
+            if(vm.treeData.length==0){
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "org/tree",
+                    contentType: "application/json",
+                    success: function(result){
+
+                        if(result.code === 0){
+                            vm.treeData = result.orgList;
+                        }else{
+                            alert(result.msg);
+                        }
+                    }
+                });
+            }
+        },
+
+
+        //分页
         handleSizeChange: function (val) {
             this.formInline.pageSize = val;
             this.reload();
         },
+
         handleCurrentChange: function (val) {
             this.formInline.currPage = val;
             this.reload();
         },
-        toTchvedio:function(tchid){
-            vm.tchId=tchid;
-            window.location=baseURL+"/teacherCen/vedio.html";
-        },
+
         // 表单重置
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
-        },
-        closeDia : function(){
-            this.dialogConfig=false;
+            vm.formInline.orgCode='';
             vm.reload();
         },
+
+        //关闭弹出框
+        closeTchDia : function(){
+            this.dialogtch=false;
+            vm.reload();
+        },
+
+        //刷新页面
         reload: function () {
             $.ajax({
                 type: "POST",
@@ -138,19 +201,64 @@ var vm = new Vue({
                 }
             });
         },
-        // el-tree节点点击事件
-        handleNodeClick: function (data) {
-            vm.formInline.orgCode= data.localOrgCode;
-            this.reload();
+
+
+        // 部门选择事件
+        handleCheckChange: function (data, checked, node) {
+            if(checked == true){
+                this.checkedId = data.id;
+                this.$refs.treeForm.setCheckedNodes([data]);
+                console.log(data);
+                vm.teacher.orgCode= data.localOrgCode;
+                vm.teacher.orgName= data.localOrgName;
+            }
         },
-        uploadSuccess: function (response, file, fileList) {
-            vm.stuMedia.comContent=response.filePath;
+
+        //确定部门
+        confimDept:function(){
+
+            vm.dialogDept=false;
         },
-        uploadError: function () {
+        //取消部门
+        cancelDept:function(){
+            vm.dialogDept=false;
+        },
+
+
+        //上传
+        uploadSuccess: function(response, file, fileList) {
+            vm.teacher.photo=response.accessoryId;
+        },
+
+        beforeUpload: function () {
+           //to do
+        },
+
+        uploadProcess: function () {
 
         },
-        beforeAvatarUpload: function () {
-            if(!checkFile(file)) return false;
-        },
+
+        //保存
+        saveOrUpdate:function () {
+            var url=baseURL + "sys/add";
+            debugger
+            console.log(vm.teacher.id);
+            if (vm.teacher.id != null && vm.teacher.id != '') {
+                url=baseURL+"sys/updata";
+            }
+            $.ajax({
+                type : "POST",
+                url: url,
+                contentType: "application/json",
+                data:JSON.stringify(vm.teacher),
+                success:function (result) {
+                    if(result.code==0){
+                        alert("成功");
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            })
+        }
     }
 });
