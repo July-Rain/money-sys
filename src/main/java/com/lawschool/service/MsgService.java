@@ -1,5 +1,6 @@
 package com.lawschool.service;
 
+import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.base.AbstractService;
 import com.lawschool.beans.Msg;
 import com.lawschool.util.PageUtils;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface MsgService {
+public interface MsgService extends IService<Msg> {
     /**
      * 新增消息
      * @param msg

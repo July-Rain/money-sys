@@ -6,6 +6,7 @@ import com.lawschool.constants.StatusConstant;
 import com.lawschool.dao.TestQuestionsDao;
 import com.lawschool.form.QuestForm;
 import com.lawschool.service.TestQuestionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -16,6 +17,8 @@ import java.util.Map;
 @Service
 public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDao,TestQuestions> implements TestQuestionService {
 
+    @Autowired
+    TestQuestionsDao testQuestionsDao;
     /**
      * 启用禁用
      * @param id
@@ -75,5 +78,16 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
      */
     public List<String> findByNum(Map<String, Object> param){
         return dao.findByNum(param);
+    }
+
+    /**
+     * 根据ID查询单个题目
+     * @param id
+     * @return
+     */
+    @Override
+    public QuestForm findTestQuestionById(String id) {
+        QuestForm question =  testQuestionsDao.findTestQuestionById(id);
+        return question;
     }
 }

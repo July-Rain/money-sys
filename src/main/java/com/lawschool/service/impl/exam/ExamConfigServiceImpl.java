@@ -1,30 +1,9 @@
 package com.lawschool.service.impl.exam;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import com.lawschool.beans.TestQuestions;
-import com.lawschool.form.AnswerForm;
-import com.lawschool.form.QuestForm;
-import com.lawschool.service.AnswerService;
-import com.lawschool.service.TestQuestionService;
-import com.lawschool.util.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
-import com.lawschool.base.BaseEntity;
-import com.lawschool.base.DataEntity;
 import com.lawschool.beans.auth.AuthRelationBean;
 import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.beans.exam.ExamDetail;
@@ -36,6 +15,15 @@ import com.lawschool.dao.exam.ExamQueConfigDao;
 import com.lawschool.dao.exam.ExamQuestionsDao;
 import com.lawschool.service.auth.AuthRelationService;
 import com.lawschool.service.exam.ExamConfigService;
+import com.lawschool.util.GetUUID;
+import com.lawschool.util.PageUtils;
+import com.lawschool.util.Query;
+import com.lawschool.util.UtilValidate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 @Service
 public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, ExamConfig> implements ExamConfigService {
@@ -55,11 +43,6 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	@Autowired
 	private AuthRelationService authService;
 
-	@Autowired
-	private TestQuestionService testQuestionService;
-
-	@Autowired
-	private AnswerService answerService;
 	/**
 	 * 查询试卷列表
 	 */
@@ -117,7 +100,8 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 		}
 	}
 	
-	public void updateConfig(ExamConfig examConfig) throws Exception {
+	public void updateConfig(ExamConfig examConfig, List<ExamQueConfig> examQueList,
+			List<ExamQuestions> queList) throws Exception {
 		//更新前校对时间
 		Date date = new Date();
 		if (date.after(examConfig.getStartTime())) {
@@ -128,7 +112,7 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 			//更新主表
 			examConfigDao.updateById(examConfig);
 			//生成试卷
-			generate(examConfig);
+			generate(examConfig, examQueList, queList);
 		}
 	}
 	/**
@@ -151,18 +135,17 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	 * @throws Exception
 	 */
 	@Transactional(rollbackFor = Exception.class)
-	public Result examConfig(String type, ExamConfig examConfig) throws Exception {
+	public void examConfig(String type, ExamConfig examConfig, List<ExamQueConfig> examQueList,
+			List<ExamQuestions> queList) throws Exception {
 		if ("1".equals(type)) {
 			// 预览试卷
-			List<QuestForm> resList =  preview(examConfig);
-			return Result.ok().put("resList",resList);
+			preview(examConfig, examQueList, queList);
 		} else {
 			// 生成试卷
 			examConfig.setId(GetUUID.getUUIDs("EC"));
-			generate(examConfig);
+			generate(examConfig, examQueList, queList);
 			//存考试配置主表
 			examConfigDao.insert(examConfig);
-			return Result.ok();
 		}
 	}
 
@@ -175,12 +158,11 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	 * @Pwarms:@throws Exception
 	 * @return:void
 	 */
-	private void generate(ExamConfig examConfig)
+	private void generate(ExamConfig examConfig, List<ExamQueConfig> examQueList, List<ExamQuestions> queList)
 			throws Exception {
 		// TODO Auto-generated method stub
 		// 获取考试出题类型
-		List<ExamQueConfig> examQueList = examConfig.getExamQueConfigList();
-		List<ExamQuestions> queList = examConfig.getExamQuestionsList();
+		
 		// 题目数量
 		int queNum = 0;
 		int score = 0;
@@ -233,52 +215,57 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	}
 
 	// 预览试卷
-	private List<QuestForm> preview(ExamConfig examConfig) throws Exception {
+	private List<ExamQuestions> preview(ExamConfig examConfig, List<ExamQueConfig> examQueList,
+			List<ExamQuestions> queList) throws Exception {
 		// 获取考试出题类型
 		examConfig.setId(IdWorker.getIdStr());
-
 		// 题目数量
 		int queNum = 0;
 		int score = 0;
-        List<ExamQueConfig> examQueList = examConfig.getExamQueConfigList();
-        List<ExamQuestions> queList = examConfig.getExamQuestionsList();
-		List<QuestForm> eqList = new ArrayList<QuestForm>();
-		if ("10033".equals(examConfig.getQuestionWay())) {
+
+		List<ExamQuestions> eqList = new ArrayList<ExamQuestions>();
+		if ("1".equals(examConfig.getQuestionWay())) {
 			// 随机出题
 			// 获取题目配置规则
 			for (ExamQueConfig examQueConfig : examQueList) {
 				// 根据配置从题库中获取
-				Map<String, Object> paramsMap = new HashMap<String, Object>();
-				paramsMap.put("specialKnowledgeId",examQueConfig.getSpecialKnowledgeId());
-				paramsMap.put("questionType",examQueConfig.getQuestionType());
-				paramsMap.put("num",examQueConfig.getQuestionNumber());
-				List<String> idList = testQuestionService.findByNum(paramsMap);
-				eqList = testQuestionService.findByIds(idList);;
-				List<AnswerForm> answerForms = answerService.findByQuestionIds(idList);
-				// 遍历处理选项信息
-				for(QuestForm qf : eqList){
-					String qid = qf.getId();
-					List<AnswerForm> tempList = new ArrayList<>();
+				// TODO
+				examQueConfig.getQuestionNumber();
+				examQueConfig.getQuestionType();
+				List<ExamQuestions> typeList = new ArrayList<ExamQuestions>();
+				for (ExamQuestions examQues : typeList) {
+					// 保存试题到试题库
+					examQues.setId(IdWorker.getIdStr());
+					examQues.setExamConfigId(examConfig.getId());
+					examQuestionsDao.insert(examQues);
+					// 获取试题答案 根据试题类型获取答案选项
 
-					for(AnswerForm af : answerForms){
-						String aqid = af.getQuestionId();
-						if(qid.equals(aqid)){
-							tempList.add(af);
-						}
-					}
-
-					qf.setAnswer(tempList);
 				}
+				// 将获取的题目添加到试题中
+				eqList.addAll(typeList);
+				// 保存题目配置
+				examQueConfig.setId(IdWorker.getIdStr());
+				examQueConfig.setLawExamConfigId(examConfig.getId());
+				examQueConfigDao.insert(examQueConfig);
+				// 保存考试试题详情
+				ExamDetail entity = new ExamDetail();
+				entity.setId(IdWorker.getIdStr());
+				entity.setExamConfigId(examConfig.getId());
+				examDetailDao.insert(entity);
+
+				queNum += examQueConfig.getQuestionNumber().intValue();
+				score += examQueConfig.getQuestionScore().intValue();
 
 			}
-//			if (queNum != examConfig.getExamCount().intValue() || score != examConfig.getExamScore().intValue()) {
-//				throw new Exception("随机出题设置的分数题数与总题数总分值不对应");
-//			}
+			if (queNum != examConfig.getExamCount().intValue() || score != examConfig.getExamScore().intValue()) {
+				throw new Exception("随机出题设置的分数题数与总题数总分值不对应");
+			}
 		} else {
 			for (ExamQuestions que : queList) {
 				score += que.getScore();
 			}
 			queNum = queList.size();
+			eqList.addAll(queList);
 
 		}
 		return eqList;

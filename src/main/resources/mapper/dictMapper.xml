@@ -95,6 +95,18 @@
         select * from LAW_SYS_DICT where code = {#code}
     </select>
 
+    <select id="findByType" resultType="com.lawschool.form.CommonForm">
+        SELECT
+        code AS "key",
+        value AS "value"
+        FROM LAW_SYS_DICT
+        <where>
+            type = #{type}
+            AND del_flag = 0
+        </where>
+        ORDER BY order_num
+    </select>
+
     <select id="findIdByType" resultType="com.lawschool.form.CommonForm">
         SELECT
         id AS "key",

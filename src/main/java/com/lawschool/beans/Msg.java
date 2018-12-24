@@ -1,10 +1,12 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
-
+@TableName("LAW_SYS_MSG_WITHIN_STATION")
 public class Msg implements Serializable{
 
     /**
@@ -35,6 +37,7 @@ public class Msg implements Serializable{
     /**
      * 发布时间
      */
+    private Date releaseDate;
     /**
      * 接收单位
      */
@@ -54,25 +57,29 @@ public class Msg implements Serializable{
     /**
      *备用字段1
      */
+    @TableField(exist = false)
     private String backup1;
     /**
      *备用字段2
      */
+    @TableField(exist = false)
     private String backup2;
     /**
      *备用字段3
      */
+    @TableField(exist = false)
     private String backup3;
     /**
      *备用字段4
      */
+    @TableField(exist = false)
     private String backup4;
     /**
      *备用字段5
      */
+    @TableField(exist = false)
     private String backup5;
 
-    private Date releaseDate;
 
     public String getId() {
         return id;

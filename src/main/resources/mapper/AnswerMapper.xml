@@ -29,6 +29,16 @@
     ORDER BY question_id
   </select>
 
+  <!--根据题目id查询答案-->
+  <select id="findByQuesId" parameterType="java.lang.String" resultType="com.lawschool.form.AnswerForm">
+    SELECT
+      id AS "id",
+      question_content AS "questionContent",
+      QUESTION_ID AS "questionId"
+    FROM law_answer
+    where QUESTION_ID = #{questionId}
+  </select>
+
   <delete id="deleteByQuestionId">
     DELETE FROM law_answer
     WHERE question_id = #{questionId}
