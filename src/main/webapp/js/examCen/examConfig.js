@@ -43,6 +43,7 @@ var vm = new Vue({
         dialogOrgDept: false,
         dialogDept: false,//部门的弹窗
         dialogUser: false,//人员的弹窗
+        dialogWatch: true,
         deptData:[],//部门树数据
         userData:[],//人员树数据
         defaultDeptProps:{
@@ -134,11 +135,14 @@ var vm = new Vue({
             this.title = "随机出题配置";
             this.randomQuesModal = true;
         },
+
         handleSave:function(randomQuesData){
             vm.examConfig.examQueConfigList=randomQuesData;
             vm.randomQuesModal = false;
         },
         preview:function(){
+            alert(1);
+            this.dialogWatch = true;
             $.ajax({
                 type: "POST",
                 url: baseURL + "exam/config/examConfig/1",
@@ -283,6 +287,7 @@ var vm = new Vue({
                 }
             })
             vm.randomQuesData = arr2;
-        }
+        },
+
     }
 });
