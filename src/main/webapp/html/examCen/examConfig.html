@@ -54,7 +54,6 @@
                         <el-form-item label="专项知识：" prop="specialKnowledgeId">
                             <el-select v-model="examConfig.list" size="mini"
                                        multiple collapse-tags style="width: auto" placeholder="多选">
-                                <el-option :key="null" :label="全部" :value="null">全部</el-option>
                                 <el-option v-for="item in skOption" :key="item.key"
                                            :label="item.value" :value="item.key"></el-option>
                             </el-select>
