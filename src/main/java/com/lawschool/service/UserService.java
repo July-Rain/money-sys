@@ -70,4 +70,12 @@ public interface UserService  extends AbstractService<User> {
      */
     public int addUser(User user);
 
+    /**
+     * @Author zjw
+     * @Description 修改用户
+     * @Date 16:37 2018/12/24
+     * @Param [user]
+     * @return boolean
+    **/
+     int updateUser(User user);
 }

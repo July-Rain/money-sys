@@ -6,10 +6,10 @@
 var vm = new Vue({
     el: '#app',
     data: {
-        videoData: [],//视频列表
+        caseData: [],//视频列表
         navData: [],//导航
         formInline: { // 搜索表单
-            stuType:"3",
+            contentType:"1",
             currPage: 1,
             pageSize: 10,
             totalCount:0,
@@ -83,39 +83,37 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "stumedia/list?isMp=true",
+                url: baseURL + "caseana/list?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
-                        vm.videoData = result.page.list;
-                        for(var i=0;i<vm.videoData.length;i++){
-                            vm.videoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
-                            if(vm.videoData[i].videoPicAcc){
-                                vm.videoData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
+                        vm.caseData = result.page.list;
+                        for(var i=0;i<vm.caseData.length;i++){
+                            vm.caseData[i].caseContentUrl=baseURL+"sys/download?accessoryId="+vm.caseData[i].comContent;
+                            if(vm.caseData[i].videoPicAcc){
+                                vm.caseData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.caseData[i].videoPicAcc;
                             }else{
-                                vm.videoData[i].videoPicAccUrl="http://temp.im/640x260";
+                                vm.caseData[i].videoPicAccUrl="http://temp.im/640x260";
                             }
-                            if(vm.videoData[i].stuType=='1'){
-                                vm.videoData[i].stuType="文字";
-                            }else if(vm.videoData[i].stuType=='2'){
-                                vm.videoData[i].stuType="音频";
-                            }else if(vm.videoData[i].stuType=='3'){
-                                vm.videoData[i].stuType="视频";
+                            if(vm.caseData[i].contentType=='1'){
+                                vm.caseData[i].contentType="文字";
+                            }else if(vm.caseData[i].contentType=='2'){
+                                vm.caseData[i].contentType="音频";
+                            }else if(vm.caseData[i].contentType=='3'){
+                                vm.caseData[i].contentType="视频";
                             }
                         }
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
                         vm.formInline.totalCount = parseInt(result.page.totalCount);
-                        console.info("videoData",vm.videoData)
+                        console.info("caseData",vm.caseData)
                     } else {
                         alert(result.msg);
                     }
                 }
             });
         },
-
-
         // el-tree节点点击事件
         handleNodeClick: function (data) {
             vm.formInline.stuLawid=data.id;
@@ -147,5 +145,8 @@ var vm = new Vue({
         cancelLaw: function () {
             this.dialogLaw=false;
         },
+        changeType: function () {
+            this.reload();
+        }
     }
 });

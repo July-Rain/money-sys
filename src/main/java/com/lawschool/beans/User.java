@@ -115,8 +115,8 @@ public class User extends DataEntity<User> {
     @TableField(exist = false) //角色list
     private List<SysRoleEntity> roleList;
 
-    @TableField(exist = false)
-    private String orgName;
+
+    private String orgName;//部门名字
 
 
 
