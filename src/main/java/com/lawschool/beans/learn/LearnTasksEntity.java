@@ -1,5 +1,6 @@
 package com.lawschool.beans.learn;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawschool.base.DataEntity;
@@ -28,6 +29,24 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
     private Date endTime;//结束时间
 
     private String taskExecute;//任务执行者
+
+    private String deptName;//适用部门名称
+
+    private String userName;//适用人员名称
+
+    @TableField(exist = false)
+    private String[] deptArr;//适用部门
+
+    @TableField(exist = false)
+    private String[] userArr;//适用人员
+
+
+    @TableField(exist = false)
+    private String deptIds;//适用部门
+
+
+    @TableField(exist = false)
+    private String userIds;//适用人员
 
     public String getTaskName() {
         return taskName;
@@ -67,5 +86,53 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
 
     public void setTaskExecute(String taskExecute) {
         this.taskExecute = taskExecute;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String[] getDeptArr() {
+        return deptArr;
+    }
+
+    public void setDeptArr(String[] deptArr) {
+        this.deptArr = deptArr;
+    }
+
+    public String[] getUserArr() {
+        return userArr;
+    }
+
+    public void setUserArr(String[] userArr) {
+        this.userArr = userArr;
+    }
+
+    public String getDeptIds() {
+        return deptIds;
+    }
+
+    public void setDeptIds(String deptIds) {
+        this.deptIds = deptIds;
+    }
+
+    public String getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(String userIds) {
+        this.userIds = userIds;
     }
 }

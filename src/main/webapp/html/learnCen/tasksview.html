@@ -81,10 +81,10 @@
                     <el-tab-pane label="检索">
                         <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                            <el-form-item prop="taskName">
+                            <el-form-item label="任务名称" prop="taskName">
                                 <el-input v-model="formInline.taskName" placeholder="任务名称" size="mini" clearable></el-input>
                             </el-form-item>
-                            <el-form-item prop="taskContent">
+                            <el-form-item label="任务内容" prop="taskContent">
                                 <el-input v-model="formInline.taskContent" placeholder="任务内容" size="mini" clearable></el-input>
                             </el-form-item>
 
@@ -101,7 +101,6 @@
                             </el-form-item>
                         </el-form>
                         <div>
-                            <el-button size="mini" type="primary" @click="addConfig" >新增</el-button>
                             <el-table
                                     :data="tableData"
                                     border
@@ -110,6 +109,12 @@
                                         prop="taskName"
                                         label="任务名称"
                                         width="280"
+                                        header-align="center"
+                                        align="center">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="taskContent"
+                                        label="任务内容"
                                         header-align="center"
                                         align="center">
                                 </el-table-column>
@@ -165,7 +170,7 @@
 
 
 
-        <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
+        <el-dialog :title="title" :visible.sync="dialogLearnTask" :before-close="closeDia">
             <el-row>
                 <el-col :span="12">
                     <el-form :model="learnTasks" :rules="rules" ref="learnTasks" label-width="100px" class="demo-learnTasks" size="mini">
@@ -194,6 +199,12 @@
                         <el-form-item label="任务执行者" prop="taskExecute">
                             <el-input v-model="learnTasks.taskExecute" placeholder="请输入任务执行者" clearable></el-input>
                         </el-form-item>
+                        <el-form-item label="使用部门" prop="deptName">
+                            <el-input v-model="learnTasks.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门" clearable></el-input>
+                        </el-form-item>
+                        <el-form-item label="使用人员" prop="userName">
+                            <el-input v-model="learnTasks.userName" readonly @focus="chooseUser" placeholder="请选择使用人员" clearable></el-input>
+                        </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="saveOrUpdate('learnTasks')">保存</el-button>
                         </el-form-item>
@@ -202,10 +213,98 @@
             </el-row>
         </el-dialog>
 
+        <el-dialog title="选择部门" :visible.sync="dialogDept" >
+            <!--对于同一级的节点，每次只能展开一个-->
+            <el-tree
+                    ref="deptTree"
+                    :data="deptData"
+                    :props="defaultDeptProps"
+                    accordion
+                    show-checkbox
+                    @check-change="handleCheckChange"
+                    node-key="id"
+                    :default-expanded-keys="[2079]"
+            >
+            </el-tree>
+            <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+            <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
+        </el-dialog>
+
+        <el-dialog title="选择人员" :visible.sync="dialogUser" >
+            <!--对于同一级的节点，每次只能展开一个-->
+            <el-row>
+                <el-col :span="4">
+                    <el-tree
+                            :data="userData"
+                            :props="defaultUserProps"
+                            accordion
+                            @node-click="handleDeptNodeClick">
+                    </el-tree>
+                </el-col>
+
+                <el-col :span="20">
+                    <el-tabs type="border-card">
+                        <el-tab-pane label="检索">
+                            <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
+
+                                <el-form-item prop="code">
+                                    <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
+                                </el-form-item>
+                                <el-form-item prop="value">
+                                    <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
+                                </el-form-item>
+
+                                <el-form-item>
+                                    <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
+                                    <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
+
+                                </el-form-item>
+                            </el-form>
+                            <div>
+                                <el-table
+                                        :data="userTableData"
+                                        border
+                                        @selection-change="handleSelectionChange"
+                                        style="width: 100%">
+                                    <el-table-column
+                                            type="selection"
+                                            width="55">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="userCode"
+                                            label="身份证号"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="userName"
+                                            label="姓名"
+                                            width="280"
+                                    >
+                                    </el-table-column>
+
+                                </el-table>
+                                <el-pagination
+                                        @size-change="userHandleSizeChange"
+                                        @current-change="userHandleCurrentChange"
+                                        :current-page="userForm.currPage"
+                                        :page-sizes="[10, 20, 30, 40]"
+                                        :page-size="userForm.pageSize"
+                                        layout="total, sizes, prev, pager, next, jumper"
+                                        :total="userForm.totalCount">
+                                </el-pagination>
+                            </div>
+                        </el-tab-pane>
+                    </el-tabs>
+                    <el-button type="primary" size="mini" @click="confimUser" >保存</el-button>
+                    <el-button type="primary" size="mini" @click="cancelUser">取消</el-button>
+                </el-col>
+            </el-row>
+
+        </el-dialog>
     </div>
 </div>
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/learnCen/learntasks.js?_${.now?long}"></script>
+<script src="${rc.contextPath}/js/manageCen/learntasks.js?_${.now?long}"></script>
 </html>
