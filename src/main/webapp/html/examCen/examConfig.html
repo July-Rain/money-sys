@@ -5,7 +5,20 @@
     <#include "/header.html">
 </head>
 <style>
-
+.preview h2{
+    text-align: center;
+    font-size: 20px;
+    line-height: 40px;
+}
+.part{
+    padding: 0 20px;
+}
+.part h4{
+    line-height: 30px;
+}
+.part p{
+    line-height: 20px;
+}
 </style>
 <body>
 <div id="app" v-cloak>
@@ -54,7 +67,6 @@
                         <el-form-item label="专项知识：" prop="specialKnowledgeId">
                             <el-select v-model="examConfig.list" size="mini"
                                        multiple collapse-tags style="width: auto" placeholder="多选">
-                                <el-option :key="null" :label="全部" :value="null">全部</el-option>
                                 <el-option v-for="item in skOption" :key="item.key"
                                            :label="item.value" :value="item.key"></el-option>
                             </el-select>
@@ -316,8 +328,18 @@
             </template>
         </el-dialog>
 
-        <el-dialog :title="title" :visible.sync="autonomyQuesModal" :before-close="closeDia">
-            自主出题
+        <el-dialog title="自主出题" :visible.sync="autonomyQuesModal" :before-close="closeDia">
+            <el-transfer
+                    filterable
+                    :filter-method="filterMethod"
+                    filter-placeholder="请输入拼音"
+                    v-model="value2"
+                    :data="data2"
+                    :titles="titleArr"
+                    :target-order="push">
+            </el-transfer>
+            <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+            <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
         </el-dialog>
 
         <el-dialog title="选择部门" :visible.sync="dialogDept" >
@@ -402,11 +424,25 @@
                             </div>
                         </el-tab-pane>
                     </el-tabs>
-                    <el-button type="primary" size="mini" @click="confimUser" >保存</el-button>
+                    <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
                     <el-button type="primary" size="mini" @click="cancelUser">取消</el-button>
                 </el-col>
             </el-row>
 
+        </el-dialog>
+        <el-dialog class="preview" title="预览" :visible.sync="dialogWatch" >
+            <!--对于同一级的节点，每次只能展开一个-->
+            <h2>2018年第四季度执法资格考试</h2>
+            <div class="subTitle">
+                <h3>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题1分，共50分。</h3>
+            </div>
+            <div class="part">
+                <h4>1.全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?</h4>
+                <p>A.从实际出发不能因循守旧、墨守成规，法治建设可适当超越社会发展阶段</p>
+                <p>B.全面依法治国的制度基础是中华法系，实践基础是中国传统社会的治理经验</p>
+                <p>C.从中国实际出发不等于“关起门来搞法治”，应移植外国法律制度和法律文化</p>
+                <p>D.从实际出发要求凸显法治的中国特色，坚持中国特色社会主义道路、理论体系和制度</p>
+            </div>
         </el-dialog>
     </div>
 </div>

@@ -41,11 +41,12 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         String caseProcess = (String)params.get("caseProcess");
         String lawLevel = (String)params.get("lawLevel");
         String caseType = (String)params.get("caseType");
+        String contentType = (String)params.get("contentType");
         String caseLawid = (String)params.get("caseLawid");
         String startTime = (String)params.get("startTime");
         String endTime = (String)params.get("endTime");
         EntityWrapper<CaseAnalysisEntity> ew = new EntityWrapper<>();
-        ew.setSqlSelect("ID,CASE_TITLE,CONTENT_TYPE,CASE_TIME,CASE_PROCESS,CASE_TYPE,LAW_LEVEL,VIDEO_PIC_ACC");
+        ew.setSqlSelect("ID,CASE_TITLE,CASE_CONTENT,CONTENT_TYPE,CASE_TIME,CASE_PROCESS,CASE_TYPE,LAW_LEVEL,VIDEO_PIC_ACC");
         if(UtilValidate.isNotEmpty(caseTitle)){
             ew.like("CASE_TITLE",caseTitle);
         }
@@ -54,6 +55,9 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         }
         if(UtilValidate.isNotEmpty(lawLevel)){
             ew.eq("LAW_LEVEL",lawLevel);
+        }
+        if(UtilValidate.isNotEmpty(contentType)){
+            ew.eq("content_type",contentType);
         }
         if(UtilValidate.isNotEmpty(caseType)){
             ew.eq("CASE_TYPE",caseType);
