@@ -1,69 +1,93 @@
 var menuId = $("#menuId").val();
 var vm = new Vue({
     el: '#app',
-    data: {
-        //menuId:"",//菜单id
-        navData: [],//导航
-        details: [],
-        options: [],
-        tableData: [],//表格数据
-        visible: false,
-        examConfig: {},
-        rules: {//表单验证规则
-            value: [
-                {required: true, message: '请输入参数名', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ],
-            code: [
-                {required: true, message: '请输入参数值', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ]
-        },
-        randomQuesModal: false,//table弹出框可见性
-        autonomyQuesModal: false,
-        title: "",//弹窗的名称
-        delIdArr: [],//删除数据
-        data:[],//题型data
-        dataListSelections: [],//选中行
-        deleteIds:[],
-        etOption:[],
-        gfOption:[],
-        imtOption:[],
-        qwOption:[],
-        otOption:[],
-        asuOption:[],
-        rrtOption:[],
-        ctOption:[],
-        skOption:[],
-        randomQuesData:[],
-        qtOption:[],
-        userTableData:[],//人员表格信息
-        multipleSelection:[],//选中人员信息
-        multipleDeptSelection:[],//选中部门信息
-        dialogOrgDept: false,
-        dialogDept: false,//部门的弹窗
-        dialogUser: false,//人员的弹窗
-        dialogWatch: true,
-        deptData:[],//部门树数据
-        userData:[],//人员树数据
-        defaultDeptProps:{
-            children: 'child',
-            label: 'orgName'
-        },//部门树的默认格式
-        defaultUserProps:{
-            children: 'child',
-            label: 'orgName'
-        },//部门人员的默认格式
-        userForm:{
-            userCode:"",
-            userName:"",
-            orgCode:"",
-            currPage: 1,
-            pageSize: 10,
-            totalCount:0
+    data() {
+        const generateData2 = _ => {
+            const data = [];
+            const cities = ['第一题', '第二题', '第三题', '第四题', '第五题', '第六题', '第七题'];
+            const pinyin = ['diyiti', 'dierti', 'disanti', 'disiti', 'siwuti', 'diliuti', 'siqiti'];
+            cities.forEach((city, index) => {
+                data.push({
+                    label: city,
+                    key: index,
+                    pinyin: pinyin[index]
+                });
+            });
+            return data;
+        };
+        return {
+            data2: generateData2(),
+            value2: [],
+            filterMethod(query, item) {
+                return item.pinyin.indexOf(query) > -1;
+            },
+            titleArr: ['待选题目','题目排序'],
+            //menuId:"",//菜单id
+            navData: [],//导航
+            details: [],
+            options: [],
+            tableData: [],//表格数据
+            visible: false,
+            examConfig: {},
+            rules: {//表单验证规则
+                value: [
+                    {required: true, message: '请输入参数名', trigger: 'blur'},
+                    {max: 50, message: '最大长度50', trigger: 'blur'}
+                ],
+                code: [
+                    {required: true, message: '请输入参数值', trigger: 'blur'},
+                    {max: 50, message: '最大长度50', trigger: 'blur'}
+                ]
+            },
+            randomQuesModal: false,//table弹出框可见性
+            autonomyQuesModal: false,
+            title: "",//弹窗的名称
+            delIdArr: [],//删除数据
+            data:[],//题型data
+            dataListSelections: [],//选中行
+            deleteIds:[],
+            etOption:[],
+            gfOption:[],
+            imtOption:[],
+            qwOption:[],
+            otOption:[],
+            asuOption:[],
+            rrtOption:[],
+            ctOption:[],
+            skOption:[],
+            randomQuesData:[],
+            qtOption:[],
+            userTableData:[],//人员表格信息
+            multipleSelection:[],//选中人员信息
+            multipleDeptSelection:[],//选中部门信息
+            dialogOrgDept: false,
+            dialogDept: false,//部门的弹窗
+            dialogUser: false,//人员的弹窗
+            dialogWatch: false,
+            deptData:[],//部门树数据
+            userData:[],//人员树数据
+            defaultDeptProps:{
+                children: 'child',
+                label: 'orgName'
+            },//部门树的默认格式
+            defaultUserProps:{
+                children: 'child',
+                label: 'orgName'
+            },//部门人员的默认格式
+            userForm:{
+                userCode:"",
+                userName:"",
+                orgCode:"",
+                currPage: 1,
+                pageSize: 10,
+                totalCount:0
 
-        }//人员查询
+            }//人员查询
+        };
+
+
     },
+
     created: function () {
         this.$nextTick(function () {
             //加载菜单
@@ -130,12 +154,17 @@ var vm = new Vue({
             if(e === "10033"){
                 this.randomQues();
             }
+            if(e === "10034"){
+                this.selfQuse();
+            }
         },
         randomQues : function(){
             this.title = "随机出题配置";
             this.randomQuesModal = true;
         },
-
+        selfQuse : function(){
+            this.autonomyQuesModal = true;
+        },
         handleSave:function(randomQuesData){
             vm.examConfig.examQueConfigList=randomQuesData;
             vm.randomQuesModal = false;
@@ -253,6 +282,9 @@ var vm = new Vue({
         closeDia: function () {
             this.randomQuesModal = false;
             // vm.reload();
+        },
+        closeSelf: function() {
+            this.autonomyQuesModal = false;
         },
         // 多选
         selectionChangeHandle: function (val) {

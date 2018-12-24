@@ -328,8 +328,18 @@
             </template>
         </el-dialog>
 
-        <el-dialog :title="title" :visible.sync="autonomyQuesModal" :before-close="closeDia">
-            自主出题
+        <el-dialog title="自主出题" :visible.sync="autonomyQuesModal" :before-close="closeDia">
+            <el-transfer
+                    filterable
+                    :filter-method="filterMethod"
+                    filter-placeholder="请输入拼音"
+                    v-model="value2"
+                    :data="data2"
+                    :titles="titleArr"
+                    :target-order="push">
+            </el-transfer>
+            <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+            <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
         </el-dialog>
 
         <el-dialog title="选择部门" :visible.sync="dialogDept" >
