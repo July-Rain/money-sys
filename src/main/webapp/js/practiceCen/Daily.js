@@ -29,7 +29,10 @@ var vm = new Vue({
                 dataType: "json",
                 success: function (result) {
                     if (result.code === 0) {
+                        console.info(result);
+                        alert("415456");
                         vm.questionForm = result.question;//返回一道试题
+                        vm.questionForm.answer = result.question.answer;
                         if(result.questionForm.length == 0){
                             alert('每日一题已结束，请提交');
                         }
