@@ -3,6 +3,7 @@ package com.lawschool.service;
 
 import com.lawschool.base.AbstractService;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
 
 import java.util.List;
@@ -51,6 +52,15 @@ public interface TestQuestionService extends AbstractService<TestQuestions> {
 
 
     TestQuestions findByEntity(TestQuestions t);
+
+    List<CommonForm> selectByTopicAndNum(String topic, Integer num);
+
+    /**
+     * 根据题目的多个id查询题目（包含题目选项）
+     * @param ids
+     * @return
+     */
+    List<QuestForm> getQuestions(List<String> ids);
 
     /**
      * 根据专项知识ID和题目类型查询指定数量的题目
