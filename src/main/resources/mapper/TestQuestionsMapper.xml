@@ -440,7 +440,7 @@
         T .diff
     </select>
 
-    <select id="findByNum" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
+    <select id="findByNum" parameterType="map" resultType="string">
         SELECT
           id
         FROM
