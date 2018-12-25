@@ -16,17 +16,13 @@ import java.util.List;
 
 public interface SysRoleService extends AbstractService<SysRoleEntity> {
     /**
-     * 增加角色
+     * 增加或修改角色
      */
-    void add(SysRoleEntity role);
+    void saveOrUpdate(SysRoleEntity role);
     /**
      * 删除角色
      */
     void deleteById(String roleId);
-    /**
-     * 修改角色
-     */
-    void updaterRole(SysRoleEntity role);
     /**
      * 查找角色
      */

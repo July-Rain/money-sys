@@ -1,6 +1,5 @@
 package com.lawschool.controller.system;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.Page;
 import com.lawschool.beans.system.SysRoleEntity;
@@ -42,7 +41,7 @@ public class SysRoleController {
      */
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
     public Result info(@PathVariable("id") String id) {
-        SysRoleEntity sysRoleEntity = roleService.selectById(id);
+        SysRoleEntity sysRoleEntity = roleService.findByRoleId(id);
         return Result.ok().put("data", sysRoleEntity);
     }
 
@@ -52,7 +51,7 @@ public class SysRoleController {
     @SysLog("保存角色")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(SysRoleEntity sysRoleEntity) {
-        roleService.save(sysRoleEntity);
+        roleService.saveOrUpdate(sysRoleEntity);
         return Result.ok();
     }
 
@@ -60,9 +59,9 @@ public class SysRoleController {
      * 批量删除角色
      */
     @SysLog("删除角色")
-    @RequestMapping(value = "delete", method = RequestMethod.GET)
-    public Result deleteById(List<String> idList) {
-        roleService.delete(idList);
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public Result deleteById(String id) {
+        roleService.deleteById(id);
         return Result.ok();
     }
 

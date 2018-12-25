@@ -1,7 +1,10 @@
 package com.lawschool.service;
 
-import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.base.AbstractService;
 import com.lawschool.beans.SysRoleMenu;
+import com.lawschool.util.GeneralRuntimeException;
+
+import java.util.List;
 
 /**
  * InterfaceName: SysRoleMenuService
@@ -11,6 +14,32 @@ import com.lawschool.beans.SysRoleMenu;
  * @author MengyuWu
  * @since JDK 1.8
  */
-public interface SysRoleMenuService extends IService<SysRoleMenu> {
+public interface SysRoleMenuService extends AbstractService<SysRoleMenu> {
 
+    /**
+     * 保存角色与菜单关系
+     * @param roleId
+     * @param menuIdList
+     */
+    void save(String roleId, List<String> menuIdList);
+
+    /**
+     * 根据角色和父级ID查询所有菜单ID
+     * @param roleId
+     * @param parentId
+     * @return
+     */
+    List<String> queryMenuIdList(String roleId, String parentId);
+
+    /**
+     * 根据菜单删除角色菜单
+     * @param menuIds
+     */
+    void deleteByMenuId(List<String> menuIds);
+
+    /**
+     * 批量删除角色菜单（根据角色IDs）
+     * @param ids
+     */
+    void deleteBatchByRole(List<String> ids);
 }
