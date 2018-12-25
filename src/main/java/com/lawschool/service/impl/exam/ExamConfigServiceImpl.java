@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
+import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.auth.AuthRelationBean;
 import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.beans.exam.ExamDetail;
@@ -13,12 +14,13 @@ import com.lawschool.dao.exam.ExamConfigDao;
 import com.lawschool.dao.exam.ExamDetailDao;
 import com.lawschool.dao.exam.ExamQueConfigDao;
 import com.lawschool.dao.exam.ExamQuestionsDao;
+import com.lawschool.form.AnswerForm;
+import com.lawschool.form.QuestForm;
+import com.lawschool.service.AnswerService;
+import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.auth.AuthRelationService;
 import com.lawschool.service.exam.ExamConfigService;
-import com.lawschool.util.GetUUID;
-import com.lawschool.util.PageUtils;
-import com.lawschool.util.Query;
-import com.lawschool.util.UtilValidate;
+import com.lawschool.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,8 +48,9 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	@Autowired
 	private TestQuestionService testQuestionService;
 
+
 	@Autowired
-	private AnswerService answerService;
+	private  AnswerService answerService;
 	/**
 	 * 查询试卷列表
 	 */
@@ -284,5 +287,29 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 		return readPassword;
 	}
 
-	
+	/**
+	 * 根據試題編號獲取试题详情
+	 * @param idList
+	 * @return
+	 */
+	private List<QuestForm> getList(List<String> idList){
+
+		List<QuestForm> eqList = testQuestionService.findByIds(idList);
+		List<AnswerForm> answerForms = answerService.findByQuestionIds(idList);
+		// 遍历处理选项信息
+		for(QuestForm qf : eqList){
+			String qid = qf.getId();
+			List<AnswerForm> tempList = new ArrayList<AnswerForm>();
+
+			for(AnswerForm af : answerForms){
+				String aqid = af.getQuestionId();
+				if(qid.equals(aqid)){
+					tempList.add(af);
+				}
+			}
+
+			qf.setAnswer(tempList);
+		}
+		return  eqList;
+	}
 }
