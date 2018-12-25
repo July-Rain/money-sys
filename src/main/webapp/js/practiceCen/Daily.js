@@ -3,22 +3,6 @@ var params = window.location.search;
 var vm = new Vue({
     el: '#app',
     data:{
-        /*dailyConfig:{
-            id:"",
-            specialKnowledgeId:"",
-            createRule:"",
-            obtainPoint:"",
-            isShowLegal:"",
-            createWay:"",//出题方式：随机，自定义
-            isShowAnswer:"",//显示答案
-            questionDifficulty:"",
-            joinPeople:"",
-            joinDept:"",
-            questionId:"",
-            beginTime:"",
-            endTime:"",
-            questionType:""
-        },//每日一题属性*/
         questionForm:{
             id:"",
             comContent:"",
@@ -30,8 +14,8 @@ var vm = new Vue({
             answer:[],
             answerChoiceNumber:"",//选项数量
             questionContent:""
-        }//接收每日一题
-
+        },//接收每日一题
+        qtOption:[],//题目类型
     },
     methods: {
 

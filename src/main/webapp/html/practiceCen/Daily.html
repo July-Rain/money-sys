@@ -16,9 +16,9 @@
         <el-row>
             <el-col >
                 <p>题目：{{questionForm.comContent}}</p>
-                <el-col v-for="item in item.answer"></el-col>
+                <el-col v-for="item in questionForm.answer"></el-col>
                 <el-checkbox-group v-model="item.answer">
-                    <el-checkbox :label="item.id" v-for="item in item.answer">答案：{{questionForm.questionContent}}</el-checkbox>
+                    <el-checkbox :label="item.id" v-for="item in questionForm.answer">答案：{{questionForm.questionContent}}</el-checkbox>
                     <br/>
                 </el-checkbox-group>
                 <span>描述：{{questionForm.answerDescrible}}</span>
