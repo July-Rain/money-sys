@@ -23,7 +23,8 @@ var vm = new Vue({
         Question:{},
         radio_disabled: false,
         dialogQuestion:false,//开始答题  弹出
-
+        BattleTopicSettings:[],//题目配置集合
+        nowQscore:"",//当前题目分值
     },
     created: function () {
         this.$nextTick(function () {
@@ -48,7 +49,8 @@ var vm = new Vue({
             {
                 vm.questionError();
             }
-
+            //不管答对答错  都要走保存题目的方法
+            // vm.oryesorno();//答完题目入库保存记录
             //触发发送事件
             sendMsg();
         },
@@ -57,6 +59,7 @@ var vm = new Vue({
         {
             alert("答错了")
 
+
         },
         //答对事件
         questionYes:function()
@@ -64,6 +67,8 @@ var vm = new Vue({
             alert("答对了")
 
         },
+
+
         reload: function () {
 
 
@@ -92,18 +97,14 @@ $.ajax({
     dataType: "json",
     async:false,
     success: function (result) {
-        // path=vm.basePath();
-
         vm.u=result.user;
-
         uid=result.user.id;
 //发送人编号
         from=result.user.id;
         fromName=result.user.fullName;
-
-
     }
 });
+
 //        console.info(to);
 // 创建一个Socket实例
 //参数为URL，ws表示WebSocket协议。onopen、onclose和onmessage方法把事件连接到Socket实例上。每个方法都提供了一个事件，以表示Socket的状态。
@@ -170,6 +171,7 @@ websocket.onmessage = function(event) {
             vm.radio_disabled=false;
             vm.allnum=data.tqList.length;
             vm.nownum=Number(nowtimu)+1;
+            vm.nowQscore=data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
             vm.Question=data.tqList[Number(nowtimu)];
         }
 
@@ -204,10 +206,11 @@ websocket.onmessage = function(event) {
             {
 
                vm.dialogQuestion=true,
-                 vm.radio_disabled=false;
-                vm.allnum=data.tqList.length;
-                vm.nownum=Number(nowtimu)+1;
-              vm.Question=data.tqList[Number(nowtimu)];
+               vm.radio_disabled=false;
+               vm.allnum=data.tqList.length;
+               vm.nownum=Number(nowtimu)+1;
+                vm.nowQscore=data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
+                vm.Question=data.tqList[Number(nowtimu)];
             }
 
             answerpeople=[];//再将这个回答过的人制空
@@ -295,7 +298,7 @@ function sendMsg(){
     }else{
         nowtimu=nowtimu+1;
         console.info(datamag);
-        // vm.Question=vm.QuestionList[nowtimu];
+
         var data={};
         data["from"]=from;
         data["fromName"]=fromName;
@@ -303,6 +306,9 @@ function sendMsg(){
         data["text"]=msg;
         data["nowtimu"]=nowtimu;
         data["tqList"]=datamag.tqList;
+        data["myanswer"]=vm.answers;
+        data["tq"]=vm.Question;
+        data["competitionOnline"]=datamag.competitionOnline;
         //发送消息
         websocket.send(JSON.stringify(data));
         //发送完消息，清空输入框
@@ -341,7 +347,20 @@ Date.prototype.Format = function (fmt) { //author: meizz
 }
 
 
-
-
+//不管答对答错 都要入库方法
+function oryesorno() {
+    //数据格式问题  把这两个时间值为空
+    vm.Question.tuIsstim="";
+    vm.Question.stuIsstim="";
+    $.ajax({
+        type: "POST",
+        url: baseURL + 'competitionOnline/saveQuestion?myanswer='+vm.answers,
+        contentType: "application/json",
+        async:false,
+        data: JSON.stringify(vm.Question),
+        success: function (result) {
+        }
+    });
+}
 
 

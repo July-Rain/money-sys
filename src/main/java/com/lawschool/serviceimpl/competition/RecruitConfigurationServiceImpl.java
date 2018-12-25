@@ -322,7 +322,7 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 		User u= (User) request.getSession().getAttribute("user");
 		UserQuestRecord userQuestRecord=new UserQuestRecord();
 		userQuestRecord.setId(IdWorker.getIdStr());//id
-		userQuestRecord.setUserId(u.getUserId());//userid
+		userQuestRecord.setUserId(u.getId());//userid
 		userQuestRecord.setQuestId(testQuestions.getId());//题目id
 		userQuestRecord.setOptTime(new Date());//保存时间
 		userQuestRecord.setMyAswerId(myanswer);//对应题目答案表的id
