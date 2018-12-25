@@ -33,10 +33,15 @@ public class Message {
 	@Expose
 	public String battleCode;
 
+	//当前答到第几题
+	@Expose
+	public String nowtimu;
+
 	//在线用户列表
 	@Expose
 	List<User> userList = new ArrayList<>();
-	
+	@Expose
+	List<TestQuestions> tqList=new ArrayList<TestQuestions>();
 	
 	public List<User> getUserList() {
 		return userList;
@@ -81,5 +86,21 @@ public class Message {
 
 	public void setBattleCode(String battleCode) {
 		this.battleCode = battleCode;
+	}
+
+	public String getNowtimu() {
+		return nowtimu;
+	}
+
+	public void setNowtimu(String nowtimu) {
+		this.nowtimu = nowtimu;
+	}
+
+	public List<TestQuestions> getTqList() {
+		return tqList;
+	}
+
+	public void setTqList(List<TestQuestions> tqList) {
+		this.tqList = tqList;
 	}
 }

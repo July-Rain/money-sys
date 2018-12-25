@@ -42,9 +42,20 @@
                                             -->
                                         </ul>
                                     </div>
+
+
+                                    <el-radio-group v-model="answers">
+                                        <el-radio label="jjj">
+                                           梵蒂冈
+                                        </el-radio>
+                                        <br/>
+                                    </el-radio-group>
+
+
                                     <div class="down">
                                         <textarea class="textInfo" id="msg" title="按ctrl+enter直接发送"></textarea>
-                                        <button class="btn" id="sendBtn"></button>
+                                        <!--<button class="btn" id="sendBtn"></button>-->
+                                        <el-button type="primary" id="sendBtn">发送</el-button>
                                     </div>
                                 </div>
 

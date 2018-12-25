@@ -24,10 +24,13 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	private ChatWebSocketHandler webSocketHandler;
 	@Autowired
 	private ChatHandshakeInterceptor chatHandshakeInterceptor;
-
+	@Autowired
+	private ChatWebSocketHandler2 webSocketHandler2;
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		//添加一个处理器还有定义处理器的处理路径
 		registry.addHandler(webSocketHandler, "/ws").addInterceptors(chatHandshakeInterceptor);
+
+		registry.addHandler(webSocketHandler2, "/wsp").addInterceptors(chatHandshakeInterceptor);
 		/*
 		 * 在这里我们用到.withSockJS()，SockJS是spring用来处理浏览器对websocket的兼容性，
 		 * 目前浏览器支持websocket还不是很好，特别是IE11以下.

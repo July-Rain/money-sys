@@ -7,6 +7,7 @@ import com.lawschool.beans.User;
 import com.lawschool.beans.learn.LearnTasksEntity;
 import com.lawschool.service.learn.LearnTasksService;
 import com.lawschool.util.GetUUID;
+import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +43,7 @@ public class LearnTasksController extends AbstractController {
 
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params){
-        Page page = tasksService.findPage(new Page<LearnTasksEntity>(params),new LearnTasksEntity());
+        PageUtils page = tasksService.queryPage(params);
         return Result.ok().put("page", page);
     }
 
@@ -73,11 +74,7 @@ public class LearnTasksController extends AbstractController {
     public Result insert(@RequestBody LearnTasksEntity tasksEntity){
         User user =getUser();
         tasksEntity.setId(GetUUID.getUUIDs("SC"));
-        tasksEntity.setCreateTime(new Date());
-        tasksEntity.setOptTime(new Date());
-        tasksEntity.setCreateUser(user.getUserName());
-        tasksEntity.setOptUser(user.getUserName());
-        tasksService.insert(tasksEntity);
+        tasksService.insertLearnTask(tasksEntity,user);
         return Result.ok().put("id",tasksEntity.getId());
     }
 
@@ -92,7 +89,8 @@ public class LearnTasksController extends AbstractController {
     @SysLog("更新学习任务")
     @RequestMapping("/update")
     public Result update(@RequestBody LearnTasksEntity tasksEntity){
-        tasksService.updateById(tasksEntity);
+        User user =getUser();
+        tasksService.updateLearnTask(tasksEntity,user);
         return Result.ok().put("id",tasksEntity.getId());
     }
 

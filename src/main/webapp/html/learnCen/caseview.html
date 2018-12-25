@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<style>
+
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="container">
+        <el-row :gutter="24">
+            <!--<el-col :span="4">
+                &lt;!&ndash;对于同一级的节点，每次只能展开一个&ndash;&gt;
+                <el-tree
+                        :data="treeData"
+                        :props="defaultProps"
+                        accordion
+                        @node-click="handleNodeClick">
+                </el-tree>
+            </el-col>-->
+            <el-col :span="24">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="检索">
+                        <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+
+                            <el-form-item label="案例标题" prop="caseTitle">
+                                <el-input v-model="formInline.caseTitle" placeholder="资料标题" size="mini"></el-input>
+                            </el-form-item>
+                            <el-form-item label="发布人" prop="stuIssuer">
+                                <el-input v-model="formInline.stuIssuer" placeholder="发布人" size="mini"></el-input>
+                            </el-form-item>
+                            <el-form-item  label="法律分类" prop="caseLawName">
+                                <el-input v-model="formInline.caseLawName" placeholder="法律分类" @focus="chooseLaw" size="mini"></el-input>
+                            </el-form-item>
+                            <el-form-item label="开始时间" prop="startTime">
+                                <el-date-picker
+                                        v-model="formInline.startTime"
+                                        type="date"
+                                        format="yyyy年MM月dd日"
+                                        value-format="yyyy-MM-dd"
+                                        placeholder="选择开始时间"
+                                        size="mini"
+                                        >
+                                </el-date-picker>
+                            </el-form-item>
+                            <el-form-item  label="结束时间" prop="endTime">
+                                <el-date-picker
+                                        v-model="formInline.endTime"
+                                        type="date"
+                                        format="yyyy年MM月dd日"
+                                        value-format="yyyy-MM-dd"
+                                        placeholder="选择结束时间"
+                                        size="mini"
+                                        >
+                                </el-date-picker>
+                            </el-form-item>
+                            <el-form-item  label="类型" prop="contentType">
+                                <el-radio label="1" v-model="formInline.contentType" @change="changeType"> 文字</el-radio>
+                                <el-radio label="2" v-model="formInline.contentType" @change="changeType"> 音频</el-radio>
+                                <el-radio label="3" v-model="formInline.contentType" @change="changeType"> 视频</el-radio>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
+                                <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
+
+                            </el-form-item>
+                        </el-form>
+                        <div>
+                            <div class="content lesson">
+                                <!-- 音频 -->
+                                <template v-if="formInline.contentType=='2'">
+                                    <el-row>
+                                        <el-col :span="6" v-for="(item, index) in caseData">
+                                            <el-card :body-style="{ padding: '4px' }">
+
+                                                <audio controls="controls" preload="none">
+                                                    <source :src="item.caseContentUrl" controls="controls">
+                                                </audio>
+                                                <div style="padding: 14px 14px 0 14px;">
+                                                    <p>
+                                                        <span class="contentType">{{item.contentType}}</span>
+                                                        <a href="javascript:;" class="title">{{item.caseTitle}}</a>
+                                                    </p>
+                                                    <p>
+                                                        <!--<span class="stuIssuer">{{item.stuIssuer}}</span>
+                                                        <span class="stuCreat">{{item.stuIsstime}}</span>-->
+                                                    </p>
+                                                </div>
+                                            </el-card>
+                                        </el-col>
+                                    </el-row>
+                                </template>
+                                <!-- 视频 -->
+                                <template v-if="formInline.contentType=='3'">
+                                <el-row>
+                                    <el-col :span="6" v-for="(item, index) in caseData">
+                                        <el-card :body-style="{ padding: '4px' }">
+
+                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl">
+                                                <source :src="item.caseContentUrl" type="video/mp4">
+                                                您的浏览器不支持视频播放
+                                            </video>
+                                            <div style="padding: 14px 14px 0 14px;">
+                                                <p>
+                                                    <span class="contentType">{{item.contentType}}</span>
+                                                    <a href="javascript:;" class="title">{{item.caseTitle}}</a>
+                                                </p>
+                                                <p>
+                                                    <!--<span class="stuIssuer">{{item.stuIssuer}}</span>
+                                                    <span class="stuCreat">{{item.stuIsstime}}</span>-->
+                                                </p>
+                                            </div>
+                                        </el-card>
+                                    </el-col>
+                                </el-row>
+                                </template>
+                            </div>
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="formInline.currPage"
+                                    :page-sizes="[10, 20, 30, 40]"
+                                    :page-size="formInline.pageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="formInline.totalCount">
+                            </el-pagination>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
+
+    </div>
+
+    <el-dialog title="选择法律分类" :visible.sync="dialogLaw" >
+        <!--对于同一级的节点，每次只能展开一个-->
+        <el-tree
+                ref="lawtree"
+                :data="treeData"
+                :props="defaultProps"
+                accordion
+                node-key="id"
+                show-checkbox
+                @check-change="handleCheckChange">
+        </el-tree>
+        <el-button type="primary" size="mini" @click="confimLaw">保存</el-button>
+        <el-button type="primary" size="mini" @click="cancelLaw">取消</el-button>
+    </el-dialog>
+
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/learnCen/caseview.js?_${.now?long}"></script>
+</html>
