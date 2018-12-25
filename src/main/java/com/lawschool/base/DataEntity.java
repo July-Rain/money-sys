@@ -1,6 +1,9 @@
 package com.lawschool.base;
 
+import com.baomidou.mybatisplus.toolkit.IdWorker;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
@@ -20,7 +23,25 @@ public class DataEntity<T> extends BaseEntity<T> {
     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     protected Date optTime;         //操作时间
 
+    // 新增前调用
+    public void preInsert(String userId){
+        String id = IdWorker.getIdStr();
+        setId(id);
+        if(StringUtils.isNotBlank(userId)){
+            this.createUser = userId;
+            this.optUser = this.createUser;
+        }
+        this.createTime = new Date();
+        this.optTime = this.createTime;
+    }
 
+    // 更新前调用
+    public void preUpdate(String userId){
+        if(StringUtils.isNotBlank(userId)){
+            this.optUser = userId;
+        }
+        this.optTime = new Date();
+    }
 
     public DataEntity(){
         super();
