@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.BaseEntity;
 import com.lawschool.base.DataEntity;
+import com.lawschool.beans.TestQuestions;
+
 /**
  * 
  * @Title:ExamConfig.java
@@ -165,7 +167,7 @@ public class ExamConfig extends DataEntity<ExamConfig> {
 	@TableField(exist = false)
 	private List<ExamQueConfig> examQueConfigList;
 	@TableField(exist = false)
-	private List<ExamQuestions> examQuestionsList;
+	private List<TestQuestions> testQuestions;
 
 	private List<String> list;
 
@@ -187,12 +189,12 @@ public class ExamConfig extends DataEntity<ExamConfig> {
 		this.examQueConfigList = examQueConfigList;
 	}
 
-	public List<ExamQuestions> getExamQuestionsList() {
-		return this.examQuestionsList;
+	public List<TestQuestions> getTestQuestions() {
+		return this.testQuestions;
 	}
 
-	public void setExamQuestionsList(final List<ExamQuestions> examQuestionsList) {
-		this.examQuestionsList = examQuestionsList;
+	public void setTestQuestions(final List<TestQuestions> testQuestions) {
+		this.testQuestions = testQuestions;
 	}
 
 	/**

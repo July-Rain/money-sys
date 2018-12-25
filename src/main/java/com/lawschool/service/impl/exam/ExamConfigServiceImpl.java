@@ -76,7 +76,6 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 
 		return new PageUtils(page);
 	}
-
 	/**
 	 * 
 	 * @Description:查询此用户所有考试信息
@@ -175,12 +174,13 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	 * @Pwarms:@throws Exception
 	 * @return:void
 	 */
-	private void generate(ExamConfig examConfig)
+	@Override
+	public void generate(ExamConfig examConfig)
 			throws Exception {
 		// TODO Auto-generated method stub
 		// 获取考试出题类型
 		List<ExamQueConfig> examQueList = examConfig.getExamQueConfigList();
-		List<ExamQuestions> queList = examConfig.getExamQuestionsList();
+		List<TestQuestions> queList = examConfig.getTestQuestions();
 		// 题目数量
 		int queNum = 0;
 		int score = 0;
@@ -233,7 +233,8 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	}
 
 	// 预览试卷
-	private List<QuestForm> preview(ExamConfig examConfig) throws Exception {
+	@Override
+	public List<QuestForm> preview(ExamConfig examConfig) throws Exception {
 		// 获取考试出题类型
 		examConfig.setId(IdWorker.getIdStr());
 
@@ -241,7 +242,7 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 		int queNum = 0;
 		int score = 0;
         List<ExamQueConfig> examQueList = examConfig.getExamQueConfigList();
-        List<ExamQuestions> queList = examConfig.getExamQuestionsList();
+        List<TestQuestions> queList = examConfig.getTestQuestions();
 		List<QuestForm> eqList = new ArrayList<QuestForm>();
 		if ("10033".equals(examConfig.getQuestionWay())) {
 			// 随机出题
@@ -253,33 +254,15 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 				paramsMap.put("questionType",examQueConfig.getQuestionType());
 				paramsMap.put("num",examQueConfig.getQuestionNumber());
 				List<String> idList = testQuestionService.findByNum(paramsMap);
-				eqList = testQuestionService.findByIds(idList);;
-				List<AnswerForm> answerForms = answerService.findByQuestionIds(idList);
-				// 遍历处理选项信息
-				for(QuestForm qf : eqList){
-					String qid = qf.getId();
-					List<AnswerForm> tempList = new ArrayList<>();
-
-					for(AnswerForm af : answerForms){
-						String aqid = af.getQuestionId();
-						if(qid.equals(aqid)){
-							tempList.add(af);
-						}
-					}
-
-					qf.setAnswer(tempList);
-				}
-
+				eqList = getList(idList);
 			}
-//			if (queNum != examConfig.getExamCount().intValue() || score != examConfig.getExamScore().intValue()) {
-//				throw new Exception("随机出题设置的分数题数与总题数总分值不对应");
-//			}
 		} else {
-			for (ExamQuestions que : queList) {
-				score += que.getScore();
+		    //
+		    List<String> idList = new ArrayList<>();
+			for (TestQuestions que : queList) {
+				idList.add(que.getId());
 			}
-			queNum = queList.size();
-
+			eqList = getList(idList);
 		}
 		return eqList;
 	}
@@ -313,5 +296,29 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 		return readPassword;
 	}
 
-	
+    /**
+     * 根據試題編號獲取试题详情
+     * @param idList
+     * @return
+     */
+	private List<QuestForm> getList(List<String> idList){
+
+	    List<QuestForm> eqList = testQuestionService.findByIds(idList);
+        List<AnswerForm> answerForms = answerService.findByQuestionIds(idList);
+        // 遍历处理选项信息
+        for(QuestForm qf : eqList){
+            String qid = qf.getId();
+            List<AnswerForm> tempList = new ArrayList<AnswerForm>();
+
+            for(AnswerForm af : answerForms){
+                String aqid = af.getQuestionId();
+                if(qid.equals(aqid)){
+                    tempList.add(af);
+                }
+            }
+
+            qf.setAnswer(tempList);
+        }
+	    return  eqList;
+    }
 }
