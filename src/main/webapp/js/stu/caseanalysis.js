@@ -488,15 +488,7 @@ var vm = new Vue({
             this.userForm.currPage=val;
             this.reloadUser();
         },
-        toggleSelection(rows) {
-            if (rows) {
-                rows.forEach(row => {
-                    this.$refs.multipleTable.toggleRowSelection(row);
-            });
-            } else {
-                this.$refs.multipleTable.clearSelection();
-            }
-        },
+
         handleSelectionChange(val) {
             //选择人员信息
             this.multipleSelection = val;

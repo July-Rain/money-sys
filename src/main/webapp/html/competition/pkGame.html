@@ -42,10 +42,29 @@
                                             -->
                                         </ul>
                                     </div>
-                                    <div class="down">
-                                        <textarea class="textInfo" id="msg" title="按ctrl+enter直接发送"></textarea>
-                                        <button class="btn" id="sendBtn"></button>
+
+                                    <br/>
+
+                                    <div v-show="dialogQuestion">
+                                                        一共{{allnum}}题，当前{{nownum}}题
+                                    [{{Question.questionType==10004?'单选题':Question.questionType==10005?'多选题':'判断题'}}] {{Question.comContent}}
+                                    <br/>
+                                    <br/>
+                                    <el-radio-group v-model="answers" v-if="Question.questionType==10004 || Question.questionType==10006"
+                                                    >
+                                        <el-radio :label="answer.id" v-for="answer in Question.answerList" :disabled="radio_disabled"
+                                                  @change="radioCheck(answer.id, Question.answerId, Question.questionType)" >
+                                            {{answer.questionContent}}
+                                        </el-radio>
+                                        <br/>
+                                    </el-radio-group>
                                     </div>
+
+                                    <!--<div class="down">-->
+                                        <!--<textarea class="textInfo" id="msg" title="按ctrl+enter直接发送"></textarea>-->
+                                        <!--&lt;!&ndash;<button class="btn" id="sendBtn"></button>&ndash;&gt;-->
+                                        <!--<el-button type="primary" id="sendBtn">发送</el-button>-->
+                                    <!--</div>-->
                                 </div>
 
                             </div>

@@ -27,4 +27,11 @@ public interface AnswerService extends AbstractService<Answer> {
     void deleteByQuestionId(String questionId);
 
     void deleteByQuestionIds(List<String> questionIds);
+
+    /**
+     * 根据单条题目ID查询 liuhuan
+     * @param qId
+     * @return
+     */
+    List<AnswerForm> findByQuesId(String qId);
 }

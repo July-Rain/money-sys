@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://java.sun.com/jsf/html">
+<head>
+    <title>每日一题</title>
+    <#include "/header.html">
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="header">
+        <div class="header-left">
+            <img src="${rc.contextPath}/statics/img/logo.png">
+            <a href="javascript:;">江苏省公安厅法律学校</a>
+        </div>
+    </div>
+    <div>
+        <el-row>
+            <el-col >
+                <p>题目：{{questionForm.comContent}}</p>
+                <el-col v-for="item in questionForm.answer"></el-col>
+                <el-checkbox-group v-model="item.answer">
+                    <el-checkbox :label="item.id" v-for="item in questionForm.answer">答案：{{questionForm.questionContent}}</el-checkbox>
+                    <br/>
+                </el-checkbox-group>
+                <span>描述：{{questionForm.answerDescrible}}</span>
+                </p>
+            </el-col>
+        </el-row>
+    </div>
+</div>
+
+</body>
+<script src="${rc.contextPath}/js/practiceCen/Daily.js?_${.now?long}"></script>
+</html>

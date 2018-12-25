@@ -114,6 +114,8 @@ var vm = new Vue({
                 }
             });
         },
+
+
         // el-tree节点点击事件
         handleNodeClick: function (data) {
             vm.formInline.stuLawid=data.id;

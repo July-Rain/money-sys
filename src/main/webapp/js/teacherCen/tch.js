@@ -48,7 +48,7 @@ var vm = new Vue({
     methods: {
         toTchvedio:function(id){
             vm.tchId=id;
-            window.location="./tchvideocourse.html?createUser="+id+"&addsrc=1";
+            window.location="./tchcourse.html?createUser="+id+"&addsrc=1";
         },
         // 查询
         onSubmit: function () {
