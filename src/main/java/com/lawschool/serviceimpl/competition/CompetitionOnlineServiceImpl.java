@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
+import com.lawschool.beans.UserQuestRecord;
 import com.lawschool.beans.competition.BattleTopicSetting;
 import com.lawschool.beans.competition.CompetitionOnline;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
@@ -16,6 +17,7 @@ import com.lawschool.beans.competition.bak.RecruitConfigurationBak;
 import com.lawschool.dao.competition.CompetitionOnlineDao;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
+import com.lawschool.service.UserQuestRecordService;
 import com.lawschool.service.competition.BattleTopicSettingService;
 import com.lawschool.service.competition.CompetitionOnlineService;
 import com.lawschool.service.competition.bak.BattleTopicSettingBakService;
@@ -57,7 +59,8 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	private TestQuestionService testQuestionService;
 	@Autowired
 	private AnswerService answerService;
-
+	@Autowired
+	private UserQuestRecordService userQuestRecordService;
 	@Override
 	public List<CompetitionOnline> list() {
 		return this.selectList(new EntityWrapper<CompetitionOnline>());
@@ -275,8 +278,6 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 
 
 	@Override
-	@SysLog("查询")
-	@Transactional(rollbackFor = Exception.class)
 	public CompetitionOnline findAll2() {
 		CompetitionOnline  competitionOnline=this.selectOne(new EntityWrapper<CompetitionOnline>());//得到在线比武的的list
 		//通过配置大关的id找到关联的小关配置信息,
@@ -309,5 +310,23 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 		}
 
 		return qList;
+	}
+	@Override
+	public void saveQuestion(TestQuestions testQuestions, String myanswer,String userid) {
+		//去作用域中取user
+//		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//		User u= (User) request.getSession().getAttribute("user");
+		UserQuestRecord userQuestRecord=new UserQuestRecord();
+		userQuestRecord.setId(IdWorker.getIdStr());//id
+		userQuestRecord.setUserId(userid);//userid
+		userQuestRecord.setQuestId(testQuestions.getId());//题目id
+		userQuestRecord.setOptTime(new Date());//保存时间
+		userQuestRecord.setMyAswerId(myanswer);//对应题目答案表的id
+		userQuestRecord.setRightAnswerId(testQuestions.getAnswerId());//这题的正确答案，对应题目答案表的id
+		userQuestRecord.setQuestionDifficulty(testQuestions.getQuestionDifficulty());//难度
+		userQuestRecord.setQuestionType(testQuestions.getQuestionType());//题目类型
+		userQuestRecord.setSpecialKnowledgeId(testQuestions.getSpecialKnowledgeId());//知识点
+		userQuestRecord.setSource("onlinPk");//添加来源
+		userQuestRecordService.insert(userQuestRecord);
 	}
 }

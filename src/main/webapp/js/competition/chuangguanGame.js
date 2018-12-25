@@ -205,7 +205,7 @@ var vm = new Vue({
         oryesorno:function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + 'recruitConfiguration/saveQuestion?myanswer='+JSON.stringify(vm.answers),
+                url: baseURL + 'recruitConfiguration/saveQuestion?myanswer='+vm.answers,
                 contentType: "application/json",
                 async:false,
                 data: JSON.stringify(vm.Question),

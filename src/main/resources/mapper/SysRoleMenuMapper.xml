@@ -1,9 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="main.java.com.lawschool.dao.SysRoleMenuDao">
-  <resultMap id="BaseResultMap" type="com.lawschool.beans.SysRoleMenu">
-    <id column="ID" jdbcType="VARCHAR" property="id" />
-    <result column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
-    <result column="MENU_ID" jdbcType="VARCHAR" property="menuId" />
-  </resultMap>
+
+<mapper namespace="com.lawschool.dao.SysRoleMenuDao">
+
+    <select id="queryMenuIdList" resultType="string">
+        SELECT
+        rm.menu_id
+        FROM law_sys_role_menu rm
+        INNER JOIN law_sys_menu m ON rm.menu_id = m.id
+        AND m.type != '0'
+        <where>
+            rm.role_id = #{roleId}
+            <if test="parentId != null and parentId != ''">
+                AND m.parent_id = #{parentId}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByRoleId">
+        DELETE FROM law_sys_role_menu
+        <where>
+            role_id = #{roleId}
+        </where>
+    </delete>
+
+    <delete id="deleteByMenuId">
+        DELETE FROM law_sys_role_menu
+        WHERE menu_id IN
+        <foreach collection="list" index="index" item="item" open=" (" separator="," close=") ">
+            #{item}
+        </foreach>
+    </delete>
+
+    <insert id="insert">
+		INSERT INTO law_sys_role_menu
+			(id,
+			menu_id,
+			role_id
+			)
+		VALUES
+			(#{id},
+			#{menuId},
+			#{roleId}
+			)
+	</insert>
+
+    <delete id="deleteBatchByRole">
+        DELETE FROM law_sys_role_menu a
+        WHERE a.role_id in
+        <foreach collection="list" index="index" item="item" open=" (" separator="," close=") ">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

@@ -1,6 +1,7 @@
 package com.lawschool.controller.competition;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.competition.BattleTopicSetting;
 import com.lawschool.beans.competition.CompetitionOnline;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
@@ -87,7 +88,14 @@ public class CompetitionOnlineController {
 
         return Result.ok().put("data", competitionOnline);
     }
+    //查找所有数据   带重复的 题目配置
+    @RequestMapping("/findAll2")
+    public Result findAll2(){
 
+        CompetitionOnline competitionOnline=  competitionOnlineService.findAll2();
+
+        return Result.ok().put("data", competitionOnline);
+    }
     @RequestMapping("/getSonList")
     public Result getSonList(String id){
         List<BattleTopicSetting> list= competitionOnlineService.getSonList(id);
@@ -102,5 +110,13 @@ public class CompetitionOnlineController {
 //        competitionOnlineService.updateComOnline();
 //        return Result.ok();
 //    }
+
+    //答过的题目入库保存
+    @RequestMapping("/saveQuestion")
+    public void saveQuestion(@RequestBody TestQuestions testQuestions,String myanswer){
+
+//        competitionOnlineService.saveQuestion(testQuestions,myanswer);
+
+    }
 
 }

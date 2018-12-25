@@ -68,7 +68,7 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
      * @return
      */
     @Override
-    public QuestForm dailyTest() {
+    public QuestForm dailyTestCreate() {
         QuestForm question = null;
         //查询当天记录表判断是否做过每日一题
         if(UtilValidate.isEmpty(dailyRecordDao.findCurrentRecord())){
@@ -110,9 +110,9 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
                 if(UtilValidate.isNotEmpty(currentConfig.getSpecialKnowledgeId())){//知识点
                     map.put("specialKnowledgeId",currentConfig.getSpecialKnowledgeId());
                 }
-                if(UtilValidate.isNotEmpty(currentConfig.getQuestionType())){//题型
+                /*if(UtilValidate.isNotEmpty(currentConfig.getQuestionType())){//题型
                     map.put("questionType",currentConfig.getQuestionType());
-                }
+                }*/
                 if(UtilValidate.isNotEmpty(currentConfig.getQuestionDifficulty())){//难度
                     map.put("questionDifficulty",currentConfig.getQuestionDifficulty());
                 }

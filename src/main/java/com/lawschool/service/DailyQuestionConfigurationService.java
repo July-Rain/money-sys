@@ -17,5 +17,5 @@ public interface DailyQuestionConfigurationService extends AbstractService<Daily
 
     void updateByDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration);
 
-    QuestForm dailyTest();//返回每日一题
+    QuestForm dailyTestCreate();//返回每日一题
 }

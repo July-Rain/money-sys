@@ -1,6 +1,7 @@
 package com.lawschool.beans;
 
 import com.google.gson.annotations.Expose;
+import com.lawschool.beans.competition.CompetitionOnline;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,12 +38,30 @@ public class Message {
 	@Expose
 	public String nowtimu;
 
+
+
 	//在线用户列表
 	@Expose
 	List<User> userList = new ArrayList<>();
 	@Expose
 	List<TestQuestions> tqList=new ArrayList<TestQuestions>();
-	
+	//在线比武配置
+	@Expose
+	CompetitionOnline competitionOnline=new CompetitionOnline();
+
+	//我的答案
+	@Expose
+	public String myanswer;
+	//题目
+	@Expose
+	TestQuestions tq=new TestQuestions();
+
+//	我的分数
+	@Expose
+    public String mycore;
+//	对手的分数
+	@Expose
+	public String youcore;
 	public List<User> getUserList() {
 		return userList;
 	}
@@ -102,5 +121,45 @@ public class Message {
 
 	public void setTqList(List<TestQuestions> tqList) {
 		this.tqList = tqList;
+	}
+
+	public CompetitionOnline getCompetitionOnline() {
+		return competitionOnline;
+	}
+
+	public void setCompetitionOnline(CompetitionOnline competitionOnline) {
+		this.competitionOnline = competitionOnline;
+	}
+
+	public String getMycore() {
+		return mycore;
+	}
+
+	public void setMycore(String mycore) {
+		this.mycore = mycore;
+	}
+
+	public String getYoucore() {
+		return youcore;
+	}
+
+	public void setYoucore(String youcore) {
+		this.youcore = youcore;
+	}
+
+	public String getMyanswer() {
+		return myanswer;
+	}
+
+	public void setMyanswer(String myanswer) {
+		this.myanswer = myanswer;
+	}
+
+	public TestQuestions getTq() {
+		return tq;
+	}
+
+	public void setTq(TestQuestions tq) {
+		this.tq = tq;
 	}
 }

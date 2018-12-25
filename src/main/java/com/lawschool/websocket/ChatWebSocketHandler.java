@@ -7,12 +7,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.competition.BattlePlatform;
+import com.lawschool.beans.competition.CompetitionOnline;
 import com.lawschool.service.UserService;
 import com.lawschool.service.competition.BattlePlatformService;
 import com.lawschool.service.competition.CompetitionOnlineService;
-import com.lawschool.service.competition.bak.BattleTopicSettingBakService;
 import com.lawschool.util.RedisUtil;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import com.lawschool.beans.Message;
 import com.lawschool.beans.User;
@@ -21,9 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 import org.springframework.web.util.HtmlUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
@@ -52,13 +48,14 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 	public static final Map<String, WebSocketSession> USER_SOCKETSESSION_MAP;
 
 	public static final Map<String, List> timuMap;
-
+	public static final Map<String, CompetitionOnline> timussettingMap;
 
 	//存储所有的在线用户
 	static {
 		USER_SOCKETSESSION_MAP = new HashMap<String, WebSocketSession>();
 
 	    timuMap=new HashMap<String,List>();
+		timussettingMap=new HashMap<String,CompetitionOnline>();
 	}
 	
 	/**
@@ -73,118 +70,11 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 		 *去redis中取redisFromBattlePlatList  对战平台的集合   先去看看里面有没有人在创建频台
 		 */
 		new Thread(new Runnable() {
-			public synchronized void run() {
-				try {
-					// 把字符串转换成list
-					Map<String,BattlePlatform> battlePlatformMap= JSON.parseObject(redisUtil.get("redisFrombattlePlatformMap"),new TypeReference<Map<String,BattlePlatform>>(){});
-					//群发消息告知大家
-					Message msg = new Message();
-
-					//得到user集合，先判断里面有没有对象
-					if(battlePlatformMap.size()==0)//如果队列里面没有人在
-					{
-						//先根据这个人 新建一个 对战平台出来   这个人是play1
-						BattlePlatform battlePlatform=battlePlatformService.save(loginUser);
-						battlePlatformMap.put(battlePlatform.getId(),battlePlatform);//把当前新建的平台加到list中   在扔回redies里面
-
-						redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);
-
-						//下面这步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
-						webSocketSession.getAttributes().put("playids",loginUser.getId());
-						webSocketSession.getAttributes().put("battlePlatid",battlePlatform.getId());
-
-
-						//第一个玩家进来 就去找题目   这样第2个玩家进来就可以直接开始。没关系 有锁
-						//得到题目的list(对象里面有答案)
-						List<TestQuestions> qList=competitionOnlineService.getQuest();
-//						现在我要把它放onlinePk+id的形式存入   第一个user的id为准
-//						redisUtil.set("onlinePk"+loginUser.getId(),qList);
-						timuMap.put("onlinePk"+loginUser.getId(),qList);
-
-
-						msg.setText("请等待 玩家加入");
-						msg.setDate(new Date());
-						msg.setTo(loginUser.getId());
-
-						//把题目塞到信息里面去往页面打
-						msg.setTqList(qList);
-
-						msg.getUserList().add(loginUser);
-						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-						//群发消息
-//						sendMessageToAll(message);
-						sendMessageToUser(loginUser.getId(),message);
-
-
-
-					}
-
-					else//队列里面有值，既然是随机匹配的话  那我就直接取第一个呗
-					{
-						//得到一个map里的K，与自己匹配上
-						String oneKey = null;
-						for (Entry<String, BattlePlatform> entry : battlePlatformMap.entrySet()) {
-							oneKey = entry.getKey();
-							if (oneKey != null) {
-								break;
-							}
-						}
-//						找到这个比武台 然后把自己加到play2里面
-
-						BattlePlatform battlePlatform=battlePlatformMap.get(oneKey);
-						battlePlatformService.updata((BattlePlatform)battlePlatformMap.get(oneKey),loginUser.getId());
-
-						//添加完后要把这个user在list中除去
-						battlePlatformMap.remove(oneKey);
-
-						redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);//在放回去redis
-
-
-						//下面这liang两步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
-						webSocketSession.getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());//
-						USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());//
-
-
-
-						msg.setText("玩家"+loginUser.getFullName()+"加入,欢迎。。。。。。。。。。");
-						msg.setDate(new Date());
-
-						//把题目塞到信息里面去往页面打
-						msg.setTqList(timuMap.get("onlinePk"+battlePlatform.getPlay1()));
-
-						msg.setTo(battlePlatform.getPlay1()+","+loginUser.getId());//为了传到前端页面
-//						msg.getUserList().add(userService.selectById(battlePlatform.getPlay1()));//目前没走数据库  这个useid 没有//
-						msg.getUserList().add(
-								(User)USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().get("loginUser")
-						);
-						msg.getUserList().add(loginUser);
-
-//						userService.selectById(battlePlatform.getPlay1());
-						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-						//群发消息
-						sendMessageToUsers(battlePlatform.getPlay1()+","+loginUser.getId(),message);//拼接接收人的id
-					}
-				} catch (Exception e) {
-					System.out.println(e);
-				}
+			public  void run() {
+				xxx(loginUser,webSocketSession);
 			}
 
 		}).start();
-
-
-
-
-//		//获取所有在线的WebSocketSession对象集合
-//		Set<Entry<String, WebSocketSession>> entrySet = USER_SOCKETSESSION_MAP.entrySet();
-//		//将最新的所有的在线人列表放入消息对象的list集合中，用于页面显示
-//		for (Entry<String, WebSocketSession> entry : entrySet) {
-//
-//			List<User> userlist=msg.getUserList();
-//			userlist.add((User)entry.getValue().getAttributes().get("loginUser"));
-//			msg.setUserList(userlist);
-//
-//		}
-		
 
 	}
 
@@ -198,6 +88,16 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 		if(message.getPayloadLength()==0)return;
 		//反序列化服务端收到的json消息
 		Message msg = GsonUtils.fromJson(message.getPayload().toString(), Message.class);
+
+
+
+		if(msg.getMyanswer()!=null && msg.getTq()!=null)
+		 {
+			 competitionOnlineService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom());
+		 }
+
+
+
 		msg.setDate(new Date());
 		//处理html的字符，转义：
 		String text = msg.getText();
@@ -234,35 +134,35 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 			webSocketSession.close();
 		}
 		
-		//群发消息告知大家
-		Message msg = new Message();
-		msg.setDate(new Date());
-		
-		//获取异常的用户的会话中的用户编号
-		User loginUser=(User)webSocketSession.getAttributes().get("loginUser");
-		//获取所有的用户的会话
-		Set<Entry<String, WebSocketSession>> entrySet = USER_SOCKETSESSION_MAP.entrySet();
-		//并查找出在线用户的WebSocketSession（会话），将其移除（不再对其发消息了。。）
-		for (Entry<String, WebSocketSession> entry : entrySet) {
-			if(entry.getKey().equals(loginUser.getId())){
-				msg.setText("万众瞩目的【"+loginUser.getFullName()+"】已经退出。。。！");
-				//清除在线会话
-				USER_SOCKETSESSION_MAP.remove(entry.getKey());
-				//记录日志：
-				System.out.println("Socket会话已经移除:用户ID" + entry.getKey());
-				break;
-			}
-		}
-		
-		//并查找出在线用户的WebSocketSession（会话），将其移除（不再对其发消息了。。）
-		for (Entry<String, WebSocketSession> entry : entrySet) {
-			msg.getUserList().add(
-					(User)entry.getValue().getAttributes().get("loginUser")
-			);
-		}
-		
-		TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-		sendMessageToAll(message);
+//		//群发消息告知大家
+//		Message msg = new Message();
+//		msg.setDate(new Date());
+//
+//		//获取异常的用户的会话中的用户编号
+//		User loginUser=(User)webSocketSession.getAttributes().get("loginUser");
+//		//获取所有的用户的会话
+//		Set<Entry<String, WebSocketSession>> entrySet = USER_SOCKETSESSION_MAP.entrySet();
+//		//并查找出在线用户的WebSocketSession（会话），将其移除（不再对其发消息了。。）
+//		for (Entry<String, WebSocketSession> entry : entrySet) {
+//			if(entry.getKey().equals(loginUser.getId())){
+//				msg.setText("万众瞩目的【"+loginUser.getFullName()+"】已经退出。。。！");
+//				//清除在线会话
+//				USER_SOCKETSESSION_MAP.remove(entry.getKey());
+//				//记录日志：
+//				System.out.println("Socket会话已经移除:用户ID" + entry.getKey());
+//				break;
+//			}
+//		}
+//
+//		//并查找出在线用户的WebSocketSession（会话），将其移除（不再对其发消息了。。）
+//		for (Entry<String, WebSocketSession> entry : entrySet) {
+//			msg.getUserList().add(
+//					(User)entry.getValue().getAttributes().get("loginUser")
+//			);
+//		}
+//
+//		TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+//		sendMessageToAll(message);
 		
 	}
 
@@ -294,25 +194,23 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 				playids.split(",");
 				//主动去断这2个用户    但是要先断自己  在给另一个人发消息说我走了   在断另一个人
 				msg.setDate(new Date());
-				msg.setText("xxx已经离开了"+loginUser.getFullName());
-
-
-
+				msg.setText(loginUser.getFullName()+"已经离开了~~~~~~~~~~~~~~~");
 
 				if(loginUser.getId().equals(playids.split(",")[0]))
 				{
-					USER_SOCKETSESSION_MAP.get(playids.split(",")[0]).close();
 					msg.getUserList().add((User)USER_SOCKETSESSION_MAP.get(playids.split(",")[1]).getAttributes().get("loginUser"));//现在在线人员只有 没掉线的哪一个了
 					TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 					sendMessageToUser(playids.split(",")[1],message);//给另一个人发消息
+					USER_SOCKETSESSION_MAP.get(playids.split(",")[0]).close();
 					USER_SOCKETSESSION_MAP.get(playids.split(",")[1]).close();
 				}
 				else
 				{
-					USER_SOCKETSESSION_MAP.get(playids.split(",")[1]).close();
+
 					TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 					msg.getUserList().add((User)USER_SOCKETSESSION_MAP.get(playids.split(",")[0]).getAttributes().get("loginUser"));//现在在线人员只有 没掉线的哪一个了
 					sendMessageToUser(playids.split(",")[0],message);//给另一个人发消息不发消息
+					USER_SOCKETSESSION_MAP.get(playids.split(",")[1]).close();
 					USER_SOCKETSESSION_MAP.get(playids.split(",")[0]).close();
 				}
 				//将这2个从里面删掉
@@ -331,13 +229,13 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 
 //				msg.setText("万众瞩目的【"+loginUser.getFullName()+"】已经有事先走了，大家继续聊...");
 				//删除redis 里的数据
-				webSocketSession.close();
+
 				Map<String,BattlePlatform> battlePlatformMap=(Map) JSONObject.fromObject(redisUtil.get("redisFrombattlePlatformMap"));
 				battlePlatformMap.remove(webSocketSession.getAttributes().get("battlePlatid"));
 				redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);
 				//清除在线会话
 				USER_SOCKETSESSION_MAP.remove(loginUser.getId());
-
+				webSocketSession.close();
 				//记录日志：
 				System.out.println("Socket会话已经移除:用户ID" + loginUser.getId());
 //				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
@@ -349,29 +247,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 //			}
 //
 //		}).start();
-//		Set<Entry<String, WebSocketSession>> entrySet = USER_SOCKETSESSION_MAP.entrySet();
-		//并查找出在线用户的WebSocketSession（会话），将其移除（不再对其发消息了。。）
-//		for (Entry<String, WebSocketSession> entry : entrySet) {
-//			if(entry.getKey().equals(loginUser.getId())){
-//				//群发消息告知大家
-//				msg.setText("万众瞩目的【"+loginUser.getFullName()+"】已经有事先走了，大家继续聊...");
-//				//清除在线会话
-//				USER_SOCKETSESSION_MAP.remove(entry.getKey());
-//				//记录日志：
-//				System.out.println("Socket会话已经移除:用户ID" + entry.getKey());
-//				break;
-//			}
-//		}
-		
-		//并查找出在线用户的WebSocketSession（会话），将其移除（不再对其发消息了。。）
-//		for (Entry<String, WebSocketSession> entry : entrySet) {
-//			msg.getUserList().add((User)entry.getValue().getAttributes().get("loginUser"));
-//		}
-		
-//		TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-//		sendMessageToAll(message);
 	}
-
 	@Override
 	 /**
      * 是否支持处理拆分消息，返回true返回拆分消息
@@ -382,7 +258,6 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 	public boolean supportsPartialMessages() {
 		return false;
 	}
-
 	/**
 	 * 
 	 * 说明：给某个人发信息
@@ -466,5 +341,101 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 			}
 		}
 	}
-	
+
+	public synchronized void xxx(User loginUser,WebSocketSession webSocketSession)
+	{
+		try {
+			// 把字符串转换成list
+			Map<String,BattlePlatform> battlePlatformMap= JSON.parseObject(redisUtil.get("redisFrombattlePlatformMap"),new TypeReference<Map<String,BattlePlatform>>(){});
+			//群发消息告知大家
+			Message msg = new Message();
+
+			//得到user集合，先判断里面有没有对象
+			if(battlePlatformMap.size()==0)//如果队列里面没有人在
+			{
+				//先根据这个人 新建一个 对战平台出来   这个人是play1
+				BattlePlatform battlePlatform=battlePlatformService.save(loginUser);
+				battlePlatformMap.put(battlePlatform.getId(),battlePlatform);//把当前新建的平台加到list中   在扔回redies里面
+
+				redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);
+
+				//下面这步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
+				webSocketSession.getAttributes().put("playids",loginUser.getId());
+				webSocketSession.getAttributes().put("battlePlatid",battlePlatform.getId());
+
+
+				//第一个玩家进来 就去找题目   这样第2个玩家进来就可以直接开始。没关系 有锁
+				//得到题目的list(对象里面有答案)
+				List<TestQuestions> qList=competitionOnlineService.getQuest();
+
+				CompetitionOnline competitionOnline=competitionOnlineService.findAll2();
+//						现在我要把它放onlinePk+id的形式存入   第一个user的id为准
+//						redisUtil.set("onlinePk"+loginUser.getId(),qList);
+				timuMap.put("onlinePk"+loginUser.getId(),qList);
+				timussettingMap.put("onlinePksetting"+loginUser.getId(),competitionOnline);
+
+				msg.setText("请等待 玩家加入");
+				msg.setDate(new Date());
+				msg.setTo(loginUser.getId());
+				msg.setNowtimu("0");
+				msg.setCompetitionOnline(competitionOnline);
+				//把题目塞到信息里面去往页面打
+				msg.setTqList(qList);
+
+				msg.getUserList().add(loginUser);
+				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+				//群发消息
+//						sendMessageToAll(message);
+				sendMessageToUser(loginUser.getId(),message);
+			}
+
+			else//队列里面有值，既然是随机匹配的话  那我就直接取第一个呗
+			{
+				//得到一个map里的K，与自己匹配上
+				String oneKey = null;
+				for (Entry<String, BattlePlatform> entry : battlePlatformMap.entrySet()) {
+					oneKey = entry.getKey();
+					if (oneKey != null) {
+						break;
+					}
+				}
+//						找到这个比武台 然后把自己加到play2里面
+				BattlePlatform battlePlatform=battlePlatformMap.get(oneKey);
+				battlePlatformService.updata((BattlePlatform)battlePlatformMap.get(oneKey),loginUser.getId());
+
+				//添加完后要把这个user在list中除去
+				battlePlatformMap.remove(oneKey);
+
+				redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);//在放回去redis
+
+
+				//下面这liang两步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
+				webSocketSession.getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());//
+				USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());//
+
+
+
+				msg.setText("玩家"+loginUser.getFullName()+"加入,欢迎。。。。。。。。。。");
+				msg.setDate(new Date());
+
+				//把题目塞到信息里面去往页面打
+				msg.setTqList(timuMap.get("onlinePk"+battlePlatform.getPlay1()));
+				msg.setCompetitionOnline(timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()));
+				msg.setNowtimu("0");
+				msg.setTo(battlePlatform.getPlay1()+","+loginUser.getId());//为了传到前端页面
+//						msg.getUserList().add(userService.selectById(battlePlatform.getPlay1()));//目前没走数据库  这个useid 没有//
+				msg.getUserList().add(
+						(User)USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().get("loginUser")
+				);
+				msg.getUserList().add(loginUser);
+
+//						userService.selectById(battlePlatform.getPlay1());
+				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+				//群发消息
+				sendMessageToUsers(battlePlatform.getPlay1()+","+loginUser.getId(),message);//拼接接收人的id
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 }

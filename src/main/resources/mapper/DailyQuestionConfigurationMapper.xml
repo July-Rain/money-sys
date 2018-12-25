@@ -207,42 +207,59 @@
         </if>
         where id = #{id}
     </update>
-    <!--根据知识点、难度、题目类型 随机每日一题，返回题目ID-->
+    <!--根据当前配置的知识点、难度 随机每日一题，返回题目ID-->
     <select id="dailyTest" parameterType="java.util.Map" resultType="java.lang.String">
-        select ID from (select ID,QUESTION_DIFFICULTY,SPECIAL_KNOWLEDGE_ID,QUESTION_TYPE from LAW_TESTQUESTIONS order by dbms_random.random)l
-        where
-        (select to_char(sysdate,'yyyy-MM-dd ') from dual)
-        BETWEEN
-        to_char(l.BEGIN_TIME,'yyyy-MM-dd ') AND to_char(l.END_TIME,'yyyy-MM-dd')
+        SELECT
+        ID
+        FROM
+        (
+        SELECT
+        s. ID,
+        s.QUESTION_DIFFICULTY,
+        s.SPECIAL_KNOWLEDGE_ID,
+        s.QUESTION_TYPE,
+        q.BEGIN_TIME,
+        q.END_TIME
+        FROM
+        LAW_TESTQUESTIONS s
+        RIGHT JOIN LAW_DAILY_QUESTION q ON s. ID = q.QUESTION_ID
+        ORDER BY
+        dbms_random. RANDOM
+        ) l
+        WHERE
+        (
+        SELECT
+        TO_CHAR (SYSDATE, 'yyyy-MM-dd')
+        FROM
+        dual
+        ) BETWEEN TO_CHAR (l.BEGIN_TIME, 'yyyy-MM-dd')
+        AND TO_CHAR (l.END_TIME, 'yyyy-MM-dd')
         <if test="specialKnowledgeId!=null||specialKnowledgeId!='' ">
             and l.SPECIAL_KNOWLEDGE_ID = #{specialKnowledgeId}
         </if>
         <if test="questionDifficulty!=null||questionDifficulty!='' ">
             and l.QUESTION_DIFFICULTY = #{questionDifficulty}
         </if>
-        <if test="questionType!=null||questionType!='' ">
-            and l.QUESTION_TYPE = #{questionType}
-        </if>
         and rownum &lt;= 1
     </select>
     <!--查询每日一题当前配置-->
     <select id="findCurrentConfig" resultType="com.lawschool.beans.DailyQuestionConfiguration">
         SELECT
-                ID as "id",
-                SPECIAL_KNOWLEDGE_ID as "specialKnowledgeId",
-                CREATE_RULE as "createRule",
-                OBTAIN_POINT as "obtainPoint",
-                IS_SHOW_LEGAL as "isShowLegal",
-                CREATE_WAY as "createWay",
-                IS_SHOW_ANSWER as "isShowAnswer",
-                QUESTION_DIFFICULTY as "questionDifficulty",
-                JOIN_PEOPLE as "joinPeople",
-                JOIN_DEPT as "joinDept",
-                QUESTION_ID as "questionId",
-                BEGIN_TIME as "beginTime",
-                END_TIME as "endTime",
-                CREATE_USER as "createUser",
-                QUESTION_TYPE as "questionType"
+        ID as "id",
+        IS_SHOW_LEGAL as "isShowLegal",
+        IS_SHOW_ANSWER as "isShowAnswer",
+        BEGIN_TIME as "beginTime",
+        END_TIME as "endTime",
+        CREATE_WAY as "createWay",
+        QUESTION_DIFFICULTY as "questionDifficulty",
+        QUESTION_DIFFICULTY as "questionDifficulty",
+        JOIN_PEOPLE as "joinPeople",
+        JOIN_DEPT as "joinDept",
+        QUESTION_ID as "questionId",
+        QUESTION_TYPE as "questionType",
+        SPECIAL_KNOWLEDGE_ID as "specialKnowledgeId",
+        CREATE_RULE as "createRule",
+        OBTAIN_POINT as "obtainPoint"
         FROM
             LAW_DAILY_QUESTION
         WHERE

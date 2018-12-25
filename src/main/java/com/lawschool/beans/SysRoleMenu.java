@@ -1,22 +1,15 @@
 package com.lawschool.beans;
 
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.lawschool.base.DataEntity;
 
 @TableName("law_sys_role_menu")
-public class SysRoleMenu {
-    private String id;
+public class SysRoleMenu extends DataEntity<SysRoleMenu> {
 
     private String roleId;
 
     private String menuId;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getRoleId() {
         return roleId;
