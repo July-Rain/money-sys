@@ -73,100 +73,8 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 		 *去redis中取redisFromBattlePlatList  对战平台的集合   先去看看里面有没有人在创建频台
 		 */
 		new Thread(new Runnable() {
-			public synchronized void run() {
-				try {
-					// 把字符串转换成list
-					Map<String,BattlePlatform> battlePlatformMap= JSON.parseObject(redisUtil.get("redisFrombattlePlatformMap"),new TypeReference<Map<String,BattlePlatform>>(){});
-					//群发消息告知大家
-					Message msg = new Message();
-
-					//得到user集合，先判断里面有没有对象
-					if(battlePlatformMap.size()==0)//如果队列里面没有人在
-					{
-						//先根据这个人 新建一个 对战平台出来   这个人是play1
-						BattlePlatform battlePlatform=battlePlatformService.save(loginUser);
-						battlePlatformMap.put(battlePlatform.getId(),battlePlatform);//把当前新建的平台加到list中   在扔回redies里面
-
-						redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);
-
-						//下面这步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
-						webSocketSession.getAttributes().put("playids",loginUser.getId());
-						webSocketSession.getAttributes().put("battlePlatid",battlePlatform.getId());
-
-
-						//第一个玩家进来 就去找题目   这样第2个玩家进来就可以直接开始。没关系 有锁
-						//得到题目的list(对象里面有答案)
-						List<TestQuestions> qList=competitionOnlineService.getQuest();
-//						现在我要把它放onlinePk+id的形式存入   第一个user的id为准
-//						redisUtil.set("onlinePk"+loginUser.getId(),qList);
-						timuMap.put("onlinePk"+loginUser.getId(),qList);
-
-
-						msg.setText("请等待 玩家加入");
-						msg.setDate(new Date());
-						msg.setTo(loginUser.getId());
-
-						//把题目塞到信息里面去往页面打
-						msg.setTqList(qList);
-
-						msg.getUserList().add(loginUser);
-						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-						//群发消息
-//						sendMessageToAll(message);
-						sendMessageToUser(loginUser.getId(),message);
-
-
-
-					}
-
-					else//队列里面有值，既然是随机匹配的话  那我就直接取第一个呗
-					{
-						//得到一个map里的K，与自己匹配上
-						String oneKey = null;
-						for (Entry<String, BattlePlatform> entry : battlePlatformMap.entrySet()) {
-							oneKey = entry.getKey();
-							if (oneKey != null) {
-								break;
-							}
-						}
-//						找到这个比武台 然后把自己加到play2里面
-
-						BattlePlatform battlePlatform=battlePlatformMap.get(oneKey);
-						battlePlatformService.updata((BattlePlatform)battlePlatformMap.get(oneKey),loginUser.getId());
-
-						//添加完后要把这个user在list中除去
-						battlePlatformMap.remove(oneKey);
-
-						redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);//在放回去redis
-
-
-						//下面这liang两步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
-						webSocketSession.getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());//
-						USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());//
-
-
-
-						msg.setText("玩家"+loginUser.getFullName()+"加入,欢迎。。。。。。。。。。");
-						msg.setDate(new Date());
-
-						//把题目塞到信息里面去往页面打
-						msg.setTqList(timuMap.get("onlinePk"+battlePlatform.getPlay1()));
-
-						msg.setTo(battlePlatform.getPlay1()+","+loginUser.getId());//为了传到前端页面
-//						msg.getUserList().add(userService.selectById(battlePlatform.getPlay1()));//目前没走数据库  这个useid 没有//
-						msg.getUserList().add(
-								(User)USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().get("loginUser")
-						);
-						msg.getUserList().add(loginUser);
-
-//						userService.selectById(battlePlatform.getPlay1());
-						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-						//群发消息
-						sendMessageToUsers(battlePlatform.getPlay1()+","+loginUser.getId(),message);//拼接接收人的id
-					}
-				} catch (Exception e) {
-					System.out.println(e);
-				}
+			public  void run() {
+				xxx(loginUser,webSocketSession);
 			}
 
 		}).start();
@@ -466,5 +374,101 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 			}
 		}
 	}
-	
+
+	public synchronized void xxx(User loginUser,WebSocketSession webSocketSession)
+	{
+		try {
+			// 把字符串转换成list
+			Map<String,BattlePlatform> battlePlatformMap= JSON.parseObject(redisUtil.get("redisFrombattlePlatformMap"),new TypeReference<Map<String,BattlePlatform>>(){});
+			//群发消息告知大家
+			Message msg = new Message();
+
+			//得到user集合，先判断里面有没有对象
+			if(battlePlatformMap.size()==0)//如果队列里面没有人在
+			{
+				//先根据这个人 新建一个 对战平台出来   这个人是play1
+				BattlePlatform battlePlatform=battlePlatformService.save(loginUser);
+				battlePlatformMap.put(battlePlatform.getId(),battlePlatform);//把当前新建的平台加到list中   在扔回redies里面
+
+				redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);
+
+				//下面这步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
+				webSocketSession.getAttributes().put("playids",loginUser.getId());
+				webSocketSession.getAttributes().put("battlePlatid",battlePlatform.getId());
+
+
+				//第一个玩家进来 就去找题目   这样第2个玩家进来就可以直接开始。没关系 有锁
+				//得到题目的list(对象里面有答案)
+				List<TestQuestions> qList=competitionOnlineService.getQuest();
+//						现在我要把它放onlinePk+id的形式存入   第一个user的id为准
+//						redisUtil.set("onlinePk"+loginUser.getId(),qList);
+				timuMap.put("onlinePk"+loginUser.getId(),qList);
+
+
+				msg.setText("请等待 玩家加入");
+				msg.setDate(new Date());
+				msg.setTo(loginUser.getId());
+				msg.setNowtimu("0");
+				//把题目塞到信息里面去往页面打
+				msg.setTqList(qList);
+
+				msg.getUserList().add(loginUser);
+				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+				//群发消息
+//						sendMessageToAll(message);
+				sendMessageToUser(loginUser.getId(),message);
+
+
+
+			}
+
+			else//队列里面有值，既然是随机匹配的话  那我就直接取第一个呗
+			{
+				//得到一个map里的K，与自己匹配上
+				String oneKey = null;
+				for (Entry<String, BattlePlatform> entry : battlePlatformMap.entrySet()) {
+					oneKey = entry.getKey();
+					if (oneKey != null) {
+						break;
+					}
+				}
+//						找到这个比武台 然后把自己加到play2里面
+
+				BattlePlatform battlePlatform=battlePlatformMap.get(oneKey);
+				battlePlatformService.updata((BattlePlatform)battlePlatformMap.get(oneKey),loginUser.getId());
+
+				//添加完后要把这个user在list中除去
+				battlePlatformMap.remove(oneKey);
+
+				redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);//在放回去redis
+
+
+				//下面这liang两步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
+				webSocketSession.getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());//
+				USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());//
+
+
+
+				msg.setText("玩家"+loginUser.getFullName()+"加入,欢迎。。。。。。。。。。");
+				msg.setDate(new Date());
+
+				//把题目塞到信息里面去往页面打
+				msg.setTqList(timuMap.get("onlinePk"+battlePlatform.getPlay1()));
+				msg.setNowtimu("0");
+				msg.setTo(battlePlatform.getPlay1()+","+loginUser.getId());//为了传到前端页面
+//						msg.getUserList().add(userService.selectById(battlePlatform.getPlay1()));//目前没走数据库  这个useid 没有//
+				msg.getUserList().add(
+						(User)USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().get("loginUser")
+				);
+				msg.getUserList().add(loginUser);
+
+//						userService.selectById(battlePlatform.getPlay1());
+				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+				//群发消息
+				sendMessageToUsers(battlePlatform.getPlay1()+","+loginUser.getId(),message);//拼接接收人的id
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 }
