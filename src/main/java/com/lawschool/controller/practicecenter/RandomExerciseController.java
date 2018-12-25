@@ -59,13 +59,13 @@ public class RandomExerciseController extends AbstractController {
     public Result dict(){
 
         // 获取试题难度字典list
-        List<CommonForm> diffList = dictService.findByType("QUESTION_DIFF");
+        List<CommonForm> diffList = dictService.findCodeByType("QUESTION_DIFF");
 
         // 获取试题分类list
-        List<CommonForm> typeList = dictService.findByType("TYPE");
+        List<CommonForm> typeList = dictService.findCodeByType("TYPE");
 
         // 获取试题类型list
-        List<CommonForm> qtList = dictService.findByType("QUESTION_TYPE");
+        List<CommonForm> qtList = dictService.findCodeByType("QUESTION_TYPE");
 
         List<CommonForm> topicList = topicTypeService.findAll(new ArrayList<String>());
 
