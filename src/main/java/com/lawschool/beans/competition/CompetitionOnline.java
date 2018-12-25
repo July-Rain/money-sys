@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawschool.beans.competition.BattleTopicSetting;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class CompetitionOnline implements Serializable {
 
 	//题目信息集合
 	@TableField(exist = false)
-	private List<BattleTopicSetting> battleTopicSettingList;
+	private List<BattleTopicSetting> battleTopicSettingList =new ArrayList<BattleTopicSetting>();
 
 	public String getCreatePeople() {
 		return createPeople;

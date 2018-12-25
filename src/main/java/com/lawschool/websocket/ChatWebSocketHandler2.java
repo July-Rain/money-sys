@@ -1,32 +1,27 @@
 package com.lawschool.websocket;
 
 
-
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.lawschool.beans.TestQuestions;
+import com.lawschool.beans.Message;
+import com.lawschool.beans.User;
 import com.lawschool.beans.competition.BattlePlatform;
 import com.lawschool.service.UserService;
 import com.lawschool.service.competition.BattlePlatformService;
-import com.lawschool.service.competition.CompetitionOnlineService;
-import com.lawschool.service.competition.bak.BattleTopicSettingBakService;
-import com.lawschool.util.RedisUtil;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import com.lawschool.beans.Message;
-import com.lawschool.beans.User;
 import com.lawschool.util.GsonUtils;
+import com.lawschool.util.RedisUtil;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 import org.springframework.web.util.HtmlUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * 
@@ -35,8 +30,8 @@ import java.util.Map.Entry;
  * @version 1.0
  * @date
  */
-@Component("chatWebSocketHandler")
-public class ChatWebSocketHandler implements WebSocketHandler {
+@Component("chatWebSocketHandler2")
+public class ChatWebSocketHandler2 implements WebSocketHandler {
 	@Autowired
 	private RedisUtil redisUtil;
 	@Autowired
@@ -45,20 +40,13 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 	@Autowired
 	private UserService userService;
 
-	@Autowired
-	private CompetitionOnlineService competitionOnlineService;
 
 	//在线用户的SOCKETsession(存储了所有的通信通道)
 	public static final Map<String, WebSocketSession> USER_SOCKETSESSION_MAP;
-
-	public static final Map<String, List> timuMap;
-
-
+	
 	//存储所有的在线用户
 	static {
 		USER_SOCKETSESSION_MAP = new HashMap<String, WebSocketSession>();
-
-	    timuMap=new HashMap<String,List>();
 	}
 	
 	/**
@@ -92,31 +80,15 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 						//下面这步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
 						webSocketSession.getAttributes().put("playids",loginUser.getId());
 						webSocketSession.getAttributes().put("battlePlatid",battlePlatform.getId());
-
-
-						//第一个玩家进来 就去找题目   这样第2个玩家进来就可以直接开始。没关系 有锁
-						//得到题目的list(对象里面有答案)
-						List<TestQuestions> qList=competitionOnlineService.getQuest();
-//						现在我要把它放onlinePk+id的形式存入   第一个user的id为准
-//						redisUtil.set("onlinePk"+loginUser.getId(),qList);
-						timuMap.put("onlinePk"+loginUser.getId(),qList);
-
-
 						msg.setText("请等待 玩家加入");
 						msg.setDate(new Date());
 						msg.setTo(loginUser.getId());
-
-						//把题目塞到信息里面去往页面打
-						msg.setTqList(qList);
-
 						msg.getUserList().add(loginUser);
+
 						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 						//群发消息
 //						sendMessageToAll(message);
 						sendMessageToUser(loginUser.getId(),message);
-
-
-
 					}
 
 					else//队列里面有值，既然是随机匹配的话  那我就直接取第一个呗
@@ -148,9 +120,6 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 
 						msg.setText("玩家"+loginUser.getFullName()+"加入,欢迎。。。。。。。。。。");
 						msg.setDate(new Date());
-
-						//把题目塞到信息里面去往页面打
-						msg.setTqList(timuMap.get("onlinePk"+battlePlatform.getPlay1()));
 
 						msg.setTo(battlePlatform.getPlay1()+","+loginUser.getId());//为了传到前端页面
 //						msg.getUserList().add(userService.selectById(battlePlatform.getPlay1()));//目前没走数据库  这个useid 没有//
@@ -219,7 +188,6 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 			sendMessageToUser(msg.getTo(), new TextMessage(GsonUtils.toJson(msg)));
 		}
 	}
-
 
 	@Override
 	/**
