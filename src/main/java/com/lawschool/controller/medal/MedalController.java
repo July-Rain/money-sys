@@ -1,9 +1,9 @@
-package com.lawschool.controller;
+package com.lawschool.controller.medal;
 
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.Page;
-import com.lawschool.beans.MedalEntity;
-import com.lawschool.service.MedalService;
+import com.lawschool.beans.medal.MedalEntity;
+import com.lawschool.service.medal.MedalService;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

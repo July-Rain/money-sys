@@ -1,4 +1,4 @@
-package com.lawschool.beans;
+package com.lawschool.beans.medal;
 
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
