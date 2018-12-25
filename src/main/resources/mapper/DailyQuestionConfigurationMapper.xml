@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.DailyQuestionConfigurationDao">
+    <resultMap id="BaseResultMap" type="com.lawschool.beans.DailyQuestionConfiguration">
+        <id column="ID" jdbcType="VARCHAR" property="id" />
+        <result column="SPECIAL_KNOWLEDGE_ID" jdbcType="VARCHAR" property="specialKnowledgeId" />
+        <result column="CREATE_RULE" jdbcType="INTEGER" property="createRule" />
+        <result column="OBTAIN_POINT" jdbcType="INTEGER" property="obtainPoint" />
+        <result column="IS_SHOW_LEGAL" jdbcType="INTEGER" property="isShowLegal" />
+        <result column="CREATE_WAY" jdbcType="INTEGER" property="createWay" />
+        <result column="IS_SHOW_ANSWER" jdbcType="INTEGER" property="isShowAnswer" />
+        <result column="QUESTION_DIFFICULTY" jdbcType="VARCHAR" property="questionDifficulty" />
+        <result column="JOIN_PEOPLE" jdbcType="VARCHAR" property="joinPeople" />
+        <result column="JOIN_DEPT" jdbcType="VARCHAR" property="joinDept" />
+        <result column="QUESTION_ID" jdbcType="VARCHAR" property="questionId" />
+        <result column="BEGIN_TIME" jdbcType="DATE" property="beginTime" />
+        <result column="END_TIME" jdbcType="DATE" property="endTime" />
+        <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+        <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+        <result column="OPT_USER" jdbcType="VARCHAR" property="optUser" />
+        <result column="OPT_TIME" jdbcType="DATE" property="optTime" />
+        <result column="QUESTION_TYPE" jdbcType="VARCHAR" property="questionType"/>
+    </resultMap>
+    <!--查询某类型每日一题规则-->
+    <select id="findList" parameterType="map" resultType="java.util.Map">
+        SELECT
+        ID as "id",
+        SPECIAL_KNOWLEDGE_ID as "specialKnowledgeId",
+        CREATE_RULE as "createRule",
+        OBTAIN_POINT as "obtainPoint",
+        IS_SHOW_LEGAL as "isShowLegal",
+        CREATE_WAY as "createWay",
+        IS_SHOW_ANSWER as "isShowAnswer",
+        QUESTION_DIFFICULTY as "questionDifficulty",
+        JOIN_PEOPLE as "joinPeople",
+        JOIN_DEPT as "joinDept",
+        QUESTION_ID as "questionId",
+        BEGIN_TIME as "beginTime",
+        END_TIME as "endTime",
+        CREATE_USER as "createUser",
+        QUESTION_TYPE as "questionType"
+        FROM LAW_DAILY_QUESTION d
+        where
+            1 = 1
+            <if test="isShowLegal != null and isShowLegal != ''">
+                AND d.IS_SHOW_LEGAL = #{isShowLegal}
+            </if>
+            <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
+                AND d.SPECIAL_KNOWLEDGE_ID = #{specialKnowledgeId}
+            </if>
+            <if test="isShowAnswer != null and isShowAnswer != ''">
+                AND d.IS_SHOW_ANSWER = #{isShowAnswer}
+            </if>
+            <if test="createRule != null and createRule != ''">
+                AND d.CREATE_RULE = #{createRule}
+            </if>
+            <if test="questionDifficulty != null and questionDifficulty != ''">
+                AND d.QUESTION_DIFFICULTY = #{questionDifficulty}
+            </if>
+            <if test="questionType != null and questionType != ''">
+                AND a.question_type = #{questionType}
+            </if>
+    </select>
+    <!--查询配置-->
+    <select id="selectByDailyId" parameterType="java.lang.String" resultType="com.lawschool.beans.DailyQuestionConfiguration">
+        SELECT
+        ID as "id",
+        SPECIAL_KNOWLEDGE_ID as "specialKnowledgeId",
+        CREATE_RULE as "createRule",
+        OBTAIN_POINT as "obtainPoint",
+        IS_SHOW_LEGAL as "isShowLegal",
+        CREATE_WAY as "createWay",
+        IS_SHOW_ANSWER as "isShowAnswer",
+        QUESTION_DIFFICULTY as "questionDifficulty",
+        JOIN_PEOPLE as "joinPeople",
+        JOIN_DEPT as "joinDept",
+        QUESTION_ID as "questionId",
+        BEGIN_TIME as "beginTime",
+        END_TIME as "endTime",
+        CREATE_USER as "createUser",
+        QUESTION_TYPE as "questionType"
+        FROM LAW_DAILY_QUESTION d
+        where
+        d.id = #{id}
+    </select>
+    <delete id="deleteByDailyId" parameterType="java.lang.String">
+        delete from LAW_DAILY_QUESTION where id = #{id}
+    </delete>
+<!--插入每日一题配置-->
+    <insert id="insertDailyConfig" parameterType="com.lawschool.beans.DailyQuestionConfiguration">
+        insert into LAW_DAILY_QUESTION
+        where 1= 1
+        <if test="id != null||id!='' ">
+            and id = #{id},
+        </if>
+        <if test="specialKnowledgeId != null||specialKnowledgeId!='' ">
+            and specialKnowledgeId = #{specialKnowledgeId},
+        </if>
+        <if test="createRule != null">
+            and createRule = #{createRule},
+        </if>
+        <if test="obtainPoint != null">
+            and obtainPoint = #{obtainPoint},
+        </if>
+        <if test="isShowLegal != null">
+            and isShowLegal = #{isShowLegal},
+        </if>
+        <if test="createWay != null">
+            and createWay = #{createWay},
+        </if>
+        <if test="isShowAnswer != null">
+            and isShowAnswer = #{isShowAnswer},
+        </if>
+        <if test="questionDifficulty != null">
+            and questionDifficulty = #{questionDifficulty},
+        </if>
+        <if test="joinPeople != null||joinPeople!='' ">
+            and joinPeople = #{joinPeople},
+        </if>
+        <if test="joinDept != null||joinDept!='' ">
+            and joinDept = #{joinDept},
+        </if>
+        <if test="questionId != null||questionId!='' ">
+            and questionId = #{questionId},
+        </if>
+        <if test="beginTime != null||beginTime!='' ">
+            and beginTime = #{beginTime},
+        </if>
+        <if test="endTime != null||endTime!='' ">
+            and endTime = #{endTime},
+        </if>
+        <if test="createUser != null||createUser!=''">
+            and createUser = #{createUser},
+        </if>
+        <if test="createTime != null||createTime!='' ">
+            and createTime = #{createTimeP},
+        </if>
+        <if test="optUser != null||optUser!='' ">
+            and optUser = #{optUser},
+        </if>
+        <if test="optTime != null||optTime!='' ">
+            and optTime = #{optTime},
+        </if>
+        <if test="questionType != null||questionType!='' ">
+            and questionType = #{questionType},
+        </if>
+    </insert>
+
+    <update id="updateByDailyConfig" parameterType="com.lawschool.beans.DailyQuestionConfiguration">
+      update LAW_DAILY_QUESTION
+        set
+        <if test="id != null||id!='' ">
+            ID = #{id,jdbcType=VARCHAR},
+        </if>
+        <if test="specialKnowledgeId != null||specialKnowledgeId!='' ">
+            specialKnowledgeId = #{specialKnowledgeId},
+        </if>
+        <if test="createRule != null||createRule!='' ">
+            createRule = #{createRule},
+        </if>
+        <if test="obtainPoint != null||obtainPoint!='' ">
+            obtainPoint = #{obtainPoint},
+        </if>
+        <if test="isShowLegal != null||isShowLegal!='' ">
+            isShowLegal = #{isShowLegal},
+        </if>
+        <if test="createWay != null||createWay!='' ">
+            createWay = #{createWay},
+        </if>
+        <if test="isShowAnswer != null||isShowAnswer!='' ">
+            isShowAnswer = #{isShowAnswer},
+        </if>
+        <if test="questionDifficulty != null||questionDifficulty!='' ">
+            questionDifficulty = #{questionDifficulty},
+        </if>
+        <if test="joinPeople != null||joinPeople!='' ">
+            joinPeople = #{joinPeople},
+        </if>
+        <if test="joinDept != null||joinDept!='' ">
+            joinDept = #{joinDept},
+        </if>
+        <if test="questionId != null||questionId!='' ">
+            questionId = #{questionId},
+        </if>
+        <if test="beginTime != null||beginTime!='' ">
+            beginTime = #{beginTime},
+        </if>
+        <if test="endTime != null||endTime!='' ">
+            endTime = #{endTime},
+        </if>
+        <if test="createUser != null||createUser!='' ">
+            createUser = #{createUser},
+        </if>
+        <if test="createTime != null||createTime!='' ">
+            createTime = #{createTime},
+        </if>
+        <if test="optUser != null||optUser!='' ">
+            optUser = #{optUser},
+        </if>
+        <if test="optTime != null||optTime!='' ">
+            optTime = #{optTime},
+        </if>
+        <if test="questionType != null||questionType!='' ">
+            questionType = #{questionType},
+        </if>
+        where id = #{id}
+    </update>
+    <!--根据知识点、难度、题目类型 随机每日一题，返回题目ID-->
+    <select id="dailyTest" parameterType="java.util.Map" resultType="java.lang.String">
+        select ID from (select ID,QUESTION_DIFFICULTY,SPECIAL_KNOWLEDGE_ID,QUESTION_TYPE from LAW_TESTQUESTIONS order by dbms_random.random)l
+        where
+        (select to_char(sysdate,'yyyy-MM-dd ') from dual)
+        BETWEEN
+        to_char(l.BEGIN_TIME,'yyyy-MM-dd ') AND to_char(l.END_TIME,'yyyy-MM-dd')
+        <if test="specialKnowledgeId!=null||specialKnowledgeId!='' ">
+            and l.SPECIAL_KNOWLEDGE_ID = #{specialKnowledgeId}
+        </if>
+        <if test="questionDifficulty!=null||questionDifficulty!='' ">
+            and l.QUESTION_DIFFICULTY = #{questionDifficulty}
+        </if>
+        <if test="questionType!=null||questionType!='' ">
+            and l.QUESTION_TYPE = #{questionType}
+        </if>
+        and rownum &lt;= 1
+    </select>
+    <!--查询每日一题当前配置-->
+    <select id="findCurrentConfig" resultType="com.lawschool.beans.DailyQuestionConfiguration">
+        SELECT
+                ID as "id",
+                SPECIAL_KNOWLEDGE_ID as "specialKnowledgeId",
+                CREATE_RULE as "createRule",
+                OBTAIN_POINT as "obtainPoint",
+                IS_SHOW_LEGAL as "isShowLegal",
+                CREATE_WAY as "createWay",
+                IS_SHOW_ANSWER as "isShowAnswer",
+                QUESTION_DIFFICULTY as "questionDifficulty",
+                JOIN_PEOPLE as "joinPeople",
+                JOIN_DEPT as "joinDept",
+                QUESTION_ID as "questionId",
+                BEGIN_TIME as "beginTime",
+                END_TIME as "endTime",
+                CREATE_USER as "createUser",
+                QUESTION_TYPE as "questionType"
+        FROM
+            LAW_DAILY_QUESTION
+        WHERE
+            (
+                SELECT
+                    TO_CHAR (SYSDATE, 'yyyy-MM-dd')
+                FROM
+                    dual
+            ) BETWEEN TO_CHAR (BEGIN_TIME, 'yyyy-MM-dd')
+        AND TO_CHAR (END_TIME, 'yyyy-MM-dd')
+    </select>
+
+</mapper>

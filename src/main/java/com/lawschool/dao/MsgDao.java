@@ -7,13 +7,13 @@ import com.lawschool.beans.Msg;
 
 public interface MsgDao extends BaseMapper<Msg> {
 
-    public void add(Msg msg);
+    void add(Msg msg);
 
-    public List<Msg> selectAllMsg();
+    List<Msg> selectAllMsg();
 
-    public Msg selectByMsgId(String id);
+     Msg selectByMsgId(String id);
 
-    public void updateByMsg(Msg msg);
+     void updateByMsg(Msg msg);
 
-    public void deleteByMsgId(String id);
+     void deleteByMsgId(String id);
 }

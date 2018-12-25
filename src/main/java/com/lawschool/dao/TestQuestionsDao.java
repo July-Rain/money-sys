@@ -70,4 +70,12 @@ public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
      */
     List<String> findByNum(Map<String, Object> param);
 
+    /**
+     * 通过id查询题目
+     * @Author liuhuan
+     * @param id
+     * @return
+     */
+    QuestForm findTestQuestionById(String id);
+
 }

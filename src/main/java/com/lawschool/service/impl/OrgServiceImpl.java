@@ -61,4 +61,9 @@ public class OrgServiceImpl extends ServiceImpl<OrgDao,Org> implements OrgServic
 
 		return	orgDao.queryForTree(orgCode);
 	}
+
+	@Override
+	public Org findOrgByCode(String orgCode) {
+		return orgDao.findOrgByCode(orgCode);
+	}
 }

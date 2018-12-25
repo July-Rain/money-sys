@@ -2,7 +2,6 @@ package com.lawschool.beans.law;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.lawschool.beans.SysMenu;
 
 import java.io.Serializable;
 import java.util.Date;

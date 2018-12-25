@@ -1,30 +1,9 @@
 package com.lawschool.service.impl.exam;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import com.lawschool.beans.TestQuestions;
-import com.lawschool.form.AnswerForm;
-import com.lawschool.form.QuestForm;
-import com.lawschool.service.AnswerService;
-import com.lawschool.service.TestQuestionService;
-import com.lawschool.util.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
-import com.lawschool.base.BaseEntity;
-import com.lawschool.base.DataEntity;
 import com.lawschool.beans.auth.AuthRelationBean;
 import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.beans.exam.ExamDetail;
@@ -36,6 +15,15 @@ import com.lawschool.dao.exam.ExamQueConfigDao;
 import com.lawschool.dao.exam.ExamQuestionsDao;
 import com.lawschool.service.auth.AuthRelationService;
 import com.lawschool.service.exam.ExamConfigService;
+import com.lawschool.util.GetUUID;
+import com.lawschool.util.PageUtils;
+import com.lawschool.util.Query;
+import com.lawschool.util.UtilValidate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 @Service
 public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, ExamConfig> implements ExamConfigService {
@@ -296,29 +284,5 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 		return readPassword;
 	}
 
-    /**
-     * 根據試題編號獲取试题详情
-     * @param idList
-     * @return
-     */
-	private List<QuestForm> getList(List<String> idList){
-
-	    List<QuestForm> eqList = testQuestionService.findByIds(idList);
-        List<AnswerForm> answerForms = answerService.findByQuestionIds(idList);
-        // 遍历处理选项信息
-        for(QuestForm qf : eqList){
-            String qid = qf.getId();
-            List<AnswerForm> tempList = new ArrayList<AnswerForm>();
-
-            for(AnswerForm af : answerForms){
-                String aqid = af.getQuestionId();
-                if(qid.equals(aqid)){
-                    tempList.add(af);
-                }
-            }
-
-            qf.setAnswer(tempList);
-        }
-	    return  eqList;
-    }
+	
 }

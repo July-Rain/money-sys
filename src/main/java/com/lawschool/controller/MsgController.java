@@ -1,5 +1,7 @@
 package com.lawschool.controller;
 
+import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.Msg;
 import com.lawschool.beans.User;
@@ -10,9 +12,7 @@ import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -21,9 +21,9 @@ import java.util.List;
 /**
  * 站内消息
  */
-@Controller
+@RestController
 @RequestMapping("/msg")
-public class MsgController extends AbstractController {
+public class MsgController extends AbstractController{
     @Autowired
     MsgService msgService;
 
@@ -36,48 +36,60 @@ public class MsgController extends AbstractController {
     /**
      * 展示全部站内消息
      */
-    @RequestMapping("/listAll")
+    @RequestMapping(value = "/listAll",method = RequestMethod.GET)
     public Result showAllMsgList(){
-        PageUtils msgList = msgService.selectAllMsg();
-        return Result.ok().put("msgList",msgList);
+        PageUtils page = msgService.selectAllMsg();
+        return Result.ok().put("page",page);
     }
 
     /**
      * 删除选中的消息
-     * @param ids
+     * @param id
      */
     @RequestMapping("/delete")
-    public Result deleteByMsgId(@RequestBody String[] ids){
-        Result result = Result.ok();
-        msgService.deleteBatchIds(ids);
-        return result;
-    }
-
-    /**
-     * 发布站内消息
-     * @param ids
-     */
-    public Result release(@RequestBody String[] ids){
-        User user = getUser();
-        for(String id:ids){
-            Msg msg = msgService.selectByMsgId(id);
-            msg.setReleaseState("1");
-            msg.setReleaseDate(new Date());
-            msg.setReleasePeople(user.getUserName());
-            msgService.updateByMsg(msg);
-        }
-        return Result.ok().put("state","已发送").put("user",user);
+    public Result deleteByMsgId(@RequestParam String id){
+        msgService.deleteByMsgId(id);
+        return Result.ok();
     }
 
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    public Result info(@PathVariable("id") String id){
+    @RequestMapping(value = "/info",method = RequestMethod.GET)
+    public Result info(@RequestParam String id){
         Msg msg = msgService.selectByMsgId(id);
-        Date date = new Date();
-        return Result.ok().put("msg",msg).put("date",date);
+        return Result.ok().put("msg",msg);
 
     }
+
+    @SysLog("保存消息")
+    @RequestMapping(value = "/insert",method = RequestMethod.POST)
+    public Result insert(@RequestBody Msg msg){
+        msg.setId(IdWorker.getIdStr());
+        msg.setReleaseState("0");//未发送
+        msgService.insert(msg);
+        return Result.ok().put("id",msg.getId());
+    }
+
+    @SysLog("修改消息")
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    public Result update(@RequestBody Msg msg){
+        msgService.updateById(msg);
+        return Result.ok().put("id",msg.getId());
+    }
+
+    @SysLog("发送消息")
+    @RequestMapping(value = "/send",method = RequestMethod.POST)
+    public Result sendMsg(@RequestParam String id){
+        User currentUser = getUser();
+        Msg msg = msgService.selectById(id);
+        /*msg.setReleasePeople(currentUser.getUserName());
+        msg.setReleaseDept(orgService.findOrgByCode(currentUser.getOrgCode()).getFullName());//发布部门(数据暂时有冲突)*/
+        msg.setReleaseState("1");//1已发送
+        msg.setReleaseDate(new Date());
+        msgService.updateById(msg);
+        return Result.ok().put("msg",msg);
+    }
+
 
 }

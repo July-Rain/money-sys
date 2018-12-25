@@ -1,7 +1,7 @@
 package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.lawschool.base.AbstractServiceImpl;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.beans.Msg;
 import com.lawschool.dao.MsgDao;
 import com.lawschool.service.MsgService;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 @Service
-public class MsgServiceImpl implements MsgService {
+public class MsgServiceImpl extends ServiceImpl<MsgDao,Msg> implements MsgService {
 
     @Autowired
     MsgDao msgDao;
