@@ -2,9 +2,13 @@ package com.lawschool.service.impl.law;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.beans.law.LawClassifyEntity;
+import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.dao.law.LawClassifyDao;
 import com.lawschool.service.law.LawClassifyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * ClassName: LawClassifyServiceImpl
@@ -16,4 +20,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LawClassifyServiceImpl extends ServiceImpl<LawClassifyDao,LawClassifyEntity> implements LawClassifyService {
+    @Autowired
+    private LawClassifyDao classifyDao;
+    public List<TaskDesicEntity> queryClassTree(){
+        //查询树节点数据
+        return classifyDao.queryClassTree();
+    }
 }

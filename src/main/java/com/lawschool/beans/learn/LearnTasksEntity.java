@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawschool.base.DataEntity;
+import com.lawschool.beans.law.TaskDesicEntity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * ClassName: LearnTasksEntity
@@ -47,6 +50,17 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
 
     @TableField(exist = false)
     private String userIds;//适用人员
+
+    @TableField(exist = false)
+    private List<TaskDesicEntity> taskContentList=new ArrayList<TaskDesicEntity>();//法律法规内容arr
+
+    public List<TaskDesicEntity> getTaskContentList() {
+        return taskContentList;
+    }
+
+    public void setTaskContentList(List<TaskDesicEntity> taskContentList) {
+        this.taskContentList = taskContentList;
+    }
 
     public String getTaskName() {
         return taskName;

@@ -179,7 +179,18 @@
                             <el-input v-model="learnTasks.taskName" placeholder="请输入任务名称" clearable></el-input>
                         </el-form-item>
                         <el-form-item label="任务内容" prop="taskContent">
-                            <el-input type="textarea" maxlength="200" v-model="learnTasks.taskContent" placeholder="请输入任务内容" clearable></el-input>
+                            <!--<el-input type="textarea" maxlength="200" v-model="learnTasks.taskContent" placeholder="请输入任务内容" clearable></el-input>-->
+                            <el-tree
+                                    ref="classTree"
+                                    :data="classData"
+                                    :props="defaultClassProps"
+                                    accordion
+                                    show-checkbox
+                                    @check-change="handleClassCheckChange"
+                                    node-key="infoId"
+                                    :default-expanded-keys="[2079]"
+                            >
+                            </el-tree>
                         </el-form-item>
                         <el-form-item label="开始日期" prop="startTime">
                             <el-date-picker
@@ -302,10 +313,27 @@
             </el-row>
 
         </el-dialog>
+
+        <!--<el-dialog title="选择法律法规" :visible.sync="dialogClass" >
+            &lt;!&ndash;对于同一级的节点，每次只能展开一个&ndash;&gt;
+            <el-tree
+                    ref="classTree"
+                    :data="classData"
+                    :props="defaultClassProps"
+                    accordion
+                    show-checkbox
+                    @check-change="handleClassCheckChange"
+                    node-key="id"
+                    :default-expanded-keys="[2079]"
+            >
+            </el-tree>
+            <el-button type="primary" size="mini" @click="confimClass">保存</el-button>
+            <el-button type="primary" size="mini" @click="cancelClass">取消</el-button>
+        </el-dialog>-->
     </div>
 </div>
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/learnCen/tasksview.js?_${.now?long}"></script>
+<script src="${rc.contextPath}/js/manageCen/learntasks.js?_${.now?long}"></script>
 </html>

@@ -6,10 +6,12 @@ import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
 import com.lawschool.beans.auth.AuthRelationBean;
+import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.beans.learn.LearnTasksEntity;
 import com.lawschool.dao.StuMediaDao;
 import com.lawschool.dao.learn.LearnTasksDao;
 import com.lawschool.service.auth.AuthRelationService;
+import com.lawschool.service.law.TaskDesicService;
 import com.lawschool.service.learn.LearnTasksService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
@@ -39,6 +41,9 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
     @Autowired
     private AuthRelationService authService;
 
+    @Autowired
+    private TaskDesicService desicService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void insertLearnTask(LearnTasksEntity learnTask, User user) {
@@ -53,9 +58,20 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         String[] deptIdArr=learnTask.getDeptArr();
         String[] userIdArr=learnTask.getUserArr();
         authService.insertAuthRelation(deptIdArr,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getCreateUser());
+        //保存任务节点
+        insertBathTaskDesic(learnTask.getTaskContentList(),learnTask.getId());
 
     }
-
+    public void insertBathTaskDesic(List<TaskDesicEntity> list,String taskId){
+        if(UtilValidate.isNotEmpty(list)){
+            list.stream().forEach(e->{
+                e.setCreateTime(new Date());
+                e.setId(GetUUID.getUUIDs("TD"));
+                e.setTaskId(taskId);
+            });
+            desicService.insertBatch(list);
+        }
+    }
     @Override
     public LearnTasksEntity selectLearnTask(String id) {
         //获取学习实体

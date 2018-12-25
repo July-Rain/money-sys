@@ -2,6 +2,9 @@ package com.lawschool.service.law;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.law.LawClassifyEntity;
+import com.lawschool.beans.law.TaskDesicEntity;
+
+import java.util.List;
 
 /**
  * ClassName: LawClassifyService
@@ -12,4 +15,6 @@ import com.lawschool.beans.law.LawClassifyEntity;
  * @since JDK 1.8
  */
 public interface LawClassifyService extends IService<LawClassifyEntity> {
+
+    List<TaskDesicEntity> queryClassTree();
 }

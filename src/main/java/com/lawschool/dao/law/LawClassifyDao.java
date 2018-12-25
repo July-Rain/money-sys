@@ -3,6 +3,10 @@ package com.lawschool.dao.law;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.lawschool.beans.law.LawClassifyEntity;
+import com.lawschool.beans.law.TaskDesicEntity;
+
+import java.util.List;
+
 /**
  * ClassName: LawClassifyDao
  * Description: 库分类 dao
@@ -12,4 +16,5 @@ import com.lawschool.beans.law.LawClassifyEntity;
  * @since JDK 1.8
  */
 public interface LawClassifyDao extends BaseMapper<LawClassifyEntity> {
+    List<TaskDesicEntity> queryClassTree();
 }

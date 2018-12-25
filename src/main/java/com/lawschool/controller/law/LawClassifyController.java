@@ -2,8 +2,8 @@ package com.lawschool.controller.law;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.base.AbstractController;
-import com.lawschool.beans.SysMenu;
 import com.lawschool.beans.law.LawClassifyEntity;
+import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.service.law.LawClassifyLibService;
 import com.lawschool.service.law.LawClassifyService;
 import com.lawschool.util.Result;
@@ -72,5 +72,29 @@ public class LawClassifyController extends AbstractController {
         }
         return finalTrees;
     }
+    @RequestMapping("/classTree")
+    public Result classTree(){
+        List<TaskDesicEntity> classifyList = classifyService.queryClassTree();
+        return Result.ok().put("classifyList",bulidClassTree(classifyList) );
+    }
+    private List<TaskDesicEntity> bulidClassTree(List<TaskDesicEntity> list) {
 
+        List<TaskDesicEntity> finalTrees = new ArrayList<TaskDesicEntity>();
+
+        for (TaskDesicEntity classify : list) {
+
+            if ("0".equals(classify.getInfoParentId())) {
+                finalTrees.add(classify);
+            }
+            List<TaskDesicEntity> classifyList = new ArrayList<TaskDesicEntity>();
+            for (TaskDesicEntity c : list) {
+                if ((c.getInfoParentId()).equals(classify.getInfoId())) {
+                    classifyList.add(c);
+                }
+            }
+            classify.setChild(classifyList);
+
+        }
+        return finalTrees;
+    }
 }

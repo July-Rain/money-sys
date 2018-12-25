@@ -4,7 +4,6 @@
  * Description:学习任务管理
  */
 
-
 var vm = new Vue({
     el: '#app',
     data: {
@@ -29,7 +28,8 @@ var vm = new Vue({
             taskName:"",
             taskContent:"",
             startTime:"",
-            endTime:""
+            endTime:"",
+            taskContentList:[]
 
         },
         rules: {//表单验证规则
@@ -69,6 +69,13 @@ var vm = new Vue({
         userTableData:[],//人员表格信息
         multipleSelection:[],//选中人员信息
         multipleDeptSelection:[],//选中部门信息
+        //dialogClass:false,//法律法规
+        classData:[],//法律法规数据
+        defaultClassProps:{
+            children: 'child',
+            label: 'infoName'
+        },//法律法规树默认数据
+       // multipleClassSelection:[]//法律法规数据选择框
     },
     created: function () {
         this.$nextTick(function () {
@@ -81,6 +88,19 @@ var vm = new Vue({
                     if(result.code === 0){
                         vm.deptData = result.orgList;
                         vm.userData = result.orgList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+            //加载法律法规数据
+            $.ajax({
+                type: "POST",
+                url: baseURL + "law/classTree",
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        vm.classData = result.classifyList;
                     }else{
                         alert(result.msg);
                     }
@@ -153,7 +173,8 @@ var vm = new Vue({
                 taskName:"",
                 taskContent:"",
                 startTime:"",
-                endTime:""
+                endTime:"",
+                taskContentList:[]
             };
             this.title = "新增学习任务";
             this.dialogLearnTask = true;
@@ -312,6 +333,28 @@ var vm = new Vue({
                 }
             }
 
-        }
+        },
+        handleClassCheckChange: function () {
+            //debugger
+            this.multipleClassSelection=this.$refs.classTree.getCheckedNodes();
+            vm.learnTasks.taskContentList=this.multipleClassSelection;
+            console.log(vm.learnTasks.taskContentList);
+        },
+        /*confimClass: function () {
+            this.multipleClassSelection=this.$refs.classTree.getCheckedNodes();
+            for(var i=0;i<this.multipleClassSelection.length;i++){
+                if (this.learnTasks.deptIds == "") {
+                    this.learnTasks.deptIds=this.multipleClassSelection[i].id;
+                    this.learnTasks.deptName=this.multipleClassSelection[i].orgName;
+                }else{
+                    this.learnTasks.deptIds+=","+this.multipleClassSelection[i].id;
+                    this.learnTasks.deptName+=","+this.multipleClassSelection[i].orgName;
+                }
+            }
+            this.dialogClass=false;
+        },
+        cancelClass: function () {
+            this.dialogClass=false;
+        }*/
     }
 });
