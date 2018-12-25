@@ -21,4 +21,6 @@ public interface AnswerDao extends AbstractDao<Answer> {
     void deleteByQuestionId(String questionId);
 
     void deleteByQuestionIds(List<String> list);
+
+    List<AnswerForm> findByQuesId(String qId);
 }

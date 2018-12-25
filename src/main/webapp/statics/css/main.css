@@ -513,3 +513,14 @@
 .content.target .target-div:nth-child(2) .el-progress{
     border: #feae23 1px solid;
 }
+.clearfix {zoom:1;}    /*==for IE6/7 Maxthon2==*/
+.clearfix:after {
+    clear:both;
+    content:'';
+    display:block;
+    width: 0;
+    height: 0;
+    visibility:hidden;
+
+}   /*==for FF/chrome/opera/IE8==*/
+

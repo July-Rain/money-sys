@@ -44,4 +44,9 @@ public class AnswerServiceImpl extends AbstractServiceImpl<AnswerDao, Answer> im
     public void deleteByQuestionIds(List<String> questionIds){
         dao.deleteByQuestionIds(questionIds);
     }
+
+    @Override
+    public List<AnswerForm> findByQuesId(String qId) {
+        return dao.findByQuesId(qId);
+    }
 }

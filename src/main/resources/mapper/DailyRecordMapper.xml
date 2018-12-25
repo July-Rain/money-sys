@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.DailyRecordDao">
+    <resultMap id="BaseResultMap" type="com.lawschool.beans.DailyRecord">
+        <id column="ID" jdbcType="VARCHAR" property="id" />
+        <result column="COM_CONTENT" jdbcType="VARCHAR" property="comContent" />
+        <result column="QUESTION_ID" jdbcType="VARCHAR" property="questionId" />
+        <result column="QUESTION_DIFFICULTY" jdbcType="VARCHAR" property="questionDifficulty" />
+        <result column="QUESTION_TYPE" jdbcType="VARCHAR" property="questionType" />
+        <result column="ANSWER_ID" jdbcType="VARCHAR" property="answerId" />
+        <result column="LEGAL_BASIS" jdbcType="VARCHAR" property="legalBasis" />
+        <result column="ANSWER_DESCRIBLE" jdbcType="VARCHAR" property="answerDescrible" />
+        <result column="OPT_USER" jdbcType="VARCHAR" property="optUser" />
+        <result column="OPT_TIME" jdbcType="DATE" property="optTime" />
+        <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+        <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+    </resultMap>
+    <!--查询当天每日一题记录表是否有记录：lh-->
+    <select id="findCurrentRecord" resultType="com.lawschool.beans.DailyRecord">
+        SELECT * FROM LAW_DAILY_RECORD where to_char(OPT_TIME,'yyyy-MM-dd') = (SELECT to_char(sysdate,'yyyy-MM-dd')from dual)
+    </select>
+    <!--插入记录到数据库-->
+    <insert id="insertRecord" parameterType="com.lawschool.beans.DailyRecord">
+        insert into LAW_DAILY_RECORD (ID, COM_CONTENT, QUESTION_ID,
+      QUESTION_DIFFICULTY, QUESTION_TYPE, ANSWER_ID,
+      LEGAL_BASIS, ANSWER_DESCRIBLE, OPT_USER,
+      OPT_TIME, CREATE_USER, CREATE_TIME
+      )
+    values (#{id,jdbcType=VARCHAR}, #{comContent,jdbcType=VARCHAR}, #{questionId,jdbcType=VARCHAR},
+      #{questionDifficulty,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR}, #{answerId,jdbcType=VARCHAR},
+      #{legalBasis,jdbcType=VARCHAR}, #{answerDescrible,jdbcType=VARCHAR}, #{optUser,jdbcType=VARCHAR},
+      #{optTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+    </insert>
+</mapper>

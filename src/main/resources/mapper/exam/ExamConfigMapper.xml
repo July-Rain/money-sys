@@ -31,37 +31,6 @@
     <result column="AIBITRATION_USER_CODE" jdbcType="VARCHAR" property="aibitrationUserCode" />
     <result column="CONFIG_STATE" jdbcType="VARCHAR" property="configState" />
   </resultMap>
-
-  <sql id="Base_Column_List">
-    ID, EXAM_NAME, Special_knowledge_ID, GROUP_FORM, EXAM_TYPE, QUESTION_WAY, TOPIC_ORDER_TYPE, 
-    OPTION_ORDER_TYPE, START_TIME, END_TIME, EXAM_TIME, ANSWER_SHOW_RULE, EXAM_SCORE, 
-    PASS_PNT, REACH_REWARD_TYPE, REACH_REWARD, ORGANIZED_ORG_CODE, IS_SHOW_LAW, IS_SHOW_LAW_PRORORTION, 
-    IS_MUST_TEST, EXAM_COUNT, CHECK_TYPE, CHECK_NUM, CHECK_PASSWORD, CHECK_SCORE_DIFFERENCE, 
-    IS_AIBITRATION, AIBITRATION_USER_CODE, CONFIG_STATE
-  </sql>
-
-  <insert id="insert" parameterType="com.lawschool.beans.exam.ExamConfig">
-    insert into LAW_EXAM_CONFIG (ID, EXAM_NAME, Special_knowledge_ID, 
-      GROUP_FORM, EXAM_TYPE, QUESTION_WAY, 
-      TOPIC_ORDER_TYPE, OPTION_ORDER_TYPE, START_TIME, 
-      END_TIME, EXAM_TIME, ANSWER_SHOW_RULE, 
-      EXAM_SCORE, PASS_PNT, REACH_REWARD_TYPE, 
-      REACH_REWARD, ORGANIZED_ORG_CODE, IS_SHOW_LAW, 
-      IS_SHOW_LAW_PRORORTION, IS_MUST_TEST, EXAM_COUNT, 
-      CHECK_TYPE, CHECK_NUM, CHECK_PASSWORD, 
-      CHECK_SCORE_DIFFERENCE, IS_AIBITRATION, AIBITRATION_USER_CODE, 
-      CONFIG_STATE)
-    values (#{id,jdbcType=VARCHAR}, #{examName,jdbcType=VARCHAR}, #{specialKnowledgeId,jdbcType=VARCHAR}, 
-      #{groupForm,jdbcType=VARCHAR}, #{examType,jdbcType=VARCHAR}, #{questionWay,jdbcType=VARCHAR}, 
-      #{topicOrderType,jdbcType=VARCHAR}, #{optionOrderType,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{examTime,jdbcType=DECIMAL}, #{answerShowRule,jdbcType=VARCHAR}, 
-      #{examScore,jdbcType=DECIMAL}, #{passPnt,jdbcType=DECIMAL}, #{reachRewardType,jdbcType=VARCHAR}, 
-      #{reachReward,jdbcType=VARCHAR}, #{organizedOrgCode,jdbcType=VARCHAR}, #{isShowLaw,jdbcType=VARCHAR}, 
-      #{isShowLawProrortion,jdbcType=VARCHAR}, #{isMustTest,jdbcType=VARCHAR}, #{examCount,jdbcType=DECIMAL}, 
-      #{checkType,jdbcType=VARCHAR}, #{checkNum,jdbcType=DECIMAL}, #{checkPassword,jdbcType=VARCHAR}, 
-      #{checkScoreDifference,jdbcType=DECIMAL}, #{isAibitration,jdbcType=VARCHAR}, #{aibitrationUserCode,jdbcType=VARCHAR}, 
-      #{configState,jdbcType=VARCHAR})
-  </insert>
   <insert id="insertSelective" parameterType="com.lawschool.beans.exam.ExamConfig">
     insert into LAW_EXAM_CONFIG
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -238,53 +207,4 @@
     </trim>
   </insert>
 
-  <insert id="insert" parameterType="com.lawschool.beans.exam.ExamConfig">
-    insert into LAW_EXAM_CONFIG (ID, EXAM_NAME, Special_knowledge_ID, 
-      GROUP_FORM, EXAM_TYPE, QUESTION_WAY, 
-      TOPIC_ORDER_TYPE, OPTION_ORDER_TYPE, START_TIME, 
-      END_TIME, EXAM_TIME, ANSWER_SHOW_RULE, 
-      EXAM_SCORE, PASS_PNT, REACH_REWARD_TYPE, 
-      REACH_REWARD, ORGANIZED_ORG_CODE, IS_SHOW_LAW, 
-      IS_SHOW_LAW_PRORORTION, IS_MUST_TEST, EXAM_COUNT, 
-      CHECK_TYPE, CHECK_NUM, CHECK_PASSWORD, 
-      CHECK_SCORE_DIFFERENCE, IS_AIBITRATION, AIBITRATION_USER_CODE, 
-      CONFIG_STATE)
-    values (#{id,jdbcType=VARCHAR}, #{examName,jdbcType=VARCHAR}, #{specialKnowledgeId,jdbcType=VARCHAR}, 
-      #{groupForm,jdbcType=VARCHAR}, #{examType,jdbcType=VARCHAR}, #{questionWay,jdbcType=VARCHAR}, 
-      #{topicOrderType,jdbcType=VARCHAR}, #{optionOrderType,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{examTime,jdbcType=DECIMAL}, #{answerShowRule,jdbcType=VARCHAR}, 
-      #{examScore,jdbcType=DECIMAL}, #{passPnt,jdbcType=DECIMAL}, #{reachRewardType,jdbcType=VARCHAR}, 
-      #{reachReward,jdbcType=VARCHAR}, #{organizedOrgCode,jdbcType=VARCHAR}, #{isShowLaw,jdbcType=VARCHAR}, 
-      #{isShowLawProrortion,jdbcType=VARCHAR}, #{isMustTest,jdbcType=VARCHAR}, #{examCount,jdbcType=DECIMAL}, 
-      #{checkType,jdbcType=VARCHAR}, #{checkNum,jdbcType=DECIMAL}, #{checkPassword,jdbcType=VARCHAR}, 
-      #{checkScoreDifference,jdbcType=DECIMAL}, #{isAibitration,jdbcType=VARCHAR}, #{aibitrationUserCode,jdbcType=VARCHAR}, 
-      #{configState,jdbcType=VARCHAR})
-  </insert>
- 	<select id="findByUser" parameterType="map" resultMap="BaseResultMap">
- 	SELECT
-		*
-		FROM
-			LAW_EXAM_CONFIG
-		WHERE
-			ID IN (
-				SELECT
-					function_id
-				FROM
-					LAW_AUTH_RELATION
-				WHERE
-					(
-						AUTH_ID IN (
-							SELECT
-								ORG_CODE
-							FROM
-								LAW_ORG START WITH ORG_ID = '10000' CONNECT BY PRIOR PARENT_ID = ORG_ID
-						)
-						OR AUTH_ID = ''
-					)
-				AND function_flag = 'ExamConfig'
-			)
- 	</select>
-    <select id="findList" resultType="com.lawschool.beans.exam.ExamConfig" parameterType="com.lawschool.beans.exam.ExamConfig">
-      select  * from LAW_EXAM_CONFIG
-    </select>
 </mapper>

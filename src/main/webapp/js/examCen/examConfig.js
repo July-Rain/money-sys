@@ -64,6 +64,7 @@ var vm = new Vue({
             dialogDept: false,//部门的弹窗
             dialogUser: false,//人员的弹窗
             dialogWatch: false,
+            dialogChange: false,
             deptData:[],//部门树数据
             userData:[],//人员树数据
             defaultDeptProps:{
@@ -82,7 +83,26 @@ var vm = new Vue({
                 pageSize: 10,
                 totalCount:0
 
-            }//人员查询
+            },//人员查询
+            //更换题目数据
+            changeData: [{
+                name: '全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?',
+                info: 'A：123；B：123；C：123；D：123'
+            },{
+                name: '全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?',
+                info: 'A：123；B：123；C：123；D：123'
+            },{
+                name: '全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?',
+                info: 'A：123；B：123；C：123；D：123'
+            },{
+                name: '全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?',
+                info: 'A：123；B：123；C：123；D：123'
+            },{
+                name: '全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?',
+                info: 'A：123；B：123；C：123；D：123'
+            }],
+            //选中题目
+            currentRow: null
         };
 
 
@@ -170,7 +190,6 @@ var vm = new Vue({
             vm.randomQuesModal = false;
         },
         preview:function(){
-            alert(1);
             this.dialogWatch = true;
             $.ajax({
                 type: "POST",
@@ -320,6 +339,21 @@ var vm = new Vue({
             })
             vm.randomQuesData = arr2;
         },
+        // 替换题目
+        changeQuestion: function (index) {
+            this.dialogChange = true
+        },
+        setCurrent(row) {
+            this.$refs.singleTable.setCurrentRow(row);
+        },
+        handleCurrentChange(val) {
+            this.currentRow = val;
+        },
+        submitChange(){
+            console.info("选中的题目",this.currentRow);
+            alert("选择了》》"+this.currentRow.name);
+            this.dialogChange = false
+        }
 
     }
 });

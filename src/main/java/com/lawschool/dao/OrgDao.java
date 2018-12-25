@@ -22,4 +22,11 @@ public interface OrgDao extends BaseMapper<Org> {
 	public List<Map<String,Object>> findUserByOrg(String orgCode);
 
 	public List<Org> queryForTree(String orgCode);
+
+	/**
+	 * liuhuan
+	 * @param orgCode
+	 * @return
+	 */
+	Org findOrgByCode(String orgCode);
 }

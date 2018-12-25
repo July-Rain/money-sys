@@ -58,4 +58,10 @@ public interface OrgService  extends IService<Org> {
 	public List<Map<String, Object>> findUserByOrg(String orgCode);
 
 	public List<Org> queryForTree(String orgCode);
+
+	/**
+	 * 根据orgCode查询部门
+	 * @Author lh
+	 */
+	Org findOrgByCode(String orgCode);
 }

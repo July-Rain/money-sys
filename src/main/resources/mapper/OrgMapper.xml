@@ -268,4 +268,9 @@ FROM
 ORDER BY
 	T2.LOCAL_ORG_CODE
   </select>
+
+  <!--通过单位编码查找单位：lh-->
+  <select id="findOrgByCode" parameterType="java.lang.String" resultType="com.lawschool.beans.Org">
+    select * from LAW_ORG where ORG_CODE = #{orgCode}
+  </select>
 </mapper>

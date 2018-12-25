@@ -6,6 +6,7 @@ import com.lawschool.beans.SysConfig;
 import com.lawschool.beans.SysLogEntity;
 import com.lawschool.beans.SysMenu;
 import com.lawschool.dao.SysMenuDao;
+import com.lawschool.dao.SysRoleMenuDao;
 import com.lawschool.service.SysMenuService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;

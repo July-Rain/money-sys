@@ -59,4 +59,10 @@ public interface TestQuestionService extends AbstractService<TestQuestions> {
      */
     List<String> findByNum(Map<String, Object> param);
 
+    /**
+     * 根据题目ID查询题目
+     * liuhuan
+     */
+    QuestForm findTestQuestionById(String id);
+
 }

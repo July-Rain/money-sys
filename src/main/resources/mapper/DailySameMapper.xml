@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.DailySameDao">
+    <resultMap id="BaseResultMap" type="com.lawschool.beans.DailySame">
+        <id column="ID" jdbcType="VARCHAR" property="id" />
+        <result column="COM_CONTENT" jdbcType="VARCHAR" property="comContent" />
+        <result column="QUESTION_ID" jdbcType="VARCHAR" property="questionId" />
+        <result column="QUESTION_DIFFICULTY" jdbcType="VARCHAR" property="questionDifficulty" />
+        <result column="QUESTION_TYPE" jdbcType="VARCHAR" property="questionType" />
+        <result column="ANSWER_ID" jdbcType="VARCHAR" property="answerId" />
+        <result column="LEGAL_BASIS" jdbcType="VARCHAR" property="legalBasis" />
+        <result column="ANSWER_DESCRIBLE" jdbcType="VARCHAR" property="answerDescrible" />
+        <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+        <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+        <result column="OPT_USER" jdbcType="VARCHAR" property="optUser" />
+        <result column="OPT_TIME" jdbcType="DATE" property="optTime"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.lawschool.beans.DailySame">
+    insert into LAW_DAILY_SAME (ID, COM_CONTENT, QUESTION_ID,
+      QUESTION_DIFFICULTY, QUESTION_TYPE, ANSWER_ID,
+      LEGAL_BASIS, ANSWER_DESCRIBLE, CREATE_USER,
+      CREATE_TIME,OPT_USER,OPT_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{comContent,jdbcType=VARCHAR}, #{questionId,jdbcType=VARCHAR},
+      #{questionDifficulty,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR}, #{answerId,jdbcType=VARCHAR},
+      #{legalBasis,jdbcType=VARCHAR}, #{answerDescrible,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR},
+      #{createTime,jdbcType=DATE},#{optUser,jdbcType=VARCHAR},#{optTime,jdbcType=DATE})
+  </insert>
+
+    <!--查询当天统一试题记录，找到统一的那题-->
+    <select id="findCurrentSameTest" resultType="com.lawschool.beans.DailySame">
+        SELECT * FROM LAW_DAILY_SAME where to_char(CREATE_TIME,'yyyy-MM-dd') = (SELECT to_char(sysdate,'yyyy-MM-dd')from dual)
+    </select>
+</mapper>
