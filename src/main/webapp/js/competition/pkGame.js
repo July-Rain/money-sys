@@ -4,11 +4,15 @@
  * Description:
  */
 
-var user=null;
+
 var datamag=null;
+//回答过题目的人
+var answerpeople=[];
 var vm = new Vue({
     el: '#app',
     data: {
+        allnum:"",
+        nownum:"",
         u:"",
         answers:"",
         //题目集合
@@ -17,6 +21,9 @@ var vm = new Vue({
         ],
         //题目
         Question:{},
+        radio_disabled: false,
+        dialogQuestion:false,//开始答题  弹出
+
     },
     created: function () {
         this.$nextTick(function () {
@@ -26,15 +33,40 @@ var vm = new Vue({
 
 
     methods: {
+        radioCheck: function (id, answerId, typeName) {
+            vm.radio_disabled = true;
+            // var answer = vm.answers[0];
+            // alert(vm.answers);
+            // alert("我选的"+id);
+            // alert("正确的"+answerId);
+            //如果答对了
+            if(id==answerId)
+            {
+                vm.questionYes();
+            }
+            else
+            {
+                vm.questionError();
+            }
 
+            //触发发送事件
+            sendMsg();
+        },
+        //答错事件
+        questionError:function()
+        {
+            alert("答错了")
 
+        },
+        //答对事件
+        questionYes:function()
+        {
+            alert("答对了")
+
+        },
         reload: function () {
-            vm.u=user;
-            vm.QuestionList=datamag.tqList;
-            console.info("~~~~~~~");
-            console.info(datamag);
 
-            console.info(vm.QuestionList);
+
         }
     }
 });
@@ -62,8 +94,8 @@ $.ajax({
     success: function (result) {
         // path=vm.basePath();
 
+        vm.u=result.user;
 
-        user=result.user;
         uid=result.user.id;
 //发送人编号
         from=result.user.id;
@@ -111,24 +143,35 @@ websocket.onopen = function(event) {
 // 监听消息
 //onmessage事件提供了一个data属性，它可以包含消息的Body部分。消息的Body部分必须是一个字符串，可以进行序列化/反序列化操作，以便传递更多的数据。
 websocket.onmessage = function(event) {
-
-
-
-    //var data=JSON.parse(event.data);
     var data=$.parseJSON(event.data);
     console.log("WebSocket:收到一条消息",data);
     datamag=data;
+
+
+    vm.QuestionList= data.tqList;
+
     //2种推送的消息
     //1.用户聊天信息：发送消息触发
     //2.系统消息：登录和退出触发
-
     //判断是否是欢迎消息（没用户编号的就是欢迎消息）
     if(data.from==undefined||data.from==null||data.from==""){
 
+        console.info("系统发的消息");
+        console.info("系统发的消息是"+data);
         //===系统消息
         $("#contentUl").append("<li><b>"+data.date+"</b><em>系统消息：</em><span>"+data.text+"</span></li>");
         //刷新在线用户列表
         $("#chatOnline").html("在线用户("+data.userList.length+")人");
+
+        // 当收到系统消息的时候  然且当是在线2人的时候 这时候 默认给第一题
+        if(data.userList.length=="2")
+        {
+            vm.dialogQuestion=true,
+            vm.radio_disabled=false;
+            vm.allnum=data.tqList.length;
+            vm.nownum=Number(nowtimu)+1;
+            vm.Question=data.tqList[Number(nowtimu)];
+        }
 
         $("#chatUserList").empty();
 
@@ -143,14 +186,41 @@ websocket.onmessage = function(event) {
         to=data.to;
 
     }else{
+        
+        console.info("人发的消息");
+        console.info(data);
+        answerpeople.push(data.from);
+        console.info("收到消息后"+answerpeople);
+        //当受到普通消息是时候  判断发送人
+        if(answerpeople.length=="2")
+        {
+            //如果2人都回答过了
+            // 题目要变
+            //收到消息时候来变化题目，前提是2人回答过
+            if(data.tqList.length <= Number(nowtimu))
+            {
+                alert("全部题目答完");
+            }else
+            {
+
+               vm.dialogQuestion=true,
+                 vm.radio_disabled=false;
+                vm.allnum=data.tqList.length;
+                vm.nownum=Number(nowtimu)+1;
+              vm.Question=data.tqList[Number(nowtimu)];
+            }
+
+            answerpeople=[];//再将这个回答过的人制空
+
+        }
         //===普通消息
         //处理一下个人信息的显示：
-        if(data.fromName==fromName){
-            data.fromName="我";
-            $("#contentUl").append("<li><span  style='display:block; float:right;'><em>"+data.fromName+"</em><span>"+data.text+data.nowtimu+"</span><b>"+data.date+"</b></span></li><br/>");
-        }else{
-            $("#contentUl").append("<li><b>"+data.date+"</b><em>"+data.fromName+"</em><span>"+data.text+data.nowtimu+"</span></li><br/>");
-        }
+        // if(data.fromName==fromName){
+        //     data.fromName="我";
+        //     $("#contentUl").append("<li><span  style='display:block; float:right;'><em>"+data.fromName+"</em><span>"+data.text+data.nowtimu+"</span><b>"+data.date+"</b></span></li><br/>");
+        // }else{
+        //     $("#contentUl").append("<li><b>"+data.date+"</b><em>"+data.fromName+"</em><span>"+data.text+data.nowtimu+"</span></li><br/>");
+        // }
 
     }
 
@@ -175,9 +245,9 @@ websocket.onerror = function(event) {
 //onload初始化
 $(function(){
     //发送消息
-    $("#sendBtn").on("click",function(){
-        sendMsg();
-    });
+    // $("#sendBtn").on("click",function(){
+    //     sendMsg();
+    // });
 
     //给退出聊天绑定事件
     $("#exitBtn").on("click",function(){
@@ -186,27 +256,27 @@ $(function(){
     });
 
     //给输入框绑定事件
-    $("#msg").on("keydown",function(event){
-        keySend(event);
-    });
+    // $("#msg").on("keydown",function(event){
+    //     keySend(event);
+    // });
 
     // 初始化时如果有消息，则滚动条到最下面：
     scrollToBottom();
 
 });
 //使用ctrl+回车快捷键发送消息
-function keySend(e) {
-    var theEvent = window.event || e;
-    var code = theEvent.keyCode || theEvent.which;
-    if (theEvent.ctrlKey && code == 13) {
-        var msg=$("#msg");
-        if (msg.innerHTML == "") {
-            msg.focus();
-            return false;
-        }
-        sendMsg();
-    }
-}
+// function keySend(e) {
+//     var theEvent = window.event || e;
+//     var code = theEvent.keyCode || theEvent.which;
+//     if (theEvent.ctrlKey && code == 13) {
+//         var msg=$("#msg");
+//         if (msg.innerHTML == "") {
+//             msg.focus();
+//             return false;
+//         }
+//         sendMsg();
+//     }
+// }
 
 //发送消息
 function sendMsg(){
@@ -218,21 +288,25 @@ function sendMsg(){
         return;
     }
     //获取用户要发送的消息内容
-    var msg=$("#msg").val();
+    // var msg=$("#msg").val();
+    var msg="我答提了";
     if(msg==""){
         return;
     }else{
         nowtimu=nowtimu+1;
+        console.info(datamag);
+        // vm.Question=vm.QuestionList[nowtimu];
         var data={};
         data["from"]=from;
         data["fromName"]=fromName;
         data["to"]=to;
         data["text"]=msg;
         data["nowtimu"]=nowtimu;
+        data["tqList"]=datamag.tqList;
         //发送消息
         websocket.send(JSON.stringify(data));
         //发送完消息，清空输入框
-        $("#msg").val("");
+        // $("#msg").val("");
     }
 }
 
