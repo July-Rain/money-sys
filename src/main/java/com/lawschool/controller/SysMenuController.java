@@ -97,7 +97,7 @@ public class SysMenuController {
         SysMenu.setParentId("-1");
         SysMenu.setName("一级菜单");
         SysMenuList.add(SysMenu);
-        SysMenuList.addAll( sysMenuService.listAllMenuTree());
+        SysMenuList.addAll(sysMenuService.listAllMenuTree());
         return Result.ok().put("listAllMenuTree", SysMenuList);
     }
 

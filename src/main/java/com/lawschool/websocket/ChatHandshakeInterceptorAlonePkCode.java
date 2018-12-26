@@ -17,8 +17,8 @@ import java.util.Map;
  * @author BoBo
  *
  */
-@Component("chatHandshakeInterceptor")
-public class ChatHandshakeInterceptor implements HandshakeInterceptor {
+@Component("chatHandshakeInterceptorAlonePkCode")
+public class ChatHandshakeInterceptorAlonePkCode implements HandshakeInterceptor {
 
 	/**
      * 握手之前，若返回false，则不建立链接
@@ -35,7 +35,14 @@ public class ChatHandshakeInterceptor implements HandshakeInterceptor {
 				User loginUser=(User)session.getAttribute("loginUser") ;
 				//将用户放入socket处理器的会话(WebSocketSession)中
 				attributes.put("loginUser", loginUser);
+				//获取带过来的游戏类型和code码
+				String type=(String)session.getAttribute("joinType") ;
+				String code=(String)session.getAttribute("joinCode") ;
+				attributes.put("joinType", type);
+				attributes.put("joinCode", code);
 				System.out.println("Websocket:用户[ID:" + (loginUser.getId() + ",Name:"+loginUser.getFullName()+"]要建立连接"));
+				System.out.println("type为"+type);
+				System.out.println("tcode为"+code);
 			}else{
 				//用户没有登录，拒绝聊天
 				//握手失败！
