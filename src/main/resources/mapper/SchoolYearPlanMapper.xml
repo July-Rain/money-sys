@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.SchoolYearPlanDao">
+    <sql id="schoolYearPlanColumn">
+        id AS "id",
+        plan_name AS "planName",
+        plan_content AS "planContent",
+        start_date AS "startDate",
+        end_date AS "endDate",
+        credit AS "credit",
+        integral AS "integral",
+        participant_user AS "participantUser",
+        participant_dept AS "participantDept",
+        remarks AS "remarks",
+        opt_user AS "optUser",
+        opt_time AS "optTime",
+        create_user AS "createUser",
+        create_time AS "createTime"
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO law_school_year_plan
+        (
+            id,
+            plan_name,
+            plan_content,
+            start_date,
+            end_date,
+            credit,
+            integral,
+            participant_user,
+            participant_dept,
+            remarks,
+            opt_user,
+            opt_time,
+            create_user,
+            create_time
+        ) VALUES (
+            id,
+            planName,
+            planContent,
+            startDate,
+            endDate,
+            credit,
+            integral,
+            participantUser,
+            participantDept,
+            remarks,
+            optUser,
+            optTime,
+            createUser,
+            createTime
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE law_school_year_plan
+        SET
+            plan_name = #{planName},
+            plan_content = #{planContent},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            credit = #{credit},
+            integral = #{integral},
+            participant_user = #{participantUser},
+            participant_dept = #{participantDept},
+            remarks = #{remarks},
+            opt_user = #{optUser},
+            opt_time = #{optTime}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <select id="findList" resultType="com.lawschool.beans.SchoolYearPlan">
+        SELECT
+        <include refid="schoolYearPlanColumn"/>
+        FROM law_school_year_plan
+    </select>
+
+    <select id="findOne" resultType="com.lawschool.beans.SchoolYearPlan">
+        SELECT
+        <include refid="schoolYearPlanColumn"/>
+        FROM law_school_year_plan
+        <where>
+            id = #{id}
+        </where>
+    </select>
+
+    <delete id="delete">
+        DELETE FROM law_school_year_plan
+        <where>
+            id IN
+            <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+    </delete>
+</mapper>

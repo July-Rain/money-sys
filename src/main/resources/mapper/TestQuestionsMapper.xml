@@ -32,29 +32,29 @@
         <result column="OPT_TIME" jdbcType="TIMESTAMP" property="optTime"/>
     </resultMap>
 
-    <sql id="question">
-        a.id,
-        a.type_id,
-        a.com_content,
-        a.question_difficulty,
-        a.question_type,
-        a.answer_choice_number,
-        a.answer_id,
-        a.special_knowledge_id,
-        a.police_classification,
-        a.legal_basis,
-        a.answer_describle,
-        a.release_status,
-        a.stu_issuer,
-        a.stu_issdepartment,
-        a.stu_isstim,
-        a.stu_optdepartment,
-        a.use_number,
-        a.rigth_number
+    <sql id="questionColumn">
+        a.id AS "id",
+        a.type_id AS "typeId",
+        a.com_content AS "comContent",
+        a.question_difficulty AS "questionDifficulty",
+        a.question_type AS "questionType",
+        a.answer_choice_number AS "answerChoiceNumber",
+        a.answer_id AS "answerId",
+        a.special_knowledge_id AS "specialKnowledgeId",
+        a.police_classification AS "policeVlassification",
+        a.legal_basis AS "legalBasis",
+        a.answer_describle AS "answerDescrible",
+        a.release_status AS "releaseStatus",
+        a.stu_issuer AS "stuIssuer",
+        a.stu_issdepartment AS "stuIssdepartment",
+        a.stu_isstim AS "stuIsstim",
+        a.stu_optdepartment AS "stuOptdepartment",
+        a.use_number AS "useNumber",
+        a.rigth_number AS "rigthNumber"
     </sql>
 
-    <insert id="insert" parameterType="com.lawschool.beans.TestQuestions">
-        insert into LAW_TESTQUESTIONS
+    <insert id="insert">
+        INSERT INTO law_testquestions
         (
              id,
              type_id,
@@ -79,7 +79,7 @@
              create_time,
              opt_user,
              opt_time
-        ) values (
+        ) VALUES (
             #{id},
             #{typeId},
             #{comContent},
@@ -106,8 +106,8 @@
         )
     </insert>
 
-    <update id="update" parameterType="com.lawschool.beans.TestQuestions">
-        update LAW_TESTQUESTIONS
+    <update id="update">
+        UPDATE law_testquestions
         SET
             type_id                 = #{typeId},
             com_content             = #{comContent},
@@ -129,7 +129,9 @@
             rigth_number            = #{rigthNumber},
             opt_user                = #{optuser},
             opt_time                = #{opttime}
-        WHERE id = #{id}
+        <where>
+            id = #{id}
+        </where>
     </update>
 
     <!--计数：我收藏的重点试题zjw-->
@@ -245,9 +247,9 @@
 
 
     <!--根据ID查询试题-->
-    <select id="findOne" parameterType="string" resultMap="BaseResultMap">
+    <select id="findOne" resultType="com.lawschool.beans.TestQuestions">
         SELECT
-        <include refid="question"/>
+        <include refid="questionColumn"/>
         FROM law_testquestions a
         <where>
             a.id = #{id}
@@ -292,9 +294,9 @@
     </select>
 
     <!--查询某类型的试题-->
-    <select id="findBySpecialKnowledgeId" parameterType="map" resultMap="BaseResultMap">
+    <select id="findBySpecialKnowledgeId" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
         SELECT
-        <include refid="question"/>
+        <include refid="questionColumn"/>
         FROM law_testquestions a
         <where>
             1 = 1
@@ -352,9 +354,9 @@
 
 
     <!--查询某类型的试题-->
-    <select id="findList" resultMap="BaseResultMap">
+    <select id="findList" resultType="com.lawschool.beans.TestQuestions">
         SELECT
-        <include refid="question"/>
+        <include refid="questionColumn"/>
         FROM law_testquestions a
         <where>
             1 = 1
@@ -383,12 +385,12 @@
 
 
     <!--查询某类型的试题-->
-    <select id="findByEntity" resultMap="BaseResultMap">
+    <select id="findByEntity" resultType="com.lawschool.beans.TestQuestions">
         SELECT
           *
         FROM
         (SELECT
-        <include refid="question"/>
+        <include refid="questionColumn"/>
         FROM law_testquestions a
         <where>
             1 = 1
@@ -445,7 +447,7 @@
           id
         FROM
         (SELECT
-        <include refid="question"/>
+        <include refid="questionColumn"/>
         FROM law_testquestions a
         <where>
             1 = 1
