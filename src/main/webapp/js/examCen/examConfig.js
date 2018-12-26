@@ -2,21 +2,21 @@ var menuId = $("#menuId").val();
 var vm = new Vue({
     el: '#app',
     data() {
-        const generateData2 = _ => {
-            const data = [];
-            const cities = ['第一题', '第二题', '第三题', '第四题', '第五题', '第六题', '第七题'];
-            const pinyin = ['diyiti', 'dierti', 'disanti', 'disiti', 'siwuti', 'diliuti', 'siqiti'];
-            cities.forEach((city, index) => {
+        const data=[]
+        const generateData = _ => {
+            for (let i = 1; i <= 15; i++) {
                 data.push({
-                    label: city,
-                    key: index,
-                    pinyin: pinyin[index]
+                    key: i,
+                    label: `备选项 ${ i }`,
+                    disabled: i % 4 === 0
                 });
-            });
-            return data;
+            }
+            console.info("data格式",data)
+            return data
+
         };
         return {
-            data2: generateData2(),
+            data2: generateData(),
             value2: [],
             filterMethod(query, item) {
                 return item.pinyin.indexOf(query) > -1;
@@ -54,6 +54,9 @@ var vm = new Vue({
             asuOption:[],
             rrtOption:[],
             ctOption:[],
+            answers:[],
+            previewList:[],
+            radio_disabled: false,
             skOption:[],
             randomQuesData:[],
             qtOption:[],
@@ -104,11 +107,10 @@ var vm = new Vue({
             //选中题目
             currentRow: null
         };
-
-
     },
 
     created: function () {
+        this.gettrData()
         this.$nextTick(function () {
             //加载菜单
             $.ajax({
@@ -170,6 +172,28 @@ var vm = new Vue({
         onSubmit: function () {
             // this.reload();
         },
+
+        radioCheck: function (id, answerId, typeName) {
+            vm.radio_disabled = true;
+            var answer = vm.answers[0];
+            var right = 0;
+
+            if(answer == answerId){
+                right = 1;
+            }
+
+            vm.obj = {
+                id: params.substring(4),
+                status: 1,
+                list: [{
+                    qId: id,
+                    answer: answer,
+                    right: right,
+                    typeName: typeName
+                }]
+            };
+
+        },
         openDiffModal : function(e){
             if(e === "10033"){
                 this.randomQues();
@@ -184,24 +208,46 @@ var vm = new Vue({
         },
         selfQuse : function(){
             this.autonomyQuesModal = true;
+
         },
         handleSave:function(randomQuesData){
             vm.examConfig.examQueConfigList=randomQuesData;
             vm.randomQuesModal = false;
         },
+        mineQueSave : function(){
+            vm.autonomyQuesModal = false;
+        },
         preview:function(){
             this.dialogWatch = true;
             $.ajax({
                 type: "POST",
-                url: baseURL + "exam/config/examConfig/1",
+                url: baseURL + "exam/config/examConfig/preview",
                 data: JSON.stringify(
                     vm.examConfig
                 ),
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-
-
+                        vm.previewList = result.list;
+                        console.log(vm.previewList);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        generate : function(){
+            vm.examConfig.qfList = vm.previewList;
+            $.ajax({
+                type: "POST",
+                url: baseURL + "exam/config/examConfig/generate",
+                data: JSON.stringify(
+                    vm.examConfig
+                ),
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        alert('生成成功');
                     } else {
                         alert(result.msg);
                     }
@@ -339,7 +385,7 @@ var vm = new Vue({
             })
             vm.randomQuesData = arr2;
         },
-        // 替换题目
+// 替换题目
         changeQuestion: function (index) {
             this.dialogChange = true
         },
@@ -353,7 +399,31 @@ var vm = new Vue({
             console.info("选中的题目",this.currentRow);
             alert("选择了》》"+this.currentRow.name);
             this.dialogChange = false
-        }
+        },
+        gettrData(){
+            var that = this;
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: baseURL + "testQuestion/list",
+                contentType: "application/json",
+                data: {
 
+                },
+                success:function(result){
+                    that.data2 = [];
+                    result.page.list.map((info,index)=>{
+                        that.data2.push({
+                            disabled: false,
+                            key: info.id,
+                            label: info.comContent
+                        })
+                    })
+                }});
+        },
+        getTestQue(value, direction, movedKeys) {
+            vm.examConfig.idList=value;
+            console.log(vm.examConfig.idList);
+        }
     }
 });
