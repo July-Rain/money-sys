@@ -54,4 +54,10 @@
         where r.user_id = #{userId}
         order by s.CREATE_TIME asc
     </select>
+
+    <!-- 查询列表 -->
+    <select id="findList" parameterType="java.lang.String"
+            resultType="com.lawschool.beans.system.SysRoleEntity">
+        SELECT role_id, role_name, remark FROM law_sys_role
+    </select>
 </mapper>
