@@ -194,7 +194,8 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 				playids.split(",");
 				//主动去断这2个用户    但是要先断自己  在给另一个人发消息说我走了   在断另一个人
 				msg.setDate(new Date());
-				msg.setText(loginUser.getFullName()+"已经离开了~~~~~~~~~~~~~~~");
+				msg.setText(loginUser.getFullName()+"已经离开了,直接获得获胜者奖励"+timussettingMap.get("onlinePksetting"+playids.split(",")[0]).getWinReward());
+				msg.setMycore(timussettingMap.get("onlinePksetting"+playids.split(",")[0]).getWinReward());
 
 				if(loginUser.getId().equals(playids.split(",")[0]))
 				{
