@@ -11,4 +11,27 @@
     <result column="ORDER_NUM" jdbcType="DECIMAL" property="orderNum" />
     <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+  <select id="queryClassTree" resultType="com.lawschool.beans.law.TaskDesicEntity">
+        SELECT
+            ID AS infoId,
+            CLASSIFY_CODE AS infoCode,
+            CLASSIFY_NAME AS infoName,
+            PARENT_ID AS infoParentId,
+            '1' AS infoType
+        FROM
+            LAW_CLASSIFY
+        WHERE
+            DEL_FLAG = '0'
+        UNION ALL
+            SELECT
+                ID AS infoId,
+                LAW_CODE AS infoCode,
+                LAW_TITLE AS infoName,
+                CLASSIFY_ID AS infoParentId,
+                '2' AS infoType
+            FROM
+                LAW_CLASSIFY_DESIC
+            WHERE
+                DEL_FLAG = '0'
+  </select>
 </mapper>

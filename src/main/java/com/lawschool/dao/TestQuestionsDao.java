@@ -2,7 +2,9 @@ package com.lawschool.dao;
 
 import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -62,6 +64,9 @@ public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
      * @return
      */
     List<QuestForm> findByIds(List<String> list);
+
+    List<CommonForm> selectByTopicAndNum(@Param("topicId") String topicId,
+                                         @Param("num") Integer num);
 
     /**
      * 根据专项知识ID和题目类型查询指定数量的题目

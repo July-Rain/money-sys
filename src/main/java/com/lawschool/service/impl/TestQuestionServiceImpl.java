@@ -4,18 +4,25 @@ import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.constants.StatusConstant;
 import com.lawschool.dao.TestQuestionsDao;
+import com.lawschool.form.AnswerForm;
+import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
+import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 
 @Service
 public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDao,TestQuestions> implements TestQuestionService {
+
+    @Autowired
+    private AnswerService answerService;
 
     @Autowired
     TestQuestionsDao testQuestionsDao;
@@ -70,6 +77,40 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
     public TestQuestions findByEntity(TestQuestions entity) {
         return dao.findByEntity(entity);
     }
+
+    @Override
+    public List<CommonForm> selectByTopicAndNum(String topic, Integer num){
+        List<CommonForm> list = dao.selectByTopicAndNum(topic, num);
+
+        return list;
+    }
+
+    @Override
+    public List<QuestForm> getQuestions(List<String> ids){
+        List<QuestForm> result = new ArrayList<>();
+
+        result = this.findByIds(ids);
+
+        List<AnswerForm> answerList = answerService.findByQuestionIds(ids);
+
+        for(QuestForm qf : result){
+            String qid = qf.getId();
+            List<AnswerForm> tempList = new ArrayList<>();
+
+            for(AnswerForm af : answerList){
+                String aqid = af.getQuestionId();
+                if(qid.equals(aqid)){
+                    tempList.add(af);
+                }
+            }
+
+            qf.setAnswer(tempList);
+            answerList.removeAll(tempList);
+        }
+
+        return result;
+    }
+
 
     /**
      * 根据专项知识ID和题目类型查询指定数量的题目

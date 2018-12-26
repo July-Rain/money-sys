@@ -201,25 +201,7 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 
 		if(CollectionUtils.isNotEmpty(questList)){
 
-			result	= testQuestionService.findByIds(questList);
-
-			List<AnswerForm> answerForms = answerService.findByQuestionIds(questList);
-			// 遍历处理选项信息
-			for(QuestForm qf : result){
-				String qid = qf.getId();
-				List<AnswerForm> tempList = new ArrayList<>();
-
-				for(AnswerForm af : answerForms){
-					String aqid = af.getQuestionId();
-					if(qid.equals(aqid)){
-						tempList.add(af);
-					}
-				}
-
-				qf.setAnswer(tempList);
-
-				answerForms.removeAll(tempList);
-			}
+			result	= testQuestionService.getQuestions(questList);
 		}
 
 		return result;

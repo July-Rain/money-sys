@@ -1,6 +1,7 @@
 package com.lawschool.util;
 
 import com.google.gson.Gson;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
@@ -106,5 +107,37 @@ public class RedisUtil {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * 获取流水号
+     * @param key key值
+     * @param expire 过期时间，-1不过期
+     * @param length 编号长度
+     * @return
+     */
+    public String getNumber(String key, long expire, Integer length){
+        String result = "";// 返回结果
+        if(length == null){
+            length = 4;
+        }
+
+        synchronized(this) {
+            String value = this.get(key);
+
+            if(StringUtils.isBlank(value) || "null".equals(value)){// 无此key对应值，保存初始值
+
+                result = String.format("%0"+length+"d", 1);
+
+                this.set(key, String.format("%0"+length+"d", 2), expire);
+            } else {
+                result = value;
+                Integer temp = Integer.parseInt(value);
+                temp++;
+                this.set(key, String.format("%0"+length+"d", temp));
+            }
+        }
+
+        return result;
     }
 }

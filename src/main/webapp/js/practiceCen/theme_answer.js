@@ -10,6 +10,7 @@ var vm = new Vue({
     },
     methods: {
         radioCheck: function (id, answerId, typeName) {
+
             vm.radio_disabled = true;
             var answer = vm.answers[0];
             var right = 0;

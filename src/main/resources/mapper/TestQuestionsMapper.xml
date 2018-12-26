@@ -326,7 +326,7 @@
         <where>
             id IN
             <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
-                #{item.id}
+                #{item}
             </foreach>
         </where>
         ORDER BY id
@@ -414,7 +414,33 @@
         </foreach>
     </delete>
 
-    <select id="findByNum" parameterType="map" resultType="com.lawschool.beans.TestQuestions">
+    <!-- 取某种主题题目，按题目难度分组取前N条 -->
+    <select id="selectByTopicAndNum" resultType="com.lawschool.form.CommonForm">
+        SELECT
+          T .diff AS KEY,
+          listagg (T .qid, ',') WITHIN GROUP (ORDER BY T .QID) AS VALUE
+        FROM
+        (
+          SELECT
+            ROW_NUMBER () OVER (
+              PARTITION BY QUESTION_DIFFICULTY
+              ORDER BY
+              SYS_GUID ()
+            ) rn,
+            QUESTION_DIFFICULTY AS diff,
+            ID AS qid
+          FROM
+            LAW_TESTQUESTIONS
+          WHERE
+            SPECIAL_KNOWLEDGE_ID = #{topicId}
+        ) T
+        WHERE
+        <![CDATA[ T .rn <= #{num} ]]>
+        GROUP BY
+        T .diff
+    </select>
+
+    <select id="findByNum" parameterType="map" resultType="string">
         SELECT
           id
         FROM

@@ -3,7 +3,7 @@
 <mapper namespace="com.lawschool.dao.medal.MedalDao">
 
     <insert id="insert" parameterType="com.lawschool.beans.medal.MedalEntity">
-        INSERT INTO
+        INSERT INTO law_medal
         (
             id,
             title_name,

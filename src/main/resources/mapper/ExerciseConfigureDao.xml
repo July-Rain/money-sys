@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.ExerciseConfigureDao">
+
+    <sql id="ecColumns">
+        o.id AS "id",
+        o.prefix AS "prefix",
+        o.name AS "name",
+        o.range_type AS "rangeType",
+        o.total AS "total",
+        o.depts AS "depts",
+        o.users AS "users",
+        o.type AS "type",
+        o.user_name AS "userName",
+        o.create_time AS "createTime"
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO LAW_EXERCISE_CONFIGURE
+        (
+            id,
+            prefix,
+            name,
+            range_type,
+            total,
+            depts,
+            users,
+            user_name,
+            create_user,
+            create_time,
+            opt_user,
+            opt_time,
+            del_flag,
+            type
+
+        ) VALUES (
+            #{id},
+            #{prefix},
+            #{name},
+            #{rangeType},
+            #{total},
+            #{depts},
+            #{users},
+            #{userName},
+            #{createUser},
+            #{createTime},
+            #{optUser},
+            #{optTime},
+            #{delFlag},
+            #{type}
+        )
+    </insert>
+
+    <!-- 更新配置题目信息 -->
+    <update id="updateQuestions">
+        UPDATE LAW_EXERCISE_CONFIGURE
+        SET questions = #{questions}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <!-- 查询单个配置信息 -->
+    <select id="findOne" resultType="com.lawschool.beans.ExerciseConfigureEntity">
+        SELECT
+        <include refid="ecColumns"/>
+        FROM LAW_EXERCISE_CONFIGURE o
+        <where>
+            o.id = #{id}
+        </where>
+    </select>
+
+    <!-- 查询练习配置中的题目信息 -->
+    <select id="findQuestionsById" resultType="string">
+        SELECT questions AS "questions"
+        FROM LAW_EXERCISE_CONFIGURE
+        <where>
+            id = #{id}
+        </where>
+    </select>
+
+    <!-- 练习配置分页列表 -->
+    <select id="findList" resultType="com.lawschool.beans.ExerciseConfigureEntity">
+        SELECT
+        <include refid="ecColumns"/>
+        FROM LAW_EXERCISE_CONFIGURE o
+        <where>
+            o.del_flag = #{delFlag}
+            <if test="createUser != null and createUser != ''">
+                AND o.create_user = #{createUser}
+            </if>
+            <if test="users != null and users != ''">
+                AND (o.users LIKE '%'||#{users}||'%' OR o.depts LIKE '%'||#{depts}||'%')
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY o.create_time DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 练习中心，分页列表数据 -->
+    <select id="findListByUser" resultType="com.lawschool.beans.ExerciseConfigureEntity">
+        SELECT
+        <include refid="ecColumns"/>,
+        t.status AS "status"
+        FROM LAW_EXERCISE_CONFIGURE o
+        LEFT JOIN LAW_EXERCISE_TASK t ON o.id = t.configure_id
+        AND t.user_id = #{createUser}
+        <where>
+            o.del_flag = #{delFlag}
+            <if test="users != null and users != ''">
+                AND (o.users LIKE '%'||#{users}||'%' OR o.depts LIKE '%'||#{depts}||'%')
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY o.create_time DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <update id="updateDelflag">
+        UPDATE LAW_EXERCISE_CONFIGURE
+        SET DEL_FLAG = 1
+        <where>
+            id = #{id}
+        </where>
+    </update>
+</mapper>
