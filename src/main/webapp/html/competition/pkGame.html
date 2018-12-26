@@ -28,6 +28,12 @@
                     <el-tab-pane label="单人随机在线比武">
                         <div style="height: 700px;" >
                             <p>当前登录用户：{{u.fullName}}</p>
+                            <br/>
+                            <p>我的得分：{{myscore}}</p>
+                            <br/>
+                            <p>对手的得分：{{youscore}}</p>
+                            <br/>
+                            <p>对手是否已答题：{{yesOrNoAnswer}}</p>
                             <div class="inChatArea">
                                 <div id="chatSidebar" class="chatSidebar">
                                     <h2 id="chatOnline">在线用户(0人)</h2>
@@ -36,7 +42,7 @@
                                     </ul>
                                 </div>
                                 <div class="chatCon">
-                                    <div class="up" id="up">
+                                    <div class="up" id="up" style="height: 180px;">
                                         <ul id="contentUl">
                                             <!-- <li><b>14:08</b><em>江山如此多娇</em><span>今天天气不大家出来嗨！！！！！</span></li>
                                             -->
@@ -47,6 +53,7 @@
 
                                     <div v-show="dialogQuestion">
                                                         一共{{allnum}}题，当前{{nownum}}题，当前题目分值{{nowQscore}}
+                                        <br/><br/>
                                     [{{Question.questionType==10004?'单选题':Question.questionType==10005?'多选题':'判断题'}}] {{Question.comContent}}
                                     <br/>
                                     <br/>
@@ -60,11 +67,6 @@
                                     </el-radio-group>
                                     </div>
 
-                                    <!--<div class="down">-->
-                                        <!--<textarea class="textInfo" id="msg" title="按ctrl+enter直接发送"></textarea>-->
-                                        <!--&lt;!&ndash;<button class="btn" id="sendBtn"></button>&ndash;&gt;-->
-                                        <!--<el-button type="primary" id="sendBtn">发送</el-button>-->
-                                    <!--</div>-->
                                 </div>
 
                             </div>

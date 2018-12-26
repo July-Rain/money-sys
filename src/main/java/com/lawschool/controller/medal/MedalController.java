@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("medal")
+@RequestMapping("/medal")
 public class MedalController {
 
     @Autowired
@@ -23,7 +23,7 @@ public class MedalController {
     @Autowired
     private UserMedalService userMedalService;
 
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     private Result list(@RequestParam Map<String, Object> params){
         Page<MedalEntity> list = medalService.findPage(new Page<MedalEntity>(params), new MedalEntity());
         return Result.ok().put("list", list);
@@ -62,7 +62,7 @@ public class MedalController {
      * 新增我的勋章（领取勋章）
      */
     @SysLog("新增我的勋章（领取勋章）")
-    @RequestMapping(value = "saveMedal", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveMedal", method = RequestMethod.POST)
     public Result saveMedal(@RequestBody UserMedalEntity medal) {
 
         if(userMedalService.checkUserMedal(medal)){
@@ -75,7 +75,7 @@ public class MedalController {
     /**
      * 查询我的勋章
      */
-    @RequestMapping(value = "find/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/find/{userId}", method = RequestMethod.GET)
     public Result findByUserId(@PathVariable("userId") String userId) {
         List<String> list = userMedalService.findMedalIdList(userId);
         return Result.ok().put("list", list);
