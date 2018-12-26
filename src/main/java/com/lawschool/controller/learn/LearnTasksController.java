@@ -1,22 +1,24 @@
 package com.lawschool.controller.learn;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.User;
+import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.beans.learn.LearnTasksEntity;
+import com.lawschool.service.law.TaskDesicService;
 import com.lawschool.service.learn.LearnTasksService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +34,9 @@ import java.util.Map;
 public class LearnTasksController extends AbstractController {
     @Autowired
     private LearnTasksService tasksService;
+
+    @Autowired
+    private TaskDesicService desicService;
     /**
      * @Author MengyuWu
      * @Description 查询列表
@@ -108,5 +113,50 @@ public class LearnTasksController extends AbstractController {
     public Result delete(@RequestBody String[] ids){
         tasksService.deleteBatchIds(Arrays.asList(ids));
         return Result.ok();
+    }
+    /**
+     * @Author MengyuWu
+     * @Description 继续学习页面
+     * @Date 16:34 2018-12-26
+     * @Param [id]
+     * @return org.springframework.web.servlet.ModelAndView
+     **/
+    
+    @RequestMapping(value = "/continueStudy", method = RequestMethod.GET)
+    public ModelAndView answer(@RequestParam String id){
+        ModelAndView mv = new ModelAndView("/learnCen/continuestudy");
+
+        mv.addObject("id", id);
+        return mv;
+    }
+    /**
+     * @Author MengyuWu
+     * @Description 根据学习任务的id获取学习任务数据
+     * @Date 16:36 2018-12-26
+     * @Param [id]
+     * @return com.lawschool.util.Result
+     **/
+    
+    @RequestMapping("/zTree")
+    public Result getZtree(@RequestParam String id){
+        List<TaskDesicEntity> desicEntities = desicService.selectList(
+                new EntityWrapper<TaskDesicEntity>()
+        .eq("task_id",id));
+        return  Result.ok().put("data",desicEntities);
+    }
+
+    /**
+     * @Author MengyuWu
+     * @Description 继续学习页面  查询节点下具体的数据
+     * @Date 16:53 2018-12-26
+     * @Param [params]
+     * @return com.lawschool.util.Result
+     **/
+    
+    @RequestMapping("/allInfo")
+    public Result allInfo(@RequestParam Map<String, Object> params){
+
+        PageUtils page = tasksService.queryContentByTask(params);
+        return Result.ok().put("page", page);
     }
 }

@@ -180,7 +180,7 @@
                         </el-form-item>
                         <el-form-item label="任务内容" prop="taskContent">
                             <!--<el-input type="textarea" maxlength="200" v-model="learnTasks.taskContent" placeholder="请输入任务内容" clearable></el-input>-->
-                            <el-tree
+                            <!--<el-tree
                                     ref="classTree"
                                     :data="classData"
                                     :props="defaultClassProps"
@@ -190,7 +190,9 @@
                                     node-key="infoId"
                                     :default-expanded-keys="[2079]"
                             >
-                            </el-tree>
+                            </el-tree>-->
+                            <!-- 选择任务 -->
+                            <ul id="classTree" class="ztree"></ul>
                         </el-form-item>
                         <el-form-item label="开始日期" prop="startTime">
                             <el-date-picker

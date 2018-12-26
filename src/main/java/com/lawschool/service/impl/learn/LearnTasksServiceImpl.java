@@ -6,11 +6,13 @@ import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
 import com.lawschool.beans.auth.AuthRelationBean;
+import com.lawschool.beans.law.ClassifyDesicEntity;
 import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.beans.learn.LearnTasksEntity;
 import com.lawschool.dao.StuMediaDao;
 import com.lawschool.dao.learn.LearnTasksDao;
 import com.lawschool.service.auth.AuthRelationService;
+import com.lawschool.service.law.ClassifyDesicService;
 import com.lawschool.service.law.TaskDesicService;
 import com.lawschool.service.learn.LearnTasksService;
 import com.lawschool.util.GetUUID;
@@ -43,6 +45,9 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
 
     @Autowired
     private TaskDesicService desicService;
+
+    @Autowired
+    private ClassifyDesicService classifyDesicService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -104,7 +109,12 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
                 }
                 learnTasksEntity.setDeptArr(deptIdArr);
             }
-
+            //获取任务的节点
+            List<TaskDesicEntity> list =desicService.selectList(
+                    new EntityWrapper<TaskDesicEntity>()
+                    .eq("task_id",learnTasksEntity.getId())
+            );
+            learnTasksEntity.setTaskContentList(list);
         }
         return learnTasksEntity;
     }
@@ -154,4 +164,41 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         authService.insertAuthRelation(deptIdArr,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getOptUser());
 
     }
+
+    @Override
+    public PageUtils queryContentByTask(Map<String, Object> params) {
+        if(UtilValidate.isNotEmpty(params)) {
+            String infoType = (String) params.get("infoType");
+            String infoId = (String) params.get("infoId");
+            String taskId = (String) params.get("taskId");
+            if ("sham".equals(infoType) && "law_90001".equals(infoId)) {
+                //点击的是虚拟节点数据 并且是法律法规数据 应该查询该节点下所有的法律法规文件
+                params.put("infoType","law_data");
+                return classifyDesicService.queryListByTask(params);
+            }
+            if ("law".equals(infoType)) {
+                //点击的是法律法规分类 并且是法律法规数据 应该查询该节点下所有的法律法规文件
+                //首先拼接法律法规分类数据
+
+                params.put("infoType","law_data");
+                return classifyDesicService.queryListByTask(params);
+            }
+
+        }
+
+        return null;
+    }
+
+   /* public String[] listAllLawIdbyparent(String lawid){
+        String lawIds=lawid;
+        String [] lawArr=null;
+
+        if(UtilValidate.isNotEmpty(lawid)){
+
+        }
+        if(UtilValidate.isNotEmpty(lawIds)){
+            lawArr=lawIds.split(",");
+        }
+        return lawArr;
+    }*/
 }

@@ -3,8 +3,27 @@
  * Date: 2018/12/18
  * Description:学习任务管理
  */
+var ztree;
+var setting = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "infoId",
+            pIdKey: "infoParentId",
+            rootPId: -1,
 
+        },
+        key: {
+            url:"nourl",
+            name:"infoName"
+        }
 
+    },
+    check:{
+        enable:true,
+        nocheckInherit:true
+    }
+};
 var vm = new Vue({
     el: '#app',
     data: {
@@ -29,7 +48,8 @@ var vm = new Vue({
             taskName:"",
             taskContent:"",
             startTime:"",
-            endTime:""
+            endTime:"",
+            taskContentList:[]
 
         },
         rules: {//表单验证规则
@@ -69,6 +89,13 @@ var vm = new Vue({
         userTableData:[],//人员表格信息
         multipleSelection:[],//选中人员信息
         multipleDeptSelection:[],//选中部门信息
+        //dialogClass:false,//法律法规
+        classData:[],//法律法规数据
+        defaultClassProps:{
+            children: 'child',
+            label: 'infoName'
+        },//法律法规树默认数据
+        // multipleClassSelection:[]//法律法规数据选择框
     },
     created: function () {
         this.$nextTick(function () {
@@ -86,8 +113,22 @@ var vm = new Vue({
                     }
                 }
             });
+            //加载法律法规数据
+            $.ajax({
+                type: "POST",
+                url: baseURL + "law/classTree",
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        vm.classData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
             this.reload();
             this.reloadUser();
+
         })
     },
     methods: {
@@ -107,11 +148,14 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
+                    debugger
                     var url = vm.learnTasks.id ? "learntasks/update" : "learntasks/insert";
                     var deptArr = vm.learnTasks.deptIds?vm.learnTasks.deptIds.split(","):[];
                     var userArr = vm.learnTasks.userIds?vm.learnTasks.userIds.split(","):[];
                     vm.learnTasks.deptArr=deptArr;
                     vm.learnTasks.userArr=userArr;
+                    var nodes = ztree.getCheckedNodes(true);
+                    vm.learnTasks.taskContentList=nodes;
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
@@ -141,6 +185,25 @@ var vm = new Vue({
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
         },
+        addLearnTask: function () {
+            this.learnTasks = {
+                id: '',
+                deptIds: "",
+                userIds: "",
+                userName:"",//适用人员姓名
+                deptName:"",//适用部门姓名
+                userArr:[],//适用人员姓名
+                deptArr:[],//适用部门姓名
+                taskName:"",
+                taskContent:"",
+                startTime:"",
+                endTime:"",
+                taskContentList:[]
+            };
+            this.title = "新增学习任务";
+            this.dialogLearnTask = true;
+            this.getDept();
+        },
         handleEdit: function (index, row) {
             this.title = "修改学习任务";
             this.dialogLearnTask = true;
@@ -156,6 +219,7 @@ var vm = new Vue({
                     }
                 }
             });
+            this.getDept();
         },
         handleDel: function (index, row) {
             vm.delIdArr.push(row.id);
@@ -295,6 +359,22 @@ var vm = new Vue({
                 }
             }
 
-        }
+        },
+        handleClassCheckChange: function () {
+            //debugger
+            this.multipleClassSelection=this.$refs.classTree.getCheckedNodes();
+            vm.learnTasks.taskContentList=this.multipleClassSelection;
+            console.log(vm.learnTasks.taskContentList);
+        },
+        getDept: function(){
+            //加载部门树
+            $.get(baseURL + "law/zTree", function(r){
+                ztree = $.fn.zTree.init($("#classTree"), setting, r.classifyList);
+            })
+        },
+        continueStudy: function (index, row) {
+            //继续学习
+            window.location.href = baseURL + "learntasks/continueStudy?id=" + row.id;
+        },
     }
 });

@@ -3,7 +3,27 @@
  * Date: 2018/12/18
  * Description:学习任务管理
  */
+var ztree;
+var setting = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "infoId",
+            pIdKey: "infoParentId",
+            rootPId: -1,
 
+        },
+        key: {
+            url:"nourl",
+            name:"infoName"
+        }
+
+    },
+    check:{
+        enable:true,
+        nocheckInherit:true
+    }
+};
 var vm = new Vue({
     el: '#app',
     data: {
@@ -108,6 +128,7 @@ var vm = new Vue({
             });
             this.reload();
             this.reloadUser();
+
         })
     },
     methods: {
@@ -127,11 +148,14 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
+                    debugger
                     var url = vm.learnTasks.id ? "learntasks/update" : "learntasks/insert";
                     var deptArr = vm.learnTasks.deptIds?vm.learnTasks.deptIds.split(","):[];
                     var userArr = vm.learnTasks.userIds?vm.learnTasks.userIds.split(","):[];
                     vm.learnTasks.deptArr=deptArr;
                     vm.learnTasks.userArr=userArr;
+                    var nodes = ztree.getCheckedNodes(true);
+                    vm.learnTasks.taskContentList=nodes;
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
@@ -178,6 +202,7 @@ var vm = new Vue({
             };
             this.title = "新增学习任务";
             this.dialogLearnTask = true;
+            this.getDept();
         },
         handleEdit: function (index, row) {
             this.title = "修改学习任务";
@@ -194,6 +219,7 @@ var vm = new Vue({
                     }
                 }
             });
+            this.getDept();
         },
         handleDel: function (index, row) {
             vm.delIdArr.push(row.id);
@@ -340,21 +366,11 @@ var vm = new Vue({
             vm.learnTasks.taskContentList=this.multipleClassSelection;
             console.log(vm.learnTasks.taskContentList);
         },
-        /*confimClass: function () {
-            this.multipleClassSelection=this.$refs.classTree.getCheckedNodes();
-            for(var i=0;i<this.multipleClassSelection.length;i++){
-                if (this.learnTasks.deptIds == "") {
-                    this.learnTasks.deptIds=this.multipleClassSelection[i].id;
-                    this.learnTasks.deptName=this.multipleClassSelection[i].orgName;
-                }else{
-                    this.learnTasks.deptIds+=","+this.multipleClassSelection[i].id;
-                    this.learnTasks.deptName+=","+this.multipleClassSelection[i].orgName;
-                }
-            }
-            this.dialogClass=false;
+        getDept: function(){
+            //加载部门树
+            $.get(baseURL + "law/zTree", function(r){
+                ztree = $.fn.zTree.init($("#classTree"), setting, r.classifyList);
+            })
         },
-        cancelClass: function () {
-            this.dialogClass=false;
-        }*/
     }
 });

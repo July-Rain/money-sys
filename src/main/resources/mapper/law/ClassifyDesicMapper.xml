@@ -14,4 +14,19 @@
     <result column="STATUS" jdbcType="NVARCHAR" property="status" />
     <result column="ISSUE_ORG" jdbcType="NVARCHAR" property="issueOrg" />
   </resultMap>
+  <select id="queryListByTask" resultMap="BaseResultMap" >
+    SELECT
+        c. ID,
+        c.LAW_CODE,
+        c.LAW_TITLE,
+        c.ISSUE_ORG,
+        c.ISSUE_TIME,
+        c.LIB_ID
+    FROM
+        LAW_TASKS_DESIC T
+    INNER JOIN LAW_CLASSIFY_DESIC c ON T .DATA_ID = c. ID
+    WHERE
+        T .TASK_ID = #{desic.taskId,jdbcType=INTEGER}
+    AND T .INFO_TYPE = #{desic.infoType,jdbcType=INTEGER}
+  </select>
 </mapper>

@@ -1,10 +1,23 @@
 package com.lawschool.service.impl.law;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.lawschool.beans.StuMedia;
+import com.lawschool.beans.law.CaseAnalysisEntity;
 import com.lawschool.beans.law.ClassifyDesicEntity;
+import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.dao.law.ClassifyDesicDao;
+import com.lawschool.dao.law.TaskDesicDao;
 import com.lawschool.service.law.ClassifyDesicService;
+import com.lawschool.util.PageUtils;
+import com.lawschool.util.Query;
+import com.lawschool.util.UtilValidate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName: ClassifyDesicServiceImpl
@@ -16,4 +29,46 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ClassifyDesicServiceImpl extends ServiceImpl<ClassifyDesicDao,ClassifyDesicEntity> implements ClassifyDesicService {
+    @Autowired
+    private ClassifyDesicDao desicDao;
+    @Autowired
+    private TaskDesicDao taskDesicDao;
+    @Override
+    public PageUtils queryListByTask(Map<String, Object> params) {
+        Page<ClassifyDesicEntity> page = new Page<ClassifyDesicEntity>(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
+        String infoType=(String)params.get("infoType");
+        String taskId=(String)params.get("taskId");
+        TaskDesicEntity taskDesicEntity = new TaskDesicEntity();
+        taskDesicEntity.setInfoType(infoType);
+        taskDesicEntity.setTaskId(taskId);
+        page.setRecords(desicDao.queryListByTask(page,taskDesicEntity));
+        EntityWrapper<TaskDesicEntity> ew = new EntityWrapper<>();
+        ew.eq("task_id",taskId);
+        ew.eq("info_type","law_data");
+        page.setTotal(taskDesicDao.selectCount(ew));
+        return new PageUtils(page);
+    }
+
+    @Override
+    public PageUtils queryPage(Map<String, Object> param) {
+        String classifyId = (String)param.get("classifyId");
+        String libId = (String)param.get("libId");
+        String status = (String)param.get("status");
+        EntityWrapper<ClassifyDesicEntity> ew = new EntityWrapper<>();
+        ew.setSqlSelect("ID,LAW_CODE,LAW_TITLE,ISSUE_TIME,LIB_ID,CLASSIFY_ID,ISSUE_ORG,STATUS");
+        if(UtilValidate.isNotEmpty(classifyId)){
+            ew.eq("classify_id",classifyId);
+        }
+        if(UtilValidate.isNotEmpty(libId)){
+            ew.eq("lib_id",libId);
+        }
+        if(UtilValidate.isNotEmpty(status)){
+            ew.eq("status",status);
+        }
+
+        ew.orderBy("ORDER_NUM");
+        Page<ClassifyDesicEntity> page = this.selectPage(
+                new Query<ClassifyDesicEntity>(param).getPage(),ew);
+        return new PageUtils(page);
+    }
 }
