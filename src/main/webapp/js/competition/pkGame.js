@@ -8,6 +8,7 @@
 var datamag=null;
 //回答过题目的人
 var answerpeople=[];
+
 var vm = new Vue({
     el: '#app',
     data: {
@@ -25,6 +26,12 @@ var vm = new Vue({
         dialogQuestion:false,//开始答题  弹出
         BattleTopicSettings:[],//题目配置集合
         nowQscore:"",//当前题目分值
+        //我的得分
+         myscore:"0",
+        //对手的得分
+         youscore:"0",
+        //对方是否已答题
+        yesOrNoAnswer:"未答题",
     },
     created: function () {
         this.$nextTick(function () {
@@ -65,7 +72,7 @@ var vm = new Vue({
         questionYes:function()
         {
             alert("答对了")
-
+            vm.myscore=Number(vm.myscore)+Number(vm.nowQscore);
         },
 
 
@@ -147,18 +154,15 @@ websocket.onmessage = function(event) {
     var data=$.parseJSON(event.data);
     console.log("WebSocket:收到一条消息",data);
     datamag=data;
-
-
     vm.QuestionList= data.tqList;
-
     //2种推送的消息
     //1.用户聊天信息：发送消息触发
     //2.系统消息：登录和退出触发
     //判断是否是欢迎消息（没用户编号的就是欢迎消息）
     if(data.from==undefined||data.from==null||data.from==""){
 
-        console.info("系统发的消息");
-        console.info("系统发的消息是"+data);
+        // console.info("系统发的消息");
+        // console.info("系统发的消息是"+data);
         //===系统消息
         $("#contentUl").append("<li><b>"+data.date+"</b><em>系统消息：</em><span>"+data.text+"</span></li>");
         //刷新在线用户列表
@@ -174,25 +178,37 @@ websocket.onmessage = function(event) {
             vm.nowQscore=data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
             vm.Question=data.tqList[Number(nowtimu)];
         }
+        if(data.mycore!=undefined&&data.mycore!=null&&data.mycore!="")
+        {
+            vm.myscore=data.mycore;
+            alert("对手弃权,获得获胜者奖励"+data.mycore);
+        }
 
         $("#chatUserList").empty();
 
         $(data.userList).each(function(){
-            console.info(this);
+            // console.info(this);
             $("#chatUserList").append("<li>"+this.fullName+"</li>");
         });
-
         //当收到消息的时候 给人赋值
-
-        console.info(" 收到系统消息，是给"+data.to);
+        // console.info(" 收到系统消息，是给"+data.to);
         to=data.to;
-
     }else{
-        
-        console.info("人发的消息");
-        console.info(data);
+        // console.info("人发的消息");
+        // console.info(data);
+        //===普通消息
+        //处理一下个人信息的显示：
+        if(data.fromName==fromName){
+            // data.fromName="我";   我发送的
+            // $("#contentUl").append("<li><span  style='display:block; float:right;'><em>"+data.fromName+"</em><span>"+data.text+data.nowtimu+"</span><b>"+data.date+"</b></span></li><br/>");
+        }else{
+            //对手发送的
+            // $("#contentUl").append("<li><b>"+data.date+"</b><em>"+data.fromName+"</em><span>"+data.text+data.nowtimu+"</span></li><br/>");
+            vm.youscore=data.mycore;
+            vm.yesOrNoAnswer="已答题";
+        }
         answerpeople.push(data.from);
-        console.info("收到消息后"+answerpeople);
+        // console.info("收到消息后"+answerpeople);
         //当受到普通消息是时候  判断发送人
         if(answerpeople.length=="2")
         {
@@ -201,37 +217,43 @@ websocket.onmessage = function(event) {
             //收到消息时候来变化题目，前提是2人回答过
             if(data.tqList.length <= Number(nowtimu))
             {
-                alert("全部题目答完");
+                if(Number(vm.myscore)==Number(vm.youscore))
+                {
+                    vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.winReward);
+                    alert("全部题目答完,双方分数一样，平局，获得获胜奖励"+data.competitionOnline.winReward+",最终得分"+vm.myscore);
+                }
+                else if(Number(vm.myscore)<Number(vm.youscore))
+                {
+                    vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.loserReward);
+                    alert("全部题目答完,双方分数一样，你输了，获得失败者奖励"+data.competitionOnline.loserReward+",最终得分"+vm.myscore);
+                }
+                else if(Number(vm.myscore)>Number(vm.youscore))
+                {
+                    vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.winReward);
+                    alert("全部题目答完,双方分数一样，你赢了，获得获胜者奖励"+data.competitionOnline.winReward+",最终得分"+vm.myscore);
+                }
+                // alert("全部题目答完");
+                closeWebsocket();
             }else
             {
-
                vm.dialogQuestion=true,
                vm.radio_disabled=false;
                vm.allnum=data.tqList.length;
                vm.nownum=Number(nowtimu)+1;
                 vm.nowQscore=data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
                 vm.Question=data.tqList[Number(nowtimu)];
+                vm.yesOrNoAnswer="未答题";
             }
-
             answerpeople=[];//再将这个回答过的人制空
-
         }
-        //===普通消息
-        //处理一下个人信息的显示：
-        // if(data.fromName==fromName){
-        //     data.fromName="我";
-        //     $("#contentUl").append("<li><span  style='display:block; float:right;'><em>"+data.fromName+"</em><span>"+data.text+data.nowtimu+"</span><b>"+data.date+"</b></span></li><br/>");
-        // }else{
-        //     $("#contentUl").append("<li><b>"+data.date+"</b><em>"+data.fromName+"</em><span>"+data.text+data.nowtimu+"</span></li><br/>");
-        // }
-
     }
-
     scrollToBottom();
 };
 
 // 监听WebSocket的关闭
 websocket.onclose = function(event) {
+    console.info("连接已断开！");
+
     $("#contentUl").append("<li><b>"+new Date().Format("yyyy-MM-dd hh:mm:ss")+"</b><em>系统消息：</em><span>连接已断开！</span></li>");
     scrollToBottom();
     console.log("WebSocket:已关闭：Client notified socket has closed",event);
@@ -239,6 +261,7 @@ websocket.onclose = function(event) {
 
 //监听异常
 websocket.onerror = function(event) {
+    console.info("连接异常，建议重新登录");
     $("#contentUl").append("<li><b>"+new Date().Format("yyyy-MM-dd hh:mm:ss")+"</b><em>系统消息：</em><span>连接异常，建议重新登录</span></li>");
     scrollToBottom();
     console.log("WebSocket:发生错误 ",event);
@@ -247,52 +270,25 @@ websocket.onerror = function(event) {
 
 //onload初始化
 $(function(){
-    //发送消息
-    // $("#sendBtn").on("click",function(){
-    //     sendMsg();
-    // });
-
     //给退出聊天绑定事件
     $("#exitBtn").on("click",function(){
         closeWebsocket();
         // location.href="login.jsp";
     });
-
-    //给输入框绑定事件
-    // $("#msg").on("keydown",function(event){
-    //     keySend(event);
-    // });
-
     // 初始化时如果有消息，则滚动条到最下面：
     scrollToBottom();
-
 });
-//使用ctrl+回车快捷键发送消息
-// function keySend(e) {
-//     var theEvent = window.event || e;
-//     var code = theEvent.keyCode || theEvent.which;
-//     if (theEvent.ctrlKey && code == 13) {
-//         var msg=$("#msg");
-//         if (msg.innerHTML == "") {
-//             msg.focus();
-//             return false;
-//         }
-//         sendMsg();
-//     }
-// }
 
 //发送消息
 function sendMsg(){
-    console.info("我发消息了,是给"+to);
     //对象为空了
     if(websocket==undefined||websocket==null){
-        //alert('WebSocket connection not established, please connect.');
         alert('您的连接已经丢失，请退出聊天重新进入');
         return;
     }
     //获取用户要发送的消息内容
     // var msg=$("#msg").val();
-    var msg="我答提了";
+    var msg="我答题了";
     if(msg==""){
         return;
     }else{
@@ -309,11 +305,19 @@ function sendMsg(){
         data["myanswer"]=vm.answers;
         data["tq"]=vm.Question;
         data["competitionOnline"]=datamag.competitionOnline;
+        data["mycore"]=vm.myscore;
+        data["youcore"]=vm.youscore;
         //发送消息
         websocket.send(JSON.stringify(data));
         //发送完消息，清空输入框
         // $("#msg").val("");
     }
+}
+
+function addSorce()
+{
+ //得分累加
+    vm.myscore=vm.myscore+Number(vm.nowQscore)
 }
 
 //关闭Websocket连接
