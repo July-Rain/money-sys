@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="container">
+
+        <el-row :gutter="24">
+            <el-col :span="24">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="检索">
+                        <el-form :inline="true" class="demo-form-inline">
+
+                            <el-form-item>
+                                <el-button type="primary" @click="addPlan()" size="mini">新增学年计划</el-button>
+                            </el-form-item>
+                        </el-form>
+                        <div>
+                            <el-table
+                                    :data="tableData"
+                                    border
+                                    style="width: 100%">
+                                <el-table-column
+                                        prop=""
+                                        label="学年计划名称">
+                                </el-table-column>
+                                <el-table-column
+                                        prop=""
+                                        label="积分">
+                                </el-table-column>
+                                <el-table-column
+                                        prop=""
+                                        label="学分">
+                                </el-table-column>
+                                <el-table-column
+                                        prop=""
+                                        label="计划开始时间">
+                                </el-table-column>
+                                <el-table-column
+                                        prop=""
+                                        label="计划结束时间">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="active"
+                                        label="操作">
+                                    <template slot-scope="scope">
+                                        <el-button
+                                                size="mini"
+                                                @click="handleWatch(scope.$index, scope.row)">查看
+                                        </el-button>
+                                        <el-button
+                                                size="mini"
+                                                @click="handleEdit(scope.$index, scope.row)">编辑
+                                        </el-button>
+                                        <el-button
+                                                size="mini"
+                                                @click="handleDel(scope.$index, scope.row)">删除
+                                        </el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="form.pageNo"
+                                    :page-sizes="[10, 20, 30, 40]"
+                                    :page-size="form.limit"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="form.count">
+                            </el-pagination>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
+
+        <el-dialog title="新增计划" :visible.sync="dialogFormVisible">
+
+            <el-form :model="form">
+                <el-row>
+
+
+                    <el-col :span="22">
+                        <el-form-item label="计划名称" :label-width="formLabelWidth">
+                            <el-input v-model="form.name" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="22">
+                        <el-form-item label="计划积分" :label-width="formLabelWidth">
+                            <el-input v-model="form.integral" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="22">
+                        <el-form-item label="计划学分" :label-width="formLabelWidth">
+                            <el-input v-model="form.credit" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="22">
+                        <el-form-item label="参与人员" :label-width="formLabelWidth">
+                            <el-input v-model="form.personnel" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="22">
+                        <el-form-item label="参与部门" :label-width="formLabelWidth">
+                            <el-input v-model="form.department" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="22">
+                        <el-form-item label="备注" :label-width="formLabelWidth">
+                            <el-input v-model="form.remarks" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+
+
+
+            </el-form>
+            <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="save">提交入库</el-button>
+            </div>
+
+        </el-dialog>
+
+    </div>
+</div>
+</body>
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/manageCen/yearPlan.js"></script>
+</html>
