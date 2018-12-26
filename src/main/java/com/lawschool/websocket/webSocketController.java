@@ -33,7 +33,7 @@ public class webSocketController extends AbstractController {
 
     //pk 独自一人 随机
     @RequestMapping("/pkAloneByRandom")
-    public Result list(HttpServletRequest request){
+    public Result pkAloneByRandom(HttpServletRequest request){
         HttpSession session = request.getSession();
         User websocketUser= (User)  request.getSession().getAttribute("loginUser");//websocketUser用到的user
         User u= (User)  request.getSession().getAttribute("user");//系统登陆人user
@@ -51,4 +51,28 @@ public class webSocketController extends AbstractController {
     }
 
 
+    //pk 独自一人  邀请码
+    @RequestMapping("/pkAloneByCode")
+    public Result pkAloneByCode(String type,String code,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        User websocketUser= (User)  request.getSession().getAttribute("loginUser");//websocketUser用到的user
+        User u= (User)  request.getSession().getAttribute("user");//系统登陆人user
+
+        if (null != websocketUser) {
+            // 清除旧的用户
+            session.removeAttribute("loginUser");
+            session.removeAttribute("joinType");
+            session.removeAttribute("joinCode");
+        }
+
+        // 新进来pk，需要构建一个用户//把系统的user放进来
+        session.setAttribute("loginUser", u);
+        session.setAttribute("joinType", type);//加入房间的类型
+        session.setAttribute("joinCode", code);//加入房间的邀请码
+        // 将登录信息放入数据库，便于协查跟踪聊天者
+        System.out.println("新用户诞生了：" + u);
+        System.out.println("加入房间的类型：" + type);
+        System.out.println("加入房间的邀请码：" + code);
+        return Result.ok().put("user",u);
+    }
 }

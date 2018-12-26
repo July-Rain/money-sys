@@ -25,9 +25,11 @@
         <el-row :gutter="24">
             <el-col :span="24">
                 <el-tabs type="border-card">
-                    <el-tab-pane label="单人随机在线比武">
+                    <el-tab-pane label="单人邀请码在线比武">
                         <div style="height: 700px;" >
                             <p>当前登录用户：{{u.fullName}}</p>
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            <p>房间号：{{battleCode}}</p>
                             <br/>
                             <p>我的得分：{{myscore}}</p>
                             <br/>
@@ -84,5 +86,5 @@
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/competition/pkGame.js?_${.now?long}"></script>
+<script src="${rc.contextPath}/js/competition/alonePkGameByCode.js?_${.now?long}"></script>
 </html>

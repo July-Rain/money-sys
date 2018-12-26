@@ -4,6 +4,10 @@
  * Description:
  */
 
+//确定是邀请码房间的 创建者  还是加入者
+var type =getUrlParam('type');
+var code =getUrlParam('code');
+
 
 var datamag=null;
 //回答过题目的人
@@ -14,6 +18,8 @@ var vm = new Vue({
     data: {
         allnum:"",
         nownum:"",
+
+        battleCode:"",
         u:"",
         answers:"",
         //题目集合
@@ -97,11 +103,12 @@ var fromName;
 //接收人编号
 //        var to="-1";
 var to= null;
-var code=null;
+
 $.ajax({
     type: "POST",
-    url: baseURL + "websocket/pkAloneByRandom",
+    url: baseURL + "websocket/pkAloneByCode",
     dataType: "json",
+    data:{"type":type,"code":code},
     async:false,
     success: function (result) {
         vm.u=result.user;
@@ -131,14 +138,14 @@ var path= basePath.substring(7);
 
 //不同浏览器的WebSocket对象类型不同
 if ('WebSocket' in window) {
-    websocket = new WebSocket("ws://" + path+ "ws");
+    websocket = new WebSocket("ws://" + path+ "alonePkGameByCode");
     console.log("=============WebSocket");
     //火狐
 } else if ('MozWebSocket' in window) {
-    websocket = new MozWebSocket("ws://" + path + "ws");
+    websocket = new MozWebSocket("ws://" + path + "alonePkGameByCode");
     console.log("=============MozWebSocket");
 } else {
-    websocket = new SockJS("http://" + path + "ws/sockjs");
+    websocket = new SockJS("http://" + path + "alonePkGameByCode/sockjs");
     console.log("=============SockJS");
 }
 
@@ -154,6 +161,7 @@ websocket.onmessage = function(event) {
     var data=$.parseJSON(event.data);
     console.log("WebSocket:收到一条消息",data);
     datamag=data;
+    vm.battleCode=data.battleCode;
     vm.QuestionList= data.tqList;
     //2种推送的消息
     //1.用户聊天信息：发送消息触发
@@ -307,6 +315,7 @@ function sendMsg(){
         data["competitionOnline"]=datamag.competitionOnline;
         data["mycore"]=vm.myscore;
         data["youcore"]=vm.youscore;
+        data["battleCode"]=datamag.battleCode;
         //发送消息
         websocket.send(JSON.stringify(data));
         //发送完消息，清空输入框

@@ -28,9 +28,10 @@ public class BattlePlatformServiceImpl extends ServiceImpl<BattlePlatformDao, Ba
 			battlePlatform.setId(IdWorker.getIdStr());
 			battlePlatform.setPlay1(u.getId());
 	//		battlePlatform.setType();
-			battlePlatform.setBattleCode(IdWorker.getIdStr());
+			battlePlatform.setBattleCode((((int)((Math.random()*9+1)*100000))+"").substring(0,6));
 	//		battlePlatform.setForeignkeyId();
 			this.insert(battlePlatform);
+
 		return battlePlatform;
 	}
 
@@ -39,4 +40,7 @@ public class BattlePlatformServiceImpl extends ServiceImpl<BattlePlatformDao, Ba
 		battlePlatform.setPlay2(play2Id);
 		this.updateById(battlePlatform);
 	}
+
+
+
 }
