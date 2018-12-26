@@ -1,5 +1,6 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
  * @Date 2018/12/26 11:34
  * @Versiom 1.0
  **/
+@TableName("law_school_year_plan")
 public class SchoolYearPlan extends DataEntity<SchoolYearPlan> {
     private String planName;//计划名称
     private String planContent;//计划内容
