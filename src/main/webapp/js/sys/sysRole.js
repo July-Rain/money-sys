@@ -5,26 +5,95 @@ var vm = new Vue({
         pageNo: 1,//分页：当前页
         dialogFormVisible: false,
         form: {
-            typeId: '',
-            questionType: '',
-            comContent: '',
-            specialKnowledgeId: '',
-            questionDifficulty: '',
-            legalBasis: '',
-            answerId: '',
-            isEnble: true,
-            optUser: '',
-            stuOptdepartment: '',
-            pageNo: 1,
-            limit: 10,
-            count: 0
+            roleName: '',
+            remarks: ''
         },
         formLabelWidth: '120px',
-        fileList: [],
         diffList: [],
         typeList: [],
         qtList: [],
-        topicList: [],
+        treeData1: [
+            {
+                id: 1,
+                label: '一级 1',
+                children: [{
+                    id: 4,
+                    label: '二级 1-1',
+                    children: [{
+                        id: 9,
+                        label: '三级 1-1-1'
+                    }, {
+                        id: 10,
+                        label: '三级 1-1-2'
+                    }]
+                }]
+            },
+            {
+                id: 2,
+                label: '一级 2',
+                children: [{
+                    id: 5,
+                    label: '二级 2-1'
+                }, {
+                    id: 6,
+                    label: '二级 2-2'
+                }]
+            },
+            {
+                id: 3,
+                label: '一级 3',
+                children: [{
+                    id: 7,
+                    label: '二级 3-1'
+                }, {
+                    id: 8,
+                    label: '二级 3-2'
+                }]
+            }
+        ],
+        treeData2: [
+            {
+                id: 199,
+                label: '一级 1',
+                children: [{
+                    id: 4,
+                    label: '二级 1-1',
+                    children: [{
+                        id: 9,
+                        label: '三级 1-1-1'
+                    }, {
+                        id: 10,
+                        label: '三级 1-1-2'
+                    }]
+                }]
+            },
+            {
+                id: 2,
+                label: '一级 2',
+                children: [{
+                    id: 5,
+                    label: '二级 2-1'
+                }, {
+                    id: 6,
+                    label: '二级 2-2'
+                }]
+            },
+            {
+                id: 3,
+                label: '一级 3',
+                children: [{
+                    id: 7,
+                    label: '二级 3-1'
+                }, {
+                    id: 8,
+                    label: '二级 3-2'
+                }]
+            }
+        ],
+        defaultProps: {
+            children: 'children',
+            label: 'label'
+        }
     },
     mounted: function () {
 
@@ -33,35 +102,14 @@ var vm = new Vue({
         layFn() {
             $(".el-dialog").css("height", "auto")
         },
-        // 文件上传
-        handleRemove(file, fileList) {
-            console.log(file, fileList);
-        },
-        handlePreview(file) {
-            console.log(file);
-        },
-        handleExceed(files, fileList) {
-            this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-        },
-        beforeRemove(file, fileList) {
-            return this.$confirm(`确定移除 ${file.name}？`);
-        },
-
         handleSizeChange: function (val) {
             console.log('每页' + val + '条');
         },
         handleCurrentChange: function (val) {
             console.log('当前页:' + val);
         },
-        addExam: function () {
-            console.log(22)
+        addRole: function () {
             vm.dialogFormVisible = true
-        },
-        batchImport: function () {
-
-        },
-        downloadTemp: function () {
-
         },
         handleWatch: function (index, row) {
             console.table({
@@ -103,25 +151,17 @@ var vm = new Vue({
         },
 
         save: function () {
-            $.ajax({
-                type: "POST",
-                url: baseURL + "testQuestion/save",
-                contentType: "application/json",
-                data: JSON.stringify(vm.form),
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.$alert('操作成功', '提示', {
-                            confirmButtonText: '确定',
-                            callback: function () {
-                                vm.dialogFormVisible = false;
-                                vm.reload();
-                            }
-                        });
-                    } else {
-                        alert(result.msg);
-                    }
-                }
+            let that = this;
+            this.$confirm('是否确定提交？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(function () {
+                that.dialogFormVisible = false;
+                //ajax
             });
+
+
         },
         reload: function () {
             $.ajax({
@@ -144,7 +184,8 @@ var vm = new Vue({
                 }
             });
         }
-    },
+    }
+    ,
     created: function () {
         this.$nextTick(function () {
             $.ajax({
@@ -164,21 +205,34 @@ var vm = new Vue({
                 }
             });
 
+        })
+        this.$nextTick(function () {
+            var that = this;
             $.ajax({
                 type: "GET",
-                url: baseURL + "exercise/random/dict",
+                url: baseURL + "menu/list2",
                 contentType: "application/json",
                 success: function (result) {
-                    if (result.code === 0) {
-                        vm.diffList = result.diffList;
-                        vm.typeList = result.typeList;
-                        vm.qtList = result.qtList;
-                        vm.topicList = result.topicList;
-                    } else {
-                        alert(result.msg);
-                    }
+                    that.treeData1 = [];
+                    console.info("功能权限", result);
+                    result.map((info) => {
+                        if (!info.parentName) {
+                            that.treeData1.push({
+                                id: info.id,
+                                label: info.name
+                            })
+                        }
+                    })
                 }
-            });
+            })
+            // $.ajax({
+            //     type: "GET",
+            //     url: baseURL + "org/tree",
+            //     contentType: "application/json",
+            //     success: function (result) {
+            //         console.info("数据权限",result)
+            //     }
+            // })
         })
     }
 
