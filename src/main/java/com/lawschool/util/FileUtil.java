@@ -37,8 +37,8 @@ public class FileUtil {
             int start =filename.lastIndexOf(".");
             String type=filename.substring(start + 1, filename.length());//后缀名
             //获取附件servcie
-            //AccessoryService accessoryService = SpringContextUtils.getBean("accessoryService", AccessoryService.class);
-            AccessoryService accessoryService =(AccessoryService)ContextLoaderListener.getCurrentWebApplicationContext().getBean ("accessoryService");
+            AccessoryService accessoryService = SpringContextUtils.getBean("accessoryService", AccessoryService.class);
+            //AccessoryService accessoryService =(AccessoryService)ContextLoaderListener.getCurrentWebApplicationContext().getBean ("accessoryService");
 
             AccessoryEntity accessoryEntity = new AccessoryEntity();
             accessoryEntity.setId(GetUUID.getUUIDs("AE"));//设置id

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.medal.UserMedalDao">
+    <insert id="insert" parameterType="com.lawschool.beans.medal.UserMedalEntity">
+		INSERT INTO law_user_medal
+			(id,
+			user_id,
+			medal_id
+			)
+		VALUES
+			(#{id},
+			#{userId},
+			#{medalId}
+			)
+    </insert>
+
+    <select id="findMedalIdList" resultType="string">
+        SELECT
+        um.medal_id
+        FROM law_user_medal um
+        INNER JOIN law_medal m ON um.medal_id = m.id
+        <where>
+            um.user_id = #{userId}
+        </where>
+    </select>
+
+    <select id="checkUserMedal" resultType="Integer">
+        SELECT
+        COUNT(*)
+        FROM law_user_medal um
+        <where>
+            um.user_id = #{userId}
+            AND medal_id = #{medalId}
+        </where>
+    </select>
+</mapper>
