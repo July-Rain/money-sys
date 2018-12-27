@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawschool.base.DataEntity;
 import com.lawschool.beans.system.SysRoleEntity;
+import sun.awt.image.IntegerInterleavedRaster;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -109,6 +110,7 @@ public class User extends DataEntity<User> {
     @TableField(exist = false) //数据权限
     private List<String> orgDataAuth;
 
+
     @TableField(exist = false) //菜单管理
     private List<SysMenu> menuAuth;
 
@@ -116,7 +118,21 @@ public class User extends DataEntity<User> {
     private List<SysRoleEntity> roleList;
 
 
+    @TableField(exist = false) //菜单管理
+    private List<String> menuIdAuth;
+
+    @TableField(exist = false) //角色list
+    private List<String> roleIdList;
+
+    @TableField(exist = false) //部门list
+    private List<String> orgIdList;
+
+
     private String orgName;//部门名字
+
+    private int isAdmin;//是否是管理员
+
+    private String orgId;//部门id
 
 
 
@@ -487,5 +503,45 @@ public class User extends DataEntity<User> {
 
     public void setIdentify(String identify) {
         this.identify = identify;
+    }
+
+    public int getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(int isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public List<String> getMenuIdAuth() {
+        return menuIdAuth;
+    }
+
+    public void setMenuIdAuth(List<String> menuIdAuth) {
+        this.menuIdAuth = menuIdAuth;
+    }
+
+    public List<String> getRoleIdList() {
+        return roleIdList;
+    }
+
+    public void setRoleIdList(List<String> roleIdList) {
+        this.roleIdList = roleIdList;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public List<String> getOrgIdList() {
+        return orgIdList;
+    }
+
+    public void setOrgIdList(List<String> orgIdList) {
+        this.orgIdList = orgIdList;
     }
 }

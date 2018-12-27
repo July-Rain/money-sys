@@ -28,4 +28,12 @@ public interface UserMapper  extends AbstractDao<User> {
 
     int updateByPrimaryKeySelective(User record);
 
+
+
+    //查询用户所有的菜单
+    List<String> queryAllPerms(String userId);
+
+
+    List<Long> queryAllMenuId(Long userId);
+
 }

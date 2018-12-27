@@ -117,6 +117,11 @@
     LOCAL_JOB_LEVEL, LOCAL_JOB_STAND, MIDDLE_REQUIRED_TYPE, PHOTO, WORK_POLICE_TIME, 
     WORK_TIME, ROLES, QUA_START_TIME, QUA_END_TIME, BIRTHDAY, LOCAL_ORG_CODE, IS_ONLINE
   </sql>
+
+
+
+
+
   <select id="findList" parameterType="map" resultType="com.lawschool.beans.User">
     SELECT
 	U.*,
@@ -137,4 +142,16 @@ where 1=1
   and U.USER_CODE  like concat(concat('%',#{userCode}),'%')
   </if>
   </select>
+
+
+  <!-- 查询用户的所有权限 -->
+  <select id="queryAllMenuId" resultType="string">
+    select m.perms from LAW_SYS_USER_ROLE RM
+	left join LAW_SYS_ROLE_MENU RM on RM.ROLE_ID=RM.role_id
+	left join LAW_SYS_MENU m on m.id=RM.menu_id
+  </select>
+
+
+
+
 </mapper>

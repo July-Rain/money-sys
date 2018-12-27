@@ -1,6 +1,7 @@
 package com.lawschool.base;
 
 import com.lawschool.beans.User;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -60,9 +61,23 @@ public abstract class AbstractController {
 	 * @return 
 	 **/
 
+//	protected User getUser() {
+//		return (User) getHttpSession().getAttribute("user");
+//	}
+
+
+	/**
+	 * @Author zjw
+	 * @Description shiro 获取用户信息
+	 * @Date 17:25 2018-12-27
+	 * @Param []
+	 * @return com.lawschool.beans.User
+	**/
 	protected User getUser() {
-		return (User) getHttpSession().getAttribute("user");
+		return (User) SecurityUtils.getSubject().getPrincipal();
 	}
+	
+	
 
 
 

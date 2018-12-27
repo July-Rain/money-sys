@@ -81,6 +81,7 @@ var vm = new Vue({
         // 表单重置
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
+            vm.reload();
         },
         closeDia : function(){
             this.dialogConfig=false;

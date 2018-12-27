@@ -5,10 +5,16 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserExample;
+import com.lawschool.config.ShiroUtils;
 import com.lawschool.dao.UserMapper;
 import com.lawschool.service.UserService;
 import com.lawschool.util.*;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -150,6 +156,35 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
             return ERROR_PSW;//密码错误
         }
         return IS_NOT_EXIST;//用户不存在
+    }
+    
+    /**
+     * @Author zjw
+     * @Description 
+     * @Date 16:03 2018-12-27
+     * @Param 
+     * @return 
+    **/
+    @Override
+    @Transactional(rollbackFor=Exception.class)
+    public Result loginShiro(String userCode,String password,HttpServletRequest request) {
+        SecurityUtils.getSubject().logout();// 此行代码用于修改会话标识未更新的BUG，作用清空登录之前产生的session信息
+        try{
+            Subject subject = ShiroUtils.getSubject();
+            UsernamePasswordToken token = new UsernamePasswordToken(userCode, password);
+            subject.login(token);
+        }catch (UnknownAccountException e) {
+            return Result.error(e.getMessage());
+        }catch (IncorrectCredentialsException e) {
+            return Result.error("账号或密码不正确");
+        }
+        catch (Exception e) {
+            return Result.error(e.getMessage());
+        }
+        User userTemp=this.selectOne(new EntityWrapper<User>().eq("USER_CODE",userCode));
+        this.updateUserOnlineStatus(userTemp.getId(),"0","1");//标记为上线
+        //request.getSession().setAttribute("user", user);
+        return  Result.ok();
     }
 
     /**

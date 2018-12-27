@@ -6,4 +6,78 @@
        default-lazy-init="true">
 
 
+    <!-- 启用shrio授权注解拦截方式 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- 装配 securityManager -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 配置登陆页面 -->
+        <property name="loginUrl" value="/index.html"/>
+        <!-- 登陆成功后的一面 -->
+        <property name="successUrl" value="/main.html"/>
+        <property name="unauthorizedUrl" value="/index.html"/>
+        <!-- 具体配置需要拦截哪些 URL, 以及访问对应的 URL 时使用 Shiro 的什么 Filter 进行拦截.  -->
+        <property name="filterChainDefinitions">
+            <value>
+                /js/**= anon
+                /statics/**=anon
+                /sys/login=anon
+                /main.html=anon
+                /**=authc
+            </value>
+        </property>
+    </bean>
+
+    <!-- 配置缓存管理器 -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <!-- 指定 ehcache 的配置文件 -->
+        <property name="cacheManagerConfigFile" value="classpath:ehcache-shiro.xml"/>
+    </bean>
+
+
+    <bean id="simpleCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg name="name" value="shiro.sesssion"/>
+        <property name="path" value="/"/>
+    </bean>
+
+    <!--会话管理器-->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!-- 全局的会话信息时间,,单位为毫秒  -->
+        <property name="globalSessionTimeout" value="6000000"/>
+        <!-- 检测扫描信息时间间隔,单位为毫秒-->
+        <property name="sessionValidationInterval" value="6000000"/>
+        <!-- 是否开启扫描 -->
+        <property name="sessionValidationSchedulerEnabled" value="true"/>
+        <!-- 去掉URL中的JSESSIONID -->
+        <property name="sessionIdUrlRewritingEnabled" value="false"/>
+
+        <property name="sessionIdCookie" ref="simpleCookie"/>
+    </bean>
+
+
+    <!-- 配置进行授权和认证的 Realm -->
+    <bean id="userRealm" class="com.lawschool.config.UserRealm">
+
+    </bean>
+
+    <!-- 配置 安全管理 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!--<property name="cacheManager" ref="cacheManager"/>-->
+        <property name="realm" ref="userRealm"/>
+        <property name="sessionManager" ref="sessionManager"/>
+        <!--<property name="sessionMode" value="native"> </property>-->
+    </bean>
+
+
+    <!-- 配置 Bean 后置处理器: 会自动的调用和 Spring 整合后各个组件的生命周期方法. -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <bean id="efaultAdvisorAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
+        <property name="proxyTargetClass" value="true"/>
+    </bean>
+
+
+    <bean id="authorizationAttributeSourceAdvisor" class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
 </beans>

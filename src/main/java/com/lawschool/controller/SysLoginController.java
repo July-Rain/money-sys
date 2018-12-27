@@ -1,11 +1,19 @@
 package com.lawschool.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.beans.SysConfig;
+import com.lawschool.beans.User;
+import com.lawschool.config.ShiroUtils;
 import com.lawschool.service.SysConfigService;
 import com.lawschool.service.UserService;
 import com.lawschool.util.Constant;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.Result;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,17 +55,20 @@ public class SysLoginController {
 	@ResponseBody
 	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
 	public Result login(String username, String password) {
+//
+//		int code = userService.login(username,password,request);
+//		if(Constant.SUCCESS==code){
+//			return Result.ok();
+//			//hhh
+//		} else if (Constant.ERROR_PSW==code) {
+//			return Result.error("密码错误");
+//		}else if(Constant.IS_NOT_EXIST==code){
+//			return Result.error("用户不存在");
+//		}
+//		return Result.ok();
 
-		int code = userService.login(username,password,request);
-		if(Constant.SUCCESS==code){
-			return Result.ok();
-			//hhh
-		} else if (Constant.ERROR_PSW==code) {
-			return Result.error("密码错误");
-		}else if(Constant.IS_NOT_EXIST==code){
-			return Result.error("用户不存在");
-		}
-		return Result.ok();
+
+		return userService.loginShiro(username, password, request);
 	}
 
 	/**
@@ -70,8 +81,9 @@ public class SysLoginController {
 	
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
 	public String logout() {
-		request.getSession().setAttribute("user", null);
-		return "redirect:login.html";
+		//request.getSession().setAttribute("user", null);
+		ShiroUtils.logout();
+		return "redirect:index.html";
 	}
 	
 	/**

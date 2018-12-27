@@ -39,11 +39,7 @@ public class MD5Util {
 
     /**
      * 加盐MD5
-     *
-     * @param password
-     * @return
-     * @author daniel
-     * @time 2016-6-11 下午8:45:04
+
      */
     public static String generate(String password) {
         Random r = new Random();
