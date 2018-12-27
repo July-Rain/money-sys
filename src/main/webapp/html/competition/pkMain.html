@@ -10,16 +10,31 @@
     <button id="a" onclick="tiao('1')">单人随机</button>
 </div>
 <div>
-    <button id="b" onclick="tiao('2')">单人邀请码</button>
+    <button id="b" onclick="tiao('2')">单人邀请码建房</button>
+    <button id="c" onclick="tiao('3')">单人邀请码进房间</button>
 </div>
 <div>
-    <button id="c" onclick="tiao('3')">多人邀请码</button>
+    <button id="d" onclick="tiao('4')">多人邀请码</button>
+</div>
+
+
+
+
+
+
+
+<div id="yqmdiv">
+  请输入邀请码：<input type="text" value="" id="yqm">
+    <button id="mybutton" onclick="join()">进入</button>
+
 </div>
 </body>
 <script type="text/javascript">
 
     $(function () {
 //        alert("进入竞赛中心大页面");
+        $("#yqmdiv").hide();
+
     });
 
 function tiao(a)
@@ -30,15 +45,25 @@ function tiao(a)
     }
     if(a=="2")
     {
-        parent.location.href =baseURL+"modules/competition/pkOnlSetting.html";
+        parent.location.href =baseURL+"modules/competition/alonePkGameByCode.html?type=add&code=0";
     }
     if(a=="3")
     {
-        parent.location.href =baseURL+"modules/competition/leitaiSetting.html";
-    }
 
+        $("#yqmdiv").show();
+//        parent.location.href =baseURL+"modules/competition/alonePkGameByCode.html?type=join";
+    }
+    if(a=="4")
+    {
+        parent.location.href =baseURL+"modules/competition/leitaiGame.html";
+    }
 }
 
+function join()
+{
+             var code=$("#yqm").val();
+            parent.location.href =baseURL+"modules/competition/alonePkGameByCode.html?type=join&code="+code;
+}
 </script>
 <!--<script src="${rc.contextPath}/statics/js/index2.js"></script>-->
 </html>

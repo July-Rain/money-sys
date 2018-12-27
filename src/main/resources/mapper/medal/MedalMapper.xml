@@ -2,7 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lawschool.dao.medal.MedalDao">
 
-    <insert id="insert" parameterType="com.lawschool.beans.medal.MedalEntity">
+    <sql id="medalColumn">
+            id AS "id",
+            title_name AS "titleName",
+            integral AS "integral",
+            credit AS "credit",
+            badge AS "badge",
+            opt_user AS "optUser",
+            opt_time AS "optTime",
+            create_user AS "createUser",
+            create_time AS "createTime"
+    </sql>
+    <insert id="insert">
         INSERT INTO law_medal
         (
             id,
@@ -27,7 +38,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="com.lawschool.beans.medal.MedalEntity">
+    <update id="update">
         UPDATE law_medal SET
         title_name = #{titleName},
         integral = #{integral},
@@ -38,34 +49,18 @@
         WHERE id = #{id}
     </update>
 
-    <select id="findOne" parameterType="string">
+    <select id="findOne" resultType="com.lawschool.beans.medal.MedalEntity">
         SELECT
-            id,
-            title_name,
-            integral,
-            credit,
-            badge,
-            opt_user,
-            opt_time,
-            create_user,
-            create_time
+        <include refid="medalColumn"/>
         FROM law_medal
         <where>
             id = #{id}
         </where>
     </select>
 
-    <select id="findList" parameterType="string">
+    <select id="findList" resultType="com.lawschool.beans.medal.MedalEntity">
         SELECT
-            id,
-            title_name,
-            integral,
-            credit,
-            badge,
-            opt_user,
-            opt_time,
-            create_user,
-            create_time
+        <include refid="medalColumn"/>
         FROM law_medal
     </select>
 

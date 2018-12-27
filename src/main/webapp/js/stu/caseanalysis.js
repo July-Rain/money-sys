@@ -266,7 +266,6 @@ var vm = new Vue({
                     if(result.code === 0){
                         vm.caseAna = result.data;
                         for (var i=0;i<vm.caseAna.length;i++){
-                            debugger
                             if(vm.caseAna.contentType!='1'&&vm.caseAna.caseContent){
                                 vm.caseAna.caseContentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].caseContent;
                                 if(vm.caseAna.videoPicAcc){
@@ -350,7 +349,6 @@ var vm = new Vue({
 
         },
         uploadSuccess: function (response, file, fileList) {
-            debugger
             this.videoFlag = false;
             this.videoUploadPercent = 0;
             if(response.code == 0){
@@ -361,7 +359,6 @@ var vm = new Vue({
             }
         },
         handlePicSuccess: function (response, file, fileList) {
-            debugger
             if(response.code == 0){
                 vm.caseAna.videoPicAcc=response.accessoryId;
                 vm.caseAna.videoPicAccUrl=baseURL+"sys/download?accessoryId="+response.accessoryId;
@@ -373,7 +370,6 @@ var vm = new Vue({
 
         },
         beforeAvatarUpload: function (file) {
-            debugger
             /*if(!checkFile(file)) return false;*/
             var  isLt10M = file.size / 1024 / 1024  < 10;
             if (['video/mp4', 'video/ogg', 'video/flv','video/avi','video/wmv','video/rmvb'].indexOf(file.type) == -1) {
@@ -387,7 +383,6 @@ var vm = new Vue({
 
         },
         beforeAudioUpload: function (file) {
-            debugger
             /*if(!checkFile(file)) return false;*/
             var  isLt10M = file.size / 1024 / 1024  < 10;
             if (['audio/ogg', 'audio/mpeg', 'audio/mp3', 'audio/wav'].indexOf(file.type) == -1) {
@@ -402,7 +397,6 @@ var vm = new Vue({
         },
         beforePicUpload: function (file) {
             //图片上传之前的判断
-            debugger
             /*if(!checkFile(file)) return false;*/
             var  isLt10M = file.size / 1024 / 1024  < 10;
             if (['image/jpeg', 'image/jpg', 'image/png','image/gif','image/bpm'].indexOf(file.type) == -1) {
@@ -416,7 +410,6 @@ var vm = new Vue({
 
         },
         uploadVideoProcess(event, file, fileList){
-            debugger
             this.videoFlag = true;
             this.videoUploadPercent = file.percentage;
         },

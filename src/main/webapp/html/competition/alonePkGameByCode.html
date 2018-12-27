@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>在线比武</title>
+    <#include "/header.html">
+    <script type="text/javascript" src="${rc.contextPath}/sun-jsp/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="${rc.contextPath}/sun-jsp/js/sockjs.min.js"></script>
+    <link rel="stylesheet" href="${rc.contextPath}/sun-jsp/css/style.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="${rc.contextPath}/sun-jsp/css/chat.css" type="text/css" media="all" />
+    <script type="text/javascript">
+
+    </script>
+</head>
+
+<body>
+<div id="app" v-cloak>
+    <div class="header">
+        <div class="header-left">
+            <img src="${rc.contextPath}/statics/img/logo.png">
+            <a href="javascript:;">江苏省公安厅法律学校</a>
+        </div>
+
+    </div>
+    <div class="container">
+        <el-row :gutter="24">
+            <el-col :span="24">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="单人邀请码在线比武">
+                        <div style="height: 700px;" >
+                            <p>当前登录用户：{{u.fullName}}</p>
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            <p>房间号：{{battleCode}}</p>
+                            <br/>
+                            <p>我的得分：{{myscore}}</p>
+                            <br/>
+                            <p>对手的得分：{{youscore}}</p>
+                            <br/>
+                            <p>对手是否已答题：{{yesOrNoAnswer}}</p>
+                            <div class="inChatArea">
+                                <div id="chatSidebar" class="chatSidebar">
+                                    <h2 id="chatOnline">在线用户(0人)</h2>
+                                    <ul id="chatUserList">
+
+                                    </ul>
+                                </div>
+                                <div class="chatCon">
+                                    <div class="up" id="up" style="height: 180px;">
+                                        <ul id="contentUl">
+                                            <!-- <li><b>14:08</b><em>江山如此多娇</em><span>今天天气不大家出来嗨！！！！！</span></li>
+                                            -->
+                                        </ul>
+                                    </div>
+
+                                    <br/>
+
+                                    <div v-show="dialogQuestion">
+                                                        一共{{allnum}}题，当前{{nownum}}题，当前题目分值{{nowQscore}}
+                                        <br/><br/>
+                                    [{{Question.questionType==10004?'单选题':Question.questionType==10005?'多选题':'判断题'}}] {{Question.comContent}}
+                                    <br/>
+                                    <br/>
+                                    <el-radio-group v-model="answers" v-if="Question.questionType==10004 || Question.questionType==10006"
+                                                    >
+                                        <el-radio :label="answer.id" v-for="answer in Question.answerList" :disabled="radio_disabled"
+                                                  @change="radioCheck(answer.id, Question.answerId, Question.questionType)" >
+                                            {{answer.questionContent}}
+                                        </el-radio>
+                                        <br/>
+                                    </el-radio-group>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
+
+
+
+
+    </div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/competition/alonePkGameByCode.js?_${.now?long}"></script>
+</html>

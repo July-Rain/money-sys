@@ -17,7 +17,7 @@ import java.util.Map;
  * @author BoBo
  *
  */
-@Component
+@Component("chatHandshakeInterceptor")
 public class ChatHandshakeInterceptor implements HandshakeInterceptor {
 
 	/**

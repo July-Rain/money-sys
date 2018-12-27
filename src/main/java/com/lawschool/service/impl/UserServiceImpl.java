@@ -11,6 +11,7 @@ import com.lawschool.util.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sun.security.util.Password;
 
 import javax.servlet.http.HttpServletRequest;
@@ -133,6 +134,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
      * @return int
     **/
     @Override
+    @Transactional(rollbackFor=Exception.class)
     public int login(String userCode,String password,HttpServletRequest request) {
         List<User> users = userMapper.selectList(new EntityWrapper<User>().eq("USER_CODE",userCode));
         if(users!=null && users.size()>0){
@@ -140,7 +142,9 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
             String salt=user.getSalt();
             String pass1 = MD5Util.Md5Hex(password + salt);
             if(user.getPassword().equals(pass1)){
+                this.updateUserOnlineStatus(user.getId(),"0","1");//标记为上线
                 request.getSession().setAttribute("user", user);
+
                 return SUCCESS;//登录成功
             }
             return ERROR_PSW;//密码错误

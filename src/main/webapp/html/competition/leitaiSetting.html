@@ -117,6 +117,18 @@
                                         {{scope.row.winName==null ?"占无擂主":scope.row.winName == "" ?"占无擂主":scope.row.winName}}
                                     </template>
                                 </el-table-column>
+
+                                <el-table-column
+                                        prop="lastTime"
+                                        label="擂主最后登陆时间"
+                                        width="280"
+                                        header-align="center"
+                                        align="center"
+                                >
+                                    <template slot-scope="scope">
+                                        {{scope.row.lastTime==null ?"占无擂主":scope.row.lastTime == "" ?"占无擂主":scope.row.lastTime}}
+                                    </template>
+                                </el-table-column>
                                 <el-table-column
                                         prop="winReward"
                                         label="获胜者奖励"

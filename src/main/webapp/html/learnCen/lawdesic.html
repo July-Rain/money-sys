@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<style>
+
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="container">
+        <el-row :gutter="24">
+            <el-col :span="4">
+                <!--对于同一级的节点，每次只能展开一个-->
+                <el-tree
+                        :data="treeData"
+                        :props="defaultProps"
+                        accordion
+                        @node-click="handleNodeClick">
+                </el-tree>
+            </el-col>
+            <el-col :span="20">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="检索">
+                        <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+
+                            <el-form-item prop="lawTitle">
+                                <el-input v-model="formInline.lawTitle" placeholder="标题" size="mini"></el-input>
+                            </el-form-item>
+                            <el-form-item prop="issueOrg">
+                                <el-input v-model="formInline.issueOrg" placeholder="颁布单位" size="mini"></el-input>
+                            </el-form-item>
+
+                            <el-form-item prop="status">
+                                <el-select v-model="formInline.status" placeholder="状态" size="mini">
+                                    <el-option label="有效" value="1"></el-option>
+                                    <el-option label="无效" value="2"></el-option>
+                                    <el-option label="已修改" value="3"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
+                                <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
+
+                            </el-form-item>
+                        </el-form>
+                        <div>
+                            <el-table
+                                    :data="tableData"
+                                    border
+                                    style="width: 100%">
+                                <el-table-column
+                                        prop="lawTitle"
+                                        label="标题"
+                                        width="280"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="issueTime"
+                                        label="发布时间"
+                                        width="280"
+                                >
+                                </el-table-column>
+
+                                <el-table-column
+                                        prop="issueOrg"
+                                        label="颁布单位"
+                                        width="180"
+                                >
+                                </el-table-column>
+
+                                <el-table-column
+                                        prop="status"
+                                        label="状态"
+                                >
+                                    <template slot-scope="scope">
+                                        <el-tag v-if="scope.row.status === '1'" size="small" type="success">有效</el-tag>
+                                        <el-tag v-if="scope.row.status === '2'" size="small" type="info">无效</el-tag>
+                                        <el-tag v-if="scope.row.status === '3'" size="small" type="warning">已修改</el-tag>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="formInline.currPage"
+                                    :page-sizes="[10, 20, 30, 40]"
+                                    :page-size="formInline.pageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="formInline.totalCount">
+                            </el-pagination>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
+
+
+
+
+
+        <el-dialog title="选择部门" :visible.sync="dialogDept" >
+            <!--对于同一级的节点，每次只能展开一个-->
+            <el-tree
+                    ref="deptTree"
+                    :data="deptData"
+                    :props="defaultDeptProps"
+                    accordion
+                    show-checkbox
+                    @check-change="handleCheckChange"
+                    node-key="id"
+                    :default-expanded-keys="[2079]"
+            >
+            </el-tree>
+            <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+            <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
+        </el-dialog>
+
+
+    </div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/learnCen/lawdesic.js?_${.now?long}"></script>
+</html>

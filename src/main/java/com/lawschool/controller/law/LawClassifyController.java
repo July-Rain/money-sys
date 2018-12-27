@@ -72,6 +72,11 @@ public class LawClassifyController extends AbstractController {
         }
         return finalTrees;
     }
+    @RequestMapping("/zTree")
+    public Result zTree(){
+        List<TaskDesicEntity> classifyList = classifyService.queryClassTree();
+        return Result.ok().put("classifyList",classifyList);
+    }
     @RequestMapping("/classTree")
     public Result classTree(){
         List<TaskDesicEntity> classifyList = classifyService.queryClassTree();

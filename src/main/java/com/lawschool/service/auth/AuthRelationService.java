@@ -13,5 +13,33 @@ import com.lawschool.beans.auth.AuthRelationBean;
  */
 public interface AuthRelationService extends IService<AuthRelationBean> {
 
+    /**
+     * @Author MengyuWu
+     * @Description 权限新增
+     * @Date 16:22 2018-12-27
+     * @Param [deptIdArr, userIdAr, functionId, functionFlag, operaUserId]
+     * @return void
+     **/
+    
     void insertAuthRelation(String[] deptIdArr,String[] userIdAr,String functionId,String functionFlag,String operaUserId);
+
+    /**
+     * @Author MengyuWu
+     * @Description 查询部门数组
+     * @Date 16:22 2018-12-27
+     * @Param [functionId, functionFlag]
+     * @return java.lang.String[]
+     **/
+    
+    String[] getDeptIdArr(String functionId,String functionFlag);
+    
+    /**
+     * @Author MengyuWu
+     * @Description 查询人员数组
+     * @Date 16:22 2018-12-27
+     * @Param [functionId, functionFlag]
+     * @return java.lang.String[]
+     **/
+    
+    String[] getUserIdArr(String functionId,String functionFlag);
 }

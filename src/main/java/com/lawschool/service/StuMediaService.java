@@ -91,4 +91,15 @@ public interface StuMediaService  extends AbstractService<StuMedia> {
     
 
     void updateStuMedia(StuMedia stuMedia,User user);
+
+    /**
+     * @Author MengyuWu
+     * @Description 根据任务信息查询相关的图文 视频 音频信息
+     * @Date 10:19 2018-12-27
+     * @Param [params]
+     * @return com.lawschool.util.PageUtils
+     **/
+    
+    PageUtils listStuByTask(Map<String, Object> params);
+    
 }
