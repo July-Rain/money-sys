@@ -11,7 +11,9 @@ import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.beans.learn.LearnTasksEntity;
 import com.lawschool.dao.StuMediaDao;
 import com.lawschool.dao.learn.LearnTasksDao;
+import com.lawschool.service.StuMediaService;
 import com.lawschool.service.auth.AuthRelationService;
+import com.lawschool.service.law.CaseAnalysisService;
 import com.lawschool.service.law.ClassifyDesicService;
 import com.lawschool.service.law.TaskDesicService;
 import com.lawschool.service.learn.LearnTasksService;
@@ -49,6 +51,12 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
     @Autowired
     private ClassifyDesicService classifyDesicService;
 
+    @Autowired
+    private StuMediaService mediaService;
+
+    @Autowired
+    private CaseAnalysisService analysisService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void insertLearnTask(LearnTasksEntity learnTask, User user) {
@@ -83,32 +91,12 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         LearnTasksEntity learnTasksEntity = mapper.selectById(id);
         if(UtilValidate.isNotEmpty(learnTasksEntity)){
             //获取适用人的id
-            List<AuthRelationBean> userAuth = authService
-                    .selectList(new EntityWrapper<AuthRelationBean>()
-                            .setSqlSelect("auth_id")
-                            .eq("function_flag","LEARNTASK")
-                            .eq("function_id",id).eq("auth_type","user"));
-            if(UtilValidate.isNotEmpty(userAuth)){
-                //把适用人id放在实体中
-                String [] userIdArr= new String[userAuth.size()] ;
-                for(int i=0;i<userAuth.size();i++){
-                    userIdArr[i]=userAuth.get(i).getAuthId();
-                }
-                learnTasksEntity.setUserArr(userIdArr);
-            }
+            String [] userIdArr= authService.getUserIdArr(id,"LEARNTASK") ;
+            learnTasksEntity.setUserArr(userIdArr);
             //获取适用部门的id
-            List<AuthRelationBean> deptAuth = authService
-                    .selectList(new EntityWrapper<AuthRelationBean>()
-                            .setSqlSelect("auth_id")
-                            .eq("function_flag","LEARNTASK")
-                            .eq("function_id",id).eq("auth_type","dept"));
-            if(UtilValidate.isNotEmpty(deptAuth)){
-                String [] deptIdArr= new String[userAuth.size()] ;
-                for(int i=0;i<userAuth.size();i++){
-                    deptIdArr[i]=userAuth.get(i).getAuthId();
-                }
-                learnTasksEntity.setDeptArr(deptIdArr);
-            }
+            String [] deptIdArr= authService.getDeptIdArr(id,"LEARNTASK") ;
+            learnTasksEntity.setDeptArr(deptIdArr);
+
             //获取任务的节点
             List<TaskDesicEntity> list =desicService.selectList(
                     new EntityWrapper<TaskDesicEntity>()
@@ -167,38 +155,63 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
 
     @Override
     public PageUtils queryContentByTask(Map<String, Object> params) {
+        PageUtils page= null;
         if(UtilValidate.isNotEmpty(params)) {
             String infoType = (String) params.get("infoType");
             String infoId = (String) params.get("infoId");
             String taskId = (String) params.get("taskId");
-            if ("sham".equals(infoType) && "law_90001".equals(infoId)) {
+            if (("sham".equals(infoType) && "law_90001".equals(infoId))||"law".equals(infoType)||"law_data".equals(infoType)) {
                 //点击的是虚拟节点数据 并且是法律法规数据 应该查询该节点下所有的法律法规文件
-                params.put("infoType","law_data");
-                return classifyDesicService.queryListByTask(params);
-            }
-            if ("law".equals(infoType)) {
                 //点击的是法律法规分类 并且是法律法规数据 应该查询该节点下所有的法律法规文件
-                //首先拼接法律法规分类数据
-
                 params.put("infoType","law_data");
-                return classifyDesicService.queryListByTask(params);
+                page=classifyDesicService.queryListByTask(params);
+                page.setRemarks("law");
+
+            }
+            else if (("sham".equals(infoType) && "stu_90004".equals(infoId))||"stu_pic".equals(infoType)||"stu_pic_data".equals(infoType)) {
+                //点击的是学习管理虚拟节点图文 或者点击图文下的分类
+                params.put("infoType","stu_pic_data");
+                page= mediaService.listStuByTask(params);
+                page.setRemarks("stu_pic");
+            }
+            else if (("sham".equals(infoType) && "stu_90003".equals(infoId))||"stu_audio".equals(infoType)||"stu_audio_data".equals(infoType)) {
+                //点击的是学习管理虚拟节点音频 或者点击音频下的分类
+                params.put("infoType","stu_audio_data");
+                page= mediaService.listStuByTask(params);
+                page.setRemarks("stu_audio");
+            }
+            else if (("sham".equals(infoType) && "stu_90002".equals(infoId))||"stu_video".equals(infoType)||"stu_video_data".equals(infoType)) {
+                //点击的是学习管理虚拟节点视频 或者点击视频下的分类
+                params.put("infoType","stu_video_data");
+                page= mediaService.listStuByTask(params);
+                page.setRemarks("stu_video");
+            }else if (("sham".equals(infoType) && "case_90008".equals(infoId))||"case_pic".equals(infoType)||"case_pic_data".equals(infoType)) {
+                //点击的是案例分析虚拟节点图文 或者点击图文下的分类
+                params.put("infoType","case_pic_data");
+                page= analysisService.listCaseAnaByTask(params);
+                page.setRemarks("case_pic");
+            }
+            else if (("sham".equals(infoType) && "case_90007".equals(infoId))||"case_audio".equals(infoType)||"case_audio_data".equals(infoType)) {
+                //点击的是案例分析虚拟节点音频 或者点击音频下的分类
+                params.put("infoType","case_audio_data");
+                page= analysisService.listCaseAnaByTask(params);
+                page.setRemarks("case_audio");
+            }
+            else if (("sham".equals(infoType) && "case_90006".equals(infoId))||"case_video".equals(infoType)||"case_video_data".equals(infoType)) {
+                //点击的是案例分析虚拟节点视频 或者点击视频下的分类
+                params.put("infoType","case_video_data");
+                page= analysisService.listCaseAnaByTask(params);
+                page.setRemarks("case_video");
+            }
+            else if (("sham".equals(infoType) && "case_90005".equals(infoId))) {
+                //点击的是案例分析虚拟节点
+                params.put("infoType","");
+                page= analysisService.listCaseAnaByTask(params);
+                page.setRemarks("case_sham");
             }
 
         }
 
-        return null;
+        return page;
     }
-
-   /* public String[] listAllLawIdbyparent(String lawid){
-        String lawIds=lawid;
-        String [] lawArr=null;
-
-        if(UtilValidate.isNotEmpty(lawid)){
-
-        }
-        if(UtilValidate.isNotEmpty(lawIds)){
-            lawArr=lawIds.split(",");
-        }
-        return lawArr;
-    }*/
 }

@@ -27,7 +27,7 @@ var setting = {
 var vm = new Vue({
     el: '#app',
     data: {
-        videoData: [],//视频列表
+        infoData: [],//列表
         navData: [],//导航
         formInline: { // 搜索表单
             stuType:"3",
@@ -65,7 +65,8 @@ var vm = new Vue({
             label: 'classifyName'
         },
         dialogLaw:false,//法律分类的弹窗
-        multipleSelection:[]//法律分类弹窗
+        multipleSelection:[],//法律分类弹窗
+        infoFlag:"law",//页面展示标记
     },
     created: function () {
 
@@ -113,31 +114,37 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "stumedia/list?isMp=true",
+                url: baseURL + "learntasks/allInfo",
                 dataType: "json",
-                data: vm.formInline,
+                data: vm.queryCond,
                 success: function (result) {
                     if (result.code == 0) {
-                        vm.videoData = result.page.list;
-                        for(var i=0;i<vm.videoData.length;i++){
-                            vm.videoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
-                            if(vm.videoData[i].videoPicAcc){
-                                vm.videoData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
-                            }else{
-                                vm.videoData[i].videoPicAccUrl="http://temp.im/640x260";
-                            }
-                            if(vm.videoData[i].stuType=='1'){
-                                vm.videoData[i].stuType="文字";
-                            }else if(vm.videoData[i].stuType=='2'){
-                                vm.videoData[i].stuType="音频";
-                            }else if(vm.videoData[i].stuType=='3'){
-                                vm.videoData[i].stuType="视频";
+                        vm.infoData=result.page.list;
+                        vm.infoFlag=result.page.remarks;
+                        if(vm.infoFlag=='stu_video'||vm.infoFlag=='stu_audio'){
+                            for(var i=0;i<vm.infoData.length;i++){
+                                vm.infoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.infoData[i].comContent;
+                                if(vm.infoData[i].videoPicAcc){
+                                    vm.infoData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.infoData[i].videoPicAcc;
+                                }else{
+                                    vm.infoData[i].videoPicAccUrl="http://temp.im/640x260";
+                                }
                             }
                         }
-                        vm.formInline.currPage = result.page.currPage;
-                        vm.formInline.pageSize = result.page.pageSize;
-                        vm.formInline.totalCount = parseInt(result.page.totalCount);
-                        console.info("videoData",vm.videoData)
+                        else if(vm.infoFlag=='stu_video'||vm.infoFlag=='stu_audio') {
+                            for (var i = 0; i < vm.caseData.length; i++) {
+                                vm.caseData[i].caseContentUrl = baseURL + "sys/download?accessoryId=" + vm.caseData[i].comContent;
+                                if (vm.caseData[i].videoPicAcc) {
+                                    vm.caseData[i].videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.caseData[i].videoPicAcc;
+                                } else {
+                                    vm.caseData[i].videoPicAccUrl = "http://temp.im/640x260";
+                                }
+                            }
+                        }
+                        vm.queryCond.currPage = result.page.currPage;
+                        vm.queryCond.pageSize = result.page.pageSize;
+                        vm.queryCond.totalCount = parseInt(result.page.totalCount);
+                        console.info("infoData",vm.infoData)
                     } else {
                         alert(result.msg);
                     }
@@ -193,15 +200,5 @@ function zTreeOnClick(event, treeId, treeNode) {
     vm.queryCond.infoType= treeNode.infoType;
     vm.queryCond.taskId= treeNode.taskId;
     vm.queryCond.infoId= treeNode.infoId;
-
-    //法律分类树数据
-    $.ajax({
-        type: "POST",
-        url: baseURL + "learntasks/allInfo",
-        dataType: "json",
-        data: vm.queryCond,
-        success: function(result){
-            console.log(result)
-        }
-    });
+    vm.reload();
 }

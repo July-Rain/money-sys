@@ -33,10 +33,10 @@ public class LawClassifyServiceImpl extends ServiceImpl<LawClassifyDao,LawClassi
                 e.setInfoParentId("stu_90004");
             }
             else if("stu_audio_0".equals(e.getInfoParentId())){
-                e.setInfoParentId("stu_90002");
+                e.setInfoParentId("stu_90003");
             }
             else if("stu_video_0".equals(e.getInfoParentId())){
-                e.setInfoParentId("stu_90003");
+                e.setInfoParentId("stu_90002");
             }
             else if("case_pic_0".equals(e.getInfoParentId())){
                 e.setInfoParentId("case_90008");

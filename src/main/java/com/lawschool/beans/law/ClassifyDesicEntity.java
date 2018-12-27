@@ -2,6 +2,7 @@ package com.lawschool.beans.law;
 
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,6 +15,7 @@ public class ClassifyDesicEntity implements Serializable {
 
     private String lawTitle;
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date issueTime;
 
     private String libId;
@@ -22,7 +24,7 @@ public class ClassifyDesicEntity implements Serializable {
     private Short delFlag;
 
     private Long orderNum;
-
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createTime;
 
     private String classifyId;

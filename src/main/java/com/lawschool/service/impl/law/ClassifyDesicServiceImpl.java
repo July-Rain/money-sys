@@ -31,21 +31,18 @@ import java.util.Map;
 public class ClassifyDesicServiceImpl extends ServiceImpl<ClassifyDesicDao,ClassifyDesicEntity> implements ClassifyDesicService {
     @Autowired
     private ClassifyDesicDao desicDao;
-    @Autowired
-    private TaskDesicDao taskDesicDao;
     @Override
     public PageUtils queryListByTask(Map<String, Object> params) {
         Page<ClassifyDesicEntity> page = new Page<ClassifyDesicEntity>(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
         String infoType=(String)params.get("infoType");
         String taskId=(String)params.get("taskId");
+        String infoId=(String)params.get("infoId");
         TaskDesicEntity taskDesicEntity = new TaskDesicEntity();
         taskDesicEntity.setInfoType(infoType);
         taskDesicEntity.setTaskId(taskId);
+        taskDesicEntity.setInfoId(infoId);
         page.setRecords(desicDao.queryListByTask(page,taskDesicEntity));
-        EntityWrapper<TaskDesicEntity> ew = new EntityWrapper<>();
-        ew.eq("task_id",taskId);
-        ew.eq("info_type","law_data");
-        page.setTotal(taskDesicDao.selectCount(ew));
+        page.setTotal(desicDao.countListByTask(taskDesicEntity));
         return new PageUtils(page);
     }
 

@@ -2,6 +2,7 @@ package com.lawschool.service.law;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.law.ClassifyDesicEntity;
+import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.util.PageUtils;
 
 import java.util.List;

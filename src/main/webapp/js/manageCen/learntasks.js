@@ -148,7 +148,6 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    debugger
                     var url = vm.learnTasks.id ? "learntasks/update" : "learntasks/insert";
                     var deptArr = vm.learnTasks.deptIds?vm.learnTasks.deptIds.split(","):[];
                     var userArr = vm.learnTasks.userIds?vm.learnTasks.userIds.split(","):[];
@@ -361,7 +360,6 @@ var vm = new Vue({
 
         },
         handleClassCheckChange: function () {
-            //debugger
             this.multipleClassSelection=this.$refs.classTree.getCheckedNodes();
             vm.learnTasks.taskContentList=this.multipleClassSelection;
             console.log(vm.learnTasks.taskContentList);

@@ -2,6 +2,7 @@ package com.lawschool.beans;
 
 import com.google.gson.annotations.Expose;
 import com.lawschool.beans.competition.CompetitionOnline;
+import com.lawschool.beans.competition.MatchSetting;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +49,10 @@ public class Message {
 	//在线比武配置
 	@Expose
 	CompetitionOnline competitionOnline=new CompetitionOnline();
+
+	//打擂台配置
+	@Expose
+	MatchSetting matchSetting=new MatchSetting();
 
 	//我的答案
 	@Expose
@@ -161,5 +166,13 @@ public class Message {
 
 	public void setTq(TestQuestions tq) {
 		this.tq = tq;
+	}
+
+	public MatchSetting getMatchSetting() {
+		return matchSetting;
+	}
+
+	public void setMatchSetting(MatchSetting matchSetting) {
+		this.matchSetting = matchSetting;
 	}
 }
