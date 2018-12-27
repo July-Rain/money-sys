@@ -8,6 +8,8 @@ import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
 import com.lawschool.beans.auth.AuthRelationBean;
+import com.lawschool.beans.law.ClassifyDesicEntity;
+import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.dao.StuMediaDao;
 import com.lawschool.dao.UserMapper;
 import com.lawschool.service.StuMediaService;
@@ -125,32 +127,11 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         StuMedia stuMedia = mapper.selectById(id);
         if(UtilValidate.isNotEmpty(stuMedia)){
             //获取适用人的id
-            List<AuthRelationBean> userAuth = authService
-                    .selectList(new EntityWrapper<AuthRelationBean>()
-                            .setSqlSelect("auth_id")
-                            .eq("function_flag","STUMEDIA")
-                            .eq("function_id",id).eq("auth_type","user"));
-            if(UtilValidate.isNotEmpty(userAuth)){
-                //把适用人id放在实体中
-                String [] userIdArr= new String[userAuth.size()] ;
-                for(int i=0;i<userAuth.size();i++){
-                    userIdArr[i]=userAuth.get(i).getAuthId();
-                }
-                stuMedia.setUserArr(userIdArr);
-            }
+            String [] userIdArr= authService.getUserIdArr(id,"STUMEDIA") ;
+            stuMedia.setUserArr(userIdArr);
             //获取适用部门的id
-            List<AuthRelationBean> deptAuth = authService
-                    .selectList(new EntityWrapper<AuthRelationBean>()
-                            .setSqlSelect("auth_id")
-                            .eq("function_flag","STUMEDIA")
-                            .eq("function_id",id).eq("auth_type","dept"));
-            if(UtilValidate.isNotEmpty(deptAuth)){
-                String [] deptIdArr= new String[userAuth.size()] ;
-                for(int i=0;i<userAuth.size();i++){
-                    deptIdArr[i]=userAuth.get(i).getAuthId();
-                }
-                stuMedia.setDeptArr(deptIdArr);
-            }
+            String [] deptIdArr= authService.getDeptIdArr(id,"STUMEDIA") ;
+            stuMedia.setDeptArr(deptIdArr);
 
         }
         return stuMedia;
@@ -275,5 +256,20 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         String[] userIdArr=stuMedia.getUserArr();
         authService.insertAuthRelation(deptIdArr,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getOptUser());
 
+    }
+
+    @Override
+    public PageUtils listStuByTask(Map<String, Object> params) {
+        Page page = new Page(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
+        String infoType=(String)params.get("infoType");
+        String taskId=(String)params.get("taskId");
+        String infoId=(String)params.get("infoId");
+        TaskDesicEntity taskDesicEntity = new TaskDesicEntity();
+        taskDesicEntity.setInfoType(infoType);
+        taskDesicEntity.setTaskId(taskId);
+        taskDesicEntity.setInfoId(infoId);
+        page.setRecords(mapper.listStuByTask(page,taskDesicEntity));
+        page.setTotal(mapper.countListStuByTask(taskDesicEntity));
+        return new PageUtils(page);
     }
 }

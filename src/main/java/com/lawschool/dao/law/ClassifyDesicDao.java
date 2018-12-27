@@ -19,5 +19,22 @@ import java.util.Map;
  **/
 
 public interface ClassifyDesicDao extends BaseMapper<ClassifyDesicEntity> {
-    List<ClassifyDesicEntity> queryListByTask(Page page,@Param("desic") TaskDesicEntity desicEntity);
+    /**
+     * @Author MengyuWu
+     * @Description 查询学习任务下的列表
+     * @Date 10:14 2018-12-27
+     * @Param [page, desicEntity]
+     * @return java.util.List<com.lawschool.beans.law.ClassifyDesicEntity>
+     **/
+    
+    List<ClassifyDesicEntity> queryListByTask(Page page,TaskDesicEntity desicEntity);
+    /**
+     * @Author MengyuWu
+     * @Description 统计条数
+     * @Date 10:14 2018-12-27
+     * @Param [desicEntity]
+     * @return int
+     **/
+    
+    int countListByTask(TaskDesicEntity desicEntity);
 }

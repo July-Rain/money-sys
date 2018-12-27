@@ -19,6 +19,8 @@ public class PageUtils implements Serializable {
 	//列表数据
 	private List<?> list;
 
+	private String remarks;
+
 	public PageUtils(List<?> list, long totalCount, long pageSize, int currPage) {
 		this.list = list;
 		this.totalCount = totalCount;
@@ -75,5 +77,12 @@ public class PageUtils implements Serializable {
 	public void setList(List<?> list) {
 		this.list = list;
 	}
-	
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
 }

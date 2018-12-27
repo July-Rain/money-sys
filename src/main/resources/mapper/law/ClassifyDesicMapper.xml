@@ -14,19 +14,42 @@
     <result column="STATUS" jdbcType="NVARCHAR" property="status" />
     <result column="ISSUE_ORG" jdbcType="NVARCHAR" property="issueOrg" />
   </resultMap>
-  <select id="queryListByTask" resultMap="BaseResultMap" >
-    SELECT
-        c. ID,
-        c.LAW_CODE,
-        c.LAW_TITLE,
-        c.ISSUE_ORG,
-        c.ISSUE_TIME,
-        c.LIB_ID
-    FROM
-        LAW_TASKS_DESIC T
-    INNER JOIN LAW_CLASSIFY_DESIC c ON T .DATA_ID = c. ID
-    WHERE
-        T .TASK_ID = #{desic.taskId,jdbcType=INTEGER}
-    AND T .INFO_TYPE = #{desic.infoType,jdbcType=INTEGER}
+  <select id="queryListByTask" resultMap="BaseResultMap" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+        SELECT
+            c. ID,
+            c.LAW_CODE,
+            c.LAW_TITLE,
+            c.ISSUE_ORG,
+            c.ISSUE_TIME,
+            c.LIB_ID,
+            c.status
+        FROM
+            (
+                SELECT
+                DISTINCT(T.id),
+                    T .DATA_ID
+                FROM
+                    LAW_TASKS_DESIC T
+                WHERE
+                    T .TASK_ID = #{taskId}
+                AND T .INFO_TYPE = #{infoType} START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
+            ) M
+        INNER JOIN LAW_CLASSIFY_DESIC c ON M .DATA_ID = c. ID
+  </select>
+    <select id="countListByTask" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+        SELECT
+            count(1)
+        FROM
+            (
+                SELECT
+                DISTINCT(T.id),
+                    T .DATA_ID
+                FROM
+                    LAW_TASKS_DESIC T
+                WHERE
+                    T .TASK_ID = #{taskId}
+                AND T .INFO_TYPE = #{infoType} START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
+            ) M
+        INNER JOIN LAW_CLASSIFY_DESIC c ON M .DATA_ID = c. ID
   </select>
 </mapper>
