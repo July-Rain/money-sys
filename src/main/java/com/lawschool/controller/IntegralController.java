@@ -46,7 +46,7 @@ public class IntegralController extends AbstractController {
      * @return com.lawschool.util.Result
     **/
     @RequestMapping("/add")
-    public Result getInfo(@RequestBody Integral integral){
+    public Result add(@RequestBody Integral integral){
         integralService.addIntegralRecord(integral, getUser());
         return Result.ok();
     }
