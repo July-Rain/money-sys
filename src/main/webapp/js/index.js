@@ -33,7 +33,7 @@ var vm = new Vue({
             });
         })
     },
-    mounted(){
+    mounted() {
         //加载菜单
         $.ajax({
             type: "POST",
@@ -49,8 +49,20 @@ var vm = new Vue({
                 }
             }
         });
+
+        let _b = false;
+        document.onkeydown = function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 66) {
+                _b = true
+
+            }
+            if (e && e.keyCode == 85 && _b) {
+                window.location.href = 'personalCen/archives.html'
+            }
+        }
     },
-    activated(){
+    activated() {
 
     },
 
@@ -59,7 +71,7 @@ var vm = new Vue({
 
         loadFrame: function (obj) {
             var _src = $("#container").attr("src");
-            if(_src === vm.iframeSrc){
+            if (_src === vm.iframeSrc) {
                 window.location.reload()
             }
             vm.iframeSrc = _src;
