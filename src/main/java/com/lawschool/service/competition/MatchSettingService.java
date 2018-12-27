@@ -2,6 +2,8 @@ package com.lawschool.service.competition;
 
 
 import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.beans.TestQuestions;
+import com.lawschool.beans.User;
 import com.lawschool.beans.competition.BattleTopicSetting;
 import com.lawschool.beans.competition.CompetitionOnline;
 import com.lawschool.beans.competition.MatchSetting;
@@ -23,4 +25,10 @@ public interface MatchSettingService extends IService<MatchSetting> {
     public void save(MatchSetting matchSetting);
     public List<BattleTopicSetting> getSonList(String id);
     public MatchSetting findAll();
+    public List<TestQuestions> getQuest();
+    public MatchSetting findAll2();
+    public void updateWin(MatchSetting matchSetting,String uid);
+
+    public void saveQuestion(TestQuestions testQuestions,String myanswer,String userid);
+
 }

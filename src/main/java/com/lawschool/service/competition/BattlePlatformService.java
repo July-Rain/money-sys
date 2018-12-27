@@ -15,7 +15,7 @@ import com.lawschool.beans.competition.BattlePlatform;
  */
 public interface BattlePlatformService extends IService<BattlePlatform>{
 
-        public BattlePlatform save(User u);
+        public BattlePlatform save(User u,String type);
 
         public void updata(BattlePlatform battlePlatform,String play2Id);
 }

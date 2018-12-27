@@ -3,7 +3,9 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.annotation.SysLog;
+import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
+import com.lawschool.beans.UserQuestRecord;
 import com.lawschool.beans.competition.BattleTopicSetting;
 import com.lawschool.beans.competition.CompetitionOnline;
 import com.lawschool.beans.competition.MatchSetting;
@@ -11,6 +13,9 @@ import com.lawschool.beans.competition.bak.BattleTopicSettingBak;
 import com.lawschool.beans.competition.bak.CompetitionOnlineBak;
 import com.lawschool.beans.competition.bak.MatchSettingBak;
 import com.lawschool.dao.competition.MatchSettingDao;
+import com.lawschool.service.AnswerService;
+import com.lawschool.service.TestQuestionService;
+import com.lawschool.service.UserQuestRecordService;
 import com.lawschool.service.competition.BattleTopicSettingService;
 import com.lawschool.service.competition.MatchSettingService;
 import com.lawschool.service.competition.bak.BattleTopicSettingBakService;
@@ -50,7 +55,12 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 
 	@Autowired
 	private BattleTopicSettingBakService battleTopicSettingBakService;
-
+	@Autowired
+	private TestQuestionService testQuestionService;
+	@Autowired
+	private AnswerService answerService;
+	@Autowired
+	private UserQuestRecordService userQuestRecordService;
 	@Override
 	public List<MatchSetting> list() {
 
@@ -203,7 +213,6 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 		MatchSetting  matchSetting=this.selectOne(new EntityWrapper<MatchSetting>());//得到list
 //		for(int i=0;i<list.size();i++)
 //		{
-
 		//通过配置大关的id找到关联的小关配置信息,
 //			     	List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationList =recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",list.get(i).getId()).orderBy("HOW_MANY_SMALL",true));
 		List<BattleTopicSetting> battleTopicSettingList =battleTopicSettingService.selectListByBaBaId(matchSetting.getId());
@@ -226,5 +235,72 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 
 //		}
 		return matchSetting;
+	}
+	@Override
+	public MatchSetting findAll2() {
+		MatchSetting  matchSetting=this.list().get(0);
+//		for(int i=0;i<list.size();i++)
+//		{
+		//通过配置大关的id找到关联的小关配置信息,
+//			     	List<RecruitCheckpointConfiguration> recruitCheckpointConfigurationList =recruitCheckpointConfigurationService.selectList(new EntityWrapper<RecruitCheckpointConfiguration>().eq("RECRUIT_CONFIGURATION_ID",list.get(i).getId()).orderBy("HOW_MANY_SMALL",true));
+		List<BattleTopicSetting> battleTopicSettingList =battleTopicSettingService.selectListByBaBaId(matchSetting.getId());
+		List<BattleTopicSetting> list2=new ArrayList();
+		if(battleTopicSettingList.size()==0)
+		{
+			return null;
+		}
+
+			//将小关信息放入对应的大关里面  一起返回给前端
+			matchSetting.setBattleTopicSettingList(battleTopicSettingList);
+//		}
+		return matchSetting;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public List<TestQuestions> getQuest() {
+
+		List<TestQuestions> qList= new ArrayList<TestQuestions>();
+		MatchSetting matchSetting=findAll2();//获取这个大关里面的所有小关的信息
+		//循环咯
+		for(BattleTopicSetting battleTopicSetting:matchSetting.getBattleTopicSettingList())
+		{
+			TestQuestions tq=new TestQuestions();
+			tq.setQuestionDifficulty(battleTopicSetting.getQuestionDifficulty());
+			tq.setQuestionType(battleTopicSetting.getQuestionType());
+			tq.setSpecialKnowledgeId(battleTopicSetting.getKnowledgeId());
+
+			TestQuestions testquestions=testQuestionService.findByEntity(tq);
+			testquestions.setAnswerList(answerService.getAnswerByQid(testquestions.getId()));
+			qList.add(testquestions);
+		}
+
+		return qList;
+	}
+
+	@Override
+	public void updateWin(MatchSetting matchSetting, String uid) {
+		matchSetting.setWinId(uid);
+		matchSetting.setLastTime(new Date());
+		this.updateById(matchSetting);
+	}
+
+	@Override
+	public void saveQuestion(TestQuestions testQuestions, String myanswer,String userid) {
+		//去作用域中取user
+//		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//		User u= (User) request.getSession().getAttribute("user");
+		UserQuestRecord userQuestRecord=new UserQuestRecord();
+		userQuestRecord.setId(IdWorker.getIdStr());//id
+		userQuestRecord.setUserId(userid);//userid
+		userQuestRecord.setQuestId(testQuestions.getId());//题目id
+		userQuestRecord.setOptTime(new Date());//保存时间
+		userQuestRecord.setMyAswerId(myanswer);//对应题目答案表的id
+		userQuestRecord.setRightAnswerId(testQuestions.getAnswerId());//这题的正确答案，对应题目答案表的id
+		userQuestRecord.setQuestionDifficulty(testQuestions.getQuestionDifficulty());//难度
+		userQuestRecord.setQuestionType(testQuestions.getQuestionType());//题目类型
+		userQuestRecord.setSpecialKnowledgeId(testQuestions.getSpecialKnowledgeId());//知识点
+		userQuestRecord.setSource("leitai");//添加来源
+		userQuestRecordService.insert(userQuestRecord);
 	}
 }

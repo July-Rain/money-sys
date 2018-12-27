@@ -69,4 +69,13 @@ public class MatchSettingController {
 
         return Result.ok().put("data", matchSetting);
     }
+
+    //改变擂主
+    @RequestMapping("/chuangLeizhu")
+    public Result chuangLeizhu(@RequestBody MatchSetting matchSetting,String uid){
+
+        matchSettingService.updateWin(matchSetting,uid);
+
+        return Result.ok();
+    }
 }
