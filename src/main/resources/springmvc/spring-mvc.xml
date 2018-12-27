@@ -32,14 +32,29 @@
    <!--资源拦截-->
    <mvc:resources location="/statics/" mapping="/statics/**"/>
    <mvc:resources location="/html/" mapping="/html/**"/>
+   <mvc:resources location="/js/" mapping="/js/**"/>
 
-   <!--  Log自定义注解拦截器 -->
+
    <mvc:interceptors>
+      <!--  Log自定义注解拦截器 -->
       <mvc:interceptor>
          <mvc:mapping path="/**"/>
          <bean class="com.lawschool.annotation.SysLogAspect"></bean>
       </mvc:interceptor>
+
+      <!--  登陆拦截 -->
+      <mvc:interceptor>
+         <mvc:mapping path="/**"/>
+         <mvc:exclude-mapping path="/sys/login"/>
+         <mvc:exclude-mapping path="/statics/**"/>
+         <mvc:exclude-mapping path="/js/**"/>
+         <bean class="com.lawschool.config.RequestInterceptor"></bean>
+      </mvc:interceptor>
    </mvc:interceptors>
+   <!-- 缓存 -->
+   <!--<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">-->
+      <!--<property name="configLocation" value="classpath:${ehcache.file}"></property>-->
+   <!--</bean>-->
 
 
    <!-- 使用注解事务，需要添加Transactional注解属性 -->
