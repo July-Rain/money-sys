@@ -23,11 +23,11 @@ public class BattlePlatformServiceImpl extends ServiceImpl<BattlePlatformDao, Ba
 
 
 	@Override
-	public BattlePlatform save(User u) {
+	public BattlePlatform save(User u,String type) {
 		    BattlePlatform battlePlatform=new BattlePlatform();
 			battlePlatform.setId(IdWorker.getIdStr());
 			battlePlatform.setPlay1(u.getId());
-	//		battlePlatform.setType();
+			battlePlatform.setType(type);
 			battlePlatform.setBattleCode((((int)((Math.random()*9+1)*100000))+"").substring(0,6));
 	//		battlePlatform.setForeignkeyId();
 			this.insert(battlePlatform);

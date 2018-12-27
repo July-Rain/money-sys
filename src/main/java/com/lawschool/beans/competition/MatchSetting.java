@@ -28,9 +28,15 @@ public class MatchSetting implements Serializable {
 	//擂主用户id
 	private String winId;
 
-	//擂主用户id
+	//擂主用户名称
 	@TableField(exist = false)
 	private String winName;
+
+
+	//擂主最后登陆 时间
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date lastTime;
+
 
 	//题量
 	private String topicNum;
@@ -239,6 +245,14 @@ public class MatchSetting implements Serializable {
 
 	public void setBattleTopicSettingList(List<BattleTopicSetting> battleTopicSettingList) {
 		this.battleTopicSettingList = battleTopicSettingList;
+	}
+
+	public Date getLastTime() {
+		return lastTime;
+	}
+
+	public void setLastTime(Date lastTime) {
+		this.lastTime = lastTime;
 	}
 
 	@Override

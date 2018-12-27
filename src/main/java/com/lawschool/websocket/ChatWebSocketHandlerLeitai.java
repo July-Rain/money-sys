@@ -1,26 +1,26 @@
 package com.lawschool.websocket;
 
 
-
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
+import com.lawschool.beans.Message;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.beans.User;
 import com.lawschool.beans.competition.BattlePlatform;
 import com.lawschool.beans.competition.CompetitionOnline;
+import com.lawschool.beans.competition.MatchSetting;
 import com.lawschool.service.UserService;
 import com.lawschool.service.competition.BattlePlatformService;
 import com.lawschool.service.competition.CompetitionOnlineService;
-import com.lawschool.util.RedisUtil;
-import net.sf.json.JSONObject;
-import com.lawschool.beans.Message;
-import com.lawschool.beans.User;
+import com.lawschool.service.competition.MatchSettingService;
 import com.lawschool.util.GsonUtils;
+import com.lawschool.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 import org.springframework.web.util.HtmlUtils;
+
 import java.io.IOException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -31,8 +31,8 @@ import java.util.Map.Entry;
  * @version 1.0
  * @date
  */
-@Component("chatWebSocketHandlerAlonePkByCode")
-public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
+@Component("chatWebSocketHandlerLeitai")
+public class ChatWebSocketHandlerLeitai implements WebSocketHandler {
 	@Autowired
 	private RedisUtil redisUtil;
 	@Autowired
@@ -42,13 +42,14 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 	private UserService userService;
 
 	@Autowired
-	private CompetitionOnlineService competitionOnlineService;
+	private MatchSettingService matchSettingService;
 
 	//在线用户的SOCKETsession(存储了所有的通信通道)
 	public static final Map<String, WebSocketSession> USER_SOCKETSESSION_MAP;
 
 	public static final Map<String, List> timuMap;
-	public static final Map<String, CompetitionOnline> timussettingMap;
+
+	public static final Map<String, MatchSetting> timussettingMap;
 
 	public static final Map<String, BattlePlatform> battlePlatformMap;
 
@@ -59,7 +60,7 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 
 		timuMap=new HashMap<String,List>();
 
-		timussettingMap=new HashMap<String,CompetitionOnline>();
+		timussettingMap=new HashMap<String,MatchSetting>();
 
 		battlePlatformMap=new HashMap<String,BattlePlatform>();
 	}
@@ -71,8 +72,8 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 	public void afterConnectionEstablished(WebSocketSession webSocketSession) throws Exception {
 		//将当前的连接的用户会话放入MAP,key是用户编号
 		User loginUser=(User) webSocketSession.getAttributes().get("loginUser");
-		String type=(String) webSocketSession.getAttributes().get("joinType");
-		String code=(String) webSocketSession.getAttributes().get("joinCode");
+//		MatchSetting matchSetting=(MatchSetting) webSocketSession.getAttributes().get("matchSetting");
+
 
 		USER_SOCKETSESSION_MAP.put(loginUser.getId(), webSocketSession);
 		/**
@@ -80,7 +81,7 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 		 */
 		new Thread(new Runnable() {
 			public  void run() {
-				xxx(loginUser,webSocketSession,type,code);
+				xxx(loginUser,webSocketSession);
 			}
 
 		}).start();
@@ -102,7 +103,7 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 
 		if(msg.getMyanswer()!=null && msg.getTq()!=null)
 		{
-			competitionOnlineService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom());
+			matchSettingService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom());
 		}
 
 
@@ -203,8 +204,8 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 			playids.split(",");
 			//主动去断这2个用户    但是要先断自己  在给另一个人发消息说我走了   在断另一个人
 			msg.setDate(new Date());
-			msg.setText(loginUser.getFullName()+"已经离开了,直接获得获胜者奖励"+timussettingMap.get("onlinePksetting"+playids.split(",")[0]).getWinReward());
-			msg.setMycore(timussettingMap.get("onlinePksetting"+playids.split(",")[0]).getWinReward());
+			msg.setText(loginUser.getFullName()+"已经离开了,直接获得获胜者奖励"+timussettingMap.get("leitaisetting"+playids.split(",")[0]).getWinReward());
+			msg.setMycore(timussettingMap.get("leitaisetting"+playids.split(",")[0]).getWinReward());
 
 			if(loginUser.getId().equals(playids.split(",")[0]))
 			{
@@ -212,6 +213,9 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 				sendMessageToUser(playids.split(",")[1],message);//给另一个人发消息
 				USER_SOCKETSESSION_MAP.get(playids.split(",")[0]).close();
+
+				//启动换人
+				matchSettingService.updateWin(timussettingMap.get("leitaisetting"+playids.split(",")[0]),loginUser.getId());
 				USER_SOCKETSESSION_MAP.get(playids.split(",")[1]).close();
 			}
 			else
@@ -221,6 +225,8 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 				msg.getUserList().add((User)USER_SOCKETSESSION_MAP.get(playids.split(",")[0]).getAttributes().get("loginUser"));//现在在线人员只有 没掉线的哪一个了
 				sendMessageToUser(playids.split(",")[0],message);//给另一个人发消息不发消息
 				USER_SOCKETSESSION_MAP.get(playids.split(",")[1]).close();
+				//启动换人
+				matchSettingService.updateWin(timussettingMap.get("leitaisetting"+playids.split(",")[0]),loginUser.getId());
 				USER_SOCKETSESSION_MAP.get(playids.split(",")[0]).close();
 			}
 			//将这2个从里面删掉
@@ -241,7 +247,7 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 			//删除redis 里的数据
 
 //			Map<String,BattlePlatform> battlePlatformMap=(Map) JSONObject.fromObject(redisUtil.get("redisFrombattlePlatformMap"));
-			battlePlatformMap.remove(webSocketSession.getAttributes().get("battlePlatcode"));
+			battlePlatformMap.remove(webSocketSession.getAttributes().get("battlePlatId"));
 //			redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);
 			//清除在线会话
 			USER_SOCKETSESSION_MAP.remove(loginUser.getId());
@@ -352,89 +358,150 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 		}
 	}
 
-	public synchronized void xxx(User loginUser,WebSocketSession webSocketSession,String type,String code)
+	public synchronized void xxx(User loginUser,WebSocketSession webSocketSession)
 	{
 		try {
-		    	Message msg = new Message();
-				//是房间的创建者
-				if(type.equals("add"))
-				{
-					//先根据这个人 新建一个 对战平台出来   这个人是play1
-					BattlePlatform battlePlatform=battlePlatformService.save(loginUser,"PKOnline");
-					battlePlatformMap.put(battlePlatform.getBattleCode(),battlePlatform);//把当前新建的平台加到map中
-					//下面这步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
-					webSocketSession.getAttributes().put("playids",loginUser.getId());
+			SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss" );
+		    Message msg = new Message();
+			MatchSetting matchSetting=matchSettingService.findAll2();
 
-					webSocketSession.getAttributes().put("battlePlatcode",battlePlatform.getBattleCode());
-					//第一个玩家进来 就去找题目   这样第2个玩家进来就可以直接开始。没关系 有锁
-					//得到题目的list(对象里面有答案)
-					List<TestQuestions> qList=competitionOnlineService.getQuest();
+			//假如现在是有擂主的
+		    	if(matchSetting.getWinId()!=null)
+		    	{
+		    		//看当前登陆人是不是擂主      如果当前登陆人是擂主
+					if(loginUser.getId().equals(matchSetting.getWinId()))
+					{
+						//开房，等人来
+						//先根据这个人 新建一个 对战平台出来   这个人是play1
+						BattlePlatform battlePlatform=battlePlatformService.save(loginUser,"leitai");
+						battlePlatformMap.put(battlePlatform.getId(),battlePlatform);//把当前新建的平台加到map中   id为主键
+						//下面这步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
+						webSocketSession.getAttributes().put("playids",loginUser.getId());
+						webSocketSession.getAttributes().put("battlePlatId",battlePlatform.getId());
 
-					CompetitionOnline competitionOnline=competitionOnlineService.findAll2();
+
+						//第一个玩家进来 就去找题目   这样第2个玩家进来就可以直接开始。没关系 有锁
+						//得到题目的list(对象里面有答案)
+						List<TestQuestions> qList=matchSettingService.getQuest();
+
 //						现在我要把它放onlinePk+id的形式存入   第一个user的id为准
 //						redisUtil.set("onlinePk"+loginUser.getId(),qList);
-					timuMap.put("onlinePk"+loginUser.getId(),qList);
-					timussettingMap.put("onlinePksetting"+loginUser.getId(),competitionOnline);
-
-					msg.setText("请等待 玩家加入");
-					msg.setDate(new Date());
-					msg.setTo(loginUser.getId());
-					msg.setNowtimu("0");
-					msg.setBattleCode(battlePlatform.getBattleCode());
-					msg.setCompetitionOnline(competitionOnline);
-					//把题目塞到信息里面去往页面打
-					msg.setTqList(qList);
-
-					msg.getUserList().add(loginUser);
-					TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-					//群发消息
-//						sendMessageToAll(message);
-					sendMessageToUser(loginUser.getId(),message);
-				}
-
-				//凭借邀请码加入房间的
-				else if (type.equals("join"))
-				{
-					//找到这个比武台 然后把自己加到play2里面
-					BattlePlatform battlePlatform=battlePlatformMap.get(code);
-					//如果code码错误  提示 然后退出
-					if(battlePlatform==null)
-					{
-						msg.setText("未找到对应房间");
+						timuMap.put("leitai"+loginUser.getId(),qList);
+						timussettingMap.put("leitaisetting"+loginUser.getId(),matchSetting);
+						msg.setText("请擂主等待 挑战者加入");
 						msg.setDate(new Date());
+						msg.setTo(loginUser.getId());
+						msg.setNowtimu("0");
+						msg.setMatchSetting(matchSetting);
+						//把题目塞到信息里面去往页面打
+						msg.setTqList(qList);
+						msg.getUserList().add(loginUser);
 						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 						sendMessageToUser(loginUser.getId(),message);
-						webSocketSession.close();
 					}
-					//通过code找到了房间
+					//如果登陆人不是擂主  首先 看擂主在不在线咯
 					else
 					{
-						//找到这个比武台 然后把自己加到play2里面
-						battlePlatformService.updata(battlePlatform,loginUser.getId());
-						//添加完后要把这个房间在除去  防止其他人加进来
-           				battlePlatformMap.remove(code);
-						//下面这liang两步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
-						webSocketSession.getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());//
-						USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());
-			 		    msg.setText("玩家"+loginUser.getFullName()+"加入,欢迎。。。。。。。。。。");
-         				msg.setDate(new Date());
+						//得到擂主的id
+					    String leizhuId=matchSetting.getWinId();
+					    //判断在不在咯
+						final WebSocketSession webSocket =  USER_SOCKETSESSION_MAP.get(leizhuId);
+						if(webSocket==null)//如果不在线
+						{
+							System.out.println("擂主不在线");
 
-		 				//把题目塞到信息里面去往页面打
-		 				msg.setTqList(timuMap.get("onlinePk"+battlePlatform.getPlay1()));
-		 				msg.setCompetitionOnline(timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()));
-		  				msg.setNowtimu("0");
-						msg.setBattleCode(code);
-		 				msg.setTo(battlePlatform.getPlay1()+","+loginUser.getId());//为了传到前端页面
-		 				msg.getUserList().add(
-		 						(User)USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().get("loginUser")
-		 				);
-		 				msg.getUserList().add(loginUser);
-						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-		 				//群发消息
-		 				sendMessageToUsers(battlePlatform.getPlay1()+","+loginUser.getId(),message);//拼接接收人的id
+							//判断擂主是否过期
 
+							Calendar c = Calendar.getInstance();
+							c.setTime(matchSetting.getLastTime());
+							c.add(Calendar.DAY_OF_MONTH, 1);
+							Date invalidTiem = c.getTime();//得到擂主最后一次登陆 加1天的时间
+							String strTime = sdf.format(invalidTiem);//格式化时间
+							if (invalidTiem.before(new Date()))
+							{
+								//过期时间大于当前时间，换人
+								msg.setText("擂主当前不再线，期限为"+strTime+",现在你是擂主了，请重新进入");
+								msg.setDate(new Date());
+								TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+								sendMessageToUser(loginUser.getId(),message);
+
+								//启动换人
+								matchSettingService.updateWin(matchSetting,loginUser.getId());
+
+								webSocketSession.close();
+
+							}
+							else
+							{
+								//表示过期时间小于当前时间
+								msg.setText("擂主当前不再线，擂主最后期限为"+strTime);
+								msg.setDate(new Date());
+								TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+								sendMessageToUser(loginUser.getId(),message);
+								webSocketSession.close();
+
+							}
+					    }
+						else
+						{
+							System.out.println("擂主在线");
+							//我要加入擂主的房间了
+							//找到这个比武台 然后把自己加到play2里面
+							BattlePlatform battlePlatform=battlePlatformMap.get(webSocket.getAttributes().get("battlePlatId"));
+							if(battlePlatform==null)
+							{
+								msg.setText("擂主正在战斗，请等待");
+								msg.setDate(new Date());
+								TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+								sendMessageToUser(loginUser.getId(),message);
+								webSocketSession.close();
+							}
+							else
+							{
+								//找到这个比武台 然后把自己加到play2里面
+								battlePlatformService.updata(battlePlatform,loginUser.getId());
+								//添加完后要把这个房间在除去  防止其他人加进来
+								battlePlatformMap.remove(battlePlatform.getId());
+								//下面这liang两步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
+								webSocketSession.getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());//
+								USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());
+								msg.setText("玩家"+loginUser.getFullName()+"加入,欢迎。。。。。。。。。。");
+								msg.setDate(new Date());
+
+								//把题目塞到信息里面去往页面打
+								msg.setTqList(timuMap.get("leitai"+battlePlatform.getPlay1()));
+								msg.setMatchSetting(timussettingMap.get("leitaisetting"+battlePlatform.getPlay1()));
+								msg.setNowtimu("0");
+
+								msg.setTo(battlePlatform.getPlay1()+","+loginUser.getId());//为了传到前端页面
+								msg.getUserList().add(
+										(User)USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().get("loginUser")
+								);
+								msg.getUserList().add(loginUser);
+								TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+								//群发消息
+								sendMessageToUsers(battlePlatform.getPlay1()+","+loginUser.getId(),message);//拼接接收人的id
+
+							}
+						}
 					}
+
 				}
+				//现在是没有擂主的
+				else
+				{
+
+					msg.setText("当前占无擂主，你已成为擂主，请先退出");
+					msg.setDate(new Date());
+					TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+					sendMessageToUser(loginUser.getId(),message);
+
+					//启动换人
+					matchSettingService.updateWin(matchSetting,loginUser.getId());
+
+					webSocketSession.close();
+				}
+
 		} catch (Exception e) {
 			System.out.println(e);
 		}
