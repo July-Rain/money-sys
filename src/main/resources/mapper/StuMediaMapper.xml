@@ -25,6 +25,7 @@
     <result column="COLLECTTIME" property="collecttime" />
       <result column="STUTYPEVALUE" property="stuTypeValue" />
     <result column="ADDSRC" property="addsrc" />
+    <result column="stuPoliceclassName" property="stuPoliceclassName" />
   </resultMap>
   <!--<insert id="insert" parameterType="com.lawschool.beans.StuMedia">
     insert into LAW_STU_MEDIA (ID, STU_CODE, STU_TITLE, 
@@ -255,5 +256,47 @@
     <if test="stuType != null and stuType!=''">
       and LAW_STU_MEDIA.stu_type = #{stuType}
     </if>
+  </select>
+
+  <select id="listStuByTask" resultMap="BaseResultMap" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+        SELECT
+            c. ID,
+            c.STU_CODE,
+            c.STU_TITLE,
+            c.VIDEO_PIC_ACC,
+            c.STU_ISSTIME,
+            c.STU_ISSUER,
+            c.STU_LAWID,
+            c.com_content,
+            DICTCODE2VALE(c.STU_POLICECLASS) as stuPoliceclassName,
+            c.stu_count
+        FROM
+            (
+                SELECT
+                DISTINCT(T.id),
+                    T .DATA_ID
+                FROM
+                    LAW_TASKS_DESIC T
+                WHERE
+                    T .TASK_ID = #{taskId}
+                AND T .INFO_TYPE = #{infoType} START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
+            ) M
+        INNER JOIN LAW_STU_MEDIA c ON M .DATA_ID = c. ID
+  </select>
+  <select id="countListStuByTask" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+        SELECT
+            count(1)
+        FROM
+            (
+                SELECT
+                DISTINCT(T.id),
+                    T .DATA_ID
+                FROM
+                    LAW_TASKS_DESIC T
+                WHERE
+                    T .TASK_ID = #{taskId}
+                AND T .INFO_TYPE = #{infoType} START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
+            ) M
+        INNER JOIN LAW_STU_MEDIA c ON M .DATA_ID = c. ID
   </select>
 </mapper>

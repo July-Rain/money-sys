@@ -25,8 +25,17 @@ public class TaskDesicEntity implements Serializable {
     private String infoCode;//节点code
     private Date createTime;//创建时间
     private String infoType;//类型标记
+    private String dataId;//数据原先的id
     @TableField(exist = false)
     private List<TaskDesicEntity> child;
+
+    public String getDataId() {
+        return dataId;
+    }
+
+    public void setDataId(String dataId) {
+        this.dataId = dataId;
+    }
 
     public String getId() {
         return id;
@@ -99,4 +108,5 @@ public class TaskDesicEntity implements Serializable {
     public void setInfoType(String infoType) {
         this.infoType = infoType;
     }
+
 }

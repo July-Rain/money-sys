@@ -22,5 +22,49 @@
     <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
     <result column="DEPT_NAME" jdbcType="VARCHAR" property="deptName" />
   </resultMap>
+  <select id="listCaseAnaByTask" resultMap="BaseResultMap" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+        SELECT
+            c. ID,
+            c.CASE_TITLE,
+            c.CASE_CODE,
+            c.VIDEO_PIC_ACC,
+            c.CASE_CONTENT,
+            c.CASE_TIME,
+            c.CONTENT_TYPE
+        FROM
+            (
+                SELECT
+                DISTINCT(T.id),
+                    T .DATA_ID
+                FROM
+                    LAW_TASKS_DESIC T
+                WHERE
+                    T .TASK_ID = #{taskId}
+              <if test="infoType != null and infoType!=''">
+                  AND T .INFO_TYPE = #{infoType}
+              </if>
 
+                START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
+            ) M
+        INNER JOIN LAW_CASE_ANALYSIS c ON M .DATA_ID = c. ID
+  </select>
+  <select id="countListCaseAnaByTask" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+        SELECT
+            count(1)
+        FROM
+            (
+                SELECT
+                DISTINCT(T.id),
+                    T .DATA_ID
+                FROM
+                    LAW_TASKS_DESIC T
+                WHERE
+                    T .TASK_ID = #{taskId}
+              <if test="infoType != null and infoType!=''">
+                  AND T .INFO_TYPE = #{infoType}
+              </if>
+                START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
+            ) M
+        INNER JOIN LAW_CASE_ANALYSIS c ON M .DATA_ID = c. ID
+  </select>
 </mapper>

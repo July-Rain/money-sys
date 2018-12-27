@@ -3,6 +3,8 @@ package com.lawschool.dao;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.StuMedia;
+import com.lawschool.beans.law.ClassifyDesicEntity;
+import com.lawschool.beans.law.TaskDesicEntity;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -21,5 +23,24 @@ public interface StuMediaDao extends AbstractDao<StuMedia> {
 
     int cntMyCollection(Map<String,Object> param);
 
+    /**
+     * @Author MengyuWu
+     * @Description 查询学习任务下的列表
+     * @Date 10:28 2018-12-27
+     * @Param [page, stuMedia]
+     * @return java.util.List<com.lawschool.beans.StuMedia>
+     **/
+    
+
+    List<StuMedia> listStuByTask(Page page, TaskDesicEntity desicEntity);
+    /**
+     * @Author MengyuWu
+     * @Description 统计条数
+     * @Date 10:14 2018-12-27
+     * @Param [stuMedia]
+     * @return int
+     **/
+
+    int countListStuByTask( TaskDesicEntity desicEntity);
 
 }

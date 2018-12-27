@@ -24,6 +24,31 @@ public class LawClassifyServiceImpl extends ServiceImpl<LawClassifyDao,LawClassi
     private LawClassifyDao classifyDao;
     public List<TaskDesicEntity> queryClassTree(){
         //查询树节点数据
-        return classifyDao.queryClassTree();
+        List<TaskDesicEntity> allList=classifyDao.queryClassTree();
+        allList.stream().forEach(e->{
+            if("law_0".equals(e.getInfoParentId())){
+                e.setInfoParentId("law_90001");
+            }
+            else if("stu_pic_0".equals(e.getInfoParentId())){
+                e.setInfoParentId("stu_90004");
+            }
+            else if("stu_audio_0".equals(e.getInfoParentId())){
+                e.setInfoParentId("stu_90003");
+            }
+            else if("stu_video_0".equals(e.getInfoParentId())){
+                e.setInfoParentId("stu_90002");
+            }
+            else if("case_pic_0".equals(e.getInfoParentId())){
+                e.setInfoParentId("case_90008");
+            }
+            else if("case_audio_0".equals(e.getInfoParentId())){
+                e.setInfoParentId("case_90007");
+            }
+            else if("case_video_0".equals(e.getInfoParentId())){
+                e.setInfoParentId("case_90006");
+            }
+        });
+       // TaskDesicEntity task=new TaskDesicEntity("","law_");
+        return allList;
     }
 }

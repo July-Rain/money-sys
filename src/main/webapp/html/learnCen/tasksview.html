@@ -101,6 +101,7 @@
                             </el-form-item>
                         </el-form>
                         <div>
+                            <el-button size="mini" type="primary" @click="addLearnTask" >新增</el-button>
                             <el-table
                                     :data="tableData"
                                     border
@@ -138,17 +139,17 @@
                                         label="操作"
                                         header-align="center"
                                         align="center"
-                                        width="180">
+                                        >
                                     <template slot-scope="scope">
                                         <el-button
                                                 size="mini"
-                                                @click="handleEdit(scope.$index, scope.row)">编辑
+                                                @click="handleEdit(scope.$index, scope.row)">查看
                                         </el-button>
                                         <el-button
                                                 plain
                                                 type="danger"
                                                 size="mini"
-                                                @click="handleDel(scope.$index, scope.row)">删除
+                                                @click="continueStudy(scope.$index, scope.row)">继续学习
                                         </el-button>
                                     </template>
                                 </el-table-column>
@@ -178,7 +179,20 @@
                             <el-input v-model="learnTasks.taskName" placeholder="请输入任务名称" clearable></el-input>
                         </el-form-item>
                         <el-form-item label="任务内容" prop="taskContent">
-                            <el-input type="textarea" maxlength="200" v-model="learnTasks.taskContent" placeholder="请输入任务内容" clearable></el-input>
+                            <!--<el-input type="textarea" maxlength="200" v-model="learnTasks.taskContent" placeholder="请输入任务内容" clearable></el-input>-->
+                            <!--<el-tree
+                                    ref="classTree"
+                                    :data="classData"
+                                    :props="defaultClassProps"
+                                    accordion
+                                    show-checkbox
+                                    @check-change="handleClassCheckChange"
+                                    node-key="infoId"
+                                    :default-expanded-keys="[2079]"
+                            >
+                            </el-tree>-->
+                            <!-- 选择任务 -->
+                            <ul id="classTree" class="ztree"></ul>
                         </el-form-item>
                         <el-form-item label="开始日期" prop="startTime">
                             <el-date-picker
@@ -301,6 +315,23 @@
             </el-row>
 
         </el-dialog>
+
+        <!--<el-dialog title="选择法律法规" :visible.sync="dialogClass" >
+            &lt;!&ndash;对于同一级的节点，每次只能展开一个&ndash;&gt;
+            <el-tree
+                    ref="classTree"
+                    :data="classData"
+                    :props="defaultClassProps"
+                    accordion
+                    show-checkbox
+                    @check-change="handleClassCheckChange"
+                    node-key="id"
+                    :default-expanded-keys="[2079]"
+            >
+            </el-tree>
+            <el-button type="primary" size="mini" @click="confimClass">保存</el-button>
+            <el-button type="primary" size="mini" @click="cancelClass">取消</el-button>
+        </el-dialog>-->
     </div>
 </div>
 </body>

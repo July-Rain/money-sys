@@ -60,7 +60,7 @@ var vm = new Vue({
         loadFrame: function (obj) {
             var _src = $("#container").attr("src");
             if(_src === vm.iframeSrc){
-                window.location.reload()
+                // window.location.reload()
             }
             vm.iframeSrc = _src;
 
