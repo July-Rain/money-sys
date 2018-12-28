@@ -273,7 +273,7 @@
 }
 .box-card .header .more{
     float: right;
-    color: #446279;
+    color: #1381e3;
 }
 .box-card .content{
     background: #ffffff;
@@ -399,7 +399,7 @@
 .content.fast li .title{
     color: #333;
     display: inline-block;
-    max-width: 400px;
+    max-width: 83%;
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
