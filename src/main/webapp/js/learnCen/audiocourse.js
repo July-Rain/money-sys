@@ -145,5 +145,20 @@ var vm = new Vue({
         cancelLaw: function () {
             this.dialogLaw=false;
         },
+        onPlay:function (id) {
+            //请求后台修改播放量
+            $.ajax({
+                type: "POST",
+                url: baseURL + "stumedia/updateCount?accId="+id,
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        }
     }
 });

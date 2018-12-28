@@ -2,6 +2,7 @@ package com.lawschool.beans;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotations.Version;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawschool.base.DataEntity;
 
@@ -39,6 +40,8 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
 
     private String stuTime;//时长
 
+    @Version
+    @TableField(update = "%s+1")
     private Integer stuCount;//观看次数
 
     private Date stuCreat;//制作时间
