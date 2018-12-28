@@ -12,87 +12,15 @@ var vm = new Vue({
         diffList: [],
         typeList: [],
         qtList: [],
-        treeData1: [
-            {
-                id: 1,
-                label: '一级 1',
-                children: [{
-                    id: 4,
-                    label: '二级 1-1',
-                    children: [{
-                        id: 9,
-                        label: '三级 1-1-1'
-                    }, {
-                        id: 10,
-                        label: '三级 1-1-2'
-                    }]
-                }]
-            },
-            {
-                id: 2,
-                label: '一级 2',
-                children: [{
-                    id: 5,
-                    label: '二级 2-1'
-                }, {
-                    id: 6,
-                    label: '二级 2-2'
-                }]
-            },
-            {
-                id: 3,
-                label: '一级 3',
-                children: [{
-                    id: 7,
-                    label: '二级 3-1'
-                }, {
-                    id: 8,
-                    label: '二级 3-2'
-                }]
-            }
-        ],
-        treeData2: [
-            {
-                id: 199,
-                label: '一级 1',
-                children: [{
-                    id: 4,
-                    label: '二级 1-1',
-                    children: [{
-                        id: 9,
-                        label: '三级 1-1-1'
-                    }, {
-                        id: 10,
-                        label: '三级 1-1-2'
-                    }]
-                }]
-            },
-            {
-                id: 2,
-                label: '一级 2',
-                children: [{
-                    id: 5,
-                    label: '二级 2-1'
-                }, {
-                    id: 6,
-                    label: '二级 2-2'
-                }]
-            },
-            {
-                id: 3,
-                label: '一级 3',
-                children: [{
-                    id: 7,
-                    label: '二级 3-1'
-                }, {
-                    id: 8,
-                    label: '二级 3-2'
-                }]
-            }
-        ],
+        treeData1: [],
+        treeData2: [],
         defaultProps: {
-            children: 'children',
-            label: 'label'
+            children: 'list',
+            label: 'name'
+        },
+        defaultProps2: {
+            children: 'child',
+            label: 'fullName'
         }
     },
     mounted: function () {
@@ -210,29 +138,24 @@ var vm = new Vue({
             var that = this;
             $.ajax({
                 type: "GET",
-                url: baseURL + "menu/list2",
+                url: baseURL + "menu/elTree",
                 contentType: "application/json",
                 success: function (result) {
-                    that.treeData1 = [];
+                    that.treeData1 = result.menuList;
                     console.info("功能权限", result);
-                    result.map((info) => {
-                        if (!info.parentName) {
-                            that.treeData1.push({
-                                id: info.id,
-                                label: info.name
-                            })
-                        }
-                    })
+
                 }
             })
-            // $.ajax({
-            //     type: "GET",
-            //     url: baseURL + "org/tree",
-            //     contentType: "application/json",
-            //     success: function (result) {
-            //         console.info("数据权限",result)
-            //     }
-            // })
+            $.ajax({
+                type: "GET",
+                url: baseURL + "org/tree",
+                contentType: "application/json",
+                success: function (result) {
+                    that.treeData2 = result.orgList;
+                    console.info("数据权限", result);
+
+                }
+            })
         })
     }
 

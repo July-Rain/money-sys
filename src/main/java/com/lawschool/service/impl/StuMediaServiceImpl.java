@@ -272,4 +272,13 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         page.setTotal(mapper.countListStuByTask(taskDesicEntity));
         return new PageUtils(page);
     }
+
+    @Override
+    public int updateCount(String accId) {
+        StuMedia stuMedia = new StuMedia();
+        stuMedia.setStuCount(1);
+        stuMedia.setComContent(accId);
+        this.update(stuMedia,new EntityWrapper<StuMedia>().ne("stu_type","1").eq("com_content",accId));
+        return 0;
+    }
 }

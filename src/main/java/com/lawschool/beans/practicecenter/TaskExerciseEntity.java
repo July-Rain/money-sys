@@ -11,13 +11,17 @@ import com.lawschool.base.DataEntity;
 @TableName("LAW_EXERCISE_TASK")
 public class TaskExerciseEntity extends DataEntity<TaskExerciseEntity> {
 
-    private static final Integer STATUS_ON = 0;// 练习任务状态，进行中
-    private static final Integer STATUS_OFF = 1;// 练习任务状态，已完结
+    public static final Integer STATUS_ON = 0;// 练习任务状态，进行中
+    public static final Integer STATUS_OFF = 1;// 练习任务状态，已完结
 
     private String configureId;// 练习配置ID
     private String questions;// 剩余题目
     private String userId;// 用户ID
     private Integer status;// 练习状态，0进行中、1已完结
+
+    private Integer no;// 上次练习的页数
+    private Integer total;// 总题数
+    private Integer answerNum;// 已答题数
 
     public String getConfigureId() {
         return configureId;
@@ -49,5 +53,29 @@ public class TaskExerciseEntity extends DataEntity<TaskExerciseEntity> {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getNo() {
+        return no;
+    }
+
+    public void setNo(Integer no) {
+        this.no = no;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
+
+    public Integer getAnswerNum() {
+        return answerNum;
+    }
+
+    public void setAnswerNum(Integer answerNum) {
+        this.answerNum = answerNum;
     }
 }

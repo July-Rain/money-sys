@@ -90,23 +90,9 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
         List<QuestForm> result = new ArrayList<>();
 
         result = this.findByIds(ids);
-
         List<AnswerForm> answerList = answerService.findByQuestionIds(ids);
 
-        for(QuestForm qf : result){
-            String qid = qf.getId();
-            List<AnswerForm> tempList = new ArrayList<>();
-
-            for(AnswerForm af : answerList){
-                String aqid = af.getQuestionId();
-                if(qid.equals(aqid)){
-                    tempList.add(af);
-                }
-            }
-
-            qf.setAnswer(tempList);
-            answerList.removeAll(tempList);
-        }
+        result = this.handleAnswers(result, answerList);
 
         return result;
     }
@@ -130,5 +116,32 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
     public QuestForm findTestQuestionById(String id) {
         QuestForm question =  testQuestionsDao.findTestQuestionById(id);
         return question;
+    }
+
+    /**
+     * 处理题目和答案
+     * @param questForms
+     * @param answerList
+     * @return
+     */
+    @Override
+    public List<QuestForm> handleAnswers(List<QuestForm> questForms, List<AnswerForm> answerList){
+
+        for(QuestForm qf : questForms){
+            String qid = qf.getId();
+            List<AnswerForm> tempList = new ArrayList<>();
+
+            for(AnswerForm af : answerList){
+                String aqid = af.getQuestionId();
+                if(qid.equals(aqid)){
+                    tempList.add(af);
+                }
+            }
+
+            qf.setAnswer(tempList);
+            answerList.removeAll(tempList);
+        }
+
+        return questForms;
     }
 }
