@@ -6,6 +6,7 @@ import com.lawschool.beans.ExerciseConfigureEntity;
 import com.lawschool.form.QuestForm;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: Moon
@@ -22,4 +23,8 @@ public interface ExerciseConfigureService extends AbstractService<ExerciseConfig
                                            ExerciseConfigureEntity entity);
 
     Integer updateDelflag(String id);
+
+    Map<String, String> getQuestions(String id);
+
+    String findQuestionsById(String id);
 }
