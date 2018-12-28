@@ -58,6 +58,23 @@ public class SysMenuController {
 
     }
     /**
+     * @Author MengyuWu
+     * @Description 查询首页的菜单
+     * @Date 15:19 2018-12-5
+     * @Param []
+     * @return com.lawschool.util.Result
+     **/
+
+    @RequestMapping("/elTree")
+    public Result elTree(){
+        EntityWrapper<SysMenu> ew = new EntityWrapper<SysMenu>();
+        List<SysMenu> menuList = sysMenuService.selectList(
+                ew.eq("is_show","1").orderBy("ORDER_NUM", true)
+        );
+        return Result.ok().put("menuList", bulidDeptTree(menuList));
+
+    }
+    /**
      * 两层循环实现建树
      * @param list 传入的树节点列表
      * @return

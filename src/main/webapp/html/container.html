@@ -142,13 +142,9 @@
                         <el-row :gutter="66">
                             <el-col :span="12" v-for="(item, index) in videoData">
                                 <el-card :body-style="{ padding: '0px' }">
-                                    <video class="video" controls preload="auto" height="125" style="overflow: hidden" data-setup="{}">
+                                    <video class="video" width="315" height="155" controls preload="none" :poster="item.videoPicAccUrl">
                                         <source :src="item.videoUrl" type="video/mp4">
-                                        <!--<source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm">-->
-                                        <!--<source src="http://vjs.zencdn.net/v/oceans.ogv" type="video/ogg">-->
-                                        <!--<p class="vjs-no-js"> To view this video please enable JavaScript, and consider upgrading to a web-->
-                                        <!--browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5-->
-                                        <!--video</a></p>-->
+                                        您的浏览器不支持视频播放
                                     </video>
                                     <div style="padding: 14px 14px 0 14px;">
                                         <p>
