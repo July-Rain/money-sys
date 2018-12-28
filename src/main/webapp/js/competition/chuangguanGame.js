@@ -184,12 +184,17 @@ var vm = new Vue({
             }
             else if(type=="over")
             {
-                vm.textmag="您已主动放弃！闯关结束，成绩为第"+vm.nowBignum+"大关的第"+vm.nowBignum+"小关，获得积分为"+vm.Score+"是否,开启新一轮闯关";
+                console.info(vm.BigGuanList[Number(vm.nowBignum)-1].recruitCheckpointConfigurationList[Number(vm.nowLitnum)-1].id);
+                //分数记录下去
+                vm.recordScore(vm.BigGuanList[Number(vm.nowBignum)-1].recruitCheckpointConfigurationList[Number(vm.nowLitnum)-1].id,vm.nowBignum,vm.nowLitnum,vm.Score);
+
+                vm.textmag="您已主动放弃！闯关结束，成绩为第"+vm.nowBignum+"大关的第"+vm.nowLitnum+"小关，获得积分为"+vm.Score+"是否,开启新一轮闯关";
             }
 
             vm.dialogQuestion=false;
             vm.dialogerror=true;
         },
+
         //答对事件
         questionYes:function()
         {
@@ -316,11 +321,15 @@ var vm = new Vue({
                     // alert("闯关结束，你赢了");
                     if( vm.BigGuanList[Number(vm.nowBignum)-1].markReward=="0")
                     {
+                        console.info(vm.BigGuanList[Number(vm.nowBignum)-1].recruitCheckpointConfigurationList[Number(vm.nowBignum)-1]);
+                        vm.recordScore(vm.BigGuanList[Number(vm.nowBignum)-1].recruitCheckpointConfigurationList[Number(vm.nowLitnum)-1].id,vm.nowBignum,vm.nowLitnum,vm.Score);
                         vm.$alert("恭喜你，通过所有大关，当前大关没有大关通关奖励分值,当前奖励积分"+vm.Score)
                     }
                     else if(vm.BigGuanList[Number(vm.nowBignum)-1].markReward=="1")
                     {
+                        console.info(vm.BigGuanList[Number(vm.nowBignum)-1].recruitCheckpointConfigurationList[Number(vm.nowBignum)-1]);
                         vm.Score=Number(vm.Score)+ Number(vm.BigGuanList[Number(vm.nowBignum)-1].rewardScore);  //下表原因  要减一
+                        vm.recordScore(vm.BigGuanList[Number(vm.nowBignum)-1].recruitCheckpointConfigurationList[Number(vm.nowLitnum)-1].id,vm.nowBignum,vm.nowLitnum,vm.Score);
                         vm.$alert("恭喜你，通过所有大关，并获得当前大关通关奖励"+vm.BigGuanList[Number(vm.nowBignum)-1].rewardScore+",当前奖励积分"+vm.Score);
                     }
 
@@ -346,6 +355,19 @@ var vm = new Vue({
         del: function () {
         },
         update: function () {
+        },
+        recordScore:function(foreignKeyId,nowbig,nowlit,sorce)
+        {
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'competitionRecord/recordScore',
+                dataType: "json",
+                async:false,
+                data: {"foreignKeyId":foreignKeyId,"nowbig":nowbig,"nowlit":nowlit,"sorce":sorce},
+                success: function (result) {
+
+                }
+            });
         },
         closeBegin: function () {
             vm.dialogBegin = false;

@@ -18,7 +18,7 @@ public class Integral  extends DataEntity<Integral> {
 
     private Integer point;//分数
 
-    private String src;//来源
+    private String src;//来源    闯关：Checkpoint    在线比武：onlinPk     擂台：leitai
 
     private String userId;//用户id
 
