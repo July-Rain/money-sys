@@ -18,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -58,6 +56,7 @@ public class ExerciseConfigureServiceImpl
 
         // 获取满足条件的题目IDS，更新配置表
         String ids = "";
+        int total = 0;
         for(ExerciseConditionEntity ent : list){
             int max = 0;
 
@@ -93,9 +92,11 @@ public class ExerciseConfigureServiceImpl
                     }
 
                     if(currentSize < arr.length){// 截取list
+                        total += currentSize;
                         List<String> tempList = Arrays.asList(arr).subList(0, currentSize+1);
                         ids += tempList.stream().collect(Collectors.joining(",")) + ",";
                     } else {
+                        total += arr.length;
                         ids += value + ",";
                     }
                 }
@@ -107,7 +108,7 @@ public class ExerciseConfigureServiceImpl
                 ids = ids.substring(0, ids.length()-1);
             }
 
-            dao.updateQuestions(entity.getId(), ids);
+            dao.updateQuestions(entity.getId(), ids, total);
         }
 
     }
@@ -152,9 +153,41 @@ public class ExerciseConfigureServiceImpl
         return page;
     }
 
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
     @Override
     public Integer updateDelflag(String id){
 
         return dao.updateDelflag(id);
+    }
+
+    /**
+     * 获取练习配置对应的题目IDs
+     * @param id
+     * @return
+     */
+    @Override
+    public Map<String, String> getQuestions(String id){
+
+        Map<String, String> map = new HashMap<String, String>(2);
+        map.put("id", id);
+
+        String quest = this.findQuestionsById(id);
+        map.put("quest", quest);
+
+        return map;
+    }
+
+    /**
+     * 获取配置对应的题目IDs
+     * @param id
+     * @return
+     */
+    public String findQuestionsById(String id){
+
+        return dao.findQuestionsById(id);
     }
 }
