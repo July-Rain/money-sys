@@ -85,6 +85,19 @@
     .el-menu--horizontal .el-submenu{
         height: 99px;
     }
+    .header-right > ul > li{
+        position: relative;
+        margin: 0 5px;
+    }
+    .header-right > ul > li:after{
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: 30px;
+        background: #71b3ee;
+        right: -7px;
+        top: 26px;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -132,7 +145,7 @@
     </div>
 
 
-    <div class="container-layout" style="height: calc(100vh - 70px)">
+    <div class="container-layout" style="height: calc(100vh - 74px)">
         <iframe id="container" @load="loadFrame(this)" :src="[(childUrl)]" frameborder="0" width="100%" height="100%"></iframe>
     </div>
 </div>
