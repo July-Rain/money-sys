@@ -54,7 +54,8 @@
     <!-- 更新配置题目信息 -->
     <update id="updateQuestions">
         UPDATE LAW_EXERCISE_CONFIGURE
-        SET questions = #{questions}
+        SET questions = #{questions},
+        total = #{total}
         <where>
             id = #{id}
         </where>
@@ -107,7 +108,9 @@
     <select id="findListByUser" resultType="com.lawschool.beans.ExerciseConfigureEntity">
         SELECT
         <include refid="ecColumns"/>,
-        t.status AS "status"
+        t.answer_num AS "answerNum",
+        t.status AS "status",
+        t.id AS "taskId"
         FROM LAW_EXERCISE_CONFIGURE o
         LEFT JOIN LAW_EXERCISE_TASK t ON o.id = t.configure_id
         AND t.user_id = #{createUser}
@@ -134,4 +137,14 @@
             id = #{id}
         </where>
     </update>
+
+    <select id="selectQuestions" resultType="map">
+        SELECT
+            id AS "id",
+            questions AS "quest"
+        FROM LAW_EXERCISE_CONFIGURE
+        <where>
+            id = #{id}
+        </where>
+    </select>
 </mapper>

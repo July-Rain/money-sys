@@ -15,4 +15,68 @@
         </where>
     </select>
 
+    <select id="getQuestAndAnswer" resultType="com.lawschool.form.QuestForm">
+        SELECT
+            t.id,
+            t.com_content,
+            t.question_difficulty,
+            t.question_type,
+            t.answer_id,
+            t.legal_basis,
+            t.answer_describle,
+            t.answer_choice_number,
+            r.ANSWER_ID AS "userAnswer",
+            r.right
+        FROM law_testquestions t
+        LEFT JOIN LAW_TASK_RECORD r
+            ON t.id = r.question_id
+            AND r.create_user = #{userId}
+            AND r.configure_id = #{id}
+        <where>
+            t.id IN
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+        ORDER BY t.id
+
+    </select>
+
+    <insert id="insert">
+        INSERT INTO LAW_EXERCISE_TASK
+        (
+            id,
+            CONFIGURE_ID,
+            QUESTIONS,
+            USER_ID,
+            STATUS,
+            NO,
+            TOTAL
+        ) VALUES (
+            #{id},
+            #{configureId},
+            #{questions},
+            #{userId},
+            #{status},
+            #{no},
+            #{total}
+        )
+    </insert>
+
+    <!-- 更新练习任务的整体答题情况 -->
+    <update id="updateAnswerNum">
+        UPDATE LAW_EXERCISE_TASK
+        SET ANSWER_NUM = ANSWER_NUM + #{num}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <update id="updateStatus">
+        UPDATE LAW_EXERCISE_TASK
+        SET status = #{status}
+        <where>
+            id = #{id}
+        </where>
+    </update>
 </mapper>
