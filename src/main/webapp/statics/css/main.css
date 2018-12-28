@@ -399,7 +399,7 @@
 .content.fast li .title{
     color: #333;
     display: inline-block;
-    max-width: 400px;
+    max-width: 83%;
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
@@ -523,4 +523,10 @@
     visibility:hidden;
 
 }   /*==for FF/chrome/opera/IE8==*/
-
+.el-tabs__header.is-top{
+    width: 350px;
+    padding-left: 38px;
+}
+.pieArea .el-icon-arrow-left,.pieArea .el-icon-arrow-right{
+    display: none
+}

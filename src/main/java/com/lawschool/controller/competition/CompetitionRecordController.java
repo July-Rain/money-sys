@@ -1,6 +1,9 @@
 package com.lawschool.controller.competition;
 
+import com.lawschool.base.AbstractController;
+import com.lawschool.beans.User;
 import com.lawschool.beans.competition.CompetitionRecord;
+import com.lawschool.service.accessory.AccessoryService;
 import com.lawschool.service.competition.CompetitionRecordService;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.AbstractCollection;
 import java.util.Map;
 
 /**
@@ -21,7 +25,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/competitionRecord")
-public class CompetitionRecordController {
+public class CompetitionRecordController extends AbstractController {
 
     @Autowired
     private CompetitionRecordService competitionRecordService;
@@ -76,6 +80,13 @@ public class CompetitionRecordController {
     }
 
 
+    //保存分数
+    @RequestMapping("/recordScore")
+    public Result recordScore(@RequestParam String foreignKeyId,@RequestParam String nowbig,@RequestParam String nowlit,@RequestParam String sorce){
+        User u=getUser();
+        competitionRecordService.recordScore(foreignKeyId,nowbig,nowlit,u,sorce);//这边到时候和前端商量  传个json串
+        return Result.ok();
+    }
 
 
 }

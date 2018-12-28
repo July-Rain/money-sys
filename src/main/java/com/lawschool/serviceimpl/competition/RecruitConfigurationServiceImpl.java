@@ -18,6 +18,7 @@ import com.lawschool.form.CommonForm;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.UserQuestRecordService;
+import com.lawschool.service.competition.CompetitionRecordService;
 import com.lawschool.service.competition.RecruitCheckpointConfigurationService;
 import com.lawschool.service.competition.RecruitConfigurationService;
 import com.lawschool.service.competition.bak.RecruitCheckpointConfigurationBakService;
@@ -69,6 +70,9 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 
 	@Autowired
 	private UserQuestRecordService userQuestRecordService;
+
+	@Autowired
+	private CompetitionRecordService competitionRecordService;
 
 	@Override
 	@SysLog("查询")
@@ -249,6 +253,11 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 		this.delete(new EntityWrapper<RecruitConfiguration>());
 		//删完自己的 还要删关联的 小关表啊
 		recruitCheckpointConfigurationService.delete(new EntityWrapper<RecruitCheckpointConfiguration>());
+
+		//还有把之前配置下的成绩记录状态位 位0
+
+		competitionRecordService.updatedata();
+
 
 	}
 
