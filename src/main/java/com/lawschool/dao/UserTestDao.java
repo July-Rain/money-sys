@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.lawschool.beans.UserTest;
 
+//不用
 public interface UserTestDao {
 
 	public UserTest selectUserById(Integer userId);

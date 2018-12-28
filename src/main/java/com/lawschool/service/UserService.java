@@ -3,6 +3,7 @@ package com.lawschool.service;
 import com.lawschool.base.AbstractService;
 import com.lawschool.beans.User;
 import com.lawschool.util.PageUtils;
+import com.lawschool.util.Result;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -47,6 +48,16 @@ public interface UserService  extends AbstractService<User> {
      * @return
      */
     public int login(String userCode,String password,HttpServletRequest request);
+
+
+    /**
+     * 用户登录
+     * @param userCode
+     * @param password
+     * @return
+     */
+    public Result loginShiro(String userCode, String password, HttpServletRequest request);
+
 
     /**
      * 修改用户密码

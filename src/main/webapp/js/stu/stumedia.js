@@ -3,6 +3,7 @@
  * Date: 2018/12/7
  * Description:配置
  */
+var editor;
 var menuId=$("#menuId").val();
 var vm = new Vue({
     el: '#app',
@@ -234,12 +235,14 @@ var vm = new Vue({
                 success: function (result) {
                     if(result.code === 0){
                         vm.stuMedia = result.data;
+                        editor.txt.html(vm.stuMedia.comContent);
                         for (var i=0;i<vm.stuMedia.length;i++){
                             if(vm.stuMedia.stuType!='1'&&vm.stuMedia.comContent){
                                 vm.stuMedia.contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
                                 if(vm.stuMedia.videoPicAcc){
                                     vm.stuMedia.videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
                                 }
+
                             }
                         }
                     }else{
@@ -475,6 +478,48 @@ var vm = new Vue({
                 }
             }
 
+        },
+        changeStuType:function () {
+            vm.stuMedia.comContent="";
+            vm.stuMedia.contentUrl="";
+            vm.stuMedia.videoPicAcc="";
+            vm.stuMedia.videoPicAccUrl="";
+            if(vm.stuMedia.stuType=='1'){
+                loadEditor();
+            }
         }
+    },
+    mounted() {
+        this.$refs.stuDialog.open();
+        setTimeout(() => {
+            this.$refs.stuDialog.close();
+            loadEditor();
+    }, 2000);
     }
 });
+function loadEditor(){
+    var E = window.wangEditor
+    editor = new E('#editor')
+    // 或者 var editor = new E( document.getElementById('editor') )
+    //显示“上传图片”的tab
+    editor.customConfig.uploadImgServer = baseURL+"sys/upload";// 上传图片到服务器
+    editor.customConfig.uploadFileName = 'importfile';
+    editor.customConfig.uploadImgHooks = {
+                // 如果服务器端返回的不是 {errno:0, data: [...]} 这种格式，可使用该配置
+                // （但是，服务器端返回的必须是一个 JSON 格式字符串！！！否则会报错）
+                customInsert: function (insertImg, result, editor) {
+                    // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
+                    // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
+
+                    // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
+                    var url = baseURL+"sys/download?accessoryId="+result.accessoryId;
+                    insertImg(url)
+                }
+            }
+    editor.customConfig.onchange = function (html) {
+        // 监控变化，同步更新到 textarea
+        vm.stuMedia.comContent=html;
+    }
+    editor.create();
+
+}

@@ -60,7 +60,7 @@
         margin-top: 16px;
     }
     .el-menu--horizontal .el-menu .el-menu-item a{
-        color: #909399;
+        color: #1381e3;
     }
     .el-menu--horizontal .el-menu .el-menu-item a:hover{
         color: #000;
@@ -70,8 +70,9 @@
         float: none;
         height: 36px;
         line-height: 36px;
-        color: #909399;
-        display: inline-block;//悬浮块横向显示
+        color: #1381e3;
+        display: inline-block;
+
     }
     .el-submenu__icon-arrow {
         display: none;
@@ -85,6 +86,37 @@
     .el-menu--horizontal .el-submenu{
         height: 99px;
     }
+    .header-right > ul > li{
+        position: relative;
+        margin: 0 5px;
+    }
+    .header-right > ul > li:after{
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: 30px;
+        background: #71b3ee;
+        right: -7px;
+        top: 26px;
+    }
+    .el-menu.el-menu--horizontal{
+        margin-top: 2px;
+        border-bottom: solid 1px transparent;
+    }
+    .el-submenu.is-opened i,.el-submenu.is-opened span{
+        color: #1381e3!important;
+    }
+    .el-submenu.is-opened .el-submenu__title,.el-submenu .el-submenu__title{
+        /*display: block;*/
+        border-radius: 5px;
+    }
+    .el-menu--popup{
+        background: #1381e3;
+    }
+    .el-menu-item i,el-menu-item span{
+        color: #1381e3;
+    }
+
 </style>
 <body>
 <div id="app" v-cloak>
@@ -132,7 +164,7 @@
     </div>
 
 
-    <div class="container-layout" style="height: calc(100vh - 70px)">
+    <div class="container-layout" style="height: calc(100vh - 74px)">
         <iframe id="container" @load="loadFrame(this)" :src="[(childUrl)]" frameborder="0" width="100%" height="100%"></iframe>
     </div>
 </div>

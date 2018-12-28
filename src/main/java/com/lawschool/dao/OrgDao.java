@@ -29,4 +29,13 @@ public interface OrgDao extends BaseMapper<Org> {
 	 * @return
 	 */
 	Org findOrgByCode(String orgCode);
+
+	/**
+	 * @Author zjw
+	 * @Description 查询子部门
+	 * @Date 11:49 2018-12-27
+	 * @Param
+	 * @return
+	**/
+	List<String> getSubDeptIdList(String orgId);
 }

@@ -71,6 +71,17 @@
 	    <filter-name>DruidWebStatFilter</filter-name>
 	    <url-pattern>/*</url-pattern>
 	  </filter-mapping>
+
+
+    <!--配置shiro-->
+    <!--<filter>-->
+        <!--<filter-name>shiroFilter</filter-name>-->
+        <!--<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>shiroFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
  
 	  <servlet>
 	    <servlet-name>DruidStatView</servlet-name>
@@ -80,8 +91,6 @@
 	    <servlet-name>DruidStatView</servlet-name>
 	    <url-pattern>/druid/*</url-pattern>
 	  </servlet-mapping>
-	  
-	  
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -110,10 +119,20 @@
     </servlet-mapping>
 
 
-
-
-
-
+    <!-- 配置  Shiro 的 Filter -->
+    <filter>
+        <description>shiro 权限拦截</description>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
 
 
@@ -134,6 +153,6 @@
         <location>/WEB-INF/errorpage/500.jsp</location>
     </error-page>
 
-    <!-- shiro -->
+
 
 </web-app>

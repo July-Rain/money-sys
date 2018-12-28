@@ -10,6 +10,7 @@ import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.competition.MatchSettingService;
 import com.lawschool.service.competition.RecruitCheckpointConfigurationService;
 import com.lawschool.util.Result;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,7 +42,8 @@ public class webSocketController extends AbstractController {
     public Result pkAloneByRandom(HttpServletRequest request){
         HttpSession session = request.getSession();
         User websocketUser= (User)  request.getSession().getAttribute("loginUser");//websocketUser用到的user
-        User u= (User)  request.getSession().getAttribute("user");//系统登陆人user
+       // User u= (User)  request.getSession().getAttribute("user");//系统登陆人user
+        User u = (User) SecurityUtils.getSubject().getPrincipal();
 
         if (null != websocketUser) {
             // 清除旧的用户
@@ -61,7 +63,8 @@ public class webSocketController extends AbstractController {
     public Result pkAloneByCode(String type,String code,HttpServletRequest request){
         HttpSession session = request.getSession();
         User websocketUser= (User)  request.getSession().getAttribute("loginUser");//websocketUser用到的user
-        User u= (User)  request.getSession().getAttribute("user");//系统登陆人user
+        //User u= (User)  request.getSession().getAttribute("user");//系统登陆人user
+        User u = (User) SecurityUtils.getSubject().getPrincipal();
 
         if (null != websocketUser) {
             // 清除旧的用户
@@ -91,7 +94,8 @@ public class webSocketController extends AbstractController {
     public Result leitaiGame(HttpServletRequest request){
         HttpSession session = request.getSession();
         User websocketUser= (User)  request.getSession().getAttribute("loginUser");//websocketUser用到的user
-        User u= (User)  request.getSession().getAttribute("user");//系统登陆人user
+        //User u= (User)  request.getSession().getAttribute("user");//系统登陆人user
+        User u = (User) SecurityUtils.getSubject().getPrincipal();
 
         if (null != websocketUser) {
             // 清除旧的用户

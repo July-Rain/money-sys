@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author zjw
- * @Title: RequestInterceptor
+ * @Title: 下线拦截
  * @ProjectName law_school
  * @Description: TODO
  * @date 2018/12/2510:59
@@ -36,23 +36,28 @@ public class RequestInterceptor  extends AbstractController implements HandlerIn
         String loginPage=basePath+"index.html";
         boolean isRedirect=false;
 
+
+        User user = ShiroUtils.getUserEntity();
+
         //防止用户重复登陆
         if((path+"/index.html").equals(uri))
         {
-            User user = (User) request.getSession().getAttribute("user");
+            //User user = (User) request.getSession().getAttribute("user");
+
             if(UtilValidate.isNotEmpty(user)){
                 response.sendRedirect(basePath+"main.html");
                 return false;
             }
+            return true;
 
         }
-        else{
-            User user = (User) request.getSession().getAttribute("user");
+//        else{
             if(UtilValidate.isNotEmpty(user)){
                 User realUser =userService.selectUserByUserId(user.getId());
                 if("0".equals(realUser.getIsOnline())){
                     //强制下线，重新登陆
-                    request.getSession().removeAttribute("user");
+                    //request.getSession().removeAttribute("user");
+                    ShiroUtils.logout();
                     response.sendRedirect(basePath+"index.html");
                     return false;
                 }
@@ -60,7 +65,8 @@ public class RequestInterceptor  extends AbstractController implements HandlerIn
                 response.sendRedirect(basePath+"index.html");
                 return false;
             }
-        }
+
+//        }
         return true;
     }
 

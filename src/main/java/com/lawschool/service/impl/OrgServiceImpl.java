@@ -66,4 +66,9 @@ public class OrgServiceImpl extends ServiceImpl<OrgDao,Org> implements OrgServic
 	public Org findOrgByCode(String orgCode) {
 		return orgDao.findOrgByCode(orgCode);
 	}
+
+	@Override
+	public List<String> getSubDeptIdList(String orgId) {
+		return orgDao.getSubDeptIdList(orgId);
+	}
 }

@@ -17,4 +17,6 @@ public interface Constant {
     int IS_NOT_EXIST=4;//不存在
 
     int ERROR_PSW=5;//密码错误
+
+    int SUPER_ADMIN=0;//是否是最高管理员权限
 }

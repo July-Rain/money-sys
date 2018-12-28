@@ -214,17 +214,4 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
 
         return page;
     }
-
-   /* public String[] listAllLawIdbyparent(String lawid){
-        String lawIds=lawid;
-        String [] lawArr=null;
-
-        if(UtilValidate.isNotEmpty(lawid)){
-
-        }
-        if(UtilValidate.isNotEmpty(lawIds)){
-            lawArr=lawIds.split(",");
-        }
-        return lawArr;
-    }*/
 }

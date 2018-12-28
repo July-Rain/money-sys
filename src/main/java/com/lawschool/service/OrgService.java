@@ -64,4 +64,13 @@ public interface OrgService  extends IService<Org> {
 	 * @Author lh
 	 */
 	Org findOrgByCode(String orgCode);
+
+	/**
+	 * @Author zjw
+	 * @Description 获取所有的子部门
+	 * @Date 11:58 2018-12-27
+	 * @Param
+	 * @return
+	**/
+	List<String> getSubDeptIdList(String orgId);
 }

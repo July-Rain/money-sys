@@ -118,7 +118,7 @@
 
 
 
-        <el-dialog :title="title" :visible.sync="dialogCaseAna" :before-close="closeDia">
+        <el-dialog :title="title" :visible.sync="dialogCaseAna" :before-close="closeDia"  ref="caseAnaDialog">
             <el-row>
                 <el-col :span="12">
                     <el-form :model="caseAna" :rules="rules" ref="caseAna" label-width="100px" class="demo-caseAna" size="mini">
@@ -134,7 +134,9 @@
                         </el-form-item>
                         <template v-if="caseAna.contentType=='1'">
                             <el-form-item label="内容" prop="caseContent">
-                                <el-input type="textarea" maxlength="200" v-model="caseAna.caseContent"></el-input>
+                                <!--<el-input type="textarea" maxlength="200" v-model="caseAna.caseContent"></el-input>-->
+                                <div id="editor" style="width: 800px;">
+                                </div>
                             </el-form-item>
                         </template>
                         <template v-if="caseAna.contentType=='2'">
@@ -328,4 +330,6 @@
 
 <!-- import [current] JavaScript -->
 <script src="${rc.contextPath}/js/stu/caseanalysis.js?_${.now?long}"></script>
+<script type="text/javascript" src="${rc.contextPath}/statics/plugins/editor/wangEditor.min.js"></script>
+
 </html>

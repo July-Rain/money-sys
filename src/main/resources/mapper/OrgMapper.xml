@@ -273,4 +273,16 @@ ORDER BY
   <select id="findOrgByCode" parameterType="java.lang.String" resultType="com.lawschool.beans.Org">
     select * from LAW_ORG where ORG_CODE = #{orgCode}
   </select>
+
+
+
+
+  <!--查询子部门的id-->
+  <select id="getSubDeptIdList" resultType="string">
+      SELECT
+	    ORG_ID
+      FROM
+	    LAW_ORG START WITH ORG_ID = #{orgId}
+      CONNECT BY PRIOR ORG_ID = PARENT_ID
+  </select>
 </mapper>
