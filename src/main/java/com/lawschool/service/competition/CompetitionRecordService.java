@@ -2,6 +2,7 @@ package com.lawschool.service.competition;
 
 
 import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.beans.User;
 import com.lawschool.beans.competition.CompetitionRecord;
 
 import java.util.List;
@@ -27,4 +28,5 @@ public interface CompetitionRecordService extends IService<CompetitionRecord> {
 
     public void updatedata();
 
+    public void recordScore(String foreignKeyId,String nowbig,String nowlit,User u,String sorce);
 }

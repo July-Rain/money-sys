@@ -10,11 +10,11 @@ public class UserIntegral extends DataEntity<UserIntegral> {
 
     private String userId;
 
-    private Integer integralPoint;
+    private Integer integralPoint;//积分
 
-    private Integer creditPoint;
+    private Integer creditPoint;//学分
 
-    private String orgCode;
+    private String orgCode;//部门code
 
 
     @TableField(exist = false)

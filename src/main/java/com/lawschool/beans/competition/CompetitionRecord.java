@@ -2,8 +2,11 @@ package com.lawschool.beans.competition;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
+import java.util.Date;
+
 /**
  *
  * @Descriptin  竞赛记录实体类
@@ -21,12 +24,25 @@ public class CompetitionRecord implements Serializable {
 	private String id;
 	//用户id
 	private String userId;
-	//闯关id/比武台记录id----------------外键id
+	//闯关小关关卡id  里面有第几大关  第几小关 题目类型的信息     --------但是有个问题  当配置被删除或者修改后（修改实质也是删除）  就找不到了  但是配份表有
 	private String foreignKeyId;
-	//类型id(作用于判断存的到底是闯关id还是比武台记录id，因为这是两张不同的表)
-	private String typeId;
+	//类型id(作用于判断存的到底是闯关id还是比武台记录id，因为这是两张不同的表)-------------不放了  只放闯关
+//	private String typeId;
+
+	//记录状态      0失效    1启用
+	private String status;
+	//打到第几大关
+	private String howBig;
+    //打到第几小关
+	private String howLit;
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date createTime;//记录时间
+
+
 	//获得的积分
 	private String score;
+
 	//备用字段1
 	private String backup1;
 	//备用字段2
@@ -63,13 +79,13 @@ public class CompetitionRecord implements Serializable {
 		this.foreignKeyId = foreignKeyId;
 	}
 
-	public String getTypeId() {
-		return typeId;
-	}
-
-	public void setTypeId(String typeId) {
-		this.typeId = typeId;
-	}
+//	public String getTypeId() {
+//		return typeId;
+//	}
+//
+//	public void setTypeId(String typeId) {
+//		this.typeId = typeId;
+//	}
 
 	public String getScore() {
 		return score;
@@ -119,13 +135,48 @@ public class CompetitionRecord implements Serializable {
 		this.backup5 = backup5;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getHowBig() {
+		return howBig;
+	}
+
+	public void setHowBig(String howBig) {
+		this.howBig = howBig;
+	}
+
+	public String getHowLit() {
+		return howLit;
+	}
+
+	public void setHowLit(String howLit) {
+		this.howLit = howLit;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
 	@Override
 	public String toString() {
 		return "CompetitionRecord{" +
 				"id='" + id + '\'' +
 				", userId='" + userId + '\'' +
 				", foreignKeyId='" + foreignKeyId + '\'' +
-				", typeId='" + typeId + '\'' +
+				", status='" + status + '\'' +
+				", howBig='" + howBig + '\'' +
+				", howLit='" + howLit + '\'' +
+				", createTime=" + createTime +
 				", score='" + score + '\'' +
 				", backup1='" + backup1 + '\'' +
 				", backup2='" + backup2 + '\'' +
