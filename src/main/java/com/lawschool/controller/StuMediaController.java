@@ -4,7 +4,9 @@ import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
+import com.lawschool.beans.learn.StuRecordEntity;
 import com.lawschool.service.StuMediaService;
+import com.lawschool.service.learn.StuRecordService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.swing.text.html.parser.Entity;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +29,9 @@ public class StuMediaController extends AbstractController {
 
     @Autowired
     private StuMediaService stuMediaService;
+
+    @Autowired
+    private StuRecordService recordService;
 
     /**
      * @Author zjw
@@ -161,9 +167,13 @@ public class StuMediaController extends AbstractController {
      **/
     
     @RequestMapping("/updateCount")
-    public Result updateCount(String accId){
+    public Result updateCount(String stuId,String stuType,String stuFrom){
+        //获取当前登陆人
+        User user=  getUser();
         //更新
-        stuMediaService.updateCount(accId );
+        stuMediaService.updateCount(stuId );
+        //插入学习记录
+        recordService.insertStuRecord(user,stuId,stuType,stuFrom);
         return Result.ok();
     }
 }

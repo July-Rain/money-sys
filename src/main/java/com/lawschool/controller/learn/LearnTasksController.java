@@ -9,6 +9,7 @@ import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.beans.learn.LearnTasksEntity;
 import com.lawschool.service.law.TaskDesicService;
 import com.lawschool.service.learn.LearnTasksService;
+import com.lawschool.service.learn.StuRecordService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
@@ -37,6 +38,9 @@ public class LearnTasksController extends AbstractController {
 
     @Autowired
     private TaskDesicService desicService;
+
+    @Autowired
+    private StuRecordService recordService;
     /**
      * @Author MengyuWu
      * @Description 查询列表
@@ -158,5 +162,14 @@ public class LearnTasksController extends AbstractController {
 
         PageUtils page = tasksService.queryContentByTask(params);
         return Result.ok().put("page", page);
+    }
+
+    @RequestMapping("/insertRecord")
+    public Result updateCount(String stuId,String stuType,String stuFrom,String taskId){
+        //获取当前登陆人
+        User user=  getUser();
+        //插入学习记录
+        recordService.insertStuRecord(user,stuId,stuType,stuFrom,taskId);
+        return Result.ok();
     }
 }

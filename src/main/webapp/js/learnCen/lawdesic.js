@@ -13,7 +13,9 @@ var vm = new Vue({
             totalCount:0,
             status:"",
             issueOrg:"",
-            lawTitle:""
+            lawTitle:"",
+            libName:"",
+            libId:""
         },
         tableData: [],//表格数据
         visible: false,
@@ -22,11 +24,11 @@ var vm = new Vue({
             children: 'list',
             label: 'classifyName'
         },
-        dialogDept: false,//部门的弹窗
-        deptData:[],//部门树数据
-        defaultDeptProps:{
+        dialogLib: false,//法律法规库的弹窗
+        libData:[],//部门树数据
+        defaultLibProps:{
             children: 'child',
-            label: 'orgName'
+            label: 'libName'
         },//部门树的默认格式
     },
     created: function () {
@@ -46,15 +48,14 @@ var vm = new Vue({
                 }
             });
 
-            //加载部门数据
+            //加载法律知识库
             $.ajax({
                 type: "POST",
-                url: baseURL + "org/tree",
+                url: baseURL + "classlib/tree",
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
-                        vm.deptData = result.orgList;
-                        vm.userData = result.orgList;
+                        vm.libData = result.data;
                     }else{
                         alert(result.msg);
                     }
@@ -86,7 +87,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "calssdesic/list?isMp=true",
+                url: baseURL + "classdesic/list?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
@@ -113,30 +114,30 @@ var vm = new Vue({
             this.reloadUser();
         },
 
-        chooseDept: function () {
+        chooseLib: function () {
             //选择部门
-            console.log(vm.deptData);
-            this.dialogDept=true;
+            console.log(vm.libData);
+            this.dialogLib=true;
 
         },
-        confimDept: function () {
-            this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
-            for(var i=0;i<this.multipleDeptSelection.length;i++){
-                if (this.stuMedia.deptIds == "") {
-                    this.stuMedia.deptIds=this.multipleDeptSelection[i].id;
-                    this.stuMedia.deptName=this.multipleDeptSelection[i].orgName;
-                }else{
-                    this.stuMedia.deptIds+=","+this.multipleDeptSelection[i].id;
-                    this.stuMedia.deptName+=","+this.multipleDeptSelection[i].orgName;
-                }
-            }
-            this.dialogDept=false;
+        confimLib: function () {
+            var node=this.$refs.libTree.getCurrentNode();
+            vm.formInline.libId=node.libId;
+            vm.formInline.libName=node.libName;
+            this.dialogLib=false;
         },
-        cancelDept: function () {
-            this.dialogDept=false;
+        cancelLib: function () {
+            this.dialogLib=false;
         },
         handleCheckChange:function () {
             
+        },
+        clearLib:function () {
+            vm.formInline.libId="";
+            vm.formInline.libName="";
+        },
+        handleDetail: function (index,row) {
+            //查看详情
         }
     }
 });

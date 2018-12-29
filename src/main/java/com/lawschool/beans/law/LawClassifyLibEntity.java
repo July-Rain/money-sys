@@ -1,9 +1,13 @@
 package com.lawschool.beans.law;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 /**
  * ClassName: LawClassifyLibEntity
  * Description: 库分类 entity
@@ -22,13 +26,16 @@ public class LawClassifyLibEntity implements Serializable {
 
     private String libName;//库分类的名称
 
-    private Long parentId;//上级的库分类的id
+    private String parentId;//上级的库分类的id
 
     private Short delFlag;//是否删除  -1：已删除  0：正常
 
     private Long orderNum;//排序标记
 
     private Date createTime;//创建时间
+
+    @TableField(exist = false)
+    private List<LawClassifyLibEntity> child=new ArrayList<LawClassifyLibEntity>();
 
     public String getId() {
         return id;
@@ -62,11 +69,11 @@ public class LawClassifyLibEntity implements Serializable {
         this.libName = libName == null ? null : libName.trim();
     }
 
-    public Long getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
 
@@ -92,5 +99,13 @@ public class LawClassifyLibEntity implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public List<LawClassifyLibEntity> getChild() {
+        return child;
+    }
+
+    public void setChild(List<LawClassifyLibEntity> child) {
+        this.child = child;
     }
 }
