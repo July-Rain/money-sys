@@ -16,7 +16,11 @@ public class UserIntegral extends DataEntity<UserIntegral> {
 
     private String orgCode;//部门code
 
+    private String fullName;//用户名
 
+    private String userCode;//用户code
+
+    private String orgName;//部门名字
     @TableField(exist = false)
     private Integer allItrRank;
 
@@ -105,5 +109,29 @@ public class UserIntegral extends DataEntity<UserIntegral> {
 
     public void setOrgCdtRank(Integer orgCdtRank) {
         this.orgCdtRank = orgCdtRank;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 }

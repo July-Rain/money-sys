@@ -20,7 +20,7 @@ var vm = new Vue({
         refresh: function () {
             $.ajax({
                 type: "GET",
-                url: baseURL + "exercise/task/list",
+                url: baseURL + "exercise/paper/list",
                 data: vm.formInline,
                 contentType: "application/json",
                 success: function (result) {
@@ -36,12 +36,12 @@ var vm = new Vue({
         start: function (id, taskId) {
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/task_paper.html?id='+id+'&taskId='+taskId;
+                = 'modules/exerciseCenter/paper_paper.html?id='+id+'&taskId='+taskId;
         },
         goon: function (id, taskId) {
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/task_paper.html?id='+id+'&taskId='+taskId;
+                = 'modules/exerciseCenter/paper_paper.html?id='+id+'&taskId='+taskId;
         }
     },
     created: function(){

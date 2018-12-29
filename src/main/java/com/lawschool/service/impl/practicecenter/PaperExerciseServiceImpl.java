@@ -2,10 +2,8 @@ package com.lawschool.service.impl.practicecenter;
 
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
-import com.lawschool.base.Page;
-import com.lawschool.beans.ExerciseConfigureEntity;
-import com.lawschool.beans.practicecenter.TaskExerciseEntity;
-import com.lawschool.dao.practicecenter.TaskExerciseDao;
+import com.lawschool.beans.practicecenter.PaperExerciseEntity;
+import com.lawschool.dao.practicecenter.PaperExerciseDao;
 import com.lawschool.form.AnswerForm;
 import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
@@ -13,10 +11,9 @@ import com.lawschool.form.ThemeAnswerForm;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.ExerciseConfigureService;
 import com.lawschool.service.TestQuestionService;
-import com.lawschool.service.practicecenter.TaskAnswerRecordService;
-import com.lawschool.service.practicecenter.TaskExerciseService;
+import com.lawschool.service.practicecenter.PaperAnswerRecordService;
+import com.lawschool.service.practicecenter.PaperExerciseService;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +27,8 @@ import java.util.*;
  * @Description:
  */
 @Service
-public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao, TaskExerciseEntity>
-        implements TaskExerciseService {
+public class PaperExerciseServiceImpl extends AbstractServiceImpl<PaperExerciseDao, PaperExerciseEntity>
+        implements PaperExerciseService {
 
     @Autowired
     private ExerciseConfigureService exerciseConfigureService;
@@ -43,7 +40,7 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
     private AnswerService answerService;
 
     @Autowired
-    private TaskAnswerRecordService taskAnswerRecordService;
+    private PaperAnswerRecordService taskAnswerRecordService;
 
     public List<CommonForm> findByUserAndConIds(String userId, List<String> list){
         List<CommonForm> resultList = dao.findByUserAndConIds(userId, list);
@@ -115,11 +112,11 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
 
         result.put("quest", quest);
 
-        TaskExerciseEntity entity = new TaskExerciseEntity();
+        PaperExerciseEntity entity = new PaperExerciseEntity();
         entity.setId(id);
         entity.setConfigureId(configureId);
         entity.setQuestions(quest);
-        entity.setStatus(TaskExerciseEntity.STATUS_ON);
+        entity.setStatus(PaperExerciseEntity.STATUS_ON);
         entity.setUserId(userId);
         entity.setNo(1);
         if(StringUtils.isBlank(quest)){

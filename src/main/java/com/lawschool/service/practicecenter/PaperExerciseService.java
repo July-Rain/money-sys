@@ -1,11 +1,8 @@
 package com.lawschool.service.practicecenter;
 
 import com.lawschool.base.AbstractService;
-import com.lawschool.base.Page;
-import com.lawschool.beans.ExerciseConfigureEntity;
-import com.lawschool.beans.practicecenter.TaskExerciseEntity;
+import com.lawschool.beans.practicecenter.PaperExerciseEntity;
 import com.lawschool.form.CommonForm;
-import com.lawschool.form.QuestForm;
 import com.lawschool.form.ThemeAnswerForm;
 
 import java.util.List;
@@ -16,7 +13,7 @@ import java.util.Map;
  * @Date: 2018/12/21 17:58
  * @Description:
  */
-public interface TaskExerciseService extends AbstractService<TaskExerciseEntity> {
+public interface PaperExerciseService extends AbstractService<PaperExerciseEntity> {
 
     /**
      * 查询练习任务，根据用户和练习任务list

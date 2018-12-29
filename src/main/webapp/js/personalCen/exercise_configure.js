@@ -82,14 +82,6 @@ var vm = new Vue({
             vm.addConfigFlag = false;
         },
         save: function () {
-            var count = 0
-            for(var i=0; i<vm.exerciseConfigure.list.length; i++){
-                var objTemp = vm.exerciseConfigure.list[i];
-                count += objTemp.primaryNum==null ? 0 : Number(objTemp.primaryNum);
-                count += objTemp.middleNum==null ? 0 : Number(objTemp.middleNum);
-                count += objTemp.seniorNum==null ? 0 : Number(objTemp.seniorNum);
-            }
-            vm.exerciseConfigure.total = count;
             $.ajax({
                 type: "POST",
                 url: baseURL + "exercise/configure/save",

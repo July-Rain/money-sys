@@ -5,11 +5,10 @@ import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.ExerciseConfigureEntity;
 import com.lawschool.beans.User;
-import com.lawschool.beans.practicecenter.TaskExerciseEntity;
-import com.lawschool.form.QuestForm;
+import com.lawschool.beans.practicecenter.PaperExerciseEntity;
 import com.lawschool.form.ThemeAnswerForm;
 import com.lawschool.service.ExerciseConfigureService;
-import com.lawschool.service.practicecenter.TaskExerciseService;
+import com.lawschool.service.practicecenter.PaperExerciseService;
 import com.lawschool.util.Result;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -26,14 +25,14 @@ import java.util.Map;
  * @Description: 练习中心，组卷练习
  */
 @RestController
-@RequestMapping("/exercise/task")
-public class TaskExerciseController extends AbstractController {
+@RequestMapping("/exercise/paper")
+public class PaperExerciseController extends AbstractController {
 
     @Autowired
     private ExerciseConfigureService exerciseConfigureService;
 
     @Autowired
-    private TaskExerciseService taskExerciseService;
+    private PaperExerciseService paperExerciseService;
 
     /**
      * 分页列表
@@ -82,7 +81,7 @@ public class TaskExerciseController extends AbstractController {
         }
 
         User user = getUser();
-        Map<String, Object> resultMap = taskExerciseService.showPaper(configureId, id,
+        Map<String, Object> resultMap = paperExerciseService.showPaper(configureId, id,
                                                                    user.getId(), isNew,
                                                                    limit, page);
 
@@ -103,10 +102,10 @@ public class TaskExerciseController extends AbstractController {
         User user = getUser();
 
         if(CollectionUtils.isNotEmpty(formList)){
-            taskExerciseService.preserve(formList, user.getId());
+            paperExerciseService.preserve(formList, user.getId());
             if(type == 1){
                 // 提交，更新任务状态
-                taskExerciseService.updateStatus(formList.get(0).getTaskId(), TaskExerciseEntity.STATUS_OFF);
+                paperExerciseService.updateStatus(formList.get(0).getTaskId(), PaperExerciseEntity.STATUS_OFF);
             }
         }
 
@@ -118,7 +117,7 @@ public class TaskExerciseController extends AbstractController {
         User user = getUser();
 
         // 提交，更新任务状态
-        taskExerciseService.updateStatus(id, TaskExerciseEntity.STATUS_OFF);
+        paperExerciseService.updateStatus(id, PaperExerciseEntity.STATUS_OFF);
 
         return Result.ok();
     }

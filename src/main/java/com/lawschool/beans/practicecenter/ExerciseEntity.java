@@ -37,10 +37,6 @@ public class ExerciseEntity extends DataEntity<ExerciseEntity>{
         this.rightNum = rightNum;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
     public String getDifficulty() {
         return difficulty;
     }
