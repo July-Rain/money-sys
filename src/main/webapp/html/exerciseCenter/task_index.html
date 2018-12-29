@@ -10,45 +10,92 @@
         <el-table
                 :data="tableData"
                 style="width: 100%"
-                stripe>
+                stripe
+                border>
+            <el-table-column
+                    type="index"
+                    width="50"
+                    label="序号"
+                    align="center">
+            </el-table-column>
             <el-table-column
                     prop="name"
                     label="练习卷名称"
-                    width="480"
-                    header-align="center">
+                    width="280"
+                    header-align="center"
+                    align="center">
             </el-table-column>
             <el-table-column
                     prop="type"
                     label="练习卷类型"
                     width="200"
-                    header-align="center">
+                    header-align="center"
+                    align="center">
             </el-table-column>
             <el-table-column
-                    prop="createUser"
+                    label="总题量/已答题量"
+                    header-align="center"
+                    align="center"
+            >
+                <template slot-scope="scope">
+                    {{scope.row.total}}/{{scope.row.answerNum==null?0:scope.row.answerNum}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="userName"
                     label="创建人"
                     width="200"
-                    header-align="center">
+                    header-align="center"
+                    align="center">
             </el-table-column>
             <el-table-column
                     prop="createTime"
                     label="创建时间"
                     width="200"
-                    header-align="center">
+                    header-align="center"
+                    align="center">
             </el-table-column>
             <el-table-column
                     label="操作"
                     header-align="center"
                     align="center"
-                    prop="status">
+                    >
                 <template slot-scope="scope">
                     <el-button
                             type="primary"
                             size="mini"
+                            v-if="scope.row.status == null"
+                            @click="start(scope.row.id, scope.row.taskId)"
                     >开始练习
+                    </el-button>
+
+                    <el-button
+                            type="success"
+                            size="mini"
+                            v-if="scope.row.status == 0"
+                            @click="goon(scope.row.id, scope.row.taskId)"
+                    >继续练习
+                    </el-button>
+                    <el-button
+                            type="warning"
+                            size="mini"
+                            v-if="scope.row.status == 1"
+                    >练习回顾
                     </el-button>
                 </template>
             </el-table-column>
         </el-table>
+
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurChange"
+                :current-page="formInline.page"
+                :page-sizes="[10, 20, 30, 40]"
+                :page-size="formInline.limit"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="formInline.count">
+        </el-pagination>
+
     </div>
 </div>
 </body>

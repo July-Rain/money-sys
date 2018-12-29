@@ -3,6 +3,7 @@ package com.lawschool.dao.practicecenter;
 import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.practicecenter.TaskExerciseEntity;
 import com.lawschool.form.CommonForm;
+import com.lawschool.form.QuestForm;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,4 +18,24 @@ public interface TaskExerciseDao extends AbstractDao<TaskExerciseEntity> {
     List<CommonForm> findByUserAndConIds(@Param("userId") String userId,
                                          @Param("list") List<String> list);
 
+    /**
+     * 获取题目信息和用户答题情况
+     * @param list
+     * @param id
+     * @return
+     */
+    List<QuestForm> getQuestAndAnswer(@Param("list") List<String> list,
+                                      @Param("id") String id,
+                                      @Param("userId") String userId);
+
+    /**
+     * 更新练习任务的整体答题情况
+     * @param id
+     * @param num
+     * @return
+     */
+    boolean updateAnswerNum(@Param("id") String id,
+                            @Param("num") Integer num);
+
+    boolean updateStatus(@Param("id") String id, @Param("status") Integer status);
 }

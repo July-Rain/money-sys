@@ -1,9 +1,12 @@
 package com.lawschool.config;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.google.gson.Gson;
 import com.lawschool.beans.*;
 import com.lawschool.dao.*;
 import com.lawschool.util.Constant;
+import com.lawschool.util.RedisUtil;
 import com.lawschool.util.UtilValidate;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
@@ -13,10 +16,13 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +47,9 @@ public class UserRealm extends AuthorizingRealm {
 
     @Autowired
     private SysRoleOrgDao sysRoleOrgDao;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
 
     @PostConstruct
@@ -108,9 +117,17 @@ public class UserRealm extends AuthorizingRealm {
         List<String> deptIdList = new ArrayList<>();
         //管理员
         if (user.getIsAdmin() == Constant.SUPER_ADMIN) {
-            List<Org> sysDeptEntities = orgDao.selectList(new EntityWrapper<Org>());
-            sysDeptEntities.stream().map(dept -> dept.getId()).collect(Collectors.toSet());
 
+            ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
+            Gson gson = new Gson();
+            if(!redisTemplate.hasKey("permOrg")){
+                deptIdList=orgDao.selectList(new EntityWrapper<Org>()).stream().map(dept -> dept.getOrgId()).collect(Collectors.toList());
+                valueOperations.set("permOrg", gson.toJson(deptIdList));
+            }
+            else{
+                String value = String.valueOf(valueOperations.get("permOrg"));
+                deptIdList= gson.fromJson(value, List.class);
+            }
 //			deptIdList.stream().forEach(deptId -> {System.out.println(deptId);});
         } else {
             //用户角色对应的部门ID列表
