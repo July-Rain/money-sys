@@ -378,6 +378,7 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 
 					msg.setText("请等待 玩家加入");
 					msg.setDate(new Date());
+					msg.setBattlePlatform(battlePlatform);
 					msg.setTo(loginUser.getId());
 					msg.setNowtimu("0");
 					msg.setBattleCode(battlePlatform.getBattleCode());
@@ -424,6 +425,7 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 		 				msg.setCompetitionOnline(timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()));
 		  				msg.setNowtimu("0");
 						msg.setBattleCode(code);
+						msg.setBattlePlatform(battlePlatform);
 		 				msg.setTo(battlePlatform.getPlay1()+","+loginUser.getId());//为了传到前端页面
 		 				msg.getUserList().add(
 		 						(User)USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().get("loginUser")
