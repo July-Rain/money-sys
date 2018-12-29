@@ -21,6 +21,7 @@ import com.lawschool.service.competition.MatchSettingService;
 import com.lawschool.service.competition.bak.BattleTopicSettingBakService;
 import com.lawschool.service.competition.bak.CompetitionOnlineBakService;
 import com.lawschool.service.competition.bak.MatchSettingBakService;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,8 +75,10 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 	@SysLog("查询,添加，删除")
 	@Transactional(rollbackFor = Exception.class)
 	public void deleteAll() {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		User u= (User) request.getSession().getAttribute("user");
+//		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//		User u= (User) request.getSession().getAttribute("user");
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
+
 		//因为对战题目配置表里面的 数据 还有的是  打擂台的  数据 ，不仅仅是属于在线比武配置的，所以 要反查，先根据在线比武设置表id去找对战题目配置表数据，先删题目配置 再删在线比武配置
 
 		List<MatchSettingBak> MatchSettingbakList=new ArrayList<MatchSettingBak>();
@@ -133,9 +136,9 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 	public void save(MatchSetting matchSetting) {
 
 		//去作用域中取user
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		User u= (User) request.getSession().getAttribute("user");
-
+//		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//		User u= (User) request.getSession().getAttribute("user");
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
 		matchSetting.setId(IdWorker.getIdStr());
 
 		matchSetting.setCreatePeople(u.getId());     //创建人id

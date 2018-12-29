@@ -29,4 +29,5 @@ public interface CompetitionRecordService extends IService<CompetitionRecord> {
     public void updatedata();
 
     public void recordScore(String foreignKeyId,String nowbig,String nowlit,User u,String sorce);
+    public void updateRecordStatus();
 }
