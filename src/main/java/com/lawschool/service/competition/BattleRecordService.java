@@ -15,4 +15,5 @@ import com.lawschool.beans.competition.BattleRecord;
 public interface BattleRecordService extends IService<BattleRecord> {
 
 
+    public void updaterecord(String type);
 }

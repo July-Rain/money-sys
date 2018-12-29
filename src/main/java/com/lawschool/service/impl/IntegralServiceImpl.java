@@ -116,7 +116,10 @@ public class IntegralServiceImpl extends AbstractServiceImpl<IntegralDao, Integr
             }else if("1".equalsIgnoreCase(type)){
                 userIntegral2.setCreditPoint(point);
             }
-            userIntegral2.setOrgCode(user.getUserCode());
+            userIntegral2.setOrgCode(user.getOrgCode());
+            userIntegral2.setFullName(user.getFullName());
+            userIntegral2.setUserCode(user.getUserCode());
+            userIntegral2.setOrgName(user.getOrgName());
             userIntegral2.setId(GetUUID.getUUIDs("UIG"));
             userIntegralDao.insert(userIntegral2);
         }

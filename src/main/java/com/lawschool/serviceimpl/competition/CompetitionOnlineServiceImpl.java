@@ -268,6 +268,11 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 //删
 			  battleTopicSettingService.delete(new EntityWrapper<BattleTopicSetting>().in("FOREIGN_KEY_ID",Arrays.asList(ids)));
 			  this.delete(new EntityWrapper<CompetitionOnline>());
+
+
+			  battleRecordService.updaterecord("OnlinPk");
+
+
 		  }
 		  else
 		  {
@@ -371,32 +376,5 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 
 
 	}
-	//保存分数记录
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public void recordScore2(String battlePlatformId, String win, String score, String type) {
 
-		User u = (User) SecurityUtils.getSubject().getPrincipal();
-		BattleRecord battleRecord=new BattleRecord();
-		battleRecord.setId(IdWorker.getIdStr());
-		battleRecord.setBattlePlatformId(battlePlatformId);
-		battleRecord.setCreateTime(new Date());
-		battleRecord.setStatus("1");
-		battleRecord.setType(type);
-		battleRecord.setScore(score);
-		battleRecord.setWhetherWin(win);
-		battleRecord.setUserId(u.getId());
-
-		battleRecordService.insert(battleRecord);
-
-		//加完后在添加 另外的积分表
-		Integral integral=new Integral();
-		integral.setType("1");
-		integral.setPoint(Integer.parseInt(score));
-		integral.setSrc(type);
-		integralService.addIntegralRecord(integral,u);
-
-
-
-	}
 }

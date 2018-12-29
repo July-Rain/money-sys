@@ -44,6 +44,5 @@ public interface CompetitionOnlineService extends IService<CompetitionOnline> {
     public List<TestQuestions> getQuest();
     public void saveQuestion(TestQuestions testQuestions,String myanswer,String userid);
     public void recordScore(String battlePlatformId,String win,String score,String type);
-    public void recordScore2(String battlePlatformId,String win,String score,String type);
 
 }

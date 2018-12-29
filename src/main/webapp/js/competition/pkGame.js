@@ -235,13 +235,8 @@ websocket.onmessage = function(event) {
                 else if(Number(vm.myscore)<Number(vm.youscore))
                 {
                     vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.loserReward);
-                    // setTimeout(function() {
-                    //     recordScore(datamag.battlePlatform.id,'0',vm.myscore,'OnlinPk');
-                    //     // recordScore2('1');
-                    // }, 50000);
-                    // setTimeout(function() {
-                    //     alert("全部题目答完,双方分数一样，你输了，获得失败者奖励"+data.competitionOnline.loserReward+",最终得分"+vm.myscore);
-                    // }, 50000);
+
+                    recordScore(datamag.battlePlatform.id,'0',vm.myscore,'OnlinPk');
                      alert("全部题目答完,，你输了，获得失败者奖励"+data.competitionOnline.loserReward+",最终得分"+vm.myscore);
                 }
                 else if(Number(vm.myscore)>Number(vm.youscore))
@@ -252,7 +247,7 @@ websocket.onmessage = function(event) {
                     alert("全部题目答完,，你赢了，获得获胜者奖励"+data.competitionOnline.winReward+",最终得分"+vm.myscore);
                 }
                 // alert("全部题目答完");
-                // closeWebsocket();
+                closeWebsocket();
             }else
             {
                vm.dialogQuestion=true,
@@ -403,8 +398,4 @@ function recordScore(battlePlatformId,win,score,type)
         success: function (result) {
         }
     });
-}
-function recordScore2(type)
-{
-    alert(type);
 }

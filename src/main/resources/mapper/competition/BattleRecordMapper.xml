@@ -7,4 +7,14 @@
 
 
 
+    <update id="updaterecord" parameterType="java.lang.String">
+     UPDATE LAW_BATTLE_RECORD
+        SET LAW_BATTLE_RECORD.STATUS = '0'
+        WHERE
+	LAW_BATTLE_RECORD."TYPE" =#{type}
+
+    </update>
+
+
+
 </mapper>

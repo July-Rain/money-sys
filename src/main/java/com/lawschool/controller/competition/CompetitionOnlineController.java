@@ -126,11 +126,5 @@ public class CompetitionOnlineController {
         competitionOnlineService.recordScore(battlePlatformId,win,score,type);
 
     }
-    //胜利者入库成绩
-    @RequestMapping("/recordScore2")
-    public void recordScore2(@RequestParam String battlePlatformId,String win,@RequestParam String score,@RequestParam String type){
 
-        competitionOnlineService.recordScore2(battlePlatformId,win,score,type);
-
-    }
 }

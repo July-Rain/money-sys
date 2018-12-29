@@ -6,6 +6,6 @@ import com.lawschool.beans.competition.BattleRecord;
 
 
 public interface BattleRecordDao extends BaseMapper<BattleRecord> {
-
+    public void updaterecord(String type);
 
 }
