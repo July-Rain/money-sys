@@ -1,7 +1,7 @@
 package com.lawschool.service.practicecenter;
 
 import com.lawschool.base.AbstractService;
-import com.lawschool.beans.practicecenter.TaskAnswerRecordEntity;
+import com.lawschool.beans.practicecenter.PaperAnswerRecordEntity;
 import com.lawschool.form.ThemeAnswerForm;
 
 /**
@@ -9,7 +9,7 @@ import com.lawschool.form.ThemeAnswerForm;
  * @Date: 2018/12/21 17:58
  * @Description:
  */
-public interface TaskAnswerRecordService extends AbstractService<TaskAnswerRecordEntity> {
+public interface PaperAnswerRecordService extends AbstractService<PaperAnswerRecordEntity> {
 
     /**
      * 保存答题记录

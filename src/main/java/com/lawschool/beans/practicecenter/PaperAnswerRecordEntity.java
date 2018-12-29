@@ -9,7 +9,7 @@ import com.lawschool.base.DataEntity;
  * @Description: 练习任务答题记录
  */
 @TableName("LAW_TASK_RECORD")
-public class TaskAnswerRecordEntity extends DataEntity<TaskAnswerRecordEntity> {
+public class PaperAnswerRecordEntity extends DataEntity<PaperAnswerRecordEntity> {
 
     private String configureId;// 练习任务配置ID
     private String questionId;// 题目ID
