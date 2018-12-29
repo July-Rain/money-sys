@@ -2,6 +2,7 @@ package com.lawschool.beans.law;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotations.Version;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
@@ -56,6 +57,10 @@ public class CaseAnalysisEntity implements Serializable {
     private String deptName;
 
     private String contentType;//资料类型
+
+    @Version
+    @TableField(update = "%s+1")
+    private Integer contentCount;//查看量统计
 
     @TableField(exist = false)
     private String[] deptArr;//适用部门
@@ -259,5 +264,13 @@ public class CaseAnalysisEntity implements Serializable {
 
     public void setDeptName(String deptName) {
         this.deptName = deptName == null ? null : deptName.trim();
+    }
+
+    public Integer getContentCount() {
+        return contentCount;
+    }
+
+    public void setContentCount(Integer contentCount) {
+        this.contentCount = contentCount;
     }
 }

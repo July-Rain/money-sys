@@ -74,7 +74,7 @@
                                     <el-col :span="6" v-for="(item, index) in videoData">
                                         <el-card :body-style="{ padding: '4px' }">
 
-                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.comContent)">
+                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,item.comContent)">
                                                 <source :src="item.contentUrl" type="video/mp4">
                                                 您的浏览器不支持视频播放
                                             </video>

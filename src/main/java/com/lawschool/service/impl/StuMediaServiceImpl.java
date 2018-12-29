@@ -274,11 +274,10 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
     }
 
     @Override
-    public int updateCount(String accId) {
+    public int updateCount(String stuId) {
         StuMedia stuMedia = new StuMedia();
         stuMedia.setStuCount(1);
-        stuMedia.setComContent(accId);
-        this.update(stuMedia,new EntityWrapper<StuMedia>().ne("stu_type","1").eq("com_content",accId));
-        return 0;
+        stuMedia.setId(stuId);
+        return baseMapper.updateById(stuMedia);
     }
 }
