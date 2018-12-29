@@ -4,20 +4,20 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.annotation.SysLog;
+import com.lawschool.beans.Integral;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserQuestRecord;
-import com.lawschool.beans.competition.BattleTopicSetting;
-import com.lawschool.beans.competition.CompetitionOnline;
-import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
-import com.lawschool.beans.competition.RecruitConfiguration;
+import com.lawschool.beans.competition.*;
 import com.lawschool.beans.competition.bak.BattleTopicSettingBak;
 import com.lawschool.beans.competition.bak.CompetitionOnlineBak;
 import com.lawschool.beans.competition.bak.RecruitConfigurationBak;
 import com.lawschool.dao.competition.CompetitionOnlineDao;
 import com.lawschool.service.AnswerService;
+import com.lawschool.service.IntegralService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.UserQuestRecordService;
+import com.lawschool.service.competition.BattleRecordService;
 import com.lawschool.service.competition.BattleTopicSettingService;
 import com.lawschool.service.competition.CompetitionOnlineService;
 import com.lawschool.service.competition.bak.BattleTopicSettingBakService;
@@ -62,6 +62,17 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	private AnswerService answerService;
 	@Autowired
 	private UserQuestRecordService userQuestRecordService;
+	@Autowired
+	private BattleRecordService battleRecordService;
+	@Autowired
+	private IntegralService integralService;
+
+
+
+
+
+
+
 	@Override
 	public List<CompetitionOnline> list() {
 		return this.selectList(new EntityWrapper<CompetitionOnline>());
@@ -330,5 +341,62 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 		userQuestRecord.setSpecialKnowledgeId(testQuestions.getSpecialKnowledgeId());//知识点
 		userQuestRecord.setSource("onlinPk");//添加来源
 		userQuestRecordService.insert(userQuestRecord);
+	}
+
+	//保存分数记录
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void recordScore(String battlePlatformId,String win,String score,String type) {
+
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
+		BattleRecord battleRecord=new BattleRecord();
+		battleRecord.setId(IdWorker.getIdStr());
+		battleRecord.setBattlePlatformId(battlePlatformId);
+		battleRecord.setCreateTime(new Date());
+		battleRecord.setStatus("1");
+		battleRecord.setType(type);
+		battleRecord.setScore(score);
+		battleRecord.setWhetherWin(win);
+		battleRecord.setUserId(u.getId());
+
+		battleRecordService.insert(battleRecord);
+
+		//加完后在添加 另外的积分表
+		Integral integral=new Integral();
+		integral.setType("1");
+		integral.setPoint(Integer.parseInt(score));
+		integral.setSrc(type);
+		integralService.addIntegralRecord(integral,u);
+
+
+
+	}
+	//保存分数记录
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void recordScore2(String battlePlatformId, String win, String score, String type) {
+
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
+		BattleRecord battleRecord=new BattleRecord();
+		battleRecord.setId(IdWorker.getIdStr());
+		battleRecord.setBattlePlatformId(battlePlatformId);
+		battleRecord.setCreateTime(new Date());
+		battleRecord.setStatus("1");
+		battleRecord.setType(type);
+		battleRecord.setScore(score);
+		battleRecord.setWhetherWin(win);
+		battleRecord.setUserId(u.getId());
+
+		battleRecordService.insert(battleRecord);
+
+		//加完后在添加 另外的积分表
+		Integral integral=new Integral();
+		integral.setType("1");
+		integral.setPoint(Integer.parseInt(score));
+		integral.setSrc(type);
+		integralService.addIntegralRecord(integral,u);
+
+
+
 	}
 }

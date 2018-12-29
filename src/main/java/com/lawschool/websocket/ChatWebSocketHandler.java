@@ -379,6 +379,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 				msg.setDate(new Date());
 				msg.setTo(loginUser.getId());
 				msg.setNowtimu("0");
+				msg.setBattlePlatform(battlePlatform);
 				msg.setCompetitionOnline(competitionOnline);
 				//把题目塞到信息里面去往页面打
 				msg.setTqList(qList);
@@ -423,6 +424,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 				msg.setTqList(timuMap.get("onlinePk"+battlePlatform.getPlay1()));
 				msg.setCompetitionOnline(timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()));
 				msg.setNowtimu("0");
+				msg.setBattlePlatform(battlePlatform);
 				msg.setTo(battlePlatform.getPlay1()+","+loginUser.getId());//为了传到前端页面
 //						msg.getUserList().add(userService.selectById(battlePlatform.getPlay1()));//目前没走数据库  这个useid 没有//
 				msg.getUserList().add(

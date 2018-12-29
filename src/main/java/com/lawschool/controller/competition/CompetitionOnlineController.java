@@ -119,4 +119,18 @@ public class CompetitionOnlineController {
 
     }
 
+    //胜利者入库成绩
+    @RequestMapping("/recordScore")
+    public void recordScore(String battlePlatformId,String win,String score,String type){
+
+        competitionOnlineService.recordScore(battlePlatformId,win,score,type);
+
+    }
+    //胜利者入库成绩
+    @RequestMapping("/recordScore2")
+    public void recordScore2(@RequestParam String battlePlatformId,String win,@RequestParam String score,@RequestParam String type){
+
+        competitionOnlineService.recordScore2(battlePlatformId,win,score,type);
+
+    }
 }

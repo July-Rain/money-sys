@@ -78,6 +78,7 @@ public class CompetitionRecordServiceImpl extends ServiceImpl<CompetitionRecordD
 		Integral integral=new Integral();
 		integral.setType("1");
 		integral.setPoint(Integer.parseInt(sorce));
+		integral.setSrc("onlinePk");
 		integralService.addIntegralRecord(integral,u);
 	}
 

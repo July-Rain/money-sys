@@ -2,8 +2,10 @@ package com.lawschool.beans.competition;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -43,6 +45,10 @@ public class BattleRecord implements Serializable {
 	//备用字段5
 	private String backup5;
 
+	//记录状态      0失效    1启用
+	private String status;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date createTime;//记录时间
 
 	public String getId() {
 		return id;
@@ -131,6 +137,22 @@ public class BattleRecord implements Serializable {
 
 	public void setBackup5(String backup5) {
 		this.backup5 = backup5;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	@Override
