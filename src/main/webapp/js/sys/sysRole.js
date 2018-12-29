@@ -24,7 +24,6 @@ var vm = new Vue({
         }
     },
     mounted: function () {
-
     },
     methods: {
         layFn() {
@@ -94,13 +93,14 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "GET",
-                url: baseURL + "testQuestion/list",
+                url: baseURL + "role/list",
                 dataType: "json",
                 data: {
                     pageNo: 1,
                     limit: 10
                 },
                 success: function (result) {
+                    console.info("result",result);
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
                         vm.form.pageNo = result.page.pageNo;
@@ -118,9 +118,8 @@ var vm = new Vue({
         this.$nextTick(function () {
             $.ajax({
                 type: "GET",
-                url: baseURL + "testQuestion/list",
+                url: baseURL + "role/list",
                 contentType: "application/json",
-                data: vm.form,
                 success: function (result) {
                     if (result.code === 0) {
                         vm.tableData = result.page.list;

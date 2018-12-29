@@ -30,28 +30,24 @@
                                     border
                                     style="width: 100%">
                                 <el-table-column
-                                        prop="comContent"
-                                        label="试题内容">
+                                        prop="orgIds"
+                                        label="角色ID">
                                 </el-table-column>
                                 <el-table-column
-                                        prop="answer"
-                                        label="答案">
+                                        prop="roleName"
+                                        label="角色名称">
                                 </el-table-column>
                                 <el-table-column
-                                        prop="project"
-                                        label="答案项">
+                                        prop="remark"
+                                        label="所属部门">
                                 </el-table-column>
                                 <el-table-column
-                                        prop="questionDifficulty"
-                                        label="难度">
+                                        prop="remark"
+                                        label="备注">
                                 </el-table-column>
                                 <el-table-column
-                                        prop="typeId"
-                                        label="分类">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="partof"
-                                        label="所属专项">
+                                        prop="createTime"
+                                        label="创建时间">
                                 </el-table-column>
                                 <el-table-column
                                         prop="active"
@@ -125,8 +121,6 @@
                         </el-tree>
                     </el-col>
                 </el-row>
-
-
 
             </el-form>
             <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
