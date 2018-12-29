@@ -1,0 +1,89 @@
+html,body,.container,ul,li,i,p,span{
+    /*width: 100%;*/
+    /*height: 100%;*/
+    padding: 0;
+    margin: 0;
+    list-style:none
+}
+img{
+    width: 100%;
+    height: 100%;
+}
+.container{
+    background: url("../img/rushBg.jpg");
+    background-size: 100% auto;
+    min-height: 55.5vw;
+    position: relative;
+}
+.person{
+    position: absolute;
+    width: 8.49194729136164vw;
+    height: auto;
+    left: 26vw;
+    top: 36vw;
+}
+.level li{
+    position: absolute;
+    width: 8.05270863836018vw;
+    height: auto;
+}
+.level li:nth-child(1){
+    left: 44vw;
+    top: 36vw;
+    background-position: 0px 0px;
+}
+.level li:nth-child(2){
+    left: 35vw;
+    top: 31vw;
+    background-position: -110px 0px;
+}
+.level li:nth-child(3){
+    left: 26vw;
+    top: 27vw;
+    background-position: -220px 0px;
+}
+.level li:nth-child(4){
+    left: 16vw;
+    top: 22vw;
+    background-position: -330px 0px;
+}
+.level li:nth-child(5){
+    left: 6vw;
+    top: 17vw;
+    background-position: -440px 0px;
+}
+.level li:nth-child(6){
+    left: 14vw;
+    top: 12vw;
+    background-position: -550px 0px;
+}
+.level li:nth-child(7){
+    left: 24vw;
+    top: 8vw;
+    background-position: -660px 0px;
+}
+.level li:nth-child(8){
+    left: 38vw;
+    top: 2vw;
+    background-position: -770px 0px;
+}
+.level li:nth-child(9){
+    left: 53vw;
+    top: 3vw;
+    background-position: -880px 0px;
+}
+.level li:nth-child(10){
+    left: 70vw;
+    top: 3vw;
+    width: 14.86090775988287vw;
+    height: auto;
+    background-position: -990px 0px;
+}
+.gray {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter: gray;
+}
