@@ -74,7 +74,7 @@ var vm = new Vue({
             }
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/task_index.html';
+                = 'modules/exerciseCenter/paper_index.html';
         },
         commit: function(){
             if(vm.preserved.length > 0){
@@ -84,12 +84,12 @@ var vm = new Vue({
             }
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/task_index.html';
+                = 'modules/exerciseCenter/paper_index.html';
         },
         tj: function(){
             $.ajax({
                 type: "POST",
-                url: baseURL + "exercise/task/commit/" + id,
+                url: baseURL + "exercise/paper/commit/" + id,
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
@@ -123,7 +123,7 @@ var vm = new Vue({
             };
             $.ajax({
                 type: "GET",
-                url: baseURL + "exercise/task/paper",
+                url: baseURL + "exercise/paper/paper",
                 data: obj,
                 contentType: "application/json",
                 success: function (result) {
@@ -142,7 +142,7 @@ var vm = new Vue({
             // 保存答题情况
             $.ajax({
                 type: "POST",
-                url: baseURL + "exercise/task/preserve/" + type,
+                url: baseURL + "exercise/paper/preserve/" + type,
                 data: JSON.stringify(vm.preserved),
                 contentType: "application/json",
                 success: function (result) {
