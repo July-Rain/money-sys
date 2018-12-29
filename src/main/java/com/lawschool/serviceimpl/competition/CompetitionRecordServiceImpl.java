@@ -80,4 +80,11 @@ public class CompetitionRecordServiceImpl extends ServiceImpl<CompetitionRecordD
 		integral.setPoint(Integer.parseInt(sorce));
 		integralService.addIntegralRecord(integral,u);
 	}
+
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void updateRecordStatus() {
+		competitionrecordDao.updateRecordStatus();
+	}
 }

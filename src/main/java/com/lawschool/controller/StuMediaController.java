@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -148,6 +149,21 @@ public class StuMediaController extends AbstractController {
     @RequestMapping("/delete")
     public Result delete(@RequestBody String[] ids){
         stuMediaService.deleteBatchIds(Arrays.asList(ids));
+        return Result.ok();
+    }
+
+    /**
+     * @Author MengyuWu
+     * @Description 根据附件id更新播放量
+     * * @Date 10:14 2018-12-28
+     * @Param [accId]
+     * @return com.lawschool.util.Result
+     **/
+    
+    @RequestMapping("/updateCount")
+    public Result updateCount(String accId){
+        //更新
+        stuMediaService.updateCount(accId );
         return Result.ok();
     }
 }

@@ -2,6 +2,7 @@ package com.lawschool.service.practicecenter;
 
 import com.lawschool.base.AbstractService;
 import com.lawschool.beans.practicecenter.TaskAnswerRecordEntity;
+import com.lawschool.form.ThemeAnswerForm;
 
 /**
  * @Auther: Moon
@@ -10,4 +11,10 @@ import com.lawschool.beans.practicecenter.TaskAnswerRecordEntity;
  */
 public interface TaskAnswerRecordService extends AbstractService<TaskAnswerRecordEntity> {
 
+    /**
+     * 保存答题记录
+     * @param form
+     * @return
+     */
+    boolean saveForm(ThemeAnswerForm form);
 }

@@ -1,5 +1,7 @@
 package com.lawschool.form;
 
+import java.util.Date;
+
 /**
  * 主题练习提交From
  */
@@ -8,6 +10,11 @@ public class ThemeAnswerForm {
     private String answer;// 回答
     private Integer right;// 回答是否正确
     private String typeName;// 题目类型
+
+    private String id;// 主键
+    private String createUser;
+    private String taskId;// 任务ID
+    private Date createTime;
 
     // ↓结果分析时用
     private Integer errorNum;// 回答错误数
@@ -59,5 +66,37 @@ public class ThemeAnswerForm {
 
     public void setRightNum(Integer rightNum) {
         this.rightNum = rightNum;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

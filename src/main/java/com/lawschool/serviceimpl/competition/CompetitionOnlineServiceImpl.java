@@ -24,6 +24,7 @@ import com.lawschool.service.competition.bak.BattleTopicSettingBakService;
 import com.lawschool.service.competition.bak.CompetitionOnlineBakService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -106,9 +107,9 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	public void save(CompetitionOnline competitionOnline) {
 
 		//去作用域中取user
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		User u= (User) request.getSession().getAttribute("user");
-
+//		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//		User u= (User) request.getSession().getAttribute("user");
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
 		competitionOnline.setId(IdWorker.getIdStr());
 
 		competitionOnline.setCreatePeople(u.getId());     //创建人id
@@ -207,8 +208,9 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	public void deleteAll() {
 		//因为对战题目配置表里面的 数据 还有的是  打擂台的  数据 ，不仅仅是属于在线比武配置的，所以 要反查，先根据在线比武设置表id去找对战题目配置表数据，先删题目配置 再删在线比武配置
 		//去作用域中取user
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		User u= (User) request.getSession().getAttribute("user");
+//		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//		User u= (User) request.getSession().getAttribute("user");
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
 		//删除主表 连附表的数据要一起删除
 		//但是涉及到bak备份表   所以我他妈的 还要先查 在插  在 删   （反正操作的是所有，不用考虑条件）
 

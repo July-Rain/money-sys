@@ -27,6 +27,7 @@ import com.lawschool.service.system.TopicTypeService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;
 import com.lawschool.util.UtilValidate;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -139,8 +140,9 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 	@Transactional(rollbackFor = Exception.class)
 	public void save(List<RecruitConfiguration> list) {
         //去作用域中取user
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		User u= (User) request.getSession().getAttribute("user");
+//		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//		User u= (User) request.getSession().getAttribute("user");
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
 		for(int i=0;i<list.size();i++)
 		{
 			RecruitConfiguration reConfation=list.get(i);
@@ -214,8 +216,9 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 	@Transactional(rollbackFor = Exception.class)
 	public void deleteAll() {
 		//去作用域中取user
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		User u= (User) request.getSession().getAttribute("user");
+//		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//		User u= (User) request.getSession().getAttribute("user");
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
 		//删除主表 连附表的数据要一起删除
 		//但是涉及到bak备份表   所以我他妈的 还要先查 在插  在 删   （反正操作的是所有，不用考虑条件）
 		List<RecruitConfigurationBak> recruitConfigurationbakAll=new ArrayList<>();
@@ -254,9 +257,9 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 		//删完自己的 还要删关联的 小关表啊
 		recruitCheckpointConfigurationService.delete(new EntityWrapper<RecruitCheckpointConfiguration>());
 
-		//还有把之前配置下的成绩记录状态位 位0
+		//还有把之前配置下的成绩记录状态位 为位0  是所有数据
 
-		competitionRecordService.updatedata();
+		competitionRecordService.updateRecordStatus();
 
 
 	}
@@ -327,8 +330,9 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 	@Transactional(rollbackFor = Exception.class)
 	public void saveQuestion(TestQuestions testQuestions, String myanswer) {
 		//去作用域中取user
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		User u= (User) request.getSession().getAttribute("user");
+//		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//		User u= (User) request.getSession().getAttribute("user");
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
 		UserQuestRecord userQuestRecord=new UserQuestRecord();
 		userQuestRecord.setId(IdWorker.getIdStr());//id
 		userQuestRecord.setUserId(u.getId());//userid
