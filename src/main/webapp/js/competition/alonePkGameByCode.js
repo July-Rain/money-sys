@@ -233,12 +233,14 @@ websocket.onmessage = function(event) {
                 else if(Number(vm.myscore)<Number(vm.youscore))
                 {
                     vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.loserReward);
-                    alert("全部题目答完,双方分数一样，你输了，获得失败者奖励"+data.competitionOnline.loserReward+",最终得分"+vm.myscore);
+                    recordScore(datamag.battlePlatform.id,'0',vm.myscore,'OnlinPk');
+                    alert("全部题目答完，你输了，获得失败者奖励"+data.competitionOnline.loserReward+",最终得分"+vm.myscore);
                 }
                 else if(Number(vm.myscore)>Number(vm.youscore))
                 {
                     vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.winReward);
-                    alert("全部题目答完,双方分数一样，你赢了，获得获胜者奖励"+data.competitionOnline.winReward+",最终得分"+vm.myscore);
+                    recordScore(datamag.battlePlatform.id,'1',vm.myscore,'OnlinPk');
+                    alert("全部题目答完，你赢了，获得获胜者奖励"+data.competitionOnline.winReward+",最终得分"+vm.myscore);
                 }
                 // alert("全部题目答完");
                 closeWebsocket();
@@ -316,6 +318,7 @@ function sendMsg(){
         data["mycore"]=vm.myscore;
         data["youcore"]=vm.youscore;
         data["battleCode"]=datamag.battleCode;
+        data["battlePlatform"]=datamag.battlePlatform;
         //发送消息
         websocket.send(JSON.stringify(data));
         //发送完消息，清空输入框
@@ -371,6 +374,20 @@ function oryesorno() {
         contentType: "application/json",
         async:false,
         data: JSON.stringify(vm.Question),
+        success: function (result) {
+        }
+    });
+
+
+}
+function recordScore(battlePlatformId,win,score,type)
+{
+    $.ajax({
+        type: "POST",
+        url: baseURL + 'competitionOnline/recordScore',
+        dataType: "json",
+
+        data: {"battlePlatformId":battlePlatformId,"win":win,"score":score,"type":type,},
         success: function (result) {
         }
     });

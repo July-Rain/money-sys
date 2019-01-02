@@ -104,12 +104,12 @@ public interface StuMediaService  extends AbstractService<StuMedia> {
 
     /**
      * @Author MengyuWu
-     * @Description 根据附件id更新对应的数据
+     * @Description 根据id更新对应的数据
      * @Date 10:32 2018-12-28
      * @Param [accId]
      * @return int
      **/
     
-    int updateCount(String accId);
+    int updateCount(String stuId);
     
 }

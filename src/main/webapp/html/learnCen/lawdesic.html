@@ -24,15 +24,17 @@
                 <el-tabs type="border-card">
                     <el-tab-pane label="检索">
                         <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-
-                            <el-form-item prop="lawTitle">
+                            <el-form-item prop="libId" label="法律法规库">
+                                <el-input v-model="formInline.libName" placeholder="法律法规库" @focus="chooseLib" size="mini" clearable @clear="clearLib"></el-input>
+                            </el-form-item>
+                            <el-form-item prop="lawTitle" label="法律决定标题">
                                 <el-input v-model="formInline.lawTitle" placeholder="标题" size="mini"></el-input>
                             </el-form-item>
-                            <el-form-item prop="issueOrg">
+                            <el-form-item prop="issueOrg" label="颁布单位">
                                 <el-input v-model="formInline.issueOrg" placeholder="颁布单位" size="mini"></el-input>
                             </el-form-item>
 
-                            <el-form-item prop="status">
+                            <el-form-item prop="status" label="状态">
                                 <el-select v-model="formInline.status" placeholder="状态" size="mini">
                                     <el-option label="有效" value="1"></el-option>
                                     <el-option label="无效" value="2"></el-option>
@@ -53,7 +55,6 @@
                                 <el-table-column
                                         prop="lawTitle"
                                         label="标题"
-                                        width="280"
                                 >
                                 </el-table-column>
                                 <el-table-column
@@ -80,6 +81,14 @@
                                         <el-tag v-if="scope.row.status === '3'" size="small" type="warning">已修改</el-tag>
                                     </template>
                                 </el-table-column>
+                                <el-table-column label="操作" width="180">
+                                    <template slot-scope="scope">
+                                        <el-button
+                                                size="mini"
+                                                @click="handleDetail(scope.$index, scope.row)">查看
+                                        </el-button>
+                                    </template>
+                                </el-table-column>
                             </el-table>
                             <el-pagination
                                     @size-change="handleSizeChange"
@@ -100,21 +109,18 @@
 
 
 
-        <el-dialog title="选择部门" :visible.sync="dialogDept" >
+        <el-dialog title="选择法律法规库" :visible.sync="dialogLib" >
             <!--对于同一级的节点，每次只能展开一个-->
             <el-tree
-                    ref="deptTree"
-                    :data="deptData"
-                    :props="defaultDeptProps"
+                    ref="libTree"
+                    :data="libData"
+                    :props="defaultLibProps"
                     accordion
-                    show-checkbox
-                    @check-change="handleCheckChange"
-                    node-key="id"
-                    :default-expanded-keys="[2079]"
+                    node-key="libId"
             >
             </el-tree>
-            <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
-            <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
+            <el-button type="primary" size="mini" @click="confimLib">保存</el-button>
+            <el-button type="primary" size="mini" @click="cancelLib">取消</el-button>
         </el-dialog>
 
 

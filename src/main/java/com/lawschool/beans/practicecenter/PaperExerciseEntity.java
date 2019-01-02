@@ -9,7 +9,7 @@ import com.lawschool.base.DataEntity;
  * @Description: 练习任务
  */
 @TableName("LAW_EXERCISE_TASK")
-public class TaskExerciseEntity extends DataEntity<TaskExerciseEntity> {
+public class PaperExerciseEntity extends DataEntity<PaperExerciseEntity> {
 
     public static final Integer STATUS_ON = 0;// 练习任务状态，进行中
     public static final Integer STATUS_OFF = 1;// 练习任务状态，已完结
