@@ -16,24 +16,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface SysRoleDao extends AbstractDao<SysRoleEntity> {
-    /**
-     * 增加角色
-     */
-    //public void insert(SysRoleEntity role);
 
     /**
      * 删除角色
      */
     void deleteRoleById(String roleId);
-    /**
-     * 修改角色
-     */
-    Integer update(SysRoleEntity role);
-
-    /**
-     * 查找角色
-     */
-    SysRoleEntity selectRoleById(String roleId);
 
     /**
      * @Author MengyuWu

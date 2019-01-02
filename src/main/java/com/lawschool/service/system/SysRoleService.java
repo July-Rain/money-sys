@@ -23,12 +23,6 @@ public interface SysRoleService extends AbstractService<SysRoleEntity> {
      * 删除角色
      */
     void deleteById(String roleId);
-    /**
-     * 查找角色
-     */
-    SysRoleEntity findByRoleId(String roleId);
-
-
 
     List<SysRoleEntity> findAll();
 

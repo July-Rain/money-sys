@@ -52,13 +52,12 @@ public class SysRoleMenuServiceImpl extends AbstractServiceImpl<SysRoleMenuDao, 
     }
 
     /**
-     * 根据角色和父级ID查询所有菜单ID
+     * 根据角色查询所有菜单ID
      * @param roleId
-     * @param parentId
      * @return
      */
-    public List<String> queryMenuIdList(String roleId, String parentId) {
-        return dao.queryMenuIdList(roleId, parentId);
+    public List<String> queryMenuIdList(String roleId) {
+        return dao.queryMenuIdList(roleId);
     }
 
     /**

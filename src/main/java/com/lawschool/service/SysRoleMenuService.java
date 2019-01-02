@@ -24,12 +24,11 @@ public interface SysRoleMenuService extends AbstractService<SysRoleMenu> {
     void save(String roleId, List<String> menuIdList);
 
     /**
-     * 根据角色和父级ID查询所有菜单ID
+     * 根据角色查询所有菜单ID
      * @param roleId
-     * @param parentId
      * @return
      */
-    List<String> queryMenuIdList(String roleId, String parentId);
+    List<String> queryMenuIdList(String roleId);
 
     /**
      * 根据菜单删除角色菜单

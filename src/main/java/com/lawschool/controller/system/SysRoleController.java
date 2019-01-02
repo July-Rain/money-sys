@@ -2,7 +2,9 @@ package com.lawschool.controller.system;
 
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.Page;
+import com.lawschool.beans.SysRoleMenu;
 import com.lawschool.beans.system.SysRoleEntity;
+import com.lawschool.service.SysRoleMenuService;
 import com.lawschool.service.system.SysRoleService;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class SysRoleController {
     @Autowired
     private SysRoleService roleService;
 
+    @Autowired
+    private SysRoleMenuService roleMenuService;
+
 
     /**
      * 查询角色列表
@@ -41,7 +46,8 @@ public class SysRoleController {
      */
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
     public Result info(@PathVariable("id") String id) {
-        SysRoleEntity sysRoleEntity = roleService.findByRoleId(id);
+        SysRoleEntity sysRoleEntity = roleService.findOne(id);
+        sysRoleEntity.setMenuList(roleMenuService.queryMenuIdList(id));
         return Result.ok().put("data", sysRoleEntity);
     }
 

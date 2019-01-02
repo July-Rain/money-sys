@@ -33,14 +33,12 @@
             ROLE_ID = #{roleId}
     </update>
 
-    <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="findOne" parameterType="java.lang.String" resultMap="BaseResultMap">
         select *
         from
             LAW_SYS_ROLE
         where
             ROLE_ID = #{roleId}
-
-
     </select>
 
     <!-- 查询权限下数据 -->
@@ -56,8 +54,7 @@
     </select>
 
     <!-- 查询列表 -->
-    <select id="findList" parameterType="java.lang.String"
-            resultType="com.lawschool.beans.system.SysRoleEntity">
+    <select id="findList" resultType="com.lawschool.beans.system.SysRoleEntity">
         SELECT role_id, role_name, remark FROM law_sys_role
     </select>
 </mapper>
