@@ -13,6 +13,7 @@
     <result column="CALSSIFY_CODE" jdbcType="NVARCHAR" property="calssifyCode" />
     <result column="STATUS" jdbcType="NVARCHAR" property="status" />
     <result column="ISSUE_ORG" jdbcType="NVARCHAR" property="issueOrg" />
+      <result column="recordId" jdbcType="NVARCHAR" property="recordId" />
   </resultMap>
   <select id="queryListByTask" resultMap="BaseResultMap" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
@@ -22,7 +23,8 @@
             c.ISSUE_ORG,
             c.ISSUE_TIME,
             c.LIB_ID,
-            c.status
+            c.status,
+			r.id as recordId
         FROM
             (
                 SELECT
@@ -35,6 +37,7 @@
                 AND T .INFO_TYPE = #{infoType} START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
             ) M
         INNER JOIN LAW_CLASSIFY_DESIC c ON M .DATA_ID = c. ID
+        LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
   </select>
     <select id="countListByTask" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
@@ -51,5 +54,6 @@
                 AND T .INFO_TYPE = #{infoType} START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
             ) M
         INNER JOIN LAW_CLASSIFY_DESIC c ON M .DATA_ID = c. ID
+        LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
   </select>
 </mapper>

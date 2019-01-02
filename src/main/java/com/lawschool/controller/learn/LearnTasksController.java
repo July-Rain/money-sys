@@ -52,6 +52,8 @@ public class LearnTasksController extends AbstractController {
 
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params){
+        User user=getUser();
+        params.put("userId",user.getId());
         PageUtils page = tasksService.queryPage(params);
         return Result.ok().put("page", page);
     }
@@ -80,10 +82,10 @@ public class LearnTasksController extends AbstractController {
     
     @SysLog("添加学习任务")
     @RequestMapping("/insert")
-    public Result insert(@RequestBody LearnTasksEntity tasksEntity){
+    public Result insert(@RequestBody LearnTasksEntity tasksEntity,String menuForm){
         User user =getUser();
         tasksEntity.setId(GetUUID.getUUIDs("SC"));
-        tasksService.insertLearnTask(tasksEntity,user);
+        tasksService.insertLearnTask(tasksEntity,user,menuForm);
         return Result.ok().put("id",tasksEntity.getId());
     }
 
@@ -97,9 +99,9 @@ public class LearnTasksController extends AbstractController {
     
     @SysLog("更新学习任务")
     @RequestMapping("/update")
-    public Result update(@RequestBody LearnTasksEntity tasksEntity){
+    public Result update(@RequestBody LearnTasksEntity tasksEntity,String menuForm){
         User user =getUser();
-        tasksService.updateLearnTask(tasksEntity,user);
+        tasksService.updateLearnTask(tasksEntity,user,menuForm);
         return Result.ok().put("id",tasksEntity.getId());
     }
 
@@ -159,7 +161,9 @@ public class LearnTasksController extends AbstractController {
     
     @RequestMapping("/allInfo")
     public Result allInfo(@RequestParam Map<String, Object> params){
-
+        //获取当前登陆人
+        User user=  getUser();
+        params.put("userId",user.getId());
         PageUtils page = tasksService.queryContentByTask(params);
         return Result.ok().put("page", page);
     }

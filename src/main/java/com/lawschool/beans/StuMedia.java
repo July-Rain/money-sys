@@ -99,6 +99,8 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
 
     private Integer delStatus;
 
+    @TableField(exist = false)
+    private String recordId;//记录id
 
     public String[] getDeptArr() {
         return deptArr;
@@ -356,5 +358,13 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
 
     public void setVideoPicAccUrl(String videoPicAccUrl) {
         this.videoPicAccUrl = videoPicAccUrl;
+    }
+
+    public String getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(String recordId) {
+        this.recordId = recordId;
     }
 }

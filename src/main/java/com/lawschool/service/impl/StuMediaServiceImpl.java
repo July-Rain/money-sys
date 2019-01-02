@@ -268,6 +268,8 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         taskDesicEntity.setInfoType(infoType);
         taskDesicEntity.setTaskId(taskId);
         taskDesicEntity.setInfoId(infoId);
+        String userId=(String)params.get("userId");
+        taskDesicEntity.setUserId(userId);
         page.setRecords(mapper.listStuByTask(page,taskDesicEntity));
         page.setTotal(mapper.countListStuByTask(taskDesicEntity));
         return new PageUtils(page);

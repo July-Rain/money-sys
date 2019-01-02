@@ -1,6 +1,8 @@
 package com.lawschool.beans.learn;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotations.Version;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,6 +30,18 @@ public class StuRecordEntity implements Serializable {
     private String stuFrom;
 
     private String taskId;//学习任务id
+
+    @Version
+    @TableField(update = "%s+1")
+    private Integer stuCount;//学习次数
+
+    public Integer getStuCount() {
+        return stuCount;
+    }
+
+    public void setStuCount(Integer stuCount) {
+        this.stuCount = stuCount;
+    }
 
     public String getTaskId() {
         return taskId;

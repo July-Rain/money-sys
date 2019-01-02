@@ -1,5 +1,6 @@
 package com.lawschool.beans.law;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -32,6 +33,17 @@ public class ClassifyDesicEntity implements Serializable {
     private String status;
 
     private String issueOrg;
+
+    @TableField(exist = false)
+    private String recordId;
+
+    public String getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(String recordId) {
+        this.recordId = recordId;
+    }
 
     public String getId() {
         return id;

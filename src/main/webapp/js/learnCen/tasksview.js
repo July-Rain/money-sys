@@ -263,6 +263,13 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
+                        if(vm.tableData){
+                            //有值
+                            for(var i=0;i< vm.tableData.length;i++){
+                                vm.tableData[i].completionDegree= vm.tableData[i].allCount == null ? '0%' :  vm.tableData[i].finishCount=='0' ? '0%' :(Math.round( vm.tableData[i].finishCount/ vm.tableData[i].allCount * 100* 100)/100) + '%';
+
+                            }
+                        }
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
                         vm.formInline.totalCount = parseInt(result.page.totalCount);

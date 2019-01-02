@@ -21,6 +21,7 @@
     <result column="VIDEO_PIC_ACC" jdbcType="VARCHAR" property="videoPicAcc" />
     <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
     <result column="DEPT_NAME" jdbcType="VARCHAR" property="deptName" />
+      <result column="recordId" jdbcType="NVARCHAR" property="recordId" />
   </resultMap>
   <select id="listCaseAnaByTask" resultMap="BaseResultMap" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
@@ -30,7 +31,8 @@
             c.VIDEO_PIC_ACC,
             c.CASE_CONTENT,
             c.CASE_TIME,
-            c.CONTENT_TYPE
+            c.CONTENT_TYPE,
+            r.id as recordId
         FROM
             (
                 SELECT
@@ -47,6 +49,7 @@
                 START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
             ) M
         INNER JOIN LAW_CASE_ANALYSIS c ON M .DATA_ID = c. ID
+      LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
   </select>
   <select id="countListCaseAnaByTask" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
@@ -66,5 +69,6 @@
                 START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
             ) M
         INNER JOIN LAW_CASE_ANALYSIS c ON M .DATA_ID = c. ID
+      LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
   </select>
 </mapper>

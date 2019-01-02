@@ -31,7 +31,7 @@ public interface LearnTasksService extends AbstractService<LearnTasksEntity> {
      **/
 
 
-    void insertLearnTask(LearnTasksEntity stuMedia,User user);
+    void insertLearnTask(LearnTasksEntity stuMedia,User user,String menuForm);
 
     /**
      * @Author MengyuWu
@@ -67,7 +67,7 @@ public interface LearnTasksService extends AbstractService<LearnTasksEntity> {
     
 
 
-    void updateLearnTask(LearnTasksEntity learnTask, User user);
+    void updateLearnTask(LearnTasksEntity learnTask, User user,String menuForm);
 
     /**
      * @Author MengyuWu
