@@ -56,7 +56,7 @@ public class SysRoleController {
      */
     @SysLog("保存角色")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Result save(SysRoleEntity sysRoleEntity) {
+    public Result save(@RequestBody SysRoleEntity sysRoleEntity) {
         roleService.saveOrUpdate(sysRoleEntity);
         return Result.ok();
     }
