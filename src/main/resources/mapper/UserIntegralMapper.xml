@@ -7,6 +7,10 @@
 SELECT
 	USER_ID,
 	INTEGRAL_POINT,
+	ORG_CODE,
+	ORG_NAME,
+	FULL_NAME,
+	USER_CODE,
 	CREDIT_POINT,
 	(
 		SELECT
@@ -74,4 +78,48 @@ WHERE
 	USER_ID = #{id}
 
   </select>
+
+
+
+	<select id="crdStatUser" resultType="com.lawschool.beans.UserIntegral">
+	SELECT
+	USER_ID,
+	ORG_CODE,
+	FULL_NAME,
+	USER_CODE,
+	ORG_NAME,
+	CREDIT_POINT,
+	ROW_NUMBER () OVER (ORDER BY CREDIT_POINT) AS orgCdtRank,
+	(SELECT allCdtRank FROM(
+			SELECT LUI.USER_ID,ROW_NUMBER () OVER (ORDER BY CREDIT_POINT) AS allCdtRank FROM LAW_USER_INTEGRAL lui)
+	  WHERE
+		USER_ID = LAW_USER_INTEGRAL.USER_ID) as allCdtRank
+	FROM
+		LAW_USER_INTEGRAL
+	WHERE
+		ORG_CODE = #{orgCode}
+	order by CREDIT_POINT
+	</select>
+
+
+
+	<select id="crdStatOrg" resultType="com.lawschool.beans.CrdStatOrg">
+
+		select
+		TAB.org_code as orgCode,
+		TAB.parent_code as parentCode,
+		TAB.org_level as orgLevel,
+		TAB.org_name as OrgName,
+		TAB.orgAllCrd,
+		ROW_NUMBER () OVER (ORDER BY orgAllCrd desc nulls last) AS orgAllCrdRank
+		from (
+			select
+				org_code,
+				parent_code,
+				org_level,
+				org_name,
+				(select sum(CREDIT_POINT)  from LAW_USER_INTEGRAL where ORG_CODE=LAW_ORG.org_code ) as orgAllCrd
+			from LAW_ORG
+		) tab
+	</select>
 </mapper>

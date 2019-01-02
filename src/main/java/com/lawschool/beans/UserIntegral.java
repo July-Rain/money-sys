@@ -21,17 +21,20 @@ public class UserIntegral extends DataEntity<UserIntegral> {
     private String userCode;//用户code
 
     private String orgName;//部门名字
-    @TableField(exist = false)
-    private Integer allItrRank;
+
 
     @TableField(exist = false)
-    private Integer orgItrRank;
+    private Integer allItrRank;//用户积分全排名
 
     @TableField(exist = false)
-    private Integer allCdtRank;
+    private Integer orgItrRank;//用户积分部门全排名
 
     @TableField(exist = false)
-    private Integer orgCdtRank;
+    private Integer allCdtRank;//用户学分全排名
+
+    @TableField(exist = false)
+    private Integer orgCdtRank;//用户学分部门全排名
+
 
 
     public UserIntegral() {
