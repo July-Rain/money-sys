@@ -241,7 +241,6 @@ var vm = new Vue({
         //保存
         saveOrUpdate:function () {
             var url=baseURL + "sys/add";
-            debugger
             console.log(vm.teacher.id);
             if (vm.teacher.id != null && vm.teacher.id != '') {
                 url=baseURL+"sys/updata";

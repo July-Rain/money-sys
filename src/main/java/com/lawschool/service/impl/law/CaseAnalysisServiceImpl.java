@@ -139,6 +139,8 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         taskDesicEntity.setInfoType(infoType);
         taskDesicEntity.setTaskId(taskId);
         taskDesicEntity.setInfoId(infoId);
+        String userId=(String)params.get("userId");
+        taskDesicEntity.setUserId(userId);
         page.setRecords(mapper.listCaseAnaByTask(page,taskDesicEntity));
         page.setTotal(mapper.countListCaseAnaByTask(taskDesicEntity));
         return new PageUtils(page);

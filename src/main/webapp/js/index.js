@@ -92,7 +92,12 @@ var vm = new Vue({
             console.info("item!!!", item)
 
             if (item.url) {
-                vm.childUrl = item.url + "?id=" + item.id;
+                if(item.url.indexOf("?") == -1){
+                    vm.childUrl = item.url + "?id=" + item.id;
+                }else{
+                    vm.childUrl = item.url + "&id=" + item.id;
+                }
+
                 this.loadNav(item.id)
                 // 并不需要更新菜单
             } else {

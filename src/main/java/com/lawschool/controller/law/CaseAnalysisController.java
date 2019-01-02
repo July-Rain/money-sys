@@ -116,13 +116,13 @@ public class CaseAnalysisController extends AbstractController {
         return Result.ok();
     }
     @RequestMapping("/updateCount")
-    public Result updateCount(String id,String stuType,String stuFrom){
+    public Result updateCount(String id,String stuType,String stuFrom,String taskId){
         //获取当前登陆人
         User user=  getUser();
         //更新
         analysisService.updateCount(id );
         //插入学习记录
-        recordService.insertStuRecord(user,id,stuType,stuFrom);
+        recordService.insertStuRecord(user,id,stuType,stuFrom,taskId);
         return Result.ok();
     }
 }

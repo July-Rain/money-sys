@@ -13,5 +13,5 @@ import com.lawschool.beans.learn.StuRecordEntity;
  * @since JDK 1.8
  */
 public interface StuRecordService extends IService<StuRecordEntity> {
-    int insertStuRecord(User user, String stuId, String stuType,String stuFrom,String ... taskId);
+    int insertStuRecord(User user, String stuId, String stuType,String stuFrom,String taskId);
 }
