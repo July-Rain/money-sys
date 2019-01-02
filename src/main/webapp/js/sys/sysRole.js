@@ -22,6 +22,7 @@ var vm = new Vue({
             children: 'child',
             label: 'fullName'
         }
+
     },
     mounted: function () {
     },
@@ -86,6 +87,33 @@ var vm = new Vue({
             }).then(function () {
                 that.dialogFormVisible = false;
                 //ajax
+                let _data = {}
+                _data.menuList = [];
+                _data.orgList = [];
+                that.$refs.tree1.getCheckedNodes().map((info)=>{
+                    console.info("11",info)
+                    _data.menuList.push(info.id)
+                })
+                that.$refs.tree2.getCheckedNodes().map((info)=>{
+                    console.info("22",info)
+                    _data.orgList.push(info.id)
+                })
+                _data.roleName = that.form.roleName;
+                _data.remarks = that.form.remarks;
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "role/save",
+                    contentType: "application/json",
+                    data: JSON.stringify(_data),
+                    success: function (result) {
+                        console.info("result",result)
+                        if (result.code === 0) {
+                            vm.reload();
+                        } else {
+                            alert(result.msg);
+                        }
+                    }
+                });
             });
 
 

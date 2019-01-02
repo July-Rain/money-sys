@@ -96,22 +96,24 @@
                     <el-col :span="6">
                         <h3>功能权限</h3>
                         <el-tree
+                                ref="tree1"
                                 :data="treeData1"
                                 show-checkbox
                                 node-key="id"
-                                :default-expanded-keys="[1, 2, 3]"
-                                :default-checked-keys="[5]"
+                                :default-expanded-keys="[]"
+                                :default-checked-keys="[]"
                                 :props="defaultProps">
                         </el-tree>
                     </el-col>
                     <el-col :span="18">
                         <h3>数据权限</h3>
                         <el-tree
+                                ref="tree2"
                                 :data="treeData2"
                                 show-checkbox
                                 node-key="id"
-                                :default-expanded-keys="[199, 2, 3]"
-                                :default-checked-keys="[199]"
+                                :default-expanded-keys="[2079]"
+                                :default-checked-keys="[]"
                                 :props="defaultProps2">
                         </el-tree>
                     </el-col>
