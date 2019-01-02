@@ -66,7 +66,7 @@ public class SysRoleController {
      */
     @SysLog("删除角色")
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public Result deleteById(String id) {
+    public Result deleteById(@RequestBody String id) {
         roleService.deleteById(id);
         return Result.ok();
     }

@@ -14,7 +14,7 @@ import java.util.List;
 @TableName("LAW_SYS_ROLE")
 public class SysRoleEntity extends DataEntity<SysRoleEntity> {
     /**
-     * 角色姓名
+     * 角色名
      */
     private String roleName;
     /**

@@ -42,6 +42,7 @@ public class SysRoleServiceImpl extends AbstractServiceImpl<SysRoleDao, SysRoleE
     public void saveOrUpdate(SysRoleEntity role) {
 
         if (StringUtils.isEmpty(role.getId())) {
+            role.setId(IdWorker.getIdStr());
             //新增角色
             dao.insert(role);
             //新增时添加相关的权限

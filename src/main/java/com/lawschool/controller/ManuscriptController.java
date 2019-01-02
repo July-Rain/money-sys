@@ -54,8 +54,8 @@ public class ManuscriptController extends AbstractController {
         return Result.ok();
     }
 
-    @RequestMapping(value = "/audit/{id}", method = RequestMethod.POST)
-    public Result audit(@PathVariable("id") String id, String audit){
+    @RequestMapping(value = "/audit", method = RequestMethod.POST)
+    public Result audit(@RequestParam String id, @RequestParam String audit){
 
         return Result.ok();
     }
