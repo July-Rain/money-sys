@@ -55,7 +55,7 @@ var vm = new Vue({
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: baseURL + "testQuestion/delete",
+                    url: baseURL + "role/delete",
                     dataType: "json",
                     data: {
                         idList: [row.id]
