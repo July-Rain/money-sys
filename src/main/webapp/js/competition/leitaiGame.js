@@ -216,6 +216,7 @@ websocket.onmessage = function(event) {
         {
             vm.myscore=data.mycore;
 
+            recordScoreFromTow(datamag.battlePlatform.id,vm.myscore,'leitai',data.to);
 
 
             if(vm.leizhu==uid)
@@ -276,13 +277,13 @@ websocket.onmessage = function(event) {
                 else if(Number(vm.myscore)<Number(vm.youscore))
                 {
                     vm.myscore=Number(vm.myscore)+Number(data.matchSetting.loserReward);
-                    recordScore(datamag.battlePlatform.id,'0',vm.myscore,'leitai');
+                    recordScore(datamag.battlePlatform.id,'0',vm.myscore,'leitai',vm.u.id);
                     alert("全部题目答完,你输了，获得失败者奖励"+data.matchSetting.loserReward+",最终得分"+vm.myscore);
                 }
                 else if(Number(vm.myscore)>Number(vm.youscore))
                 {
                     vm.myscore=Number(vm.myscore)+Number(data.matchSetting.winReward);
-                    recordScore(datamag.battlePlatform.id,'1',vm.myscore,'leitai');
+                    recordScore(datamag.battlePlatform.id,'1',vm.myscore,'leitai',vm.u.id);
                     if(vm.leizhu==uid)
                     {
                         //擂主不变
@@ -431,15 +432,32 @@ Date.prototype.Format = function (fmt) { //author: meizz
 
 
 
-function recordScore(battlePlatformId,win,score,type)
+
+function recordScore(battlePlatformId,win,score,type,uid)
 {
     $.ajax({
         type: "POST",
         url: baseURL + 'competitionOnline/recordScore',
         dataType: "json",
 
-        data: {"battlePlatformId":battlePlatformId,"win":win,"score":score,"type":type,},
+        data: {"battlePlatformId":battlePlatformId,"win":win,"score":score,"type":type,"uid":uid},
         success: function (result) {
         }
     });
+}
+function recordScoreFromTow(battlePlatformId,score,type,users)
+{
+    var userArray= users.split(",");
+
+    for ( var i = 0; i <userArray.length; i++){
+
+        if(userArray[i]==vm.u.id)
+        {
+            recordScore(battlePlatformId,'1',score,type,userArray[i]);
+        }
+        else
+        {
+            recordScore(battlePlatformId,'0','0',type,userArray[i]);
+        }
+    }
 }
