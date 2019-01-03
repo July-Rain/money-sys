@@ -26,6 +26,7 @@ var vm = new Vue({
         radio_disabled: false,
         dialogQuestion:false,//开始答题  弹出
         BattleTopicSettings:[],//题目配置集合
+        nowbattleTopicSetting:"",
         nowQscore:"",//当前题目分值
         //我的得分
          myscore:"0",
@@ -73,8 +74,17 @@ var vm = new Vue({
         //答对事件
         questionYes:function()
         {
-            alert("答对了")
-            vm.myscore=Number(vm.myscore)+Number(vm.nowQscore);
+            // alert("答对了")
+            // vm.myscore=Number(vm.myscore)+Number(vm.nowQscore);
+            if(vm.nowbattleTopicSetting.whetherGetIntegral=="1")//这题能获得积分
+            {
+                vm.myscore=Number(vm.myscore)+Number(vm.nowQscore);
+                alert("答对了，获得本题积分");
+            }
+            else
+            {
+                alert("答对了，本题不能获得积分");
+            }
         },
 
 
@@ -199,6 +209,7 @@ websocket.onmessage = function(event) {
             vm.allnum=data.tqList.length;
             vm.nownum=Number(nowtimu)+1;
             vm.nowQscore=data.matchSetting.battleTopicSettingList[Number(nowtimu)].score;
+            vm.nowbattleTopicSetting=data.matchSetting.battleTopicSettingList[Number(nowtimu)];
             vm.Question=data.tqList[Number(nowtimu)];
         }
         if(data.mycore!=undefined&&data.mycore!=null&&data.mycore!="")
@@ -265,11 +276,13 @@ websocket.onmessage = function(event) {
                 else if(Number(vm.myscore)<Number(vm.youscore))
                 {
                     vm.myscore=Number(vm.myscore)+Number(data.matchSetting.loserReward);
+                    recordScore(datamag.battlePlatform.id,'0',vm.myscore,'leitai');
                     alert("全部题目答完,你输了，获得失败者奖励"+data.matchSetting.loserReward+",最终得分"+vm.myscore);
                 }
                 else if(Number(vm.myscore)>Number(vm.youscore))
                 {
                     vm.myscore=Number(vm.myscore)+Number(data.matchSetting.winReward);
+                    recordScore(datamag.battlePlatform.id,'1',vm.myscore,'leitai');
                     if(vm.leizhu==uid)
                     {
                         //擂主不变
@@ -303,6 +316,8 @@ websocket.onmessage = function(event) {
                vm.allnum=data.tqList.length;
                vm.nownum=Number(nowtimu)+1;
                 vm.nowQscore=data.matchSetting.battleTopicSettingList[Number(nowtimu)].score;
+
+                vm.nowbattleTopicSetting=data.matchSetting.battleTopicSettingList[Number(nowtimu)];
                 vm.Question=data.tqList[Number(nowtimu)];
                 vm.yesOrNoAnswer="未答题";
             }
@@ -369,6 +384,7 @@ function sendMsg(){
         data["matchSetting"]=datamag.matchSetting;
         data["mycore"]=vm.myscore;
         data["youcore"]=vm.youscore;
+        data["battlePlatform"]=datamag.battlePlatform;
 
         //发送消息
         websocket.send(JSON.stringify(data));
@@ -415,3 +431,15 @@ Date.prototype.Format = function (fmt) { //author: meizz
 
 
 
+function recordScore(battlePlatformId,win,score,type)
+{
+    $.ajax({
+        type: "POST",
+        url: baseURL + 'competitionOnline/recordScore',
+        dataType: "json",
+
+        data: {"battlePlatformId":battlePlatformId,"win":win,"score":score,"type":type,},
+        success: function (result) {
+        }
+    });
+}
