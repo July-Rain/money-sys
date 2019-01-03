@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.Org;
+import com.lawschool.util.Result;
 
 /**
  * 
@@ -73,4 +74,14 @@ public interface OrgService  extends IService<Org> {
 	 * @return
 	**/
 	List<String> getSubDeptIdList(String orgId);
+	
+	
+	/**
+	 * @Author zjw
+	 * @Description 为当前的部门添加等级  （开发中完善数据）
+	 * @Date 9:48 2018-12-31
+	 * @Param []
+	 * @return com.lawschool.util.Result
+	**/
+	Result addOrgLevel();
 }

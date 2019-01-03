@@ -3,15 +3,13 @@ package com.lawschool.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.lawschool.base.AbstractServiceImpl;
-import com.lawschool.beans.CrdStatOrg;
-import com.lawschool.beans.Integral;
-import com.lawschool.beans.User;
-import com.lawschool.beans.UserIntegral;
+import com.lawschool.beans.*;
 import com.lawschool.dao.IntegralDao;
 import com.lawschool.dao.UserIntegralDao;
 import com.lawschool.service.UserIntegralService;
 import com.lawschool.service.UserService;
 import com.lawschool.util.PageUtils;
+import com.lawschool.util.Query;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +49,7 @@ public class UserIntegralServiceImpl extends AbstractServiceImpl<UserIntegralDao
 
     /**
      * @Author zjw
-     * @Description 人员维度学分统计
+     * @Description 学分 人员 
      * @Date 11:21 2018-12-29
      * @Param [orgCode]
      * @return java.util.List<com.lawschool.beans.UserIntegral>
@@ -62,25 +60,57 @@ public class UserIntegralServiceImpl extends AbstractServiceImpl<UserIntegralDao
         int pageNo= parseInt(Optional.ofNullable(param.get("currPage")).orElse("1").toString());
         int pageSize= parseInt(Optional.ofNullable(param.get("pageSize")).orElse("10").toString());
         Page<UserIntegral> page=new Page(pageNo,pageSize);
-        Page lst = page.setRecords(userIntegralDao.crdStatUser(page,param.get("orgCode").toString()));
-        return new PageUtils(lst);
+        page.setRecords(userIntegralDao.crdStatUser(page,param.get("orgCode").toString()));
+        page.setTotal(userIntegralDao.selectCount(new EntityWrapper<UserIntegral>().eq("ORG_CODE", param.get("orgCode").toString())));
+        return new PageUtils(page);
     }
 
+    /**
+     * @Author zjw
+     * @Description 学分 部门
+     * @Date 15:14 2019-1-3
+     * @Param []
+     * @return java.util.List<com.lawschool.beans.CrdStatOrg>
+    **/
     @Override
     public List<CrdStatOrg> crdStatOrg() {
         return userIntegralDao.crdStatOrg();
     }
 
+
+
+    /**
+     * @Author zjw
+     * @Description 积分 人员 
+     * @Date 11:21 2018-12-29
+     * @Param [orgCode]
+     * @return java.util.List<com.lawschool.beans.UserIntegral>
+     **/
+    @Override
+    public PageUtils itrStatUser(Map<String, Object> param) {
+        int pageNo= parseInt(Optional.ofNullable(param.get("currPage")).orElse("1").toString());
+        int pageSize= parseInt(Optional.ofNullable(param.get("pageSize")).orElse("10").toString());
+        Page<UserIntegral> page=new Page(pageNo,pageSize);
+        page.setRecords(userIntegralDao.itrStatUser(page,param.get("orgCode").toString()));
+        page.setTotal(userIntegralDao.selectCount(new EntityWrapper<UserIntegral>().eq("ORG_CODE", param.get("orgCode").toString())));
+        return new PageUtils(page);
+    }
+
+    @Override
+    public List<ItrStatOrg> itrStatOrg() {
+        return userIntegralDao.itrStatOrg();
+    }
+
     @Override
     public PageUtils list(Map<String,Object> param) {
 
-        int pageNo= parseInt(Optional.ofNullable(param.get("currPage")).orElse("1").toString());
-        int pageSize= parseInt(Optional.ofNullable(param.get("pageSize")).orElse("10").toString());
+       // int pageNo= parseInt(Optional.ofNullable(param.get("currPage")).orElse("1").toString());
+        //int pageSize= parseInt(Optional.ofNullable(param.get("pageSize")).orElse("10").toString());
 
         String userCode=(String)param.get("userCode");
         String fullName=(String)param.get("fullName");
 
-        Page page=new Page(pageNo,pageSize);
+        //Page page=new Page(pageNo,pageSize);
         EntityWrapper<UserIntegral> ew=new EntityWrapper<>();
         if(UtilValidate.isNotEmpty(userCode)){
             ew.like("USER_CODE", userCode);
@@ -88,7 +118,9 @@ public class UserIntegralServiceImpl extends AbstractServiceImpl<UserIntegralDao
         if(UtilValidate.isNotEmpty(fullName)){
             ew.like("FULL_NAME", fullName);
         }
-        List<UserIntegral> lst = userIntegralDao.selectPage(page, ew);
+        Page page1 = this.selectPage(new Query<UserIntegral>(param).getPage(), ew);
+
+        List<UserIntegral> lst=page1.getRecords();
 
         User user=new User();
         List<UserIntegral> rst=new ArrayList<>();
@@ -100,8 +132,8 @@ public class UserIntegralServiceImpl extends AbstractServiceImpl<UserIntegralDao
             });
         }
 
-        page.setRecords(rst);
-        PageUtils pageUtils=new PageUtils(page);
+        page1.setRecords(rst);
+        PageUtils pageUtils=new PageUtils(page1);
         return pageUtils;
     }
 
