@@ -390,6 +390,7 @@ public class ChatWebSocketHandlerLeitai implements WebSocketHandler {
 						timussettingMap.put("leitaisetting"+loginUser.getId(),matchSetting);
 						msg.setText("请擂主等待 挑战者加入");
 						msg.setDate(new Date());
+						msg.setBattlePlatform(battlePlatform);
 						msg.setTo(loginUser.getId());
 						msg.setNowtimu("0");
 						msg.setMatchSetting(matchSetting);
@@ -467,7 +468,7 @@ public class ChatWebSocketHandlerLeitai implements WebSocketHandler {
 								USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());
 								msg.setText("玩家"+loginUser.getFullName()+"加入,欢迎。。。。。。。。。。");
 								msg.setDate(new Date());
-
+								msg.setBattlePlatform(battlePlatform);
 								//把题目塞到信息里面去往页面打
 								msg.setTqList(timuMap.get("leitai"+battlePlatform.getPlay1()));
 								msg.setMatchSetting(timussettingMap.get("leitaisetting"+battlePlatform.getPlay1()));

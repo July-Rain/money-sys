@@ -31,6 +31,7 @@ var vm = new Vue({
         radio_disabled: false,
         dialogQuestion:false,//开始答题  弹出
         BattleTopicSettings:[],//题目配置集合
+        nowbattleTopicSetting:"",//当前题目配置
         nowQscore:"",//当前题目分值
         //我的得分
          myscore:"0",
@@ -77,8 +78,18 @@ var vm = new Vue({
         //答对事件
         questionYes:function()
         {
-            alert("答对了")
-            vm.myscore=Number(vm.myscore)+Number(vm.nowQscore);
+            // alert("答对了")
+            // vm.myscore=Number(vm.myscore)+Number(vm.nowQscore);
+
+            if(vm.nowbattleTopicSetting.whetherGetIntegral=="1")//这题能获得积分
+            {
+                vm.myscore=Number(vm.myscore)+Number(vm.nowQscore);
+                alert("答对了，获得本题积分");
+            }
+            else
+            {
+                alert("答对了，本题不能获得积分");
+            }
         },
 
 
@@ -184,6 +195,7 @@ websocket.onmessage = function(event) {
             vm.allnum=data.tqList.length;
             vm.nownum=Number(nowtimu)+1;
             vm.nowQscore=data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
+            vm.nowbattleTopicSetting=data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
             vm.Question=data.tqList[Number(nowtimu)];
         }
         if(data.mycore!=undefined&&data.mycore!=null&&data.mycore!="")
@@ -251,6 +263,7 @@ websocket.onmessage = function(event) {
                vm.allnum=data.tqList.length;
                vm.nownum=Number(nowtimu)+1;
                 vm.nowQscore=data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
+                vm.nowbattleTopicSetting=data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
                 vm.Question=data.tqList[Number(nowtimu)];
                 vm.yesOrNoAnswer="未答题";
             }
