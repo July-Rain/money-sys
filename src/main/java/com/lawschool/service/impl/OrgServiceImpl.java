@@ -3,7 +3,10 @@ package com.lawschool.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.lawschool.util.Result;
+import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,5 +73,31 @@ public class OrgServiceImpl extends ServiceImpl<OrgDao,Org> implements OrgServic
 	@Override
 	public List<String> getSubDeptIdList(String orgId) {
 		return orgDao.getSubDeptIdList(orgId);
+	}
+
+
+	private void updateSubLevel(Org org){
+		List<Org> lst=orgDao.selectList(new EntityWrapper<Org>().eq("PARENT_ID",org.getOrgId()));
+		Integer orgLevel = org.getOrgLevel();
+		if(UtilValidate.isNotEmpty(lst) ){
+			lst.stream().forEach(e->{
+				e.setOrgLevel(orgLevel+1);
+				orgDao.updateAllColumnById(e);
+				updateSubLevel(e);
+			});
+		}
+
+	}
+
+	@Override
+	public Result addOrgLevel() {
+		List<Org> lst = orgDao.selectList(new EntityWrapper<Org>().eq("LOCAL_ORG_CODE", "32"));
+
+		lst.stream().forEach(e->{
+			e.setOrgLevel(0);
+			orgDao.updateAllColumnById(e);
+			updateSubLevel(e);
+		});
+		return null;
 	}
 }

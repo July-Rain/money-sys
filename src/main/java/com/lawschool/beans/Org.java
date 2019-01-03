@@ -39,7 +39,7 @@ public class Org extends BaseEntity<Org>  {
 
     private Date orgIndate;// 更新日期
 
-    private Short orgLevel;// 更新日期
+    private Integer orgLevel;// 更新日期
 
     private String orgName;// 机构名称
 
@@ -76,36 +76,6 @@ public class Org extends BaseEntity<Org>  {
     @TableField(exist = false)
     private List child;//子集
 
-    public Org(String id, Date addTime, String addUser, Date updateTime, String updateUser, String dictionaryName, String fullName, String oldOrgCode, String ordercode, String orgCode, Date orgEnddate, String orgId, Date orgIndate, Short orgLevel, String orgName, String orgShortname, Date orgStartdate, Integer orgStatus, Integer orgType, String otherName, String parentCode, String parentId, Short synFlag, String localOrgCode, String localOrgName, String localParentOrgId, String localOrgType, String localPoliceType) {
-        this.id = id;
-        this.addTime = addTime;
-        this.addUser = addUser;
-        this.updateTime = updateTime;
-        this.updateUser = updateUser;
-        this.dictionaryName = dictionaryName;
-        this.fullName = fullName;
-        this.oldOrgCode = oldOrgCode;
-        this.ordercode = ordercode;
-        this.orgCode = orgCode;
-        this.orgEnddate = orgEnddate;
-        this.orgId = orgId;
-        this.orgIndate = orgIndate;
-        this.orgLevel = orgLevel;
-        this.orgName = orgName;
-        this.orgShortname = orgShortname;
-        this.orgStartdate = orgStartdate;
-        this.orgStatus = orgStatus;
-        this.orgType = orgType;
-        this.otherName = otherName;
-        this.parentCode = parentCode;
-        this.parentId = parentId;
-        this.synFlag = synFlag;
-        this.localOrgCode = localOrgCode;
-        this.localOrgName = localOrgName;
-        this.localParentOrgId = localParentOrgId;
-        this.localOrgType = localOrgType;
-        this.localPoliceType = localPoliceType;
-    }
 
     public Org() {
         super();
@@ -215,11 +185,11 @@ public class Org extends BaseEntity<Org>  {
         this.orgIndate = orgIndate;
     }
 
-    public Short getOrgLevel() {
+    public Integer getOrgLevel() {
         return orgLevel;
     }
 
-    public void setOrgLevel(Short orgLevel) {
+    public void setOrgLevel(Integer orgLevel) {
         this.orgLevel = orgLevel;
     }
 
