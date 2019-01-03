@@ -3,8 +3,10 @@ package com.lawschool.beans;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 @TableName("LAW_SYS_MSG_WITHIN_STATION")
 public class Msg implements Serializable{
@@ -27,9 +29,34 @@ public class Msg implements Serializable{
      */
     private String content;
     /**
-     * 发布单位
+     * 发布单位(ID)
      */
     private String releaseDept;
+
+    /**
+     * 接收单位名称（deptName）
+     */
+    @TableField(exist = false)
+    private String deptName;
+
+    /**
+     * 接收人名称(userName)
+     */
+    @TableField(exist = false)
+    private String userName;
+
+    /**
+     * 接收单位（数组）
+     */
+    @TableField(exist = false)
+    private String[] deptArr;
+
+    /**
+     * 接收人（数组）
+     */
+    @TableField(exist = false)
+    private String[] userArr;
+
     /**
      * 发布人
      */
@@ -37,6 +64,7 @@ public class Msg implements Serializable{
     /**
      * 发布时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date releaseDate;
     /**
      * 接收单位
@@ -49,6 +77,7 @@ public class Msg implements Serializable{
     /**
      * 接收日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date recieveDate;
     /**
      * 消息发布状态 1：已发送，0：未发送
@@ -209,6 +238,38 @@ public class Msg implements Serializable{
         this.backup5 = backup5;
     }
 
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String[] getDeptArr() {
+        return deptArr;
+    }
+
+    public void setDeptArr(String[] deptArr) {
+        this.deptArr = deptArr;
+    }
+
+    public String[] getUserArr() {
+        return userArr;
+    }
+
+    public void setUserArr(String[] userArr) {
+        this.userArr = userArr;
+    }
+
     @Override
     public String toString() {
         return "Msg{" +
@@ -217,6 +278,10 @@ public class Msg implements Serializable{
                 ", noticeType='" + noticeType + '\'' +
                 ", content='" + content + '\'' +
                 ", releaseDept='" + releaseDept + '\'' +
+                ", deptName='" + deptName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", deptArr=" + Arrays.toString(deptArr) +
+                ", userArr=" + Arrays.toString(userArr) +
                 ", releasePeople='" + releasePeople + '\'' +
                 ", releaseDate=" + releaseDate +
                 ", recieveDept='" + recieveDept + '\'' +
@@ -230,5 +295,4 @@ public class Msg implements Serializable{
                 ", backup5='" + backup5 + '\'' +
                 '}';
     }
-
 }
