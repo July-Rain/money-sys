@@ -187,6 +187,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 		//先移除 ，在发消息告诉对方
 		//先得到要处理的id  看看有没有匹配成啊  删哪个啊
 			String playids=	(String)webSocketSession.getAttributes().get("playids");
+	     	msg.setTo(playids);//为了传到前端页面
 			if((playids.contains(",")))
 			{
 				//说明配成功了  要处理2个用户
