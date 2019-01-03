@@ -159,13 +159,13 @@ var vm = new Vue({
                         orgName: ""
                     }
                 }
-                statInfo.id=vm.orgList[i].orgCode;
-                statInfo.pid = vm.orgList[i].parentCode;
+                statInfo.id=vm.orgList[i].orgId;
+                statInfo.pid = vm.orgList[i].parentId;
                 statInfo.level=vm.orgList[i].orgLevel==null?0:vm.orgList[i].orgLevel;
                 statInfo.data.orgName = vm.orgList[i].orgName;
                 statInfo.data.orgAllCrd = vm.orgList[i].orgAllCrd==null?0:vm.orgList[i].orgAllCrd;
                 statInfo.data.orgAllCrdRank = vm.orgList[i].orgAllCrdRank;
-                map.set(vm.orgList[i].orgCode,statInfo);
+                map.set(vm.orgList[i].orgId,statInfo);
             }
             map.forEach(function(value, index, array) {
                 vm.tableData2.push(value);

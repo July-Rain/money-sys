@@ -12,27 +12,27 @@ import org.springframework.context.annotation.Bean;
 
 public class CrdStatOrg {
 
-    private String orgCode;
-    private String parentCode;
+    private String orgId;
+    private String parentId;
     private String orgLevel;
     private String OrgName;
     private String orgAllCrd;
     private String orgAllCrdRank;
 
-    public String getOrgCode() {
-        return orgCode;
+    public String getOrgId() {
+        return orgId;
     }
 
-    public void setOrgCode(String orgCode) {
-        this.orgCode = orgCode;
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
     }
 
-    public String getParentCode() {
-        return parentCode;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setParentCode(String parentCode) {
-        this.parentCode = parentCode;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public String getOrgLevel() {
