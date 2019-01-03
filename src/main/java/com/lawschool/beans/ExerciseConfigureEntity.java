@@ -32,6 +32,10 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
     private List<ExerciseConditionEntity> list;
     @TableField(exist = false)
     private Integer status;// 练习任务状态
+    @TableField(exist = false)
+    private String taskId;// 用户练习任务Id
+    @TableField(exist = false)
+    private Integer answerNum;// 答题数
 
     public String getPrefix() {
         return prefix;
@@ -127,5 +131,21 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public Integer getAnswerNum() {
+        return answerNum;
+    }
+
+    public void setAnswerNum(Integer answerNum) {
+        this.answerNum = answerNum;
     }
 }

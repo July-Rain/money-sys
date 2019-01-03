@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.ManuscriptDao">
+    <sql id="manuscriptColumn">
+        id AS "id",
+        audit_user AS "auditUser",
+        audit_time AS "auditTime",
+        audit_status AS "auditStatus",
+        manuscript_type AS "manuscriptType",
+        type_id AS "typeId",
+        question_difficulty AS "questionDifficulty",
+        question_type AS "questionType",
+        answer_choice_number AS "answerChoiceNumber",
+        answer_id AS "answerId",
+        special_knowledge_id AS "specialKnowledgeId",
+        police_classification AS "policeClassification",
+        legal_basis AS "legalBasis",
+        answer_describle AS "answerDescrible",
+        stu_code AS "stuCode",
+        stu_title AS "stuTitle",
+        com_content AS "comContent"
+    </sql>
+
+    <insert id="insert">
+
+    </insert>
+</mapper>

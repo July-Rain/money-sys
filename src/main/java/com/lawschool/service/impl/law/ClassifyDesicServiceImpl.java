@@ -37,10 +37,12 @@ public class ClassifyDesicServiceImpl extends ServiceImpl<ClassifyDesicDao,Class
         String infoType=(String)params.get("infoType");
         String taskId=(String)params.get("taskId");
         String infoId=(String)params.get("infoId");
+        String userId=(String)params.get("userId");
         TaskDesicEntity taskDesicEntity = new TaskDesicEntity();
         taskDesicEntity.setInfoType(infoType);
         taskDesicEntity.setTaskId(taskId);
         taskDesicEntity.setInfoId(infoId);
+        taskDesicEntity.setUserId(userId);
         page.setRecords(desicDao.queryListByTask(page,taskDesicEntity));
         page.setTotal(desicDao.countListByTask(taskDesicEntity));
         return new PageUtils(page);
@@ -51,6 +53,8 @@ public class ClassifyDesicServiceImpl extends ServiceImpl<ClassifyDesicDao,Class
         String classifyId = (String)param.get("classifyId");
         String libId = (String)param.get("libId");
         String status = (String)param.get("status");
+        String lawTitle = (String)param.get("lawTitle");
+        String issueOrg = (String)param.get("issueOrg");
         EntityWrapper<ClassifyDesicEntity> ew = new EntityWrapper<>();
         ew.setSqlSelect("ID,LAW_CODE,LAW_TITLE,ISSUE_TIME,LIB_ID,CLASSIFY_ID,ISSUE_ORG,STATUS");
         if(UtilValidate.isNotEmpty(classifyId)){
@@ -61,6 +65,11 @@ public class ClassifyDesicServiceImpl extends ServiceImpl<ClassifyDesicDao,Class
         }
         if(UtilValidate.isNotEmpty(status)){
             ew.eq("status",status);
+        }if(UtilValidate.isNotEmpty(lawTitle)){
+            ew.like("law_title",lawTitle);
+        }
+        if(UtilValidate.isNotEmpty(issueOrg)){
+            ew.like("issue_org",issueOrg);
         }
 
         ew.orderBy("ORDER_NUM");

@@ -1,5 +1,9 @@
 package com.lawschool.form;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,6 +22,11 @@ public class QuestForm {
     private String answerDescrible;// 答案描述
     private List<AnswerForm> answer;//选项
     private Integer answerChoiceNumber;// 选项数量
+
+    private String userAnswer;// 用户答案
+    private Integer right;// 用户回答是否正确
+
+    private List<String> checkList = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -91,19 +100,31 @@ public class QuestForm {
         this.answerChoiceNumber = answerChoiceNumber;
     }
 
+    public String getUserAnswer() {
+        return userAnswer;
+    }
 
-    @Override
-    public String toString() {
-        return "QuestForm{" +
-                "id='" + id + '\'' +
-                ", comContent='" + comContent + '\'' +
-                ", questionDifficulty='" + questionDifficulty + '\'' +
-                ", questionType='" + questionType + '\'' +
-                ", answerId='" + answerId + '\'' +
-                ", legalBasis='" + legalBasis + '\'' +
-                ", answerDescrible='" + answerDescrible + '\'' +
-                ", answer=" + answer +
-                ", answerChoiceNumber=" + answerChoiceNumber +
-                '}';
+    public void setUserAnswer(String userAnswer) {
+        this.userAnswer = userAnswer;
+    }
+
+    public Integer getRight() {
+        return right;
+    }
+
+    public void setRight(Integer right) {
+        this.right = right;
+    }
+
+    public List<String> getCheckList() {
+
+        if(StringUtils.isNotBlank(this.userAnswer)){
+            checkList = Arrays.asList(this.userAnswer.split(","));
+        }
+        return checkList;
+    }
+
+    public void setCheckList(List<String> checkList) {
+        this.checkList = checkList;
     }
 }

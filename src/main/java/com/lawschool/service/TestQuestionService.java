@@ -3,6 +3,7 @@ package com.lawschool.service;
 
 import com.lawschool.base.AbstractService;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.form.AnswerForm;
 import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
 
@@ -75,4 +76,5 @@ public interface TestQuestionService extends AbstractService<TestQuestions> {
      */
     QuestForm findTestQuestionById(String id);
 
+    List<QuestForm> handleAnswers(List<QuestForm> questForms, List<AnswerForm> answerList);
 }

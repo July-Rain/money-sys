@@ -9,6 +9,7 @@ import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.beans.learn.LearnTasksEntity;
 import com.lawschool.service.law.TaskDesicService;
 import com.lawschool.service.learn.LearnTasksService;
+import com.lawschool.service.learn.StuRecordService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
@@ -37,6 +38,9 @@ public class LearnTasksController extends AbstractController {
 
     @Autowired
     private TaskDesicService desicService;
+
+    @Autowired
+    private StuRecordService recordService;
     /**
      * @Author MengyuWu
      * @Description 查询列表
@@ -48,6 +52,8 @@ public class LearnTasksController extends AbstractController {
 
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params){
+        User user=getUser();
+        params.put("userId",user.getId());
         PageUtils page = tasksService.queryPage(params);
         return Result.ok().put("page", page);
     }
@@ -76,10 +82,10 @@ public class LearnTasksController extends AbstractController {
     
     @SysLog("添加学习任务")
     @RequestMapping("/insert")
-    public Result insert(@RequestBody LearnTasksEntity tasksEntity){
+    public Result insert(@RequestBody LearnTasksEntity tasksEntity,String menuForm){
         User user =getUser();
         tasksEntity.setId(GetUUID.getUUIDs("SC"));
-        tasksService.insertLearnTask(tasksEntity,user);
+        tasksService.insertLearnTask(tasksEntity,user,menuForm);
         return Result.ok().put("id",tasksEntity.getId());
     }
 
@@ -93,9 +99,9 @@ public class LearnTasksController extends AbstractController {
     
     @SysLog("更新学习任务")
     @RequestMapping("/update")
-    public Result update(@RequestBody LearnTasksEntity tasksEntity){
+    public Result update(@RequestBody LearnTasksEntity tasksEntity,String menuForm){
         User user =getUser();
-        tasksService.updateLearnTask(tasksEntity,user);
+        tasksService.updateLearnTask(tasksEntity,user,menuForm);
         return Result.ok().put("id",tasksEntity.getId());
     }
 
@@ -155,8 +161,19 @@ public class LearnTasksController extends AbstractController {
     
     @RequestMapping("/allInfo")
     public Result allInfo(@RequestParam Map<String, Object> params){
-
+        //获取当前登陆人
+        User user=  getUser();
+        params.put("userId",user.getId());
         PageUtils page = tasksService.queryContentByTask(params);
         return Result.ok().put("page", page);
+    }
+
+    @RequestMapping("/insertRecord")
+    public Result updateCount(String stuId,String stuType,String stuFrom,String taskId){
+        //获取当前登陆人
+        User user=  getUser();
+        //插入学习记录
+        recordService.insertStuRecord(user,stuId,stuType,stuFrom,taskId);
+        return Result.ok();
     }
 }

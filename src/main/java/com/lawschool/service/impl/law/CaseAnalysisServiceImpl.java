@@ -3,6 +3,7 @@ package com.lawschool.service.impl.law;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
 import com.lawschool.beans.auth.AuthRelationBean;
 import com.lawschool.beans.law.CaseAnalysisEntity;
@@ -138,8 +139,18 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         taskDesicEntity.setInfoType(infoType);
         taskDesicEntity.setTaskId(taskId);
         taskDesicEntity.setInfoId(infoId);
+        String userId=(String)params.get("userId");
+        taskDesicEntity.setUserId(userId);
         page.setRecords(mapper.listCaseAnaByTask(page,taskDesicEntity));
         page.setTotal(mapper.countListCaseAnaByTask(taskDesicEntity));
         return new PageUtils(page);
+    }
+
+    @Override
+    public int updateCount(String stuId) {
+        CaseAnalysisEntity caseAna = new CaseAnalysisEntity();
+        caseAna.setContentCount(1);
+        caseAna.setId(stuId);
+        return baseMapper.updateById(caseAna);
     }
 }

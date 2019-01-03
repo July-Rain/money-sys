@@ -1,0 +1,157 @@
+img{
+    width: 100%;
+    height: 100%;
+}
+.container{
+    background-color: #f2f2f2;
+    padding: 91px 24px 23px;
+}
+/*个人信息头部*/
+.personal_area{
+    position: relative;
+    background-color: #fff;
+    padding-bottom: 40px;
+    margin-bottom: 16px;
+}
+.personal_area .user_head{
+    width: 176px;
+    height: 176px;
+    border: 4px solid #fff;
+    border-radius: 4px;
+    position: absolute;
+    left: 32px;
+    top: -70px;
+    background-color: #fff;
+}
+.person_info{
+    float: left;
+    margin: 119px 0 0 8px;
+
+}
+.person_info > p.name{
+    line-height: 48px;
+    height: 48px;
+    padding-left: 25px;
+    font-size: 26px;
+    color: #333;
+    font-weight: bolder;
+}
+.person_info > ul > li{
+    float: left;
+    width: 77px;
+
+}
+.person_info > ul > li span{
+    display: block;
+    text-align: center;
+}
+
+.person_info > ul > li span.num{
+    line-height: 32px;
+    height: 32px;
+    font-size: 20px;
+    color: #333;
+    font-weight: bolder;
+}
+.person_info > ul > li span.name{
+    line-height: 25px;
+    height: 25px;
+    font-size: 16px;
+    color: #666;
+}
+.submit_info{
+    float: right;
+    width: 69vw;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    background-color: #f5f8fa;
+    margin: 40px 32px 0 0;
+}
+.submit_info .clearfix{
+    border-top: 1px solid #e8e8e8;
+}
+.el-textarea__inner{
+    border: none;
+    background-color: #f5f8fa;
+    height: 116px;
+    padding: 19px;
+    color: #666;
+    font-size: 16px;
+}
+.el-form-item{
+    margin-bottom: 0;
+}
+
+/*讨论区*/
+.info_area{
+    background-color: #fff;
+    padding: 0 32px;
+}
+.info_area > ul.clearfix{
+    border-bottom: 4px solid #fafafa;
+    height: 61px;
+    line-height: 61px;
+}
+.info_area > ul.clearfix > li{
+    float: left;
+    margin-right: 60px;
+    margin-top: -4px;
+    font-size: 18px;
+    color: #666;
+}
+.info_area > ul.clearfix > li.active{
+    border-bottom: 4px solid #1381e3;
+    color: #000;
+}
+.info_area .tab .item{
+    padding-top: 24px;
+}
+.item .item_top{
+    padding-bottom: 13px;
+}
+.item .item_top .item_head{
+    float: left;
+    width: 60px;
+    height: 60px;
+}
+.item .item_top > p{
+    float: left;
+    height: 60px;
+    line-height: 60px;
+}
+.item .item_top > p .name{
+    padding-left: 19px;
+    color: #333;
+    font-weight: bolder;
+    font-size: 20px;
+}
+.item .item_top > p .time{
+    padding-left: 24px;
+    font-size: 14px;
+    color: #999;
+}
+.item > p.text{
+    line-height: 28px;
+    color: #333;
+    font-size: 16px;
+}
+.item ul.item_bot > li{
+    float: left;
+    line-height: 49px;
+    height: 49px;
+}
+.item ul.item_bot > li{
+    color: #999;
+}
+.item ul.item_bot > li i{
+    padding-right: 7px;
+    color: #8590a6;
+}
+.item ul.item_bot > li:nth-child(1){
+    padding-right: 32px;
+}
+.item ul.item_bot > li:nth-child(2){
+    padding-right: 84px;
+}
+
+

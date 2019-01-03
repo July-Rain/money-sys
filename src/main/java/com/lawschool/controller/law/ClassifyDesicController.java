@@ -20,7 +20,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @RestController
-@RequestMapping("/calssdesic")
+@RequestMapping("/classdesic")
 public class ClassifyDesicController extends AbstractController {
     @Autowired
     private ClassifyDesicService desicService;

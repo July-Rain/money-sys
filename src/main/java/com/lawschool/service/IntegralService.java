@@ -31,4 +31,6 @@ public interface IntegralService {
      * @return int
     **/
     int addIntegralRecord(Integral integer, User user);
+
+
 }

@@ -186,7 +186,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sys/getUorT",
+                url: baseURL + "sys/getUorT?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {

@@ -80,7 +80,6 @@ public class IntegralServiceImpl extends AbstractServiceImpl<IntegralDao, Integr
      * @return int
     **/
     @Override
-    @SysLog(value="添加用户积分学分记录")
     @Transactional(rollbackFor = Exception.class)
     public int addIntegralRecord(Integral integral, User user) {
         String userId=user.getId();
@@ -97,28 +96,32 @@ public class IntegralServiceImpl extends AbstractServiceImpl<IntegralDao, Integr
         integralDao.insert(integral);
 
         //2.更新用户积分学分表
-        UserIntegral userIntegral=new UserIntegral();
-        userIntegral.setUserId(userId);
-        userIntegral = userIntegralDao.selectOne(userIntegral);
+//        UserIntegral userIntegral=new UserIntegral();
+//        userIntegral.setUserId(userId);
+        List<UserIntegral> userIntegral = userIntegralDao.selectList(new EntityWrapper<UserIntegral>().eq("USER_ID",user.getId()));
 
         //原来就有
-        if(UtilValidate.isNotEmpty(userIntegral)){
+        if(userIntegral.size()>0){
             if("0".equalsIgnoreCase(type)){
-                userIntegral.setIntegralPoint(userIntegral.getIntegralPoint()+point);
+                userIntegral.get(0).setIntegralPoint(userIntegral.get(0).getIntegralPoint()+point);
             }else if("1".equalsIgnoreCase(type)){
-                userIntegral.setCreditPoint(userIntegral.getCreditPoint()+point);
+                userIntegral.get(0).setCreditPoint(userIntegral.get(0).getCreditPoint()+point);
             }
 
-            userIntegralDao.update(userIntegral,new EntityWrapper<UserIntegral>().eq("USER_ID", userId));
+            userIntegralDao.update(userIntegral.get(0),new EntityWrapper<UserIntegral>().eq("USER_ID", userId));
         }else{
+            UserIntegral userIntegral2=new UserIntegral();
             if("0".equalsIgnoreCase(type)){
-                userIntegral.setIntegralPoint(point);
+                userIntegral2.setIntegralPoint(point);
             }else if("1".equalsIgnoreCase(type)){
-                userIntegral.setCreditPoint(point);
+                userIntegral2.setCreditPoint(point);
             }
-            user.setOrgCode(user.getUserCode());
-            userIntegral.setId(GetUUID.getUUIDs("UIG"));
-            userIntegralDao.insert(userIntegral);
+            userIntegral2.setOrgCode(user.getOrgCode());
+            userIntegral2.setFullName(user.getFullName());
+            userIntegral2.setUserCode(user.getUserCode());
+            userIntegral2.setOrgName(user.getOrgName());
+            userIntegral2.setId(GetUUID.getUUIDs("UIG"));
+            userIntegralDao.insert(userIntegral2);
         }
 
         return SUCCESS;

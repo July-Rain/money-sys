@@ -12,5 +12,8 @@ public class BattleRecordServiceImpl extends ServiceImpl<BattleRecordDao, Battle
 	@Autowired
 	private BattleRecordDao battleRecordDao;
 
-
+	@Override
+	public void updaterecord(String type) {
+		battleRecordDao.updaterecord(type);
+	}
 }

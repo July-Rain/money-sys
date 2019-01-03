@@ -62,6 +62,24 @@
                                             <el-tag v-if="scope.row.status === '3'" size="small" type="warning">已修改</el-tag>
                                         </template>
                                     </el-table-column>
+                                    <el-table-column
+                                            prop="recordId"
+                                            label="是否学习"
+                                            width="180"
+                                    >
+                                        <template slot-scope="scope">
+                                            <el-tag v-if="scope.row.recordId" size="small" type="success">已学习</el-tag>
+                                            <el-tag v-else size="small" type="info">未学习</el-tag>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="操作" width="180">
+                                        <template slot-scope="scope">
+                                            <el-button
+                                                    size="mini"
+                                                    @click="handleDetail(scope.$index, scope.row)">查看
+                                            </el-button>
+                                        </template>
+                                    </el-table-column>
                                 </el-table>
                             </div>
                             <div v-if="infoFlag=='stu_pic'" class="content lesson">
@@ -101,6 +119,24 @@
                                             <el-tag size="small" type="success">图文</el-tag>
                                         </template>
                                     </el-table-column>
+                                    <el-table-column
+                                            prop="recordId"
+                                            label="是否学习"
+                                            width="180"
+                                    >
+                                        <template slot-scope="scope">
+                                            <el-tag v-if="scope.row.recordId" size="small" type="success">已学习</el-tag>
+                                            <el-tag v-else size="small" type="info">未学习</el-tag>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="操作" width="180">
+                                        <template slot-scope="scope">
+                                            <el-button
+                                                    size="mini"
+                                                    @click="countStu(scope.row.id)">查看
+                                            </el-button>
+                                        </template>
+                                    </el-table-column>
 
                                 </el-table>
                             </div>
@@ -109,7 +145,7 @@
                                     <el-col :span="6" v-for="(item, index) in infoData">
                                         <el-card :body-style="{ padding: '4px' }">
 
-                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl">
+                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="countStu(item.id)">
                                                 <source :src="item.contentUrl" type="video/mp4">
                                                 您的浏览器不支持视频播放
                                             </video>
@@ -121,6 +157,8 @@
                                                 <p>
                                                     <span class="stuIssuer">{{item.stuIssuer}}</span>
                                                     <span class="stuCreat">{{item.stuIsstime}}</span>
+                                                    <el-tag v-if="item.recordId" size="small" type="success">已学习</el-tag>
+                                                    <el-tag v-else size="small" type="info">未学习</el-tag>
                                                 </p>
                                             </div>
                                         </el-card>
@@ -131,7 +169,7 @@
                                 <el-row :gutter="66">
                                     <el-col :span="12" v-for="(item, index) in infoData">
                                         <el-card :body-style="{ padding: '0px' }">
-                                            <audio controls="controls" preload="none">
+                                            <audio controls="controls" preload="none" @play="countStu(item.id)">
                                                 <source :src="item.contentUrl" controls="controls">
                                             </audio>
                                             <div style="padding: 14px 14px 0 14px;">
@@ -142,6 +180,8 @@
                                                 <p>
                                                     <span class="stuIssuer">{{item.stuIssuer}}</span>
                                                     <span class="stuCreat">{{item.stuCreat}}</span>
+                                                    <el-tag v-if="item.recordId" size="small" type="success">已学习</el-tag>
+                                                    <el-tag v-else size="small" type="info">未学习</el-tag>
                                                 </p>
                                             </div>
                                         </el-card>
@@ -185,6 +225,24 @@
                                             <el-tag  size="small" type="success">图文</el-tag>
                                         </template>
                                     </el-table-column>
+                                    <el-table-column
+                                            prop="recordId"
+                                            label="是否学习"
+                                            width="180"
+                                    >
+                                        <template slot-scope="scope">
+                                            <el-tag v-if="scope.row.recordId" size="small" type="success">已学习</el-tag>
+                                            <el-tag v-else size="small" type="info">未学习</el-tag>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="操作" width="180">
+                                        <template slot-scope="scope">
+                                            <el-button
+                                                    size="mini"
+                                                    @click="countCase(scope.row.id)">查看
+                                            </el-button>
+                                        </template>
+                                    </el-table-column>
 
                                 </el-table>
                             </div>
@@ -193,7 +251,7 @@
                                     <el-col :span="6" v-for="(item, index) in infoData">
                                         <el-card :body-style="{ padding: '4px' }">
 
-                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl">
+                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="countCase(item.id)">
                                                 <source :src="item.caseContentUrl" type="video/mp4">
                                                 您的浏览器不支持视频播放
                                             </video>
@@ -203,8 +261,8 @@
                                                     <a href="javascript:;" class="title">{{item.caseTitle}}</a>
                                                 </p>
                                                 <p>
-                                                    <!--<span class="stuIssuer">{{item.stuIssuer}}</span>
-                                                    <span class="stuCreat">{{item.stuIsstime}}</span>-->
+                                                    <el-tag v-if="item.recordId" size="small" type="success">已学习</el-tag>
+                                                    <el-tag v-else size="small" type="info">未学习</el-tag>
                                                 </p>
                                             </div>
                                         </el-card>
@@ -216,7 +274,7 @@
                                     <el-col :span="6" v-for="(item, index) in infoData">
                                         <el-card :body-style="{ padding: '4px' }">
 
-                                            <audio controls="controls" preload="none">
+                                            <audio controls="controls" preload="none" @play="countCase(item.id)">
                                                 <source :src="item.caseContentUrl" controls="controls">
                                             </audio>
                                             <div style="padding: 14px 14px 0 14px;">
@@ -225,8 +283,8 @@
                                                     <a href="javascript:;" class="title">{{item.caseTitle}}</a>
                                                 </p>
                                                 <p>
-                                                    <!--<span class="stuIssuer">{{item.stuIssuer}}</span>
-                                                    <span class="stuCreat">{{item.stuIsstime}}</span>-->
+                                                    <el-tag v-if="item.recordId" size="small" type="success">已学习</el-tag>
+                                                    <el-tag v-else size="small" type="info">未学习</el-tag>
                                                 </p>
                                             </div>
                                         </el-card>
@@ -272,7 +330,24 @@
                                             <el-tag v-if="scope.row.contentType === '3'" size="small" type="warning">视频</el-tag>
                                         </template>
                                     </el-table-column>
-
+                                    <el-table-column
+                                            prop="recordId"
+                                            label="是否学习"
+                                            width="180"
+                                    >
+                                        <template slot-scope="scope">
+                                            <el-tag v-if="scope.row.recordId" size="small" type="success">已学习</el-tag>
+                                            <el-tag v-else size="small" type="info">未学习</el-tag>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="操作" width="180">
+                                        <template slot-scope="scope">
+                                            <el-button
+                                                    size="mini"
+                                                    @click="countCase(scope.row.id)">查看
+                                            </el-button>
+                                        </template>
+                                    </el-table-column>
                                 </el-table>
                             </div>
                             <el-pagination

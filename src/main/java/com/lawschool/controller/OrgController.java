@@ -79,4 +79,11 @@ public class OrgController extends AbstractController {
 //        return maps;
 //    }
 
+
+    @RequestMapping("/addlevel")
+    public Result addLevel(){
+
+        return orgService.addOrgLevel();
+    }
+
 }

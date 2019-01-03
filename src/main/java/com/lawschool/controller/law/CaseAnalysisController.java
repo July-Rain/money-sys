@@ -6,6 +6,7 @@ import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
 import com.lawschool.beans.law.CaseAnalysisEntity;
 import com.lawschool.service.law.CaseAnalysisService;
+import com.lawschool.service.learn.StuRecordService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
@@ -32,6 +33,9 @@ public class CaseAnalysisController extends AbstractController {
 
     @Autowired
     private CaseAnalysisService analysisService;
+
+    @Autowired
+    private StuRecordService recordService;
 
     /**
      * @Author MengyuWu
@@ -109,6 +113,16 @@ public class CaseAnalysisController extends AbstractController {
     @RequestMapping("/delete")
     public Result delete(@RequestBody String[] ids){
         analysisService.deleteBatchIds(Arrays.asList(ids));
+        return Result.ok();
+    }
+    @RequestMapping("/updateCount")
+    public Result updateCount(String id,String stuType,String stuFrom,String taskId){
+        //获取当前登陆人
+        User user=  getUser();
+        //更新
+        analysisService.updateCount(id );
+        //插入学习记录
+        recordService.insertStuRecord(user,id,stuType,stuFrom,taskId);
         return Result.ok();
     }
 }

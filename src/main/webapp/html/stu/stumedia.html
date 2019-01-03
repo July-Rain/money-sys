@@ -13,6 +13,9 @@
     font-size: 30px;
     color: #57A8DC;
 }
+.w-e-toolbar{
+    overflow-x: scroll;
+}
 </style>
 <body>
 <div id="app" v-cloak>
@@ -142,7 +145,7 @@
                         <template v-if="stuMedia.stuType=='1'">
                             <el-form-item label="内容" prop="comContent">
                                 <!--<el-input  type="textarea" maxlength="200" v-model="stuMedia.comContent"></el-input>-->
-                                <div id="editor" style="width: 800px;">
+                                <div id="editor" style="width: 615px;">
                                 </div>
                             </el-form-item>
                         </template>

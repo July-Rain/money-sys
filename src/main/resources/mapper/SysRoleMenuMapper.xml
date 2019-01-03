@@ -11,9 +11,6 @@
         AND m.type != '0'
         <where>
             rm.role_id = #{roleId}
-            <if test="parentId != null and parentId != ''">
-                AND m.parent_id = #{parentId}
-            </if>
         </where>
     </select>
 

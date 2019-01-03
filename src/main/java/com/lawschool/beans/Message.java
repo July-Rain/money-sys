@@ -1,6 +1,7 @@
 package com.lawschool.beans;
 
 import com.google.gson.annotations.Expose;
+import com.lawschool.beans.competition.BattlePlatform;
 import com.lawschool.beans.competition.CompetitionOnline;
 import com.lawschool.beans.competition.MatchSetting;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 /**
  * DTO类，用来存放聊天的消息
- * @author BoBo
+ * @author 孙小康
  *
  */
 public class Message {
@@ -53,6 +54,11 @@ public class Message {
 	//打擂台配置
 	@Expose
 	MatchSetting matchSetting=new MatchSetting();
+
+
+	//对战平台
+	@Expose
+	BattlePlatform battlePlatform=new BattlePlatform();
 
 	//我的答案
 	@Expose
@@ -174,5 +180,13 @@ public class Message {
 
 	public void setMatchSetting(MatchSetting matchSetting) {
 		this.matchSetting = matchSetting;
+	}
+
+	public BattlePlatform getBattlePlatform() {
+		return battlePlatform;
+	}
+
+	public void setBattlePlatform(BattlePlatform battlePlatform) {
+		this.battlePlatform = battlePlatform;
 	}
 }

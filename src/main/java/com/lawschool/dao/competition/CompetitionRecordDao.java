@@ -8,4 +8,5 @@ import com.lawschool.beans.competition.CompetitionRecord;
 public interface CompetitionRecordDao extends BaseMapper<CompetitionRecord> {
 
 
+    public void updateRecordStatus();
 }

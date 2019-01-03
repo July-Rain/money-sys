@@ -59,7 +59,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         int pageNo= Integer.parseInt( Optional.ofNullable(params.get("currPage")).orElse("1").toString());
         int pageSize=Integer.parseInt((String) Optional.ofNullable(params.get("pageSize")).orElse("10").toString());
 
-        Page<User> page=new Page<>(pageNo,pageSize);
+        //Page<User> page=new Page<>(pageNo,pageSize);
 
         EntityWrapper<User> ew = new EntityWrapper<>();//默认所有的用户
 
@@ -88,9 +88,9 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
             ew.eq("IS_ONLINE",1);//1  在线
         }
 
-        List<User> users = userMapper.selectPage(page,ew);
+        Page<User> page = this.selectPage( new Query<User>(params).getPage(),ew);
 
-        PageUtils pageUtils=new PageUtils(users,users.size(),pageSize,pageNo);
+        PageUtils pageUtils=new PageUtils(page);
         return pageUtils;
     }
     

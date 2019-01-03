@@ -25,6 +25,7 @@ var vm = new Vue({
         radio_disabled: false,
         dialogQuestion:false,//开始答题  弹出
         BattleTopicSettings:[],//题目配置集合
+        nowbattleTopicSetting:"",//当前题目配置
         nowQscore:"",//当前题目分值
         //我的得分
          myscore:"0",
@@ -71,8 +72,16 @@ var vm = new Vue({
         //答对事件
         questionYes:function()
         {
-            alert("答对了")
-            vm.myscore=Number(vm.myscore)+Number(vm.nowQscore);
+
+            if(vm.nowbattleTopicSetting.whetherGetIntegral=="1")//这题能获得积分
+            {
+                vm.myscore=Number(vm.myscore)+Number(vm.nowQscore);
+                alert("答对了，获得本题积分");
+            }
+            else
+            {
+                alert("答对了，本题不能获得积分");
+            }
         },
 
 
@@ -176,12 +185,17 @@ websocket.onmessage = function(event) {
             vm.allnum=data.tqList.length;
             vm.nownum=Number(nowtimu)+1;
             vm.nowQscore=data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
+            vm.nowbattleTopicSetting=data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
             vm.Question=data.tqList[Number(nowtimu)];
         }
         if(data.mycore!=undefined&&data.mycore!=null&&data.mycore!="")
         {
             vm.myscore=data.mycore;
-            alert("对手弃权,获得获胜者奖励"+data.mycore);
+
+
+            recordScoreFromTow(datamag.battlePlatform.id,vm.myscore,'OnlinPk',data.to);
+            alert("对手弃权,只获得获胜者奖励"+data.mycore);
+
         }
 
         $("#chatUserList").empty();
@@ -220,17 +234,21 @@ websocket.onmessage = function(event) {
                 if(Number(vm.myscore)==Number(vm.youscore))
                 {
                     vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.winReward);
-                    alert("全部题目答完,双方分数一样，平局，获得获胜奖励"+data.competitionOnline.winReward+",最终得分"+vm.myscore);
+                    alert("全部题目答完,双方分数一样，平局,占不计入成绩表中，获得获胜奖励"+data.competitionOnline.winReward+",最终得分"+vm.myscore);
                 }
                 else if(Number(vm.myscore)<Number(vm.youscore))
                 {
                     vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.loserReward);
-                    alert("全部题目答完,双方分数一样，你输了，获得失败者奖励"+data.competitionOnline.loserReward+",最终得分"+vm.myscore);
+
+                    recordScore(datamag.battlePlatform.id,'0',vm.myscore,'OnlinPk',vm.u.id);
+                     alert("全部题目答完,，你输了，获得失败者奖励"+data.competitionOnline.loserReward+",最终得分"+vm.myscore);
                 }
                 else if(Number(vm.myscore)>Number(vm.youscore))
                 {
                     vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.winReward);
-                    alert("全部题目答完,双方分数一样，你赢了，获得获胜者奖励"+data.competitionOnline.winReward+",最终得分"+vm.myscore);
+
+                    recordScore(datamag.battlePlatform.id,'1',vm.myscore,'OnlinPk',vm.u.id);
+                    alert("全部题目答完,，你赢了，获得获胜者奖励"+data.competitionOnline.winReward+",最终得分"+vm.myscore);
                 }
                 // alert("全部题目答完");
                 closeWebsocket();
@@ -241,6 +259,7 @@ websocket.onmessage = function(event) {
                vm.allnum=data.tqList.length;
                vm.nownum=Number(nowtimu)+1;
                 vm.nowQscore=data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
+                vm.nowbattleTopicSetting=data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
                 vm.Question=data.tqList[Number(nowtimu)];
                 vm.yesOrNoAnswer="未答题";
             }
@@ -307,6 +326,8 @@ function sendMsg(){
         data["competitionOnline"]=datamag.competitionOnline;
         data["mycore"]=vm.myscore;
         data["youcore"]=vm.youscore;
+
+        data["battlePlatform"]=datamag.battlePlatform;
         //发送消息
         websocket.send(JSON.stringify(data));
         //发送完消息，清空输入框
@@ -368,3 +389,33 @@ function oryesorno() {
 }
 
 
+
+// recordScore(datamag.battlePlatform.id,'0',vm.myscore,'OnlinPk');
+function recordScore(battlePlatformId,win,score,type,uid)
+{
+    $.ajax({
+        type: "POST",
+        url: baseURL + 'competitionOnline/recordScore',
+        dataType: "json",
+
+        data: {"battlePlatformId":battlePlatformId,"win":win,"score":score,"type":type,"uid":uid},
+        success: function (result) {
+        }
+    });
+}
+function recordScoreFromTow(battlePlatformId,score,type,users)
+{
+    var userArray= users.split(",");
+
+    for ( var i = 0; i <userArray.length; i++){
+
+        if(userArray[i]==vm.u.id)
+        {
+            recordScore(battlePlatformId,'1',score,type,userArray[i]);
+        }
+        else
+        {
+            recordScore(battlePlatformId,'0','0',type,userArray[i]);
+        }
+    }
+}

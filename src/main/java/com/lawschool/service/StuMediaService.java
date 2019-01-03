@@ -101,5 +101,15 @@ public interface StuMediaService  extends AbstractService<StuMedia> {
      **/
     
     PageUtils listStuByTask(Map<String, Object> params);
+
+    /**
+     * @Author MengyuWu
+     * @Description 根据id更新对应的数据
+     * @Date 10:32 2018-12-28
+     * @Param [accId]
+     * @return int
+     **/
+    
+    int updateCount(String stuId);
     
 }

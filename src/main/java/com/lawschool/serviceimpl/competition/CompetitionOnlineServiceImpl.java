@@ -4,26 +4,24 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.annotation.SysLog;
+import com.lawschool.beans.Integral;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserQuestRecord;
-import com.lawschool.beans.competition.BattleTopicSetting;
-import com.lawschool.beans.competition.CompetitionOnline;
-import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
-import com.lawschool.beans.competition.RecruitConfiguration;
+import com.lawschool.beans.competition.*;
 import com.lawschool.beans.competition.bak.BattleTopicSettingBak;
 import com.lawschool.beans.competition.bak.CompetitionOnlineBak;
 import com.lawschool.beans.competition.bak.RecruitConfigurationBak;
 import com.lawschool.dao.competition.CompetitionOnlineDao;
-import com.lawschool.service.AnswerService;
-import com.lawschool.service.TestQuestionService;
-import com.lawschool.service.UserQuestRecordService;
+import com.lawschool.service.*;
+import com.lawschool.service.competition.BattleRecordService;
 import com.lawschool.service.competition.BattleTopicSettingService;
 import com.lawschool.service.competition.CompetitionOnlineService;
 import com.lawschool.service.competition.bak.BattleTopicSettingBakService;
 import com.lawschool.service.competition.bak.CompetitionOnlineBakService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,6 +59,18 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	private AnswerService answerService;
 	@Autowired
 	private UserQuestRecordService userQuestRecordService;
+	@Autowired
+	private BattleRecordService battleRecordService;
+	@Autowired
+	private IntegralService integralService;
+
+	@Autowired
+	private UserService userService;
+
+
+
+
+
 	@Override
 	public List<CompetitionOnline> list() {
 		return this.selectList(new EntityWrapper<CompetitionOnline>());
@@ -106,9 +116,9 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	public void save(CompetitionOnline competitionOnline) {
 
 		//去作用域中取user
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		User u= (User) request.getSession().getAttribute("user");
-
+//		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//		User u= (User) request.getSession().getAttribute("user");
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
 		competitionOnline.setId(IdWorker.getIdStr());
 
 		competitionOnline.setCreatePeople(u.getId());     //创建人id
@@ -207,8 +217,9 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	public void deleteAll() {
 		//因为对战题目配置表里面的 数据 还有的是  打擂台的  数据 ，不仅仅是属于在线比武配置的，所以 要反查，先根据在线比武设置表id去找对战题目配置表数据，先删题目配置 再删在线比武配置
 		//去作用域中取user
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		User u= (User) request.getSession().getAttribute("user");
+//		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//		User u= (User) request.getSession().getAttribute("user");
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
 		//删除主表 连附表的数据要一起删除
 		//但是涉及到bak备份表   所以我他妈的 还要先查 在插  在 删   （反正操作的是所有，不用考虑条件）
 
@@ -255,6 +266,11 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 //删
 			  battleTopicSettingService.delete(new EntityWrapper<BattleTopicSetting>().in("FOREIGN_KEY_ID",Arrays.asList(ids)));
 			  this.delete(new EntityWrapper<CompetitionOnline>());
+
+
+			  battleRecordService.updaterecord("OnlinPk");
+
+
 		  }
 		  else
 		  {
@@ -329,4 +345,37 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 		userQuestRecord.setSource("onlinPk");//添加来源
 		userQuestRecordService.insert(userQuestRecord);
 	}
+
+	//保存分数记录
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void recordScore(String battlePlatformId,String win,String score,String type,String uid) {
+
+		User u= userService.selectUserByUserId(uid);
+		BattleRecord battleRecord=new BattleRecord();
+		battleRecord.setId(IdWorker.getIdStr());
+		battleRecord.setBattlePlatformId(battlePlatformId);
+		battleRecord.setCreateTime(new Date());
+		battleRecord.setStatus("1");
+		battleRecord.setType(type);
+		battleRecord.setScore(score);
+		battleRecord.setWhetherWin(win);
+		battleRecord.setUserId(uid);
+
+		battleRecordService.insert(battleRecord);
+
+		//加完后在添加 另外的积分表
+		Integral integral=new Integral();
+		integral.setType("1");
+		integral.setPoint(Integer.parseInt(score));
+		integral.setSrc(type);
+
+
+
+		integralService.addIntegralRecord(integral,u);
+
+
+
+	}
+
 }

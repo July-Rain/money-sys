@@ -12,91 +12,19 @@ var vm = new Vue({
         diffList: [],
         typeList: [],
         qtList: [],
-        treeData1: [
-            {
-                id: 1,
-                label: '一级 1',
-                children: [{
-                    id: 4,
-                    label: '二级 1-1',
-                    children: [{
-                        id: 9,
-                        label: '三级 1-1-1'
-                    }, {
-                        id: 10,
-                        label: '三级 1-1-2'
-                    }]
-                }]
-            },
-            {
-                id: 2,
-                label: '一级 2',
-                children: [{
-                    id: 5,
-                    label: '二级 2-1'
-                }, {
-                    id: 6,
-                    label: '二级 2-2'
-                }]
-            },
-            {
-                id: 3,
-                label: '一级 3',
-                children: [{
-                    id: 7,
-                    label: '二级 3-1'
-                }, {
-                    id: 8,
-                    label: '二级 3-2'
-                }]
-            }
-        ],
-        treeData2: [
-            {
-                id: 199,
-                label: '一级 1',
-                children: [{
-                    id: 4,
-                    label: '二级 1-1',
-                    children: [{
-                        id: 9,
-                        label: '三级 1-1-1'
-                    }, {
-                        id: 10,
-                        label: '三级 1-1-2'
-                    }]
-                }]
-            },
-            {
-                id: 2,
-                label: '一级 2',
-                children: [{
-                    id: 5,
-                    label: '二级 2-1'
-                }, {
-                    id: 6,
-                    label: '二级 2-2'
-                }]
-            },
-            {
-                id: 3,
-                label: '一级 3',
-                children: [{
-                    id: 7,
-                    label: '二级 3-1'
-                }, {
-                    id: 8,
-                    label: '二级 3-2'
-                }]
-            }
-        ],
+        treeData1: [],
+        treeData2: [],
         defaultProps: {
-            children: 'children',
-            label: 'label'
+            children: 'list',
+            label: 'name'
+        },
+        defaultProps2: {
+            children: 'child',
+            label: 'fullName'
         }
+
     },
     mounted: function () {
-
     },
     methods: {
         layFn() {
@@ -128,7 +56,7 @@ var vm = new Vue({
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: baseURL + "testQuestion/delete",
+                    url: baseURL + "role/delete",
                     dataType: "json",
                     data: {
                         idList: [row.id]
@@ -159,6 +87,33 @@ var vm = new Vue({
             }).then(function () {
                 that.dialogFormVisible = false;
                 //ajax
+                let _data = {}
+                _data.menuList = [];
+                _data.orgList = [];
+                that.$refs.tree1.getCheckedNodes().map((info)=>{
+                    console.info("11",info)
+                    _data.menuList.push(info.id)
+                })
+                that.$refs.tree2.getCheckedNodes().map((info)=>{
+                    console.info("22",info)
+                    _data.orgList.push(info.id)
+                })
+                _data.roleName = that.form.roleName;
+                _data.remarks = that.form.remarks;
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "role/save",
+                    contentType: "application/json",
+                    data: JSON.stringify(_data),
+                    success: function (result) {
+                        console.info("result",result)
+                        if (result.code === 0) {
+                            vm.reload();
+                        } else {
+                            alert(result.msg);
+                        }
+                    }
+                });
             });
 
 
@@ -166,13 +121,14 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "GET",
-                url: baseURL + "testQuestion/list",
+                url: baseURL + "role/list",
                 dataType: "json",
                 data: {
                     pageNo: 1,
                     limit: 10
                 },
                 success: function (result) {
+                    console.info("result",result);
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
                         vm.form.pageNo = result.page.pageNo;
@@ -190,9 +146,8 @@ var vm = new Vue({
         this.$nextTick(function () {
             $.ajax({
                 type: "GET",
-                url: baseURL + "testQuestion/list",
+                url: baseURL + "role/list",
                 contentType: "application/json",
-                data: vm.form,
                 success: function (result) {
                     if (result.code === 0) {
                         vm.tableData = result.page.list;
@@ -210,29 +165,24 @@ var vm = new Vue({
             var that = this;
             $.ajax({
                 type: "GET",
-                url: baseURL + "menu/list2",
+                url: baseURL + "menu/elTree",
                 contentType: "application/json",
                 success: function (result) {
-                    that.treeData1 = [];
+                    that.treeData1 = result.menuList;
                     console.info("功能权限", result);
-                    result.map((info) => {
-                        if (!info.parentName) {
-                            that.treeData1.push({
-                                id: info.id,
-                                label: info.name
-                            })
-                        }
-                    })
+
                 }
             })
-            // $.ajax({
-            //     type: "GET",
-            //     url: baseURL + "org/tree",
-            //     contentType: "application/json",
-            //     success: function (result) {
-            //         console.info("数据权限",result)
-            //     }
-            // })
+            $.ajax({
+                type: "GET",
+                url: baseURL + "org/tree",
+                contentType: "application/json",
+                success: function (result) {
+                    that.treeData2 = result.orgList;
+                    console.info("数据权限", result);
+
+                }
+            })
         })
     }
 

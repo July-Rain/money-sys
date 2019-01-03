@@ -8,12 +8,13 @@ import com.lawschool.base.DataEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 
 @TableName("LAW_SYS_ROLE")
 public class SysRoleEntity extends DataEntity<SysRoleEntity> {
     /**
-     * 角色姓名
+     * 角色名
      */
     private String roleName;
     /**
@@ -21,10 +22,11 @@ public class SysRoleEntity extends DataEntity<SysRoleEntity> {
      */
     private String remark;
 
+
     @TableField(exist = false)
-    private String menuIds;
+    private List<String> menuList;
     @TableField(exist = false)
-    private String orgIds;
+    private List<String> orgList;
 
 
     public String getRoleName() {
@@ -43,27 +45,19 @@ public class SysRoleEntity extends DataEntity<SysRoleEntity> {
         this.remark = remark;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public List<String> getMenuList() {
+        return menuList;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setMenuList(List<String> menuList) {
+        this.menuList = menuList;
     }
 
-    public String getMenuIds() {
-        return menuIds;
+    public List<String> getOrgList() {
+        return orgList;
     }
 
-    public void setMenuIds(String menuIds) {
-        this.menuIds = menuIds;
-    }
-
-    public String getOrgIds() {
-        return orgIds;
-    }
-
-    public void setOrgIds(String orgIds) {
-        this.orgIds = orgIds;
+    public void setOrgList(List<String> orgList) {
+        this.orgList = orgList;
     }
 }

@@ -1,5 +1,6 @@
 package com.lawschool.redis;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.beans.Dict;
 import com.lawschool.beans.Org;
 import com.lawschool.beans.User;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -57,11 +59,19 @@ public class LoadData {
             orgList=bulidDeptTree(orgList,"32");
             redisUtil.set("orgList",orgList);
         }
-//
-//        List<Dict> list = dictService.selectAllDict();
-//        for(Dict data:list){
-//            redisUtil.set("dictInfo",data);
-//        }
+
+
+        List<Dict> list = dictService.selectAllDict();
+        for(Dict data:list){
+            redisUtil.set("dictInfo",data);
+        }
+
+
+        //权限设置-部门数据(OrgId)
+        List<String> sysDeptEntities = orgService.selectList(new EntityWrapper<Org>().in("ORG_TYPE","10,70,-1,0")).stream().map(e->e.getOrgId()).collect(Collectors.toList());
+        if(!redisUtil.hasKey("permOrg")){
+            redisUtil.set("permOrg",sysDeptEntities);
+        }
 
     }
 

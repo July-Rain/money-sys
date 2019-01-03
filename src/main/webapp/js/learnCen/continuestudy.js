@@ -190,6 +190,63 @@ var vm = new Vue({
                 ztree = $.fn.zTree.init($("#classTree"), setting, r.data);
             })
         },
+        handleDetail: function (index , row) {
+            //查看详情信息
+            //1.记录学习记录
+            if(vm.infoFlag=='law'){
+                this.insertStuRecord(row.id);
+            }else if(vm.infoFlag=='stu_pic'){
+                this.countStu(row.id);
+            }else if(vm.infoFlag=='case_pic'){
+                this.countCase(row.id);
+            }
+        },
+        insertStuRecord: function (id) {
+            //请求后台修改播放量 记录学习记录
+            $.ajax({
+                type: "POST",
+                url: baseURL +  "learntasks/insertRecord?stuId="+id+"&stuType="+vm.infoFlag+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        countStu:function (id) {
+            //请求后台修改播放量 记录学习记录
+            $.ajax({
+                type: "POST",
+                url: baseURL +  "stumedia/updateCount?stuId="+id+"&stuType="+vm.infoFlag+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        countCase:function (id) {
+            //请求后台修改播放量 记录学习记录 --案例分析模块
+
+            $.ajax({
+                type: "POST",
+                url: baseURL +  "caseana/updateCount?id="+id+"&stuType="+vm.infoFlag+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        }
     }
 });
 

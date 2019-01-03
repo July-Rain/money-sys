@@ -187,6 +187,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 		//先移除 ，在发消息告诉对方
 		//先得到要处理的id  看看有没有匹配成啊  删哪个啊
 			String playids=	(String)webSocketSession.getAttributes().get("playids");
+	     	msg.setTo(playids);//为了传到前端页面
 			if((playids.contains(",")))
 			{
 				//说明配成功了  要处理2个用户
@@ -379,6 +380,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 				msg.setDate(new Date());
 				msg.setTo(loginUser.getId());
 				msg.setNowtimu("0");
+				msg.setBattlePlatform(battlePlatform);
 				msg.setCompetitionOnline(competitionOnline);
 				//把题目塞到信息里面去往页面打
 				msg.setTqList(qList);
@@ -423,6 +425,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 				msg.setTqList(timuMap.get("onlinePk"+battlePlatform.getPlay1()));
 				msg.setCompetitionOnline(timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()));
 				msg.setNowtimu("0");
+				msg.setBattlePlatform(battlePlatform);
 				msg.setTo(battlePlatform.getPlay1()+","+loginUser.getId());//为了传到前端页面
 //						msg.getUserList().add(userService.selectById(battlePlatform.getPlay1()));//目前没走数据库  这个useid 没有//
 				msg.getUserList().add(

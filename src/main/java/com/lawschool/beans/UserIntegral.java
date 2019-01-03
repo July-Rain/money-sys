@@ -16,18 +16,25 @@ public class UserIntegral extends DataEntity<UserIntegral> {
 
     private String orgCode;//部门code
 
+    private String fullName;//用户名
+
+    private String userCode;//用户code
+
+    private String orgName;//部门名字
+
 
     @TableField(exist = false)
-    private Integer allItrRank;
+    private Integer allItrRank;//用户积分全排名
 
     @TableField(exist = false)
-    private Integer orgItrRank;
+    private Integer orgItrRank;//用户积分部门全排名
 
     @TableField(exist = false)
-    private Integer allCdtRank;
+    private Integer allCdtRank;//用户学分全排名
 
     @TableField(exist = false)
-    private Integer orgCdtRank;
+    private Integer orgCdtRank;//用户学分部门全排名
+
 
 
     public UserIntegral() {
@@ -105,5 +112,29 @@ public class UserIntegral extends DataEntity<UserIntegral> {
 
     public void setOrgCdtRank(Integer orgCdtRank) {
         this.orgCdtRank = orgCdtRank;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 }
