@@ -1,5 +1,6 @@
 package com.lawschool.service.impl;
 
+import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.SysRoleMenu;
 import com.lawschool.dao.SysRoleMenuDao;
@@ -43,6 +44,7 @@ public class SysRoleMenuServiceImpl extends AbstractServiceImpl<SysRoleMenuDao, 
         // 保存角色与菜单关系
         for(String menuId : menuIdList){
             SysRoleMenu sysRoleMenu = new SysRoleMenu();
+            sysRoleMenu.setId(IdWorker.getIdStr());
             sysRoleMenu.setMenuId(menuId);
             sysRoleMenu.setRoleId(roleId);
 
