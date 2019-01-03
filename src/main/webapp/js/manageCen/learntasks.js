@@ -3,6 +3,7 @@
  * Date: 2018/12/18
  * Description:学习任务管理
  */
+var menu=getUrlParam("menu");//获取页面标识
 var ztree;
 var setting = {
     data: {
@@ -128,7 +129,7 @@ var vm = new Vue({
             });
             this.reload();
             this.reloadUser();
-
+            vm.menuForm=menu;
         })
     },
     methods: {
@@ -148,7 +149,7 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    var url = vm.learnTasks.id ? "learntasks/update" : "learntasks/insert";
+                    var url = vm.learnTasks.id ? "learntasks/update?menuFrom="+vm.menuForm : "learntasks/insert?menuFrom="+vm.menuForm;
                     var deptArr = vm.learnTasks.deptIds?vm.learnTasks.deptIds.split(","):[];
                     var userArr = vm.learnTasks.userIds?vm.learnTasks.userIds.split(","):[];
                     vm.learnTasks.deptArr=deptArr;

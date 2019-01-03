@@ -37,10 +37,12 @@ public class ClassifyDesicServiceImpl extends ServiceImpl<ClassifyDesicDao,Class
         String infoType=(String)params.get("infoType");
         String taskId=(String)params.get("taskId");
         String infoId=(String)params.get("infoId");
+        String userId=(String)params.get("userId");
         TaskDesicEntity taskDesicEntity = new TaskDesicEntity();
         taskDesicEntity.setInfoType(infoType);
         taskDesicEntity.setTaskId(taskId);
         taskDesicEntity.setInfoId(infoId);
+        taskDesicEntity.setUserId(userId);
         page.setRecords(desicDao.queryListByTask(page,taskDesicEntity));
         page.setTotal(desicDao.countListByTask(taskDesicEntity));
         return new PageUtils(page);

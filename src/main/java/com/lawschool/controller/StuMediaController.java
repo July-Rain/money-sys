@@ -167,13 +167,13 @@ public class StuMediaController extends AbstractController {
      **/
     
     @RequestMapping("/updateCount")
-    public Result updateCount(String stuId,String stuType,String stuFrom){
+    public Result updateCount(String stuId,String stuType,String stuFrom,String taskId){
         //获取当前登陆人
         User user=  getUser();
         //更新
         stuMediaService.updateCount(stuId );
         //插入学习记录
-        recordService.insertStuRecord(user,stuId,stuType,stuFrom);
+        recordService.insertStuRecord(user,stuId,stuType,stuFrom,taskId);
         return Result.ok();
     }
 }

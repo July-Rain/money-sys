@@ -50,6 +50,10 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
 
     @TableField(exist = false)
     private String userIds;//适用人员
+    @TableField(exist = false)
+    private int allCount;//任务中所有课程数量
+    @TableField(exist = false)
+    private int finishCount;//完成课程数量
 
     @TableField(exist = false)
     private List<TaskDesicEntity> taskContentList=new ArrayList<TaskDesicEntity>();//法律法规内容arr
@@ -148,5 +152,20 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
 
     public void setUserIds(String userIds) {
         this.userIds = userIds;
+    }
+    public int getAllCount() {
+        return allCount;
+    }
+
+    public void setAllCount(int allCount) {
+        this.allCount = allCount;
+    }
+
+    public int getFinishCount() {
+        return finishCount;
+    }
+
+    public void setFinishCount(int finishCount) {
+        this.finishCount = finishCount;
     }
 }

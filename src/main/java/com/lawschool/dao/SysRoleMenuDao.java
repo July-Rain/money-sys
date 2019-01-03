@@ -14,7 +14,7 @@ public interface SysRoleMenuDao extends AbstractDao<SysRoleMenu> {
     /**
      * 根据角色ID，获取菜单ID列表
      */
-    List<String> queryMenuIdList(@Param("roleId") String roleId, @Param("parentId") String parentId);
+    List<String> queryMenuIdList(@Param("roleId") String roleId);
 
     int deleteByRoleId(String roleId);
 

@@ -191,7 +191,11 @@ websocket.onmessage = function(event) {
         if(data.mycore!=undefined&&data.mycore!=null&&data.mycore!="")
         {
             vm.myscore=data.mycore;
-            alert("对手弃权,获得获胜者奖励"+data.mycore);
+
+
+            recordScoreFromTow(datamag.battlePlatform.id,vm.myscore,'OnlinPk',data.to);
+            alert("对手弃权,只获得获胜者奖励"+data.mycore);
+
         }
 
         $("#chatUserList").empty();
@@ -236,14 +240,14 @@ websocket.onmessage = function(event) {
                 {
                     vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.loserReward);
 
-                    recordScore(datamag.battlePlatform.id,'0',vm.myscore,'OnlinPk');
+                    recordScore(datamag.battlePlatform.id,'0',vm.myscore,'OnlinPk',vm.u.id);
                      alert("全部题目答完,，你输了，获得失败者奖励"+data.competitionOnline.loserReward+",最终得分"+vm.myscore);
                 }
                 else if(Number(vm.myscore)>Number(vm.youscore))
                 {
                     vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.winReward);
 
-                    recordScore(datamag.battlePlatform.id,'1',vm.myscore,'OnlinPk');
+                    recordScore(datamag.battlePlatform.id,'1',vm.myscore,'OnlinPk',vm.u.id);
                     alert("全部题目答完,，你赢了，获得获胜者奖励"+data.competitionOnline.winReward+",最终得分"+vm.myscore);
                 }
                 // alert("全部题目答完");
@@ -387,15 +391,31 @@ function oryesorno() {
 
 
 // recordScore(datamag.battlePlatform.id,'0',vm.myscore,'OnlinPk');
-function recordScore(battlePlatformId,win,score,type)
+function recordScore(battlePlatformId,win,score,type,uid)
 {
     $.ajax({
         type: "POST",
         url: baseURL + 'competitionOnline/recordScore',
         dataType: "json",
 
-        data: {"battlePlatformId":battlePlatformId,"win":win,"score":score,"type":type,},
+        data: {"battlePlatformId":battlePlatformId,"win":win,"score":score,"type":type,"uid":uid},
         success: function (result) {
         }
     });
+}
+function recordScoreFromTow(battlePlatformId,score,type,users)
+{
+    var userArray= users.split(",");
+
+    for ( var i = 0; i <userArray.length; i++){
+
+        if(userArray[i]==vm.u.id)
+        {
+            recordScore(battlePlatformId,'1',score,type,userArray[i]);
+        }
+        else
+        {
+            recordScore(battlePlatformId,'0','0',type,userArray[i]);
+        }
+    }
 }

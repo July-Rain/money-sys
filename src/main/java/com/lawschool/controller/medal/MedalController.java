@@ -1,6 +1,7 @@
 package com.lawschool.controller.medal;
 
 import com.lawschool.annotation.SysLog;
+import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.medal.MedalEntity;
 import com.lawschool.beans.medal.UserMedalEntity;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/medal")
-public class MedalController {
+public class MedalController extends AbstractController {
 
     @Autowired
     private MedalService medalService;
@@ -75,9 +76,19 @@ public class MedalController {
     /**
      * 查询我的勋章
      */
-    @RequestMapping(value = "/find/{userId}", method = RequestMethod.GET)
-    public Result findByUserId(@PathVariable("userId") String userId) {
-        List<String> list = userMedalService.findMedalIdList(userId);
+    @RequestMapping(value = "/myMedal", method = RequestMethod.GET)
+    public Result myMedal() {
+        List<String> list = userMedalService.findMedalIdList(getUser().getId());
         return Result.ok().put("list", list);
+    }
+
+    /**
+     * 可领取的勋章
+     * @return
+     */
+    @RequestMapping(value = "/medalList", method = RequestMethod.GET)
+    public Result medal(){
+        //TODO
+        return Result.ok();
     }
 }

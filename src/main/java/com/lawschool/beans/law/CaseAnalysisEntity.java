@@ -74,6 +74,17 @@ public class CaseAnalysisEntity implements Serializable {
     @TableField(exist = false)
     private String videoPicAccUrl;//内容路径
 
+    @TableField(exist = false)
+    private String recordId;//记录id
+
+    public String getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(String recordId) {
+        this.recordId = recordId;
+    }
+
     public String getContentType() {
         return contentType;
     }

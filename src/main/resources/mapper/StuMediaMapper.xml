@@ -26,6 +26,7 @@
       <result column="STUTYPEVALUE" property="stuTypeValue" />
     <result column="ADDSRC" property="addsrc" />
     <result column="stuPoliceclassName" property="stuPoliceclassName" />
+    <result column="recordId" jdbcType="NVARCHAR" property="recordId" />
   </resultMap>
   <!--<insert id="insert" parameterType="com.lawschool.beans.StuMedia">
     insert into LAW_STU_MEDIA (ID, STU_CODE, STU_TITLE, 
@@ -269,7 +270,8 @@
             c.STU_LAWID,
             c.com_content,
             DICTCODE2VALE(c.STU_POLICECLASS) as stuPoliceclassName,
-            c.stu_count
+            c.stu_count,
+			r.id as recordId
         FROM
             (
                 SELECT
@@ -282,6 +284,7 @@
                 AND T .INFO_TYPE = #{infoType} START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
             ) M
         INNER JOIN LAW_STU_MEDIA c ON M .DATA_ID = c. ID
+        LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
   </select>
   <select id="countListStuByTask" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
@@ -298,5 +301,6 @@
                 AND T .INFO_TYPE = #{infoType} START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
             ) M
         INNER JOIN LAW_STU_MEDIA c ON M .DATA_ID = c. ID
+        LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
   </select>
 </mapper>

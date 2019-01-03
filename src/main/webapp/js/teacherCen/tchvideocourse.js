@@ -100,7 +100,6 @@ var vm = new Vue({
         },
         // 表单重置
         resetForm: function (formName) {
-            debugger
             this.$refs[formName].resetFields();
         },
         reload: function () {

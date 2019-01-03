@@ -205,7 +205,7 @@ var vm = new Vue({
             //请求后台修改播放量 记录学习记录
             $.ajax({
                 type: "POST",
-                url: baseURL +  "learntasks/insertRecord?stuId="+id+"&stuType="+vm.infoFlag+"&stuFrom=learntask&taskId="+taskId,
+                url: baseURL +  "learntasks/insertRecord?stuId="+id+"&stuType="+vm.infoFlag+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -218,10 +218,9 @@ var vm = new Vue({
         },
         countStu:function (id) {
             //请求后台修改播放量 记录学习记录
-
             $.ajax({
                 type: "POST",
-                url: baseURL +  "stumedia/updateCount?stuId="+id+"&stuType="+vm.infoFlag+"&stuFrom=learntask&taskId="+taskId,
+                url: baseURL +  "stumedia/updateCount?stuId="+id+"&stuType="+vm.infoFlag+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -237,7 +236,7 @@ var vm = new Vue({
 
             $.ajax({
                 type: "POST",
-                url: baseURL +  "caseana/updateCount?id="+id+"&stuType="+vm.infoFlag+"&stuFrom=learntask&taskId="+taskId,
+                url: baseURL +  "caseana/updateCount?id="+id+"&stuType="+vm.infoFlag+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){

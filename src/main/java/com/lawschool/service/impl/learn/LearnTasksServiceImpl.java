@@ -9,6 +9,7 @@ import com.lawschool.beans.auth.AuthRelationBean;
 import com.lawschool.beans.law.ClassifyDesicEntity;
 import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.beans.learn.LearnTasksEntity;
+import com.lawschool.beans.learn.StuRecordEntity;
 import com.lawschool.dao.StuMediaDao;
 import com.lawschool.dao.learn.LearnTasksDao;
 import com.lawschool.service.StuMediaService;
@@ -17,6 +18,7 @@ import com.lawschool.service.law.CaseAnalysisService;
 import com.lawschool.service.law.ClassifyDesicService;
 import com.lawschool.service.law.TaskDesicService;
 import com.lawschool.service.learn.LearnTasksService;
+import com.lawschool.service.learn.StuRecordService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;
@@ -49,6 +51,9 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
     private TaskDesicService desicService;
 
     @Autowired
+    private StuRecordService recordService;
+
+    @Autowired
     private ClassifyDesicService classifyDesicService;
 
     @Autowired
@@ -59,7 +64,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void insertLearnTask(LearnTasksEntity learnTask, User user) {
+    public void insertLearnTask(LearnTasksEntity learnTask, User user,String menuForm) {
         //存学习任务基本信息
 
         learnTask.setOptUser(user.getId());
@@ -68,9 +73,15 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         learnTask.setCreateTime(new Date());
         mapper.insert(learnTask);
         //存权限表
-        String[] deptIdArr=learnTask.getDeptArr();
-        String[] userIdArr=learnTask.getUserArr();
-        authService.insertAuthRelation(deptIdArr,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getCreateUser());
+        if("person".equals(menuForm)){
+            String[] userIdArr={user.getId()};
+            authService.insertAuthRelation(null,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getCreateUser());
+        }else{
+            //存权限表
+            String[] deptIdArr=learnTask.getDeptArr();
+            String[] userIdArr=learnTask.getUserArr();
+            authService.insertAuthRelation(deptIdArr,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getCreateUser());
+        }
         //保存任务节点
         insertBathTaskDesic(learnTask.getTaskContentList(),learnTask.getId());
 
@@ -109,6 +120,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String userId=(String)params.get("userId");
         String taskName = (String)params.get("taskName");
         String taskContent = (String)params.get("taskContent");
         String startTime = (String)params.get("startTime");
@@ -136,21 +148,40 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         ew.orderBy("CREATE_TIME");
         Page<LearnTasksEntity> page = this.selectPage(
                 new Query<LearnTasksEntity>(params).getPage(),ew);
+        //设置学习任务中课程数量以及当前登陆人学习数量
+        List<LearnTasksEntity> tasksEntities=page.getRecords();
+        tasksEntities.stream().forEach(e->{
+            int allCount = desicService.selectCount(new EntityWrapper<TaskDesicEntity>().eq("task_id",e.getId()).like("info_type","_data"));
+            int finishCount = recordService.selectCount(new EntityWrapper<StuRecordEntity>().eq("task_id",e.getId()).eq("user_id",userId));
+            e.setAllCount(allCount);
+            e.setFinishCount(finishCount);
+        });
+        page.setRecords(tasksEntities);
         return new PageUtils(page);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateLearnTask(LearnTasksEntity learnTask, User user) {
+    public void updateLearnTask(LearnTasksEntity learnTask, User user,String menuForm) {
         learnTask.setCreateUser(user.getId());
         learnTask.setCreateTime(new Date());
         mapper.updateById(learnTask);
+        //删除权限表
         authService.delete(new EntityWrapper<AuthRelationBean>().eq("function_flag","LEARNTASK").eq("function_Id",learnTask.getId()));
+        //删除任务表
+        desicService.delete(new EntityWrapper<TaskDesicEntity>().eq("task_id",learnTask.getId()));
         //存权限表
-        String[] deptIdArr=learnTask.getDeptArr();
-        String[] userIdArr=learnTask.getUserArr();
-        authService.insertAuthRelation(deptIdArr,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getOptUser());
-
+        if("person".equals(menuForm)){
+            String[] userIdArr={user.getId()};
+            authService.insertAuthRelation(null,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getOptUser());
+        }else{
+            //存权限表
+            String[] deptIdArr=learnTask.getDeptArr();
+            String[] userIdArr=learnTask.getUserArr();
+            authService.insertAuthRelation(deptIdArr,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getOptUser());
+        }
+        //保存任务节点
+        insertBathTaskDesic(learnTask.getTaskContentList(),learnTask.getId());
     }
 
     @Override
