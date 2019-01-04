@@ -4,4 +4,7 @@ import com.lawschool.base.AbstractService;
 import com.lawschool.beans.bbs.ReplyEntity;
 
 public interface ReplyService extends AbstractService<ReplyEntity> {
+
+
+    Integer findMyReply(String userId);
 }

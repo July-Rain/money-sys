@@ -1,8 +1,12 @@
 package com.lawschool.controller.bbs;
 
+import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.bbs.PostEntity;
+import com.lawschool.form.PostFrom;
+import com.lawschool.service.bbs.PostCollectionService;
 import com.lawschool.service.bbs.PostService;
+import com.lawschool.service.bbs.ReplyService;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +22,26 @@ import java.util.Map;
  **/
 @RestController
 @RequestMapping("/post")
-public class PostController {
+public class PostController extends AbstractController {
 
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private ReplyService replyService;
+
+    @Autowired
+    private PostCollectionService postCollectionService;
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result list(@RequestParam Map<String, Object> params){
-        Page<PostEntity> page = postService.findPage(new Page<PostEntity>(params), new PostEntity());
+
+        String subordinateColumn = (String)params.get("subordinateColumn");
+
+        PostEntity postEntity = new PostEntity();
+        postEntity.setSubordinateColumn(subordinateColumn);
+
+        Page<PostEntity> page = postService.findPage(new Page<PostEntity>(params), postEntity);
         return Result.ok().put("page", page);
     }
 
@@ -45,5 +61,15 @@ public class PostController {
     public Result delete(@RequestBody List<String> ids){
         postService.delete(ids);
         return Result.ok();
+    }
+
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
+    public Result count(){
+        PostFrom post = new PostFrom();
+        post.setUserName(getUser().getUserName());
+        post.setRelease(postService.findMyPost(getUser().getId()));
+        post.setComment(replyService.findMyReply(getUser().getId()));
+        post.setCollection(postCollectionService.findMyCollection(getUser().getId()));
+        return Result.ok().put("data", post);
     }
 }

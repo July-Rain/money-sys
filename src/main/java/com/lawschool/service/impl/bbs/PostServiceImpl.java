@@ -14,4 +14,8 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class PostServiceImpl extends AbstractServiceImpl<PostDao, PostEntity> implements PostService {
+
+    public Integer findMyPost(String userId){
+        return dao.findMyPost(userId);
+    }
 }

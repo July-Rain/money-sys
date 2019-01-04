@@ -5,23 +5,22 @@
 
     <select id="queryPostIdList" resultType="string">
         SELECT
-        pc.post_id
-        FROM law_post_conllection pc
-        INNER JOIN law_post p ON pc.post_id = p.id
+        post_id
+        FROM law_post_collection
         <where>
-            pc.user_id = #{userId}
+            user_id = #{userId}
         </where>
     </select>
 
     <delete id="deleteByUserId" parameterType="string">
-        DELETE FROM law_post_conllection
+        DELETE FROM law_post_collection
         <where>
             user_id = #{userId}
         </where>
     </delete>
 
     <delete id="deleteByPostId">
-        DELETE FROM law_post_conllection
+        DELETE FROM law_post_collection
         WHERE post_id IN
         <foreach collection="list" index="index" item="item" open=" (" separator="," close=") ">
             #{item}
@@ -29,7 +28,7 @@
     </delete>
 
     <insert id="insert">
-		INSERT INTO law_post_conllection
+		INSERT INTO law_post_collection
 			(id,
 			post_id,
 			user_id
@@ -42,10 +41,19 @@
 	</insert>
 
     <delete id="deleteBatchByUserId">
-        DELETE FROM law_post_conllection a
+        DELETE FROM law_post_collection
         WHERE a.user_id in
         <foreach collection="list" index="index" item="item" open=" (" separator="," close=") ">
             #{item}
         </foreach>
     </delete>
+
+    <select id="findMyCollection" resultType="Integer">
+        SELECT
+            COUNT (*) num
+        FROM
+            law_post_collection
+        WHERE
+            user_id = #{userId}
+    </select>
 </mapper>

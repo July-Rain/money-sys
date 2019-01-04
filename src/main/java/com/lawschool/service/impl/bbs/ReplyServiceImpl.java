@@ -4,6 +4,7 @@ import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.bbs.ReplyEntity;
 import com.lawschool.dao.bbs.ReplyDao;
 import com.lawschool.service.bbs.ReplyService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,4 +15,8 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class ReplyServiceImpl extends AbstractServiceImpl<ReplyDao, ReplyEntity> implements ReplyService {
+
+    public Integer findMyReply(String userId){
+        return dao.findMyReply(userId);
+    }
 }

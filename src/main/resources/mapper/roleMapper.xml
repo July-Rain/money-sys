@@ -16,14 +16,6 @@
             (#{id}, #{roleName}, #{remark}, #{createTime})
     </insert>
 
-    <delete id="deleteRoleById" parameterType="java.lang.String">
-        delete
-        from
-            LAW_SYS_ROLE
-        where
-            id = #{id}
-    </delete>
-
     <update id="update" parameterType="com.lawschool.beans.system.SysRoleEntity">
         update
             LAW_SYS_ROLE
@@ -57,4 +49,14 @@
     <select id="findList" resultType="com.lawschool.beans.system.SysRoleEntity">
         SELECT id, role_name, remark FROM law_sys_role
     </select>
+
+    <delete id="delete">
+        DELETE
+        FROM
+        law_sys_role
+        WHERE id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

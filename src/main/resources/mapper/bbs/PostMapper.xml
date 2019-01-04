@@ -65,6 +65,15 @@
         SELECT
         <include refid="replyColumn"/>
         FROM law_post
+        <where>
+            1 = 1
+            <if test="subordinateColumn != null and subordinateColumn != ''">
+                AND subordinate_column = #{subordinateColumn}
+            </if>
+            <if test="createUser != null and createUser != ''">
+                AND create_user = #{createUser}
+            </if>
+        </where>
     </select>
 
     <select id="findOne" resultType="com.lawschool.beans.bbs.PostEntity">
@@ -83,4 +92,13 @@
             #{item}
         </foreach>
     </delete>
+    
+    <select id="findMyPost" resultType="Integer">
+        SELECT
+            COUNT (*) num
+        FROM
+            law_post
+        WHERE
+            create_user = #{userId}
+    </select>
 </mapper>

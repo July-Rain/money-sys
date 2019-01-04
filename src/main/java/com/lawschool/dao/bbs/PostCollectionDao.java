@@ -15,4 +15,6 @@ public interface PostCollectionDao extends AbstractDao<PostCollectionEntity> {
     void deleteByPostId(List<String> ids);
 
     void deleteBatchByUserId(List<String> ids);
+
+    Integer findMyCollection(@Param("userId") String userId);
 }

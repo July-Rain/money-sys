@@ -14,4 +14,8 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class PostCollectionServiceImpl extends AbstractServiceImpl<PostCollectionDao, PostCollectionEntity> implements PostCollectionService {
+
+    public Integer findMyCollection(String userId){
+        return dao.findMyCollection(userId);
+    }
 }

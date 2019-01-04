@@ -78,4 +78,13 @@
             #{item}
         </foreach>
     </delete>
+
+    <select id="findMyReply" resultType="Integer">
+        SELECT
+            COUNT (*) num
+        FROM
+            law_reply
+        WHERE
+            create_user = #{userId}
+    </select>
 </mapper>
