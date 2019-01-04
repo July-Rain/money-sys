@@ -61,10 +61,6 @@ var vm = new Vue({
         })
     },
     methods:{
-        refreshTab: function (index) {
-            this.menuIndex = index;
-            // $ajax 更新数据
-        },
 
         save: function () {
             $.ajax({
@@ -110,7 +106,8 @@ var vm = new Vue({
                 }
             });
         },
-        reload: function () {
+        reload: function (index) {
+            this.menuIndex = index;
             $.ajax({
                 type: "GET",
                 url: baseURL + "post/list",

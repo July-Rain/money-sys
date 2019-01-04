@@ -12,27 +12,31 @@
         <div class="personal_area clearfix">
             <div class="user_head"><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></div>
             <div class="person_info">
-                <p class="name">令狐冲</p>
+                <p class="name">{{info.userName}}</p>
                 <ul class="clearfix">
-                    <li><span class="num">22</span><span class="name">发表</span></li>
-                    <li><span class="num">12</span><span class="name">评论</span></li>
-                    <li><span class="num">36</span><span class="name">收藏</span></li>
+                    <li><span class="num">{{info.release}}</span><span class="name">发表</span></li>
+                    <li><span class="num">{{info.comment}}</span><span class="name">评论</span></li>
+                    <li><span class="num">{{info.collection}}</span><span class="name">收藏</span></li>
                 </ul>
             </div>
             <div class="submit_info">
                 <el-form ref="form" :model="form">
                     <el-form-item>
-                        <el-input type="textarea" v-model="form.desc" placeholder="有什么和大家一起交流的话题？"></el-input>
+                        <el-input type="textarea" v-model="form.content" placeholder="有什么和大家一起交流的话题？"></el-input>
                     </el-form-item>
                     <div class="clearfix">
 
                         <el-form-item label="所属栏目" label-width="80px" style="padding: 11px 0 10px;float: left">
-                            <el-select v-model="form.region" placeholder="请选择">
-                                <el-option label="区域一" value="shanghai"></el-option>
-                                <el-option label="区域二" value="beijing"></el-option>
+                            <el-select v-model="form.subordinateColumn" placeholder="请选择">
+                                <el-option label="试题" value="st"></el-option>
+                                <el-option label="试题报错" value="stbc"></el-option>
+                                <el-option label="学习" value="xx"></el-option>
+                                <el-option label="案例" value="al"></el-option>
+                                <el-option label="建议" value="jy"></el-option>
+                                <el-option label="常见问题解答" value="cjwtjd"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-button type="primary" style="margin: 13px 9px 0 0;float: right">发布</el-button>
+                        <el-button type="primary" style="margin: 13px 9px 0 0;float: right" @click="save">发布</el-button>
                     </div>
 
                 </el-form>
@@ -41,7 +45,7 @@
         </div>
         <div class="info_area">
             <ul class="clearfix">
-                <li v-for="(item,index) in navList" :class="{active:!(index - menuIndex)}" @click="refreshTab(index)">{{item}}</li>
+                <li v-for="(item,index) in navList" :class="{active:!(index - menuIndex)}" @click="reload(index)">{{item}}</li>
             </ul>
             <div class="tab">
                 <div class="item">

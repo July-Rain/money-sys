@@ -19,6 +19,8 @@ public class PostEntity extends DataEntity<PostEntity> {
     private Integer commentNum;//评论
     private Integer reportNum;//举报
 
+    private String userName;
+
     public String getTitleName() {
         return titleName;
     }
@@ -65,5 +67,13 @@ public class PostEntity extends DataEntity<PostEntity> {
 
     public void setReportNum(Integer reportNum) {
         this.reportNum = reportNum;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
