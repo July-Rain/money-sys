@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>组队模式</title>
+    <#include "/header.html">
+    <script type="text/javascript" src="${rc.contextPath}/sun-jsp/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="${rc.contextPath}/sun-jsp/js/sockjs.min.js"></script>
+    <link rel="stylesheet" href="${rc.contextPath}/sun-jsp/css/style.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="${rc.contextPath}/sun-jsp/css/chat.css" type="text/css" media="all" />
+    <script type="text/javascript">
+
+    </script>
+</head>
+
+<body>
+<div id="app" v-cloak>
+    <div class="header">
+        <div class="header-left">
+            <img src="${rc.contextPath}/statics/img/logo.png">
+            <a href="javascript:;">江苏省公安厅法律学校</a>
+        </div>
+
+    </div>
+    <div class="container">
+        <el-row :gutter="24">
+            <el-col :span="24">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="组队模式">
+                        <div style="height: 700px;" >
+                                <p><button id="exitBtn">退出</button></p>
+                                <p>当前登录用户：{{u.fullName}}</p>
+                                <p id="div1"></p>
+                                <p>队伍code码：{{competitionTeam.teamCode}}</p>
+                                <!--<p>当前登录用户：{{u.fullName}}</p>-->
+
+
+                                <div class="inChatArea">
+                                    <div id="chatSidebar" class="chatSidebar">
+                                        <h2 id="chatOnline">队伍人员(0人)</h2>
+                                        <ul id="chatUserList">
+                                            <!--  <li>bobo老师</li>
+                                              -->
+                                        </ul>
+                                    </div>
+                                    <div class="chatCon">
+                                        <div class="up" id="up">
+                                            <ul id="contentUl">
+                                                <!-- <li><b>14:08</b><em>江山如此多娇</em><span>今天天气不大家出来嗨！！！！！</span></li>
+                                                -->
+                                            </ul>
+                                        </div>
+                                        <div class="down">
+                                            <textarea class="textInfo" id="msg" title="按ctrl+enter直接发送"></textarea>
+                                            <button class="btn" id="sendBtn">发送</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
+
+
+
+
+    </div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/competition/teamGame.js?_${.now?long}"></script>
+</html>

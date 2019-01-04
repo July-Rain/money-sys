@@ -2,6 +2,7 @@ package com.lawschool.beans.competition;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -21,15 +22,22 @@ public class CompetitionTeam implements Serializable {
 	//id主键
 	@TableId
 	private String id;
-	//战队名称
-	private String teamName;
+	//战队code
+	private String teamCode;
 	//队长
 	private String userId;
-	//战队规模
+	//战队实际规模
 	private String scale;
+
+	//队伍当前规模。用来判断人员有没有满
+	private String nowScale;
+
+
 	//战队状态   0 解散   1 正常
 	private String status;
-
+	//创建时间
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date createTime;
 	//备用字段1
 	private String backup1;
 	//备用字段2
@@ -42,6 +50,14 @@ public class CompetitionTeam implements Serializable {
 	private String backup5;
 
 
+	public String getNowScale() {
+		return nowScale;
+	}
+
+	public void setNowScale(String nowScale) {
+		this.nowScale = nowScale;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -50,12 +66,12 @@ public class CompetitionTeam implements Serializable {
 		this.id = id;
 	}
 
-	public String getTeamName() {
-		return teamName;
+	public String getTeamCode() {
+		return teamCode;
 	}
 
-	public void setTeamName(String teamName) {
-		this.teamName = teamName;
+	public void setTeamCode(String teamCode) {
+		this.teamCode = teamCode;
 	}
 
 	public String getUserId() {
@@ -122,14 +138,24 @@ public class CompetitionTeam implements Serializable {
 		this.backup5 = backup5;
 	}
 
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
 	@Override
 	public String toString() {
 		return "CompetitionTeam{" +
 				"id='" + id + '\'' +
-				", teamName='" + teamName + '\'' +
+				", teamCode='" + teamCode + '\'' +
 				", userId='" + userId + '\'' +
 				", scale='" + scale + '\'' +
+				", nowScale='" + nowScale + '\'' +
 				", status='" + status + '\'' +
+				", createTime=" + createTime +
 				", backup1='" + backup1 + '\'' +
 				", backup2='" + backup2 + '\'' +
 				", backup3='" + backup3 + '\'' +

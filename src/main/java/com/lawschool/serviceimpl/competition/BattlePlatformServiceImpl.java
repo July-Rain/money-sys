@@ -13,6 +13,7 @@ import com.lawschool.service.competition.MatchSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -29,6 +30,7 @@ public class BattlePlatformServiceImpl extends ServiceImpl<BattlePlatformDao, Ba
 	@Autowired
 	private MatchSettingService matchSettingService;
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public BattlePlatform save(User u,String type) {
 		    BattlePlatform battlePlatform=new BattlePlatform();
 			battlePlatform.setId(IdWorker.getIdStr());

@@ -1,6 +1,6 @@
 package com.lawschool.service;
 
-import com.lawschool.beans.CrdStatOrg;
+//import com.lawschool.beans.CrdStatOrg;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserIntegral;
 import com.lawschool.util.PageUtils;
@@ -36,7 +36,7 @@ public interface UserIntegralService {
      PageUtils crdStatUser(Map<String,Object> map);
 
 
-     List<CrdStatOrg> crdStatOrg();
+//     List<CrdStatOrg> crdStatOrg();
 
      /**
       * @Author zjw

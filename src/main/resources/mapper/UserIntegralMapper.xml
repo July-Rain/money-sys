@@ -103,23 +103,23 @@ WHERE
 
 
 
-	<select id="crdStatOrg" resultType="com.lawschool.beans.CrdStatOrg">
+	<!--<select id="crdStatOrg" resultType="com.lawschool.beans.CrdStatOrg">-->
 
-		select
-		TAB.org_code as orgCode,
-		TAB.parent_code as parentCode,
-		TAB.org_level as orgLevel,
-		TAB.org_name as OrgName,
-		TAB.orgAllCrd,
-		ROW_NUMBER () OVER (ORDER BY orgAllCrd desc nulls last) AS orgAllCrdRank
-		from (
-			select
-				org_code,
-				parent_code,
-				org_level,
-				org_name,
-				(select sum(CREDIT_POINT)  from LAW_USER_INTEGRAL where ORG_CODE=LAW_ORG.org_code ) as orgAllCrd
-			from LAW_ORG
-		) tab
-	</select>
+		<!--select-->
+		<!--TAB.org_code as orgCode,-->
+		<!--TAB.parent_code as parentCode,-->
+		<!--TAB.org_level as orgLevel,-->
+		<!--TAB.org_name as OrgName,-->
+		<!--TAB.orgAllCrd,-->
+		<!--ROW_NUMBER () OVER (ORDER BY orgAllCrd desc nulls last) AS orgAllCrdRank-->
+		<!--from (-->
+			<!--select-->
+				<!--org_code,-->
+				<!--parent_code,-->
+				<!--org_level,-->
+				<!--org_name,-->
+				<!--(select sum(CREDIT_POINT)  from LAW_USER_INTEGRAL where ORG_CODE=LAW_ORG.org_code ) as orgAllCrd-->
+			<!--from LAW_ORG-->
+		<!--) tab-->
+	<!--</select>-->
 </mapper>

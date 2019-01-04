@@ -1,7 +1,7 @@
 package com.lawschool.controller;
 
 import com.lawschool.base.AbstractController;
-import com.lawschool.beans.CrdStatOrg;
+//import com.lawschool.beans.CrdStatOrg;
 import com.lawschool.beans.UserIntegral;
 import com.lawschool.service.UserIntegralService;
 import com.lawschool.util.PageUtils;
@@ -66,8 +66,9 @@ public class UserIntegralController extends AbstractController {
      **/
     @RequestMapping("crdStatOrg")
     public Result crdStatOrg(){
-        List<CrdStatOrg> orgList = userIntegralService.crdStatOrg();
-        return Result.ok().put("orgList", orgList);
+//        List<CrdStatOrg> orgList = userIntegralService.crdStatOrg();
+//        return Result.ok().put("orgList", orgList);
+        return Result.ok();
     }
 
     /**

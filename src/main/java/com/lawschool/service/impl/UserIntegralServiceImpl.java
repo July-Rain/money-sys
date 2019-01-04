@@ -3,7 +3,7 @@ package com.lawschool.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.lawschool.base.AbstractServiceImpl;
-import com.lawschool.beans.CrdStatOrg;
+//import com.lawschool.beans.CrdStatOrg;
 import com.lawschool.beans.Integral;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserIntegral;
@@ -66,10 +66,10 @@ public class UserIntegralServiceImpl extends AbstractServiceImpl<UserIntegralDao
         return new PageUtils(lst);
     }
 
-    @Override
-    public List<CrdStatOrg> crdStatOrg() {
-        return userIntegralDao.crdStatOrg();
-    }
+//    @Override
+//    public List<CrdStatOrg> crdStatOrg() {
+//        return userIntegralDao.crdStatOrg();
+//    }
 
     @Override
     public PageUtils list(Map<String,Object> param) {
