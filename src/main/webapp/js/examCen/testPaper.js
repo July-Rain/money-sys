@@ -1,3 +1,5 @@
+// 配置ID
+var examConfigId = getUrlParam('id');
 var vm = new Vue({
     el: '#app',
     data: {
@@ -9,8 +11,28 @@ var vm = new Vue({
         }
     },
     created: function () {
+        this.$nextTick(function () {
+            vm.refresh();
+        })
     },
     methods: {
+        refresh: function () {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "user/exam/startExam",
+                data:{
+                    examConfigId :examConfigId
+                },
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.questionList = result.queList;
+                        vm.examConfig = result.examConfig;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
         fontS:function(){
             console.log(2)
             $("p,span").css("font-size","16px");
@@ -34,6 +56,7 @@ var vm = new Vue({
         },
         submit: function () {
             console.info("交卷",vm.form)
-        }
+        },
+
     }
 });
