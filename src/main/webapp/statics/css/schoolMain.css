@@ -2,6 +2,12 @@ img{
     width: 100%;
     height: 100%;
 }
+.el-button{
+    padding: 10px 35px;
+    border-radius: 2px;
+    background-color: #1381e3;
+
+}
 .container{
     background-color: #f2f2f2;
     padding: 91px 24px 23px;
@@ -70,7 +76,7 @@ img{
 .submit_info .clearfix{
     border-top: 1px solid #e8e8e8;
 }
-.el-textarea__inner{
+.personal_area .el-textarea__inner{
     border: none;
     background-color: #f5f8fa;
     height: 116px;
@@ -78,10 +84,16 @@ img{
     color: #666;
     font-size: 16px;
 }
-.el-form-item{
+.personal_area .el-form-item{
     margin-bottom: 0;
 }
-
+.personal_area .el-form-item__label{
+    /*line-height: 28px;*/
+}
+.personal_area .el-input__inner{
+    width: 160px;
+    height: 28px;
+}
 /*讨论区*/
 .info_area{
     background-color: #fff;
@@ -98,6 +110,7 @@ img{
     margin-top: -4px;
     font-size: 18px;
     color: #666;
+    cursor: pointer;
 }
 .info_area > ul.clearfix > li.active{
     border-bottom: 4px solid #1381e3;

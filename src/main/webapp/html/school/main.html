@@ -10,7 +10,7 @@
 
     <div class="container">
         <div class="personal_area clearfix">
-            <div class="user_head"><img src="${rc.contextPath}/statics/img/logo.png" alt=""></div>
+            <div class="user_head"><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></div>
             <div class="person_info">
                 <p class="name">令狐冲</p>
                 <ul class="clearfix">
@@ -26,7 +26,7 @@
                     </el-form-item>
                     <div class="clearfix">
 
-                        <el-form-item label="所属栏目" label-width="80px" style="padding: 17px 0 16px;float: left">
+                        <el-form-item label="所属栏目" label-width="80px" style="padding: 11px 0 10px;float: left">
                             <el-select v-model="form.region" placeholder="请选择">
                                 <el-option label="区域一" value="shanghai"></el-option>
                                 <el-option label="区域二" value="beijing"></el-option>
@@ -41,20 +41,13 @@
         </div>
         <div class="info_area">
             <ul class="clearfix">
-                <li class="active">全部</li>
-                <li>试题</li>
-                <li>试题报错</li>
-                <li>学习</li>
-                <li>案例</li>
-                <li>建议</li>
-                <li>常见问题解答</li>
-                <li>我的参与</li>
+                <li v-for="(item,index) in navList" :class="{active:!(index - menuIndex)}" @click="refreshTab(index)">{{item}}</li>
             </ul>
             <div class="tab">
                 <div class="item">
                     <div class="item_top clearfix">
                         <div class="item_head">
-                            <img src="${rc.contextPath}/statics/img/logo.png" alt="">
+                            <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
                         </div>
                         <p>
                             <span class="name">孙大圣</span>
