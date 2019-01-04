@@ -24,23 +24,23 @@
                                     border
                                     style="width: 100%">
                                 <el-table-column
-                                        prop=""
+                                        prop="planName"
                                         label="学年计划名称">
                                 </el-table-column>
                                 <el-table-column
-                                        prop=""
+                                        prop="integral"
                                         label="积分">
                                 </el-table-column>
                                 <el-table-column
-                                        prop=""
+                                        prop="credit"
                                         label="学分">
                                 </el-table-column>
                                 <el-table-column
-                                        prop=""
+                                        prop="startDate"
                                         label="计划开始时间">
                                 </el-table-column>
                                 <el-table-column
-                                        prop=""
+                                        prop="endDate"
                                         label="计划结束时间">
                                 </el-table-column>
                                 <el-table-column
@@ -65,7 +65,7 @@
                             <el-pagination
                                     @size-change="handleSizeChange"
                                     @current-change="handleCurrentChange"
-                                    :current-page="form.pageNo"
+                                    :current-page="form.page"
                                     :page-sizes="[10, 20, 30, 40]"
                                     :page-size="form.limit"
                                     layout="total, sizes, prev, pager, next, jumper"
@@ -85,7 +85,17 @@
 
                     <el-col :span="22">
                         <el-form-item label="计划名称" :label-width="formLabelWidth">
-                            <el-input v-model="form.name" autocomplete="off"></el-input>
+                            <el-input v-model="form.planName" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col>
+                        <el-form-item label="开始时间" :label-width="formLabelWidth">
+                            <el-date-picker v-model="form.startDate" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"> </el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                    <el-col>
+                        <el-form-item label="结束时间" :label-width="formLabelWidth">
+                            <el-date-picker v-model="form.endDate" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"> </el-date-picker>
                         </el-form-item>
                     </el-col>
                     <el-col :span="22">
@@ -100,12 +110,12 @@
                     </el-col>
                     <el-col :span="22">
                         <el-form-item label="参与人员" :label-width="formLabelWidth">
-                            <el-input v-model="form.personnel" autocomplete="off"></el-input>
+                            <el-input v-model="form.participantUser" autocomplete="off"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="22">
                         <el-form-item label="参与部门" :label-width="formLabelWidth">
-                            <el-input v-model="form.department" autocomplete="off"></el-input>
+                            <el-input v-model="form.participantDept" autocomplete="off"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="22">

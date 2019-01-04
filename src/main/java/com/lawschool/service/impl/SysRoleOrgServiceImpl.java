@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.beans.SysRoleOrg;
 import com.lawschool.dao.SysRoleOrgDao;
 import com.lawschool.service.SysRoleOrgService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * ClassName: SysRoleOrgServiceImpl
@@ -16,4 +19,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysRoleOrgServiceImpl extends ServiceImpl<SysRoleOrgDao,SysRoleOrg> implements SysRoleOrgService {
+
+    @Autowired
+    private SysRoleOrgDao dao;
+
+    public List<String> queryOrgIdList(String roleId){
+        return dao.queryOrgIdList(roleId);
+    }
 }

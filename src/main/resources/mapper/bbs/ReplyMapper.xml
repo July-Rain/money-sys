@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lawschool.dao.bbs.ReplyDao">
+    <sql id="replyColumn">
+        post_id AS "postId",
+        content AS "content",
+        reply_object AS "replyObject",
+        opt_user AS "optUser",
+        opt_time AS "optTime",
+        create_user AS "createUser",
+        create_time AS "createTime"
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO law_reply
+        (
+        id,
+        post_id,
+        content,
+        reply_object,
+        opt_user,
+        opt_time,
+        create_user,
+        create_time
+        ) VALUES (
+        #{id},
+        #{postId},
+        #{content},
+        #{replyObject},
+        #{optUser},
+        #{optTime},
+        #{createUser},
+        #{createTime}
+        )
+    </insert>
+
+    <!--<update id="update">-->
+        <!--UPDATE law_reply-->
+        <!--SET-->
+        <!--post_id = #{postId},-->
+        <!--content = #{content},-->
+        <!--reply_object = #{replyObject},-->
+        <!--opt_user = #{optUser},-->
+        <!--opt_time = #{optTime}-->
+        <!--<where>-->
+            <!--id = #{id}-->
+        <!--</where>-->
+    <!--</update>-->
+
+    <select id="findList" resultType="com.lawschool.beans.bbs.ReplyEntity">
+        SELECT
+        <include refid="replyColumn"/>
+        FROM law_reply
+    </select>
+
+    <select id="findOne" resultType="com.lawschool.beans.bbs.ReplyEntity">
+        SELECT
+        <include refid="replyColumn"/>
+        FROM law_reply
+        <where>
+            id = #{id}
+        </where>
+    </select>
+
+    <delete id="delete">
+        DELETE FROM law_reply
+        WHERE id IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByPostId">
+        DELETE FROM law_reply
+        WHERE post_id IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

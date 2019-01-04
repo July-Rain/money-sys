@@ -2,16 +2,19 @@ var vm = new Vue({
     el: '#app',
     data: {
         tableData: [],//表格数据
-        pageNo: 1,//分页：当前页
+        page: 1,//分页：当前页
         dialogFormVisible: false,
         form: {
-            name: '',
-            integral: '',
+            planName: '',
+            planContent: '',
+            startDate: '',
+            endDate: '',
             credit: '',
-            personnel: '',
-            department: '',
+            integral : '',
+            participantUser : '',
+            participantDept : '',
             remarks: '',
-            pageNo: 1,
+            page: 1,
             limit: 10,
             count: 0
         },
@@ -56,44 +59,51 @@ var vm = new Vue({
                 "row": row
             })
         },
-        handleEdit: function () {
-
+        handleEdit: function (index, row) {
+            var that = this;
+            $.ajax({
+                type: "GET",
+                url: baseURL + "schoolYearPlan/info/" + row.id,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        that.form = result.data;
+                        that.dialogFormVisible = true;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         },
 
         handleDel: function (index, row) {
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(function () {
-                $.ajax({
-                    type: "POST",
-                    url: baseURL + "testQuestion/delete",
-                    dataType: "json",
-                    data: {
-                        idList: [row.id]
-                    },
-                    success: function (result) {
-                        if (result.code === 0) {
-                            vm.reload();
-                        } else {
-                            alert(result.msg);
-                        }
+            var arr = new Array();
+            arr.push(row.id);
+            $.ajax({
+                type: "POST",
+                url: baseURL + "schoolYearPlan/delete",
+                contentType: "application/json",
+                data: JSON.stringify(arr),
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.$alert('操作成功', '提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                                vm.dialogFormVisible = false;
+                                vm.reload();
+                            }
+                        });
+                    } else {
+                        alert(result.msg);
                     }
-                });
-
-            }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
+                }
             });
         },
 
         save: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "提交入库接口",
+                url: baseURL + "schoolYearPlan/save",
                 contentType: "application/json",
                 data: JSON.stringify(vm.form),
                 success: function (result) {
@@ -114,16 +124,16 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "GET",
-                url: baseURL + "testQuestion/list",
-                dataType: "json",
+                url: baseURL + "schoolYearPlan/list",
+                contentType: "application/json",
                 data: {
-                    pageNo: 1,
+                    page: 1,
                     limit: 10
                 },
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
-                        vm.form.pageNo = result.page.pageNo;
+                        vm.form.page = result.page.page;
                         vm.form.pageSize = result.page.pageSize;
                         vm.form.count = parseInt(result.page.count);
                     } else {
@@ -137,13 +147,13 @@ var vm = new Vue({
         this.$nextTick(function () {
             $.ajax({
                 type: "GET",
-                url: baseURL + "testQuestion/list",
+                url: baseURL + "schoolYearPlan/list",
                 contentType: "application/json",
                 data: vm.form,
                 success: function (result) {
                     if (result.code === 0) {
                         vm.tableData = result.page.list;
-                        vm.form.pageNo = result.page.pageNo;
+                        vm.form.page = result.page.page;
                         vm.form.pageSize = result.page.pageSize;
                         vm.form.count = parseInt(result.page.count);
                     } else {
