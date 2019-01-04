@@ -28,7 +28,10 @@ var vm = new Vue({
             options: [],
             tableData: [],//表格数据
             visible: false,
-            examConfig: {},
+            examConfig: {
+                deptId: "",
+                userId: "",
+            },
             rules: {//表单验证规则
                 value: [
                     {required: true, message: '请输入参数名', trigger: 'blur'},
@@ -66,6 +69,7 @@ var vm = new Vue({
             dialogOrgDept: false,
             dialogDept: false,//部门的弹窗
             dialogUser: false,//人员的弹窗
+            dialogCompany: false,//单位弹框
             dialogWatch: false,
             dialogChange: false,
             deptData:[],//部门树数据
@@ -106,6 +110,7 @@ var vm = new Vue({
             }],
             //选中题目
             currentRow: null
+
         };
     },
 
@@ -219,6 +224,10 @@ var vm = new Vue({
         },
         preview:function(){
             this.dialogWatch = true;
+            var deptArr = vm.examConfig.deptId?vm.examConfig.deptId.split(","):[];
+            var userArr = vm.examConfig.userId?vm.examConfig.userId.split(","):[];
+            vm.examConfig.deptArr=deptArr;
+            vm.examConfig.userArr=userArr;
             $.ajax({
                 type: "POST",
                 url: baseURL + "exam/config/examConfig/preview",
@@ -238,6 +247,10 @@ var vm = new Vue({
         },
         generate : function(){
             vm.examConfig.qfList = vm.previewList;
+            var deptArr = vm.examConfig.deptId?vm.examConfig.deptId.split(","):[];
+            var userArr = vm.examConfig.userId?vm.examConfig.userId.split(","):[];
+            vm.examConfig.deptArr=deptArr;
+            vm.examConfig.userArr=userArr;
             $.ajax({
                 type: "POST",
                 url: baseURL + "exam/config/examConfig/generate",
@@ -248,6 +261,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         alert('生成成功');
+                     //   window.location.href = baseURL +"examCen/exam.html";
                     } else {
                         alert(result.msg);
                     }
@@ -257,11 +271,11 @@ var vm = new Vue({
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
             for(var i=0;i<this.multipleDeptSelection.length;i++){
-                if (this.examConfig.deptIds == "") {
-                    this.examConfig.deptIds=this.multipleDeptSelection[i].id;
+                if (this.examConfig.deptId == "") {
+                    this.examConfig.deptId=this.multipleDeptSelection[i].id;
                     this.examConfig.deptName=this.multipleDeptSelection[i].orgName;
                 }else{
-                    this.examConfig.deptIds+=","+this.multipleDeptSelection[i].id;
+                    this.examConfig.deptId+=","+this.multipleDeptSelection[i].id;
                     this.examConfig.deptName+=","+this.multipleDeptSelection[i].orgName;
                 }
             }
@@ -289,13 +303,22 @@ var vm = new Vue({
             this.reloadUser();
         },
         chooseOrgDept: function(){
-
+            this.dialogCompany = true
         },
         chooseDept: function () {
             //选择部门
             console.log(vm.deptData);
             this.dialogDept=true;
 
+        },
+        CompanyClick: function(data){
+            this.examConfig.organizedOrgCode = data.fullName;
+            //data.fullName
+            //data.id
+        },
+        saveCompany: function(){
+            this.dialogCompany = false;
+            
         },
         //部门人员控件中点击事件
         handleDeptNodeClick: function (data) {
@@ -311,11 +334,11 @@ var vm = new Vue({
             this.multipleSelection = val;
             //遍历最终的人员信息
             for (var i=0;i<val.length;i++){
-                if (this.examConfig.userIds == "") {
-                    this.examConfig.userIds=val[i].id;
+                if (this.examConfig.userId == "") {
+                    this.examConfig.userId=val[i].id;
                     this.examConfig.userName=val[i].userName;
                 }else{
-                    this.examConfig.userIds+=","+val[i].id;
+                    this.examConfig.userId+=","+val[i].id;
                     this.examConfig.userName+=","+val[i].userName;
                 }
             }

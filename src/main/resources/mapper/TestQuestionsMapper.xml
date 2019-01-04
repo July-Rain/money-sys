@@ -447,7 +447,7 @@
           id
         FROM
         (SELECT
-        <include refid="questionColumn"/>
+        a.id
         FROM law_testquestions a
         <where>
             1 = 1
