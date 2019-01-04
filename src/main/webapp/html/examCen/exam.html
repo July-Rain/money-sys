@@ -9,22 +9,6 @@
 </style>
 <body>
 <div id="app" v-cloak>
-    <div class="header">
-        <div class="header-left">
-            <img src="${rc.contextPath}/statics/img/logo.png">
-            <a href="javascript:;">江苏省公安厅法律学校</a>
-        </div>
-        <div class="header-right">
-            <ul>
-                <li v-for="item in navData"  @click="toChild(item)">
-                    <a>
-                        <i :class="item.icon"></i>
-                        <p><a href="javascript:;">{{item.name}}</a></p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
     <div class="container">
         <el-row :gutter="24">
             <el-col :span="24">
@@ -64,7 +48,7 @@
                                 >
                                 </el-table-column>
                                 <el-table-column
-                                        prop="examType"
+                                        prop="examTypeName"
                                         label="试卷类型"
                                         width="130"
                                 >

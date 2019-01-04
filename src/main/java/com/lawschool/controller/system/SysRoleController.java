@@ -5,6 +5,7 @@ import com.lawschool.base.Page;
 import com.lawschool.beans.SysRoleMenu;
 import com.lawschool.beans.system.SysRoleEntity;
 import com.lawschool.service.SysRoleMenuService;
+import com.lawschool.service.SysRoleOrgService;
 import com.lawschool.service.system.SysRoleService;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class SysRoleController {
     @Autowired
     private SysRoleMenuService roleMenuService;
 
+    @Autowired
+    private SysRoleOrgService sysRoleOrgService;
+
 
     /**
      * 查询角色列表
@@ -48,6 +52,7 @@ public class SysRoleController {
     public Result info(@PathVariable("id") String id) {
         SysRoleEntity sysRoleEntity = roleService.findOne(id);
         sysRoleEntity.setMenuList(roleMenuService.queryMenuIdList(id));
+        sysRoleEntity.setOrgList(sysRoleOrgService.queryOrgIdList(id));
         return Result.ok().put("data", sysRoleEntity);
     }
 
@@ -65,9 +70,9 @@ public class SysRoleController {
      * 批量删除角色
      */
     @SysLog("删除角色")
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public Result deleteById(@RequestBody String id) {
-        roleService.deleteById(id);
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public Result deleteById(@RequestBody List<String> ids) {
+        roleService.delete(ids);
         return Result.ok();
     }
 

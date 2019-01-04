@@ -68,7 +68,7 @@ public class LoadData {
 
 
         //权限设置-部门数据(OrgId)
-        List<String> sysDeptEntities = orgService.selectList(new EntityWrapper<Org>()).stream().map(e->e.getOrgId()).collect(Collectors.toList());
+        List<String> sysDeptEntities = orgService.selectList(new EntityWrapper<Org>().in("ORG_TYPE","10,70,-1,0")).stream().map(e->e.getOrgId()).collect(Collectors.toList());
         if(!redisUtil.hasKey("permOrg")){
             redisUtil.set("permOrg",sysDeptEntities);
         }

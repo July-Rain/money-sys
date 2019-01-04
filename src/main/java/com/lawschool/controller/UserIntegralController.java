@@ -1,7 +1,8 @@
 package com.lawschool.controller;
 
 import com.lawschool.base.AbstractController;
-//import com.lawschool.beans.CrdStatOrg;
+import com.lawschool.beans.CrdStatOrg;
+import com.lawschool.beans.ItrStatOrg;
 import com.lawschool.beans.UserIntegral;
 import com.lawschool.service.UserIntegralService;
 import com.lawschool.util.PageUtils;
@@ -41,12 +42,17 @@ public class UserIntegralController extends AbstractController {
     @RequestMapping("info")
     public Result getInfo(){
         UserIntegral userIntegral =userIntegralService.getInfo(getUser());
+        if(userIntegral == null){
+            userIntegral = new UserIntegral();
+            userIntegral.setCreditPoint(0);
+            userIntegral.setIntegralPoint(0);
+        }
         return Result.ok().put("info", userIntegral);
     }
 
     /**
      * @Author zjw
-     * @Description 学分统计人员维度
+     * @Description 学分 人员
      * @Date 11:22 2018-12-29
      * @Param []
      * @return com.lawschool.util.Result
@@ -59,18 +65,46 @@ public class UserIntegralController extends AbstractController {
 
     /**
      * @Author zjw
-     * @Description 学分统计部门维度
+     * @Description 学分 部门
      * @Date 11:22 2018-12-29
      * @Param []
      * @return com.lawschool.util.Result
      **/
     @RequestMapping("crdStatOrg")
     public Result crdStatOrg(){
-//        List<CrdStatOrg> orgList = userIntegralService.crdStatOrg();
-//        return Result.ok().put("orgList", orgList);
-        return Result.ok();
+        List<CrdStatOrg> orgList = userIntegralService.crdStatOrg();
+
+        return Result.ok().put("orgList", orgList);
     }
 
+
+
+    /**
+     * @Author zjw
+     * @Description 积分 人员
+     * @Date 11:22 2018-12-29
+     * @Param []
+     * @return com.lawschool.util.Result
+     **/
+    @RequestMapping("itrStatUser")
+    public Result itrStatUser(@RequestParam  Map<String,Object> param){
+        PageUtils page= userIntegralService.itrStatUser(param);
+        return Result.ok().put("page", page);
+    }
+
+
+    /**
+     * @Author zjw
+     * @Description 积分 部门
+     * @Date 11:22 2018-12-29
+     * @Param []
+     * @return com.lawschool.util.Result
+     **/
+    @RequestMapping("itrStatOrg")
+    public Result itrStatOrg(){
+        List<ItrStatOrg> orgList = userIntegralService.itrStatOrg();
+        return Result.ok().put("orgList", orgList);
+    }
     /**
      * @Author zjw
      * @Description 模糊查找用户的积分学分情况

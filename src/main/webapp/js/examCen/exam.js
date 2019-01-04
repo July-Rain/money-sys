@@ -68,40 +68,6 @@ var vm = new Vue({
             this.formInline.currPage = val;
             this.reload();
         },
-        // 保存和修改
-        saveOrUpdate: function (formName) {
-            this.$refs[formName].validate(function (valid) {
-                if (valid) {
-                    var url = vm.sysConfig.id ? "sysconfig/update" : "sysconfig/insert";
-                    $.ajax({
-                        type: "POST",
-                        url: baseURL + url,
-                        contentType: "application/json",
-                        data: JSON.stringify(vm.sysConfig),
-                        success: function (result) {
-                            if (result.code === 0) {
-                                vm.$alert('操作成功', '提示', {
-                                    confirmButtonText: '确定',
-                                    callback: function () {
-                                        vm.dialogConfig = false;
-                                        vm.reload();
-                                    }
-                                });
-                            } else {
-                                alert(result.msg);
-                            }
-                        }
-                    });
-                } else {
-                    console.log('error submit!!');
-                    return false;
-                }
-            });
-        },
-        // 表单重置
-        resetForm: function (formName) {
-            this.$refs[formName].resetFields();
-        },
         addConfig: function () {
             parent.location.href =baseURL+"modules/examCen/examConfig.html";
         },
@@ -166,7 +132,7 @@ var vm = new Vue({
                         vm.tableData = result.page.list;
                         vm.formInline.currPage = result.page.pageNo;
                         vm.formInline.pageSize = result.page.pageSize;
-                        vm.formInline.totalCount = parseInt(result.page.count)+1;
+                        vm.formInline.totalCount = parseInt(result.page.count);
                     } else {
                         alert(result.msg);
                     }

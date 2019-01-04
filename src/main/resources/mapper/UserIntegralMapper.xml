@@ -80,7 +80,7 @@ WHERE
   </select>
 
 
-
+	<!--学分 人员-->
 	<select id="crdStatUser" resultType="com.lawschool.beans.UserIntegral">
 	SELECT
 	USER_ID,
@@ -103,23 +103,73 @@ WHERE
 
 
 
-	<!--<select id="crdStatOrg" resultType="com.lawschool.beans.CrdStatOrg">-->
 
-		<!--select-->
-		<!--TAB.org_code as orgCode,-->
-		<!--TAB.parent_code as parentCode,-->
-		<!--TAB.org_level as orgLevel,-->
-		<!--TAB.org_name as OrgName,-->
-		<!--TAB.orgAllCrd,-->
-		<!--ROW_NUMBER () OVER (ORDER BY orgAllCrd desc nulls last) AS orgAllCrdRank-->
-		<!--from (-->
-			<!--select-->
-				<!--org_code,-->
-				<!--parent_code,-->
-				<!--org_level,-->
-				<!--org_name,-->
-				<!--(select sum(CREDIT_POINT)  from LAW_USER_INTEGRAL where ORG_CODE=LAW_ORG.org_code ) as orgAllCrd-->
-			<!--from LAW_ORG-->
-		<!--) tab-->
-	<!--</select>-->
+
+<!--学分 部门-->
+	<select id="crdStatOrg" resultType="com.lawschool.beans.CrdStatOrg">
+
+	  select
+		TAB.org_id as orgId,
+		TAB.parent_id as parentId,
+		TAB.org_level as orgLevel,
+		TAB.org_name as OrgName,
+		TAB.orgAllCrd,
+		ROW_NUMBER () OVER (ORDER BY orgAllCrd desc nulls last) AS orgAllCrdRank
+		from (
+		select
+		org_id,
+		parent_id,
+		org_level,
+		org_name,
+		(select sum(CREDIT_POINT)  from LAW_USER_INTEGRAL where ORG_CODE=LAW_ORG.org_code ) as orgAllCrd
+		from LAW_ORG
+		WHERE ORG_TYPE IN (10, 70, -1,0)
+		) tab
+	</select>
+
+
+
+
+<!--积分 人员-->
+	<select id="itrStatUser" resultType="com.lawschool.beans.UserIntegral">
+	SELECT
+	USER_ID,
+	ORG_CODE,
+	FULL_NAME,
+	USER_CODE,
+	ORG_NAME,
+	INTEGRAL_POINT,
+	ROW_NUMBER () OVER (ORDER BY INTEGRAL_POINT) AS orgItrRank,
+	(SELECT allItrRank FROM(
+			SELECT LUI.USER_ID,ROW_NUMBER () OVER (ORDER BY INTEGRAL_POINT) AS allItrRank FROM LAW_USER_INTEGRAL lui)
+	  WHERE
+		USER_ID = LAW_USER_INTEGRAL.USER_ID) as allItrRank
+	FROM
+		LAW_USER_INTEGRAL
+	WHERE
+		ORG_CODE = #{orgCode}
+	order by INTEGRAL_POINT
+	</select>
+
+
+	<!--积分 部门-->
+	<select id="itrStatOrg" resultType="com.lawschool.beans.ItrStatOrg">
+		select
+			TAB.org_id as orgId,
+			TAB.parent_id as parentId,
+			TAB.org_level as orgLevel,
+			TAB.org_name as OrgName,
+			TAB.orgAllItr,
+			ROW_NUMBER () OVER (ORDER BY orgAllItr desc nulls last) AS orgAllItrRank
+		from (
+				 select
+					 org_id,
+					 parent_id,
+					 org_level,
+					 org_name,
+					 (select sum(INTEGRAL_POINT)  from LAW_USER_INTEGRAL where ORG_CODE=LAW_ORG.org_code ) as orgAllItr
+				 from LAW_ORG
+				 WHERE ORG_TYPE IN (10, 70, -1,0)
+			 ) tab
+	</select>
 </mapper>

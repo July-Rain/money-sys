@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.lawschool.base.DataEntity;
 
 /**
  * 
@@ -14,16 +15,12 @@ import com.baomidou.mybatisplus.annotations.TableName;
  * @date 2018年12月3日
  */
 @TableName("LAW_EXAM_QUESTION_CONFIG")
-public class ExamQueConfig implements Serializable{
+public class ExamQueConfig extends DataEntity<ExamQueConfig> {
 	  /**
 	 * 
 	 */
 	private static final long serialVersionUID = -2328174082418076685L;
 
-	/**
-     * null
-     */
-    private String id;
 
     /**
      * 考试配置ID
@@ -54,37 +51,6 @@ public class ExamQueConfig implements Serializable{
      * null
      */
     private String addUser;
-
-    /**
-     * null
-     */
-    private Date addTime;
-
-    /**
-     * null
-     */
-    private String updateUser;
-
-    /**
-     * null
-     */
-    private Date updateTime;
-
-    /**
-     * null
-     * @return ID null
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * null
-     * @param id null
-     */
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
 
     /**
      * 考试配置ID
@@ -150,70 +116,6 @@ public class ExamQueConfig implements Serializable{
      */
     public void setQuestionScore(BigDecimal questionScore) {
         this.questionScore = questionScore;
-    }
-
-    /**
-     * null
-     * @return ADD_USER null
-     */
-    public String getAddUser() {
-        return addUser;
-    }
-
-    /**
-     * null
-     * @param addUser null
-     */
-    public void setAddUser(String addUser) {
-        this.addUser = addUser == null ? null : addUser.trim();
-    }
-
-    /**
-     * null
-     * @return ADD_TIME null
-     */
-    public Date getAddTime() {
-        return addTime;
-    }
-
-    /**
-     * null
-     * @param addTime null
-     */
-    public void setAddTime(Date addTime) {
-        this.addTime = addTime;
-    }
-
-    /**
-     * null
-     * @return UPDATE_USER null
-     */
-    public String getUpdateUser() {
-        return updateUser;
-    }
-
-    /**
-     * null
-     * @param updateUser null
-     */
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser == null ? null : updateUser.trim();
-    }
-
-    /**
-     * null
-     * @return UPDATE_TIME null
-     */
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    /**
-     * null
-     * @param updateTime null
-     */
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
 	public String getSpecialKnowledgeId() {

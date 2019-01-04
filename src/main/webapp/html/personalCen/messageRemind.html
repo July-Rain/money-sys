@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>消息提醒 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<style>
+
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="header">
+        <div class="header-left">
+            <img src="${rc.contextPath}/statics/img/logo.png">
+            <a href="javascript:;">江苏省公安厅法律学校</a>
+        </div>
+    </div>
+    <div class="container">
+        <el-row :gutter="24">
+            <el-col :span="24">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="消息">
+                        <div>
+
+                            <el-table
+                                    :data="tableData"
+                                    border
+                                    style="width: 100%">
+                                <el-table-column
+                                        prop="id"
+                                        label="序号"
+                                        width="150"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="title"
+                                        label="消息标题"
+                                        width="200"
+                                >
+                                </el-table-column>
+
+                                <el-table-column
+                                        prop="content"
+                                        label="消息内容"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="releaseDate"
+                                        label="发送时间"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="recieveDate"
+                                        label="接收时间"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="noticeType"
+                                        label="消息类型"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="releaseState"
+                                        label="状态"
+                                        width="180"
+                                        header-align="center"
+                                        align="center"
+                                        width="100">
+                                    <template slot-scope="scope">
+                                        <el-tag v-if="scope.row.releaseState === '0'" size="small" type="danger">未发布</el-tag>
+                                        <el-tag v-else size="small">已发布</el-tag>
+                                    </template>
+                                </el-table-column>
+                                <!--<el-table-column label="操作" width="300">
+                                    <template slot-scope="scope">
+                                        <el-button
+                                                size="mini"
+                                                @click="send(scope.$index, scope.row)">发送
+                                        </el-button>
+                                        <el-button
+                                                size="mini"
+                                                @click="handleEdit(scope.$index, scope.row)">编辑
+                                        </el-button>
+                                        <el-button
+                                                size="mini"
+                                                @click="handleDel(scope.$index, scope.row)">删除
+                                        </el-button>
+                                    </template>
+                                </el-table-column>-->
+                            </el-table>
+
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="formInline.currPage"
+                                    :page-sizes="[10, 20, 30, 40]"
+                                    :page-size="formInline.pageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="formInline.totalCount">
+                            </el-pagination>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
+    </div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/personalCen/messageRemind.js"></script>
+</html>

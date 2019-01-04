@@ -6,4 +6,13 @@
     <result column="ROLE_ID" jdbcType="DECIMAL" property="roleId" />
     <result column="ORG_ID" jdbcType="DECIMAL" property="orgId" />
   </resultMap>
+
+  <select id="queryOrgIdList" resultType="string">
+      SELECT
+      org_id
+      FROM law_sys_role_org
+      <where>
+          role_id = #{roleId}
+      </where>
+  </select>
 </mapper>

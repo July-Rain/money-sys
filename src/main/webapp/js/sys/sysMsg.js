@@ -10,20 +10,40 @@ var vm = new Vue({
             releaseDept:"",//发布单位
             releasePeople:"",//发布人
             recieveDept:"",//接收单位
-            recievePeople:"",
+            deptName:"",//接收单位名称
+            recievePeople:"",//接收人ID
+            userName:"",//接收人名称
+            deptArr:[],//接收单位数组
+            userArr:[],//接收人数组
             recieveDate:"",
             releaseState:"",//发布状态
             releaseDate:""
         },
+        userTableData:[],//人员表格信息
+        userForm:{
+            userCode:"",
+            userName:"",
+            orgCode:"",
+            currPage: 1,
+            pageSize: 10,
+            totalCount:0
+
+        },//人员查询
         formInline:{
             currPage:"",
             pageSize:"",
             totalCount:"",
             orgCode:'',
         },
+        defaultUserProps:{
+            children: 'child',
+            label: 'orgName'
+        },//部门人员的默认格式
+        userData:[],//人员树数据
         tableData: [],//表格数据
         deptData:[],//接收树形数据
         dialogDept:false,//部门的弹窗
+        dialogUser:false,//人员的弹窗
         defaultProps: { // el-tree
             children: 'child',
             label: 'localOrgName'
@@ -63,6 +83,67 @@ var vm = new Vue({
         })
     },
     methods: {
+        searchUser: function () {
+            //查询人员信息
+            vm.reloadUser();
+        },
+        reloadUser: function () {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "sys/getAllUsers",
+                dataType: "json",
+                data: vm.userForm,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.userTableData = result.page.list;
+                        vm.userForm.currPage = result.page.currPage;
+                        vm.userForm.pageSize = result.page.pageSize;
+                        vm.userForm.totalCount = parseInt(result.page.count);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        userHandleCurrentChange: function (val) {
+            this.userForm.currPage=val;
+            this.reloadUser();
+        },
+        userHandleSizeChange: function (val) {
+            this.userForm.pageSize=val;
+            this.reloadUser();
+        },
+        handleSelectionChange(val) {
+            //选择人员信息
+            this.multipleSelection = val;
+            //遍历最终的人员信息
+            for (var i=0;i<val.length;i++){
+                if (this.sysMsg.recievePeople == "") {
+                    this.sysMsg.recievePeople=val[i].id;
+                    this.sysMsg.userName=val[i].userName;
+                }else{
+                    this.sysMsg.recievePeople+=","+val[i].id;
+                    this.sysMsg.userName+=","+val[i].userName;
+                }
+            }
+
+        },
+        //部门人员控件中点击事件
+        handleDeptNodeClick: function (data) {
+            this.userForm.orgCode=data.orgCode;
+            this.reloadUser();
+        },
+        chooseUser: function () {
+            //选择人员
+            this.dialogUser=true;
+
+        },
+        confimUser: function () {
+            this.dialogUser=false;
+        },
+        cancelUser: function () {
+            this.dialogUser=false;
+        },
         loadTopic: function(){
             /*$.ajax({
                 type: "GET",
@@ -81,6 +162,7 @@ var vm = new Vue({
         },
         chooseDept: function () {
             //选择部门
+            //idalert("000000000000")
             console.log(vm.deptData);
             this.dialogDept=true;
 
@@ -112,14 +194,25 @@ var vm = new Vue({
 
         },
         handleCheckChange: function (data, checked, indeterminate) {
-            console.log(data);
+            //alert("9999999999")
+            console.log(data);tableData
 
         },
-        confimUser: function () {
-            this.dialogUser=false;
+        confimDept: function () {
+            this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
+            for(var i=0;i<this.multipleDeptSelection.length;i++){
+                if (this.sysMsg.recievePeople == "") {
+                    this.sysMsg.recieveDept=this.multipleDeptSelection[i].id;
+                    this.sysMsg.deptName=this.multipleDeptSelection[i].orgName;
+                }else{
+                    this.sysMsg.recieveDept+=","+this.multipleDeptSelection[i].id;
+                    this.sysMsg.deptName+=","+this.multipleDeptSelection[i].orgName;
+                }
+            }
+            this.dialogDept=false;
         },
-        cancelUser: function () {
-            this.dialogUser=false;
+        cancelDept: function () {
+            this.dialogDept=false;
         },
         // 查询
         onSubmit: function () {
@@ -136,6 +229,43 @@ var vm = new Vue({
 
         // 保存和修改
         saveOrUpdate: function (formName) {
+            this.$refs[formName].validate(function (valid) {
+                if (valid) {
+                    var url = vm.sysMsg.id ? "msg/update" : "msg/insert";
+                    //var url = vm.sysMsg.id ? "msg/update" : "msg/insert";
+                    var deptArr = vm.sysMsg.recieveDept?vm.sysMsg.recieveDept.split(","):[];
+                    var userArr = vm.sysMsg.recievePeople?vm.sysMsg.recievePeople.split(","):[];
+                    vm.sysMsg.deptArr=deptArr;
+                    vm.sysMsg.userArr=userArr;
+                    /*var nodes = ztree.getCheckedNodes(true);
+                    vm.learnTasks.taskContentList=nodes;*/
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + url,
+                        contentType: "application/json",
+                        data: JSON.stringify(vm.sysMsg),
+                        success: function (result) {
+                            if (result.code === 0) {
+                                vm.$alert('操作成功', '提示', {
+                                    confirmButtonText: '确定',
+                                    callback: function () {
+                                        vm.dialogConfig = false;
+                                        vm.reload();
+                                    }
+                                });
+                            } else {
+                                alert(result.msg);
+                            }
+                        }
+                    });
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        // 保存和修改
+        /*saveOrUpdate: function (formName) {
             console.info(vm.sysMsg);
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
@@ -165,7 +295,7 @@ var vm = new Vue({
                 }
             });
 
-        },
+        },*/
         // 表单重置
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
@@ -209,7 +339,7 @@ var vm = new Vue({
             });
         },
         handleDel: function (index, row) {
-            alert(row.id)
+            alert(11112222)
             //vm.delIdArr.push(row.id);
             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',

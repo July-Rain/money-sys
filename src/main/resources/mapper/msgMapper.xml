@@ -43,6 +43,8 @@
                 <if test="releasePeople!=null and releasePeople != ''">RELEASE_PEOPLE=#{releasePeople},</if>
                 <if test="releaseDate!=null and releaseDate != ''">RELEASE_DATE=#{releaseDate},</if>
                 <if test="releaseState!=null and releaseState != ''">RELEASE_STATE=#{releaseState},</if>
+                <if test="recieveDate!=null and recieveDate !='' ">RECIEVE_DATE=TO_DATE(#{recieveDate}, 'yyyy-MM-dd HH:mm:ss')</if>
+                <if test="recievePeople!=null and recievePeople != '' ">RECIEVE_PEOPLE=#{recievePeople}</if>
             </trim>
         WHERE id=#{id}
     </update>
@@ -51,4 +53,24 @@
     <delete id="deleteByMsgId" parameterType="java.lang.String">
         delete from LAW_SYS_MSG_WITHIN_STATION where  ID = #{id}
     </delete>
+
+    <!--查询当前用户被推送的消息,返回被推送所有消息List<Msg>-->
+    <select id="showSent" resultType="com.lawschool.beans.Msg">
+        SELECT
+        ID AS "id",
+        TITLE AS "title",
+        CONTENT AS "content",
+        RELEASE_PEOPLE AS "releasePeople",
+        NOTICE_TYPE AS "noticeType",
+        RELEASE_DATE AS "releaseDate",
+        RECIEVE_DATE AS "recieveDate"
+        FROM
+        LAW_SYS_MSG_WITHIN_STATION
+        WHERE
+        1 = 1
+        and RELEASE_STATE = 1
+        <if test="null!=recievePeople||''!=recievePeople">
+            and RECIEVE_PEOPLE = #{recievePeople}
+        </if>
+    </select>
 </mapper>

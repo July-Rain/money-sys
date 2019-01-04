@@ -206,5 +206,16 @@
       </if>
     </trim>
   </insert>
-
+  <select id="findList" resultType="com.lawschool.beans.exam.ExamConfig" parameterType="com.lawschool.beans.exam.ExamConfig">
+        SELECT
+        ID,
+            EXAM_NAME,
+        EXAM_TYPE,
+        DICTCODE2VALE(EXAM_TYPE) EXAM_TYPE_NAME,
+        ORGANIZED_ORG_CODE,
+        START_TIME,
+        END_TIME
+        FROM
+            LAW_EXAM_CONFIG
+	</select>
 </mapper>
