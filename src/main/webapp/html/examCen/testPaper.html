@@ -154,7 +154,7 @@ p,span{
         </el-form>
         <el-button @click="submit" type="success" style="float: right;">交卷</el-button>
     </div>
-    <div class="timing">考试时间剩余<span>29</span>min<span>59</span>s</div>
+    <div v-if="minutes&&seconds" class="timing">考试时间剩余<span v-if="minutes">{{minutes}}</span>min<span v-if="seconds">{{seconds}}</span>s</div>
 </div>
 </body>
 
