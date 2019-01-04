@@ -42,6 +42,11 @@ public class UserIntegralController extends AbstractController {
     @RequestMapping("info")
     public Result getInfo(){
         UserIntegral userIntegral =userIntegralService.getInfo(getUser());
+        if(userIntegral == null){
+            userIntegral = new UserIntegral();
+            userIntegral.setCreditPoint(0);
+            userIntegral.setIntegralPoint(0);
+        }
         return Result.ok().put("info", userIntegral);
     }
 

@@ -5,26 +5,16 @@ var vm = new Vue({
         page: 1,//分页：当前页
         dialogFormVisible: false,
         form: {
-            typeId: '',
-            questionType: '',
-            comContent: '',
-            specialKnowledgeId: '',
-            questionDifficulty: '',
-            legalBasis: '',
-            answerId: '',
-            isEnble: true,
-            optUser: '',
-            stuOptdepartment: '',
+            titleName: '',
+            integral: '',
+            credit: '',
+            badge:'',
             page: 1,
             limit: 10,
             count: 0
         },
         formLabelWidth: '120px',
-        fileList: [],
-        diffList: [],
-        typeList: [],
-        qtList: [],
-        topicList: [],
+        isReceive : []
     },
     mounted: function () {
 
@@ -71,43 +61,33 @@ var vm = new Vue({
         handleEdit: function () {
 
         },
-
-        handleDel: function (index, row) {
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(function () {
-                $.ajax({
-                    type: "POST",
-                    url: baseURL + "testQuestion/delete",
-                    dataType: "json",
-                    data: {
-                        idList: [row.id]
-                    },
-                    success: function (result) {
-                        if (result.code === 0) {
-                            vm.reload();
-                        } else {
-                            alert(result.msg);
-                        }
-                    }
-                });
-
-            }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
-            });
-        },
-
-        save: function () {
+        receive: function (index,row) {
+            console.log(index,row)
             $.ajax({
                 type: "POST",
-                url: baseURL + "testQuestion/save",
+                url: baseURL + "medal/saveMedal/" + row.id,
                 contentType: "application/json",
-                data: JSON.stringify(vm.form),
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.$alert('操作成功', '提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                                vm.dialogFormVisible = false;
+                                vm.reload();
+                            }
+                        });
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        wear: function (index,row) {
+            console.log(index,row)
+            $.ajax({
+                type: "POST",
+                url: baseURL + "medal/wear/" + row.id,
+                contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
                         vm.$alert('操作成功', '提示', {
@@ -126,7 +106,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "GET",
-                url: baseURL + "testQuestion/list",
+                url: baseURL + "medal/list",
                 dataType: "json",
                 data: {
                     page: 1,
@@ -143,13 +123,26 @@ var vm = new Vue({
                     }
                 }
             });
+
+            $.ajax({
+                type: "GET",
+                url: baseURL + "medal/myMedal",
+                dataType: "json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.isReceive = result.list;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         }
     },
     created: function () {
         this.$nextTick(function () {
             $.ajax({
                 type: "GET",
-                url: baseURL + "testQuestion/list",
+                url: baseURL + "medal/list",
                 contentType: "application/json",
                 data: vm.form,
                 success: function (result) {
@@ -166,19 +159,17 @@ var vm = new Vue({
 
             $.ajax({
                 type: "GET",
-                url: baseURL + "exercise/random/dict",
-                contentType: "application/json",
+                url: baseURL + "medal/myMedal",
+                dataType: "json",
                 success: function (result) {
-                    if (result.code === 0) {
-                        vm.diffList = result.diffList;
-                        vm.typeList = result.typeList;
-                        vm.qtList = result.qtList;
-                        vm.topicList = result.topicList;
+                    if (result.code == 0) {
+                        vm.isReceive = result.list;
                     } else {
                         alert(result.msg);
                     }
                 }
             });
+
         })
     }
 

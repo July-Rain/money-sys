@@ -1,6 +1,7 @@
 package com.lawschool.beans;
 
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawschool.base.DataEntity;
 
 import java.util.Date;
@@ -39,6 +40,7 @@ public class SchoolYearPlan extends DataEntity<SchoolYearPlan> {
         this.planContent = planContent;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public Date getStartDate() {
         return startDate;
     }
@@ -47,6 +49,7 @@ public class SchoolYearPlan extends DataEntity<SchoolYearPlan> {
         this.startDate = startDate;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public Date getEndDate() {
         return endDate;
     }

@@ -5,14 +5,35 @@
 		INSERT INTO law_user_medal
 			(id,
 			user_id,
-			medal_id
+			medal_id,
+			is_wear
 			)
 		VALUES
 			(#{id},
 			#{userId},
-			#{medalId}
+			#{medalId},
+			#{isWear}
 			)
     </insert>
+
+    <update id="disenbleWear">
+        UPDATE law_user_medal
+        SET
+        is_wear = '0'
+        <where>
+            user_id = #{userId}
+        </where>
+    </update>
+
+    <update id="enbleWear">
+        UPDATE law_user_medal
+        SET
+        is_wear = '1'
+        <where>
+            user_id = #{userId}
+            AND medal_id = #{medalId}
+        </where>
+    </update>
 
     <select id="findMedalIdList" resultType="string">
         SELECT

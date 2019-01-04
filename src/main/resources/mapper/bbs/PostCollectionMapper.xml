@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lawschool.dao.bbs.PostCollectionDao">
+
+    <select id="queryPostIdList" resultType="string">
+        SELECT
+        pc.post_id
+        FROM law_post_conllection pc
+        INNER JOIN law_post p ON pc.post_id = p.id
+        <where>
+            pc.user_id = #{userId}
+        </where>
+    </select>
+
+    <delete id="deleteByUserId" parameterType="string">
+        DELETE FROM law_post_conllection
+        <where>
+            user_id = #{userId}
+        </where>
+    </delete>
+
+    <delete id="deleteByPostId">
+        DELETE FROM law_post_conllection
+        WHERE post_id IN
+        <foreach collection="list" index="index" item="item" open=" (" separator="," close=") ">
+            #{item}
+        </foreach>
+    </delete>
+
+    <insert id="insert">
+		INSERT INTO law_post_conllection
+			(id,
+			post_id,
+			user_id
+			)
+		VALUES
+			(#{id},
+			#{postId},
+			#{userId}
+			)
+	</insert>
+
+    <delete id="deleteBatchByUserId">
+        DELETE FROM law_post_conllection a
+        WHERE a.user_id in
+        <foreach collection="list" index="index" item="item" open=" (" separator="," close=") ">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

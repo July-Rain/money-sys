@@ -10,5 +10,9 @@ public interface UserMedalDao extends AbstractDao<UserMedalEntity> {
 
     List<String> findMedalIdList(@Param("userId") String userId);
 
+    void enbleWear(@Param("userId") String userId, @Param("medalId") String medalId);
+
+    void disenbleWear(@Param("userId") String userId);
+
     Integer checkUserMedal(UserMedalEntity userMedal);
 }
