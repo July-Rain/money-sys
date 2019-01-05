@@ -62,7 +62,7 @@
                     <ul class="item_bot clearfix">
                         <li @click="collection(item.id,index)"><i class="iconfont icon-gerenzhongxin"></i><span>{{item.collectionNum||0}}</span><span> 收藏</span></li>
                         <li @click="showComment(item.id,index)"><i class="iconfont icon-gerenzhongxin"></i><span>{{item.commentNum||0}}</span><span> 评论</span></li>
-                        <li>举报</li>
+                        <li @click="report(item.id,index)">举报</li>
                     </ul>
                     <div class="writeComment clearfix">
                         <el-input v-model="reply.content" placeholder="写下你的评论 · · ·"></el-input>
