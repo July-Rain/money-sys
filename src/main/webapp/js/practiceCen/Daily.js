@@ -4,7 +4,7 @@ var vm = new Vue({
     el: '#app',
     data: {
         textmag:"",
-        myAnswer:[],//我的答案ID
+        myAnswer:"",//我的答案ID
         questionForm: {
             id: "",
             answerId:"",
@@ -31,7 +31,7 @@ var vm = new Vue({
         onSubmit:function(answerId) {
             console.info(answerId);
             console.info("我的答案",vm.answers);//我的答案
-            var myAnswer = answerId.split(',');
+            var myAnswer = vm.answers.split(',');
             var answer = answerId.split(',');
 
             //先判断个数一不一样
