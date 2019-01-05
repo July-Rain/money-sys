@@ -9,5 +9,7 @@ public interface UserMedalService extends AbstractService<UserMedalEntity> {
 
     List<String> findMedalIdList(String userId);
 
+    void enbleWear(String userId, String medalId);
+
     Boolean checkUserMedal(UserMedalEntity userMedal);
 }

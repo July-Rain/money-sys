@@ -13,10 +13,7 @@ import com.lawschool.beans.competition.bak.BattleTopicSettingBak;
 import com.lawschool.beans.competition.bak.CompetitionOnlineBak;
 import com.lawschool.beans.competition.bak.RecruitConfigurationBak;
 import com.lawschool.dao.competition.CompetitionOnlineDao;
-import com.lawschool.service.AnswerService;
-import com.lawschool.service.IntegralService;
-import com.lawschool.service.TestQuestionService;
-import com.lawschool.service.UserQuestRecordService;
+import com.lawschool.service.*;
 import com.lawschool.service.competition.BattleRecordService;
 import com.lawschool.service.competition.BattleTopicSettingService;
 import com.lawschool.service.competition.CompetitionOnlineService;
@@ -67,7 +64,8 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	@Autowired
 	private IntegralService integralService;
 
-
+	@Autowired
+	private UserService userService;
 
 
 
@@ -351,9 +349,9 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	//保存分数记录
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void recordScore(String battlePlatformId,String win,String score,String type) {
+	public void recordScore(String battlePlatformId,String win,String score,String type,String uid) {
 
-		User u = (User) SecurityUtils.getSubject().getPrincipal();
+		User u= userService.selectUserByUserId(uid);
 		BattleRecord battleRecord=new BattleRecord();
 		battleRecord.setId(IdWorker.getIdStr());
 		battleRecord.setBattlePlatformId(battlePlatformId);
@@ -362,7 +360,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 		battleRecord.setType(type);
 		battleRecord.setScore(score);
 		battleRecord.setWhetherWin(win);
-		battleRecord.setUserId(u.getId());
+		battleRecord.setUserId(uid);
 
 		battleRecordService.insert(battleRecord);
 
@@ -371,6 +369,9 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 		integral.setType("1");
 		integral.setPoint(Integer.parseInt(score));
 		integral.setSrc(type);
+
+
+
 		integralService.addIntegralRecord(integral,u);
 
 

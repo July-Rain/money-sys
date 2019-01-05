@@ -57,11 +57,11 @@
                             <el-pagination
                                     @size-change="handleSizeChange"
                                     @current-change="handleCurrentChange"
-                                    :current-page="currentPage4"
+                                    :current-page="form.page"
                                     :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="10"
+                                    :page-size="form.limit"
                                     layout="total, sizes, prev, pager, next, jumper"
-                                    :total="40">
+                                    :total="form.count">
                             </el-pagination>
                         </div>
                     </el-tab-pane>
@@ -91,22 +91,19 @@
                     </el-col>
                     <el-col :span="24">
                         <el-form-item label="参与人员" :label-width="formLabelWidthS">
-                            <el-input v-model="form.info" autocomplete="off"></el-input>
+                            <el-input v-model="form.participantUser" autocomplete="off"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">
                         <el-form-item label="参与部门" :label-width="formLabelWidthS">
-                            <el-input v-model="form.info" autocomplete="off"></el-input>
+                            <el-input v-model="form.participantDept" autocomplete="off"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
-
-
-
             </el-form>
             <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">设置完成</el-button>
+                <el-button type="primary" @click="save">设置完成</el-button>
             </div>
 
         </el-dialog>

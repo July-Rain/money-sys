@@ -5,8 +5,11 @@ var vm = new Vue({
         pageNo: 1,//分页：当前页
         dialogFormVisible: false,
         form: {
+            id : '',
             roleName: '',
-            remarks: ''
+            remarks: '',
+            menuList : [],
+            orgList : []
         },
         formLabelWidth: '120px',
         diffList: [],
@@ -21,7 +24,7 @@ var vm = new Vue({
         defaultProps2: {
             children: 'child',
             label: 'fullName'
-        }
+        },
 
     },
     mounted: function () {
@@ -37,15 +40,35 @@ var vm = new Vue({
             console.log('当前页:' + val);
         },
         addRole: function () {
-            vm.dialogFormVisible = true
+            this.form = {
+                id : '',
+                roleName: '',
+                remarks: '',
+                menuList : [],
+                orgList : []
+            };
+            vm.dialogFormVisible = true;
         },
         handleWatch: function (index, row) {
             console.table({
                 "row": row
             })
         },
-        handleEdit: function () {
-
+        handleEdit: function (index, row) {
+            var that = this;
+            $.ajax({
+                type: "GET",
+                url: baseURL + "role/info/" + row.id,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        that.form = result.data;
+                        that.dialogFormVisible = true;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         },
 
         handleDel: function (index, row) {
@@ -54,13 +77,13 @@ var vm = new Vue({
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(function () {
+                var arr = new Array();
+                arr.push(row.id);
                 $.ajax({
                     type: "POST",
                     url: baseURL + "role/delete",
-                    dataType: "json",
-                    data: {
-                        idList: [row.id]
-                    },
+                    contentType: "application/json",
+                    data: JSON.stringify(arr),
                     success: function (result) {
                         if (result.code === 0) {
                             vm.reload();
@@ -98,6 +121,7 @@ var vm = new Vue({
                     console.info("22",info)
                     _data.orgList.push(info.id)
                 })
+                _data.id = vm.form.id;
                 _data.roleName = that.form.roleName;
                 _data.remarks = that.form.remarks;
                 $.ajax({
@@ -106,7 +130,6 @@ var vm = new Vue({
                     contentType: "application/json",
                     data: JSON.stringify(_data),
                     success: function (result) {
-                        console.info("result",result)
                         if (result.code === 0) {
                             vm.reload();
                         } else {

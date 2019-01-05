@@ -1,10 +1,13 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.DataEntity;
+import com.lawschool.form.AnswerForm;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 统一试题记录表
@@ -51,6 +54,17 @@ public class DailySame extends DataEntity<DailySame> {
      * 答案描述
      */
     private String answerDescrible;
+
+    @TableField(exist = false)
+    private List<AnswerForm> answer;//选项
+
+    public List<AnswerForm> getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(List<AnswerForm> answer) {
+        this.answer = answer;
+    }
 
     public String getComContent() {
         return comContent;

@@ -14,22 +14,24 @@
         <result column="OPT_TIME" jdbcType="DATE" property="optTime" />
         <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
         <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+        <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
     </resultMap>
     <!--查询当天每日一题记录表是否有记录：lh-->
-    <select id="findCurrentRecord" resultType="com.lawschool.beans.DailyRecord">
+    <select id="findCurrentRecord" parameterType="java.lang.String" resultType="com.lawschool.beans.DailyRecord">
         SELECT * FROM LAW_DAILY_RECORD where to_char(OPT_TIME,'yyyy-MM-dd') = (SELECT to_char(sysdate,'yyyy-MM-dd')from dual)
+        and USER_ID = #{userId}
     </select>
     <!--插入记录到数据库-->
     <insert id="insertRecord" parameterType="com.lawschool.beans.DailyRecord">
         insert into LAW_DAILY_RECORD (ID, COM_CONTENT, QUESTION_ID,
       QUESTION_DIFFICULTY, QUESTION_TYPE, ANSWER_ID,
       LEGAL_BASIS, ANSWER_DESCRIBLE, OPT_USER,
-      OPT_TIME, CREATE_USER, CREATE_TIME
+      OPT_TIME, CREATE_USER, CREATE_TIME,USER_ID
       )
     values (#{id,jdbcType=VARCHAR}, #{comContent,jdbcType=VARCHAR}, #{questionId,jdbcType=VARCHAR},
       #{questionDifficulty,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR}, #{answerId,jdbcType=VARCHAR},
       #{legalBasis,jdbcType=VARCHAR}, #{answerDescrible,jdbcType=VARCHAR}, #{optUser,jdbcType=VARCHAR},
-      #{optTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      #{optTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},#{userId}
       )
     </insert>
 </mapper>

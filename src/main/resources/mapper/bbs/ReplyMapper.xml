@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lawschool.dao.bbs.ReplyDao">
+    <sql id="replyColumn">
+        a.id AS "id",
+        a.post_id AS "postId",
+        a.content AS "content",
+        a.reply_object AS "replyObject",
+        a.opt_user AS "optUser",
+        a.opt_time AS "optTime",
+        a.create_user AS "createUser",
+        a.create_time AS "createTime"
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO law_reply
+        (
+        id,
+        post_id,
+        content,
+        reply_object,
+        opt_user,
+        opt_time,
+        create_user,
+        create_time
+        ) VALUES (
+        #{id},
+        #{postId},
+        #{content},
+        #{replyObject},
+        #{optUser},
+        #{optTime},
+        #{createUser},
+        #{createTime}
+        )
+    </insert>
+
+    <!--<update id="update">-->
+        <!--UPDATE law_reply-->
+        <!--SET-->
+        <!--post_id = #{postId},-->
+        <!--content = #{content},-->
+        <!--reply_object = #{replyObject},-->
+        <!--opt_user = #{optUser},-->
+        <!--opt_time = #{optTime}-->
+        <!--<where>-->
+            <!--id = #{id}-->
+        <!--</where>-->
+    <!--</update>-->
+
+    <select id="findList" resultType="com.lawschool.beans.bbs.ReplyEntity">
+        SELECT
+        <include refid="replyColumn"/>
+        ,b.user_name AS "userName"
+        FROM law_reply a, law_user b
+        <where>
+            a.create_user = b.id
+            <if test="postId != null and postId != ''">
+                AND a.post_id = #{postId}
+            </if>
+            <if test="createUser != null and createUser != ''">
+                AND a.create_user = #{createUser}
+            </if>
+        </where>
+    </select>
+
+    <select id="findOne" resultType="com.lawschool.beans.bbs.ReplyEntity">
+        SELECT
+        <include refid="replyColumn"/>
+        FROM law_reply a
+        <where>
+            a.id = #{id}
+        </where>
+    </select>
+
+    <delete id="delete">
+        DELETE FROM law_reply
+        WHERE id IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByPostId">
+        DELETE FROM law_reply
+        WHERE post_id IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findMyReply" resultType="Integer">
+        SELECT
+            COUNT (*) num
+        FROM
+            law_reply
+        WHERE
+            create_user = #{userId}
+    </select>
+</mapper>

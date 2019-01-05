@@ -1,0 +1,250 @@
+img{
+    width: 100%;
+    height: 100%;
+}
+.el-button{
+    padding: 10px 35px;
+    border-radius: 2px;
+    background-color: #1381e3;
+
+}
+.container{
+    background-color: #f2f2f2;
+    padding: 91px 24px 23px;
+}
+/*个人信息头部*/
+.personal_area{
+    position: relative;
+    background-color: #fff;
+    padding-bottom: 40px;
+    margin-bottom: 16px;
+}
+.personal_area .user_head{
+    width: 176px;
+    height: 176px;
+    border: 4px solid #fff;
+    border-radius: 4px;
+    position: absolute;
+    left: 32px;
+    top: -70px;
+    background-color: #fff;
+}
+.person_info{
+    float: left;
+    margin: 119px 0 0 8px;
+
+}
+.person_info > p.name{
+    line-height: 48px;
+    height: 48px;
+    padding-left: 25px;
+    font-size: 26px;
+    color: #333;
+    font-weight: bolder;
+}
+.person_info > ul > li{
+    float: left;
+    width: 77px;
+
+}
+.person_info > ul > li span{
+    display: block;
+    text-align: center;
+}
+
+.person_info > ul > li span.num{
+    line-height: 32px;
+    height: 32px;
+    font-size: 20px;
+    color: #333;
+    font-weight: bolder;
+}
+.person_info > ul > li span.name{
+    line-height: 25px;
+    height: 25px;
+    font-size: 16px;
+    color: #666;
+}
+.submit_info{
+    float: right;
+    width: 69vw;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    background-color: #f5f8fa;
+    margin: 40px 32px 0 0;
+}
+.submit_info .clearfix{
+    border-top: 1px solid #e8e8e8;
+}
+.personal_area .el-textarea__inner{
+    border: none;
+    background-color: #f5f8fa;
+    height: 116px;
+    padding: 19px;
+    color: #666;
+    font-size: 16px;
+}
+.personal_area .el-form-item{
+    margin-bottom: 0;
+}
+.personal_area .el-form-item__label{
+    /*line-height: 28px;*/
+}
+.personal_area .el-input__inner{
+    width: 160px;
+    height: 28px;
+}
+/*讨论区*/
+.info_area{
+    background-color: #fff;
+    padding: 0 32px;
+}
+.info_area > ul.clearfix{
+    border-bottom: 4px solid #fafafa;
+    height: 61px;
+    line-height: 61px;
+}
+.info_area > ul.clearfix > li{
+    float: left;
+    margin-right: 60px;
+    margin-top: -4px;
+    font-size: 18px;
+    color: #666;
+    cursor: pointer;
+}
+.info_area > ul.clearfix > li.active{
+    border-bottom: 4px solid #1381e3;
+    color: #000;
+}
+.info_area .tab .item{
+    padding-top: 24px;
+}
+.item .item_top{
+    padding-bottom: 13px;
+}
+.item .item_top .item_head{
+    float: left;
+    width: 60px;
+    height: 60px;
+}
+.item .item_top > p{
+    float: left;
+    height: 60px;
+    line-height: 60px;
+}
+.item .item_top > p .name{
+    padding-left: 19px;
+    color: #333;
+    font-weight: bolder;
+    font-size: 20px;
+}
+.item .item_top > p .time{
+    padding-left: 24px;
+    font-size: 14px;
+    color: #999;
+}
+.item > p.text{
+    line-height: 28px;
+    color: #333;
+    font-size: 16px;
+}
+.item ul.item_bot > li{
+    float: left;
+    line-height: 49px;
+    height: 49px;
+}
+.item ul.item_bot > li{
+    color: #999;
+    cursor: pointer;
+}
+.item ul.item_bot > li i{
+    padding-right: 7px;
+    color: #8590a6;
+}
+.item ul.item_bot > li:nth-child(1){
+    padding-right: 32px;
+}
+.item ul.item_bot > li:nth-child(2){
+    padding-right: 84px;
+}
+/*评论区*/
+.comment_area{
+    border: 1px solid #e8e8e8;
+    border-radius: 3px;
+    padding-top: 4px;
+}
+.comment_area .title{
+    height: 45px;
+    line-height: 45px;
+    padding-left: 20px;
+    color: #333;
+    font-size: 20px;
+    border-bottom: 1px solid #f2f2f2;
+}
+.comment_area .item_top{
+    padding: 0 19px;
+}
+.comment_area .item_top{
+    padding-top: 15px;
+}
+.item .comment_area .item_head{
+    width: 40px;
+    height: 40px;
+}
+.item .comment_area .item_top > p{
+    line-height: 40px;
+    height: 40px;
+}
+.item .comment_area p.text{
+    border-bottom: 1px solid #f2f2f2;
+    line-height: 28px;
+    padding: 11px 19px 18px;
+    font-size: 16px;
+    color: #333;
+}
+p.openMore{
+    line-height: 73px;
+    height: 73px;
+    color: #1381e3;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+}
+
+/*写下评论*/
+.item .writeComment .el-input{
+    float: left;
+    width: 81.33235724743777vw;
+    padding-bottom: 16px;
+}
+.item .writeComment .el-input .el-input__inner{
+    height: 36px;
+    line-height: 36px;
+    border-color: #e8e8e8;
+    background-color: #f5f8fa;
+    color: #666;
+    font-size: 16px;
+}
+.item .writeComment .el-button{
+    margin-right: 25px;
+    float: right;
+}
+
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #666!important;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #666!important;
+    opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #666!important;
+    opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #666!important;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: #666!important;
+}

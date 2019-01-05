@@ -10,4 +10,10 @@ import com.lawschool.beans.SchoolYearPlan;
  * @Versiom 1.0
  **/
 public interface SchoolYearPlanService extends AbstractService<SchoolYearPlan> {
+
+    /**
+     * 查询当前学年目标
+     * @return
+     */
+    SchoolYearPlan findYearPlanByNow(String userId);
 }

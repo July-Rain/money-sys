@@ -5,21 +5,61 @@
     <#include "/header.html">
 </head>
 <style>
-
+.container{
+    background: #efefef;
+}
+.el-tabs__header.is-top{
+    padding: 0;
+    background: #efefef;
+    width: 100%;
+}
+.el-tabs__item.is-top.is-active{
+    padding: 0 23px!important;
+    height: 28px;
+    line-height: 30px;
+    font-size: 16px;
+    color: #36a9e0!important;
+    background-color: #fff!important;
+    border-radius: 3px 3px 0 0;
+    border-color:#80c5e6 #80c5e6 transparent!important;
+}
+.el-tabs__content{
+    border-top: 1px #36a9e0 solid;
+}
+.content ul li{
+    width: 20%;
+    float: left;
+}
+.content ul li .item{
+    padding-right: 25px;
+}
+.content ul li .item video{
+    width: 100%;
+    height: 9.15080527086384vw;
+    border-radius: 5px;
+}
+.stuType{
+    background: #f97a1f;
+    padding: 0 5px;
+    color: #fff;
+    border-radius: 2px;
+}
+.stuIssuer{
+    float: left;
+}
+.stuCreat{
+    float: right;
+}
 </style>
 <body>
 <div id="app" v-cloak>
     <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-bottom: 20px">
+            <el-breadcrumb-item>首页</el-breadcrumb-item>
+            <el-breadcrumb-item>学习中心</el-breadcrumb-item>
+            <el-breadcrumb-item>视频课堂</el-breadcrumb-item>
+        </el-breadcrumb>
         <el-row :gutter="24">
-            <!--<el-col :span="4">
-                &lt;!&ndash;对于同一级的节点，每次只能展开一个&ndash;&gt;
-                <el-tree
-                        :data="treeData"
-                        :props="defaultProps"
-                        accordion
-                        @node-click="handleNodeClick">
-                </el-tree>
-            </el-col>-->
             <el-col :span="24">
                 <el-tabs type="border-card">
                     <el-tab-pane label="检索">
@@ -56,12 +96,6 @@
                                         >
                                 </el-date-picker>
                             </el-form-item>
-                           <!-- <el-form-item prop="status">
-                                <el-select v-model="formInline.status" placeholder="状态" size="mini">
-                                    <el-option label="有效" value="1"></el-option>
-                                    <el-option label="无效" value="0"></el-option>
-                                </el-select>
-                            </el-form-item>-->
                             <el-form-item>
                                 <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
                                 <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
@@ -70,15 +104,14 @@
                         </el-form>
                         <div>
                             <div class="content lesson">
-                                <el-row>
-                                    <el-col :span="6" v-for="(item, index) in videoData">
-                                        <el-card :body-style="{ padding: '4px' }">
-
-                                            <video id="demo-video" width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,item.comContent)" @pause="onPause(item.id)">
+                                <ul class="clearfix">
+                                    <li v-for="(item, index) in videoData">
+                                        <div class="item">
+                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,item.comContent)" @pause="onPause(item.id)">
                                                 <source :src="item.contentUrl" type="video/mp4">
                                                 您的浏览器不支持视频播放
                                             </video>
-                                            <div style="padding: 14px 14px 0 14px;">
+                                            <div>
                                                 <p>
                                                     <span class="stuType">{{item.stuType}}</span>
                                                     <a href="javascript:;" class="title">{{item.stuTitle}}</a>
@@ -88,9 +121,9 @@
                                                     <span class="stuCreat">{{item.stuIsstime}}</span>
                                                 </p>
                                             </div>
-                                        </el-card>
-                                    </el-col>
-                                </el-row>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                             <el-pagination
                                     @size-change="handleSizeChange"

@@ -6,9 +6,11 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawschool.base.BaseEntity;
 import com.lawschool.base.DataEntity;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.form.QuestForm;
 
 /**
  * 
@@ -160,15 +162,54 @@ public class ExamConfig extends DataEntity<ExamConfig> {
 	private String configState;
 
 	@TableField(exist = false)
-	private String[] deptId;// 适用部门
+	private String[] deptArr;//适用部门
 
 	@TableField(exist = false)
-	private String[] userId;// 适用人员
+	private String[] userArr;//适用人员
+	@TableField(exist = false)
+	private String examTypeName;
+
+	public String getExamTypeName() {
+		return this.examTypeName;
+	}
+
+	public void setExamTypeName(final String examTypeName) {
+		this.examTypeName = examTypeName;
+	}
+
+	public String[] getDeptArr() {
+		return this.deptArr;
+	}
+
+	public void setDeptArr(final String[] deptArr) {
+		this.deptArr = deptArr;
+	}
+
+	public String[] getUserArr() {
+		return this.userArr;
+	}
+
+	public void setUserArr(final String[] userArr) {
+		this.userArr = userArr;
+	}
+
 	@TableField(exist = false)
 	private List<ExamQueConfig> examQueConfigList;
 	@TableField(exist = false)
-	private List<TestQuestions> testQuestions;
+	private List<String> idList;
 
+	//预览试题列表
+	@TableField(exist = false)
+	private List<QuestForm> qfList;
+
+	public List<QuestForm> getQfList() {
+		return this.qfList;
+	}
+
+	public void setQfList(final List<QuestForm> qfList) {
+		this.qfList = qfList;
+	}
+	@TableField(exist = false)
 	private List<String> list;
 
 	private String status;
@@ -189,12 +230,12 @@ public class ExamConfig extends DataEntity<ExamConfig> {
 		this.examQueConfigList = examQueConfigList;
 	}
 
-	public List<TestQuestions> getTestQuestions() {
-		return this.testQuestions;
+	public List<String> getIdList() {
+		return this.idList;
 	}
 
-	public void setTestQuestions(final List<TestQuestions> testQuestions) {
-		this.testQuestions = testQuestions;
+	public void setIdList(final List<String> idList) {
+		this.idList = idList;
 	}
 
 	/**
@@ -683,21 +724,7 @@ public class ExamConfig extends DataEntity<ExamConfig> {
 		this.configState = configState == null ? null : configState.trim();
 	}
 
-	public String[] getDeptId() {
-		return deptId;
-	}
 
-	public void setDeptId(String[] deptId) {
-		this.deptId = deptId;
-	}
-
-	public String[] getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String[] userId) {
-		this.userId = userId;
-	}
 
 	public List<String> getList() {
 		return this.list;

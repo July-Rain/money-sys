@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.User;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -84,12 +85,12 @@ public abstract class AbstractServiceImpl<D extends AbstractDao<T>, T extends Da
 
         String userId = "none";
 
-        User user = (User)((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession().getAttribute("user");
+        User user = (User)SecurityUtils.getSubject().getPrincipal();
         if(user != null){
             userId = user.getId();
         }
 
-        if(StringUtils.isNotEmpty(entity.getId())){
+        if(StringUtils.isEmpty(entity.getId())){
             entity.setCreateUser(userId);
             entity.setCreateTime(new Date());
         }

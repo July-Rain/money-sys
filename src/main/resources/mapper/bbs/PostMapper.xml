@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lawschool.dao.bbs.PostDao">
+    <sql id="replyColumn">
+        a.id AS "id",
+        a.content AS "content",
+        a.subordinate_column AS "subordinateColumn",
+        a.collection_num AS "collectionNum",
+        a.comment_num AS "commentNum",
+        a.report_num AS "reportNum",
+        a.opt_user AS "optUser",
+        a.opt_time AS "optTime",
+        a.create_user AS "createUser",
+        a.create_time AS "createTime"
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO law_post
+        (
+        id,
+        content,
+        subordinate_column,
+        collection_num,
+        comment_num,
+        report_num,
+        opt_user,
+        opt_time,
+        create_user,
+        create_time
+        ) VALUES (
+        #{id},
+        #{content},
+        #{subordinateColumn},
+        #{collectionNum},
+        #{commentNum},
+        #{reportNum},
+        #{optUser},
+        #{optTime},
+        #{createUser},
+        #{createTime}
+        )
+    </insert>
+
+    <update id="updateNum">
+        UPDATE law_post
+        SET
+        <if test="collectionNum != null and collectionNum != ''">
+            collection_num = #{collectionNum}
+        </if>
+        <if test="commentNum != null and commentNum != ''">
+            comment_num = #{commentNum}
+        </if>
+        <if test="reportNum != null and reportNum != ''">
+            report_num = #{reportNum}
+        </if>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <select id="findList" resultType="com.lawschool.beans.bbs.PostEntity">
+        SELECT
+        <include refid="replyColumn"/>
+        ,b.user_name AS "userName"
+        FROM law_post a, law_user b
+        <where>
+            a.create_user = b.id
+            <if test="subordinateColumn != null and subordinateColumn != ''">
+                AND a.subordinate_column = #{subordinateColumn}
+            </if>
+            <if test="createUser != null and createUser != ''">
+                AND a.create_user = #{createUser}
+            </if>
+        </where>
+    </select>
+
+    <select id="findOne" resultType="com.lawschool.beans.bbs.PostEntity">
+        SELECT
+        <include refid="replyColumn"/>
+        FROM law_post a
+        <where>
+            a.id = #{id}
+        </where>
+    </select>
+
+    <delete id="delete">
+        DELETE FROM law_post
+        WHERE id IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    
+    <select id="findMyPost" resultType="Integer">
+        SELECT
+            COUNT (*) num
+        FROM
+            law_post
+        WHERE
+            create_user = #{userId}
+    </select>
+</mapper>

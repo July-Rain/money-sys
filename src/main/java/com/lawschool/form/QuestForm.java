@@ -23,6 +23,7 @@ public class QuestForm {
     private List<AnswerForm> answer;//选项
     private Integer answerChoiceNumber;// 选项数量
 
+    private String questionId;//题目Id
     private String userAnswer;// 用户答案
     private Integer right;// 用户回答是否正确
 

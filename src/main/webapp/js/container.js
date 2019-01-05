@@ -255,7 +255,13 @@ var vm = new Vue({
                 }
             ],
             dataListSelections: [],//选中行
-            deleteIds:[]
+            deleteIds:[],
+            yearPlan:{
+                credit : 0,//目标学分
+                integral : 0,//目标积分
+                credited : 0,//学分
+                integraled : 0//积分
+            }
         }
     },
     created: function () {
@@ -286,6 +292,36 @@ var vm = new Vue({
 
                     if (result.code === 0) {
                         vm.navData = result.menuList;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+
+            //学年目标
+            $.ajax({
+                type: "GET",
+                url: baseURL + "schoolYearPlan/yearPlan",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.yearPlan.credit = parseInt(result.data.credit);
+                        vm.yearPlan.integral = parseInt(result.data.integral);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+
+            //学年目标
+            $.ajax({
+                type: "GET",
+                url: baseURL + "userIntegral/info",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.yearPlan.credited = result.info.creditPoint;
+                        vm.yearPlan.integraled = result.info.integralPoint;
                     } else {
                         alert(result.msg);
                     }

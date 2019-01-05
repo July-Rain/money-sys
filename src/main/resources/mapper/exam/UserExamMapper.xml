@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.exam.UserExamDao">
+
+    <select id="getQueIdList" resultType="string">
+      select EXAM_LIBRARY_ID from LAW_EXAM_QUESTIONS where EXAM_DETAIL_ID=#{examDetailId}
+   </select>
+
+    <select id="getExamDetailId" parameterType="string" resultType="string">
+        select
+          * from (
+          select id from LAW_EXAM_DETAIL where
+           EXAM_CONFIG_ID=#{examConfigId}
+           ORDER BY dbms_random.random  ) where ROWNUM=1
+    </select>
+</mapper>

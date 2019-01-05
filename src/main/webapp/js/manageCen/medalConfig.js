@@ -2,13 +2,16 @@ var vm = new Vue({
     el: '#app',
     data: {
         tableData: [],//表格数据
-        pageNo: 1,//分页：当前页
+        page: 1,//分页：当前页
         dialogFormVisible: false,
         form: {
-            name: '',
+            titleName: '',
             integral: '',
             credit: '',
-            badge:''
+            badge:'',
+            page: 1,
+            limit: 10,
+            count: 0
         },
         formLabelWidth: '200px',
         formLabelWidthS: '143px',
@@ -44,15 +47,53 @@ var vm = new Vue({
             console.log('当前页:' + val);
         },
         addMedal: function () {
-            console.log(22)
+            this.form = {
+                titleName: '',
+                integral: '',
+                credit: '',
+                badge:''
+            };
             vm.dialogFormVisible = true
         },
 
-        handleEdit: function () {
-
+        handleEdit: function (index, row) {
+            var that = this;
+            $.ajax({
+                type: "GET",
+                url: baseURL + "medal/info/" + row.id,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        that.form = result.data;
+                        that.dialogFormVisible = true;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         },
-        handleDel: function () {
-
+        handleDel: function (index, row) {
+            var arr = new Array();
+            arr.push(row.id);
+            $.ajax({
+                type: "POST",
+                url: baseURL + "medal/delete",
+                contentType: "application/json",
+                data: JSON.stringify(arr),
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.$alert('操作成功', '提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                                vm.dialogFormVisible = false;
+                                vm.reload();
+                            }
+                        });
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         },
         save: function () {
             $.ajax({
@@ -81,13 +122,13 @@ var vm = new Vue({
                 url: baseURL + "medal/list",
                 dataType: "json",
                 data: {
-                    pageNo: 1,
+                    page: 1,
                     limit: 10
                 },
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
-                        vm.form.pageNo = result.page.pageNo;
+                        vm.form.page = result.page.page;
                         vm.form.pageSize = result.page.pageSize;
                         vm.form.count = parseInt(result.page.count);
                     } else {
@@ -107,7 +148,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.tableData = result.page.list;
-                        vm.form.pageNo = result.page.pageNo;
+                        vm.form.page = result.page.page;
                         vm.form.pageSize = result.page.pageSize;
                         vm.form.count = parseInt(result.page.count);
                     } else {

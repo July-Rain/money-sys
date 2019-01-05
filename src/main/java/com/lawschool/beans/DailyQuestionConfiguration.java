@@ -32,7 +32,7 @@ public class DailyQuestionConfiguration extends DataEntity<DailyQuestionConfigur
     private List<String> specialKnowledgeIds=new ArrayList<String>();
 
     /**
-     *出题规则 1:统一试题.2:随机不同
+     *出题规则 1:统一试题.0:随机不同
      */
     private Integer createRule;
 

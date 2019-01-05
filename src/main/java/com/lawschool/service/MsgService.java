@@ -7,6 +7,7 @@ import com.lawschool.util.PageUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MsgService extends IService<Msg> {
     /**
@@ -45,4 +46,9 @@ public interface MsgService extends IService<Msg> {
      * @param ids
      */
     public void deleteBatchIds(String[] ids);
+
+    /**
+     * 展示已发送消息(传入当前用户id，和分页参数)
+     */
+    PageUtils showSent(String recievePeople, Map<String,Object> param);
 }
