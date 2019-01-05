@@ -17,10 +17,10 @@ public class DataEntity<T> extends BaseEntity<T> {
 
     protected String createUser;    //创建人
 
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     protected Date createTime;      //创建时间
     protected String optUser;       //操作人
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     protected Date optTime;         //操作时间
 
     // 新增前调用
