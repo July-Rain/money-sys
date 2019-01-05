@@ -48,42 +48,40 @@
                 <li v-for="(item,index) in navList" :class="{active:!(index - menuIndex)}" @click="reload(index)">{{item}}</li>
             </ul>
             <div class="tab">
-                <div class="item">
+                <div class="item" v-if="tableData" v-for="(item,index) in tableData">
                     <div class="item_top clearfix">
                         <div class="item_head">
                             <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
                         </div>
                         <p>
-                            <span class="name">孙大圣</span>
-                            <span class="time">2018-11-02 23：57：41</span>
+                            <span class="name">{{item.userName}}</span>
+                            <span class="time">{{item.createTime}}</span>
                         </p>
                     </div>
-                    <p class="text">乘客错过公交站，侮辱打骂公交司机造成车辆坠江该怎么量刑？乘客错过公交站，侮辱打骂公交司机造成车辆坠江该怎么量刑？乘客错过公交站，侮辱打骂公交司机造成车辆坠
-                        江该怎么量刑？乘客错过公交站，侮辱打骂公交司机造成车辆坠江该怎么量刑？</p>
+                    <p class="text">{{item.content}}</p>
                     <ul class="item_bot clearfix">
-                        <li><i class="iconfont icon-gerenzhongxin"></i><span>102</span><span>收藏</span></li>
-                        <li><i class="iconfont icon-gerenzhongxin"></i><span>28</span><span>评论</span></li>
+                        <li @click="collection(item.id,index)"><i class="iconfont icon-gerenzhongxin"></i><span>{{item.collectionNum||0}}</span><span> 收藏</span></li>
+                        <li @click="showComment(item.id,index)"><i class="iconfont icon-gerenzhongxin"></i><span>{{item.commentNum||0}}</span><span> 评论</span></li>
                         <li>举报</li>
                     </ul>
                     <div class="writeComment clearfix">
-                        <el-input v-model="form.region" placeholder="写下你的评论 · · ·"></el-input>
-                        <el-button type="primary">发布</el-button>
+                        <el-input v-model="reply.content" placeholder="写下你的评论 · · ·"></el-input>
+                        <el-button @click="saveReply(item.id)" type="primary">发布</el-button>
                     </div>
                     <!--这个model要改-->
-                    <div class="comment_area">
-                        <div class="title">28评论</div>
-                        <div class="comment_item">
+                    <div class="comment_area" v-if="item.commentShow">
+                        <div class="title">{{item.commentNum||0}}评论</div>
+                        <div class="comment_item" v-for="i in item.child">
                             <div class="item_top clearfix">
                                 <div class="item_head">
                                     <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
                                 </div>
                                 <p>
-                                    <span class="name">孙大圣</span>
-                                    <span class="time">2018-11-02 23：57：41</span>
+                                    <span class="name">{{i.userName}}</span>
+                                    <span class="time">{{i.createTime}}</span>
                                 </p>
                             </div>
-                            <p class="text">乘客错过公交站，侮辱打骂公交司机造成车辆坠江该怎么量刑？乘客错过公交站，侮辱打骂公交司机造成车辆坠江该怎么量刑？乘客错过公交站，侮辱打骂公交司机造成车辆坠
-                                江该怎么量刑？乘客错过公交站，侮辱打骂公交司机造成车辆坠江该怎么量刑？</p>
+                            <p class="text">{{i.content}}</p>
                         </div>
                         <p class="openMore">展开更多评论</p>
 

@@ -3,7 +3,7 @@
 
 <mapper namespace="com.lawschool.dao.bbs.ReplyDao">
     <sql id="replyColumn">
-        id AS "id",
+        a.id AS "id",
         a.post_id AS "postId",
         a.content AS "content",
         a.reply_object AS "replyObject",

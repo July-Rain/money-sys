@@ -58,7 +58,12 @@ public class ReplyController extends AbstractController {
         replyService.save(entity);
 
         PostEntity postEntity = postService.findOne(entity.getPostId());
-        postEntity.setCommentNum(postEntity.getCommentNum() == null ? 1 : postEntity.getCommentNum()+ 1);
+
+        PostEntity newPostEntity = new PostEntity();
+        newPostEntity.setId(postEntity.getId());
+        newPostEntity.setCommentNum(postEntity.getCommentNum() == null ? 1 : postEntity.getCommentNum()+ 1);
+
+        postService.updateNum(postEntity);
         return Result.ok();
     }
 

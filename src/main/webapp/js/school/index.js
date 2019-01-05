@@ -6,8 +6,8 @@
 var vm = new Vue({
     el: '#app',
     data: {
+        tableData:[],//评论数据
         form:{
-            titleName: "",
             content : "",
             subordinateColumn : ""
         },
@@ -35,7 +35,13 @@ var vm = new Vue({
                 data:vm.form,
                 success: function (result) {
                     if (result.code === 0) {
+
                         vm.tableData = result.page.list;
+                        console.info("create1",vm.tableData);
+                        for (var i = 0; i < vm.tableData.length; i++) {
+                            vm.tableData[i].commentShow = false
+                        }
+                        console.info("create2",vm.tableData);
                         vm.form.page = result.page.page;
                         vm.form.pageSize = result.page.pageSize;
                         vm.form.count = parseInt(result.page.count);
@@ -61,7 +67,7 @@ var vm = new Vue({
         })
     },
     methods:{
-
+        // 发表帖子
         save: function () {
             $.ajax({
                 type: "POST",
@@ -83,9 +89,10 @@ var vm = new Vue({
                 }
             });
         },
+        // 发表评论
         saveReply: function (postId, replyObject) {
             vm.reply.postId = postId;
-            vm.reply.replyObject = replyObject;
+            vm.reply.replyObject = replyObject||null;
             $.ajax({
                 type: "POST",
                 url: baseURL + "reply/save",
@@ -105,6 +112,36 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+        // 查询评论并展示
+        showComment: function(id,index){
+            $.ajax({
+                type: "GET",
+                url: baseURL + "reply/list",
+                dataType: "json",
+                data: {
+                    postId:id
+                },
+                success: function (result) {
+                    console.info("result",result);
+                    vm.tableData[index].child = result.page.list;
+                    vm.tableData[index].commentShow = true;
+                    var arr = vm.tableData;
+                    vm.tableData = [];
+                    vm.tableData = arr;
+                    console.info("showCom",vm.tableData)
+                }
+            })
+        },
+        collection: function(id,index){
+            $.ajax({
+                type: "POST",
+                url: baseURL+'post/collection/'+id,
+                dataType: "json",
+                success:function (result) {
+                    console.info("哈哈哈",result)
+                }
+            })
         },
         reload: function (index) {
             this.menuIndex = index;

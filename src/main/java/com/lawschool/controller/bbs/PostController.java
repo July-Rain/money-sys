@@ -83,7 +83,12 @@ public class PostController extends AbstractController {
         postCollectionService.save(entity);
 
         PostEntity postEntity = postService.findOne(id);
-        postEntity.setCollectionNum(postEntity.getCollectionNum() == null ? 1 : postEntity.getCollectionNum()+ 1);
+
+        PostEntity newPostEntity = new PostEntity();
+        newPostEntity.setId(postEntity.getId());
+        newPostEntity.setCollectionNum(postEntity.getCollectionNum() == null ? 1 : postEntity.getCollectionNum()+ 1);
+
+        postService.updateNum(newPostEntity);
         return Result.ok();
     }
 

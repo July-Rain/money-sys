@@ -42,20 +42,22 @@
         )
     </insert>
 
-    <!--<update id="update">-->
-        <!--UPDATE law_post-->
-        <!--SET-->
-        <!--content = #{content},-->
-        <!--subordinate_column = #{subordinateColumn},-->
-        <!--collection_num = #{collectionNum},-->
-        <!--comment_num = #{commentNum},-->
-        <!--report_num = #{reportNum},-->
-        <!--opt_user = #{optUser},-->
-        <!--opt_time = #{optTime}-->
-        <!--<where>-->
-            <!--id = #{id}-->
-        <!--</where>-->
-    <!--</update>-->
+    <update id="updateNum">
+        UPDATE law_post
+        SET
+        <if test="collectionNum != null and collectionNum != ''">
+            collection_num = #{collectionNum}
+        </if>
+        <if test="commentNum != null and commentNum != ''">
+            comment_num = #{commentNum}
+        </if>
+        <if test="reportNum != null and reportNum != ''">
+            report_num = #{reportNum}
+        </if>
+        <where>
+            id = #{id}
+        </where>
+    </update>
 
     <select id="findList" resultType="com.lawschool.beans.bbs.PostEntity">
         SELECT
