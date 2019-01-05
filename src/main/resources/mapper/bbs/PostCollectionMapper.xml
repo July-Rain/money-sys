@@ -50,7 +50,7 @@
 
     <select id="findMyCollection" resultType="Integer">
         SELECT
-            COUNT (*) num
+            COUNT (DISTINCT id) num
         FROM
             law_post_collection
         WHERE
@@ -76,6 +76,16 @@
             <if test="subordinateColumn != null and subordinateColumn != ''">
                 AND a.subordinate_column = #{subordinateColumn}
             </if>
+        </where>
+    </select>
+
+    <select id="findByUser" resultType="Integer">
+        SELECT
+        COUNT (*) num
+        FROM law_post_collection
+        <where>
+            user_id = #{userId}
+            AND post_id = #{postId}
         </where>
     </select>
 </mapper>

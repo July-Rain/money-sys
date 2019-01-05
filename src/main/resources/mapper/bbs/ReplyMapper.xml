@@ -56,6 +56,9 @@
         FROM law_reply a, law_user b
         <where>
             a.create_user = b.id
+            <if test="postId != null and postId != ''">
+                AND a.post_id = #{postId}
+            </if>
             <if test="createUser != null and createUser != ''">
                 AND a.create_user = #{createUser}
             </if>

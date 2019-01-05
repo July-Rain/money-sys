@@ -16,4 +16,6 @@ public interface PostCollectionService extends AbstractService<PostCollectionEnt
     Page<CollectionPostForm> findPage(Page<CollectionPostForm> page, CollectionPostForm entity);
 
     Integer findMyCollection(String userId);
+
+    Integer findByUser(PostCollectionEntity postCollectionEntity);
 }

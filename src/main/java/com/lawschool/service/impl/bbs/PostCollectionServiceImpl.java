@@ -32,4 +32,8 @@ public class PostCollectionServiceImpl extends AbstractServiceImpl<PostCollectio
     public Integer findMyCollection(String userId){
         return dao.findMyCollection(userId);
     }
+
+    public Integer findByUser(PostCollectionEntity postCollectionEntity){
+        return dao.findByUser(postCollectionEntity);
+    }
 }

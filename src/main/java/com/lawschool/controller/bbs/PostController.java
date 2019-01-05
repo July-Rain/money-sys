@@ -80,6 +80,11 @@ public class PostController extends AbstractController {
         PostCollectionEntity entity = new PostCollectionEntity();
         entity.setUserId(getUser().getId());
         entity.setPostId(id);
+
+        if(postCollectionService.findByUser(entity) > 0){
+            return Result.ok("已收藏过此贴！");
+        }
+
         postCollectionService.save(entity);
 
         PostEntity postEntity = postService.findOne(id);
