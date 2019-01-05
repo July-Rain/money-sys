@@ -72,7 +72,7 @@ public class ClassifyDesicServiceImpl extends ServiceImpl<ClassifyDesicDao,Class
             ew.like("issue_org",issueOrg);
         }
 
-        ew.orderBy("ORDER_NUM");
+        ew.orderBy("ISSUE_TIME",false);
         Page<ClassifyDesicEntity> page = this.selectPage(
                 new Query<ClassifyDesicEntity>(param).getPage(),ew);
         return new PageUtils(page);

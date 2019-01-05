@@ -5,6 +5,7 @@ import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
 import com.lawschool.util.PageUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -111,5 +112,6 @@ public interface StuMediaService  extends AbstractService<StuMedia> {
      **/
     
     int updateCount(String stuId);
+
     
 }

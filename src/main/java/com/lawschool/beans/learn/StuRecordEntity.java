@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.annotations.Version;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -34,6 +35,16 @@ public class StuRecordEntity implements Serializable {
     @Version
     @TableField(update = "%s+1")
     private Integer stuCount;//学习次数
+
+    private BigDecimal stuCountTime;//学习总时长
+
+    public BigDecimal getStuCountTime() {
+        return stuCountTime;
+    }
+
+    public void setStuCountTime(BigDecimal stuCountTime) {
+        this.stuCountTime = stuCountTime;
+    }
 
     public Integer getStuCount() {
         return stuCount;

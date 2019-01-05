@@ -142,18 +142,18 @@
                         <el-row :gutter="66">
                             <el-col :span="12" v-for="(item, index) in videoData">
                                 <el-card :body-style="{ padding: '0px' }">
-                                    <video class="video" width="315" height="155" controls preload="none" :poster="item.videoPicAccUrl">
-                                        <source :src="item.videoUrl" type="video/mp4">
+                                    <video class="video" width="315" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,item.comContent)">
+                                        <source :src="item.contentUrl" type="video/mp4">
                                         您的浏览器不支持视频播放
                                     </video>
                                     <div style="padding: 14px 14px 0 14px;">
                                         <p>
                                             <span class="lawType">{{item.lawType}}</span>
-                                            <a href="javascript:;" class="title">{{item.title}}</a>
+                                            <a href="javascript:;" class="title">{{item.stuTitle}}</a>
                                         </p>
                                         <p>
-                                            <span class="dept">{{item.dept}}</span>
-                                            <span class="time">{{item.date}}</span>
+                                            <span class="dept">{{item.stuIssuer}}</span>
+                                            <span class="time">{{item.stuIsstime}}</span>
                                         </p>
                                     </div>
                                 </el-card>
@@ -171,9 +171,9 @@
                     <div class="content fast">
                         <ul>
                             <li v-for="item in newsData">
-                                <a href="javascript:;" class="title">{{item.title}}</a>
+                                <a href="javascript:;" class="title">{{item.lawTitle}}</a>
                                 <img v-if="item.tipShow" src="${rc.contextPath}/statics/img/new.png">
-                                <span class="date">{{item.date}}</span>
+                                <span class="date">{{item.issueTime}}</span>
                             </li>
                         </ul>
                     </div>

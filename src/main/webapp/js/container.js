@@ -190,20 +190,7 @@ var vm = new Vue({
                     {validator: validateDate, trigger: 'blur'}
                 ]
             },
-            videoData: [
-                {
-                    videoUrl: 'http://vjs.zencdn.net/v/oceans.mp4',
-                    lawType: '刑法',
-                    title: '2019考研政治独家点题的打得2019考研政治独家点题',
-                    dept: '公安部门',
-                    date: '2018-10-23'
-                }, {
-                    videoUrl: 'http://vjs.zencdn.net/v/oceans.mp4',
-                    lawType: '刑法',
-                    title: '2019考研政治独家点题的打得2019考研政治独家点题',
-                    dept: '公安部门',
-                    date: '2018-10-23'
-                }],
+            videoData: [],//视频教程
             newsData: [
                 {
                     title: '智能管理下全面打造案管智能管理下全面打造案管智能管理下全面打造案管全面智能管理下全面打造案管智能管理下全面打造案管智能管理下全面打造案管全面智能管理下全面打造案管智能管理下全面打造案管智能管理下全面打造案管全面',
@@ -280,6 +267,8 @@ var vm = new Vue({
             //     myPlayer = this;
             //     myPlayer.play();
             // });
+            this.loadVideo();
+            this.loadNewsData();
         })
 
         this.$nextTick(function () {
@@ -573,5 +562,74 @@ var vm = new Vue({
         handleDelete: function () {
             alert('批量删除')
         },
+        loadVideo: function () {//加载视频课程
+            var loadInline={
+                stuType:"3",
+                currPage: 1,
+                pageSize: 2,
+                totalCount:0,
+                stuLawName:"",
+                stuIssuer:"",
+                startTime:"",
+                endTime:""};
+            $.ajax({
+                type: "POST",
+                url: baseURL + "stumedia/list?isMp=true",
+                dataType: "json",
+                data: loadInline,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.videoData = result.page.list;
+                        for(var i=0;i<vm.videoData.length;i++){
+                            vm.videoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
+                            if(vm.videoData[i].videoPicAcc){
+                                vm.videoData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
+                            }else{
+                                vm.videoData[i].videoPicAccUrl="http://temp.im/640x260";
+                            }
+                        }
+                        console.info("videoData",vm.videoData)
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+
+        },
+        loadNewsData: function () {//新法速递
+            var loadInline={
+                currPage: 1,
+                pageSize: 2,
+                totalCount:0,};
+            $.ajax({
+                type: "POST",
+                url: baseURL + "classdesic/list?isMp=true",
+                dataType: "json",
+                data: loadInline,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.newsData = result.page.list;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+
+        },
+        onPlay:function (id,accId) {
+            //请求后台修改播放量 记录学习记录
+            $.ajax({
+                type: "POST",
+                url: baseURL + "stumedia/updateCount?stuId="+id+"&stuType=stu_video&stuFrom=videocen",
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        }
     }
 });
