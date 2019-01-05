@@ -6,6 +6,8 @@ import com.lawschool.dao.SchoolYearPlanDao;
 import com.lawschool.service.SchoolYearPlanService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * @ClassName SchoolYearPlanServiceImpl
  * @Author wangtongye
@@ -14,4 +16,8 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class SchoolYearPlanServiceImpl extends AbstractServiceImpl<SchoolYearPlanDao, SchoolYearPlan> implements SchoolYearPlanService {
+
+    public SchoolYearPlan findYearPlanByNow(String userId){
+        return dao.findYearPlanByNow(userId);
+    }
 }

@@ -19,10 +19,6 @@ public interface SysRoleService extends AbstractService<SysRoleEntity> {
      * 增加或修改角色
      */
     void saveOrUpdate(SysRoleEntity role);
-    /**
-     * 删除角色
-     */
-    void deleteById(String roleId);
 
     List<SysRoleEntity> findAll();
 

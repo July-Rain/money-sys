@@ -25,4 +25,6 @@ public interface ExamConfigService extends AbstractService<ExamConfig> {
     List<QuestForm> preview(ExamConfig examConfig) throws Exception;
 
     void generate(ExamConfig examConfig) throws Exception;
+
+    List<QuestForm> getList(List<String> idList);
 }

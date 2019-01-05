@@ -2,7 +2,7 @@ var vm = new Vue({
     el: '#app',
     data: {
         tableData: [],//表格数据
-        pageNo: 1,//分页：当前页
+        page: 1,//分页：当前页
         dialogFormVisible: false,
         form: {
             typeId: '',
@@ -15,7 +15,7 @@ var vm = new Vue({
             isEnble: true,
             optUser: '',
             stuOptdepartment: '',
-            pageNo: 1,
+            page: 1,
             limit: 10,
             count: 0
         },
@@ -129,13 +129,13 @@ var vm = new Vue({
                 url: baseURL + "testQuestion/list",
                 dataType: "json",
                 data: {
-                    pageNo: 1,
+                    page: 1,
                     limit: 10
                 },
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
-                        vm.form.pageNo = result.page.pageNo;
+                        vm.form.page = result.page.page;
                         vm.form.pageSize = result.page.pageSize;
                         vm.form.count = parseInt(result.page.count);
                     } else {
@@ -155,7 +155,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.tableData = result.page.list;
-                        vm.form.pageNo = result.page.pageNo;
+                        vm.form.page = result.page.page;
                         vm.form.pageSize = result.page.pageSize;
                         vm.form.count = parseInt(result.page.count);
                     } else {

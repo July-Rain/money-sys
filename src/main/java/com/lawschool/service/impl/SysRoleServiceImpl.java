@@ -70,10 +70,13 @@ public class SysRoleServiceImpl extends AbstractServiceImpl<SysRoleDao, SysRoleE
     /**
      * 删除角色
      */
-    public void deleteById(String roleId) {
-        dao.deleteRoleById(roleId);
+    @Override
+    public void delete(List<String> roleIds) {
+        dao.delete(roleIds);
         //删除角色对应的相关权限
-        authService.deleteAuth(roleId);
+        for (String roleId : roleIds){
+            authService.deleteAuth(roleId);
+        }
     }
 
     public List<SysRoleEntity> findAll() {

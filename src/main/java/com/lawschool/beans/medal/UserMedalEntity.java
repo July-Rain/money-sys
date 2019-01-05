@@ -10,6 +10,8 @@ public class UserMedalEntity extends DataEntity<UserMedalEntity> {
 
     private String medalId;
 
+    private String isWear;//是否佩戴
+
     public String getUserId() {
         return userId;
     }
@@ -24,5 +26,13 @@ public class UserMedalEntity extends DataEntity<UserMedalEntity> {
 
     public void setMedalId(String medalId) {
         this.medalId = medalId;
+    }
+
+    public String getIsWear() {
+        return isWear;
+    }
+
+    public void setIsWear(String isWear) {
+        this.isWear = isWear;
     }
 }

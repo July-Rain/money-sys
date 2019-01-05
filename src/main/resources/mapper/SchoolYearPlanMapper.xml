@@ -36,20 +36,20 @@
             create_user,
             create_time
         ) VALUES (
-            id,
-            planName,
-            planContent,
-            startDate,
-            endDate,
-            credit,
-            integral,
-            participantUser,
-            participantDept,
-            remarks,
-            optUser,
-            optTime,
-            createUser,
-            createTime
+            #{id},
+            #{planName},
+            #{planContent},
+            #{startDate},
+            #{endDate},
+            #{credit},
+            #{integral},
+            #{participantUser},
+            #{participantDept},
+            #{remarks},
+            #{optUser},
+            #{optTime},
+            #{createUser},
+            #{createTime}
         )
     </insert>
 
@@ -96,4 +96,14 @@
             </foreach>
         </where>
     </delete>
+
+    <select id="findYearPlanByNow" resultType="com.lawschool.beans.SchoolYearPlan">
+        SELECT
+        <include refid="schoolYearPlanColumn"/>
+        FROM law_school_year_plan
+        <where>
+            participant_user = #{userId}
+            AND SYSDATE BETWEEN start_date AND end_date
+        </where>
+    </select>
 </mapper>

@@ -25,9 +25,15 @@ public class MedalController extends AbstractController {
     private UserMedalService userMedalService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    private Result list(@RequestParam Map<String, Object> params){
-        Page<MedalEntity> list = medalService.findPage(new Page<MedalEntity>(params), new MedalEntity());
-        return Result.ok().put("list", list);
+    public Result list(@RequestParam Map<String, Object> params) {
+
+        String titleName = (String) params.get("titleName");
+
+        MedalEntity medalEntity = new MedalEntity();
+        medalEntity.setTitleName(titleName);
+
+        Page<MedalEntity> page = medalService.findPage(new Page<MedalEntity>(params), medalEntity);
+        return Result.ok().put("page", page);
     }
 
     /**
@@ -44,8 +50,8 @@ public class MedalController extends AbstractController {
      */
     @SysLog("保存勋章")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Result save(@RequestBody MedalEntity medalEntity) {
-        medalService.save(medalEntity);
+    public Result save(@RequestBody MedalEntity entity) {
+        medalService.save(entity);
         return Result.ok();
     }
 
@@ -54,8 +60,18 @@ public class MedalController extends AbstractController {
      */
     @SysLog("删除勋章")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Result deleteById(@RequestBody List<String> idList) {
-        medalService.delete(idList);
+    public Result deleteById(@RequestBody List<String> ids) {
+        medalService.delete(ids);
+        return Result.ok();
+    }
+
+    /**
+     * 可领取的勋章
+     * @return
+     */
+    @RequestMapping(value = "/medalList", method = RequestMethod.GET)
+    public Result medal(){
+        //TODO
         return Result.ok();
     }
 
@@ -63,13 +79,18 @@ public class MedalController extends AbstractController {
      * 新增我的勋章（领取勋章）
      */
     @SysLog("新增我的勋章（领取勋章）")
-    @RequestMapping(value = "/saveMedal", method = RequestMethod.POST)
-    public Result saveMedal(@RequestBody UserMedalEntity medal) {
+    @RequestMapping(value = "/saveMedal/{id}", method = RequestMethod.POST)
+    public Result saveMedal(@PathVariable("id") String id) {
 
-        if(userMedalService.checkUserMedal(medal)){
+        UserMedalEntity entity = new UserMedalEntity();
+        entity.setUserId(getUser().getId());
+        entity.setMedalId(id);
+        entity.setIsWear("0");
+
+        if(userMedalService.checkUserMedal(entity)){
             throw new GeneralRuntimeException("勋章已经领取过！");
         }
-        userMedalService.save(medal);
+        userMedalService.save(entity);
         return Result.ok();
     }
 
@@ -83,12 +104,12 @@ public class MedalController extends AbstractController {
     }
 
     /**
-     * 可领取的勋章
-     * @return
+     * 佩戴勋章
      */
-    @RequestMapping(value = "/medalList", method = RequestMethod.GET)
-    public Result medal(){
-        //TODO
+    @SysLog("佩戴勋章")
+    @RequestMapping(value = "/wear/{id}", method = RequestMethod.POST)
+    public Result wear(@PathVariable("id") String id) {
+        userMedalService.enbleWear(getUser().getId(), id);
         return Result.ok();
     }
 }

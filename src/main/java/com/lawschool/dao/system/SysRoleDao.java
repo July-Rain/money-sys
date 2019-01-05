@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.system.SysRoleEntity;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,13 +15,7 @@ import org.springframework.stereotype.Repository;
  * @Time        2018/11/28
  *
  */
-@Repository
 public interface SysRoleDao extends AbstractDao<SysRoleEntity> {
-
-    /**
-     * 删除角色
-     */
-    void deleteRoleById(String roleId);
 
     /**
      * @Author MengyuWu

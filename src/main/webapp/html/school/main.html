@@ -10,29 +10,33 @@
 
     <div class="container">
         <div class="personal_area clearfix">
-            <div class="user_head"><img src="${rc.contextPath}/statics/img/logo.png" alt=""></div>
+            <div class="user_head"><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></div>
             <div class="person_info">
-                <p class="name">令狐冲</p>
+                <p class="name">{{info.userName}}</p>
                 <ul class="clearfix">
-                    <li><span class="num">22</span><span class="name">发表</span></li>
-                    <li><span class="num">12</span><span class="name">评论</span></li>
-                    <li><span class="num">36</span><span class="name">收藏</span></li>
+                    <li><span class="num">{{info.release}}</span><span class="name">发表</span></li>
+                    <li><span class="num">{{info.comment}}</span><span class="name">评论</span></li>
+                    <li><span class="num">{{info.collection}}</span><span class="name">收藏</span></li>
                 </ul>
             </div>
             <div class="submit_info">
                 <el-form ref="form" :model="form">
                     <el-form-item>
-                        <el-input type="textarea" v-model="form.desc" placeholder="有什么和大家一起交流的话题？"></el-input>
+                        <el-input type="textarea" v-model="form.content" placeholder="有什么和大家一起交流的话题？"></el-input>
                     </el-form-item>
                     <div class="clearfix">
 
-                        <el-form-item label="所属栏目" label-width="80px" style="padding: 17px 0 16px;float: left">
-                            <el-select v-model="form.region" placeholder="请选择">
-                                <el-option label="区域一" value="shanghai"></el-option>
-                                <el-option label="区域二" value="beijing"></el-option>
+                        <el-form-item label="所属栏目" label-width="80px" style="padding: 11px 0 10px;float: left">
+                            <el-select v-model="form.subordinateColumn" placeholder="请选择">
+                                <el-option label="试题" value="st"></el-option>
+                                <el-option label="试题报错" value="stbc"></el-option>
+                                <el-option label="学习" value="xx"></el-option>
+                                <el-option label="案例" value="al"></el-option>
+                                <el-option label="建议" value="jy"></el-option>
+                                <el-option label="常见问题解答" value="cjwtjd"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-button type="primary" style="margin: 13px 9px 0 0;float: right">发布</el-button>
+                        <el-button type="primary" style="margin: 13px 9px 0 0;float: right" @click="save">发布</el-button>
                     </div>
 
                 </el-form>
@@ -41,33 +45,47 @@
         </div>
         <div class="info_area">
             <ul class="clearfix">
-                <li class="active">全部</li>
-                <li>试题</li>
-                <li>试题报错</li>
-                <li>学习</li>
-                <li>案例</li>
-                <li>建议</li>
-                <li>常见问题解答</li>
-                <li>我的参与</li>
+                <li v-for="(item,index) in navList" :class="{active:!(index - menuIndex)}" @click="reload(index)">{{item}}</li>
             </ul>
             <div class="tab">
-                <div class="item">
+                <div class="item" v-if="tableData" v-for="(item,index) in tableData">
                     <div class="item_top clearfix">
                         <div class="item_head">
-                            <img src="${rc.contextPath}/statics/img/logo.png" alt="">
+                            <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
                         </div>
                         <p>
-                            <span class="name">孙大圣</span>
-                            <span class="time">2018-11-02 23：57：41</span>
+                            <span class="name">{{item.userName}}</span>
+                            <span class="time">{{item.createTime}}</span>
                         </p>
                     </div>
-                    <p class="text">乘客错过公交站，侮辱打骂公交司机造成车辆坠江该怎么量刑？乘客错过公交站，侮辱打骂公交司机造成车辆坠江该怎么量刑？乘客错过公交站，侮辱打骂公交司机造成车辆坠
-                        江该怎么量刑？乘客错过公交站，侮辱打骂公交司机造成车辆坠江该怎么量刑？</p>
+                    <p class="text">{{item.content}}</p>
                     <ul class="item_bot clearfix">
-                        <li><i class="iconfont icon-gerenzhongxin"></i><span>102</span><span>收藏</span></li>
-                        <li><i class="iconfont icon-gerenzhongxin"></i><span>28</span><span>评论</span></li>
+                        <li @click="collection(item.id,index)"><i class="iconfont icon-gerenzhongxin"></i><span>{{item.collectionNum||0}}</span><span> 收藏</span></li>
+                        <li @click="showComment(item.id,index)"><i class="iconfont icon-gerenzhongxin"></i><span>{{item.commentNum||0}}</span><span> 评论</span></li>
                         <li>举报</li>
                     </ul>
+                    <div class="writeComment clearfix">
+                        <el-input v-model="reply.content" placeholder="写下你的评论 · · ·"></el-input>
+                        <el-button @click="saveReply(item.id)" type="primary">发布</el-button>
+                    </div>
+                    <!--这个model要改-->
+                    <div class="comment_area" v-if="item.commentShow">
+                        <div class="title">{{item.commentNum||0}}评论</div>
+                        <div class="comment_item" v-for="i in item.child">
+                            <div class="item_top clearfix">
+                                <div class="item_head">
+                                    <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                                </div>
+                                <p>
+                                    <span class="name">{{i.userName}}</span>
+                                    <span class="time">{{i.createTime}}</span>
+                                </p>
+                            </div>
+                            <p class="text">{{i.content}}</p>
+                        </div>
+                        <p class="openMore">展开更多评论</p>
+
+                    </div>
                 </div>
             </div>
         </div>
