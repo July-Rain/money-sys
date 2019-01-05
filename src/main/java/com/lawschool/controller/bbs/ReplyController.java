@@ -25,7 +25,13 @@ public class ReplyController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result list(@RequestParam Map<String, Object> params){
-        Page<ReplyEntity> page = replyService.findPage(new Page<ReplyEntity>(params), new ReplyEntity());
+
+        String postId = (String)params.get("postId");
+
+        ReplyEntity replyEntity = new ReplyEntity();
+        replyEntity.setPostId(postId);
+
+        Page<ReplyEntity> page = replyService.findPage(new Page<ReplyEntity>(params), replyEntity);
         return Result.ok().put("page", page);
     }
 
