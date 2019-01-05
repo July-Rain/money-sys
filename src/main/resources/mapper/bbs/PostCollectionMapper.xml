@@ -56,4 +56,28 @@
         WHERE
             user_id = #{userId}
     </select>
+
+    <select id="findList" parameterType="com.lawschool.form.CollectionPostForm" resultType="com.lawschool.form.CollectionPostForm">
+        SELECT
+            a.id AS "id",
+            a.title_name AS "titleName",
+            a.content AS "content",
+            a.subordinate_column AS "subordinateColumn",
+            a.collection_num AS "collectionNum",
+            a.comment_num AS "commentNum",
+            a.report_num AS "reportNum",
+            a.opt_user AS "optUser",
+            a.opt_time AS "optTime",
+            a.create_user AS "createUser",
+            a.create_time AS "createTime"
+        FROM
+            law_post_collection pc
+            INNER JOIN law_post a ON pc.post_id = a.id
+        <where>
+            pc.user_id = #{userId}
+            <if test="subordinateColumn != null and subordinateColumn != ''">
+                AND a.subordinate_column = #{subordinateColumn}
+            </if>
+        </where>
+    </select>
 </mapper>

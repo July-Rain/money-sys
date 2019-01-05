@@ -2,7 +2,9 @@ package com.lawschool.controller.bbs;
 
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
+import com.lawschool.beans.bbs.PostCollectionEntity;
 import com.lawschool.beans.bbs.PostEntity;
+import com.lawschool.form.CollectionPostForm;
 import com.lawschool.form.PostFrom;
 import com.lawschool.service.bbs.PostCollectionService;
 import com.lawschool.service.bbs.PostService;
@@ -71,5 +73,20 @@ public class PostController extends AbstractController {
         post.setComment(replyService.findMyReply(getUser().getId()));
         post.setCollection(postCollectionService.findMyCollection(getUser().getId()));
         return Result.ok().put("data", post);
+    }
+
+    @RequestMapping(value = "/collection/{id}", method = RequestMethod.POST)
+    public Result collection(@PathVariable("id") String id){
+        PostCollectionEntity entity = new PostCollectionEntity();
+        entity.setUserId(getUser().getId());
+        entity.setPostId(id);
+        postCollectionService.save(entity);
+        return Result.ok();
+    }
+
+    @RequestMapping(value = "/myCollection", method = RequestMethod.GET)
+    public Result myCollection(@RequestParam Map<String, Object> params){
+        Page<CollectionPostForm> page = postCollectionService.findPage(new Page<CollectionPostForm>(params), new CollectionPostForm());
+        return Result.ok().put("page", page);
     }
 }
