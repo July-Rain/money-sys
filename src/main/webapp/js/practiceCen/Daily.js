@@ -28,10 +28,9 @@ var vm = new Vue({
         radioData: ""
     },
     methods: {
-        onSubmit:function(answerId)
-        {
+        onSubmit:function(answerId) {
             console.info(answerId);
-            console.info(vm.answers);//我的答案
+            console.info("我的答案",vm.answers);//我的答案
             var myAnswer = answerId.split(',');
             var answer = answerId.split(',');
 
@@ -65,7 +64,7 @@ var vm = new Vue({
             vm.dialogerror=true;
         },
         questionYes:function(){
-            questionForm
+            // questionForm
         },
         //不管答对答错 都要入库方法
         oryesorno:function () {

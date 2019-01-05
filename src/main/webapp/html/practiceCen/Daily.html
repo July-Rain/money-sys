@@ -18,17 +18,11 @@
             <p> 题目：{{questionForm.comContent}}</p>
 
             <el-checkbox-group v-model="answers" v-if="questionForm.questionType==10005">
-                <el-checkbox v-if="item.id"  :label="item.questionContent" v-for="item in questionForm.answer">
+                <el-checkbox v-if="item.id" :label="item.id" v-for="item in questionForm.answer">
                     {{item.questionContent}}
                 </el-checkbox>
                 <br/>
             </el-checkbox-group>
-            <!--<el-checkbox-group v-model="answers" v-if="Question.questionType==10005">
-                <el-checkbox :label="answer.id" v-for="answer in Question.answerList">
-                    {{answer.questionContent}}
-                </el-checkbox>
-                <br/>
-            </el-checkbox-group>-->
             <el-button type="primary" v-if="questionForm.questionType==10005" @click="onSubmit(questionForm.answerId)">提交</el-button><br/>
             <span v-show="showDetail">
                 <span v-show="answerShow">答案描述：{{questionForm.answerDescrible}}</span><br/>
