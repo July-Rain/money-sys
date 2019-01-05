@@ -4,7 +4,6 @@
 <mapper namespace="com.lawschool.dao.bbs.PostDao">
     <sql id="replyColumn">
         a.id AS "id",
-        a.title_name AS "titleName",
         a.content AS "content",
         a.subordinate_column AS "subordinateColumn",
         a.collection_num AS "collectionNum",
@@ -20,7 +19,6 @@
         INSERT INTO law_post
         (
         id,
-        title_name,
         content,
         subordinate_column,
         collection_num,
@@ -32,7 +30,6 @@
         create_time
         ) VALUES (
         #{id},
-        #{titleName},
         #{content},
         #{subordinateColumn},
         #{collectionNum},
@@ -48,7 +45,6 @@
     <!--<update id="update">-->
         <!--UPDATE law_post-->
         <!--SET-->
-        <!--title_name = #{titleName},-->
         <!--content = #{content},-->
         <!--subordinate_column = #{subordinateColumn},-->
         <!--collection_num = #{collectionNum},-->

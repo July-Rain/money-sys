@@ -60,19 +60,17 @@
     <select id="findList" parameterType="com.lawschool.form.CollectionPostForm" resultType="com.lawschool.form.CollectionPostForm">
         SELECT
             a.id AS "id",
-            a.title_name AS "titleName",
+            u.user_name AS "userName",
             a.content AS "content",
             a.subordinate_column AS "subordinateColumn",
             a.collection_num AS "collectionNum",
             a.comment_num AS "commentNum",
             a.report_num AS "reportNum",
-            a.opt_user AS "optUser",
-            a.opt_time AS "optTime",
-            a.create_user AS "createUser",
             a.create_time AS "createTime"
         FROM
             law_post_collection pc
             INNER JOIN law_post a ON pc.post_id = a.id
+            INNER JOIN law_user u ON u.id = a.create_user
         <where>
             pc.user_id = #{userId}
             <if test="subordinateColumn != null and subordinateColumn != ''">
