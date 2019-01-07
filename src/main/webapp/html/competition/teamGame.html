@@ -25,12 +25,18 @@
         <el-row :gutter="24">
             <el-col :span="24">
                 <el-tabs type="border-card">
-                    <el-tab-pane label="组队模式">
-                        <div style="height: 700px;" >
-                                <p><button id="exitBtn">退出</button></p>
-                                <p>当前登录用户：{{u.fullName}}</p>
+                    <el-tab-pane label="组队模式" >
+                        <div style="height: 700px;">
+
+                                <p v-show="teamtype"><el-button id="exitBtn">退出</el-button></p>
+
+                                <p v-show="teamtype"><el-button  id="addroom">创建对战房间</el-button></p>
+
+                                <p v-show="teamtype"><el-button id="joinroom">code码加入对战房间</el-button></p>
+                                <p >当前登录用户：{{u.fullName}}</p>
                                 <p id="div1"></p>
-                                <p>队伍code码：{{competitionTeam.teamCode}}</p>
+                                <p v-show="teamtype">队伍code码：{{competitionTeam.teamCode}}</p>
+                                <p v-show="teamtype2">房间code码：{{battlePlatform.battleCode}}</p>
                                 <!--<p>当前登录用户：{{u.fullName}}</p>-->
 
 
@@ -49,17 +55,24 @@
                                                 -->
                                             </ul>
                                         </div>
-                                        <div class="down">
+                                        <div class="down" >
                                             <textarea class="textInfo" id="msg" title="按ctrl+enter直接发送"></textarea>
-                                            <button class="btn" id="sendBtn">发送</button>
+                                            <el-button class="btn" id="sendBtn">发送</el-button>
                                         </div>
                                     </div>
-
+                                    <div  v-show="teamtype2" id="chatSidebar2" class="chatSidebar2">
+                                        <h2 id="chatOnline2">队伍人员(0人)</h2>
+                                        <ul id="chatUserList2">
+                                            <!--  <li>bobo老师</li>
+                                              -->
+                                        </ul>
+                                    </div>
                                 </div>
 
 
                         </div>
                     </el-tab-pane>
+
                 </el-tabs>
             </el-col>
         </el-row>

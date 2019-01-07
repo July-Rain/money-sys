@@ -2,7 +2,9 @@ package com.lawschool.websocket;
 
 import com.lawschool.beans.MessageByTeam;
 import com.lawschool.beans.User;
+import com.lawschool.beans.competition.BattlePlatform;
 import com.lawschool.beans.competition.CompetitionTeam;
+import com.lawschool.service.competition.BattlePlatformService;
 import com.lawschool.service.competition.CompetitionTeamService;
 import com.lawschool.util.GsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,8 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 
 	@Autowired
 	private CompetitionTeamService competitionTeamService;
-
+	@Autowired
+	private BattlePlatformService battlePlatformService;
 	//在线用户的SOCKETsession(存储了所有的通信通道)
 	public static final Map<String, WebSocketSession> USER_SOCKETSESSION_MAP;
 
@@ -37,12 +40,16 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 	public static final Map<String, List> USER_ids;
 	//在线的队伍  根据队伍的code 存队伍人员的user
 	public static final Map<String, List> USER_us;
+	//在线的比武台  根据比武台的code
+	public static final Map<String, BattlePlatform> battlePlatformMap;
+
 	//存储所有的在线用户
 	static {
 		USER_SOCKETSESSION_MAP = new HashMap<String, WebSocketSession>();
 		USER_TEAM= new HashMap<String, CompetitionTeam>();
 		USER_ids=new HashMap<String, List>();
 		USER_us=new HashMap<String, List>();
+		battlePlatformMap=new HashMap<String,BattlePlatform>();
 	}
 	
 	/**
@@ -88,6 +95,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 				msg.getTo().add(loginUser.getId());
 				msg.getUserList().add(loginUser);
 				msg.setCompetitionTeam(competitionTeam);
+				msg.setTeamOrGame("0");
 				//将消息转换为json
 				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 				//群发消息
@@ -147,7 +155,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 						msg.setText("玩家"+loginUser.getFullName()+"加入,欢迎。。。。。。。。。。");
 						msg.setDate(new Date());
 						msg.getTo().addAll(uids);
-
+						msg.setTeamOrGame("0");
 						msg.getUserList().addAll(us);
 						msg.setCompetitionTeam(competitionTeam);
 						//将消息转换为json
@@ -175,24 +183,80 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 		if(message.getPayloadLength()==0)return;
 		//反序列化服务端收到的json消息
 		MessageByTeam msg = GsonUtils.fromJson(message.getPayload().toString(), MessageByTeam.class);
-		msg.setDate(new Date());
-		//处理html的字符，转义：
-		String text = msg.getText();
-		//转换为HTML转义字符表示
-		String htmlEscapeText = HtmlUtils.htmlEscape(text);
-		msg.setText(htmlEscapeText);
-		System.out.println("消息（可存数据库作为历史记录）:"+message.getPayload().toString());
-		//判断是群发还是单发
-//		if(msg.getTo()==null||msg.getTo().equals("-1")){
-//			//群发
-//			sendMessageToAll(new TextMessage(GsonUtils.toJson(msg)));
-//		}else{
-//			//单发
-//			sendMessageToUser(msg.getTo().get(0), new TextMessage(GsonUtils.toJson(msg)));
-//		}
-		sendMessageToUserByList(msg.getTo(),new TextMessage(GsonUtils.toJson(msg)));
+		if(msg.getText().equals("addroom") && msg.getTeamOrGame().equals("1")) //当触发新建房间事件
+		{
+			//这时候要建房间了。有这个按钮的权限必定是房主，用这个人的id就好他要不要线程呢。 要把
+			new Thread(new Runnable() {
+				public  void run() {
+					addroom(msg);
+				}
+			}).start();
+		}
+		else//正常的发送消息等
+		{
+			msg.setDate(new Date());
+			//处理html的字符，转义：
+			String text = msg.getText();
+			//转换为HTML转义字符表示
+			String htmlEscapeText = HtmlUtils.htmlEscape(text);
+			msg.setText(htmlEscapeText);
+			System.out.println("消息（可存数据库作为历史记录）:"+message.getPayload().toString());
+			//判断是群发还是单发
+	//		if(msg.getTo()==null||msg.getTo().equals("-1")){
+	//			//群发
+	//			sendMessageToAll(new TextMessage(GsonUtils.toJson(msg)));
+	//		}else{
+	//			//单发
+	//			sendMessageToUser(msg.getTo().get(0), new TextMessage(GsonUtils.toJson(msg)));
+	//		}
+			sendMessageToUserByList(msg.getTo(),new TextMessage(GsonUtils.toJson(msg)));
+		}
 	}
 
+	public synchronized void addroom(MessageByTeam msg)
+	{
+		try
+		{
+			//先创建房间
+			//先根据这个人找到战队
+			CompetitionTeam competitionTeam=msg.getCompetitionTeam();
+			//先根据这战队 新建一个 对战平台出来   这play1 就是战队的id
+			BattlePlatform battlePlatform=battlePlatformService.save(competitionTeam.getId(),"teamOnline");
+			//把当前新建的平台加到map中，用平台的cosd码
+			battlePlatformMap.put(battlePlatform.getBattleCode(),battlePlatform);
+			//找到这个队长的sockersession
+			WebSocketSession SocketSession=USER_SOCKETSESSION_MAP.get(msg.getFrom());
+			//将平台code给队长
+			SocketSession.getAttributes().put("battlePlatcode",battlePlatform.getBattleCode());
+
+			//先不找题目  后面再说
+
+			//发消息
+			msg.setFrom(null);//设置为系统发消息
+			msg.setText("请等待 其他队伍加入.。。。。。。。。");
+			msg.setDate(new Date());
+			msg.setBattlePlatform(battlePlatform);
+			msg.setBattleCode(battlePlatform.getBattleCode());
+//			msg.setUserList2(null);
+			TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+			sendMessageToUserByList(msg.getTo(),new TextMessage(GsonUtils.toJson(msg)));
+
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+	public synchronized void joinroom()
+	{
+		try
+		{
+
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 	@Override
 	/**
      * 消息传输过程中出现的异常处理函数
