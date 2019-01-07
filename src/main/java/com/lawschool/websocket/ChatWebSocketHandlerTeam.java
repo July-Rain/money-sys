@@ -30,6 +30,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 	private CompetitionTeamService competitionTeamService;
 	@Autowired
 	private BattlePlatformService battlePlatformService;
+
 	//在线用户的SOCKETsession(存储了所有的通信通道)
 	public static final Map<String, WebSocketSession> USER_SOCKETSESSION_MAP;
 
@@ -192,6 +193,15 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 				}
 			}).start();
 		}
+		else if(msg.getText().equals("joinroom") && msg.getTeamOrGame().equals("1")) //当触发新建房间事件
+		{
+			//这时候要建房间了。有这个按钮的权限必定是房主，用这个人的id就好他要不要线程呢。 要把
+			new Thread(new Runnable() {
+				public  void run() {
+					joinroom(msg);
+				}
+			}).start();
+		}
 		else//正常的发送消息等
 		{
 			msg.setDate(new Date());
@@ -247,10 +257,52 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 		}
 	}
 
-	public synchronized void joinroom()
+	public synchronized void joinroom(MessageByTeam msg)
 	{
 		try
 		{
+			//先根据这个人找到战队
+			CompetitionTeam competitionTeam=msg.getCompetitionTeam();
+			//要加入了哦
+			//首先肯定是 通过code 去找平台
+			String battleCode=msg.getBattleCode();
+			//找平台
+			BattlePlatform battlePlatform=battlePlatformMap.get(battleCode);
+			if(battlePlatform==null)//根据code码没找到
+			{
+				msg.setFrom(null);//设置为系统发消息
+				msg.setText("未找到房间,重新输入");
+				msg.setDate(new Date());
+				msg.setTeamOrGame("0");
+				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+				sendMessageToUserByList(msg.getTo(),new TextMessage(GsonUtils.toJson(msg)));
+			}
+			else
+			{
+				//找到了
+				//找到这个比武台 然后把自己加到play2里面
+				battlePlatformService.updata(battlePlatform,competitionTeam.getId());
+				//添加完后要把这个房间在除去  防止其他人加进来
+				battlePlatformMap.remove(battleCode);
+				CompetitionTeam Team1 = competitionTeamService.selectById(battlePlatform.getPlay1());
+
+
+				//先不找题目  后面再说
+
+				//发消息
+				msg.setFrom(null);//设置为系统发消息
+				msg.setText("欢迎" +msg.getFromName()+"的队伍加入");
+				msg.setDate(new Date());
+				msg.setBattlePlatform(battlePlatform);
+				msg.setBattleCode(battlePlatform.getBattleCode());
+				msg.setUserList2(USER_us.get(msg.getCompetitionTeam().getTeamCode()));
+				msg.setUserList(USER_us.get(Team1.getTeamCode()));
+
+				msg.getTo().addAll(USER_ids.get(Team1.getTeamCode()));
+				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+				sendMessageToUserByList(msg.getTo(),new TextMessage(GsonUtils.toJson(msg)));
+			}
+
 
 		}
 		catch (Exception e) {
