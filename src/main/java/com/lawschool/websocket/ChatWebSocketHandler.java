@@ -356,7 +356,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 			if(battlePlatformMap.size()==0)//如果队列里面没有人在
 			{
 				//先根据这个人 新建一个 对战平台出来   这个人是play1
-				BattlePlatform battlePlatform=battlePlatformService.save(loginUser,"PKOnline");
+				BattlePlatform battlePlatform=battlePlatformService.save(loginUser.getId(),"PKOnline");
 				battlePlatformMap.put(battlePlatform.getId(),battlePlatform);//把当前新建的平台加到list中   在扔回redies里面
 
 				redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);

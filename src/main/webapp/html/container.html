@@ -247,7 +247,7 @@
             </el-col>
         </el-row>
 
-        <el-row :gutter="20">
+        <el-row :gutter="20" v-if="false">
             <el-col :span="4">
                 <!--对于同一级的节点，每次只能展开一个-->
                 <el-tree
@@ -338,17 +338,17 @@
             </el-col>
         </el-row>
 
-        <div>---------表单验证---------</div>
-        <ol>
-            <li>输入框控制输入长度：最大输入长度maxlength='40',最小输入长度minlength</li>
-            <li>是否可清空:clearable,禁用:disabled,只读:readonly</li>
-            <li>当一个 form 元素中只有一个输入框时，在该输入框中按下回车应提交该表单。如果希望阻止这一默认行为，可以在 'el-form' 标签上添加 @submit.native.prevent。</li>
-            <li>model:表单数据对象,rules:表单验证规则,size:用于控制该表单内组件的尺寸medium / small / mini,prop:表单域 model 字段</li>
-            <li>表单重置:一、el-form 加ref属性，二、el-form-item 加prop属性</li>
-            <li>表单验证:一、rules 属性为验证规则，二、el-form-item 加prop属性设置为需校验的字段名即可</li>
-        </ol>
+        <!--<div>-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;表单验证-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</div>-->
+        <!--<ol>-->
+            <!--<li>输入框控制输入长度：最大输入长度maxlength='40',最小输入长度minlength</li>-->
+            <!--<li>是否可清空:clearable,禁用:disabled,只读:readonly</li>-->
+            <!--<li>当一个 form 元素中只有一个输入框时，在该输入框中按下回车应提交该表单。如果希望阻止这一默认行为，可以在 'el-form' 标签上添加 @submit.native.prevent。</li>-->
+            <!--<li>model:表单数据对象,rules:表单验证规则,size:用于控制该表单内组件的尺寸medium / small / mini,prop:表单域 model 字段</li>-->
+            <!--<li>表单重置:一、el-form 加ref属性，二、el-form-item 加prop属性</li>-->
+            <!--<li>表单验证:一、rules 属性为验证规则，二、el-form-item 加prop属性设置为需校验的字段名即可</li>-->
+        <!--</ol>-->
         <!--表单验证-->
-        <el-row>
+        <el-row v-if="false">
             <el-col :span="12">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" size="mini">
                     <el-form-item label="上级菜单" prop="parentName">
@@ -452,11 +452,11 @@
             </el-col>
         </el-row>
 
-        <el-button type="primary" @click="handleAdd" size="mini">新增</el-button>
-        <el-button type="danger" @click="handleDelete()"
+        <el-button v-if="false" type="primary" @click="handleAdd" size="mini">新增</el-button>
+        <el-button v-if="false" type="danger" @click="handleDelete()"
                    :disabled="dataListSelections.length <= 0" size="mini">批量删除
         </el-button>
-        <el-table
+        <el-table v-if="false"
                 :data="data11"
                 height="250"
                 border
@@ -515,12 +515,12 @@
         </el-table>
 
 
-        <el-button type="text" @click="open2">简易提示框</el-button>
+        <el-button v-if="false" type="text" @click="open2">简易提示框</el-button>
 
         <!-- Table -->
-        <el-button type="text" @click="dialogTableVisible = true">打开嵌套表格的 Dialog</el-button>
+        <el-button v-if="false" type="text" @click="dialogTableVisible = true">打开嵌套表格的 Dialog</el-button>
 
-        <el-dialog title="收货地址" :visible.sync="dialogTableVisible">
+        <el-dialog v-if="false" title="收货地址" :visible.sync="dialogTableVisible">
             <el-table :data="tableData">
                 <el-table-column property="date" label="日期" width="150"></el-table-column>
                 <el-table-column property="name" label="姓名" width="200"></el-table-column>
@@ -529,11 +529,11 @@
         </el-dialog>
 
         <!-- Form -->
-        <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
+        <el-button v-if="false" type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
 
 
 
-        <el-popover
+        <el-popover v-if="false"
                 placement="top-start"
                 :title="popover.title"
                 width="200"
@@ -541,18 +541,18 @@
                 :content="popover.content">
             <el-button slot="reference">hover 激活</el-button>
         </el-popover>
-        <p>
+        <p v-if="false">
             <a href="http://www.iconfont.cn/manage/index?spm=a313x.7781069.1998910419.11&manage_type=myprojects&projectId=947370&keyword=">iconfont图标：</a>
             <i class="iconfont icon-testing-mouse"></i>
         </p>
 
-        <p>
+        <p v-if="false">
             <a href="http://element-cn.eleme.io/#/zh-CN/component/icon">element - icon:</a>
             <br>
             <i class="el-icon-info"></i>
             <el-button type="primary" icon="el-icon-search">搜索</el-button>
         </p>
-        <div class="m">
+        <div v-if="false" class="m">
             <video id="my-video" class="video-js" controls preload="auto" width="960" height="400" data-setup="{}">
                 <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
                 <source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm">
@@ -562,7 +562,7 @@
                         video</a></p>
             </video>
         </div>
-        <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+        <el-dialog v-if="false" title="收货地址" :visible.sync="dialogFormVisible">
             <el-form :model="ruleForm">
                 <el-form-item label="名称" :label-width="formLabelWidth">
                     <el-input v-model="ruleForm.name" autocomplete="off" placeholder="请选择活动名称" clearable></el-input>

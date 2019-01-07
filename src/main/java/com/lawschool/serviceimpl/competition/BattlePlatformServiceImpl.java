@@ -13,6 +13,7 @@ import com.lawschool.service.competition.MatchSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -29,18 +30,25 @@ public class BattlePlatformServiceImpl extends ServiceImpl<BattlePlatformDao, Ba
 	@Autowired
 	private MatchSettingService matchSettingService;
 	@Override
-	public BattlePlatform save(User u,String type) {
+	@Transactional(rollbackFor = Exception.class)
+	public BattlePlatform save(String play1Id,String type) {
 		    BattlePlatform battlePlatform=new BattlePlatform();
 			battlePlatform.setId(IdWorker.getIdStr());
-			battlePlatform.setPlay1(u.getId());
+			battlePlatform.setPlay1(play1Id);
 			battlePlatform.setType(type);
 			battlePlatform.setBattleCode((((int)((Math.random()*9+1)*100000))+"").substring(0,6));
-			if(type.equals("PKOnline"))
+			if(type.equals("PKOnline") || type.equals("teamOnline"))
 			{
 				//从在线pk加载过来的
 				CompetitionOnline competitionOnline=  ompetitionOnlineService.selectOne(new EntityWrapper<CompetitionOnline>());
 				battlePlatform.setForeignKeyId(competitionOnline.getId());
 			}
+//			else if(type.equals("teamOnline"))
+//			{
+//				//从组队比武加载过来的
+//				MatchSetting matchSetting=  matchSettingService.selectOne(new EntityWrapper<MatchSetting>());
+//				battlePlatform.setForeignKeyId(matchSetting.getId());
+//			}
 			else if(type.equals("leitai"))
 			{
 				//从打擂台加载过来的

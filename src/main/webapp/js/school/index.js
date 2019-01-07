@@ -3,6 +3,23 @@
  * Date: 2018/12/3
  * Description:
  */
+
+// var a = [{
+//     b:[]
+// },{
+//     b:[]
+// },{
+//     b:[]
+// }];
+// var c = {
+//     dd:111,
+//     ee:222,
+//     cc:[{rrr:"123"}]
+// };
+// a.map(function (value, index, array) {
+//     value.b.push(c)
+// })
+// console.log(JSON.stringify(a));
 var vm = new Vue({
     el: '#app',
     data: {
@@ -28,30 +45,27 @@ var vm = new Vue({
             alias: ""
         }, {
             name: "试题",
-            alias: ""
+            alias: "st"
         }, {
             name: "试题报错",
-            alias: ""
+            alias: "stbc"
         }, {
             name: "学习",
-            alias: ""
+            alias: "xx"
         }, {
             name: "案例",
-            alias: ""
-        }, {
-            name: "全部",
-            alias: ""
-        }, {
+            alias: "al"
+        },{
             name: "建议",
-            alias: ""
+            alias: "jy"
         }, {
             name: "常见问题解答",
-            alias: ""
+            alias: "cjwtjd"
         }, {
             name: "我的参与",
             alias: ""
         }],
-        navList: ["全部", "试题", "试题报错", "学习", "案例", "建议", "常见问题解答", "我的参与"]
+        // navList: ["全部", "试题", "试题报错", "学习", "案例", "建议", "常见问题解答", "我的参与"]
     },
     created: function () {
 
@@ -67,7 +81,7 @@ var vm = new Vue({
                         vm.tableData = result.page.list;
                         console.info("create1", vm.tableData);
                         for (var i = 0; i < vm.tableData.length; i++) {
-                            vm.tableData[i].commentShow = false
+                            vm.tableData[i].commentShow = false;
                         }
                         console.info("create2", vm.tableData);
                         vm.form.page = result.page.page;
@@ -118,14 +132,19 @@ var vm = new Vue({
             });
         },
         // 发表评论
-        saveReply: function (postId, replyObject) {
+        saveReply: function (postId, content, replyObject) {
+            var _reply = {
+                postId: postId,
+                replyObject: replyObject || null,
+                content: vm.reply.content
+            };
             vm.reply.postId = postId;
             vm.reply.replyObject = replyObject || null;
             $.ajax({
                 type: "POST",
                 url: baseURL + "reply/save",
                 contentType: "application/json",
-                data: JSON.stringify(vm.reply),
+                data: JSON.stringify(_reply),
                 success: function (result) {
                     if (result.code === 0) {
                         vm.$alert('操作成功', '提示', {
@@ -167,7 +186,8 @@ var vm = new Vue({
                 url: baseURL + 'post/collection/' + id,
                 dataType: "json",
                 success: function (result) {
-                    console.info("哈哈哈", result)
+                    console.info("哈哈哈", result);
+                    vm.reload();
                 }
             })
         },
@@ -180,15 +200,19 @@ var vm = new Vue({
                 }
             });
         },
-        reload: function (index) {
-            this.menuIndex = index;
+        reload: function (index, alias) {
+            // index tab
+            if (index) {
+                this.menuIndex = index;
+            }
             $.ajax({
                 type: "GET",
                 url: baseURL + "post/list",
                 dataType: "json",
                 data: {
                     page: 1,
-                    limit: 10
+                    limit: 10,
+                    subordinateColumn: alias || null
                 },
                 success: function (result) {
                     if (result.code == 0) {
@@ -204,3 +228,4 @@ var vm = new Vue({
         }
     }
 });
+

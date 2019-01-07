@@ -45,7 +45,7 @@
         </div>
         <div class="info_area">
             <ul class="clearfix">
-                <li v-for="(item,index) in navList" :class="{active:!(index - menuIndex)}" @click="reload(index)">{{item}}</li>
+                <li v-for="(navItem,index) in navList" :class="{active:!(index - menuIndex)}" @click="reload(index,navItem.alias)">{{navItem.name}}</li>
             </ul>
             <div class="tab">
                 <div class="item" v-if="tableData" v-for="(item,index) in tableData">
@@ -64,7 +64,7 @@
                         <li @click="showComment(item.id,index)"><i class="iconfont icon-gerenzhongxin"></i><span>{{item.commentNum||0}}</span><span> 评论</span></li>
                         <li @click="report(item.id,index)">举报</li>
                     </ul>
-                    <div class="writeComment clearfix">
+                    <div class="writeComment clearfix" v-if="item.commentShow">
                         <el-input v-model="reply.content" placeholder="写下你的评论 · · ·"></el-input>
                         <el-button @click="saveReply(item.id)" type="primary">发布</el-button>
                     </div>
@@ -83,7 +83,7 @@
                             </div>
                             <p class="text">{{i.content}}</p>
                         </div>
-                        <p class="openMore">展开更多评论</p>
+                        <!--<p class="openMore">展开更多评论</p>-->
 
                     </div>
                 </div>
