@@ -1,9 +1,11 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
+import com.lawschool.form.AnswerForm;
 
-import java.util.Date;
+import java.util.List;
 
 /**
  * @Author liuhuan
@@ -51,6 +53,19 @@ public class DailyRecord extends DataEntity<DailyRecord> {
      * 是否做过(已做、未做)
      */
     private String isDown;
+
+    /**
+     * 用户ID
+     * @return
+     */
+    private String userId;
+
+    /**
+     * 答案数组
+     * @return
+     */
+    @TableField(exist = false)
+    private List<AnswerForm> answerList;
 
     public String getComContent() {
         return comContent;
@@ -116,10 +131,26 @@ public class DailyRecord extends DataEntity<DailyRecord> {
         this.isDown = isDown;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public List<AnswerForm> getAnswerList() {
+        return answerList;
+    }
+
+    public void setAnswerList(List<AnswerForm> answerList) {
+        this.answerList = answerList;
+    }
+
     @Override
     public String toString() {
         return "DailyRecord{" +
-                ", comContent='" + comContent + '\'' +
+                "comContent='" + comContent + '\'' +
                 ", questionId='" + questionId + '\'' +
                 ", questionDifficulty='" + questionDifficulty + '\'' +
                 ", questionType='" + questionType + '\'' +
@@ -127,6 +158,8 @@ public class DailyRecord extends DataEntity<DailyRecord> {
                 ", legalBasis='" + legalBasis + '\'' +
                 ", answerDescrible='" + answerDescrible + '\'' +
                 ", isDown='" + isDown + '\'' +
+                ", userId='" + userId + '\'' +
+                ", answerList=" + answerList +
                 '}';
     }
 }

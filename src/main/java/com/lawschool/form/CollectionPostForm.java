@@ -1,26 +1,59 @@
-package com.lawschool.beans.bbs;
+package com.lawschool.form;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.lawschool.base.DataEntity;
+import com.lawschool.base.Page;
+
+import java.util.Date;
 
 /**
- * @ClassName PostEntity
+ * @ClassName CollectionPostForm
  * @Author wangtongye
- * @Date 2019/1/3 10:00
+ * @Date 2019/1/5 11:51
  * @Versiom 1.0
  **/
-@TableName("law_post")
-public class PostEntity extends DataEntity<PostEntity> {
+public class CollectionPostForm {
 
+    private String id;
+    private String userId;
+    private String userName;
+    private Date createTime;
     private String content;//内容
     private String subordinateColumn;//所属栏目
     private Integer collectionNum;//收藏
     private Integer commentNum;//评论
     private Integer reportNum;//举报
+    private Page<CollectionPostForm> page;
 
-    @TableField
-    private String userName;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public String getContent() {
         return content;
@@ -62,11 +95,11 @@ public class PostEntity extends DataEntity<PostEntity> {
         this.reportNum = reportNum;
     }
 
-    public String getUserName() {
-        return userName;
+    public Page<CollectionPostForm> getPage() {
+        return page;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setPage(Page<CollectionPostForm> page) {
+        this.page = page;
     }
 }

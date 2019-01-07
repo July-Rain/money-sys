@@ -224,7 +224,7 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
             ew.eq("ADDSRC",addsrc);
         }
 
-        ew.orderBy("STU_ISSTIME");
+        ew.orderBy("STU_ISSTIME",false);
         //Page<StuMedia> page = new Page<StuMedia>();
        /* Page<StuMedia> page = new Page<StuMedia>(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
 

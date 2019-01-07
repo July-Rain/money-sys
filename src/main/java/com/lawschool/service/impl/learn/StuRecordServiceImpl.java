@@ -10,6 +10,7 @@ import com.lawschool.util.GetUUID;
 import com.lawschool.util.UtilValidate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -46,5 +47,18 @@ public class StuRecordServiceImpl extends ServiceImpl<StuRecordDao,StuRecordEnti
             return baseMapper.insert(stuRecordEntity);
         }
 
+    }
+
+    @Override
+    public int countTime(String stuId, String stuFrom, BigDecimal playTime) {
+        StuRecordEntity recordEntity= this.selectOne(new EntityWrapper<StuRecordEntity>().eq("stu_id",stuId).eq("stu_from",stuFrom));
+        if(UtilValidate.isNotEmpty(recordEntity)){
+            BigDecimal time = recordEntity.getStuCountTime();
+            time = time.add(playTime);
+            recordEntity.setStuCountTime(time);
+            baseMapper.updateById(recordEntity);
+        }
+
+        return 0;
     }
 }

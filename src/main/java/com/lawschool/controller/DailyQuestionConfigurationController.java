@@ -82,7 +82,7 @@ public class DailyQuestionConfigurationController {
     @SysLog("题目展示")
     @RequestMapping(value = "/showDailyTest",method = RequestMethod.POST)
     public Result showTest(){
-        QuestForm question = dailyQuestionConfigurationService.dailyTestCreate();
-        return Result.ok().put("question",question);
+        Result result = dailyQuestionConfigurationService.dailyTestCreate();
+        return result;
     }
 }

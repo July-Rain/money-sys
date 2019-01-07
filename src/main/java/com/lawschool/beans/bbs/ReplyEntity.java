@@ -1,5 +1,6 @@
 package com.lawschool.beans.bbs;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
 
@@ -15,6 +16,9 @@ public class ReplyEntity extends DataEntity<ReplyEntity> {
     private String postId;//回复评论
     private String content;//回复内容
     private String replyObject;//回复对象
+
+    @TableField
+    private String userName;
 
     public String getPostId() {
         return postId;
@@ -38,5 +42,13 @@ public class ReplyEntity extends DataEntity<ReplyEntity> {
 
     public void setReplyObject(String replyObject) {
         this.replyObject = replyObject;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

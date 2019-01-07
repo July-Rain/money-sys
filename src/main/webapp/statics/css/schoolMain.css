@@ -155,6 +155,7 @@ img{
 }
 .item ul.item_bot > li{
     color: #999;
+    cursor: pointer;
 }
 .item ul.item_bot > li i{
     padding-right: 7px;
@@ -166,5 +167,84 @@ img{
 .item ul.item_bot > li:nth-child(2){
     padding-right: 84px;
 }
+/*评论区*/
+.comment_area{
+    border: 1px solid #e8e8e8;
+    border-radius: 3px;
+    padding-top: 4px;
+}
+.comment_area .title{
+    height: 45px;
+    line-height: 45px;
+    padding-left: 20px;
+    color: #333;
+    font-size: 20px;
+    border-bottom: 1px solid #f2f2f2;
+}
+.comment_area .item_top{
+    padding: 0 19px;
+}
+.comment_area .item_top{
+    padding-top: 15px;
+}
+.item .comment_area .item_head{
+    width: 40px;
+    height: 40px;
+}
+.item .comment_area .item_top > p{
+    line-height: 40px;
+    height: 40px;
+}
+.item .comment_area p.text{
+    border-bottom: 1px solid #f2f2f2;
+    line-height: 28px;
+    padding: 11px 19px 18px;
+    font-size: 16px;
+    color: #333;
+}
+p.openMore{
+    line-height: 73px;
+    height: 73px;
+    color: #1381e3;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+}
+
+/*写下评论*/
+.item .writeComment .el-input{
+    float: left;
+    width: 81.33235724743777vw;
+    padding-bottom: 16px;
+}
+.item .writeComment .el-input .el-input__inner{
+    height: 36px;
+    line-height: 36px;
+    border-color: #e8e8e8;
+    background-color: #f5f8fa;
+    color: #666;
+    font-size: 16px;
+}
+.item .writeComment .el-button{
+    margin-right: 25px;
+    float: right;
+}
 
 
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #666!important;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #666!important;
+    opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #666!important;
+    opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #666!important;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: #666!important;
+}

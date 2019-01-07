@@ -5,7 +5,7 @@ import com.lawschool.beans.DailyRecord;
 
 public interface DailyRecordDao extends AbstractDao<DailyRecord> {
 
-    DailyRecord findCurrentRecord();//查找当前记录
+    DailyRecord findCurrentRecord(String userId);//查找当前记录
 
     void insertRecord(DailyRecord dailyRecord);//插入配置
 }

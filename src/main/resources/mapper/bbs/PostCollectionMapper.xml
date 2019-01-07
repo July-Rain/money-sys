@@ -50,10 +50,42 @@
 
     <select id="findMyCollection" resultType="Integer">
         SELECT
-            COUNT (*) num
+            COUNT (DISTINCT id) num
         FROM
             law_post_collection
         WHERE
             user_id = #{userId}
+    </select>
+
+    <select id="findList" parameterType="com.lawschool.form.CollectionPostForm" resultType="com.lawschool.form.CollectionPostForm">
+        SELECT
+            a.id AS "id",
+            u.user_name AS "userName",
+            a.content AS "content",
+            a.subordinate_column AS "subordinateColumn",
+            a.collection_num AS "collectionNum",
+            a.comment_num AS "commentNum",
+            a.report_num AS "reportNum",
+            a.create_time AS "createTime"
+        FROM
+            law_post_collection pc
+            INNER JOIN law_post a ON pc.post_id = a.id
+            INNER JOIN law_user u ON u.id = a.create_user
+        <where>
+            pc.user_id = #{userId}
+            <if test="subordinateColumn != null and subordinateColumn != ''">
+                AND a.subordinate_column = #{subordinateColumn}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByUser" resultType="Integer">
+        SELECT
+        COUNT (*) num
+        FROM law_post_collection
+        <where>
+            user_id = #{userId}
+            AND post_id = #{postId}
+        </where>
     </select>
 </mapper>
