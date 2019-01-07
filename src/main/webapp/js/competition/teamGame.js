@@ -130,7 +130,7 @@ websocket.onmessage = function(event) {
         $("#contentUl").append("<li><b>"+data.date+"</b><em>系统消息：</em><span>"+data.text+"</span></li>");
         //刷新在线用户列表
         $("#chatOnline").html("队伍人员("+data.userList.length+")人");
-        $("#chatOnline2").html("对方队伍人员("+data.userList2.length+")人");
+        $("#chatOnline2").html("队伍人员("+data.userList2.length+")人");
         $("#chatUserList").empty();
 
         $(data.userList).each(function(){
@@ -187,7 +187,7 @@ $(function(){
 
     $("#addroom").hide();//按钮隐藏
     $("#joinroom").hide();//按钮隐藏
-
+    $("#joinroomDiv").hide();//按钮隐藏
     //发送消息
     $("#sendBtn").on("click",function(){
         sendMsg();
@@ -211,6 +211,7 @@ $(function(){
 
 
 
+
 //addroom 创建比赛房间事件
 $("#addroom").on("click",function(){
     //先看能不能点  人不齐 不能点
@@ -230,7 +231,44 @@ $("#addroom").on("click",function(){
 
 
 });
+//joinroom 加入比赛房间事件
+$("#joinroom").on("click",function(){
 
+    $("#joinroomDiv").show();//按钮隐藏
+});
+
+//点击进入code房间事件
+$("#joinroomButton").on("click",function(){
+    var roomcode=$("#joinroomCode").val();
+    if(roomcode=="")
+    {
+        alert("请输入房间code码");
+        return;
+    }
+    else
+    {
+        //先看能不能点  人不齐 不能点
+        if(news.competitionTeam.nowScale!=news.competitionTeam.scale)
+        {
+            //人不齐  不可以点了
+            alert("人不齐");
+            return;
+        }
+        else
+        {
+            $("#joinroomDiv").hide();//div隐藏
+            //人齐了 ，走send发消息这一步  告诉handler
+            $("#msg").val("joinroom");
+            news.teamOrGame="1";//下面就是要到比赛去了;
+            news.battleCode=roomcode;
+            sendMsg();
+        }
+    }
+
+
+
+
+});
 //使用ctrl+回车快捷键发送消息
 function keySend(e) {
     var theEvent = window.event || e;

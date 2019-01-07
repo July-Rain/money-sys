@@ -33,6 +33,12 @@
                                 <p v-show="teamtype"><el-button  id="addroom">创建对战房间</el-button></p>
 
                                 <p v-show="teamtype"><el-button id="joinroom">code码加入对战房间</el-button></p>
+
+                                <div id="joinroomDiv">
+                                    <input id="joinroomCode"> <button id="joinroomButton">进入</button>
+                                </div>
+
+
                                 <p >当前登录用户：{{u.fullName}}</p>
                                 <p id="div1"></p>
                                 <p v-show="teamtype">队伍code码：{{competitionTeam.teamCode}}</p>
