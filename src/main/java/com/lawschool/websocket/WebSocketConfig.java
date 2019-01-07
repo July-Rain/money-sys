@@ -32,6 +32,10 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	private ChatHandshakeInterceptorLeitai chatHandshakeInterceptorLeitai;
 	@Autowired
 	private ChatWebSocketHandlerLeitai chatWebSocketHandlerLeitai;
+	@Autowired
+	private ChatWebSocketHandlerTeam chatWebSocketHandlerteam;
+	@Autowired
+	private ChatHandshakeInterceptorTeam chatHandshakeInterceptorteam;
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		//添加一个处理器还有定义处理器的处理路径
 		registry.addHandler(webSocketHandler, "/ws").addInterceptors(chatHandshakeInterceptor);
@@ -39,6 +43,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 		registry.addHandler(chatWebSocketHandlerAlonePkByCode, "/alonePkGameByCode").addInterceptors(chatHandshakeInterceptorAlonePkCode);
 
 		registry.addHandler(chatWebSocketHandlerLeitai, "/Leitai").addInterceptors(chatHandshakeInterceptorLeitai);
+
+		registry.addHandler(chatWebSocketHandlerteam, "/team").addInterceptors(chatHandshakeInterceptorteam);
 		/*
 		 * 在这里我们用到.withSockJS()，SockJS是spring用来处理浏览器对websocket的兼容性，
 		 * 目前浏览器支持websocket还不是很好，特别是IE11以下.

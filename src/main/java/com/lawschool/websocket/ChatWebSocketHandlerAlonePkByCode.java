@@ -361,7 +361,7 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 				if(type.equals("add"))
 				{
 					//先根据这个人 新建一个 对战平台出来   这个人是play1
-					BattlePlatform battlePlatform=battlePlatformService.save(loginUser,"PKOnline");
+					BattlePlatform battlePlatform=battlePlatformService.save(loginUser.getId(),"PKOnline");
 					battlePlatformMap.put(battlePlatform.getBattleCode(),battlePlatform);//把当前新建的平台加到map中
 					//下面这步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
 					webSocketSession.getAttributes().put("playids",loginUser.getId());

@@ -374,7 +374,7 @@ public class ChatWebSocketHandlerLeitai implements WebSocketHandler {
 					{
 						//开房，等人来
 						//先根据这个人 新建一个 对战平台出来   这个人是play1
-						BattlePlatform battlePlatform=battlePlatformService.save(loginUser,"leitai");
+						BattlePlatform battlePlatform=battlePlatformService.save(loginUser.getId(),"leitai");
 						battlePlatformMap.put(battlePlatform.getId(),battlePlatform);//把当前新建的平台加到map中   id为主键
 						//下面这步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
 						webSocketSession.getAttributes().put("playids",loginUser.getId());

@@ -23,8 +23,12 @@ public class BattlePlatform{
 
 	//比武配置id（可能是在线比武，也可能是 打擂台。存在2种表里的id）
 	private String foreignKeyId;
-	//对战类型 （来区分是在线比武还是打擂台。来确定反查到哪张表）
+
+
+
+	//对战类型 （来区分是在线比武还是打擂台。来确定反查到哪张表）（后加了组队比武类型，组队比武的话  纯的是2个队伍的id）
 	private String type;
+
 	//玩家1
 	private String play1;
 	//玩家2
