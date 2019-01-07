@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.diagnosis.StuDiagnosisDao">
+    <resultMap id="BaseResultMap" type="java.util.HashMap">
+        <result column="value" jdbcType="INTEGER" property="value" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+    </resultMap>
+    <select id="getDiaInfo" resultType="com.lawschool.beans.diagnosis.DiagnosisEntity" parameterType="map">
+        select sum(STU_COUNT_TIME) as value,'videocen' as type,
+        '视频中心' as name
+         from LAW_STU_RECORD
+         where user_id=#{userId}
+         and STU_FROM='videocen'
+        <if test="startTime != null and startTime!=''">
+            AND <![CDATA[STU_TIME >= TO_DATE(#{startTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        <if test="endTime != null and endTime!=''">
+            AND <![CDATA[STU_TIME <= TO_DATE(#{endTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        UNION ALL
+        select sum(STU_COUNT_TIME) as value,'audiocen' as type,
+        '音频中心' as name
+        from LAW_STU_RECORD
+        where user_id=#{userId}
+        and STU_FROM='audiocen'
+        <if test="startTime != null and startTime!=''">
+            AND <![CDATA[STU_TIME >= TO_DATE(#{startTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        <if test="endTime != null and endTime!=''">
+            AND <![CDATA[STU_TIME <= TO_DATE(#{endTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        UNION ALL
+        select sum(STU_COUNT_TIME) as value,'learntask' as type,
+        '学习任务' as name
+         from LAW_STU_RECORD
+         where user_id=#{userId}
+         and STU_FROM='learntask'
+        <if test="startTime != null and startTime!=''">
+            AND <![CDATA[STU_TIME >= TO_DATE(#{startTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        <if test="endTime != null and endTime!=''">
+            AND <![CDATA[STU_TIME <= TO_DATE(#{endTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        UNION ALL
+        select sum(STU_COUNT_TIME) as value,'caseana' as type,
+        '案例分析' as name
+        from LAW_STU_RECORD
+        where user_id=#{userId}
+        and STU_FROM='caseana'
+        <if test="startTime != null and startTime!=''">
+            AND <![CDATA[STU_TIME >= TO_DATE(#{startTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        <if test="endTime != null and endTime!=''">
+            AND <![CDATA[STU_TIME <= TO_DATE(#{endTime}, 'yyyy-mm-dd')]]>
+        </if>
+    </select>
+
+    <select id="countStuTime" resultType="java.math.BigDecimal" parameterType="map">
+        <!-- 统计时长-->
+        SELECT
+        SUM (STU_COUNT_TIME)
+        FROM
+        LAW_STU_RECORD
+        WHERE
+        user_id = #{userId}
+        <if test="stuFrom != null and stuFrom!=''">
+            AND STU_FROM = #{stuFrom}
+        </if>
+        <if test="startTime != null and startTime!=''">
+            AND <![CDATA[STU_TIME >= TO_DATE(#{startTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        <if test="endTime != null and endTime!=''">
+            AND <![CDATA[STU_TIME <= TO_DATE(#{endTime}, 'yyyy-mm-dd')]]>
+        </if>
+    </select>
+
+    <select id="getRankNo" resultType="java.lang.Integer" parameterType="map">
+        <!-- 统计学习时长排名-->
+
+        SELECT
+          RANK () OVER (ORDER BY s.stuTime ASC) AS rankNo
+        FROM
+          (
+          SELECT
+          U .*, T .stuTime
+          FROM
+          LAW_USER U
+          LEFT JOIN (
+          SELECT
+          SUM (STU_COUNT_TIME) AS stuTime,
+          USER_ID
+          FROM
+          LAW_STU_RECORD
+        where 1=1
+            <if test="stuFrom != null and stuFrom!=''">
+                AND STU_FROM = #{stuFrom}
+            </if>
+            <if test="startTime != null and startTime!=''">
+                AND <![CDATA[STU_TIME >= TO_DATE(#{startTime}, 'yyyy-mm-dd')]]>
+            </if>
+
+            <if test="endTime != null and endTime!=''">
+                AND <![CDATA[STU_TIME <= TO_DATE(#{endTime}, 'yyyy-mm-dd')]]>
+            </if>
+          GROUP BY
+          USER_ID
+          ) T ON U . ID = T .USER_ID
+        ) s
+        WHERE
+        s. ID = #{userId}
+
+    </select>
+</mapper>

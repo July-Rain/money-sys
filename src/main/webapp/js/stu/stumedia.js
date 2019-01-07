@@ -328,7 +328,6 @@ var vm = new Vue({
                 vm.stuMedia.comContent=response.accessoryId;
                 vm.stuMedia.contentUrl=baseURL+"sys/download?accessoryId="+response.accessoryId;
                 setTimeout(function () {
-                    debugger
                     vm.stuMedia.stuTime=document.getElementsByClassName("avatar")[0].duration;
                     console.info("啊啊啊",document.getElementsByClassName("avatar")[0].currentTime,document.getElementsByClassName("avatar")[0].duration);
                 },800)
