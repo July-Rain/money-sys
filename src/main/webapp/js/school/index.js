@@ -4,21 +4,22 @@
  * Description:
  */
 
-var a = [{
-    b:[]
-}];
-var c = {
-    dd:111,
-    ee:222,
-    cc:444
-};
-a[0].b[0] = 1;
-a[0].b.push(c);
-a[0].b.push(c);
-a[0].b.push(c);
-
-
-console.log(JSON.stringify(a));
+// var a = [{
+//     b:[]
+// },{
+//     b:[]
+// },{
+//     b:[]
+// }];
+// var c = {
+//     dd:111,
+//     ee:222,
+//     cc:[{rrr:"123"}]
+// };
+// a.map(function (value, index, array) {
+//     value.b.push(c)
+// })
+// console.log(JSON.stringify(a));
 var vm = new Vue({
     el: '#app',
     data: {
