@@ -245,4 +245,14 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
 
         return page;
     }
+
+    @Override
+    public int countTask(Map<String, Object> params) {
+        //数据权限使用
+        String userId=(String)params.get("userId");
+        EntityWrapper<LearnTasksEntity> ew = new EntityWrapper<>();
+        ew.setSqlSelect("ID,TASK_NAME,START_TIME,END_TIME,TASK_CONTENT,CREATE_USER");
+        int count = mapper.selectCount(ew);
+        return count;
+    }
 }

@@ -150,7 +150,6 @@ var vm = new Vue({
         },
         onPlay:function (id,accId) {
             vm.playTime=0;
-            debugger
             //请求后台修改播放量 记录学习记录
             $.ajax({
                 type: "POST",
@@ -172,7 +171,6 @@ var vm = new Vue({
                 });
         },
         onPause: function (id) {
-            debugger
             //媒介因素暂停事件
             //请求后台记录观看时长
             $.ajax({
@@ -232,7 +230,6 @@ var timeinfo;
 })*/
 
 function countTime() {
-    debugger
     var sTime = timeinfo;
     console.log(timeinfo)
     /*$.ajax({

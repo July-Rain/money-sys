@@ -275,6 +275,7 @@ var vm = new Vue({
             // });
             this.loadVideo();
             this.loadNewsData();
+            this.loadTasks();
         })
 
         this.$nextTick(function () {
@@ -666,6 +667,21 @@ var vm = new Vue({
                     }
                 }
             });
-        }
+        },
+        loadTasks: function () {//学习任务
+            $.ajax({
+                type: "POST",
+                url: baseURL + "learntasks/getCount",
+                dataType: "json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.learnTasks = result.learnTasks;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+
+        },
     }
 });

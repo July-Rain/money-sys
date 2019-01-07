@@ -78,4 +78,14 @@ public interface LearnTasksService extends AbstractService<LearnTasksEntity> {
      **/
     
     PageUtils queryContentByTask(@RequestParam Map<String, Object> params);
+
+    /**
+     * @Author MengyuWu
+     * @Description 统计学习任务个数
+     * @Date 17:36 2019-1-7
+     * @Param [params]
+     * @return int
+     **/
+    
+    int countTask (Map<String, Object> params);
 }
