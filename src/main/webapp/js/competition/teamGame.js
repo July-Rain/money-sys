@@ -6,11 +6,26 @@
 var vm = new Vue({
     el: '#app',
     data: {
-
+        allnum:"",
+        nownum:"",
+        answers:"",
+        //题目集合
+        QuestionList:[
+            // Question={id:""},
+        ],
+        //题目
+        Question:{},
+        battleCode:"",
+        radio_disabled: false,
+        // dialogQuestion:false,//开始答题  弹出
+        BattleTopicSettings:[],//题目配置集合
+        nowbattleTopicSetting:"",//当前题目配置
+        nowQscore:"",//当前题目分值
         u:"",//人
         competitionTeam:"",//队伍信息
         teamtype:true,//组队和比赛模式下 不同展示的东西  （组队）
         teamtype2:false,//组队和比赛模式下 不同展示的东西  （比赛）
+        dialogQuestion:false,//开始答题  弹出
         battlePlatform:{},//对战平台
     },
     created: function () {
@@ -21,7 +36,49 @@ var vm = new Vue({
 
 
     methods: {
+        radioCheck: function (id, answerId, typeName) {
+            vm.radio_disabled = true;
+            // var answer = vm.answers[0];
+            // alert(vm.answers);
+            // alert("我选的"+id);
+            // alert("正确的"+answerId);
+            //如果答对了
+            if(id==answerId)
+            {
+                vm.questionYes();
+            }
+            else
+            {
+                vm.questionError();
+            }
+            //不管答对答错  都要走保存题目的方法
+            // vm.oryesorno();//答完题目入库保存记录
+            //触发发送事件
+            $("#msg").val("答题了");
+            sendMsg();
+        },
+        //答错事件
+        questionError:function()
+        {
+            alert("答错了")
 
+
+        },
+        //答对事件
+        questionYes:function()
+        {
+            alert("答对了")
+
+            // if(vm.nowbattleTopicSetting.whetherGetIntegral=="1")//这题能获得积分
+            // {
+            //     vm.myscore=Number(vm.myscore)+Number(vm.nowQscore);
+            //     alert("答对了，获得本题积分");
+            // }
+            // else
+            // {
+            //     alert("答对了，本题不能获得积分");
+            // }
+        },
         reload:function () {
 
         },
@@ -35,9 +92,11 @@ var vm = new Vue({
 var peopleNum = getUrlParam('peopleNum');//几人队伍
 var type = getUrlParam('type');//建房还是加入房
 var code = getUrlParam('code');//房间code码
-
+//回答过题目的人
+var answerpeople=[];
 var news=null;
-
+//当前第几题  默认第1  排序0
+var nowtimu=0;
 var uid=null;
 //发送人编号
 var from=null;
@@ -113,18 +172,38 @@ websocket.onmessage = function(event) {
     }
     vm.battlePlatform=data.battlePlatform;//将对战频台给vue
     vm.competitionTeam=data.competitionTeam;//将队伍信息给vue
-
+    vm.battleCode=data.battleCode;
+    vm.QuestionList= data.tqList;
     if(vm.u.id==vm.competitionTeam.userId)
     {
         $("#addroom").show();//按钮隐藏
         $("#joinroom").show();//按钮隐藏
     }
+
     //2种推送的消息
     //1.用户聊天信息：发送消息触发
     //2.系统消息：登录和退出触发
 
     //判断是否是欢迎消息（没用户编号的就是欢迎消息）
     if(data.from==undefined||data.from==null||data.from==""){
+
+        // 当收到系统消息的时候  看看是不是两个队伍匹配上了  看to的人和队伍配置人的2倍相比
+        if(Number(data.to.length)==Number(data.competitionTeam.nowScale)*2)
+        {
+
+            nowtimu=0;//因为下面send消息的时候 已经在不停的改变nowtimu的值  我要将他回归最初的状态
+
+            vm.dialogQuestion=true,//有人加进来 才显示 题目
+            vm.radio_disabled=false;
+            vm.allnum=data.tqList.length;
+            vm.nownum=Number(nowtimu)+1;
+            vm.nowQscore=data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
+            vm.nowbattleTopicSetting=data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
+            vm.Question=data.tqList[Number(nowtimu)];
+        }
+
+
+
 
         //===系统消息
         $("#contentUl").append("<li><b>"+data.date+"</b><em>系统消息：</em><span>"+data.text+"</span></li>");
@@ -148,7 +227,39 @@ websocket.onmessage = function(event) {
         console.info(" 收到系统消息，是给"+data.to);
         to=data.to;
 
-    }else{
+    }
+    else   //人之间的发消息
+    {
+
+        if(data.teamOrGame=="1")//前提是 在游戏比赛环节  不是在比赛前的吹逼时候  是人发消息  与系统发来的消息 带过来的==1不同
+        {
+            answerpeople.push(data.from);
+            if(answerpeople.length==data.to.length)
+            {
+                //如果2人都回答过了
+                // 题目要变
+                //收到消息时候来变化题目，前提是2人回答过
+                if(data.tqList.length <= Number(nowtimu))
+                {
+                    alert("全部题目答完");
+                    closeWebsocket();
+                }
+                else
+                {
+                    vm.dialogQuestion=true,
+                    vm.radio_disabled=false;
+                    vm.allnum=data.tqList.length;
+                    vm.nownum=Number(nowtimu)+1;
+                    // vm.nowQscore=data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
+                    vm.nowbattleTopicSetting=data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
+                    vm.Question=data.tqList[Number(nowtimu)];
+                    // vm.yesOrNoAnswer="未答题";
+                }
+                answerpeople=[];//再将这个回答过的人制空
+            }
+        }
+
+
         //===普通消息
         //处理一下个人信息的显示：
         if(data.fromName==fromName){
@@ -296,6 +407,7 @@ function sendMsg(){
     if(msg==""){
         return;
     }else{
+        nowtimu=nowtimu+1;
         var data={};
         data["from"]=from;
         data["fromName"]=fromName;
@@ -306,6 +418,11 @@ function sendMsg(){
         data["battlePlatform"]=news.battlePlatform;
         data["battleCode"]=news.battleCode;
 
+        data["nowtimu"]=nowtimu;
+        data["tqList"]=news.tqList;
+        data["myanswer"]=vm.answers;
+        data["tq"]=vm.Question;
+        data["competitionOnline"]=news.competitionOnline;
         //发送消息
         websocket.send(JSON.stringify(data));
         //发送完消息，清空输入框

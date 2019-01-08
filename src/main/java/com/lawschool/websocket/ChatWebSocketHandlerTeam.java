@@ -1,11 +1,15 @@
 package com.lawschool.websocket;
 
 import com.lawschool.beans.MessageByTeam;
+import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
 import com.lawschool.beans.competition.BattlePlatform;
+import com.lawschool.beans.competition.CompetitionOnline;
 import com.lawschool.beans.competition.CompetitionTeam;
 import com.lawschool.service.competition.BattlePlatformService;
+import com.lawschool.service.competition.CompetitionOnlineService;
 import com.lawschool.service.competition.CompetitionTeamService;
+import com.lawschool.service.competition.TeamUserService;
 import com.lawschool.util.GsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,6 +34,10 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 	private CompetitionTeamService competitionTeamService;
 	@Autowired
 	private BattlePlatformService battlePlatformService;
+	@Autowired
+	private CompetitionOnlineService competitionOnlineService;
+	@Autowired
+	private TeamUserService teamUserService;
 
 	//在线用户的SOCKETsession(存储了所有的通信通道)
 	public static final Map<String, WebSocketSession> USER_SOCKETSESSION_MAP;
@@ -44,6 +52,8 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 	//在线的比武台  根据比武台的code
 	public static final Map<String, BattlePlatform> battlePlatformMap;
 
+	public static final Map<String, List> timuMap;
+	public static final Map<String, CompetitionOnline> timussettingMap;
 	//存储所有的在线用户
 	static {
 		USER_SOCKETSESSION_MAP = new HashMap<String, WebSocketSession>();
@@ -51,6 +61,8 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 		USER_ids=new HashMap<String, List>();
 		USER_us=new HashMap<String, List>();
 		battlePlatformMap=new HashMap<String,BattlePlatform>();
+		timuMap=new HashMap<String,List>();
+		timussettingMap=new HashMap<String,CompetitionOnline>();
 	}
 	
 	/**
@@ -141,6 +153,11 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 						//先把队伍的 当前人员数+1
 						competitionTeam.setNowScale((Integer.parseInt(competitionTeam.getNowScale())+1)+"");
 						competitionTeamService.updateById(competitionTeam);
+
+						//teamUserService  将人加入到战队人员表中
+						teamUserService.save(competitionTeam.getId(),loginUser.getId());
+
+
 						//去找这个队伍有哪些人id
 						List<String> uids= USER_ids.get(competitionTeam.getTeamCode());
 						uids.add(loginUser.getId());
@@ -239,15 +256,26 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 			//将平台code给队长
 			SocketSession.getAttributes().put("battlePlatcode",battlePlatform.getBattleCode());
 
-			//先不找题目  后面再说
+			//题目
+			//第一个玩家进来 就去找题目   这样第2个玩家进来就可以直接开始。没关系 有锁
+			//得到题目的list(对象里面有答案)
+			List<TestQuestions> qList=competitionOnlineService.getQuest();
 
+			CompetitionOnline competitionOnline=competitionOnlineService.findAll2();
+//			现在我要把它存入 因为是双方都需要去找到的  所以 用双方都能取到的属性 对战平台的code码为key
+			timuMap.put(battlePlatform.getBattleCode(),qList);
+			timussettingMap.put(battlePlatform.getBattleCode(),competitionOnline);
 			//发消息
 			msg.setFrom(null);//设置为系统发消息
 			msg.setText("请等待 其他队伍加入.。。。。。。。。");
 			msg.setDate(new Date());
 			msg.setBattlePlatform(battlePlatform);
 			msg.setBattleCode(battlePlatform.getBattleCode());
-//			msg.setUserList2(null);
+			msg.setNowtimu("0");
+			msg.setBattleCode(battlePlatform.getBattleCode());
+			msg.setCompetitionOnline(competitionOnline);
+			//把题目塞到信息里面去往页面打
+			msg.setTqList(qList);
 			TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 			sendMessageToUserByList(msg.getTo(),new TextMessage(GsonUtils.toJson(msg)));
 
@@ -280,27 +308,46 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 			else
 			{
 				//找到了
-				//找到这个比武台 然后把自己加到play2里面
-				battlePlatformService.updata(battlePlatform,competitionTeam.getId());
-				//添加完后要把这个房间在除去  防止其他人加进来
-				battlePlatformMap.remove(battleCode);
 				CompetitionTeam Team1 = competitionTeamService.selectById(battlePlatform.getPlay1());
 
+//				Team1.getScale();//得到人家的是几人队
+//				msg.getCompetitionTeam().getScale();//自己是几人队
+				if(msg.getCompetitionTeam().getScale().equals(Team1.getScale()))//是同一种队伍
+				{
+					//找到这个比武台 然后把自己加到play2里面
+					battlePlatformService.updata(battlePlatform,competitionTeam.getId());
+					//添加完后要把这个房间在除去  防止其他人加进来
+					battlePlatformMap.remove(battleCode);
 
-				//先不找题目  后面再说
+					//发消息
+					msg.setFrom(null);//设置为系统发消息
+					msg.setText("欢迎" +msg.getFromName()+"的队伍加入");
+					msg.setDate(new Date());
+					msg.setBattlePlatform(battlePlatform);
+					msg.setBattleCode(battlePlatform.getBattleCode());
+					//把题目塞到信息里面去往页面打
+					msg.setTqList(timuMap.get(battlePlatform.getBattleCode()));
+					msg.setCompetitionOnline(timussettingMap.get(battlePlatform.getBattleCode()));
+					msg.setNowtimu("0");
 
-				//发消息
-				msg.setFrom(null);//设置为系统发消息
-				msg.setText("欢迎" +msg.getFromName()+"的队伍加入");
-				msg.setDate(new Date());
-				msg.setBattlePlatform(battlePlatform);
-				msg.setBattleCode(battlePlatform.getBattleCode());
-				msg.setUserList2(USER_us.get(msg.getCompetitionTeam().getTeamCode()));
-				msg.setUserList(USER_us.get(Team1.getTeamCode()));
+					msg.setUserList2(USER_us.get(msg.getCompetitionTeam().getTeamCode()));
+					msg.setUserList(USER_us.get(Team1.getTeamCode()));
 
-				msg.getTo().addAll(USER_ids.get(Team1.getTeamCode()));
-				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-				sendMessageToUserByList(msg.getTo(),new TextMessage(GsonUtils.toJson(msg)));
+					msg.getTo().addAll(USER_ids.get(Team1.getTeamCode()));
+					TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+					sendMessageToUserByList(msg.getTo(),new TextMessage(GsonUtils.toJson(msg)));
+				}
+				else
+				{
+					msg.setFrom(null);//设置为系统发消息
+					msg.setText("不是同一种类型队伍，请重新加入");
+					msg.setDate(new Date());
+					msg.setTeamOrGame("0");
+					TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+					sendMessageToUserByList(msg.getTo(),new TextMessage(GsonUtils.toJson(msg)));
+				}
+
+
 			}
 
 
@@ -425,7 +472,9 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 
 			competitionTeam.setNowScale((Integer.parseInt(competitionTeam.getNowScale())-1)+"");
 			competitionTeamService.updateById(competitionTeam);//改变状态位
+			//将人重战队中删去
 
+			teamUserService.deleteTeamUser(competitionTeam.getId(),loginUser.getId());
 			msg.setText(loginUser.getFullName()+"离开");
 			msg.setDate(new Date());
 			msg.getTo().addAll(ids);
