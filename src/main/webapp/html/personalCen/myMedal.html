@@ -6,64 +6,59 @@
 </head>
 <body>
 <div id="app" v-cloak>
-    <div class="header">
-        <div class="header-left">
-            <img src="${rc.contextPath}/statics/img/logo.png">
-            <a href="javascript:;">江苏省公安厅法律学校</a>
-        </div>
-    </div>
     <div class="container">
-
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }">个人中心</el-breadcrumb-item>
+            <el-breadcrumb-item>我的勋章</el-breadcrumb-item>
+        </el-breadcrumb>
         <el-row :gutter="24">
             <el-col :span="24">
                 <el-tabs type="border-card">
-                    <el-tab-pane label="检索">
-                        <el-form :inline="true" class="demo-form-inline">
+                    <el-form :inline="true" class="demo-form-inline">
 
-                        </el-form>
-                        <div>
-                            <el-table
-                                    :data="tableData"
-                                    border
-                                    style="width: 100%">
-                                <el-table-column
-                                        prop="titleName"
-                                        label="勋章名称">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="badge"
-                                        label="勋章图标">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="isReceive"
-                                        label="是否可领取">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="active"
-                                        label="操作">
-                                    <template slot-scope="scope">
-                                        <el-button :disabled="isReceive.indexOf(tableData[scope.$index].id) > -1"
-                                                size="mini"
-                                                @click="receive(scope.$index, scope.row)">{{isReceive.indexOf(tableData[scope.$index].id) > -1?"已":""}}领取
-                                        </el-button>
-                                        <el-button
-                                                size="mini"
-                                                @click="wear(scope.$index, scope.row)">佩戴
-                                        </el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="form.pageNo"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="form.limit"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="form.count">
-                            </el-pagination>
-                        </div>
-                    </el-tab-pane>
+                    </el-form>
+                    <div>
+                        <el-table
+                                :data="tableData"
+                                border
+                                style="width: 100%">
+                            <el-table-column
+                                    prop="titleName"
+                                    label="勋章名称">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="badge"
+                                    label="勋章图标">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="isReceive"
+                                    label="是否可领取">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="active"
+                                    label="操作">
+                                <template slot-scope="scope">
+                                    <el-button :disabled="isReceive.indexOf(tableData[scope.$index].id) > -1"
+                                            size="mini"
+                                            @click="receive(scope.$index, scope.row)">{{isReceive.indexOf(tableData[scope.$index].id) > -1?"已":""}}领取
+                                    </el-button>
+                                    <el-button
+                                            size="mini"
+                                            @click="wear(scope.$index, scope.row)">佩戴
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <el-pagination
+                                @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange"
+                                :current-page="form.pageNo"
+                                :page-sizes="[10, 20, 30, 40]"
+                                :page-size="form.limit"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="form.count">
+                        </el-pagination>
+                    </div>
                 </el-tabs>
             </el-col>
         </el-row>
