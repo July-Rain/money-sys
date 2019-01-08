@@ -61,6 +61,22 @@ public class LearnTasksController extends AbstractController {
 
     /**
      * @Author MengyuWu
+     * @Description 查询我创建的
+     * @Date 17:25 2019-1-8
+     * @Param [params]
+     * @return com.lawschool.util.Result
+     **/
+    
+    @RequestMapping("/listICreate")
+    public Result listICreate(@RequestParam Map<String, Object> params){
+        User user=getUser();
+        params.put("userId",user.getId());
+        PageUtils page = tasksService.queryPageICreate(params);
+        return Result.ok().put("page", page);
+    }
+
+    /**
+     * @Author MengyuWu
      * @Description 查看详情
      * @Date 16:23 2018-12-18
      * @Param [id]

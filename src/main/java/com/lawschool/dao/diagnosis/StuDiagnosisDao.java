@@ -44,4 +44,15 @@ public interface StuDiagnosisDao {
      **/
     
     int getRankNo(Map<String,String> param);
+
+    /**
+     * @Author MengyuWu
+     * @Description 获取学习各个模块的个数统计
+     * @Date 14:36 2019-1-8
+     * @Param [param]
+     * @return java.util.List<com.lawschool.beans.diagnosis.DiagnosisEntity>
+     **/
+    
+
+    List<DiagnosisEntity> DiaStat(Map<String,String> param);
 }

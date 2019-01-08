@@ -88,8 +88,27 @@
                         <el-form-item label="任务名称" prop="taskName">
                             <el-input v-model="formInline.taskName" placeholder="任务名称" size="mini" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="任务内容" prop="taskContent">
-                            <el-input v-model="formInline.taskContent" placeholder="任务内容" size="mini" clearable></el-input>
+                        <el-form-item label="所属警种" prop="policeclass">
+                            <el-select v-model="formInline.policeclass" placeholder="所属警种" >
+                                <el-option
+                                        v-for="item in policeclassOption"
+                                        :key="item.code"
+                                        :label="item.value"
+                                        :value="item.code"
+                                >
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="所属分类" prop="taskClass">
+                            <el-select v-model="formInline.taskClass" placeholder="所属分类" >
+                                <el-option
+                                        v-for="item in taskClassOption"
+                                        :key="item.code"
+                                        :label="item.value"
+                                        :value="item.code"
+                                >
+                                </el-option>
+                            </el-select>
                         </el-form-item>
 
                         <!--<el-form-item prop="status">
@@ -118,8 +137,14 @@
                                     align="center">
                             </el-table-column>
                             <el-table-column
-                                    prop="taskContent"
-                                    label="任务内容"
+                                    prop="taskClassName"
+                                    label="任务类型"
+                                    header-align="center"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="policeclassName"
+                                    label="所属警种"
                                     header-align="center"
                                     align="center">
                             </el-table-column>
@@ -196,6 +221,28 @@
                             </el-tree>-->
                             <!-- 选择任务 -->
                             <ul id="classTree" class="ztree"></ul>
+                        </el-form-item>
+                        <el-form-item label="所属警种" prop="policeclass">
+                            <el-select v-model="learnTasks.policeclass" placeholder="所属警种" >
+                                <el-option
+                                        v-for="item in policeclassOption"
+                                        :key="item.code"
+                                        :label="item.value"
+                                        :value="item.code"
+                                >
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="所属分类" prop="taskClass">
+                            <el-select v-model="learnTasks.taskClass" placeholder="所属分类" >
+                                <el-option
+                                        v-for="item in taskClassOption"
+                                        :key="item.code"
+                                        :label="item.value"
+                                        :value="item.code"
+                                >
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item label="开始日期" prop="startTime">
                             <el-date-picker
