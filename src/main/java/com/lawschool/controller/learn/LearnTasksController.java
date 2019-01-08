@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
+import com.lawschool.beans.ExerciseConfigureEntity;
 import com.lawschool.beans.User;
 import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.beans.learn.LearnTasksEntity;
@@ -175,5 +176,15 @@ public class LearnTasksController extends AbstractController {
         //插入学习记录
         recordService.insertStuRecord(user,stuId,stuType,stuFrom,taskId);
         return Result.ok();
+    }
+
+    @RequestMapping("/getCount")
+    public Result getCount(@RequestParam Map<String, Object> params){
+        Result result = new Result();
+        User user=getUser();
+        params.put("userId",user.getId());
+        int count = tasksService.countTask(params);
+        result.put("learnTasks",count);
+        return  result;
     }
 }
