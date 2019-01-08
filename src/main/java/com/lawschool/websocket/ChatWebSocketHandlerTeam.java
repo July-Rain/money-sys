@@ -213,6 +213,13 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 		if(message.getPayloadLength()==0)return;
 		//反序列化服务端收到的json消息
 		MessageByTeam msg = GsonUtils.fromJson(message.getPayload().toString(), MessageByTeam.class);
+
+        if(msg.getMyanswer()!=null && msg.getTq()!=null)
+        {
+            competitionOnlineService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom());
+        }
+
+
 		if(msg.getText().equals("addroom") && msg.getTeamOrGame().equals("1")) //当触发新建房间事件
 		{
 			//这时候要建房间了。有这个按钮的权限必定是房主，用这个人的id就好他要不要线程呢。 要把

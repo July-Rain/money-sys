@@ -52,7 +52,7 @@ var vm = new Vue({
                 vm.questionError();
             }
             //不管答对答错  都要走保存题目的方法
-            oryesorno();//答完题目入库保存记录
+            // oryesorno();//答完题目入库保存记录
             //触发发送事件
             $("#msg").val("答题了");
             sendMsg();
@@ -467,6 +467,7 @@ function oryesorno() {
     //数据格式问题  把这两个时间值为空
     vm.Question.tuIsstim="";
     vm.Question.stuIsstim="";
+    console.info(vm.Question)
     $.ajax({
         type: "POST",
         url: baseURL + 'competitionOnline/saveQuestion?myanswer='+vm.answers,

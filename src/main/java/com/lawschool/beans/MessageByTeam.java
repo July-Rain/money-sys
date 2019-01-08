@@ -73,6 +73,19 @@ public class MessageByTeam {
 	@Expose
 	TestQuestions tq=new TestQuestions();
 
+	//我的答案
+	@Expose
+	public String myanswer;
+
+
+	public String getMyanswer() {
+		return myanswer;
+	}
+
+	public void setMyanswer(String myanswer) {
+		this.myanswer = myanswer;
+	}
+
 	public String getNowtimu() {
 		return nowtimu;
 	}
