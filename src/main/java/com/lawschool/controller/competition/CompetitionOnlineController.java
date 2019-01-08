@@ -2,6 +2,7 @@ package com.lawschool.controller.competition;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.beans.User;
 import com.lawschool.beans.competition.BattleTopicSetting;
 import com.lawschool.beans.competition.CompetitionOnline;
 import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
@@ -9,6 +10,7 @@ import com.lawschool.beans.competition.RecruitConfiguration;
 import com.lawschool.service.competition.CompetitionOnlineService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -115,7 +117,8 @@ public class CompetitionOnlineController {
     @RequestMapping("/saveQuestion")
     public void saveQuestion(@RequestBody TestQuestions testQuestions,String myanswer){
 
-//        competitionOnlineService.saveQuestion(testQuestions,myanswer);
+        User u = (User) SecurityUtils.getSubject().getPrincipal();
+         competitionOnlineService.saveQuestion(testQuestions,myanswer,u.getId());
 
     }
 

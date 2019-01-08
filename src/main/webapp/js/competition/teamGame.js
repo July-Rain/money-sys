@@ -52,7 +52,7 @@ var vm = new Vue({
                 vm.questionError();
             }
             //不管答对答错  都要走保存题目的方法
-            // vm.oryesorno();//答完题目入库保存记录
+            oryesorno();//答完题目入库保存记录
             //触发发送事件
             $("#msg").val("答题了");
             sendMsg();
@@ -462,3 +462,20 @@ Date.prototype.Format = function (fmt) { //author: meizz
 }
 
 
+//不管答对答错 都要入库方法
+function oryesorno() {
+    //数据格式问题  把这两个时间值为空
+    vm.Question.tuIsstim="";
+    vm.Question.stuIsstim="";
+    $.ajax({
+        type: "POST",
+        url: baseURL + 'competitionOnline/saveQuestion?myanswer='+vm.answers,
+        contentType: "application/json",
+        async:false,
+        data: JSON.stringify(vm.Question),
+        success: function (result) {
+        }
+    });
+
+
+}
