@@ -1,6 +1,7 @@
 package com.lawschool.beans.diagnosis;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * ClassName: DiagnosisEntity
@@ -11,9 +12,22 @@ import java.io.Serializable;
  * @since JDK 1.8
  */
 public class DiagnosisEntity implements Serializable {
-    private int value;
+    //学习时长
+    private BigDecimal value;
+    //学习次数
+    private int countStu;
+    //名称
     private String name;
+    //类型
     private String type;
+
+    public int getCountStu() {
+        return countStu;
+    }
+
+    public void setCountStu(int countStu) {
+        this.countStu = countStu;
+    }
 
     public String getType() {
         return type;
@@ -23,11 +37,11 @@ public class DiagnosisEntity implements Serializable {
         this.type = type;
     }
 
-    public int getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 

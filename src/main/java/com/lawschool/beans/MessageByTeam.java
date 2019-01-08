@@ -62,6 +62,54 @@ public class MessageByTeam {
 	@Expose
 	public String battleCode;
 
+
+	//当前答到第几题
+	@Expose
+	public String nowtimu;
+
+	@Expose
+	List<TestQuestions> tqList=new ArrayList<TestQuestions>();
+	//题目
+	@Expose
+	TestQuestions tq=new TestQuestions();
+
+	//我的答案
+	@Expose
+	public String myanswer;
+
+
+	public String getMyanswer() {
+		return myanswer;
+	}
+
+	public void setMyanswer(String myanswer) {
+		this.myanswer = myanswer;
+	}
+
+	public String getNowtimu() {
+		return nowtimu;
+	}
+
+	public void setNowtimu(String nowtimu) {
+		this.nowtimu = nowtimu;
+	}
+
+	public List<TestQuestions> getTqList() {
+		return tqList;
+	}
+
+	public void setTqList(List<TestQuestions> tqList) {
+		this.tqList = tqList;
+	}
+
+	public TestQuestions getTq() {
+		return tq;
+	}
+
+	public void setTq(TestQuestions tq) {
+		this.tq = tq;
+	}
+
 	public String getTeamOrGame() {
 		return teamOrGame;
 	}

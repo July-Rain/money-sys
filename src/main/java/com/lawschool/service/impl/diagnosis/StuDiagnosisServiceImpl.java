@@ -2,6 +2,7 @@ package com.lawschool.service.impl.diagnosis;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.beans.User;
+import com.lawschool.beans.diagnosis.DiagnosisEntity;
 import com.lawschool.dao.diagnosis.StuDiagnosisDao;
 import com.lawschool.service.UserService;
 import com.lawschool.service.diagnosis.StuDiagnosisService;
@@ -35,6 +36,10 @@ public class StuDiagnosisServiceImpl implements StuDiagnosisService {
         Result result= Result.ok();
         //返回学情数据
         result.put("data",diagnosisDao.getDiaInfo(param));
+
+        //学习模块的各个个数统计
+        result.put("stuCount",DiaStat(param));
+
         //学情统计数据封装
         List<Map<String,Object>> stuInfo = new ArrayList<>();
         //视频学习
@@ -71,6 +76,8 @@ public class StuDiagnosisServiceImpl implements StuDiagnosisService {
         stuInfo.add(learntaskMap);
 
         result.put("stuInfo",stuInfo);
+
+
         return result;
     }
 
@@ -106,5 +113,10 @@ public class StuDiagnosisServiceImpl implements StuDiagnosisService {
     @Override
     public int getRankNo(Map<String, String> param) {
         return diagnosisDao.getRankNo(param);
+    }
+
+    @Override
+    public List<DiagnosisEntity> DiaStat(Map<String, String> param) {
+        return diagnosisDao.DiaStat(param);
     }
 }

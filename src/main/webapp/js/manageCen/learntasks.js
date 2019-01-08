@@ -34,7 +34,9 @@ var vm = new Vue({
             taskName: '',
             currPage: 1,
             pageSize: 10,
-            totalCount: 0
+            totalCount: 0,
+            taskClass:"",
+            policeclass:""
         },
         tableData: [],//表格数据
         visible: false,
@@ -50,7 +52,9 @@ var vm = new Vue({
             taskContent:"",
             startTime:"",
             endTime:"",
-            taskContentList:[]
+            taskContentList:[],
+            taskClass:"",
+            policeclassOption:""
 
         },
         rules: {//表单验证规则
@@ -96,6 +100,8 @@ var vm = new Vue({
             children: 'child',
             label: 'infoName'
         },//法律法规树默认数据
+        taskClassOption:[],//所属分类
+        policeclassOption:[]//所属警种
        // multipleClassSelection:[]//法律法规数据选择框
     },
     created: function () {
@@ -127,6 +133,29 @@ var vm = new Vue({
                     }
                 }
             });
+            // 所属警种
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async:false,
+                data: {type:"POLICACLASS",Parentcode:"0"},
+                success: function (result) {
+                    vm.policeclassOption=result.dictlist;
+                }
+            });
+            // 所属分类
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async:false,
+                data: {type:"TASKCLASS",Parentcode:"0"},
+                success: function (result) {
+                    debugger
+                    vm.taskClassOption=result.dictlist;
+                }
+            });
             this.reload();
             this.reloadUser();
             vm.menuForm=menu;
@@ -149,6 +178,7 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
+                    debugger
                     var url = vm.learnTasks.id ? "learntasks/update?menuFrom="+vm.menuForm : "learntasks/insert?menuFrom="+vm.menuForm;
                     var deptArr = vm.learnTasks.deptIds?vm.learnTasks.deptIds.split(","):[];
                     var userArr = vm.learnTasks.userIds?vm.learnTasks.userIds.split(","):[];
@@ -198,7 +228,9 @@ var vm = new Vue({
                 taskContent:"",
                 startTime:"",
                 endTime:"",
-                taskContentList:[]
+                taskContentList:[],
+                taskClass:"",
+                policeclassOption:""
             };
             this.title = "新增学习任务";
             this.dialogLearnTask = true;
@@ -258,7 +290,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "learntasks/list?isMp=true",
+                url: baseURL + "learntasks/listICreate?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {

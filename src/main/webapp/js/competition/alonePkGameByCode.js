@@ -108,7 +108,7 @@ var vm = new Vue({
 var uid=null;
 //发送人编号
 var from=null;
-//当前第几题  默认1
+//当前第几题  默认1  排序0
 var nowtimu=0;
 var fromName;
 //接收人编号

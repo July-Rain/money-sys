@@ -329,9 +329,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	}
 	@Override
 	public void saveQuestion(TestQuestions testQuestions, String myanswer,String userid) {
-		//去作用域中取user
-//		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-//		User u= (User) request.getSession().getAttribute("user");
+	try{
 		UserQuestRecord userQuestRecord=new UserQuestRecord();
 		userQuestRecord.setId(IdWorker.getIdStr());//id
 		userQuestRecord.setUserId(userid);//userid
@@ -343,7 +341,12 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 		userQuestRecord.setQuestionType(testQuestions.getQuestionType());//题目类型
 		userQuestRecord.setSpecialKnowledgeId(testQuestions.getSpecialKnowledgeId());//知识点
 		userQuestRecord.setSource("onlinPk");//添加来源
-		userQuestRecordService.insert(userQuestRecord);
+		userQuestRecordService.insert(userQuestRecord);}
+	catch(Exception e)
+	{
+		System.out.println(e);
+	}
+
 	}
 
 	//保存分数记录
