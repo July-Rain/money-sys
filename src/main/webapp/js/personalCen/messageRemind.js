@@ -20,9 +20,9 @@ var vm = new Vue({
         msgList:[],//接收推送的消息
         tableData:[],//表格数据
         formInline:{
-            currPage:"",
-            pageSize:"",
-            totalCount:""
+            currPage:0,
+            pageSize:0,
+            totalCount:0
         }
     },
     created: function () {
@@ -48,6 +48,15 @@ var vm = new Vue({
                 }
             });
         },
-
+        handleSizeChange: function (val) {
+            console.log('每页' + val + '条');
+        },
+        handleCurrentChange: function (val) {
+            console.log('当前页:' + val);
+        },
+        toUrl: function(url) {
+            alert(1)
+            window.location.href = baseURL + url
+        }
     }
 });
