@@ -1,5 +1,7 @@
 package com.lawschool.serviceimpl.competition;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.competition.TeamUser;
 import com.lawschool.dao.competition.TeamUserDao;
 import com.lawschool.service.competition.TeamUserService;
@@ -14,18 +16,18 @@ public class TeamUserServiceImpl extends ServiceImpl<TeamUserDao, TeamUser> impl
 
 
 	@Override
-	public void save(String id) {
+	public void save(String teamId,String uid) {
 
 		TeamUser teamUser=new TeamUser();
-
-		teamUser.setUserId("这里放useid");
-		teamUser.setTeamId(id);//这是战队id  这些后面都要改的
+		teamUser.setId(IdWorker.getIdStr());
+		teamUser.setUserId(uid);
+		teamUser.setTeamId(teamId);//这是战队id  这些后面都要改的
 		this.insert(teamUser);
 
 	}
 
 	@Override
-	public void deleteId(String id) {
-		this.deleteById(id);
+	public void deleteTeamUser(String teamId,String uid) {
+		this.delete(new EntityWrapper<TeamUser>().eq("TEAM_ID",teamId).eq("USER_ID",uid));
 	}
 }

@@ -61,9 +61,24 @@
                                                 -->
                                             </ul>
                                         </div>
-                                        <div class="down" >
+                                        <div class="down" v-show="teamtype">
                                             <textarea class="textInfo" id="msg" title="按ctrl+enter直接发送"></textarea>
                                             <el-button class="btn" id="sendBtn">发送</el-button>
+                                        </div>
+                                        <div class="down" v-show="dialogQuestion">
+                                            一共{{allnum}}题，当前第{{nownum}}题，当前题目分值{{nowQscore}}
+                                            <br/><br/>
+                                            [{{Question.questionType==10004?'单选题':Question.questionType==10005?'多选题':'判断题'}}] {{Question.comContent}}
+                                            <br/>
+                                            <br/>
+                                            <el-radio-group v-model="answers" v-if="Question.questionType==10004 || Question.questionType==10006"
+                                            >
+                                                <el-radio :label="answer.id" v-for="answer in Question.answerList" :disabled="radio_disabled"
+                                                          @change="radioCheck(answer.id, Question.answerId, Question.questionType)" >
+                                                    {{answer.questionContent}}
+                                                </el-radio>
+                                                <br/>
+                                            </el-radio-group>
                                         </div>
                                     </div>
                                     <div  v-show="teamtype2" id="chatSidebar2" class="chatSidebar2">
@@ -73,6 +88,10 @@
                                               -->
                                         </ul>
                                     </div>
+
+                                    <br/>
+
+
                                 </div>
 
 

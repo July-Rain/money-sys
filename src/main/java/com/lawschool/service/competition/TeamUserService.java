@@ -15,8 +15,8 @@ import com.lawschool.beans.competition.TeamUser;
 public interface TeamUserService extends IService<TeamUser> {
 
 
-    public void save(String id);
+    public void save(String teamId,String uid);
 
-    public void deleteId(String id);
+    public void deleteTeamUser(String teamId,String uid);
 
 }
