@@ -18,9 +18,7 @@ var vm = new Vue({
             addsrc:"1",
             createUser:"",
             startTime:"",
-            endTime:"",
-            addsrc:"1",
-            createUser:"",
+            endTime:""
         },
         visible: false,
         stuMedia: {
@@ -60,7 +58,7 @@ var vm = new Vue({
                 }
             });
 
-        })
+        });
         this.$nextTick(function () {
             this.reload();
         })
@@ -151,5 +149,8 @@ var vm = new Vue({
         cancelLaw: function () {
             this.dialogLaw=false;
         },
+        toUrl: function (url) {
+            window.location.href = baseURL + url
+        }
     }
 });

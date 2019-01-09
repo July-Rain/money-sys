@@ -118,4 +118,61 @@
         s. ID = #{userId}
 
     </select>
+
+    <select id="DiaStat" resultType="com.lawschool.beans.diagnosis.DiagnosisEntity" parameterType="map">
+        select sum(STU_COUNT) as value,'law' as type,
+        '法律法规' as name
+        from LAW_STU_RECORD
+        where user_id=#{userId}
+        and STU_TYPE='law'
+        <if test="startTime != null and startTime!=''">
+            AND <![CDATA[STU_TIME >= TO_DATE(#{startTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        <if test="endTime != null and endTime!=''">
+            AND <![CDATA[STU_TIME <= TO_DATE(#{endTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        UNION ALL
+        select sum(STU_COUNT) as value,'stu_video' as type,
+        '视频' as name
+        from LAW_STU_RECORD
+        where user_id=#{userId}
+        and STU_TYPE='stu_video'
+        <if test="startTime != null and startTime!=''">
+            AND <![CDATA[STU_TIME >= TO_DATE(#{startTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        <if test="endTime != null and endTime!=''">
+            AND <![CDATA[STU_TIME <= TO_DATE(#{endTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        UNION ALL
+        select sum(STU_COUNT) as value,'stu_audio' as type,
+        '音频' as name
+        from LAW_STU_RECORD
+        where user_id=#{userId}
+        and STU_TYPE='stu_audio'
+        <if test="startTime != null and startTime!=''">
+            AND <![CDATA[STU_TIME >= TO_DATE(#{startTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        <if test="endTime != null and endTime!=''">
+            AND <![CDATA[STU_TIME <= TO_DATE(#{endTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        UNION ALL
+        select sum(STU_COUNT) as value,'stu_pic' as type,
+        '图文' as name
+        from LAW_STU_RECORD
+        where user_id=#{userId}
+        and STU_TYPE='stu_pic'
+        <if test="startTime != null and startTime!=''">
+            AND <![CDATA[STU_TIME >= TO_DATE(#{startTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        <if test="endTime != null and endTime!=''">
+            AND <![CDATA[STU_TIME <= TO_DATE(#{endTime}, 'yyyy-mm-dd')]]>
+        </if>
+    </select>
 </mapper>

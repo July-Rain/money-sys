@@ -55,6 +55,22 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
     @TableField(exist = false)
     private int finishCount;//完成课程数量
 
+    private String policeclass;//所属警种
+    @TableField(exist = false)
+    private String policeclassName;//所属警种的名称
+
+    private String taskClass;//所属任务分类
+    @TableField(exist = false)
+    private String taskClassName;//所属任务分类名称
+
+    private String deptCode;//所属部门code
+
+    private int countUser; //任务下人员的个数
+
+    private int countData;//任务节点下数据的个数
+
+    private String isUse;//是否使用
+
     @TableField(exist = false)
     private List<TaskDesicEntity> taskContentList=new ArrayList<TaskDesicEntity>();//法律法规内容arr
 
@@ -167,5 +183,69 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
 
     public void setFinishCount(int finishCount) {
         this.finishCount = finishCount;
+    }
+
+    public String getPoliceclass() {
+        return policeclass;
+    }
+
+    public void setPoliceclass(String policeclass) {
+        this.policeclass = policeclass;
+    }
+
+    public String getPoliceclassName() {
+        return policeclassName;
+    }
+
+    public void setPoliceclassName(String policeclassName) {
+        this.policeclassName = policeclassName;
+    }
+
+    public String getTaskClass() {
+        return taskClass;
+    }
+
+    public void setTaskClass(String taskClass) {
+        this.taskClass = taskClass;
+    }
+
+    public String getTaskClassName() {
+        return taskClassName;
+    }
+
+    public void setTaskClassName(String taskClassName) {
+        this.taskClassName = taskClassName;
+    }
+
+    public String getDeptCode() {
+        return deptCode;
+    }
+
+    public void setDeptCode(String deptCode) {
+        this.deptCode = deptCode;
+    }
+
+    public int getCountUser() {
+        return countUser;
+    }
+
+    public void setCountUser(int countUser) {
+        this.countUser = countUser;
+    }
+
+    public int getCountData() {
+        return countData;
+    }
+
+    public void setCountData(int countData) {
+        this.countData = countData;
+    }
+
+    public String getIsUse() {
+        return isUse;
+    }
+
+    public void setIsUse(String isUse) {
+        this.isUse = isUse;
     }
 }

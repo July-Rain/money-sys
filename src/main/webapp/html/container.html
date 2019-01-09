@@ -118,14 +118,14 @@
                                 <span>学年积分</span>
                                 <span><span>{{yearPlan.integraled}}</span>/<span>{{yearPlan.integral}}</span></span>
                             </div>
-                            <el-progress :show-text="false" :stroke-width="12" :percentage="yearPlan.integraled/yearPlan.integral*100" color="rgb(77,180,154)"></el-progress>
+                            <el-progress :show-text="false" :stroke-width="12" :percentage="yearPlan.integraled/yearPlan.integral*100 || 0" color="rgb(77,180,154)"></el-progress>
                         </div>
                         <div class="target-div">
                             <div class="title">
                                 <span>学年学分</span>
                                 <span><span>{{yearPlan.credited}}</span>/<span>{{yearPlan.credit}}</span></span>
                             </div>
-                            <el-progress :show-text="false" :stroke-width="12" :percentage="yearPlan.credited/yearPlan.credit*100" color="#feae23"></el-progress>
+                            <el-progress :show-text="false" :stroke-width="12" :percentage="yearPlan.credited/yearPlan.credit || 0" color="#feae23"></el-progress>
                         </div>
                     </div>
                 </div>
@@ -270,7 +270,7 @@
                             </el-form-item>
                             <el-form-item prop="user">
                                 <el-input v-model="formInline.user" placeholder="提示" size="mini" clearable></el-input>
-                            </el-form-item>
+                                </el-form-item>
                             <el-form-item prop="chooseDate" label="选择日期">
                                 <el-date-picker
                                         v-model="formInline.chooseDate"

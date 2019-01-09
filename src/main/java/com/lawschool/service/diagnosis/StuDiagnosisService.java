@@ -44,4 +44,14 @@ public interface StuDiagnosisService {
      **/
 
     int getRankNo(Map<String,String> param);
+
+    /**
+     * @Author MengyuWu
+     * @Description 统计学习各个模块的个数
+     * @Date 14:53 2019-1-8
+     * @Param 
+     * @return 
+     **/
+
+    List<DiagnosisEntity> DiaStat(Map<String,String> param);
 }
