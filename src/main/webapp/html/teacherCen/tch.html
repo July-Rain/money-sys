@@ -5,7 +5,6 @@
     <#include "/header.html">
 </head>
 <style>
-
 </style>
 <body>
 <div id="app" v-cloak>
@@ -18,20 +17,28 @@
 
             <el-col :span="20">
                 <el-tabs type="border-card">
-                    <el-tab-pane label="教官展示">
-                        <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-                            <el-form-item prop="userName">
-                                <el-input v-model="formInline.userName" placeholder="姓名" size="mini"></el-input>
-                            </el-form-item>
-                            <el-form-item prop="userCode">
-                                <el-input v-model="formInline.userCode" placeholder="身份证号" size="mini"></el-input>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                                <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
-                            </el-form-item>
-                        </el-form>
-                        <div>
+                    <div class="info_card">
+                        <div class="card_title">
+                            <i class="iconfont icon-jiansuo"></i>
+                            <h3>检索工具</h3>
+                        </div>
+                        <div class="card_contain">
+                            <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+                                <el-form-item prop="userName">
+                                    <el-input v-model="formInline.userName" placeholder="姓名" size="mini"></el-input>
+                                </el-form-item>
+                                <el-form-item prop="userCode">
+                                    <el-input v-model="formInline.userCode" placeholder="身份证号" size="mini"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
+                                    <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
+                                </el-form-item>
+                            </el-form>
+                        </div>
+                    </div>
+
+                    <div>
 
                             <el-row :gutter="30">
                                     <el-col :span="6" v-for="(item, index) in tchData">
@@ -59,7 +66,6 @@
                                     :total="formInline.totalCount">
                             </el-pagination>
                         </div>
-                    </el-tab-pane>
                 </el-tabs>
             </el-col>
 
