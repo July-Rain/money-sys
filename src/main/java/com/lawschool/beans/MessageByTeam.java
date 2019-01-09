@@ -77,6 +77,17 @@ public class MessageByTeam {
 	@Expose
 	public String myanswer;
 
+	//正确答案
+	@Expose
+	public String rightAnswer;
+
+	public String getRightAnswer() {
+		return rightAnswer;
+	}
+
+	public void setRightAnswer(String rightAnswer) {
+		this.rightAnswer = rightAnswer;
+	}
 
 	public String getMyanswer() {
 		return myanswer;

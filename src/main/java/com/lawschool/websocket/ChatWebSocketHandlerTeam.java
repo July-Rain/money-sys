@@ -58,8 +58,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 
 	//根据战队code纯共用的计数器
     public static final Map<String, Integer> count;
-    //定义一个计数器
-    public static  int jishu=0;
+
 	//存储所有的在线用户
 	static {
 		USER_SOCKETSESSION_MAP = new HashMap<String, WebSocketSession>();
@@ -214,7 +213,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 		//反序列化服务端收到的json消息
 		MessageByTeam msg = GsonUtils.fromJson(message.getPayload().toString(), MessageByTeam.class);
 
-        if(msg.getMyanswer()!=null && msg.getTq()!=null)
+        if( (msg.getMyanswer()!=null && !"".equals(msg.getMyanswer())) && (msg.getTq()!=null))
         {
             competitionOnlineService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom());
         }
@@ -436,8 +435,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
         if(count.get(teamCode)==0)
         {
             count.put(teamCode,count.get(teamCode)+1);//+1
-            if(jishu==0){
-                jishu=jishu+1;
+
                 // 记录日志，准备关闭连接
                 System.out.println("Websocket正常断开:" + webSocketSession.getId() + "已经关闭");
                 //获取异常的用户的会话中的用户编号
@@ -491,12 +489,13 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
                     timussettingMap.remove(battlePlatform.getBattleCode());
                     if(battlePlatform.getPlay2()==null)//如果没有玩家2  结束
                     {
-                        jishu=0;
+
                     }
                     else
                     {
-                        CompetitionTeam TeamPlay2=competitionTeamService.selectById(battlePlatform.getPlay2());
 
+                        CompetitionTeam TeamPlay2=competitionTeamService.selectById(battlePlatform.getPlay2());
+						count.put(TeamPlay2.getTeamCode(),count.get(TeamPlay2.getTeamCode())+1);
                         //得到整个战队人员id 去遍历发消息与退出
                         List<String> ids2=USER_ids.get(TeamPlay2.getTeamCode());
                         for(String id:ids2)
@@ -510,7 +509,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
                                 SocketSession.close();
                             }
                         }
-                        jishu=0;
+
                         count.remove(TeamPlay2.getTeamCode());
                         //清除静态变量
                         USER_TEAM.remove(TeamPlay2.getTeamCode());
@@ -543,7 +542,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
                                 SocketSession.close();
                             }
                         }
-                        jishu=0;
+
                         count.remove(teamCode);
                         competitionTeam.setStatus("0");
                         competitionTeamService.updateById(competitionTeam);//改变状态位
@@ -592,14 +591,10 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
                         TextMessage message = new TextMessage(GsonUtils.toJson(msg));
                         //群发消息
                         sendMessageToUserByList(msg.getTo(),message);
-                        jishu=0;
+
                         count.put(teamCode,0);//+1
                     }
                 }
-
-
-            }
-
 
 
 
