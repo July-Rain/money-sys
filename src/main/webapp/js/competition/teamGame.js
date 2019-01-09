@@ -31,7 +31,7 @@ var vm = new Vue({
         BattleTopicSettings:[],//题目配置集合
         nowbattleTopicSetting:"",//当前题目配置
 
-        u:"",//人
+        u:{},//人
         competitionTeam:"",//队伍信息
         teamtype:true,//组队和比赛模式下 不同展示的东西  （组队）
         teamtype2:false,//组队和比赛模式下 不同展示的东西  （比赛）
@@ -54,8 +54,7 @@ var vm = new Vue({
             // alert("我选的"+id);
             // alert("正确的"+answerId);
             //如果答对了
-            console.info(vm.answers);
-            console.info(answerId);
+
            vm.rightAnswer= answerId;//把正确答案给上去
             if(id==answerId)
             {
@@ -230,8 +229,8 @@ websocket.onmessage = function(event) {
             vm.nowbattleTopicSetting=data.competitionOnline.battleTopicSettingList[Number(nowtimu)];//当前题目配置
             vm.Question=data.tqList[Number(nowtimu)];//当前题目内容
 
-            $('#chatUserList li').last().after("<li>"+"总分为："+0+"</li>");
-            $('#chatUserList2 li').last().after("<li>"+"总分为："+0+"</li>");
+            $('#chatUserList li').last().after("<li>"+"总分为：0分"+"</li>");
+            $('#chatUserList2 li').last().after("<li>"+"总分为：0分"+"</li>");
 
         }
 
@@ -262,8 +261,6 @@ websocket.onmessage = function(event) {
                 writeAnswers.push("1")
             }
 
-            console.info(answerpeople);
-            console.info(writeAnswers);
 
             $('#chatUserList').find('li').each(function(){
                     var thisli=$(this);
@@ -283,7 +280,7 @@ websocket.onmessage = function(event) {
                            }
                        }
                     }
-            })
+            });
 
             $('#chatUserList2').find('li').each(function(){
                 var thisli=$(this);
@@ -308,11 +305,60 @@ websocket.onmessage = function(event) {
             if(answerpeople.length==data.to.length)
             {
                 setTimeout(function(){
+                    answerpeople=[];//再将这个回答过的人制空
+                    writeAnswers=[];//再将这个回答过答案制空
+                    $('#chatUserList').find('li').each(function(){
+                        $(this).find("span").html("");
+                    })
+                    $('#chatUserList2').find('li').each(function(){
+                        $(this).find("span").html("");
+                    })
                     //如果都回答过了
                     // 题目要变
                     //收到消息时候来变化题目，前提是2人回答过
                     if(data.tqList.length <= Number(nowtimu)) {
-                        alert("全部题目答完");
+
+
+                            console.info(Number(vm.allScore1));
+                            console.info(Number(vm.allScore2));
+                            console.info(vm.u);
+                            console.info(vm.u.fullName);
+                            if(Number(vm.allScore1)==Number(vm.allScore2))
+                            {
+                                alert("全部题目答完,得分一样，先什么也不做");
+                            }
+                            //遍历第一个user列表  看当前用户在不在   在了 就是赢了 不再就输了
+                            $('#chatUserList').find('li').each(function(){
+                                console.info($(this).text())
+
+                                if($(this).text()==vm.u.fullName){
+                                    if(Number(vm.allScore1)>Number(vm.allScore2)){
+                                        vm.myScore=Number(vm.myScore)+Number(data.competitionOnline.winReward);
+                                        recordScore(news.battlePlatform.id,'1',vm.myScore,'teamOnline',vm.u.id);
+                                        alert("全部题目答完,恭喜获胜,获得获胜者奖励"+data.competitionOnline.winReward+",最终得分"+vm.myScore);
+                                    } else if(Number(vm.allScore1)<Number(vm.allScore2)){
+                                        vm.myScore=Number(vm.myScore)+Number(data.competitionOnline.loserReward);
+                                        recordScore(news.battlePlatform.id,'0',vm.myScore,'teamOnline',vm.u.id);
+                                        alert("全部题目答完,很遗憾，失败,获得失败者奖励"+data.competitionOnline.loserReward+",最终得分"+vm.myScore);
+                                    }
+
+                                }
+                            });
+                            $('#chatUserList2').find('li').each(function(){
+                                if($(this).text()==vm.u.fullName){
+                                    if(Number(vm.allScore1)<Number(vm.allScore2)){
+                                        vm.myScore=Number(vm.myScore)+Number(data.competitionOnline.winReward);
+                                        recordScore(news.battlePlatform.id,'1',vm.myScore,'teamOnline',vm.u.id);
+                                        alert("全部题目答完,恭喜获胜,获得获胜者奖励"+data.competitionOnline.winReward+",最终得分"+vm.myScore);
+                                    } else if(Number(vm.allScore1)>Number(vm.allScore2)){
+                                        vm.myScore=Number(vm.myScore)+Number(data.competitionOnline.loserReward);
+                                        recordScore(news.battlePlatform.id,'0',vm.myScore,'teamOnline',vm.u.id);
+                                        alert("全部题目答完,很遗憾，失败,获得失败者奖励"+data.competitionOnline.loserReward+",最终得分"+vm.myScore);
+                                    }
+                                }
+                            });
+
+
                         closeWebsocket();
                     } else {
                         vm.dialogQuestion=true,
@@ -324,14 +370,7 @@ websocket.onmessage = function(event) {
                         vm.Question=data.tqList[Number(nowtimu)];//当前题目内容
                         // vm.yesOrNoAnswer="未答题";
                     }
-                    answerpeople=[];//再将这个回答过的人制空
-                    writeAnswers=[];//再将这个回答过答案制空
-                    $('#chatUserList').find('li').each(function(){
-                        $(this).find("span").html("");
-                    })
-                    $('#chatUserList2').find('li').each(function(){
-                        $(this).find("span").html("");
-                    })
+
                     }, 3000);
 
             }
@@ -544,20 +583,30 @@ Date.prototype.Format = function (fmt) { //author: meizz
 
 
 //不管答对答错 都要入库方法
-function oryesorno() {
-    //数据格式问题  把这两个时间值为空
-    vm.Question.tuIsstim="";
-    vm.Question.stuIsstim="";
-    console.info(vm.Question)
+// function oryesorno() {
+//     //数据格式问题  把这两个时间值为空
+//     vm.Question.tuIsstim="";
+//     vm.Question.stuIsstim="";
+//     console.info(vm.Question)
+//     $.ajax({
+//         type: "POST",
+//         url: baseURL + 'competitionOnline/saveQuestion?myanswer='+vm.answers,
+//         contentType: "application/json",
+//         async:false,
+//         data: JSON.stringify(vm.Question),
+//         success: function (result) {
+//         }
+//     });
+// }
+function recordScore(battlePlatformId,win,score,type,uid)
+{
     $.ajax({
         type: "POST",
-        url: baseURL + 'competitionOnline/saveQuestion?myanswer='+vm.answers,
-        contentType: "application/json",
-        async:false,
-        data: JSON.stringify(vm.Question),
+        url: baseURL + 'competitionOnline/recordScore',
+        dataType: "json",
+
+        data: {"battlePlatformId":battlePlatformId,"win":win,"score":score,"type":type,"uid":uid},
         success: function (result) {
         }
     });
-
-
 }

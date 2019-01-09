@@ -361,7 +361,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	@Transactional(rollbackFor = Exception.class)
 	public void recordScore(String battlePlatformId,String win,String score,String type,String uid) {
 
-		User u= userService.selectUserByUserId(uid);
+		User u= userService.selectById(uid);
 		BattleRecord battleRecord=new BattleRecord();
 		battleRecord.setId(IdWorker.getIdStr());
 		battleRecord.setBattlePlatformId(battlePlatformId);
