@@ -32,6 +32,8 @@ public class StuRecordEntity implements Serializable {
 
     private String taskId;//学习任务id
 
+    private String deptId;//部门id
+
     @Version
     @TableField(update = "%s+1")
     private Integer stuCount;//学习次数
@@ -132,5 +134,13 @@ public class StuRecordEntity implements Serializable {
 
     public void setStuTime(Date stuTime) {
         this.stuTime = stuTime;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
     }
 }

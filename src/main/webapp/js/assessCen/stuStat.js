@@ -19,6 +19,12 @@ var vm = new Vue({
                 type:"",//类型
                 name:""//文字描述
             },//学情统计数据
+            seriesNumData:[],//学习情况统计
+            deptStatData:[],//部门统计数据
+            tabLoading:true,
+            opacity0:true,
+            deptTempData:[],//部门临时数据
+            activeName:"person"
 
         }
     },
@@ -26,8 +32,9 @@ var vm = new Vue({
 
         this.$nextTick(function () {
             this.getStuDia();
-            this.initPie1()
-            //this.initBar1()
+            this.initPie1();
+            this.initPieNum();
+            //this.loadTabTreeData();
         })
 
 
@@ -125,101 +132,86 @@ var vm = new Vue({
             // 使用刚指定的配置项和数据显示图表。
             vm.echartsOption(myChart, option)
         },
-        /*initBar1: function () {
-            var myChart = echarts.init(document.getElementById('bar1'));
+        initPieNum: function () {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('pienum'));
+            // 指定图表的配置项和数据
             var option = {
-                color: ['#3398DB'],
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                        // },
-                        // formatter: function (value) {
-                        //     return value[0].axisValue + ':<br/>' + num[value[0].dataIndex] + '人（' + value[0].data + '%）'
+                backgroundColor: '#fff',
+
+                title: {
+                    text: '',
+                    left: 'center',
+                    top: 20,
+                    textStyle: {
+                        color: '#ccc'
                     }
                 },
-                grid: {
-                    left: '6%',
-                    right: '7%',
-                    bottom: '5%',
-                    top: '10%',
-                    containLabel: true
+
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
                 },
-                xAxis: [
-                    {
-                        type: 'category',
-                        data: ['刑法', '宪法', '民商法', '行政法', '社会法', '经济法', '诉讼及非讼程序法'],
-                        axisTick: {
-                            alignWithLabel: true
-                        },
-                        // 设置坐标轴字体颜色和宽度
-                        axisLine: {
-                            lineStyle: {
-                                color: ['#abafb2']
-                            }
-                        },
-                        axisLabel: {
-                            interval: 0,
-                            // rotate: 20,
-                            textStyle: {
-                                fontSize: 12 // 让字体变大
-                            }
-                        }
+
+                visualMap: {
+                    show: false,
+                    min: 80,
+                    max: 600,
+                    inRange: {
+                        colorLightness: [0, 1]
                     }
-                ],
-                yAxis: [
+                },
+                series : [
                     {
-                        type: 'value',
-                        axisLabel: {
-                            formatter: '{value} %'
-                        },
-                        interval: 25,
-                        max: 100,
-                        min: 0,
-                        // 设置坐标轴字体颜色和宽度
-                        axisLine: {
-                            lineStyle: {
-                                width: 0,
-                                color: ['#abafb2']
+                        name:'学习情况统计',
+                        type:'pie',
+                        radius : '55%',
+                        center: ['50%', '50%'],
+                        data:vm.seriesNumData.sort(function (a, b) { return a.value - b.value; }),
+                        roseType: 'radius',
+                        label: {
+                            normal: {
+                                textStyle: {
+                                    color: '#666'
+                                }
                             }
-                        }
-                    }
-                ],
-                series: [
-                    {
-                        type: 'bar',
-                        barWidth: 25,
-                        // itemStyle: {
-                        //     normal: {
-                        //         color: new echarts.graphic.LinearGradient(
-                        //             0, 0, 0, 0.3,
-                        //             [
-                        //                 {offset: 0, color: '#1994d7'},
-                        //                 {offset: 1, color: '#004b95'}
-                        //             ]
-                        //         )
-                        //     }
-                        // },
+                        },
+                        labelLine: {
+                            normal: {
+                                lineStyle: {
+                                    color: '#666'
+                                },
+                                smooth: 0.2,
+                                length: 10,
+                                length2: 20
+                            }
+                        },
                         itemStyle: {
                             normal: {
                                 // 定制显示（按顺序）
                                 color: function(params) {
-                                    var colorList = ["#36aae0","#feae24","#de6870","#1381e3","#81bdd8","#f97a1f","#5ebd5c"];
+                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
                                     return colorList[params.dataIndex]
                                 }
                             },
                         },
-                        data: [82, 52, 62, 41, 93, 63, 43]
+
+                        animationType: 'scale',
+                        animationEasing: 'elasticOut',
+                        animationDelay: function (idx) {
+                            return Math.random() * 200;
+                        }
                     }
                 ]
-            }
+            };
+            // 使用刚指定的配置项和数据显示图表。
             vm.echartsOption(myChart, option)
-        },*/
+        },
         getStuDia: function () {
             var loadInline={
                 currPage: 1,
                 pageSize: 2,
-                totalCount:0,};
+                totalCount:0};
             $.ajax({
                 async:false,
                 type: "POST",
@@ -230,11 +222,76 @@ var vm = new Vue({
                     if (result.code == 0) {
                         vm.seriesData = result.data;
                         vm.stuInfo=result.stuInfo;
+                        vm.seriesNumData = result.stuCount;
                     } else {
                         alert(result.msg);
                     }
                 }
             });
+        },
+        //初始话表格部门树
+        loadTabTreeData :function (){
+            $.ajax({
+                type: "POST",
+                url: baseURL + "diagnosis/getOrgDiaStat",
+                dataType: "json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.deptTempData = result.data;
+
+                        console.log(vm.deptTempData)
+                        vm.loadTabTreeFn();
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        loadTabTreeFn :function (){
+            this.showTableData();
+            this.$nextTick(function (){
+                var otb = null;
+
+                otb = new oTreeTable('otb', document.getElementById('tb1'), {skin:'default',showIcon:false,openLevel:0});
+
+                vm.tabLoading=false;
+                setTimeout(function () {
+                    vm.opacity0=false;
+                });
+            });
+        },
+        showTableData: function () {
+            var map = new Map();
+            for(var i = 0; i < vm.deptTempData.length; i++){
+                var statInfo = {
+                    id: "",
+                    pid: "",
+                    level: "",
+                    data: vm.deptTempData[i]
+                }
+                statInfo.id=vm.deptTempData[i].orgId;
+                statInfo.pid = vm.deptTempData[i].parentId;
+                statInfo.level=vm.deptTempData[i].orgLevel==null?0:vm.deptTempData[i].orgLevel;
+                map.set(vm.deptTempData[i].orgId,statInfo);
+            }
+            map.forEach(function(value, index, array) {
+                vm.deptStatData.push(value);
+            });
+            console.log(vm.deptStatData);
+        },
+        handleTabClick:function (tab,event) {
+            debugger
+            if(tab.name=='org'){
+                this.loadTabTreeData();
+                console.log("加载数据");
+            }else{
+                this.getStuDia();
+            }
+        }
+    },
+    filters: {
+        objTstring: function (value) {
+            return JSON.stringify(value);
         }
     }
 });

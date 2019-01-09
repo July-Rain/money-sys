@@ -175,4 +175,295 @@
             AND <![CDATA[STU_TIME <= TO_DATE(#{endTime}, 'yyyy-mm-dd')]]>
         </if>
     </select>
+
+    <select id="orgDiaStat" resultType="com.lawschool.beans.diagnosis.OrgDiagnosisEntity" parameterType="map">
+
+
+        SELECT
+        lawAll.ORG_ID as orgId,
+        lawAll.FULL_NAME as orgName,
+        lawAll.org_level as orgLevel,
+        lawAll.parent_id as parentId,
+        lawAll.lawAllCount,
+        videoAll.videoAllCount,
+        picAll.picAllCount,
+        audioAll.audioAllCount ,
+        lawTask.lawTaskCount ,
+        videoTask.videoTaskCount ,
+        picTask.picTaskCount ,
+        audioTask.audioTaskCount ,
+        videoCase.videoCaseCount ,
+        picCase.picCaseCount ,
+        audioCase.audioCaseCount
+
+        from
+        -- 全部法律法规
+        (SELECT
+            o.ORG_ID,
+            o.FULL_NAME,
+          o.parent_id,
+          o.org_level,
+            a.lawAllCount
+        FROM
+            LAW_ORG o
+        LEFT JOIN (
+            SELECT
+                SUM (STU_COUNT) AS lawAllCount,
+                DEPT_ID
+            FROM
+                LAW_STU_RECORD
+            WHERE
+                STU_TYPE = 'law'
+            GROUP BY
+                DEPT_ID
+
+        ) a
+        on o.ORG_ID = a.DEPT_ID) lawAll,
+
+         -- 全部视频数据
+        (SELECT
+            o.ORG_ID,
+            o.FULL_NAME,
+          o.parent_id,
+          o.org_level,
+            a.videoAllCount
+        FROM
+            LAW_ORG o
+        LEFT JOIN (
+            SELECT
+                SUM (STU_COUNT) AS videoAllCount,
+                DEPT_ID
+            FROM
+                LAW_STU_RECORD
+            WHERE
+                STU_TYPE = 'stu_video'
+            GROUP BY
+                DEPT_ID
+
+        ) a
+        on o.ORG_ID = a.DEPT_ID) videoAll,
+
+        --全部图文数据
+        (SELECT
+            o.ORG_ID,
+            o.FULL_NAME,
+          o.parent_id,
+          o.org_level,
+            a.picAllCount
+        FROM
+            LAW_ORG o
+        LEFT JOIN (
+            SELECT
+                SUM (STU_COUNT) AS picAllCount,
+                DEPT_ID
+            FROM
+                LAW_STU_RECORD
+            WHERE
+                STU_TYPE = 'stu_pic'
+            GROUP BY
+                DEPT_ID
+
+        ) a
+        on o.ORG_ID = a.DEPT_ID) picAll,
+
+        -- 全部音频数据
+        (SELECT
+            o.ORG_ID,
+            o.FULL_NAME,
+          o.parent_id,
+          o.org_level,
+            a.audioAllCount
+        FROM
+            LAW_ORG o
+        LEFT JOIN (
+            SELECT
+                SUM (STU_COUNT) AS audioAllCount,
+                DEPT_ID
+            FROM
+                LAW_STU_RECORD
+            WHERE
+                STU_TYPE = 'stu_audio'
+            GROUP BY
+                DEPT_ID
+
+        ) a
+        on o.ORG_ID = a.DEPT_ID) audioAll,
+
+        -- 学习任务法律法规
+        (SELECT
+            o.ORG_ID,
+            o.FULL_NAME,
+          o.parent_id,
+          o.org_level,
+            a.lawTaskCount
+        FROM
+            LAW_ORG o
+        LEFT JOIN (
+            SELECT
+                SUM (STU_COUNT) AS lawTaskCount,
+                DEPT_ID
+            FROM
+                LAW_STU_RECORD
+            WHERE
+                STU_TYPE='law' and STU_FROM='learntask'
+            GROUP BY
+                DEPT_ID
+
+        ) a
+        on o.ORG_ID = a.DEPT_ID) lawTask,
+
+        -- 学习任务视频
+        (SELECT
+            o.ORG_ID,
+            o.FULL_NAME,
+          o.parent_id,
+          o.org_level,
+            a.videoTaskCount
+        FROM
+            LAW_ORG o
+        LEFT JOIN (
+            SELECT
+                SUM (STU_COUNT) AS videoTaskCount,
+                DEPT_ID
+            FROM
+                LAW_STU_RECORD
+            WHERE
+                STU_TYPE='stu_video' and STU_FROM='learntask'
+            GROUP BY
+                DEPT_ID
+
+        ) a
+        on o.ORG_ID = a.DEPT_ID) videoTask,
+
+        -- 学习任务图文
+        (SELECT
+            o.ORG_ID,
+            o.FULL_NAME,
+          o.parent_id,
+          o.org_level,
+            a.picTaskCount
+        FROM
+            LAW_ORG o
+        LEFT JOIN (
+            SELECT
+                SUM (STU_COUNT) AS picTaskCount,
+                DEPT_ID
+            FROM
+                LAW_STU_RECORD
+            WHERE
+                STU_TYPE='stu_pic' and STU_FROM='learntask'
+            GROUP BY
+                DEPT_ID
+
+        ) a
+        on o.ORG_ID = a.DEPT_ID) picTask,
+
+        -- 学习任务音频数据
+        (SELECT
+            o.ORG_ID,
+            o.FULL_NAME,
+          o.parent_id,
+          o.org_level,
+            a.audioTaskCount
+        FROM
+            LAW_ORG o
+        LEFT JOIN (
+            SELECT
+                SUM (STU_COUNT) AS audioTaskCount,
+                DEPT_ID
+            FROM
+                LAW_STU_RECORD
+            WHERE
+                STU_TYPE='stu_audio' and STU_FROM='learntask'
+            GROUP BY
+                DEPT_ID
+
+        ) a
+        on o.ORG_ID = a.DEPT_ID) audioTask,
+
+
+        -- 案例分析视频
+        (SELECT
+            o.ORG_ID,
+            o.FULL_NAME,
+          o.parent_id,
+          o.org_level,
+            a.videoCaseCount
+        FROM
+            LAW_ORG o
+        LEFT JOIN (
+            SELECT
+                SUM (STU_COUNT) AS videoCaseCount,
+                DEPT_ID
+            FROM
+                LAW_STU_RECORD
+            WHERE
+                STU_TYPE='stu_video' and STU_FROM='caseana'
+            GROUP BY
+                DEPT_ID
+
+        ) a
+        on o.ORG_ID = a.DEPT_ID) videoCase,
+
+
+        -- 案例分析图文
+        (SELECT
+            o.ORG_ID,
+            o.FULL_NAME,
+          o.parent_id,
+          o.org_level,
+            a.picCaseCount
+        FROM
+            LAW_ORG o
+        LEFT JOIN (
+            SELECT
+                SUM (STU_COUNT) AS picCaseCount,
+                DEPT_ID
+            FROM
+                LAW_STU_RECORD
+            WHERE
+                STU_TYPE='stu_pic' and STU_FROM='caseana'
+            GROUP BY
+                DEPT_ID
+
+        ) a
+        on o.ORG_ID = a.DEPT_ID) picCase,
+
+
+        -- 案例分析音频数据
+        (SELECT
+            o.ORG_ID,
+            o.FULL_NAME,
+          o.parent_id,
+          o.org_level,
+            a.audioCaseCount
+        FROM
+            LAW_ORG o
+        LEFT JOIN (
+            SELECT
+                SUM (STU_COUNT) AS audioCaseCount,
+                DEPT_ID
+            FROM
+                LAW_STU_RECORD
+            WHERE
+                STU_TYPE='stu_audio' and STU_FROM='caseana'
+            GROUP BY
+                DEPT_ID
+
+        ) a
+        on o.ORG_ID = a.DEPT_ID) audioCase
+
+
+         where lawAll.ORG_ID=videoAll.ORG_ID
+
+              and lawAll.ORG_ID=picAll.ORG_ID
+              and lawAll.ORG_ID=audioAll.ORG_ID
+              and lawAll.ORG_ID=lawTask.ORG_ID
+              and lawAll.ORG_ID=videoTask.ORG_ID
+              and lawAll.ORG_ID=picTask.ORG_ID
+              and lawAll.ORG_ID=audioTask.ORG_ID
+              and lawAll.ORG_ID=videoCase.ORG_ID
+              and lawAll.ORG_ID=picCase.ORG_ID
+              and lawAll.ORG_ID=audioCase.ORG_ID
+    </select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.lawschool.service.diagnosis;
 
 import com.lawschool.beans.diagnosis.DiagnosisEntity;
+import com.lawschool.beans.diagnosis.OrgDiagnosisEntity;
 import com.lawschool.util.Result;
 
 import java.math.BigDecimal;
@@ -54,4 +55,14 @@ public interface StuDiagnosisService {
      **/
 
     List<DiagnosisEntity> DiaStat(Map<String,String> param);
+
+    /**
+     * @Author MengyuWu
+     * @Description 部门统计数据
+     * @Date 17:07 2019-1-9
+     * @Param [param]
+     * @return java.util.List<com.lawschool.beans.diagnosis.OrgDiagnosisEntity>
+     **/
+
+    List<OrgDiagnosisEntity> orgDiaStat(Map<String,String> param);
 }

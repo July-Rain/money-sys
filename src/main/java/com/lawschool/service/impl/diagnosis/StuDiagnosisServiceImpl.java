@@ -3,6 +3,7 @@ package com.lawschool.service.impl.diagnosis;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.beans.User;
 import com.lawschool.beans.diagnosis.DiagnosisEntity;
+import com.lawschool.beans.diagnosis.OrgDiagnosisEntity;
 import com.lawschool.dao.diagnosis.StuDiagnosisDao;
 import com.lawschool.service.UserService;
 import com.lawschool.service.diagnosis.StuDiagnosisService;
@@ -118,5 +119,10 @@ public class StuDiagnosisServiceImpl implements StuDiagnosisService {
     @Override
     public List<DiagnosisEntity> DiaStat(Map<String, String> param) {
         return diagnosisDao.DiaStat(param);
+    }
+
+    @Override
+    public List<OrgDiagnosisEntity> orgDiaStat(Map<String, String> param) {
+        return diagnosisDao.orgDiaStat(param);
     }
 }

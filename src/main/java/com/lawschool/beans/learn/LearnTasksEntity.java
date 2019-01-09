@@ -54,6 +54,8 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
     private int allCount;//任务中所有课程数量
     @TableField(exist = false)
     private int finishCount;//完成课程数量
+    @TableField(exist = false)
+    private int overCount;//超时完成数
 
     private String policeclass;//所属警种
     @TableField(exist = false)
@@ -67,7 +69,6 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
 
     private int countUser; //任务下人员的个数
 
-    private int countData;//任务节点下数据的个数
 
     private String isUse;//是否使用
 
@@ -233,13 +234,6 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
         this.countUser = countUser;
     }
 
-    public int getCountData() {
-        return countData;
-    }
-
-    public void setCountData(int countData) {
-        this.countData = countData;
-    }
 
     public String getIsUse() {
         return isUse;
@@ -247,5 +241,13 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
 
     public void setIsUse(String isUse) {
         this.isUse = isUse;
+    }
+
+    public int getOverCount() {
+        return overCount;
+    }
+
+    public void setOverCount(int overCount) {
+        this.overCount = overCount;
     }
 }
