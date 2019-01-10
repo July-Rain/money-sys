@@ -41,6 +41,7 @@ var vm = new Vue({
 
                     if(result.code === 0){
                         vm.treeData = result.orgList;
+                        console.info("tree",vm.treeData)
                     }else{
                         alert(result.msg);
                     }
