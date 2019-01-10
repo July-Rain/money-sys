@@ -45,7 +45,6 @@ var vm = new Vue({
                         if(url&&url!='container.html'){
                             vm.navData.push({
                                 icon: "icon-zaixianxuexi",
-                                id: "0",
                                 name: "返回首页",
                                 url: 'container.html'
                             });
@@ -68,8 +67,6 @@ var vm = new Vue({
             console.info("item!!!", item);
             if(item.url === 'container.html'){
                 vm.navData.splice(-1,1);
-                // vm.backShow = false;
-                console.log(vm.navData)
             }
             if (item.url) {
                 if(item.url.indexOf("?") == -1){
@@ -78,8 +75,21 @@ var vm = new Vue({
                     vm.childUrl = item.url + "&id=" + item.id;
                 }
 
-                this.loadNav(item.id,item.url)
-                // 并不需要更新菜单
+                if(
+                    item.url === 'container.html'
+                    || item.parentId == "0"
+                    || item.name === "系统管理"
+                    || item.name === "管理中心"
+                    || item.name === "评估中心"
+                    || item.name === "学情统计"
+                    || item.name === "考情统计"
+                    || item.name === "学分统计"
+                    || item.name === "积分统计"
+                    || item.name === "任务统计"
+                ){
+                    this.loadNav(item.id,item.url)
+                }
+
             } else {
                 if (item.list.length == 0) {
                     alert("暂无链接")
