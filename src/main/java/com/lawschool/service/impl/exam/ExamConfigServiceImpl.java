@@ -67,13 +67,12 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 
 		return new PageUtils(page);
 	}
+
 	/**
-	 * 
-	 * @Description:查询此用户所有考试信息
-	 * @Pwarms:@param userCode
-	 * @Pwarms:@param orgCode
-	 * @Pwarms:@return
-	 * @return:null
+	 * 查询此用户所有考试信息
+	 * @param userCode
+	 * @param orgCode
+	 * @return
 	 */
 	public List<ExamConfig> findByUser(String userCode, String orgCode) {
 		// 先查
@@ -85,10 +84,8 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	}
 
 	/**
-	 * 
-	 * @Description:删除考试配置
-	 * @Pwarms:@return
-	 * @return:int
+	 * 删除考试配置
+	 * @param id
 	 * @throws Exception
 	 */
 	@Transactional(rollbackFor = Exception.class)
@@ -121,24 +118,11 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 			generate(examConfig);
 		}
 	}
-	/**
-	 * 
-	 * @Description:根据考试配置ID获取试卷考试
-	 * @Pwarms:@param examConfigId
-	 * @return:void
-	 */
-	public void startExam(String examConfigId) {
-
-	}
 
 	/**
-	 * 
-	 * @Description:生成考试试题
-	 * @Pwarms:@param examConfig
-	 * @Pwarms:@param examQueList
-	 * @Pwarms:@param queList
-	 * @Pwarms:@throws Exception
-	 * @return:void
+	 *
+	 * @param examConfig
+	 * @throws Exception
 	 */
 	@Override
 	public void generate(ExamConfig examConfig)
@@ -158,106 +142,53 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 		if("10027".equals(examConfig.getGroupForm())){
 			//统一组卷,一套试题
 			//保存考试详情信息
-			ExamDetail examDetail = new ExamDetail();
-			examDetail.setId(GetUUID.getUUIDs("ED"));
-			examDetail.setOptTime(new Date());
-			examDetail.setCreateTime(new Date());
-			examDetail.setExamConfigId(examConfig.getId());
+			ExamDetail examDetail = saveExamDetail(examConfig.getId());
 			examDetailDao.insert(examDetail);
 			//预览的试卷当做一套试题
 			List<QuestForm> qfList = examConfig.getQfList();
 			if(UtilValidate.isNotEmpty(qfList)){
 				//预览了试卷，将预览试卷的题目直接保存
 				//保存考试试题信息
-				for (QuestForm qf : qfList) {
-					ExamQuestions examQuestions = new ExamQuestions();
-					examQuestions.setExamConfigId(examConfig.getId());
-					examQuestions.setId(GetUUID.getUUIDs("EQ"));
-					examQuestions.setExamDetailId(examDetail.getId());
-					examQuestions.setExamLibraryId(qf.getId());
-					examQuestionsDao.insert(examQuestions);
+				if("10033".equals(examConfig.getQuestionWay())){
+					for (ExamQueConfig examQueConfig : examQueList) {
+						//保存考试题目配置表
+						saveExamQueConfig(examConfig.getId(),examQueConfig);
+					}
 				}
+				saveExamQueByQueList(qfList,examConfig.getId(),examDetail.getId());
 			}else{
 				//没有预览试卷，根据出题方式出题
 				if("10033".equals(examConfig.getQuestionWay())){
 					//随机出题
 					for (ExamQueConfig examQueConfig : examQueList) {
 						// 根据配置从题库中获取
-						Map<String, Object> paramsMap = new HashMap<String, Object>();
-						paramsMap.put("specialKnowledgeId",examQueConfig.getSpecialKnowledgeId());
-						paramsMap.put("questionType",examQueConfig.getQuestionType());
-						paramsMap.put("num",examQueConfig.getQuestionNumber());
+						//保存考试题目配置表
+						saveExamQueConfig(examConfig.getId(),examQueConfig);
 						//根据考试配置获取题目ID
-						List<String> idLists = testQuestionService.findByNum(paramsMap);
-						for (String tqId : idLists){
-							ExamQuestions examQuestions = new ExamQuestions();
-							examQuestions.setExamConfigId(examConfig.getId());
-							examQuestions.setId(GetUUID.getUUIDs("EQ"));
-							examQuestions.setExamDetailId(examDetail.getId());
-							examQuestions.setExamLibraryId(tqId);
-							examQuestionsDao.insert(examQuestions);
-						}
+						List<String> idLists = getIdList(examQueConfig);
+						saveExamQueByIdList(idLists,examConfig.getId(),examDetail.getId());
 					}
 				}else{
 					//自主出题，直接获取试题ID存
 					List<String> idList = examConfig.getIdList();
-					for (String tqId : idList){
-						ExamQuestions examQuestions = new ExamQuestions();
-						examQuestions.setExamConfigId(examConfig.getId());
-						examQuestions.setId(GetUUID.getUUIDs("EQ"));
-						examQuestions.setExamDetailId(examDetail.getId());
-						examQuestions.setExamLibraryId(tqId);
-						examQuestionsDao.insert(examQuestions);
-					}
+					saveExamQueByIdList(idList,examConfig.getId(),examDetail.getId());
 				}
 			}
 		}else{
+			//随机组卷
+			int num = 50; //TODO 待改从配置文件取
 			//随机组卷：随机组卷时只能随机出题
 			//是否预览试卷
 			List<QuestForm> qfList = examConfig.getQfList();
 			if(UtilValidate.isNotEmpty(qfList)){
 				//不为空
-				ExamDetail examDetail = new ExamDetail();
-				examDetail.setId(GetUUID.getUUIDs("ED"));
-				examDetail.setOptTime(new Date());
-				examDetail.setCreateTime(new Date());
-				examDetail.setExamConfigId(examConfig.getId());
+				ExamDetail examDetail = saveExamDetail(examConfig.getId());
 				examDetailDao.insert(examDetail);
-				for (QuestForm qf : qfList) {
-					ExamQuestions examQuestions = new ExamQuestions();
-					examQuestions.setExamConfigId(examConfig.getId());
-					examQuestions.setId(GetUUID.getUUIDs("EQ"));
-					examQuestions.setExamDetailId(examDetail.getId());
-					examQuestions.setExamLibraryId(qf.getId());
-					examQuestionsDao.insert(examQuestions);
-				}
+				saveExamQueByQueList(qfList,examConfig.getId(),examDetail.getId());
 				//在生成49套试卷
-				for(int i=0;i<49;i++){
-					ExamDetail ed = new ExamDetail();
-					ed.setId(GetUUID.getUUIDs("ED"));
-					ed.setOptTime(new Date());
-					ed.setCreateTime(new Date());
-					ed.setExamConfigId(examConfig.getId());
-					examDetailDao.insert(ed);
-					//随机出题
-					for (ExamQueConfig examQueConfig : examQueList) {
-						// 根据配置从题库中获取
-						Map<String, Object> paramsMap = new HashMap<String, Object>();
-						paramsMap.put("specialKnowledgeId",examQueConfig.getSpecialKnowledgeId());
-						paramsMap.put("questionType",examQueConfig.getQuestionType());
-						paramsMap.put("num",examQueConfig.getQuestionNumber());
-						//根据考试配置获取题目ID
-						List<String> idLists = testQuestionService.findByNum(paramsMap);
-						for (String tqId : idLists){
-							ExamQuestions examQuestions = new ExamQuestions();
-							examQuestions.setExamConfigId(examConfig.getId());
-							examQuestions.setId(GetUUID.getUUIDs("EQ"));
-							examQuestions.setExamDetailId(ed.getId());
-							examQuestions.setExamLibraryId(tqId);
-							examQuestionsDao.insert(examQuestions);
-						}
-					}
-				}
+				generateNumExam(num-1,examConfig.getId(),examQueList);
+			}else{
+				generateNumExam(num,examConfig.getId(),examQueList);
 			}
 		}
 
@@ -284,26 +215,24 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 			// 获取题目配置规则
 			for (ExamQueConfig examQueConfig : examQueList) {
 				// 根据配置从题库中获取
-				Map<String, Object> paramsMap = new HashMap<String, Object>();
-				paramsMap.put("specialKnowledgeId",examQueConfig.getSpecialKnowledgeId());
-				paramsMap.put("questionType",examQueConfig.getQuestionType());
-				paramsMap.put("num",examQueConfig.getQuestionNumber());
-				List<String> idList = testQuestionService.findByNum(paramsMap);
-				eqList = getList(idList);
+				List<String> idList = getIdList(examQueConfig);
+				if(UtilValidate.isNotEmpty(idList)) {
+					eqList.addAll( getList(idList));
+				}
 			}
 		} else {
 		    //
 			List<String> idList = examConfig.getIdList();
-			eqList = getList(idList);
+			if(UtilValidate.isNotEmpty(idList)) {
+				eqList = getList(idList);
+			}
 		}
 		return eqList;
 	}
-	
+
 	/**
-	 * 
-	 * @Description:根据考试配置主键删除关联关系表
-	 * @Pwarms:@param id
-	 * @return:void
+	 * 根据考试配置主键删除关联关系表
+	 * @param id
 	 */
 	public void deleteRelated(String id) {
 		// 删除考试详情表
@@ -318,10 +247,8 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	}
 
 	/**
-	 * 
-	 * @Description:生成阅卷指令
-	 * @Pwarms:@return
-	 * @return:String
+	 * 生成阅卷指令
+	 * @return
 	 */
 	public String generatePassword() {
 		String readPassword = GetUUID.getUUIDs("YJ");
@@ -353,5 +280,92 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 			qf.setAnswer(tempList);
 		}
 		return  eqList;
+	}
+
+	/**
+	 * 获取题目ID列表
+	 * @param examQueConfig
+	 * @return
+	 */
+	private List<String> getIdList(ExamQueConfig examQueConfig){
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("specialKnowledgeId",examQueConfig.getSpecialKnowledgeId());
+		paramsMap.put("questionType",examQueConfig.getQuestionType());
+		paramsMap.put("num",examQueConfig.getQuestionNumber());
+		List<String> idList = testQuestionService.findByNum(paramsMap);
+		return idList;
+	}
+
+	/**
+	 * 保存考试详情信息
+	 * @param examConfigId
+	 */
+	private ExamDetail saveExamDetail(String examConfigId){
+		ExamDetail examDetail = new ExamDetail();
+		examDetail.setId(GetUUID.getUUIDs("ED"));
+		examDetail.setOptTime(new Date());
+		examDetail.setCreateTime(new Date());
+		examDetail.setExamConfigId(examConfigId);
+		return examDetail;
+	}
+
+	private void saveExamQueConfig(String examConfigId,ExamQueConfig examQueConfig){
+		examQueConfig.setId(GetUUID.getUUIDs("EQC"));
+		examQueConfig.setLawExamConfigId(examConfigId);
+		examQueConfigDao.insert(examQueConfig);
+	}
+	/**
+	 * 根据试题详情保存试题信息
+	 * @param qfList
+	 * @param examConfigId
+	 * @param examDetailId
+	 */
+	private void saveExamQueByQueList(List<QuestForm> qfList,String examConfigId,String examDetailId){
+		for (QuestForm qf : qfList) {
+			ExamQuestions examQuestions = new ExamQuestions();
+			examQuestions.setExamConfigId(examConfigId);
+			examQuestions.setId(GetUUID.getUUIDs("EQ"));
+			examQuestions.setExamDetailId(examDetailId);
+			examQuestions.setExamLibraryId(qf.getId());
+			examQuestionsDao.insert(examQuestions);
+		}
+	}
+
+	/**
+	 * 根据试题编号保存试题信息
+	 * @param idLists
+	 * @param examConfigId
+	 * @param examDetailId
+	 */
+	private void saveExamQueByIdList(List<String> idLists,String examConfigId,String examDetailId){
+		for (String tqId : idLists){
+			ExamQuestions examQuestions = new ExamQuestions();
+			examQuestions.setExamConfigId(examConfigId);
+			examQuestions.setId(GetUUID.getUUIDs("EQ"));
+			examQuestions.setExamDetailId(examDetailId);
+			examQuestions.setExamLibraryId(tqId);
+			examQuestionsDao.insert(examQuestions);
+		}
+	}
+
+	/**
+	 * 生成不同数量的试卷
+	 * @param num 生成数量
+	 * @param examConfigId 考试配置ID
+	 */
+	private void generateNumExam(int num,String examConfigId,List<ExamQueConfig> examQueList){
+		for(int i=0;i<num;i++){
+			ExamDetail ed = saveExamDetail(examConfigId);
+			examDetailDao.insert(ed);
+			//随机出题
+			for (ExamQueConfig examQueConfig : examQueList) {
+				//保存考试题目配置信息
+				saveExamQueConfig(examConfigId,examQueConfig);
+				// 根据配置从题库中获取
+				//根据考试配置获取题目ID
+				List<String> idLists = getIdList(examQueConfig);
+				saveExamQueByIdList(idLists,examConfigId,ed.getId());
+			}
+		}
 	}
 }

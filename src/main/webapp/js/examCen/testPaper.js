@@ -9,6 +9,16 @@ var vm = new Vue({
             checkbox1: [],
             judgement1: ''
         },
+        sinChoicList:[],
+        mulChoicList:[],
+        judgeList:[],
+        subjectList:[],
+        otherList:[],
+        questionList:[],
+        examConfig:[],
+        page: 1,
+        limit: 5,
+        count:0,
         maxtime: 60 * 60,//总时长
         minutes: 0,//显示分
         seconds: 0,//显示秒
@@ -33,13 +43,73 @@ var vm = new Vue({
                 },
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.questionList = result.queList;
+
                         vm.examConfig = result.examConfig;
+
+                        if(vm.examConfig.topicOrderType=='10031'){
+                            // 题目乱序
+                            //单选
+                            vm.sinChoicList = vm.shuffle(result.sinChoicList);
+                            //多选
+                            vm.mulChoicList = vm.shuffle(result.mulChoicList);
+                            //判断
+                            vm.judgeList = vm.shuffle(result.judgeList);
+                            //主观
+                            vm.subjectList = vm.shuffle(result.subjectList);
+                            //其他
+                            vm.otherList = vm.shuffle(result.otherList);
+                        }else {
+                            //单选
+                            vm.sinChoicList = result.sinChoicList;
+                            //多选
+                            vm.mulChoicList = result.mulChoicList;
+                            //判断
+                            vm.judgeList = result.judgeList;
+                            //主观
+                            vm.subjectList = result.subjectList;
+                            //其他
+                            vm.otherList = result.otherList;
+                        }
+                        if(vm.examConfig.optionOrderType=='10031'){
+                            // 选项乱序
+                            for(var i = 0;i <vm.sinChoicList.length;i++ ){
+                                vm.sinChoicList[i].answer = vm.shuffle(vm.sinChoicList[i].answer)
+                            }
+                            for(var i = 0;i <vm.mulChoicList.length;i++ ){
+                                vm.mulChoicList[i].answer = vm.shuffle(vm.mulChoicList[i].answer)
+                            }
+                        }
+                        vm.maxtime = vm.examConfig.examTime*60;
                     } else {
                         alert(result.msg);
                     }
                 }
             });
+        },
+        handleSizeChange: function (event) {
+            vm.limit = event;
+            if(vm.preserved.length > 0){
+                vm.preserve(0);
+            }
+        },
+        save: function(){
+            if(vm.preserved.length > 0){
+                vm.preserve(0);
+            }
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/exerciseCenter/paper_index.html';
+        },
+        handleCurChange: function (event) {
+            vm.page = event;
+            if(vm.preserved.length > 0){
+                vm.preserve(0);
+            }
+        },
+        commit: function(){
+        },
+        tj: function(){
+
         },
         fontS: function () {
             console.log(2)
@@ -77,6 +147,16 @@ var vm = new Vue({
                 clearInterval(vm.timer);
                 alert("时间到，结束!");
             }
+        },
+        shuffle: function(a) {
+            var j, x, i;
+            for (i = a.length; i; i--) {
+                j = Math.floor(Math.random() * i);
+                x = a[i - 1];
+                a[i - 1] = a[j];
+                a[j] = x;
+            }
+            return a;
         }
     }
 });
