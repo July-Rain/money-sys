@@ -81,6 +81,31 @@ public class MessageByTeam {
 	@Expose
 	public String rightAnswer;
 
+
+	//积分
+	@Expose
+	public String jifen;
+
+	//谁跑
+	@Expose
+	public String strus;//0自己队友跑了  1对方跑了
+
+	public String getStrus() {
+		return strus;
+	}
+
+	public void setStrus(String strus) {
+		this.strus = strus;
+	}
+
+	public String getJifen() {
+		return jifen;
+	}
+
+	public void setJifen(String jifen) {
+		this.jifen = jifen;
+	}
+
 	public String getRightAnswer() {
 		return rightAnswer;
 	}

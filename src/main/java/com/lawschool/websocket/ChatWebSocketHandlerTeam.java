@@ -58,7 +58,8 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 
 	//根据战队code纯共用的计数器
     public static final Map<String, Integer> count;
-
+	//回答次数计数器 最后与题目数量对比 判断是不是全部答完题目后退出的‘
+	public static final Map<String, Integer> answerCount;//计数器
 	//存储所有的在线用户
 	static {
 		USER_SOCKETSESSION_MAP = new HashMap<String, WebSocketSession>();
@@ -69,6 +70,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 		timuMap=new HashMap<String,List>();
 		timussettingMap=new HashMap<String,CompetitionOnline>();
         count=new HashMap<String,Integer>();
+		answerCount=new HashMap<String,Integer>();
 	}
 	
 	/**
@@ -112,7 +114,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
                 //设置共用count
                 count.put(competitionTeam.getTeamCode(),0);
 
-
+				answerCount.put(loginUser.getId(),0);//一进来设置0
 
 				msg.setText("请等待 队友加入");
 				msg.setDate(new Date());
@@ -179,6 +181,8 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 						us.add(loginUser);
 						//再将这个list放回静态变量里
 						USER_us.put(competitionTeam.getTeamCode(),us);
+
+						answerCount.put(loginUser.getId(),0);//一进来设置0
 						//将战队的code码放到通道中
 						webSocketSession.getAttributes().put("TeamCode",competitionTeam.getTeamCode());
 						msg.setText("玩家"+loginUser.getFullName()+"加入,欢迎。。。。。。。。。。");
@@ -218,6 +222,10 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
             competitionOnlineService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom());
         }
 
+		if(!"addroom".equals(msg.getText()) && !"joinroom".equals(msg.getText()) && msg.getTeamOrGame().equals("1")) //当触发新建房间事件
+		{
+			answerCount.put(msg.getFrom(),answerCount.get(msg.getFrom())+1);
+		}
 
 		if(msg.getText().equals("addroom") && msg.getTeamOrGame().equals("1")) //当触发新建房间事件
 		{
@@ -246,14 +254,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 			String htmlEscapeText = HtmlUtils.htmlEscape(text);
 			msg.setText(htmlEscapeText);
 			System.out.println("消息（可存数据库作为历史记录）:"+message.getPayload().toString());
-			//判断是群发还是单发
-	//		if(msg.getTo()==null||msg.getTo().equals("-1")){
-	//			//群发
-	//			sendMessageToAll(new TextMessage(GsonUtils.toJson(msg)));
-	//		}else{
-	//			//单发
-	//			sendMessageToUser(msg.getTo().get(0), new TextMessage(GsonUtils.toJson(msg)));
-	//		}
+
 			sendMessageToUserByList(msg.getTo(),new TextMessage(GsonUtils.toJson(msg)));
 		}
 	}
@@ -391,34 +392,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 		if (webSocketSession.isOpen()) {
 			webSocketSession.close();
 		}
-		
-//		//群发消息告知大家
-//		MessageByTeam msg = new MessageByTeam();
-//		msg.setDate(new Date());
-//
-//		//获取异常的用户的会话中的用户编号
-//		User loginUser=(User)webSocketSession.getAttributes().get("loginUser");
-//		//获取所有的用户的会话
-//		Set<Entry<String, WebSocketSession>> entrySet = USER_SOCKETSESSION_MAP.entrySet();
-//		//并查找出在线用户的WebSocketSession（会话），将其移除（不再对其发消息了。。）
-//		for (Entry<String, WebSocketSession> entry : entrySet) {
-//			if(entry.getKey().equals(loginUser.getId())){
-//				msg.setText("万众瞩目的【"+loginUser.getFullName()+"】已经退出。。。！");
-//				//清除在线会话
-//				USER_SOCKETSESSION_MAP.remove(entry.getKey());
-//				//记录日志：
-//				System.out.println("Socket会话已经移除:用户ID" + entry.getKey());
-//				break;
-//			}
-//		}
-//
-//		//并查找出在线用户的WebSocketSession（会话），将其移除（不再对其发消息了。。）
-//		for (Entry<String, WebSocketSession> entry : entrySet) {
-//			msg.getUserList().add((User)entry.getValue().getAttributes().get("loginUser"));
-//		}
-//
-//		TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-//		sendMessageToAll(message);
+
 		
 	}
 
@@ -454,68 +428,242 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 
                 if(competitionTeam==null)//说明是在游戏环节退出的
                 {
-                    //不管什么队长不队长的  只要退出了就发消息给所有人  并让其他人都 下线
 
-                    //根据teamcode  找这个人的队伍信息   code码页数唯一的  可以取到
-                    CompetitionTeam Team=competitionTeamService.selectOne(new EntityWrapper<CompetitionTeam>().eq("TEAM_CODE",teamCode));
-                    //什么不想  先去找这个队的id   用id来反查比武平台实体
-                    //这个id可能是play1也可能是play2 但是不会有重复的数据 队伍是每次生成的 id是不重复
+					//不管什么队长不队长的  只要退出了就发消息给所有人  并让其他人都 下线
 
-                    BattlePlatform battlePlatform=	battlePlatformService.selectOne(new EntityWrapper<BattlePlatform>().eq("PLAY1",Team.getId()).or().eq("PLAY2",Team.getId()));
+					//根据teamcode  找这个人的队伍信息   code码页数唯一的  可以取到
+					CompetitionTeam Team=competitionTeamService.selectOne(new EntityWrapper<CompetitionTeam>().eq("TEAM_CODE",teamCode));
+					//这个id可能是play1也可能是play2 但是不会有重复的数据 队伍是每次生成的 id是不重复
 
-                    //play1必定有值；play2不一定有值   因为 在play1等待阶段也会有人退出，这时候play2没加进来  ，要记得把好多东西删掉
-                    CompetitionTeam TeamPlay1=competitionTeamService.selectById(battlePlatform.getPlay1());
-                    USER_SOCKETSESSION_MAP.remove(loginUser.getId());//先移除这个人
-                    //得到整个战队人员id 去遍历发消息与退出
-                    List<String> ids=USER_ids.get(TeamPlay1.getTeamCode());
-                    for(String id:ids)
-                    {
-                        if(!id.equals(loginUser.getId()))//要不等于当前退出人，已经退出了
-                        {
-                            WebSocketSession SocketSession=USER_SOCKETSESSION_MAP.get(id);
-                            msg.setText(loginUser.getFullName()+"离开,游戏结束");
-                            TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-                            sendMessageToUser(id,message);
-                            SocketSession.close();
-                        }
-                    }
-                    //清除静态变量
-                    USER_TEAM.remove(TeamPlay1.getTeamCode());
-                    USER_ids.remove(TeamPlay1.getTeamCode());
-                    USER_us.remove(TeamPlay1.getTeamCode());
-                    count.remove(TeamPlay1.getTeamCode());
-                    battlePlatformMap.remove(battlePlatform.getBattleCode());
-                    timuMap.remove(battlePlatform.getBattleCode());
-                    timussettingMap.remove(battlePlatform.getBattleCode());
-                    if(battlePlatform.getPlay2()==null)//如果没有玩家2  结束
-                    {
+					BattlePlatform battlePlatform=	battlePlatformService.selectOne(new EntityWrapper<BattlePlatform>().eq("PLAY1",Team.getId()).or().eq("PLAY2",Team.getId()));
 
-                    }
-                    else
-                    {
+					//1。teamcode   2.team 有了
+					//如果battlePlatform 的play2 没有值   只是单纯的给队友发消息 说XXX走了 队伍解散
+					//如果battlePlatform 的play2 有值  判断大家是不是都回答过题目   根据这个条件 来判断是不是偷跑
+					if(battlePlatform.getPlay2()==null)
+					{
+						//给队友发消息 说xxx走了
+						List<String> ids=USER_ids.get(teamCode);
+						for(String id:ids)
+						{
+							if(!id.equals(loginUser.getId()))//要不等于当前退出人，已经退出了
+							{
+								WebSocketSession SocketSession=USER_SOCKETSESSION_MAP.get(id);
+								msg.setText(loginUser.getFullName()+"离开,游戏结束");
+								TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+								sendMessageToUser(id,message);
+								SocketSession.close();
+							}
+							USER_SOCKETSESSION_MAP.remove(id);//移除这些人
+							answerCount.remove(id);
+						}
+						//清除静态变量
+						USER_TEAM.remove(teamCode);
+						USER_ids.remove(teamCode);
+						USER_us.remove(teamCode);
+						count.remove(teamCode);
+						battlePlatformMap.remove(battlePlatform.getBattleCode());
+						timuMap.remove(battlePlatform.getBattleCode());
+						timussettingMap.remove(battlePlatform.getBattleCode());
 
-                        CompetitionTeam TeamPlay2=competitionTeamService.selectById(battlePlatform.getPlay2());
-						count.put(TeamPlay2.getTeamCode(),count.get(TeamPlay2.getTeamCode())+1);
-                        //得到整个战队人员id 去遍历发消息与退出
-                        List<String> ids2=USER_ids.get(TeamPlay2.getTeamCode());
-                        for(String id:ids2)
-                        {
-                            if(!id.equals(loginUser.getId()))//要不等于当前退出人，已经退出了
-                            {
-                                WebSocketSession SocketSession=USER_SOCKETSESSION_MAP.get(id);
-                                msg.setText(loginUser.getFullName()+"离开,游戏结束");
-                                TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-                                sendMessageToUser(id,message);
-                                SocketSession.close();
-                            }
-                        }
+					}
+					else
+					{
+						//在成功匹配上了 其他队伍
+						//定义个状态位
+						 int i=0;
+						String team1=  battlePlatform.getPlay1();
+						String team2=  battlePlatform.getPlay2();
 
-                        count.remove(TeamPlay2.getTeamCode());
-                        //清除静态变量
-                        USER_TEAM.remove(TeamPlay2.getTeamCode());
-                        USER_ids.remove(TeamPlay2.getTeamCode());
-                        USER_us.remove(TeamPlay2.getTeamCode());
-                    }
+						List<String> ids1=USER_ids.get((competitionTeamService.selectById(team1)).getTeamCode());
+						for(String id:ids1)
+						{
+							if(answerCount.get(id)!=timuMap.get(battlePlatform.getBattleCode()).size())
+							{
+								i=i+1;
+							}
+						}
+						List<String> ids2=USER_ids.get((competitionTeamService.selectById(team2)).getTeamCode());
+						for(String id:ids2)
+						{
+							if(answerCount.get(id)!=timuMap.get(battlePlatform.getBattleCode()).size())
+							{
+								i=i+1;
+							}
+						}
+						if(i==0)
+						{
+							count.put((competitionTeamService.selectById(team1)).getTeamCode(),count.get((competitionTeamService.selectById(team1)).getTeamCode())+1);
+							count.put((competitionTeamService.selectById(team2)).getTeamCode(),count.get((competitionTeamService.selectById(team2)).getTeamCode())+1);
+							//大家一起答完题目 一起愉快的结束   所有人发消息说
+							List<String> idsA=USER_ids.get((competitionTeamService.selectById(team1)).getTeamCode());
+							for(String id:idsA)
+							{
+								if(!id.equals(loginUser.getId()))//要不等于当前退出人，已经退出了
+								{
+									WebSocketSession SocketSession=USER_SOCKETSESSION_MAP.get(id);
+									msg.setText("游戏结束");
+									TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+									sendMessageToUser(id,message);
+									SocketSession.close();
+								}
+								USER_SOCKETSESSION_MAP.remove(id);//移除这些人
+								answerCount.remove(id);
+							}
+							List<String> idsB=USER_ids.get((competitionTeamService.selectById(team2)).getTeamCode());
+							for(String id:idsB)
+							{
+								if(!id.equals(loginUser.getId()))//要不等于当前退出人，已经退出了
+								{
+									WebSocketSession SocketSession=USER_SOCKETSESSION_MAP.get(id);
+									msg.setText("游戏结束");
+									TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+									sendMessageToUser(id,message);
+									SocketSession.close();
+								}
+								USER_SOCKETSESSION_MAP.remove(id);//移除这些人
+								answerCount.remove(id);
+							}
+							//清除静态变量
+							USER_TEAM.remove(teamCode);
+							USER_ids.remove(teamCode);
+							USER_us.remove(teamCode);
+							count.remove(teamCode);
+							battlePlatformMap.remove(battlePlatform.getBattleCode());
+							timuMap.remove(battlePlatform.getBattleCode());
+							timussettingMap.remove(battlePlatform.getBattleCode());
+						}
+						else if(i!=0)//说明偷跑
+						{
+							count.put((competitionTeamService.selectById(team1)).getTeamCode(),count.get((competitionTeamService.selectById(team1)).getTeamCode())+1);
+							count.put((competitionTeamService.selectById(team2)).getTeamCode(),count.get((competitionTeamService.selectById(team2)).getTeamCode())+1);
+
+							List<String> idsA=USER_ids.get((competitionTeamService.selectById(team1)).getTeamCode());
+
+							for(String id:idsA)
+							{
+
+								if(!id.equals(loginUser.getId()))//要不等于当前退出人，已经退出了
+								{
+									WebSocketSession SocketSession=USER_SOCKETSESSION_MAP.get(id);
+									if(idsA.contains(loginUser.getId())==true)
+									{
+										msg.setText(loginUser.getFullName()+"离开,很遗憾，游戏结束");
+										msg.setStrus("0");//队友跑了
+									}
+									else
+									{
+										msg.setText(loginUser.getFullName()+"离开,恭喜你，游戏结束");
+										msg.setJifen(timussettingMap.get(battlePlatform.getBattleCode()).getWinReward());
+										msg.setStrus("1");//对方跑了
+									}
+
+
+									TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+									sendMessageToUser(id,message);
+									SocketSession.close();
+								}
+								USER_SOCKETSESSION_MAP.remove(id);//移除这些人
+								answerCount.remove(id);
+							}
+							List<String> idsB=USER_ids.get((competitionTeamService.selectById(team2)).getTeamCode());
+							for(String id:idsB)
+							{
+								if(!id.equals(loginUser.getId()))//要不等于当前退出人，已经退出了
+								{
+									WebSocketSession SocketSession=USER_SOCKETSESSION_MAP.get(id);
+									if(idsB.contains(loginUser.getId())==true)
+									{
+										msg.setText(loginUser.getFullName()+"离开,很遗憾，游戏结束");
+										msg.setStrus("0");//队友跑了
+									}
+									else
+									{
+										msg.setText(loginUser.getFullName()+"离开,恭喜你，游戏结束");
+										msg.setJifen(timussettingMap.get(battlePlatform.getBattleCode()).getWinReward());
+										msg.setStrus("1");//对方跑了
+									}
+
+
+									TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+									sendMessageToUser(id,message);
+									SocketSession.close();
+								}
+								USER_SOCKETSESSION_MAP.remove(id);//移除这些人
+								answerCount.remove(id);
+							}
+							//清除静态变量
+							USER_TEAM.remove(teamCode);
+							USER_ids.remove(teamCode);
+							USER_us.remove(teamCode);
+							count.remove(teamCode);
+							battlePlatformMap.remove(battlePlatform.getBattleCode());
+							timuMap.remove(battlePlatform.getBattleCode());
+							timussettingMap.remove(battlePlatform.getBattleCode());
+						}
+						i=0;
+					}
+
+//
+//
+//
+//
+//
+//                    //什么不想  先去找这个队的id   用id来反查比武平台实体
+//
+//                    //play1必定有值；play2不一定有值   因为 在play1等待阶段也会有人退出，这时候play2没加进来  ，要记得把好多东西删掉
+//                    CompetitionTeam TeamPlay1=competitionTeamService.selectById(battlePlatform.getPlay1());
+//                    USER_SOCKETSESSION_MAP.remove(loginUser.getId());//先移除这个人
+//                    //得到整个战队人员id 去遍历发消息与退出
+//                    List<String> ids=USER_ids.get(TeamPlay1.getTeamCode());
+//                    for(String id:ids)
+//                    {
+//                        if(!id.equals(loginUser.getId()))//要不等于当前退出人，已经退出了
+//                        {
+//                            WebSocketSession SocketSession=USER_SOCKETSESSION_MAP.get(id);
+//                            msg.setText(loginUser.getFullName()+"离开,游戏结束");
+//                            TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+//                            sendMessageToUser(id,message);
+//                            SocketSession.close();
+//                        }
+//                    }
+//                    //清除静态变量
+//                    USER_TEAM.remove(TeamPlay1.getTeamCode());
+//                    USER_ids.remove(TeamPlay1.getTeamCode());
+//                    USER_us.remove(TeamPlay1.getTeamCode());
+//                    count.remove(TeamPlay1.getTeamCode());
+//                    battlePlatformMap.remove(battlePlatform.getBattleCode());
+//                    timuMap.remove(battlePlatform.getBattleCode());
+//                    timussettingMap.remove(battlePlatform.getBattleCode());
+//                    if(battlePlatform.getPlay2()==null)//如果没有玩家2  结束
+//                    {
+//
+//                    }
+//                    else
+//                    {
+//
+//                        CompetitionTeam TeamPlay2=competitionTeamService.selectById(battlePlatform.getPlay2());
+//						count.put(TeamPlay2.getTeamCode(),count.get(TeamPlay2.getTeamCode())+1);
+//                        //得到整个战队人员id 去遍历发消息与退出
+//                        List<String> ids2=USER_ids.get(TeamPlay2.getTeamCode());
+//                        for(String id:ids2)
+//                        {
+//                            if(!id.equals(loginUser.getId()))//要不等于当前退出人，已经退出了
+//                            {
+//                                WebSocketSession SocketSession=USER_SOCKETSESSION_MAP.get(id);
+//                                msg.setText(loginUser.getFullName()+"离开,游戏结束");
+//                                TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+//                                sendMessageToUser(id,message);
+//                                SocketSession.close();
+//                            }
+//                        }
+//
+//                        count.remove(TeamPlay2.getTeamCode());
+//                        //清除静态变量
+//                        USER_TEAM.remove(TeamPlay2.getTeamCode());
+//                        USER_ids.remove(TeamPlay2.getTeamCode());
+//                        USER_us.remove(TeamPlay2.getTeamCode());
+//                    }
 
                     //remove掉一切关系东西
 
@@ -550,6 +698,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
                         USER_TEAM.remove(teamCode);
                         USER_ids.remove(teamCode);
                         USER_us.remove(teamCode);
+						answerCount.remove(loginUser.getId());
                     }
 
                     else
@@ -591,7 +740,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
                         TextMessage message = new TextMessage(GsonUtils.toJson(msg));
                         //群发消息
                         sendMessageToUserByList(msg.getTo(),message);
-
+						answerCount.remove(loginUser.getId());
                         count.put(teamCode,0);//+1
                     }
                 }

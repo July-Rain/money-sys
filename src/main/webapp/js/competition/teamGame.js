@@ -37,7 +37,7 @@ var vm = new Vue({
         teamtype2:false,//组队和比赛模式下 不同展示的东西  （比赛）
         dialogQuestion:false,//开始答题  弹出
         battlePlatform:{},//对战平台
-
+        jifen:"0",
     },
     created: function () {
         this.$nextTick(function () {
@@ -214,6 +214,25 @@ websocket.onmessage = function(event) {
         });
 
 
+        if(data.strus!=undefined&&data.strus!=null&&data.strus!="")
+        {
+
+            if(data.strus=="0")//队友跑了
+            {
+                alert("队友离开，不获得积分");
+            }
+
+            else if(data.strus=="1")//对方跑了
+            {
+                vm.jifen=data.jifen;
+                recordScore(news.battlePlatform.id,'1',vm.jifen,'teamOnline',vm.u.id);
+                alert("对手弃权,恭喜胜利,获得积分"+vm.jifen);
+
+            }
+
+
+        }
+
 
         // 当收到系统消息的时候  看看是不是两个队伍匹配上了  看to的人和队伍配置人的2倍相比
         if(Number(data.to.length)==Number(data.competitionTeam.nowScale)*2)
@@ -318,11 +337,6 @@ websocket.onmessage = function(event) {
                     //收到消息时候来变化题目，前提是2人回答过
                     if(data.tqList.length <= Number(nowtimu)) {
 
-
-                            console.info(Number(vm.allScore1));
-                            console.info(Number(vm.allScore2));
-                            console.info(vm.u);
-                            console.info(vm.u.fullName);
                             if(Number(vm.allScore1)==Number(vm.allScore2))
                             {
                                 alert("全部题目答完,得分一样，先什么也不做");
@@ -333,13 +347,13 @@ websocket.onmessage = function(event) {
 
                                 if($(this).text()==vm.u.fullName){
                                     if(Number(vm.allScore1)>Number(vm.allScore2)){
-                                        vm.myScore=Number(vm.myScore)+Number(data.competitionOnline.winReward);
-                                        recordScore(news.battlePlatform.id,'1',vm.myScore,'teamOnline',vm.u.id);
-                                        alert("全部题目答完,恭喜获胜,获得获胜者奖励"+data.competitionOnline.winReward+",最终得分"+vm.myScore);
+                                        vm.jifen=Number(data.competitionOnline.winReward);
+                                        recordScore(news.battlePlatform.id,'1',vm.jifen,'teamOnline',vm.u.id);
+                                        alert("全部题目答完,恭喜获胜,获得获胜者奖励"+data.competitionOnline.winReward);
                                     } else if(Number(vm.allScore1)<Number(vm.allScore2)){
-                                        vm.myScore=Number(vm.myScore)+Number(data.competitionOnline.loserReward);
-                                        recordScore(news.battlePlatform.id,'0',vm.myScore,'teamOnline',vm.u.id);
-                                        alert("全部题目答完,很遗憾，失败,获得失败者奖励"+data.competitionOnline.loserReward+",最终得分"+vm.myScore);
+                                        vm.jifen=Number(data.competitionOnline.loserReward);
+                                        recordScore(news.battlePlatform.id,'0',vm.jifen,'teamOnline',vm.u.id);
+                                        alert("全部题目答完,很遗憾，失败,获得失败者奖励"+data.competitionOnline.loserReward);
                                     }
 
                                 }
@@ -347,13 +361,13 @@ websocket.onmessage = function(event) {
                             $('#chatUserList2').find('li').each(function(){
                                 if($(this).text()==vm.u.fullName){
                                     if(Number(vm.allScore1)<Number(vm.allScore2)){
-                                        vm.myScore=Number(vm.myScore)+Number(data.competitionOnline.winReward);
-                                        recordScore(news.battlePlatform.id,'1',vm.myScore,'teamOnline',vm.u.id);
-                                        alert("全部题目答完,恭喜获胜,获得获胜者奖励"+data.competitionOnline.winReward+",最终得分"+vm.myScore);
+                                        vm.jifen=Number(data.competitionOnline.winReward);
+                                        recordScore(news.battlePlatform.id,'1',vm.jifen,'teamOnline',vm.u.id);
+                                        alert("全部题目答完,恭喜获胜,获得获胜者奖励"+data.competitionOnline.winReward);
                                     } else if(Number(vm.allScore1)>Number(vm.allScore2)){
-                                        vm.myScore=Number(vm.myScore)+Number(data.competitionOnline.loserReward);
-                                        recordScore(news.battlePlatform.id,'0',vm.myScore,'teamOnline',vm.u.id);
-                                        alert("全部题目答完,很遗憾，失败,获得失败者奖励"+data.competitionOnline.loserReward+",最终得分"+vm.myScore);
+                                        vm.jifen=Number(data.competitionOnline.loserReward);
+                                        recordScore(news.battlePlatform.id,'0',vm.jifen,'teamOnline',vm.u.id);
+                                        alert("全部题目答完,很遗憾，失败,获得失败者奖励"+data.competitionOnline.loserReward);
                                     }
                                 }
                             });
@@ -609,4 +623,20 @@ function recordScore(battlePlatformId,win,score,type,uid)
         success: function (result) {
         }
     });
+}
+function recordScoreFromTow(battlePlatformId,score,type,users)
+{
+    var userArray= users.split(",");
+
+    for ( var i = 0; i <userArray.length; i++){
+
+        if(userArray[i]==vm.u.id)
+        {
+            recordScore(battlePlatformId,'1',score,type,userArray[i]);
+        }
+        else
+        {
+            recordScore(battlePlatformId,'0','0',type,userArray[i]);
+        }
+    }
 }

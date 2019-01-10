@@ -149,8 +149,15 @@ var vm = new Vue({
                 data: {type:"QUESTION_TYPE",Parentcode:"0"},
                 success: function (result) {
 
+                    // vm.itemtype=result.dictlist;
+                    for(var tt=0;tt<result.dictlist.length;tt++)
+                    {
+                        if((result.dictlist[tt].value=="单选题")||(result.dictlist[tt].value=="判断题") )
+                        {
+                            vm.itemtype.push(result.dictlist[tt]);
+                        }
+                    }
 
-                    vm.itemtype=result.dictlist;
                 }
             });
 
@@ -338,9 +345,14 @@ var vm = new Vue({
                 async:false,
                 data: {type:"QUESTION_TYPE",Parentcode:"0"},
                 success: function (result) {
-
-
-                    vm.itemtype=result.dictlist;
+                    vm.itemtype=[];
+                    for(var tt=0;tt<result.dictlist.length;tt++)
+                    {
+                        if((result.dictlist[tt].value=="单选题")||(result.dictlist[tt].value=="判断题") )
+                        {
+                            vm.itemtype.push(result.dictlist[tt]);
+                        }
+                    }
                 }
             });
 

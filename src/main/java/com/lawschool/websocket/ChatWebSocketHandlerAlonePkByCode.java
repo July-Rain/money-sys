@@ -52,7 +52,9 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 
 	public static final Map<String, BattlePlatform> battlePlatformMap;
 
-
+	public static final Map<String, Integer> count;//计数器
+	//回答次数计数器 最后与题目数量对比 判断是不是全部答完题目后退出的‘
+	public static final Map<String, Integer> answerCount;//计数器
 	//存储所有的在线用户
 	static {
 		USER_SOCKETSESSION_MAP = new HashMap<String, WebSocketSession>();
@@ -62,6 +64,8 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 		timussettingMap=new HashMap<String,CompetitionOnline>();
 
 		battlePlatformMap=new HashMap<String,BattlePlatform>();
+		count=new HashMap<String,Integer>();
+		answerCount=new HashMap<String,Integer>();
 	}
 
 	/**
@@ -142,37 +146,6 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 		if (webSocketSession.isOpen()) {
 			webSocketSession.close();
 		}
-
-//		//群发消息告知大家
-//		Message msg = new Message();
-//		msg.setDate(new Date());
-//
-//		//获取异常的用户的会话中的用户编号
-//		User loginUser=(User)webSocketSession.getAttributes().get("loginUser");
-//		//获取所有的用户的会话
-//		Set<Entry<String, WebSocketSession>> entrySet = USER_SOCKETSESSION_MAP.entrySet();
-//		//并查找出在线用户的WebSocketSession（会话），将其移除（不再对其发消息了。。）
-//		for (Entry<String, WebSocketSession> entry : entrySet) {
-//			if(entry.getKey().equals(loginUser.getId())){
-//				msg.setText("万众瞩目的【"+loginUser.getFullName()+"】已经退出。。。！");
-//				//清除在线会话
-//				USER_SOCKETSESSION_MAP.remove(entry.getKey());
-//				//记录日志：
-//				System.out.println("Socket会话已经移除:用户ID" + entry.getKey());
-//				break;
-//			}
-//		}
-//
-//		//并查找出在线用户的WebSocketSession（会话），将其移除（不再对其发消息了。。）
-//		for (Entry<String, WebSocketSession> entry : entrySet) {
-//			msg.getUserList().add(
-//					(User)entry.getValue().getAttributes().get("loginUser")
-//			);
-//		}
-//
-//		TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-//		sendMessageToAll(message);
-
 	}
 
 	@Override
@@ -181,83 +154,95 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 	 * 连接关闭后：一般是回收资源等
 	 */
 	public void afterConnectionClosed(WebSocketSession webSocketSession, CloseStatus closeStatus) throws Exception {
-		// 记录日志，准备关闭连接
-		System.out.println("Websocket正常断开:" + webSocketSession.getId() + "已经关闭");
-
-		//群发消息告知大家
-		Message msg = new Message();
-		msg.setDate(new Date());
-
-		//获取异常的用户的会话中的用户编号
+		String battlePlatformId=(String) webSocketSession.getAttributes().get("battlePlatformId");//得到这个平台的id
 		User loginUser=(User)webSocketSession.getAttributes().get("loginUser");
-//		new Thread(new Runnable() {
-//			public synchronized void run() {
-//				try {
-		//先移除 ，在发消息告诉对方
-		//先得到要处理的id  看看有没有匹配成啊  删哪个啊
-		String playids=	(String)webSocketSession.getAttributes().get("playids");
-		msg.setTo(playids);//为了传到前端页面
-		if((playids.contains(",")))
-		{
-			//说明配成功了  要处理2个用户
-			//将他冲USER_SOCKETSESSION_MAP里删掉
-			playids.split(",");
-			//主动去断这2个用户    但是要先断自己  在给另一个人发消息说我走了   在断另一个人
-			msg.setDate(new Date());
-			msg.setText(loginUser.getFullName()+"已经离开了,直接获得获胜者奖励"+timussettingMap.get("onlinePksetting"+playids.split(",")[0]).getWinReward());
-			msg.setMycore(timussettingMap.get("onlinePksetting"+playids.split(",")[0]).getWinReward());
 
-			if(loginUser.getId().equals(playids.split(",")[0]))
+		//通过平台的id去找计数器  一平台2人 第一人第一次进来肯定为0
+		int jishu=count.get(battlePlatformId);
+		if(jishu==0)
+		{
+			//群发消息告知大家
+			Message msg = new Message();
+			msg.setDate(new Date());
+
+			count.put(battlePlatformId,jishu+1);//将计数器+1  这样林一个人进来就不走这个方法 只是断开
+			//找到另外一个人 给他发消息  然后把它也断了
+			//但是play1肯定有人   play2不一定有人  要判断
+			BattlePlatform battlePlatform = battlePlatformService.selectById(battlePlatformId);
+			if(battlePlatform.getPlay2()==null)//如果 没有玩家2  就是说明房主自己退  他不需要和任何人说 我走了
 			{
-				msg.getUserList().add((User)USER_SOCKETSESSION_MAP.get(playids.split(",")[1]).getAttributes().get("loginUser"));//现在在线人员只有 没掉线的哪一个了
-				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-				sendMessageToUser(playids.split(",")[1],message);//给另一个人发消息
-				USER_SOCKETSESSION_MAP.get(playids.split(",")[0]).close();
-				USER_SOCKETSESSION_MAP.get(playids.split(",")[1]).close();
+				USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).close();
+				count.remove(battlePlatformId);
+				USER_SOCKETSESSION_MAP.remove(battlePlatform.getPlay1());
 			}
 			else
 			{
+				//这里肯定是中途退出   但是就是不知道正常js关闭走不走这个逻辑  断点下试试
 
-				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-				msg.getUserList().add((User)USER_SOCKETSESSION_MAP.get(playids.split(",")[0]).getAttributes().get("loginUser"));//现在在线人员只有 没掉线的哪一个了
-				sendMessageToUser(playids.split(",")[0],message);//给另一个人发消息不发消息
-				USER_SOCKETSESSION_MAP.get(playids.split(",")[1]).close();
-				USER_SOCKETSESSION_MAP.get(playids.split(",")[0]).close();
+				if((timuMap.get("onlinePk"+battlePlatform.getPlay1()).size()==answerCount.get(battlePlatform.getPlay1())) && (timuMap.get("onlinePk"+battlePlatform.getPlay1()).size()==answerCount.get(battlePlatform.getPlay2())))//如果这个人的回答次数和题目数量一样  并且 对手 回答的次数也和题目数量一样  说明是正常断开
+				{
+					if(loginUser.getId().equals(battlePlatform.getPlay1()))
+					{
+						//当前人是玩家1，给玩家2发消息
+						msg.setText("游戏结束");
+						msg.setTo(battlePlatform.getPlay2());//为了传到前端页面
+						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+						sendMessageToUser(battlePlatform.getPlay2(),message);//给另一个人发消息
+						USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay2()).close();
+					}
+					else if(loginUser.getId().equals(battlePlatform.getPlay2()))
+					{
+						//当前人是玩家1，给玩家2发消息
+						msg.setText("游戏结束");
+						msg.setTo(battlePlatform.getPlay1());//为了传到前端页面
+						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+						sendMessageToUser(battlePlatform.getPlay1(),message);//给另一个人发消息
+						USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).close();
+					}
+
+				}
+				else//说明这个人 偷跑了
+				{
+					if(loginUser.getId().equals(battlePlatform.getPlay1()))
+					{
+						//当前人是玩家1，给玩家2发消息
+						msg.setText(loginUser.getFullName()+"已经离开了,恭喜你获胜");
+						msg.setMycore(timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()).getWinReward());
+						msg.setTo(battlePlatform.getPlay2());//为了传到前端页面
+						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+						sendMessageToUser(battlePlatform.getPlay2(),message);//给另一个人发消息
+						USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay2()).close();
+					}
+					else if(loginUser.getId().equals(battlePlatform.getPlay2()))
+					{
+						//当前人是玩家1，给玩家2发消息
+						msg.setText(loginUser.getFullName()+"已经离开了,恭喜你获胜");
+						msg.setMycore(timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()).getWinReward());
+						msg.setTo(battlePlatform.getPlay1());//为了传到前端页面
+						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+						sendMessageToUser(battlePlatform.getPlay1(),message);//给另一个人发消息
+						USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).close();
+					}
+
+
+
+				}
+				//清空
+
+				USER_SOCKETSESSION_MAP.remove(battlePlatform.getPlay1());
+				USER_SOCKETSESSION_MAP.remove(battlePlatform.getPlay2());
+				timussettingMap.remove("onlinePksetting"+battlePlatform.getPlay1());
+				timuMap.remove("onlinePk"+battlePlatform.getPlay1());
+				answerCount.remove(battlePlatform.getPlay1());
+				answerCount.remove(battlePlatform.getPlay2());
+				battlePlatformMap.remove(battlePlatform.getBattleCode());
 			}
-			//将这2个从里面删掉
-			USER_SOCKETSESSION_MAP.remove(playids.split(",")[0]);
-			USER_SOCKETSESSION_MAP.remove(playids.split(",")[1]);
 
-			//记录日志：
-			System.out.println("Socket会话已经移除:用户ID" + playids.split(",")[1]);
-			//记录日志：
-			System.out.println("Socket会话已经移除:用户ID" + playids.split(",")[0]);
 		}
 		else
 		{
-			//还没有配对成功，只需要处理当前的用户
-			//将他冲USER_SOCKETSESSION_MAP里删掉
-
-//				msg.setText("万众瞩目的【"+loginUser.getFullName()+"】已经有事先走了，大家继续聊...");
-			//删除redis 里的数据
-
-//			Map<String,BattlePlatform> battlePlatformMap=(Map) JSONObject.fromObject(redisUtil.get("redisFrombattlePlatformMap"));
-			battlePlatformMap.remove(webSocketSession.getAttributes().get("battlePlatcode"));
-//			redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);
-			//清除在线会话
-			USER_SOCKETSESSION_MAP.remove(loginUser.getId());
-			webSocketSession.close();
-			//记录日志：
-			System.out.println("Socket会话已经移除:用户ID" + loginUser.getId());
-//				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-//				sendMessageTouser(loginUser.getId(),message);//就一个人 都走了  不发消息
+			count.remove(battlePlatformId);
 		}
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//
-//		}).start();
 	}
 	@Override
 	/**
@@ -377,6 +362,11 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 					timuMap.put("onlinePk"+loginUser.getId(),qList);
 					timussettingMap.put("onlinePksetting"+loginUser.getId(),competitionOnline);
 
+					webSocketSession.getAttributes().put("battlePlatformId",battlePlatform.getId());//纯大家的平台id
+					count.put(battlePlatform.getId(),0);//将这个平台id计数为0
+					answerCount.put(loginUser.getId(),0);//一进来设置0
+
+
 					msg.setText("请等待 玩家加入");
 					msg.setDate(new Date());
 					msg.setBattlePlatform(battlePlatform);
@@ -417,6 +407,13 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
            				battlePlatformMap.remove(code);
 						//下面这liang两步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
 						webSocketSession.getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());//
+
+
+
+						webSocketSession.getAttributes().put("battlePlatformId",battlePlatform.getId());//纯大家的平台id
+						answerCount.put(loginUser.getId(),0);//一进来设置0
+
+
 						USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).getAttributes().put("playids",battlePlatform.getPlay1()+","+loginUser.getId());
 			 		    msg.setText("玩家"+loginUser.getFullName()+"加入,欢迎。。。。。。。。。。");
          				msg.setDate(new Date());
