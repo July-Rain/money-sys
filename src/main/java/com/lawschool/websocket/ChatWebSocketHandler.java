@@ -179,7 +179,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 							 if(loginUser.getId().equals(battlePlatform.getPlay1()))
 							 {
 								 //当前人是玩家1，给玩家2发消息
-								 msg.setText(loginUser.getFullName()+"已经离开了");
+								 msg.setText("游戏结束");
 								 msg.setTo(battlePlatform.getPlay2());//为了传到前端页面
 								 TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 								 sendMessageToUser(battlePlatform.getPlay2(),message);//给另一个人发消息
@@ -188,7 +188,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 							 else if(loginUser.getId().equals(battlePlatform.getPlay2()))
 							 {
 								 //当前人是玩家1，给玩家2发消息
-								 msg.setText(loginUser.getFullName()+"已经离开了");
+								 msg.setText("游戏结束");
 								 msg.setTo(battlePlatform.getPlay1());//为了传到前端页面
 								 TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 								 sendMessageToUser(battlePlatform.getPlay1(),message);//给另一个人发消息
