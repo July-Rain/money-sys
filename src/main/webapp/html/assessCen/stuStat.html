@@ -10,6 +10,10 @@
 <body>
 <div id="app" v-cloak>
     <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span>评估中心</span></el-breadcrumb-item>
+            <el-breadcrumb-item>学情统计</el-breadcrumb-item>
+        </el-breadcrumb>
         <el-row class="content5-3">
             <el-col :span="24">
                 <div class="box-card boardCard">
