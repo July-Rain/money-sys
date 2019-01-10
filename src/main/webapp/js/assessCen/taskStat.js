@@ -67,7 +67,6 @@ var vm = new Vue({
                 {max: 50, message: '最大长度50', trigger: 'blur'}
             ]*/
         },
-        dialogLearnTask: false,//table弹出框可见性
         title: "",//弹窗的名称
         delIdArr: [],//删除数据
         dialogDept: false,//部门的弹窗
@@ -174,71 +173,12 @@ var vm = new Vue({
             this.formInline.currPage = val;
             this.reload();
         },
-        // 保存和修改
-        saveOrUpdate: function (formName) {
-            this.$refs[formName].validate(function (valid) {
-                if (valid) {
-                    debugger
-                    var url = vm.learnTasks.id ? "learntasks/update?menuFrom="+vm.menuForm : "learntasks/insert?menuFrom="+vm.menuForm;
-                    var deptArr = vm.learnTasks.deptIds?vm.learnTasks.deptIds.split(","):[];
-                    var userArr = vm.learnTasks.userIds?vm.learnTasks.userIds.split(","):[];
-                    vm.learnTasks.deptArr=deptArr;
-                    vm.learnTasks.userArr=userArr;
-                    var nodes = ztree.getCheckedNodes(true);
-                    vm.learnTasks.taskContentList=nodes;
-                    $.ajax({
-                        type: "POST",
-                        url: baseURL + url,
-                        contentType: "application/json",
-                        data: JSON.stringify(vm.learnTasks),
-                        success: function (result) {
-                            if (result.code === 0) {
-                                vm.$alert('操作成功', '提示', {
-                                    confirmButtonText: '确定',
-                                    callback: function () {
-                                        vm.dialogLearnTask = false;
-                                        vm.reload();
-                                    }
-                                });
-                            } else {
-                                alert(result.msg);
-                            }
-                        }
-                    });
-                } else {
-                    console.log('error submit!!');
-                    return false;
-                }
-            });
-        },
         // 表单重置
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
         },
-        addLearnTask: function () {
-            this.learnTasks = {
-                id: '',
-                deptIds: "",
-                userIds: "",
-                userName:"",//适用人员姓名
-                deptName:"",//适用部门姓名
-                userArr:[],//适用人员姓名
-                deptArr:[],//适用部门姓名
-                taskName:"",
-                taskContent:"",
-                startTime:"",
-                endTime:"",
-                taskContentList:[],
-                taskClass:"",
-                policeclassOption:""
-            };
-            this.title = "新增学习任务";
-            this.dialogLearnTask = true;
-            this.getDept();
-        },
         handleEdit: function (index, row) {
             this.title = "修改学习任务";
-            this.dialogLearnTask = true;
             $.ajax({
                 type: "POST",
                 url: baseURL + 'learntasks/info?id=' + row.id,
@@ -251,74 +191,11 @@ var vm = new Vue({
                     }
                 }
             });
-            this.getDept();
-        },
-        handleDel: function (index, row) {
-            vm.delIdArr.push(row.id);
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(function () {
-                $.ajax({
-                    type: "POST",
-                    url: baseURL + 'learntasks/delete',
-                    async: true,
-                    data: JSON.stringify(vm.delIdArr),
-                    contentType: "application/json",
-                    success: function (result) {
-                        vm.reload();
-                        vm.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
-
-                    }
-                });s
-            }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
-            });
-
-        },
-        handleStart: function (index, row) {
-            this.$confirm('启用后将不能修改, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(function () {
-                $.ajax({
-                    type: "POST",
-                    url: baseURL + 'learntasks/startTask?id='+row.id,
-                    async: true,
-                    contentType: "application/json",
-                    success: function (result) {
-                        vm.reload();
-                        vm.$message({
-                            type: 'success',
-                            message: '启用成功!'
-                        });
-
-                    }
-                });s
-            }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消启用'
-                });
-            });
-
-        },
-        closeDia: function () {
-            this.dialogLearnTask = false;
-            vm.reload();
         },
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "learntasks/listICreate?isMp=true",
+                url: baseURL + "learntasks/listAllStat?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
@@ -432,11 +309,10 @@ var vm = new Vue({
             vm.learnTasks.taskContentList=this.multipleClassSelection;
             console.log(vm.learnTasks.taskContentList);
         },
-        getDept: function(){
-            //加载部门树
-            $.get(baseURL + "law/zTree", function(r){
-                ztree = $.fn.zTree.init($("#classTree"), setting, r.classifyList);
-            })
+        // el-tree节点点击事件
+        handleNodeClick: function (data) {
+            vm.formInline.orgCode=data.orgCode;
+            this.reload();
         },
     }
 });

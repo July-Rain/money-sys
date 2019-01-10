@@ -5,7 +5,30 @@
     <#include "/header.html">
 </head>
 <style>
-
+    .content ul li{
+        width: 20%;
+        float: left;
+    }
+    .content ul li .item{
+        padding-right: 25px;
+    }
+    .content ul li .item video{
+        width: 100%;
+        height: 9.15080527086384vw;
+        border-radius: 5px;
+    }
+    .stuType{
+        background: #f97a1f;
+        padding: 0 5px;
+        color: #fff;
+        border-radius: 2px;
+    }
+    .stuIssuer{
+        float: left;
+    }
+    .stuCreat{
+        float: right;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -18,86 +41,88 @@
             <el-col :span="24">
                 <el-tabs type="border-card">
                     <div class="info_card">
-                        <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+                        <div class="card_title">
+                            <i class="iconfont icon-jiansuo"></i>
+                            <h3>检索工具</h3>
+                        </div>
+                        <div class="card_contain">
+                            <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                            <el-form-item label="资料标题" prop="stuTitle">
-                                <el-input v-model="formInline.stuTitle" placeholder="资料标题" size="mini"></el-input>
-                            </el-form-item>
-                            <el-form-item label="发布人" prop="stuIssuer">
-                                <el-input v-model="formInline.stuIssuer" placeholder="发布人" size="mini"></el-input>
-                            </el-form-item>
-                            <el-form-item  label="法律分类" prop="stuLawName">
-                                <el-input v-model="formInline.stuLawName" placeholder="法律分类" @focus="chooseLaw" size="mini"></el-input>
-                            </el-form-item>
-                            <el-form-item label="开始时间" prop="startTime">
-                                <el-date-picker
-                                        v-model="formInline.startTime"
-                                        type="date"
-                                        format="yyyy年MM月dd日"
-                                        value-format="yyyy-MM-dd"
-                                        placeholder="选择开始时间"
-                                        size="mini"
-                                        >
-                                </el-date-picker>
-                            </el-form-item>
-                            <el-form-item  label="结束时间" prop="endTime">
-                                <el-date-picker
-                                        v-model="formInline.endTime"
-                                        type="date"
-                                        format="yyyy年MM月dd日"
-                                        value-format="yyyy-MM-dd"
-                                        placeholder="选择结束时间"
-                                        size="mini"
-                                        >
-                                </el-date-picker>
-                            </el-form-item>
-                           <!-- <el-form-item prop="status">
-                                <el-select v-model="formInline.status" placeholder="状态" size="mini">
-                                    <el-option label="有效" value="1"></el-option>
-                                    <el-option label="无效" value="0"></el-option>
-                                </el-select>
-                            </el-form-item>-->
-                            <el-form-item>
-                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                                <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
+                                <el-form-item label="资料标题" prop="stuTitle">
+                                    <el-input v-model="formInline.stuTitle" placeholder="资料标题" size="mini"></el-input>
+                                </el-form-item>
+                                <el-form-item label="发布人" prop="stuIssuer">
+                                    <el-input v-model="formInline.stuIssuer" placeholder="发布人" size="mini"></el-input>
+                                </el-form-item>
+                                <el-form-item  label="法律分类" prop="stuLawName">
+                                    <el-input v-model="formInline.stuLawName" placeholder="法律分类" @focus="chooseLaw" size="mini"></el-input>
+                                </el-form-item>
+                                <el-form-item label="开始时间" prop="startTime">
+                                    <el-date-picker
+                                            v-model="formInline.startTime"
+                                            type="date"
+                                            format="yyyy年MM月dd日"
+                                            value-format="yyyy-MM-dd"
+                                            placeholder="选择开始时间"
+                                            size="mini"
+                                    >
+                                    </el-date-picker>
+                                </el-form-item>
+                                <el-form-item  label="结束时间" prop="endTime">
+                                    <el-date-picker
+                                            v-model="formInline.endTime"
+                                            type="date"
+                                            format="yyyy年MM月dd日"
+                                            value-format="yyyy-MM-dd"
+                                            placeholder="选择结束时间"
+                                            size="mini"
+                                    >
+                                    </el-date-picker>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
+                                    <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
 
-                            </el-form-item>
-                        </el-form>
-                        <div>
-                            <div class="content lesson">
-                                <el-row>
-                                    <el-col :span="6" v-for="(item, index) in videoData">
-                                        <el-card :body-style="{ padding: '4px' }">
-
-                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl">
-                                                <source :src="item.contentUrl" type="video/mp4">
-                                                您的浏览器不支持视频播放
-                                            </video>
-                                            <div style="padding: 14px 14px 0 14px;">
-                                                <p>
-                                                    <span class="stuType">{{item.stuType}}</span>
-                                                    <a href="javascript:;" class="title">{{item.stuTitle}}</a>
-                                                </p>
-                                                <p>
-                                                    <span class="stuIssuer">{{item.stuIssuer}}</span>
-                                                    <span class="stuCreat">{{item.stuIsstime}}</span>
-                                                </p>
-                                            </div>
-                                        </el-card>
-                                    </el-col>
-                                </el-row>
-                            </div>
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
-                            </el-pagination>
+                                </el-form-item>
+                            </el-form>
                         </div>
                     </div>
+
+                    <div>
+
+                        <div class="content lesson">
+                            <ul class="clearfix">
+                                <li v-for="(item, index) in videoData">
+                                    <div class="item">
+                                        <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,item.comContent)" @pause="onPause(item.id)">
+                                            <source :src="item.contentUrl" type="video/mp4">
+                                            您的浏览器不支持视频播放
+                                        </video>
+                                        <div>
+                                            <p>
+                                                <span class="stuType">{{item.stuType}}</span>
+                                                <a href="javascript:;" class="title">{{item.stuTitle}}</a>
+                                            </p>
+                                            <p>
+                                                <span class="stuIssuer">{{item.stuIssuer}}</span>
+                                                <span class="stuCreat">{{item.stuIsstime}}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <el-pagination
+                                @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange"
+                                :current-page="formInline.currPage"
+                                :page-sizes="[10, 20, 30, 40]"
+                                :page-size="formInline.pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="formInline.totalCount">
+                        </el-pagination>
+                    </div>
+
                 </el-tabs>
             </el-col>
         </el-row>

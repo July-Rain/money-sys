@@ -3,6 +3,7 @@ package com.lawschool.controller.diagnosis;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.User;
 import com.lawschool.beans.diagnosis.DiagnosisEntity;
+import com.lawschool.beans.diagnosis.OrgDiagnosisEntity;
 import com.lawschool.service.diagnosis.StuDiagnosisService;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,14 @@ public class StuDiagnosisController extends AbstractController {
         User user = getUser();
         params.put("userId",user.getId());
         return  diagnosisService.getDiaInfo(params);
+    }
+
+    @RequestMapping("getOrgDiaStat")
+    public Result getOrgDiaStat(Map<String,String> params){
+        //获取部门统计数据
+        User user = getUser();
+        params.put("userId",user.getId());
+        List<OrgDiagnosisEntity> orgDiaList = diagnosisService.orgDiaStat(params);
+        return  Result.ok().put("data",orgDiaList);
     }
 }

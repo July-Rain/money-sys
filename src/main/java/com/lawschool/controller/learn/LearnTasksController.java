@@ -77,6 +77,20 @@ public class LearnTasksController extends AbstractController {
 
     /**
      * @Author MengyuWu
+     * @Description 统计页面查询所有数据
+     * @Date 17:25 2019-1-8
+     * @Param [params]
+     * @return com.lawschool.util.Result
+     **/
+
+    @RequestMapping("/listAllStat")
+    public Result listAllStat(@RequestParam Map<String, Object> params){
+        params.put("isUse","1");
+        PageUtils page = tasksService.queryPageICreate(params);
+        return Result.ok().put("page", page);
+    }
+    /**
+     * @Author MengyuWu
      * @Description 查看详情
      * @Date 16:23 2018-12-18
      * @Param [id]
@@ -194,6 +208,14 @@ public class LearnTasksController extends AbstractController {
         return Result.ok();
     }
 
+    /**
+     * @Author MengyuWu
+     * @Description 统计数量
+     * @Date 10:32 2019-1-9
+     * @Param [params]
+     * @return com.lawschool.util.Result
+     **/
+    
     @RequestMapping("/getCount")
     public Result getCount(@RequestParam Map<String, Object> params){
         Result result = new Result();
@@ -202,5 +224,14 @@ public class LearnTasksController extends AbstractController {
         int count = tasksService.countTask(params);
         result.put("learnTasks",count);
         return  result;
+    }
+    @SysLog("启用学习任务")
+    @RequestMapping("/startTask")
+    public Result startTask(String id){
+        LearnTasksEntity learnTasksEntity = new LearnTasksEntity();
+        learnTasksEntity.setId(id);
+        learnTasksEntity.setIsUse("1");
+        tasksService.updateById(learnTasksEntity);
+        return Result.ok();
     }
 }
