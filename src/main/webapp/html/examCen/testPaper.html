@@ -93,65 +93,60 @@ p,span{
 <body>
 <div id="app" v-cloak>
     <div id="paper">
-        <h2>2018年第四季度执法资格考试</h2>
-        <div class="smg">
-            <p class="name">姓名:<span>王小明</span></p>
-            <p class="set">字体设置( <span class="text_s" @click="fontS">小</span> <span class="text_m" @click="fontM">中</span> <span class="text_l" @click="fontL">大</span>)</p>
+    <h2>{{examConfig.examName}}</h2>
+    <div class="smg">
+        <p class="name">姓名:<span>王小明</span></p>
+        <p class="set">字体设置( <span class="text_s" @click="fontS">小</span> <span class="text_m" @click="fontM">中</span> <span class="text_l" @click="fontL">大</span>)</p>
+    </div>
+    <el-form :model="form">
+        <div class="subTitle">
+            <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题1分，共50分。</p>
         </div>
-        <el-form :model="form">
-            <div class="subTitle">
-                <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题1分，共50分。</p>
+        <div v-for="(item,index) in sinChoicList" class="question_area">
+            <p class="ques_name">{{index+1}}. {{item.comContent}}。</p>
+            <el-radio-group v-model="item.userAnswer">
+                <el-radio :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
+                    {{item2.questionContent}}
+                </el-radio>
+            </el-radio-group>
+        </div>
+        <div class="subTitle">
+            <p>二、多选题。</p>
+            <div v-for="(item,index) in mulChoicList" class="question_area">
+                <p class="ques_name">{{index+1}}. {{item.comContent}}。</p>
+                <el-checkbox-group  v-model="item.checkList">
+                    <el-checkbox :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
+                        {{item2.questionContent}}
+                    </el-checkbox>
+                    <el-checkbox disabled :label="item2.id" v-for="item2 in item.answer" v-if="item.right != null">
+                        {{item2.questionContent}}
+                    </el-checkbox>
+                    <br/>
+                </el-checkbox-group>
             </div>
-            <div class="question_area">
-                <p class="ques_name">1.全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?</p>
-                <el-form-item>
-                    <el-radio-group v-model="form.radio1">
-                        <el-radio label="A.从实际出发不能因循守旧、墨守成规，法治建设可适当超越社会发展阶段"></el-radio>
-                        <el-radio label="B.全面依法治国的制度基础是中华法系，实践基础是中国传统社会的治理经验"></el-radio>
-                        <el-radio label="C.从中国实际出发不等于“关起门来搞法治”，应移植外国法律制度和法律文化"></el-radio>
-                        <el-radio label="D.从实际出发要求凸显法治的中国特色，坚持中国特色社会主义道路、理论体系和制度"></el-radio>
-                    </el-radio-group>
-                </el-form-item>
+        </div>
+        <div class="subTitle">
+            <p>三、判断题。判断题判断题判断题</p>
+        </div>
+        <div class="question_area">
+            <div v-for="(item,index) in judgeList" class="question_area">
+                <p class="ques_name">{{index+1}}. {{item.comContent}} 。</p>
+                <el-radio-group v-model="item.userAnswer">
+                    <el-radio :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
+                        {{item2.questionContent}}
+                    </el-radio>
+                </el-radio-group>
             </div>
-            <div class="question_area">
-                <p class="ques_name">2.全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?</p>
-                <el-form-item>
-                    <el-radio-group v-model="form.radio2">
-                        <el-radio label="A.从实际出发不能因循守旧、墨守成规，法治建设可适当超越社会发展阶段"></el-radio>
-                        <el-radio label="B.全面依法治国的制度基础是中华法系，实践基础是中国传统社会的治理经验"></el-radio>
-                        <el-radio label="C.从中国实际出发不等于“关起门来搞法治”，应移植外国法律制度和法律文化"></el-radio>
-                        <el-radio label="D.从实际出发要求凸显法治的中国特色，坚持中国特色社会主义道路、理论体系和制度"></el-radio>
-                    </el-radio-group>
-                </el-form-item>
-            </div>
-            <div class="subTitle">
-                <p>二、多选题。多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题多选题</p>
-            </div>
-            <div class="question_area">
-                <p class="ques_name">3.这是一道多选题</p>
-
-                <el-form-item label="">
-                    <el-checkbox-group v-model="form.checkbox1">
-                        <el-checkbox label="A.从实际出发不能因循守旧、墨守成规，法治建设可适当超越社会发展阶段" name="type"></el-checkbox>
-                        <el-checkbox label="B.全面依法治国的制度基础是中华法系，实践基础是中国传统社会的治理经验" name="type"></el-checkbox>
-                        <el-checkbox label="C.从中国实际出发不等于“关起门来搞法治”，应移植外国法律制度和法律文化" name="type"></el-checkbox>
-                        <el-checkbox label="D.从实际出发要求凸显法治的中国特色，坚持中国特色社会主义道路、理论体系和制度" name="type"></el-checkbox>
-                    </el-checkbox-group>
-                </el-form-item>
-            </div>
-            <div class="subTitle">
-                <p>三、判断题。判断题判断题判断题</p>
-            </div>
-            <div class="question_area">
-                <p class="ques_name">4.这是一道判断题这是一道判断题这是一道判断题这是一道判断题这是一道判断题</p>
-                <el-form-item class="judgement">
-                    <el-radio-group v-model="form.judgement1">
-                        <el-radio label="正确"></el-radio>
-                        <el-radio label="错误"></el-radio>
-                    </el-radio-group>
-                </el-form-item>
-            </div>
-        </el-form>
+        </div>
+        <div class="subTitle">
+            <p>四、主观题</p>
+        </div>
+        <div v-for="(item,index) in subjectList" class="question_area">
+            <p class="ques_name">{{index+1}}. {{item.comContent}} 。</p>
+            答 ：<input type="text">
+        </div>
+    </el-form>
+        <el-button @click="save" type="success" style="float: right;">保存</el-button>
         <el-button @click="submit" type="success" style="float: right;">交卷</el-button>
     </div>
     <div v-if="minutes&&seconds" class="timing">考试时间剩余<span v-if="minutes">{{minutes}}</span>min<span v-if="seconds">{{seconds}}</span>s</div>

@@ -1,5 +1,6 @@
 package com.lawschool.beans.exam;
 
+import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
 
 /**
@@ -9,6 +10,7 @@ import com.lawschool.base.DataEntity;
  *
  * @author 王帅奇
  */
+@TableName("law_user_exam")
 public class UserExam extends DataEntity<UserExam> {
 
     private String examConfigId;    //考试配置id
