@@ -318,11 +318,6 @@ websocket.onmessage = function(event) {
                     //收到消息时候来变化题目，前提是2人回答过
                     if(data.tqList.length <= Number(nowtimu)) {
 
-
-                            console.info(Number(vm.allScore1));
-                            console.info(Number(vm.allScore2));
-                            console.info(vm.u);
-                            console.info(vm.u.fullName);
                             if(Number(vm.allScore1)==Number(vm.allScore2))
                             {
                                 alert("全部题目答完,得分一样，先什么也不做");

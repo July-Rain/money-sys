@@ -26,7 +26,7 @@
         #{item}
       </foreach>
     </where>
-    ORDER BY question_id
+    ORDER BY question_id，id
   </select>
 
   <!--根据题目id查询答案-->

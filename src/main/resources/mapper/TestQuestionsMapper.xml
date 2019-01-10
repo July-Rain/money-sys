@@ -331,7 +331,7 @@
                 #{item}
             </foreach>
         </where>
-        ORDER BY id
+        ORDER BY question_type
     </select>
 
 
