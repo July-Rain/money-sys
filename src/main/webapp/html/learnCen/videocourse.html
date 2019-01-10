@@ -107,7 +107,7 @@
                                 <ul class="clearfix">
                                     <li v-for="(item, index) in videoData">
                                         <div class="item">
-                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,item.comContent)" @pause="onPause(item.id)">
+                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id)" @pause="onPause(item.id,$event)">
                                                 <source :src="item.contentUrl" type="video/mp4">
                                                 您的浏览器不支持视频播放
                                             </video>

@@ -38,6 +38,7 @@ var vm = new Vue({
         dialogLaw:false,//法律分类的弹窗
         multipleSelection:[],//法律分类弹窗
         playTime:0,//播放时间
+        oldTime:0,//原来播放时间
     },
     created: function () {
 
@@ -148,8 +149,8 @@ var vm = new Vue({
         cancelLaw: function () {
             this.dialogLaw=false;
         },
-        onPlay:function (id,accId) {
-            vm.playTime=0;
+        onPlay:function (id) {
+            //获取当前选择对象
             //请求后台修改播放量 记录学习记录
             $.ajax({
                 type: "POST",
@@ -163,19 +164,36 @@ var vm = new Vue({
                     }
                 }
             });
-            $("#demo-video").on(
+            /*$(el).on(
                 "timeupdate",
                 function(event){
                     vm.playTime=this.currentTime;
+                    vm.durationTime=this.duration;
                     console.log(this.currentTime, this.duration);
-                });
+                });*/
         },
-        onPause: function (id) {
+        onPause: function (id,event) {
+            debugger
+            var el = event.currentTarget;
+            var temp =0;
+            //var playTime= $(el).currentTime;
+            vm.oldTime=vm.playTime;
+
+            vm.playTime= el.currentTime;
+
+            temp=vm.playTime-vm.oldTime;
+
+            var finishFlag =false;
+            if(el.currentTime == el.duration ){
+                finishFlag=true;
+            }
+            //获取当前选择对象
+
             //媒介因素暂停事件
             //请求后台记录观看时长
             $.ajax({
                 type: "POST",
-                url: baseURL + "stumedia/countTime?stuId="+id+"&stuFrom=videocen&playTime="+vm.playTime,
+                url: baseURL + "stumedia/countTime?stuId="+id+"&stuFrom=videocen&playTime="+temp+"&finishFlag="+finishFlag,
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -188,57 +206,4 @@ var vm = new Vue({
         }
     }
 });
-var timeinfo;
-/*$(document).ready(function () {
-    debugger
-    var options = {
-    };
-    var player = videojs('demo-video', options, function onPlayerReady() {
-        debugger
-        var time1;
-        var t1 = 0;
-        function aa() {
-            t1 += 0.25;
-            timeinfo = t1;
-            console.log('aa-' + t1);
-        }
-        //开始播放视频时，设置一个定时器，每250毫秒调用一次aa(),观看时长加2.5秒
-        this.on('play', function () {
-            console.log('开始播放');
-            time1 = setInterval(function () {
-                aa();
-            }, 250)
-        });
-        //结束和暂时时清除定时器，并向后台发送数据
-        this.on('ended', function () {
-            console.log('结束播放');
-            window.clearInterval(time1);
-            countTime();   //向后台发数据
-        });
-        this.on('pause', function () {
-            console.log('暂停播放');
-            window.clearInterval(time1);
-            countTime();  //向后台发数据
-        });
-    });
-    //直接关闭页面，并向后台发送数据
-    if(window.addEventListener){
-        window.addEventListener("beforeunload",countTime,false);
-    }else{
-        window.attachEvent("onbeforeunload",countTime);
-    }
-})*/
 
-function countTime() {
-    var sTime = timeinfo;
-    console.log(timeinfo)
-    /*$.ajax({
-        url: "{{ route('time') }}",
-        type: "POST",
-        dataType: 'json',
-        data: {'sTime': sTime, '_token': "{{ csrf_token() }}"},
-        success: function (data) {
-            console.log(data);
-        }
-    })*/
-}

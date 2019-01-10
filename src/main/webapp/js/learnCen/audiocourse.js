@@ -36,7 +36,9 @@ var vm = new Vue({
             label: 'classifyName'
         },
         dialogLaw:false,//法律分类的弹窗
-        multipleSelection:[]//法律分类弹窗
+        multipleSelection:[],//法律分类弹窗
+        playTime:0,//播放时间
+        oldTime:0,//原播放时间
     },
     created: function () {
 
@@ -145,11 +147,42 @@ var vm = new Vue({
         cancelLaw: function () {
             this.dialogLaw=false;
         },
-        onPlay:function (id,accId) {
+        onPlay:function (id) {
             //请求后台修改播放量 记录学习记录
             $.ajax({
                 type: "POST",
                 url: baseURL + "stumedia/updateCount?stuId="+id+"&stuType=stu_audio&stuFrom=audiocen",
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        onPause: function (id,event) {
+            debugger
+            var el = event.currentTarget;
+            var temp =0;
+            vm.oldTime=vm.playTime;
+
+            vm.playTime= el.currentTime;
+
+            temp=vm.playTime-vm.oldTime;
+
+            var finishFlag =false;
+            if(el.currentTime == el.duration ){
+                finishFlag=true;
+            }
+            //获取当前选择对象
+
+            //媒介因素暂停事件
+            //请求后台记录观看时长
+            $.ajax({
+                type: "POST",
+                url: baseURL + "stumedia/countTime?stuId="+id+"&stuFrom=audiocen&playTime="+temp+"&finishFlag="+finishFlag,
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
