@@ -199,14 +199,14 @@ public class LearnTasksController extends AbstractController {
         return Result.ok().put("page", page);
     }
 
-    @RequestMapping("/insertRecord")
-    public Result updateCount(String stuId,String stuType,String stuFrom,String taskId){
+    /*@RequestMapping("/insertRecord")
+    public Result insertRecord(String stuId,String stuType,String stuFrom,String taskId){
         //获取当前登陆人
         User user=  getUser();
         //插入学习记录
         recordService.insertStuRecord(user,stuId,stuType,stuFrom,taskId);
         return Result.ok();
-    }
+    }*/
 
     /**
      * @Author MengyuWu

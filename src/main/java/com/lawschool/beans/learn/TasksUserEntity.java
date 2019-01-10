@@ -19,6 +19,8 @@ public class TasksUserEntity implements Serializable {
 
     private String isFinish;
 
+    private Date finishTime;
+
     public String getId() {
         return id;
     }
@@ -65,5 +67,13 @@ public class TasksUserEntity implements Serializable {
 
     public void setIsFinish(String isFinish) {
         this.isFinish = isFinish == null ? null : isFinish.trim();
+    }
+
+    public Date getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(Date finishTime) {
+        this.finishTime = finishTime;
     }
 }
