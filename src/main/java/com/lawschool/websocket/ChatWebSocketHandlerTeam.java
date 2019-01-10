@@ -391,34 +391,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 		if (webSocketSession.isOpen()) {
 			webSocketSession.close();
 		}
-		
-//		//群发消息告知大家
-//		MessageByTeam msg = new MessageByTeam();
-//		msg.setDate(new Date());
-//
-//		//获取异常的用户的会话中的用户编号
-//		User loginUser=(User)webSocketSession.getAttributes().get("loginUser");
-//		//获取所有的用户的会话
-//		Set<Entry<String, WebSocketSession>> entrySet = USER_SOCKETSESSION_MAP.entrySet();
-//		//并查找出在线用户的WebSocketSession（会话），将其移除（不再对其发消息了。。）
-//		for (Entry<String, WebSocketSession> entry : entrySet) {
-//			if(entry.getKey().equals(loginUser.getId())){
-//				msg.setText("万众瞩目的【"+loginUser.getFullName()+"】已经退出。。。！");
-//				//清除在线会话
-//				USER_SOCKETSESSION_MAP.remove(entry.getKey());
-//				//记录日志：
-//				System.out.println("Socket会话已经移除:用户ID" + entry.getKey());
-//				break;
-//			}
-//		}
-//
-//		//并查找出在线用户的WebSocketSession（会话），将其移除（不再对其发消息了。。）
-//		for (Entry<String, WebSocketSession> entry : entrySet) {
-//			msg.getUserList().add((User)entry.getValue().getAttributes().get("loginUser"));
-//		}
-//
-//		TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-//		sendMessageToAll(message);
+
 		
 	}
 
