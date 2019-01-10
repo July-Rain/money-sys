@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.swing.text.html.parser.Entity;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -167,13 +168,28 @@ public class StuMediaController extends AbstractController {
      **/
     
     @RequestMapping("/updateCount")
-    public Result updateCount(String stuId,String stuType,String stuFrom,String taskId){
+    public Result updateCount(String stuId, String stuType, String stuFrom, String taskId, BigDecimal playTime){
         //获取当前登陆人
         User user=  getUser();
         //更新
         stuMediaService.updateCount(stuId );
         //插入学习记录
         recordService.insertStuRecord(user,stuId,stuType,stuFrom,taskId);
+
+
+        return Result.ok();
+    }
+    /**
+     * @Author MengyuWu
+     * @Description 根据学习id更新播放时长
+     * * @Date 10:14 2018-12-28
+     * @Param [id]
+     * @return com.lawschool.util.Result
+     **/
+
+    @RequestMapping("/countTime")
+    public Result countTime(String stuId,String stuFrom,BigDecimal playTime){
+        recordService.countTime(stuId,stuFrom,playTime );
         return Result.ok();
     }
 }

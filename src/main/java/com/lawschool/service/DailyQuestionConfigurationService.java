@@ -4,6 +4,7 @@ import com.lawschool.base.AbstractService;
 import com.lawschool.beans.DailyQuestionConfiguration;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.form.QuestForm;
+import com.lawschool.util.Result;
 
 import java.util.Map;
 
@@ -17,5 +18,5 @@ public interface DailyQuestionConfigurationService extends AbstractService<Daily
 
     void updateByDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration);
 
-    QuestForm dailyTestCreate();//返回每日一题
+    Result dailyTestCreate();//返回每日一题 以及 当前每日一题配置
 }

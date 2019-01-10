@@ -1,5 +1,6 @@
 package com.lawschool.beans.bbs;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
 
@@ -12,22 +13,14 @@ import com.lawschool.base.DataEntity;
 @TableName("law_post")
 public class PostEntity extends DataEntity<PostEntity> {
 
-    private String titleName;//标题
     private String content;//内容
     private String subordinateColumn;//所属栏目
     private Integer collectionNum;//收藏
     private Integer commentNum;//评论
     private Integer reportNum;//举报
 
+    @TableField
     private String userName;
-
-    public String getTitleName() {
-        return titleName;
-    }
-
-    public void setTitleName(String titleName) {
-        this.titleName = titleName;
-    }
 
     public String getContent() {
         return content;

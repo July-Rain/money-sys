@@ -33,6 +33,7 @@ var vm = new Vue({
          youscore:"0",
         //对方是否已答题
         yesOrNoAnswer:"未答题",
+        jifen:"0",//最终录入的成绩积分
     },
     created: function () {
         this.$nextTick(function () {
@@ -72,16 +73,8 @@ var vm = new Vue({
         //答对事件
         questionYes:function()
         {
-
-            if(vm.nowbattleTopicSetting.whetherGetIntegral=="1")//这题能获得积分
-            {
                 vm.myscore=Number(vm.myscore)+Number(vm.nowQscore);
-                alert("答对了，获得本题积分");
-            }
-            else
-            {
-                alert("答对了，本题不能获得积分");
-            }
+                alert("答对了");
         },
 
 
@@ -190,11 +183,9 @@ websocket.onmessage = function(event) {
         }
         if(data.mycore!=undefined&&data.mycore!=null&&data.mycore!="")
         {
-            vm.myscore=data.mycore;
-
-
-            recordScoreFromTow(datamag.battlePlatform.id,vm.myscore,'OnlinPk',data.to);
-            alert("对手弃权,只获得获胜者奖励"+data.mycore);
+            vm.jifen=data.mycore;
+            recordScoreFromTow(datamag.battlePlatform.id,vm.jifen,'OnlinPk',data.to);
+            alert("对手弃权,恭喜胜利,获得积分"+vm.jifen);
 
         }
 
@@ -226,6 +217,8 @@ websocket.onmessage = function(event) {
         //当受到普通消息是时候  判断发送人
         if(answerpeople.length=="2")
         {
+            setTimeout(function(){
+            answerpeople=[];//将这个回答过的人制空
             //如果2人都回答过了
             // 题目要变
             //收到消息时候来变化题目，前提是2人回答过
@@ -233,22 +226,22 @@ websocket.onmessage = function(event) {
             {
                 if(Number(vm.myscore)==Number(vm.youscore))
                 {
-                    vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.winReward);
-                    alert("全部题目答完,双方分数一样，平局,占不计入成绩表中，获得获胜奖励"+data.competitionOnline.winReward+",最终得分"+vm.myscore);
+                    // vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.winReward);
+                    alert("全部题目答完,双方分数一样，平局,占不计入成绩表中，");
                 }
                 else if(Number(vm.myscore)<Number(vm.youscore))
                 {
-                    vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.loserReward);
+                    vm.jifen=Number(data.competitionOnline.loserReward);
 
-                    recordScore(datamag.battlePlatform.id,'0',vm.myscore,'OnlinPk',vm.u.id);
-                     alert("全部题目答完,，你输了，获得失败者奖励"+data.competitionOnline.loserReward+",最终得分"+vm.myscore);
+                    recordScore(datamag.battlePlatform.id,'0',vm.jifen,'OnlinPk',vm.u.id);
+                     alert("全部题目答完,，你输了，获得失败者奖励"+data.competitionOnline.loserReward);
                 }
                 else if(Number(vm.myscore)>Number(vm.youscore))
                 {
-                    vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.winReward);
+                    vm.jifen=Number(data.competitionOnline.winReward);
 
-                    recordScore(datamag.battlePlatform.id,'1',vm.myscore,'OnlinPk',vm.u.id);
-                    alert("全部题目答完,，你赢了，获得获胜者奖励"+data.competitionOnline.winReward+",最终得分"+vm.myscore);
+                    recordScore(datamag.battlePlatform.id,'1',vm.jifen,'OnlinPk',vm.u.id);
+                    alert("全部题目答完,，你赢了，获得获胜者奖励"+data.competitionOnline.winReward);
                 }
                 // alert("全部题目答完");
                 closeWebsocket();
@@ -263,7 +256,8 @@ websocket.onmessage = function(event) {
                 vm.Question=data.tqList[Number(nowtimu)];
                 vm.yesOrNoAnswer="未答题";
             }
-            answerpeople=[];//再将这个回答过的人制空
+
+            }, 3000);
         }
     }
     scrollToBottom();

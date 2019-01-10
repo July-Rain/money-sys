@@ -14,7 +14,10 @@
     <button id="c" onclick="tiao('3')">单人邀请码进房间</button>
 </div>
 <div>
-    <button id="d" onclick="tiao('4')">多人邀请码</button>
+    <button id="d" onclick="tiaole('2','add')">多人组队（建房）（2v2）</button>
+    <button id="e" onclick="tiaole('2','join')">多人组队（进房）（2v2）</button>
+    <button id="f" onclick="tiaole('5','add')">多人组队（建房）（5v5）</button>
+    <button id="g" onclick="tiaole('5','join2')">多人组队（进房）（5v5）</button>
 </div>
 
 
@@ -28,13 +31,24 @@
     <button id="mybutton" onclick="join()">进入</button>
 
 </div>
+<div id="team1">
+    2v2请输入邀请码：<input type="text" value="" id="yqm2">
+    <button id="team1button" onclick="join2()">进入</button>
+
+</div>
+<div id="team2">
+    5v5请输入邀请码：<input type="text" value="" id="yqm3">
+    <button id="team2button" onclick="join3()">进入</button>
+
+</div>
 </body>
 <script type="text/javascript">
 
     $(function () {
 //        alert("进入竞赛中心大页面");
         $("#yqmdiv").hide();
-
+        $("#team1").hide();
+        $("#team2").hide();
     });
 
 function tiao(a)
@@ -55,7 +69,25 @@ function tiao(a)
     }
     if(a=="4")
     {
-        parent.location.href =baseURL+"modules/competition/leitaiGame.html";
+        parent.location.href =baseURL+"modules/competition/teamGame.html";
+    }
+}
+
+function tiaole(num,type)
+{
+    if(type=="add")
+    {
+        parent.location.href =baseURL+"modules/competition/teamGame.html?peopleNum="+num+"&type=add&code=0";
+    }
+    else if(type=="join")
+    {
+        $("#team1").show();
+        $("#team2").hide();
+    }
+    else if(type=="join2")
+    {
+        $("#team1").hide();
+        $("#team2").show();
     }
 }
 
@@ -63,6 +95,16 @@ function join()
 {
              var code=$("#yqm").val();
             parent.location.href =baseURL+"modules/competition/alonePkGameByCode.html?type=join&code="+code;
+}
+function join2()
+{
+    var code=$("#yqm2").val();
+    parent.location.href =baseURL+"modules/competition/teamGame.html?peopleNum=2&type=join&code="+code;
+}
+function join3()
+{
+    var code=$("#yqm3").val();
+    parent.location.href =baseURL+"modules/competition/teamGame.html?peopleNum=5&type=join&code="+code;
 }
 </script>
 <!--<script src="${rc.contextPath}/statics/js/index2.js"></script>-->

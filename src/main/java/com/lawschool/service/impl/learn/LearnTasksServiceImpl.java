@@ -10,6 +10,7 @@ import com.lawschool.beans.law.ClassifyDesicEntity;
 import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.beans.learn.LearnTasksEntity;
 import com.lawschool.beans.learn.StuRecordEntity;
+import com.lawschool.beans.learn.TasksUserEntity;
 import com.lawschool.dao.StuMediaDao;
 import com.lawschool.dao.learn.LearnTasksDao;
 import com.lawschool.service.StuMediaService;
@@ -19,6 +20,7 @@ import com.lawschool.service.law.ClassifyDesicService;
 import com.lawschool.service.law.TaskDesicService;
 import com.lawschool.service.learn.LearnTasksService;
 import com.lawschool.service.learn.StuRecordService;
+import com.lawschool.service.learn.TasksUserService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;
@@ -62,6 +64,9 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
     @Autowired
     private CaseAnalysisService analysisService;
 
+    @Autowired
+    private TasksUserService tasksUserService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void insertLearnTask(LearnTasksEntity learnTask, User user,String menuForm) {
@@ -71,17 +76,26 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         learnTask.setOptTime(new Date());
         learnTask.setCreateUser(user.getId());
         learnTask.setCreateTime(new Date());
-        mapper.insert(learnTask);
+        learnTask.setDeptCode(user.getOrgCode());
+
+        int countUser=0;
         //存权限表
         if("person".equals(menuForm)){
             String[] userIdArr={user.getId()};
             authService.insertAuthRelation(null,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getCreateUser());
+            //保存对应的任务和人员信息
+            countUser = tasksUserService.insertLearnUser(null,userIdArr,learnTask.getId());
         }else{
             //存权限表
             String[] deptIdArr=learnTask.getDeptArr();
             String[] userIdArr=learnTask.getUserArr();
             authService.insertAuthRelation(deptIdArr,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getCreateUser());
+            //保存对应的任务和人员信息
+            countUser = tasksUserService.insertLearnUser(deptIdArr,userIdArr,learnTask.getId());
         }
+        learnTask.setCountUser(countUser);
+
+        mapper.insert(learnTask);
         //保存任务节点
         insertBathTaskDesic(learnTask.getTaskContentList(),learnTask.getId());
 
@@ -96,6 +110,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
             desicService.insertBatch(list);
         }
     }
+
     @Override
     public LearnTasksEntity selectLearnTask(String id) {
         //获取学习实体
@@ -123,16 +138,25 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         String userId=(String)params.get("userId");
         String taskName = (String)params.get("taskName");
         String taskContent = (String)params.get("taskContent");
+        String taskClass = (String)params.get("taskClass");
+        String policeclass = (String)params.get("policeclass");
         String startTime = (String)params.get("startTime");
         String endTime = (String)params.get("endTime");
         String createUser=(String)params.get("createUser");//创建人
         EntityWrapper<LearnTasksEntity> ew = new EntityWrapper<>();
-        ew.setSqlSelect("ID,TASK_NAME,START_TIME,END_TIME,TASK_CONTENT,CREATE_USER");
+        ew.setSqlSelect("ID,TASK_NAME,START_TIME,END_TIME,TASK_CONTENT,CREATE_USER,DEPT_CODE,DICTCODE2VALE(POLICECLASS) as policeclassName,DICTCODE2VALE(TASK_CLASS) as taskClassName");
+        ew.eq("is_use","1");
         if(UtilValidate.isNotEmpty(taskName)){
             ew.like("TASK_NAME",taskName);
         }
         if(UtilValidate.isNotEmpty(taskContent)){
             ew.like("TASK_CONTENT",taskContent);
+        }
+        if(UtilValidate.isNotEmpty(taskClass)){
+            ew.eq("task_class",taskClass);
+        }
+        if(UtilValidate.isNotEmpty(policeclass)){
+            ew.eq("policeclass",policeclass);
         }
         if(UtilValidate.isNotEmpty(startTime)){
             ew.addFilter("(START_TIME >= TO_DATE('"+startTime+"', 'yyyy-mm-dd'))");
@@ -155,6 +179,64 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
             int finishCount = recordService.selectCount(new EntityWrapper<StuRecordEntity>().eq("task_id",e.getId()).eq("user_id",userId));
             e.setAllCount(allCount);
             e.setFinishCount(finishCount);
+        });
+        page.setRecords(tasksEntities);
+        return new PageUtils(page);
+    }
+
+    @Override
+    public PageUtils queryPageICreate(Map<String, Object> params) {
+        String userId=(String)params.get("userId");
+        String taskName = (String)params.get("taskName");
+        String taskClass = (String)params.get("taskClass");
+        String policeclass = (String)params.get("policeclass");
+        String startTime = (String)params.get("startTime");
+        String endTime = (String)params.get("endTime");
+        String orgCode = (String)params.get("orgCode");
+        String isUse = (String)params.get("isUse");
+        EntityWrapper<LearnTasksEntity> ew = new EntityWrapper<>();
+        ew.setSqlSelect("ID,TASK_NAME,START_TIME,END_TIME,TASK_CONTENT,CREATE_USER,DEPT_CODE,DICTCODE2VALE(POLICECLASS) as policeclassName,DICTCODE2VALE(TASK_CLASS) as taskClassName,is_use");
+        if(UtilValidate.isNotEmpty(taskName)){
+            ew.like("TASK_NAME",taskName);
+        }
+        if(UtilValidate.isNotEmpty(taskClass)){
+            ew.eq("task_class",taskClass);
+        }
+        if(UtilValidate.isNotEmpty(policeclass)){
+            ew.eq("policeclass",policeclass);
+        }
+        if(UtilValidate.isNotEmpty(startTime)){
+            ew.addFilter("(START_TIME >= TO_DATE('"+startTime+"', 'yyyy-mm-dd'))");
+        }
+        if(UtilValidate.isNotEmpty(endTime)){
+            ew.addFilter("(END_TIME <= TO_DATE('"+endTime+"', 'yyyy-mm-dd'))");
+        }
+        if(UtilValidate.isNotEmpty(orgCode)){
+            ew.like("dept_code",orgCode);
+        }
+
+        if(UtilValidate.isNotEmpty(userId)){  //创建人
+            ew.eq("CREATE_USER",userId);
+        }
+        if(UtilValidate.isNotEmpty(isUse)){  //是否启用
+            ew.eq("is_use",isUse);
+        }
+        ew.orderBy("CREATE_TIME");
+        Page<LearnTasksEntity> page = this.selectPage(
+                new Query<LearnTasksEntity>(params).getPage(),ew);
+        //设置学习任务中课程数量以及当前登陆人学习数量
+        List<LearnTasksEntity> tasksEntities=page.getRecords();
+        tasksEntities.stream().forEach(e->{
+            //完成的人数
+            int finishCount = tasksUserService.selectCount(new EntityWrapper<TasksUserEntity>().eq("task_id",e.getId()).eq("is_finish","1"));
+            //总完成人数
+            int allCount = e.getCountUser();
+            //超时完成的个数
+            int overCount = tasksUserService.selectCount(new EntityWrapper<TasksUserEntity>().eq("task_id",e.getId()).eq("is_finish","1").gt("finish_time",e.getEndTime()));
+
+            e.setAllCount(allCount);
+            e.setFinishCount(finishCount);
+            e.setOverCount(overCount);
         });
         page.setRecords(tasksEntities);
         return new PageUtils(page);
@@ -244,5 +326,14 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         }
 
         return page;
+    }
+
+    @Override
+    public int countTask(Map<String, Object> params) {
+        //数据权限使用
+        String userId=(String)params.get("userId");
+        EntityWrapper<LearnTasksEntity> ew = new EntityWrapper<>();
+        int count = mapper.selectCount(ew);
+        return count;
     }
 }

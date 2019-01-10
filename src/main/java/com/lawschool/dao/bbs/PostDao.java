@@ -6,5 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 public interface PostDao extends AbstractDao<PostEntity> {
 
+    Integer updateNum(PostEntity postEntity);
+
     Integer findMyPost(@Param("userId") String userId);
 }

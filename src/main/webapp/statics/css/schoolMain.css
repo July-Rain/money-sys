@@ -155,6 +155,7 @@ img{
 }
 .item ul.item_bot > li{
     color: #999;
+    cursor: pointer;
 }
 .item ul.item_bot > li i{
     padding-right: 7px;

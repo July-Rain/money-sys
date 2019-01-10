@@ -2,7 +2,9 @@ package com.lawschool.controller.bbs;
 
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
+import com.lawschool.beans.bbs.PostCollectionEntity;
 import com.lawschool.beans.bbs.PostEntity;
+import com.lawschool.form.CollectionPostForm;
 import com.lawschool.form.PostFrom;
 import com.lawschool.service.bbs.PostCollectionService;
 import com.lawschool.service.bbs.PostService;
@@ -71,5 +73,33 @@ public class PostController extends AbstractController {
         post.setComment(replyService.findMyReply(getUser().getId()));
         post.setCollection(postCollectionService.findMyCollection(getUser().getId()));
         return Result.ok().put("data", post);
+    }
+
+    @RequestMapping(value = "/collection/{id}", method = RequestMethod.POST)
+    public Result collection(@PathVariable("id") String id){
+        PostCollectionEntity entity = new PostCollectionEntity();
+        entity.setUserId(getUser().getId());
+        entity.setPostId(id);
+
+        if(postCollectionService.findByUser(entity) > 0){
+            return Result.ok("已收藏过此贴！");
+        }
+
+        postCollectionService.save(entity);
+
+        PostEntity postEntity = postService.findOne(id);
+
+        PostEntity newPostEntity = new PostEntity();
+        newPostEntity.setId(postEntity.getId());
+        newPostEntity.setCollectionNum(postEntity.getCollectionNum() == null ? 1 : postEntity.getCollectionNum()+ 1);
+
+        postService.updateNum(newPostEntity);
+        return Result.ok();
+    }
+
+    @RequestMapping(value = "/myCollection", method = RequestMethod.GET)
+    public Result myCollection(@RequestParam Map<String, Object> params){
+        Page<CollectionPostForm> page = postCollectionService.findPage(new Page<CollectionPostForm>(params), new CollectionPostForm());
+        return Result.ok().put("page", page);
     }
 }

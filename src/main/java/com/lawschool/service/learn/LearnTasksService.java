@@ -48,7 +48,7 @@ public interface LearnTasksService extends AbstractService<LearnTasksEntity> {
 
     /**
      * @Author MengyuWu
-     * @Description 分页查询
+     * @Description 分页查询 -- 查询我的任务列表
      * @Date 15:25 2018-12-24
      * @Param [params]
      * @return com.lawschool.util.PageUtils
@@ -56,7 +56,16 @@ public interface LearnTasksService extends AbstractService<LearnTasksEntity> {
     
 
     PageUtils queryPage(Map<String, Object> params);
+    /**
+     * @Author MengyuWu
+     * @Description 分页查询  --查询我创建的学习分类
+     * @Date 15:25 2018-12-24
+     * @Param [params]
+     * @return com.lawschool.util.PageUtils
+     **/
 
+
+    PageUtils queryPageICreate(Map<String, Object> params);
     /**
      * @Author MengyuWu
      * @Description 学习任务修改
@@ -78,4 +87,16 @@ public interface LearnTasksService extends AbstractService<LearnTasksEntity> {
      **/
     
     PageUtils queryContentByTask(@RequestParam Map<String, Object> params);
+
+    /**
+     * @Author MengyuWu
+     * @Description 统计学习任务个数
+     * @Date 17:36 2019-1-7
+     * @Param [params]
+     * @return int
+     **/
+    
+    int countTask (Map<String, Object> params);
+
+
 }

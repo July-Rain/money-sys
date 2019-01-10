@@ -2,6 +2,7 @@ package com.lawschool.service.competition;
 
 
 import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.beans.User;
 import com.lawschool.beans.competition.CompetitionTeam;
 
 import java.util.List;
@@ -24,4 +25,7 @@ public interface CompetitionTeamService extends IService<CompetitionTeam> {
         public void save();
 
         public void deleteId(String id);
+
+        public CompetitionTeam insertNewTeam(User u, String peopleNum);
+
 }

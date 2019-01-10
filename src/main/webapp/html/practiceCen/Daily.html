@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://java.sun.com/jsf/html">
+<html lang="en">
 <head>
     <title>每日一题</title>
     <#include "/header.html">
@@ -14,15 +14,21 @@
     </div>
     <div>
         <el-row>
-            <p>题目：{{questionForm.comContent}}</p>
+            <span>题目类型：[{{questionForm.questionType==10004?'单选题':questionForm.questionType==10005?'多选题':'多选题'}}]</span><br/>
+            <p> 题目：{{questionForm.comContent}}</p>
 
-            <el-checkbox-group v-model="questionForm.answer">
-                <el-checkbox v-if="item.id" :change="aaa()" :label="item.questionContent" v-for="item in questionForm.answer">
+            <el-checkbox-group v-model="answers" v-if="questionForm.questionType==10005">
+                <el-checkbox v-if="item.id" :label="item.id" v-for="item in questionForm.answer">
+                    {{item.questionContent}}
                 </el-checkbox>
+                <br/>
             </el-checkbox-group>
-
-
-            <span v-if="answerShow">答案：{{questionForm.answerDescrible}}</span>
+            <el-button type="primary" v-if="questionForm.questionType==10005" @click="onSubmit(questionForm.answerId)">提交</el-button><br/>
+            <span v-show="showDetail">
+                <span v-show="answerShow">答案描述：{{questionForm.answerDescrible}}</span><br/>
+                <span v-show="legalBasisShow">法律依据：{{questionForm.legalBasis}}</span><br/>
+                <span>题目难度：{{questionForm.questionDifficulty}}</span>
+            </span>
         </el-row>
     </div>
 </div>

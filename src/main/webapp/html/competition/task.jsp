@@ -119,15 +119,7 @@
 
         //onload初始化
         $(function(){
-            $.ajax({
-                type: "POST",
-                url: baseURL + "websocket/pkAloneByRandom",
-                dataType: "json",
-                async:false,
-                success: function (result) {
 
-                }
-            });
 
             //发送消息
             $("#sendBtn").on("click",function(){

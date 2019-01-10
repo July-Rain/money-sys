@@ -4,49 +4,133 @@
     <title>主题练习</title>
     <#include "/header.html">
 </head>
+<style>
+    .container{
+        background: #efefef;
+    }
+    .content{
+        width: 1052px;
+        height: 521px;
+        background: #FFFFFF;
+        margin: 0 auto;
+        position: relative;
+    }
+    .content-title{
+        color: #FFFFFF;
+        font-size: 30px;
+        text-align: center;
+        height: 50px;
+        line-height: 50px;
+        background: #79acd4;
+    }
+    .content-main{
+        height: 100%;
+        color: #36a9e0;
+        font-size: 18px;
+        padding: 70px 40px;
+        position: relative;
+    }
+    .answer{
+        font-size: 18px;
+        color: #666666;
+        margin-top: 55px;
+    }
+    .desc{
+        color: #999999;
+        font-size: 14px;
+        position: absolute;
+        bottom: 190px;
+        right: 160px;
+    }
+    .buttonAll{
+        position: absolute;
+        bottom: 90px;
+    }
+    .bottonAll button{
+        /*margin-right: 100px !important;*/
+    }
+</style>
 <body>
-    <div id="app" v-cloak>
-    <div class="header">
-        <div class="header-left">
-            <img src="${rc.contextPath}/statics/img/logo.png">
-            <a href="javascript:;">江苏省公安厅法律学校</a>
-        </div>
-    </div>
+<div id="app" v-cloak>
     <div class="container">
-        <div class="swiper-container swiper-no-swiping">
-            <div class="swiper-wrapper">
-                <div v-for="item in dataList" class="swiper-slide">
-                    [{{item.questionType==4?'单选题':item.questionType==5?'多选题':'判断题'}}] {{item.comContent}}
-                    <br/>
-                    <br/>
+        <div class="content">
+            <div class="content-title">
+                法律法规练习
+            </div>
+            <div class="content-main" v-for="(item,index) in dataList">
+                <el-row>
+                    <el-col :span="4">
+                        <i class="el-icon-star-on" style="margin-right: 15px"></i>
+                        <span>题目<i style="font-style: normal">{{index+1}}</i>：</span><span>（{{item.questionType==4?'单选题':item.questionType==5?'多选题':'判断题'}}）</span>
+                    </el-col>
+                    <el-col :span="20">
+                        {{item.comContent}}
+                    </el-col>
+                </el-row>
+                <el-row class="answer">
+                    <el-col :span="4">&nbsp;
+                    </el-col>
+                    <el-col :span="20">
                         <el-checkbox-group v-model="answers" v-if="item.questionType==5">
-                            <el-checkbox :label="item2.id" v-for="item2 in item.answer">{{item2.questionContent}}</el-checkbox>
-                            <br/>
+                            <el-checkbox :label="item.id" v-for="item in item.answer">{{item.questionContent}}
+                            </el-checkbox>
                         </el-checkbox-group>
-
                         <el-radio-group v-model="answers"
                                         v-if="item.questionType==4 || item.questionType==6"
                                         :disabled="radio_disabled">
-                            <el-radio :label="item2.id" v-for="item2 in item.answer"
+                            <el-radio :label="item.id" v-for="item in item.answer"
                                       @change="radioCheck(item.id, item.answerId, item.questionType)">
-                                {{item2.questionContent}}
+                                {{item.questionContent}}
                             </el-radio>
                             <br/>
                         </el-radio-group>
-                    <br/>
-                    难度系数：{{item.questionDifficulty}}
+                    </el-col>
+                </el-row>
+                <div class="desc">
+                    <p style="margin-bottom: 20px">
+                        试题难度：<span>{{item.questionDifficulty}}</span>
+                    </p>
+                    <p>
+                        第<span>1</span>题，共<span>999</span>题
+                    </p>
                 </div>
             </div>
+            <div class="buttonAll">
+                <el-button type="primary" icon="el-icon-arrow-left" style="margin: 0 100px">上一页</el-button>
+                <el-button type="primary" icon="el-icon-arrow-right" @click="next" style="margin-right: 100px">下一页</el-button>
+                <el-button type="primary" style="margin-right: 100px">保存</el-button>
+                <el-button type="primary" @click="commit">提交本次练习</el-button>
+            </div>
         </div>
-        <el-button-group>
-            <el-button type="primary" icon="el-icon-arrow-left">上一页</el-button>
-            <el-button type="primary" @click="next">下一页<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
-            <el-button type="primary">保存<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
-            <el-button type="primary" @click="commit">提交本次练习<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
-        </el-button-group>
+        <!--<div class="swiper-container swiper-no-swiping">-->
+            <!--<div class="swiper-wrapper">-->
+                <!--<div v-for="item in dataList" class="swiper-slide">-->
+                    <!--[{{item.questionType==4?'单选题':item.questionType==5?'多选题':'判断题'}}] {{item.comContent}}-->
+                    <!--<br/>-->
+                    <!--<br/>-->
+                    <!--<el-checkbox-group v-model="answers" v-if="item.questionType==5">-->
+                        <!--<el-checkbox :label="item2.id" v-for="item2 in item.answer">{{item2.questionContent}}-->
+                        <!--</el-checkbox>-->
+                        <!--<br/>-->
+                    <!--</el-checkbox-group>-->
+
+                    <!--<el-radio-group v-model="answers"-->
+                                    <!--v-if="item.questionType==4 || item.questionType==6"-->
+                                    <!--:disabled="radio_disabled">-->
+                        <!--<el-radio :label="item2.id" v-for="item2 in item.answer"-->
+                                  <!--@change="radioCheck(item.id, item.answerId, item.questionType)">-->
+                            <!--{{item2.questionContent}}-->
+                        <!--</el-radio>-->
+                        <!--<br/>-->
+                    <!--</el-radio-group>-->
+                    <!--<br/>-->
+                    <!--难度系数：{{item.questionDifficulty}}-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </div>
 </body>
 
-    <script src="${rc.contextPath}/js/practiceCen/theme_answer.js?_${.now?long}"></script>
+    <script src="${rc.contextPath}/js/exerciseCenter/theme_answer.js?_${.now?long}"></script>
 </html>

@@ -3,13 +3,14 @@
 
 <mapper namespace="com.lawschool.dao.bbs.ReplyDao">
     <sql id="replyColumn">
-        post_id AS "postId",
-        content AS "content",
-        reply_object AS "replyObject",
-        opt_user AS "optUser",
-        opt_time AS "optTime",
-        create_user AS "createUser",
-        create_time AS "createTime"
+        a.id AS "id",
+        a.post_id AS "postId",
+        a.content AS "content",
+        a.reply_object AS "replyObject",
+        a.opt_user AS "optUser",
+        a.opt_time AS "optTime",
+        a.create_user AS "createUser",
+        a.create_time AS "createTime"
     </sql>
 
     <insert id="insert">
@@ -51,15 +52,25 @@
     <select id="findList" resultType="com.lawschool.beans.bbs.ReplyEntity">
         SELECT
         <include refid="replyColumn"/>
-        FROM law_reply
+        ,b.user_name AS "userName"
+        FROM law_reply a, law_user b
+        <where>
+            a.create_user = b.id
+            <if test="postId != null and postId != ''">
+                AND a.post_id = #{postId}
+            </if>
+            <if test="createUser != null and createUser != ''">
+                AND a.create_user = #{createUser}
+            </if>
+        </where>
     </select>
 
     <select id="findOne" resultType="com.lawschool.beans.bbs.ReplyEntity">
         SELECT
         <include refid="replyColumn"/>
-        FROM law_reply
+        FROM law_reply a
         <where>
-            id = #{id}
+            a.id = #{id}
         </where>
     </select>
 

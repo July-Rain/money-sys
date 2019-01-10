@@ -38,6 +38,11 @@
 	float:left;
 	padding-bottom:20px;
 	}
+.chatSidebar2{
+		 width:150px;
+		 float:left;
+		 padding-bottom:20px;
+	 }
 .chatCon{
 	width:680px;
 	height:500px;
@@ -58,15 +63,32 @@
 	color:#ffffff;
 	font-family:微软雅黑;
 	}
+.chatSidebar2 h2{
+		 background:#00ae10;
+		 font-size:14px;
+		 line-height:40px; height:40px;
+		 padding:0 10px;
+		 color:#ffffff;
+		 font-family:微软雅黑;
+	 }
 .chatSidebar ul{
 	line-height:30px;
 	}
+.chatSidebar2 ul{
+		 line-height:30px;
+	 }
 .chatSidebar ul li{
 	background:rgba(0,0,0,0.2);
 	margin-bottom:1px;
 	padding-left:15px;
 	}
+.chatSidebar2 ul li{
+		 background:rgba(0,0,0,0.2);
+		 margin-bottom:1px;
+		 padding-left:15px;
+	 }
 .chatSidebar ul li:hover{background:rgba(0,0,0,0.3);}
+.chatSidebar2 ul li:hover{background:rgba(0,0,0,0.3);}
 .up{
 	height:300px;
 	background:rgba(0,0,0,0.2);

@@ -75,96 +75,156 @@
 <body>
 <div id="app" v-cloak>
     <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }">个人中心</el-breadcrumb-item>
+            <el-breadcrumb-item>我的学习</el-breadcrumb-item>
+            <el-breadcrumb-item>任务配置</el-breadcrumb-item>
+        </el-breadcrumb>
         <el-row :gutter="24">
             <el-col :span="24">
                 <el-tabs type="border-card">
-                    <el-tab-pane label="检索">
-                        <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+                    <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                            <el-form-item label="任务名称" prop="taskName">
-                                <el-input v-model="formInline.taskName" placeholder="任务名称" size="mini" clearable></el-input>
-                            </el-form-item>
-                            <el-form-item label="任务内容" prop="taskContent">
-                                <el-input v-model="formInline.taskContent" placeholder="任务内容" size="mini" clearable></el-input>
-                            </el-form-item>
-
-                            <!--<el-form-item prop="status">
-                                <el-select v-model="formInline.status" placeholder="状态" size="mini" clearable>
-                                    <el-option label="有效" value="1"></el-option>
-                                    <el-option label="无效" value="0"></el-option>
-                                </el-select>
-                            </el-form-item>-->
-                            <el-form-item>
-                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                                <el-button size="mini" @click="resetForm('formInline')">重置</el-button>
-
-                            </el-form-item>
-                        </el-form>
-                        <div>
-                            <el-button size="mini" type="primary" @click="addLearnTask" >新增</el-button>
-                            <el-table
-                                    :data="tableData"
-                                    border
-                                    style="width: 100%">
-                                <el-table-column
-                                        prop="taskName"
-                                        label="任务名称"
-                                        width="280"
-                                        header-align="center"
-                                        align="center">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="taskContent"
-                                        label="任务内容"
-                                        header-align="center"
-                                        align="center">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="startTime"
-                                        label="任务开始时间"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
+                        <el-form-item label="任务名称" prop="taskName">
+                            <el-input v-model="formInline.taskName" placeholder="任务名称" size="mini" clearable></el-input>
+                        </el-form-item>
+                        <el-form-item label="所属警种" prop="policeclass">
+                            <el-select size="mini" v-model="formInline.policeclass" placeholder="所属警种" >
+                                <el-option
+                                        v-for="item in policeclassOption"
+                                        :key="item.code"
+                                        :label="item.value"
+                                        :value="item.code"
                                 >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="endTime"
-                                        label="任务结束时间"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="所属分类" prop="taskClass">
+                            <el-select size="mini" v-model="formInline.taskClass" placeholder="所属分类" >
+                                <el-option
+                                        v-for="item in taskClassOption"
+                                        :key="item.code"
+                                        :label="item.value"
+                                        :value="item.code"
                                 >
-                                </el-table-column>
-                                <el-table-column
-                                        label="操作"
-                                        header-align="center"
-                                        align="center"
-                                        width="180">
-                                    <template slot-scope="scope">
-                                        <el-button
-                                                size="mini"
-                                                @click="handleEdit(scope.$index, scope.row)">编辑
-                                        </el-button>
-                                        <el-button
-                                                plain
-                                                type="danger"
-                                                size="mini"
-                                                @click="handleDel(scope.$index, scope.row)">删除
-                                        </el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
-                            </el-pagination>
-                        </div>
-                    </el-tab-pane>
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <!--<el-form-item prop="status">
+                            <el-select v-model="formInline.status" placeholder="状态" size="mini" clearable>
+                                <el-option label="有效" value="1"></el-option>
+                                <el-option label="无效" value="0"></el-option>
+                            </el-select>
+                        </el-form-item>-->
+                        <el-form-item>
+                            <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
+                            <el-button size="mini" @click="resetForm('formInline')">重置</el-button>
+
+                        </el-form-item>
+                    </el-form>
+                    <div>
+                        <el-button size="mini" type="primary" @click="addLearnTask" >新增</el-button>
+                        <el-table
+                                :data="tableData"
+                                border
+                                style="width: 100%">
+                            <el-table-column
+                                    prop="taskName"
+                                    label="任务名称"
+                                    header-align="center"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="taskClassName"
+                                    label="任务类型"
+                                    width="180"
+                                    header-align="center"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="policeclassName"
+                                    label="所属警种"
+                                    width="180"
+                                    header-align="center"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="startTime"
+                                    label="任务开始时间"
+                                    width="180"
+                                    header-align="center"
+                                    align="center"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="endTime"
+                                    label="任务结束时间"
+                                    width="180"
+                                    header-align="center"
+                                    align="center"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="completionDegree"
+                                    label="任务完成度"
+                                    width="180"
+                                    header-align="center"
+                                    align="center"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="overDegree"
+                                    label="超时完成率"
+                                    width="180"
+                                    header-align="center"
+                                    align="center"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="isUse"
+                                    label="是否启用"
+                                    width="180"
+                                    align="center"
+                                    width="100">
+                                <template slot-scope="scope">
+                                    <el-tag v-if="scope.row.isUse === '0'" size="small" type="danger">未启用</el-tag>
+                                    <el-tag v-else size="small">已启用</el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                    label="操作"
+                                    header-align="center"
+                                    align="center"
+                                    width="180">
+                                <template slot-scope="scope">
+                                    <el-button v-if="scope.row.isUse=='0'"
+                                            size="mini"
+                                            @click="handleStart(scope.$index, scope.row)">启动
+                                    </el-button>
+                                    <el-button
+                                            size="mini"
+                                            @click="handleEdit(scope.$index, scope.row)">编辑
+                                    </el-button>
+                                    <el-button
+                                            plain
+                                            type="danger"
+                                            size="mini"
+                                            @click="handleDel(scope.$index, scope.row)">删除
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <el-pagination
+                                @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange"
+                                :current-page="formInline.currPage"
+                                :page-sizes="[10, 20, 30, 40]"
+                                :page-size="formInline.pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="formInline.totalCount">
+                        </el-pagination>
+                    </div>
                 </el-tabs>
             </el-col>
         </el-row>
@@ -193,6 +253,28 @@
                             </el-tree>-->
                             <!-- 选择任务 -->
                             <ul id="classTree" class="ztree"></ul>
+                        </el-form-item>
+                        <el-form-item label="所属警种" prop="policeclass">
+                            <el-select v-model="learnTasks.policeclass" placeholder="所属警种" >
+                                <el-option
+                                        v-for="item in policeclassOption"
+                                        :key="item.code"
+                                        :label="item.value"
+                                        :value="item.code"
+                                >
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="所属分类" prop="taskClass">
+                            <el-select v-model="learnTasks.taskClass" placeholder="所属分类" >
+                                <el-option
+                                        v-for="item in taskClassOption"
+                                        :key="item.code"
+                                        :label="item.value"
+                                        :value="item.code"
+                                >
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item label="开始日期" prop="startTime">
                             <el-date-picker

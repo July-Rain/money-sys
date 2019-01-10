@@ -11,88 +11,96 @@
         <el-row :gutter="24">
             <el-col :span="24">
                 <el-tabs type="border-card">
-                    <el-tab-pane label="检索">
-                        <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                            <el-form-item prop="code">
-                                <el-input v-model="formInline.code" placeholder="参数编码" size="mini"></el-input>
-                            </el-form-item>
-                            <el-form-item prop="value">
-                                <el-input v-model="formInline.value" placeholder="参数值" size="mini"></el-input>
-                            </el-form-item>
 
-                            <el-form-item prop="status">
-                                <el-select v-model="formInline.status" placeholder="已考状态" size="mini">
-                                    <el-option label="已考" value="1"></el-option>
-                                    <el-option label="未考" value="0"></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button type="primary" @click="onSubmit" size="mini">查询11</el-button>
-                                <el-button @click="resetForm('formInline')">重置</el-button>
-
-                            </el-form-item>
-                        </el-form>
-                        <div>
-                            <el-table
-                                    :data="tableData"
-                                    border
-                                    style="width: 100%">
-                                <el-table-column
-                                        prop="examName"
-                                        label="试卷名称"
-                                        width="280"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="examTypeName"
-                                        label="试卷类型"
-                                        width="130"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="examTime"
-                                        label="考试时长"
-                                        width="130"
-                                >
-                                </el-table-column>
-
-                                <el-table-column
-                                        prop="organizedOrgCode"
-                                        label="组考单位"
-                                        width="150"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="startTime"
-                                        label="考试开始时间"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="endTime"
-                                        label="考试结束时间"
-                                >
-                                </el-table-column>
-                                <el-table-column label="操作" width="300">
-                                    <template slot-scope="scope">
-                                        <el-button
-                                                size="mini"
-                                                @click="startExam(scope.$index, scope.row)">开始考试
-                                        </el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
-                            </el-pagination>
+                    <div class="info_card">
+                        <div class="card_title">
+                            <i class="iconfont icon-jiansuo"></i>
+                            <h3>检索工具</h3>
                         </div>
-                    </el-tab-pane>
+                        <div class="card_contain">
+                            <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+
+                                <el-form-item prop="code">
+                                    <el-input v-model="formInline.code" placeholder="参数编码" size="mini"></el-input>
+                                </el-form-item>
+                                <el-form-item prop="value">
+                                    <el-input v-model="formInline.value" placeholder="参数值" size="mini"></el-input>
+                                </el-form-item>
+
+                                <el-form-item prop="status">
+                                    <el-select v-model="formInline.status" placeholder="已考状态" size="mini">
+                                        <el-option label="已考" value="1"></el-option>
+                                        <el-option label="未考" value="0"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
+                                    <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
+
+                                </el-form-item>
+                            </el-form>
+                        </div>
+                    </div>
+                    <div>
+                        <el-table
+                                :data="tableData"
+                                border
+                                style="width: 100%">
+                            <el-table-column
+                                    prop="examName"
+                                    label="试卷名称"
+                                    width="280"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="examTypeName"
+                                    label="试卷类型"
+                                    width="130"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="examTime"
+                                    label="考试时长"
+                                    width="130"
+                            >
+                            </el-table-column>
+
+                            <el-table-column
+                                    prop="organizedOrgCode"
+                                    label="组考单位"
+                                    width="150"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="startTime"
+                                    label="考试开始时间"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="endTime"
+                                    label="考试结束时间"
+                            >
+                            </el-table-column>
+                            <el-table-column label="操作" width="300">
+                                <template slot-scope="scope">
+                                    <el-button
+                                            size="mini"
+                                            @click="startExam(scope.$index, scope.row)">开始考试
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <el-pagination
+                                @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange"
+                                :current-page="formInline.currPage"
+                                :page-sizes="[10, 20, 30, 40]"
+                                :page-size="formInline.pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="formInline.totalCount">
+                        </el-pagination>
+                    </div>
                 </el-tabs>
             </el-col>
         </el-row>

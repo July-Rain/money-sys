@@ -98,7 +98,7 @@ public class IntegralServiceImpl extends AbstractServiceImpl<IntegralDao, Integr
         //2.更新用户积分学分表
 //        UserIntegral userIntegral=new UserIntegral();
 //        userIntegral.setUserId(userId);
-        List<UserIntegral> userIntegral = userIntegralDao.selectList(new EntityWrapper<UserIntegral>().eq("USER_ID",user.getId()));
+        List<UserIntegral> userIntegral = userIntegralDao.selectList(new EntityWrapper<UserIntegral>().eq("USER_ID",userId));
 
         //原来就有
         if(userIntegral.size()>0){
@@ -120,6 +120,7 @@ public class IntegralServiceImpl extends AbstractServiceImpl<IntegralDao, Integr
             userIntegral2.setFullName(user.getFullName());
             userIntegral2.setUserCode(user.getUserCode());
             userIntegral2.setOrgName(user.getOrgName());
+            userIntegral2.setUserId(userId);
             userIntegral2.setId(GetUUID.getUUIDs("UIG"));
             userIntegralDao.insert(userIntegral2);
         }

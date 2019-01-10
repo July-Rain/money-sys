@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
+import com.lawschool.beans.ExerciseConfigureEntity;
 import com.lawschool.beans.User;
 import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.beans.learn.LearnTasksEntity;
@@ -58,6 +59,36 @@ public class LearnTasksController extends AbstractController {
         return Result.ok().put("page", page);
     }
 
+    /**
+     * @Author MengyuWu
+     * @Description 查询我创建的
+     * @Date 17:25 2019-1-8
+     * @Param [params]
+     * @return com.lawschool.util.Result
+     **/
+    
+    @RequestMapping("/listICreate")
+    public Result listICreate(@RequestParam Map<String, Object> params){
+        User user=getUser();
+        params.put("userId",user.getId());
+        PageUtils page = tasksService.queryPageICreate(params);
+        return Result.ok().put("page", page);
+    }
+
+    /**
+     * @Author MengyuWu
+     * @Description 统计页面查询所有数据
+     * @Date 17:25 2019-1-8
+     * @Param [params]
+     * @return com.lawschool.util.Result
+     **/
+
+    @RequestMapping("/listAllStat")
+    public Result listAllStat(@RequestParam Map<String, Object> params){
+        params.put("isUse","1");
+        PageUtils page = tasksService.queryPageICreate(params);
+        return Result.ok().put("page", page);
+    }
     /**
      * @Author MengyuWu
      * @Description 查看详情
@@ -174,6 +205,33 @@ public class LearnTasksController extends AbstractController {
         User user=  getUser();
         //插入学习记录
         recordService.insertStuRecord(user,stuId,stuType,stuFrom,taskId);
+        return Result.ok();
+    }
+
+    /**
+     * @Author MengyuWu
+     * @Description 统计数量
+     * @Date 10:32 2019-1-9
+     * @Param [params]
+     * @return com.lawschool.util.Result
+     **/
+    
+    @RequestMapping("/getCount")
+    public Result getCount(@RequestParam Map<String, Object> params){
+        Result result = new Result();
+        User user=getUser();
+        params.put("userId",user.getId());
+        int count = tasksService.countTask(params);
+        result.put("learnTasks",count);
+        return  result;
+    }
+    @SysLog("启用学习任务")
+    @RequestMapping("/startTask")
+    public Result startTask(String id){
+        LearnTasksEntity learnTasksEntity = new LearnTasksEntity();
+        learnTasksEntity.setId(id);
+        learnTasksEntity.setIsUse("1");
+        tasksService.updateById(learnTasksEntity);
         return Result.ok();
     }
 }

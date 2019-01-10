@@ -107,7 +107,7 @@
                                 </el-table-column>
                                 <el-table-column
                                         prop="winReward"
-                                        label="获胜者奖励"
+                                        label="获胜者奖励积分"
                                         width="280"
                                         header-align="center"
                                         align="center"
@@ -115,7 +115,7 @@
                                 </el-table-column>
                                 <el-table-column
                                         prop="loserReward"
-                                        label="失败者奖励"
+                                        label="失败者奖励积分"
                                         width="280"
                                         header-align="center"
                                         align="center"
@@ -205,12 +205,12 @@
                             <tr>
 
                                 <th>
-                                    <el-form-item label="获胜者奖励" prop="winReward">
+                                    <el-form-item label="获胜者奖励积分" prop="winReward">
                                         <el-input type="number" v-model="competitionOnline.winReward" placeholder="获胜者奖励" clearable></el-input>
                                     </el-form-item>
                                 </th>
                                 <th>
-                                    <el-form-item label="失败者奖励" prop="loserReward">
+                                    <el-form-item label="失败者奖励积分" prop="loserReward">
                                         <el-input type="number" v-model="competitionOnline.loserReward" placeholder="失败者奖励" clearable></el-input>
                                     </el-form-item>
                                 </th>
@@ -258,14 +258,14 @@
 
                                  </tr>
                                 <tr>
-                                    <th>
-                                        <el-form-item label="是否获得积分" prop="whetherGetIntegral">
-                                            <el-switch v-model="item.whetherGetIntegral" active-text="是"  inactive-text="否" active-value="1"  inactive-value="0" ></el-switch>
-                                        </el-form-item>
-                                    </th>
-                                    <th>
-                                        <el-form-item label="获得分数 " prop="score">
-                                            <el-input v-model="item.score" placeholder="获得分数" clearable></el-input>
+                                    <!--<th>-->
+                                        <!--<el-form-item label="是否获得积分" prop="whetherGetIntegral">-->
+                                            <!--<el-switch v-model="item.whetherGetIntegral" active-text="是"  inactive-text="否" active-value="1"  inactive-value="0" ></el-switch>-->
+                                        <!--</el-form-item>-->
+                                    <!--</th>-->
+                                    <th colspan="2">
+                                        <el-form-item label="题目分值 " prop="score">
+                                            <el-input v-model="item.score" placeholder="题目分值" clearable></el-input>
                                         </el-form-item>
                                     </th>
                                 </tr>
@@ -335,13 +335,13 @@
                                 <td>试题难度</td>
                                 <td>{{item.questionDifficultyName}}</td>
                             </tr>
-                            <tr>
+                            <!--<tr>-->
 
-                                <td>是否获得积分</td>
-                                <td>{{item.whetherGetIntegralName}}</td>
-                            </tr>
+                                <!--<td>是否获得积分</td>-->
+                                <!--<td>{{item.whetherGetIntegralName}}</td>-->
+                            <!--</tr>-->
                             <tr>
-                                <td>获得分值</td>
+                                <td>题目分值</td>
                                 <td>{{item.score}}</td>
                                 <td>试题类型</td>
                                 <td>{{item.questionTypeName}}</td>

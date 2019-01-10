@@ -34,7 +34,9 @@ var vm = new Vue({
             taskName: '',
             currPage: 1,
             pageSize: 10,
-            totalCount: 0
+            totalCount: 0,
+            taskClass:"",
+            policeclass:""
         },
         tableData: [],//表格数据
         visible: false,
@@ -50,7 +52,9 @@ var vm = new Vue({
             taskContent:"",
             startTime:"",
             endTime:"",
-            taskContentList:[]
+            taskContentList:[],
+            taskClass:"",
+            policeclassOption:""
 
         },
         rules: {//表单验证规则
@@ -96,6 +100,8 @@ var vm = new Vue({
             children: 'child',
             label: 'infoName'
         },//法律法规树默认数据
+        taskClassOption:[],//所属分类
+        policeclassOption:[]//所属警种
        // multipleClassSelection:[]//法律法规数据选择框
     },
     created: function () {
@@ -127,6 +133,29 @@ var vm = new Vue({
                     }
                 }
             });
+            // 所属警种
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async:false,
+                data: {type:"POLICACLASS",Parentcode:"0"},
+                success: function (result) {
+                    vm.policeclassOption=result.dictlist;
+                }
+            });
+            // 所属分类
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async:false,
+                data: {type:"TASKCLASS",Parentcode:"0"},
+                success: function (result) {
+                    debugger
+                    vm.taskClassOption=result.dictlist;
+                }
+            });
             this.reload();
             this.reloadUser();
             vm.menuForm=menu;
@@ -149,6 +178,7 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
+                    debugger
                     var url = vm.learnTasks.id ? "learntasks/update?menuFrom="+vm.menuForm : "learntasks/insert?menuFrom="+vm.menuForm;
                     var deptArr = vm.learnTasks.deptIds?vm.learnTasks.deptIds.split(","):[];
                     var userArr = vm.learnTasks.userIds?vm.learnTasks.userIds.split(","):[];
@@ -198,7 +228,9 @@ var vm = new Vue({
                 taskContent:"",
                 startTime:"",
                 endTime:"",
-                taskContentList:[]
+                taskContentList:[],
+                taskClass:"",
+                policeclassOption:""
             };
             this.title = "新增学习任务";
             this.dialogLearnTask = true;
@@ -251,6 +283,34 @@ var vm = new Vue({
             });
 
         },
+        handleStart: function (index, row) {
+            this.$confirm('启用后将不能修改, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(function () {
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + 'learntasks/startTask?id='+row.id,
+                    async: true,
+                    contentType: "application/json",
+                    success: function (result) {
+                        vm.reload();
+                        vm.$message({
+                            type: 'success',
+                            message: '启用成功!'
+                        });
+
+                    }
+                });s
+            }).catch(function () {
+                vm.$message({
+                    type: 'info',
+                    message: '已取消启用'
+                });
+            });
+
+        },
         closeDia: function () {
             this.dialogLearnTask = false;
             vm.reload();
@@ -258,12 +318,19 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "learntasks/list?isMp=true",
+                url: baseURL + "learntasks/listICreate?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
+                        if(vm.tableData){
+                            //有值
+                            for(var i=0;i< vm.tableData.length;i++){
+                                vm.tableData[i].completionDegree= vm.tableData[i].allCount == null ? '0%' :  vm.tableData[i].finishCount=='0' ? '0%' :(Math.round( vm.tableData[i].finishCount/ vm.tableData[i].allCount * 100* 100)/100) + '%';
+                                vm.tableData[i].overDegree= vm.tableData[i].overCount == null ? '0%' :  vm.tableData[i].allCount=='0' ? '0%' :(Math.round( vm.tableData[i].overCount/ vm.tableData[i].allCount * 100* 100)/100) + '%';
+                            }
+                        }
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
                         vm.formInline.totalCount = parseInt(result.page.totalCount);
