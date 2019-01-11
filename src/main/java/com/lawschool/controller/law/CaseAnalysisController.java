@@ -115,6 +115,14 @@ public class CaseAnalysisController extends AbstractController {
         analysisService.deleteBatchIds(Arrays.asList(ids));
         return Result.ok();
     }
+    /**
+     * @Author MengyuWu
+     * @Description 案例分析
+     * @Date 15:10 2019-1-10
+     * @Param [id, stuType, stuFrom, taskId]
+     * @return com.lawschool.util.Result
+     **/
+    
     @RequestMapping("/updateCount")
     public Result updateCount(String id,String stuType,String stuFrom,String taskId){
         //获取当前登陆人

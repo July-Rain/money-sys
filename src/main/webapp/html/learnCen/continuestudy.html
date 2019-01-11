@@ -145,7 +145,7 @@
                                     <el-col :span="6" v-for="(item, index) in infoData">
                                         <el-card :body-style="{ padding: '4px' }">
 
-                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="countStu(item.id)">
+                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,'stu_video')" @pause="onPause(item.id,$event)">
                                                 <source :src="item.contentUrl" type="video/mp4">
                                                 您的浏览器不支持视频播放
                                             </video>
@@ -169,7 +169,7 @@
                                 <el-row :gutter="66">
                                     <el-col :span="12" v-for="(item, index) in infoData">
                                         <el-card :body-style="{ padding: '0px' }">
-                                            <audio controls="controls" preload="none" @play="countStu(item.id)">
+                                            <audio controls="controls" preload="none" @play="onPlay(item.id,'stu_audio')" @pause="onPause(item.id,$event)">
                                                 <source :src="item.contentUrl" controls="controls">
                                             </audio>
                                             <div style="padding: 14px 14px 0 14px;">
@@ -251,7 +251,7 @@
                                     <el-col :span="6" v-for="(item, index) in infoData">
                                         <el-card :body-style="{ padding: '4px' }">
 
-                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="countCase(item.id)">
+                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,'stu_video')" @pause="onPause(item.id,$event)">
                                                 <source :src="item.caseContentUrl" type="video/mp4">
                                                 您的浏览器不支持视频播放
                                             </video>
@@ -274,7 +274,7 @@
                                     <el-col :span="6" v-for="(item, index) in infoData">
                                         <el-card :body-style="{ padding: '4px' }">
 
-                                            <audio controls="controls" preload="none" @play="countCase(item.id)">
+                                            <audio controls="controls" preload="none" @play="onPlay(item.id,'stu_audio')" @pause="onPause(item.id,$event)">
                                                 <source :src="item.caseContentUrl" controls="controls">
                                             </audio>
                                             <div style="padding: 14px 14px 0 14px;">

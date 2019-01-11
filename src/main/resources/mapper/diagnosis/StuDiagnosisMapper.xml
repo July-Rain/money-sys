@@ -177,11 +177,9 @@
     </select>
 
     <select id="orgDiaStat" resultType="com.lawschool.beans.diagnosis.OrgDiagnosisEntity" parameterType="map">
-
-
         SELECT
         lawAll.ORG_ID as orgId,
-        lawAll.FULL_NAME as orgName,
+        lawAll.ORG_NAME as orgName,
         lawAll.org_level as orgLevel,
         lawAll.parent_id as parentId,
         lawAll.lawAllCount,
@@ -200,7 +198,7 @@
         -- 全部法律法规
         (SELECT
             o.ORG_ID,
-            o.FULL_NAME,
+            o.ORG_NAME,
           o.parent_id,
           o.org_level,
             a.lawAllCount
@@ -218,7 +216,7 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID) lawAll,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000) lawAll,
 
          -- 全部视频数据
         (SELECT
@@ -241,7 +239,7 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID) videoAll,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000) videoAll,
 
         --全部图文数据
         (SELECT
@@ -264,7 +262,7 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID) picAll,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000) picAll,
 
         -- 全部音频数据
         (SELECT
@@ -287,7 +285,7 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID) audioAll,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000) audioAll,
 
         -- 学习任务法律法规
         (SELECT
@@ -310,7 +308,7 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID) lawTask,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000) lawTask,
 
         -- 学习任务视频
         (SELECT
@@ -333,7 +331,7 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID) videoTask,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000) videoTask,
 
         -- 学习任务图文
         (SELECT
@@ -356,7 +354,7 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID) picTask,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000) picTask,
 
         -- 学习任务音频数据
         (SELECT
@@ -379,7 +377,7 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID) audioTask,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000) audioTask,
 
 
         -- 案例分析视频
@@ -403,7 +401,7 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID) videoCase,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000) videoCase,
 
 
         -- 案例分析图文
@@ -427,7 +425,7 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID) picCase,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000) picCase,
 
 
         -- 案例分析音频数据
@@ -451,19 +449,19 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID) audioCase
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000) audioCase
 
 
          where lawAll.ORG_ID=videoAll.ORG_ID
 
               and lawAll.ORG_ID=picAll.ORG_ID
-              and lawAll.ORG_ID=audioAll.ORG_ID
-              and lawAll.ORG_ID=lawTask.ORG_ID
-              and lawAll.ORG_ID=videoTask.ORG_ID
-              and lawAll.ORG_ID=picTask.ORG_ID
-              and lawAll.ORG_ID=audioTask.ORG_ID
-              and lawAll.ORG_ID=videoCase.ORG_ID
-              and lawAll.ORG_ID=picCase.ORG_ID
-              and lawAll.ORG_ID=audioCase.ORG_ID
+                    and lawAll.ORG_ID=audioAll.ORG_ID
+        and lawAll.ORG_ID=lawTask.ORG_ID
+        and lawAll.ORG_ID=videoTask.ORG_ID
+        and lawAll.ORG_ID=picTask.ORG_ID
+        and lawAll.ORG_ID=audioTask.ORG_ID
+        and lawAll.ORG_ID=videoCase.ORG_ID
+        and lawAll.ORG_ID=picCase.ORG_ID
+        and lawAll.ORG_ID=audioCase.ORG_ID
     </select>
 </mapper>

@@ -138,6 +138,24 @@ var vm = new Vue({
         },
         handleDetail: function (index,row) {
             //查看详情
+            //记录学习记录
+            this.insertRecord(row.id);
+        },
+        insertRecord: function (id) {
+            //插入学习记录
+            //请求后台修改播放量 记录学习记录
+            $.ajax({
+                type: "POST",
+                url: baseURL +  "sturecord/insertRecord?stuId="+id+"&stuType=law"+"&stuFrom=law",
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
         }
     }
 });

@@ -188,8 +188,8 @@ public class StuMediaController extends AbstractController {
      **/
 
     @RequestMapping("/countTime")
-    public Result countTime(String stuId,String stuFrom,BigDecimal playTime){
-        recordService.countTime(stuId,stuFrom,playTime );
+    public Result countTime(String stuId,String stuFrom,BigDecimal playTime,Boolean finishFlag){
+        recordService.countTime(stuId,stuFrom,playTime,finishFlag );
         return Result.ok();
     }
 }
