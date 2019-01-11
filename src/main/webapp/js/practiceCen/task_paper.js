@@ -1,7 +1,7 @@
-// 配置ID
-var configureId = getUrlParam('id');
 // 练习任务Id
-var id = getUrlParam('taskId');
+var id = getUrlParam('id');
+// 任务配置ID
+var taskId = getUrlParam('taskId');
 
 var vm = new Vue({
     el: "#app",
@@ -53,7 +53,6 @@ var vm = new Vue({
             var obj = vm.questionList[index];
             var answerId = obj.answerId;
             var userAnswer = obj.userAnswer;
-            var themeName = obj.themeName;
 
             if(userAnswer == answerId){
                 obj.right = 1;
@@ -66,7 +65,7 @@ var vm = new Vue({
                 qId: obj.id,
                 answer: userAnswer,
                 right: obj.right,
-                themeName: themeName
+                themeName: obj.themeName
             };
 
             vm.preserved.push(form);
@@ -87,12 +86,12 @@ var vm = new Vue({
             }
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/paper_index.html';
+                = 'modules/exerciseCenter/task_index.html';
         },
         tj: function(){
             $.ajax({
                 type: "POST",
-                url: baseURL + "exercise/paper/commit/" + id,
+                url: baseURL + "exercise/task/commit/" + id,
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
@@ -119,21 +118,21 @@ var vm = new Vue({
         },
         refresh: function () {
             var obj = {
-                configureId: configureId,
+                taskId: taskId,
                 id: id,
                 limit: vm.limit,
                 page: vm.page
             };
             $.ajax({
                 type: "GET",
-                url: baseURL + "exercise/paper/paper",
+                url: baseURL + "exercise/task/paper",
                 data: obj,
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.questionList = result.page.list;
-                        vm.count = result.page.count;
-                        id = result.page.id;
+                        vm.questionList = result.result.list;
+                        vm.count = result.result.count;
+                        id = result.result.id;
                         vm.preserved = [];
                     } else {
                         alert(result.msg);
@@ -145,7 +144,7 @@ var vm = new Vue({
             // 保存答题情况
             $.ajax({
                 type: "POST",
-                url: baseURL + "exercise/paper/preserve/" + type,
+                url: baseURL + "exercise/task/preserve/" + type,
                 data: JSON.stringify(vm.preserved),
                 contentType: "application/json",
                 success: function (result) {
