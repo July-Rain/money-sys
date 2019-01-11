@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>统计分析</title>
+    <#include "/header.html">
+</head>
+<body>
+    <div id="app" v-cloak>
+        总的分析：<div class="container">
+            <div v-for="(value,key) in overall">
+                {{key}}: {{value}} 次
+            </div>
+        </div>
+        <br/>
+        总答题量：{{total}}、答对：{{right}}、答错：{{total - right}}
+        <br/>
+        <br/>
+
+        以下数据为图表需要数据：
+        <br/>
+        主题回答数量：
+        <br/>
+        <div v-for="(value, key) in themeAnswerNum">
+            {{key}}: {{value}}次
+        </div>
+        <br/>
+        <br/>
+        主题回答正确数量：
+        <br/><div v-for="(value, key) in themeRightNum">
+            {{key}}: {{value}}次
+        </div>
+    </div>
+</body>
+    <script src="${rc.contextPath}/js/practiceCen/analysis.js?_${.now?long}"></script>
+</html>
