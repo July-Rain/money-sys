@@ -6,9 +6,12 @@ import com.lawschool.form.ThemeAnswerForm;
 
 import java.util.List;
 
-public interface ThemeAnswerRecordService extends AbstractService<ThemeAnswerRecordEntity> {
-
-    void saveBatch(List<ThemeAnswerRecordEntity> list);
+/**
+ * @Auther: Moon
+ * @Date: 2018/12/21 17:58
+ * @Description: 主题练习--答题记录--Service
+ */
+public interface ThemeAnswerRecordService extends AnswerRecordService<ThemeAnswerRecordEntity> {
 
     List<ThemeAnswerForm> analysisAnswer(String themeId);
 }

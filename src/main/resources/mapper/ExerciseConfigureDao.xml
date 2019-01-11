@@ -112,7 +112,7 @@
         t.status AS "status",
         t.id AS "taskId"
         FROM LAW_EXERCISE_CONFIGURE o
-        LEFT JOIN LAW_EXERCISE_TASK t ON o.id = t.configure_id
+        LEFT JOIN LAW_EXERCISE_PAPER t ON o.id = t.configure_id
         AND t.user_id = #{createUser}
         <where>
             o.del_flag = #{delFlag}

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.practicecenter.AnalysisDao">
+    <select id="analysis" resultType="map">
+        SELECT
+            P .TASK_ID AS "id",
+            P .THEME_NAME AS "themeName",
+            COUNT (P .TASK_ID) AS "answerNum",
+            SUM (P . RIGHT) AS "rightNum",
+            '组卷练习' AS "typeName"
+        FROM
+            LAW_PAPER_RECORD P
+        WHERE
+            TO_CHAR (P .CREATE_TIME, 'YYYY-MM') = #{month}
+        AND P .create_user = #{userId}
+        GROUP BY
+            P .TASK_ID,
+            P .THEME_NAME
+        UNION ALL
+        SELECT
+            T .TASK_ID AS "id",
+            T .THEME_NAME AS "themeName",
+            COUNT (T .TASK_ID) AS "answerNum",
+            SUM (T . RIGHT) AS "rightNum",
+            '主题练习' AS "typeName"
+        FROM
+            LAW_THEME_RECORD T
+        WHERE
+            TO_CHAR (T .CREATE_TIME, 'YYYY-MM') = #{month}
+        AND T .create_user = #{userId}
+        GROUP BY
+            T .TASK_ID,
+            T .THEME_NAME
+        UNION ALL
+		SELECT
+			r.CONFIGURE_ID AS "id",
+			r.THEME_NAME AS "themeName",
+			COUNT (r.CONFIGURE_ID) AS "answerNum",
+			SUM (r. RIGHT) AS "rightNum",
+			'任务练习' AS "typeName"
+		FROM
+			LAW_TASK_RECORD r
+		WHERE
+			TO_CHAR (r.CREATE_TIME, 'YYYY-MM') = #{month}
+		AND r.create_user = #{userId}
+		GROUP BY
+			r.CONFIGURE_ID,
+			r.THEME_NAME
+		UNION ALL
+			SELECT
+				E .TASK_ID AS "id",
+				E .THEME_NAME AS "themeName",
+				COUNT (E .TASK_ID) AS "answerNum",
+				SUM (E . RIGHT) AS "rightNum",
+				'随机练习' AS "typeName"
+			FROM
+				LAW_EXERCISE_RECORD E
+			WHERE
+				TO_CHAR (E .CREATE_TIME, 'YYYY-MM') = #{month}
+			AND E .create_user = #{userId}
+			GROUP BY
+				E .TASK_ID,
+				E .THEME_NAME
+    </select>
+</mapper>

@@ -21,4 +21,79 @@
     <!--</resultMap>-->
 
 
+    <select id="PkCountByUser" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT
+            table1.count1+table2.count2
+        FROM
+            (
+                SELECT
+                    COUNT (*) AS count1
+                FROM
+                    LAW_BATTLE_PLATFORM
+                WHERE
+                    (
+                        TYPE = 'PKOnline'
+                        OR TYPE = 'PKOnlineBycode'
+                    )
+                AND PLAY1 IS NOT NULL
+                AND PLAY2 IS NOT NULL
+                AND (
+                    PLAY1 = #{uid}
+                    OR PLAY2 = #{uid}
+                )
+
+
+        ) table1,
+         (
+            SELECT
+                COUNT (*) AS count2
+            FROM
+                LAW_BATTLE_PLATFORM
+            WHERE
+                TYPE = 'teamOnline'
+            AND PLAY1 IS NOT NULL
+            AND PLAY2 IS NOT NULL
+            AND (
+                PLAY1 IN (
+                    SELECT
+                        TEAM_ID
+                    FROM
+                        LAW_TEAM_USER
+                    WHERE
+                        USER_ID = #{uid}
+                )
+                OR PLAY2 IN (
+                    SELECT
+                        TEAM_ID
+                    FROM
+                        LAW_TEAM_USER
+                    WHERE
+                        USER_ID = #{uid}
+                )
+            )
+
+
+        ) table2
+    </select>
+
+
+    <select id="leitaiCountByUser" resultType="java.lang.Integer" parameterType="java.lang.String">
+
+              SELECT
+                    COUNT (*) AS count1
+                FROM
+                    LAW_BATTLE_PLATFORM
+                WHERE
+                    TYPE = 'leitai'
+                AND PLAY1 IS NOT NULL
+                AND PLAY2 IS NOT NULL
+                AND (
+                    PLAY1 = #{uid}
+                    OR PLAY2 = #{uid}
+                )
+
+    </select>
 </mapper>
+
+
+

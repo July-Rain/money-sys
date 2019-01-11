@@ -8,7 +8,7 @@ import com.lawschool.base.DataEntity;
  * @Date: 2018/12/21 13:59
  * @Description: 练习任务
  */
-@TableName("LAW_EXERCISE_TASK")
+@TableName("LAW_EXERCISE_PAPER")
 public class PaperExerciseEntity extends DataEntity<PaperExerciseEntity> {
 
     public static final Integer STATUS_ON = 0;// 练习任务状态，进行中

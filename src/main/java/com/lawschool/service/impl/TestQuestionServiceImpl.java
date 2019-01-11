@@ -2,7 +2,7 @@ package com.lawschool.service.impl;
 
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.TestQuestions;
-import com.lawschool.constants.StatusConstant;
+import com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity;
 import com.lawschool.dao.TestQuestionsDao;
 import com.lawschool.form.AnswerForm;
 import com.lawschool.form.CommonForm;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
 
     @Autowired
     TestQuestionsDao testQuestionsDao;
+
     /**
      * 启用禁用
      * @param id
@@ -72,7 +74,6 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
         return dao.findByIds(list);
     }
 
-
     @Override
     public TestQuestions findByEntity(TestQuestions entity) {
         return dao.findByEntity(entity);
@@ -96,7 +97,6 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
 
         return result;
     }
-
 
     /**
      * 根据专项知识ID和题目类型查询指定数量的题目
@@ -143,5 +143,50 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
         }
 
         return questForms;
+    }
+
+    /**
+     * 根据各种条件统计满足条件的题目数量
+     *
+     * @param params
+     * @return
+     */
+    public Integer getNumByConditions(Map<String, String> params){
+
+        return dao.getNumByConditions(params);
+    }
+
+    /**
+     * 查询满足条件的题目IDS（带分页效果）
+     * 请勿随便改动
+     * @param params
+     *      params包含以下参数：
+     *          type: 题目类型（字典表的code,文字 OR 视频），多选
+     *          themeId: 题目主题（law_sys_topic的ID），多选
+     *          difficulty：题目难度（字典表的code），多选
+     *          classify：题目类型（字典表code，多选 OR 单选...），多选
+     * @return
+     */
+    @Override
+    public List<String> selectIdsForPage(Map<String, Object> params){
+
+        return dao.selectIdsForPage(params);
+    }
+
+    /**
+     * 根据主题分组统计题目数量
+     * @return
+     */
+    @Override
+    public Map<String, String> countByThemeId(){
+        Map<String, String> result = new HashMap<String, String>();
+
+        List<CommonForm> formList = dao.countByThemeId();
+        for(CommonForm form : formList){
+
+            result.put(form.getKey(), form.getValue());
+        }
+
+        return result;
     }
 }

@@ -79,3 +79,19 @@ function openWindow(url, title, w, h) {
     var iLeft = (window.screen.availWidth-10-iWidth)/2;           //获得窗口的水平位置;
     myWindow  = window.open( url, title, 'height=' + iHeight + ',innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ', toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no, titlebar=yes, alwaysRaised=yes');
 }
+
+
+function jsgetUser()
+{
+    var u=null;
+    $.ajax({
+        type: "POST",
+        url: baseURL + "sys/jsGetUser",
+        dataType: "json",
+        async:false,
+        success: function (result) {
+            u=result.u;
+        }
+    });
+    return u;
+}

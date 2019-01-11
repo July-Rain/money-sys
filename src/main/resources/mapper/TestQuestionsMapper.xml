@@ -316,24 +316,25 @@
     <!--查询所需要的问题字段-->
     <select id="findByIds" resultType="com.lawschool.form.QuestForm">
         SELECT
-        id,
-        com_content,
-        question_difficulty,
-        question_type,
-        answer_id,
-        legal_basis,
-        answer_describle,
-        answer_choice_number
-        FROM law_testquestions
+            t.id,
+            t.com_content,
+            t.question_difficulty,
+            t.question_type,
+            t.answer_id,
+            t.legal_basis,
+            t.answer_describle,
+            t.answer_choice_number,
+            c.name AS "themeName"
+        FROM law_testquestions t
+        LEFT JOIN law_sys_topic c ON t.special_knowledge_id = c.id
         <where>
-            id IN
+            t.id IN
             <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
         </where>
-        ORDER BY question_type
+        ORDER BY t.question_type
     </select>
-
 
     <!--获取试题的详细信息zjw-->
     <select id="getInfoById" resultType="com.lawschool.beans.TestQuestions" parameterType="com.lawschool.beans.TestQuestions">
@@ -351,7 +352,6 @@
       FROM law_testquestions
     where id=#{id}
     </select>
-
 
     <!--查询某类型的试题-->
     <select id="findList" resultType="com.lawschool.beans.TestQuestions">
@@ -489,5 +489,102 @@
         rigth_number
         from LAW_TESTQUESTIONS where
         ID = #{id}
+    </select>
+
+    <select id="getNumByConditions" resultType="integer" parameterType="map">
+        SELECT
+            COUNT(*)
+        FROM law_testquestions
+        <where>
+            1=1
+            <if test="difficulty != null and difficulty != ''">
+                AND question_difficulty in
+                <foreach collection="difficulty.split(',')" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="type != null and type != ''">
+                AND question_type in
+                <foreach collection="type.split(',')" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="classify != null and classify != ''">
+                AND type_id in
+                <foreach collection="classify.split(',')" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="themeId != null and themeId != ''">
+                AND special_Knowledge_Id in
+                <foreach collection="themeId.split(',')" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            AND IS_ENBLE = 0
+        </where>
+    </select>
+
+    <!--
+        根据查询条件查询满足的题目（手动分页），统一按照题目创建时间升序排序，
+        如需改动，请咨询请咨询QQ2434844600
+    -->
+    <select id="selectIdsForPage" parameterType="map" resultType="string">
+        SELECT t.id FROM
+        (
+            SELECT
+                o. ID,
+                ROWNUM as rn
+            FROM
+            (
+                SELECT
+                    ID
+                FROM
+                    LAW_TESTQUESTIONS
+                WHERE
+                    1=1
+                <if test="themeId != '' and themeId != null">
+                    AND special_Knowledge_Id in
+                    <foreach collection="themeId.split(',')" open="(" close=")" separator="," item="item">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="difficulty != '' and difficulty != null">
+                    AND QUESTION_DIFFICULTY in
+                    <foreach collection="difficulty.split(',')" open="(" close=")" separator="," item="item">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="classify != null and classify != ''">
+                    AND type_id in
+                    <foreach collection="classify.split(',')" open="(" close=")" separator="," item="item">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="type != null and type != ''">
+                    AND QUESTION_TYPE in
+                    <foreach collection="type.split(',')" open="(" close=")" separator="," item="item">
+                        #{item}
+                    </foreach>
+                </if>
+                AND IS_ENBLE = 0
+                AND QUESTION_TYPE <![CDATA[ <> ]]> '10007'
+                ORDER BY
+                    create_time
+            ) o
+            WHERE
+                ROWNUM <![CDATA[ <= ]]> #{end}) t
+            WHERE t.rn  <![CDATA[ >= ]]> #{start}
+    </select>
+
+    <select id="countByThemeId" resultType="com.lawschool.form.CommonForm">
+        SELECT
+            special_Knowledge_Id AS "key",
+            count(special_Knowledge_Id) AS "value"
+        FROM LAW_TESTQUESTIONS
+        WHERE
+            IS_ENBLE = 0
+        AND special_Knowledge_Id IS NOT NULL
+        GROUP BY special_Knowledge_Id
     </select>
 </mapper>

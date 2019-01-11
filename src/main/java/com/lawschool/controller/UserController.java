@@ -9,6 +9,7 @@ import com.lawschool.service.UserService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -163,4 +164,9 @@ public class UserController extends AbstractController {
         return rst==SUCCESS?Result.ok():Result.error("修改用户失败");
     }
 
+    @RequestMapping("/jsGetUser")
+    public Result jsGetUser(){
+        User u = (User) SecurityUtils.getSubject().getPrincipal();
+        return Result.ok().put("u",u);
+    }
 }

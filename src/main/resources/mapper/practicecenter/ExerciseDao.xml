@@ -63,15 +63,21 @@
         </where>
     </update>
 
-    <select id="analysis" resultType="com.lawschool.form.AnalysisForm">
+    <select id="analysis" resultType="map">
         SELECT
-	        count(DISTINCT exercise_id) as typeNum,
-	        COUNT (*) AS total,
-	        SUM (IS_RIGHT) AS rightNum
+            TASK_ID AS ID,
+            THEME_NAME AS themeName,
+            COUNT (*) AS answerNum,
+            SUM (RIGHT) AS rightNum
         FROM
-	        LAW_EXERCISE_RECORD
+            LAW_PAPER_RECORD
         WHERE
-	        TO_CHAR (ANSWER_TIME, 'YYYY-MM') = #{month}
+	        TO_CHAR (CREATE_TIME, 'YYYY-MM') = #{month}
 	        AND create_user = #{userId}
+        GROUP BY
+            TASK_ID,
+            THEME_NAME
+        ORDER BY
+            TASK_ID
     </select>
 </mapper>

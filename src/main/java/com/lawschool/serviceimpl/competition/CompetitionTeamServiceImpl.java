@@ -71,6 +71,8 @@ public class CompetitionTeamServiceImpl extends ServiceImpl<CompetitionTeamDao, 
 		competitionTeam.setScale(peopleNum);
 		competitionTeam.setUserId(u.getId());
 		this.insert(competitionTeam);
+		//战队成员表里面也要有他自己
+		teamUserService.save(competitionTeam.getId(),u.getId());
 		return competitionTeam;
 	}
 }

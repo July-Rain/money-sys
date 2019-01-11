@@ -18,4 +18,7 @@ public interface BattlePlatformService extends IService<BattlePlatform>{
         public BattlePlatform save(String play1Id,String type);
 
         public void updata(BattlePlatform battlePlatform,String play2Id);
+
+        public int PkCountByUser(String uid);
+        public int leitaiCountByUser(String uid);
 }

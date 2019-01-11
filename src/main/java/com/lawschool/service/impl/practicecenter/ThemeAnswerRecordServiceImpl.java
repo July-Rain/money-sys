@@ -15,14 +15,17 @@ import java.util.List;
 public class ThemeAnswerRecordServiceImpl extends AbstractServiceImpl<ThemeAnswerRecordDao, ThemeAnswerRecordEntity>
         implements ThemeAnswerRecordService {
 
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void saveBatch(List<ThemeAnswerRecordEntity> list){
+    public boolean saveForm(ThemeAnswerForm form){
 
-       for(ThemeAnswerRecordEntity entity : list){
-           dao.save(entity);
-       }
-   }
+        return dao.saveForm(form);
+    }
+
+    public void saveBatch(List<ThemeAnswerForm> list){
+        for(ThemeAnswerForm form : list){
+
+            this.saveForm(form);
+        }
+    }
 
     /**
      * 分组统计主题答题情况
@@ -33,44 +36,44 @@ public class ThemeAnswerRecordServiceImpl extends AbstractServiceImpl<ThemeAnswe
     public List<ThemeAnswerForm> analysisAnswer(String themeId){
         List<ThemeAnswerForm> list = dao.analysisAnswer(themeId);
 
-        List<ThemeAnswerForm> resultList = new ArrayList<>();
+//        List<ThemeAnswerForm> resultList = new ArrayList<>();
+//
+//        for(int i=0; i<list.size(); i++){
+//            ThemeAnswerForm result = new ThemeAnswerForm();
+//
+//            ThemeAnswerForm form = list.get(i);
+//            Integer right = form.getRight();
+//            String typeName = form.getTypeName();
+//
+//            if(right == 0){// 错误
+//                result.setErrorNum(form.getRightNum());
+//
+//            } else {// 正确
+//                result.setRightNum(form.getRightNum());
+//
+//            }
+//
+//            if(i+1 < list.size()){
+//                ThemeAnswerForm formNext = list.get(i+1);
+//                String typeNameNext = formNext.getTypeName();
+//                if(typeName.equals(typeNameNext)){
+//                    // 同一题型合并
+//                    Integer rightNext = formNext.getRight();
+//                    if(rightNext == 0){// 错误
+//                        result.setErrorNum(form.getRightNum());
+//
+//                    } else {// 正确
+//                        result.setRightNum(form.getRightNum());
+//
+//                    }
+//                    i= i+1;
+//
+//                }
+//            }
+//
+//            resultList.add(result);
+//        }
 
-        for(int i=0; i<list.size(); i++){
-            ThemeAnswerForm result = new ThemeAnswerForm();
-
-            ThemeAnswerForm form = list.get(i);
-            Integer right = form.getRight();
-            String typeName = form.getTypeName();
-
-            if(right == 0){// 错误
-                result.setErrorNum(form.getRightNum());
-
-            } else {// 正确
-                result.setRightNum(form.getRightNum());
-
-            }
-
-            if(i+1 < list.size()){
-                ThemeAnswerForm formNext = list.get(i+1);
-                String typeNameNext = formNext.getTypeName();
-                if(typeName.equals(typeNameNext)){
-                    // 同一题型合并
-                    Integer rightNext = formNext.getRight();
-                    if(rightNext == 0){// 错误
-                        result.setErrorNum(form.getRightNum());
-
-                    } else {// 正确
-                        result.setRightNum(form.getRightNum());
-
-                    }
-                    i= i+1;
-
-                }
-            }
-
-            resultList.add(result);
-        }
-
-        return resultList;
+        return list;
     }
 }

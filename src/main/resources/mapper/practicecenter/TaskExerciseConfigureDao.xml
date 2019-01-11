@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.practicecenter.TaskExerciseConfigureDao">
+
+    <sql id="columns">
+        ID AS "id",
+        NAME AS "name",
+        THEME_ID AS "themeId",
+        difficulty AS "difficulty",
+        classify AS "classify",
+        type AS "type",
+        total AS "total",
+        theme_name AS "themeName"
+    </sql>
+
+    <!-- 分页查询 -->
+    <select id="findList" resultType="com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity">
+        SELECT
+        <include refid="columns"/>
+        FROM LAW_EXERCISE_TASK_CONFIGURE
+        <where>
+            del_flag = #{delFlag}
+            AND create_user = #{createUser}
+            <if test="source != null and source != ''">
+                AND source = #{source}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY create_time DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO
+            LAW_EXERCISE_TASK_CONFIGURE
+        (
+            ID,
+            NAME,
+            source,
+            theme_id,
+            difficulty,
+            classify,
+            type,
+            total,
+            users,
+            depts,
+            del_flag,
+            create_user,
+            create_time,
+            opt_user,
+            opt_time,
+            theme_name,
+            create_name
+        )
+        VALUES
+        (
+            #{id},
+            #{name},
+            #{source},
+            #{themeId},
+            #{difficulty},
+            #{classify},
+            #{type},
+            #{total},
+            #{users},
+            #{depts},
+            #{delFlag},
+            #{createUser},
+            #{createTime},
+            #{optUser},
+            #{optTime},
+            #{themeName},
+            #{createName}
+        )
+    </insert>
+
+    <update id="logicDelete">
+        UPDATE LAW_EXERCISE_TASK_CONFIGURE
+        SET del_flag = #{delFlag}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <select id="findOne" resultType="com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity">
+        SELECT
+        <include refid="columns"/>
+        FROM LAW_EXERCISE_TASK_CONFIGURE
+        <where>
+            id = #{id}
+        </where>
+    </select>
+</mapper>

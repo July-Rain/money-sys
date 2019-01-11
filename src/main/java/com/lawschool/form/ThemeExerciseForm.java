@@ -6,12 +6,12 @@ package com.lawschool.form;
  */
 public class ThemeExerciseForm {
 
-    private String id;
-    private String typeId;
-    private String typeName;
-    private String total;
-    private String answerNum;
-    private String status;
+    private String id;// 任务ID
+    private String themeId;// 主题类型Id
+    private String themeName;// 主题名称
+    private String total;// 题目总数
+    private String answerNum;// 已回答数量
+    private String status;// 任务状态
 
     public String getId() {
         return id;
@@ -21,12 +21,20 @@ public class ThemeExerciseForm {
         this.id = id;
     }
 
-    public String getTypeId() {
-        return typeId;
+    public String getThemeId() {
+        return themeId;
     }
 
-    public void setTypeId(String typeId) {
-        this.typeId = typeId;
+    public void setThemeId(String themeId) {
+        this.themeId = themeId;
+    }
+
+    public String getThemeName() {
+        return themeName;
+    }
+
+    public void setThemeName(String themeName) {
+        this.themeName = themeName;
     }
 
     public String getTotal() {
@@ -52,13 +60,5 @@ public class ThemeExerciseForm {
     public void setStatus(String status) {
         this.status = status;
     }
-
-	public String getTypeName() {
-		return typeName;
-	}
-
-	public void setTypeName(String typeName) {
-		this.typeName = typeName;
-	}
     
 }
