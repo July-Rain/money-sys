@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.practicecenter.TaskExerciseDao">
+
+    <!-- 分页查询,关联任务配置表 -->
+    <select id="findList" resultType="com.lawschool.beans.practicecenter.TaskExerciseEntity">
+        SELECT
+            c.id AS "taskId",
+            t.id AS "id",
+            c.name AS "name",
+            c.theme_name AS "themeName",
+            c.total AS "total",
+            t.status AS "status",
+            t.answer_num AS "answerNum",
+            t.right_num AS "rightNum",
+            c.create_name AS "createName",
+            c.create_time AS "createTime"
+        FROM LAW_EXERCISE_TASK_CONFIGURE c
+        LEFT JOIN LAW_EXERCISE_TASK t ON c.id = t.task_id
+        AND t.create_user = #{createUser}
+        <where>
+            c.del_flag = #{delFlag}
+            <if test="users != null and users != ''">
+                AND (c.users LIKE '%'||#{users}||'%' OR c.depts LIKE '%'||#{depts}||'%')
+            </if>
+            AND c.total > 0
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY c.create_time DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO LAW_EXERCISE_TASK
+        (
+            ID,
+            TASK_ID,
+            STATUS,
+            create_user,
+            create_time,
+            opt_user,
+            opt_time,
+            total
+        )
+        VALUES
+        (
+            #{id},
+            #{taskId},
+            #{status},
+            #{createUser},
+            #{createTime},
+            #{optUser},
+            #{optTime},
+            #{total}
+        )
+    </insert>
+
+    <select id="getQuestions" resultType="com.lawschool.form.QuestForm">
+        SELECT
+            t.id,
+            t.com_content,
+            t.question_difficulty,
+            t.question_type,
+            t.answer_id,
+            t.legal_basis,
+            t.answer_describle,
+            t.answer_choice_number,
+            c.name AS "themeName",
+            r.ANSWER AS "userAnswer",
+            r.right AS "right"
+        FROM law_testquestions t
+        LEFT JOIN law_task_record r ON t.id = r.question_id
+        AND r.configure_id = #{taskId}
+        AND r.create_user = #{userId}
+        LEFT JOIN law_sys_topic c ON c.id = t.SPECIAL_KNOWLEDGE_ID
+        <where>
+            t.id IN
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+        ORDER BY t.create_time
+    </select>
+
+    <select id="findOne" resultType="com.lawschool.beans.practicecenter.TaskExerciseEntity">
+        SELECT
+            ID AS "id",
+            TASK_ID AS "taskId",
+            ANSWER_NUM AS "answerNum"
+        FROM LAW_EXERCISE_TASK
+        <where>
+            id = #{id}
+        </where>
+    </select>
+
+    <!-- 更新练习任务的整体答题情况 -->
+    <update id="updateAnswerNum">
+        UPDATE LAW_EXERCISE_TASK
+        SET ANSWER_NUM = ANSWER_NUM + #{num}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <!-- 更新练习任务状态 -->
+    <update id="updateStatus">
+        UPDATE LAW_EXERCISE_TASK
+        SET status = #{status}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <select id="analysis" resultType="com.lawschool.form.AnalysisForm">
+        SELECT
+	        count(DISTINCT TASK_id) as typeNum,
+	        COUNT (*) AS total,
+	        SUM (RIGHT) AS rightNum
+        FROM
+	        LAW_TASK_RECORD
+        WHERE
+	        TO_CHAR (CREATE_TIME, 'YYYY-MM') = #{month}
+	        AND create_user = #{userId}
+    </select>
+</mapper>

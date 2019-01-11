@@ -6,7 +6,7 @@
         SELECT
             configure_id AS "key",
             status AS "value"
-        FROM LAW_EXERCISE_TASK
+        FROM LAW_EXERCISE_PAPER
         <where>
             configure_id in
             <foreach collection="list" open="(" close=")" separator="," item="item">
@@ -28,10 +28,10 @@
             r.ANSWER_ID AS "userAnswer",
             r.right
         FROM law_testquestions t
-        LEFT JOIN LAW_TASK_RECORD r
+        LEFT JOIN LAW_PAPER_RECORD r
             ON t.id = r.question_id
             AND r.create_user = #{userId}
-            AND r.configure_id = #{id}
+            AND r.task_id = #{id}
         <where>
             t.id IN
             <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
@@ -43,7 +43,7 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO LAW_EXERCISE_TASK
+        INSERT INTO LAW_EXERCISE_PAPER
         (
             id,
             CONFIGURE_ID,
@@ -65,7 +65,7 @@
 
     <!-- 更新练习任务的整体答题情况 -->
     <update id="updateAnswerNum">
-        UPDATE LAW_EXERCISE_TASK
+        UPDATE LAW_EXERCISE_PAPER
         SET ANSWER_NUM = ANSWER_NUM + #{num}
         <where>
             id = #{id}
@@ -73,10 +73,12 @@
     </update>
 
     <update id="updateStatus">
-        UPDATE LAW_EXERCISE_TASK
+        UPDATE LAW_EXERCISE_PAPER
         SET status = #{status}
         <where>
             id = #{id}
         </where>
     </update>
+
+
 </mapper>

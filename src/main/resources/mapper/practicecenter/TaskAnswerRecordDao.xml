@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lawschool.dao.practicecenter.PaperAnswerRecordDao">
+<mapper namespace="com.lawschool.dao.practicecenter.TaskAnswerRecordDao">
 
     <insert id="saveForm" parameterType="com.lawschool.form.ThemeAnswerForm">
-        INSERT INTO LAW_PAPER_RECORD
+        INSERT INTO LAW_TASK_RECORD
         (
             id,
-            TASK_ID,
+            CONFIGURE_ID,
             QUESTION_ID,
-            ANSWER,
+            ANSWER_ID,
             RIGHT,
             CREATE_TIME,
             CREATE_USER,
@@ -26,17 +26,4 @@
             #{themeName}
         )
     </insert>
-
-    <select id="analysisAnswer" resultType="com.lawschool.form.ThemeAnswerForm">
-        SELECT
-            theme_name AS "themeName",
-            right AS "right",
-            count(*) AS "rightNum"
-        FROM law_paper_record
-        <where>
-            task_id = #{id}
-        </where>
-        GROUP BY theme_name, right
-        ORDER BY theme_name
-    </select>
 </mapper>
