@@ -166,6 +166,12 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 					BattlePlatform battlePlatform = battlePlatformService.selectById(battlePlatformId);
 					 if(battlePlatform.getPlay2()==null)//如果 没有玩家2  就是说明房主自己退  他不需要和任何人说 我走了
 					 {
+						//但是要把频台给删掉
+						 Map<String,BattlePlatform> battlePlatformMap= JSON.parseObject(redisUtil.get("redisFrombattlePlatformMap"),new TypeReference<Map<String,BattlePlatform>>(){});
+						 //添加完后要把这个user在list中除去
+						 battlePlatformMap.remove(battlePlatform.getId());
+						 redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);//在放回去redis
+
 						 USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).close();
 						 count.remove(battlePlatformId);
 						 USER_SOCKETSESSION_MAP.remove(battlePlatform.getPlay1());

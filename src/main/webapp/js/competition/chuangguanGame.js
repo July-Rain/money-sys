@@ -177,9 +177,13 @@ var vm = new Vue({
         questionError:function(type)
         {
             // type有error和over  error是答错 走这个方法  over是主动放弃不答了 走这个方法   因为主动不答还要涉及到积分获取
-            vm.oryesorno();//答完题目入库保存记录
+          
             if(type=="error")
             {
+                vm.oryesorno();//答完题目入库保存记录
+
+                //分数记录下去//答错了 也说明他进来过了  要有记录  分数只是 都是0   所得的关卡要减1才是 他实际答对的 关卡
+                vm.recordScore(vm.BigGuanList[Number(vm.nowBignum)-1].recruitCheckpointConfigurationList[Number(vm.nowLitnum)-1].id,vm.nowBignum,vm.nowLitnum,'0');
                 vm.textmag="很遗憾！答错了,闯关结束！是否继续";
             }
             else if(type=="over")
@@ -327,7 +331,7 @@ var vm = new Vue({
                     }
                     else if(vm.BigGuanList[Number(vm.nowBignum)-1].markReward=="1")
                     {
-                        console.info(vm.BigGuanList[Number(vm.nowBignum)-1].recruitCheckpointConfigurationList[Number(vm.nowBignum)-1]);
+
                         vm.Score=Number(vm.Score)+ Number(vm.BigGuanList[Number(vm.nowBignum)-1].rewardScore);  //下表原因  要减一
                         vm.recordScore(vm.BigGuanList[Number(vm.nowBignum)-1].recruitCheckpointConfigurationList[Number(vm.nowLitnum)-1].id,vm.nowBignum,vm.nowLitnum,vm.Score);
                         vm.$alert("恭喜你，通过所有大关，并获得当前大关通关奖励"+vm.BigGuanList[Number(vm.nowBignum)-1].rewardScore+",当前奖励积分"+vm.Score);

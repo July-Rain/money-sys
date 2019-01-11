@@ -8,5 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface BattlePlatformDao extends BaseMapper<BattlePlatform> {
 
+    public int PkCountByUser(String uid);
 
+    public int leitaiCountByUser(String uid);
 }

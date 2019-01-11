@@ -37,7 +37,7 @@ public class BattlePlatformServiceImpl extends ServiceImpl<BattlePlatformDao, Ba
 			battlePlatform.setPlay1(play1Id);
 			battlePlatform.setType(type);
 			battlePlatform.setBattleCode((((int)((Math.random()*9+1)*100000))+"").substring(0,6));
-			if(type.equals("PKOnline") || type.equals("teamOnline"))
+			if(type.equals("PKOnline") || type.equals("teamOnline") || type.equals("PKOnlineBycode"))
 			{
 				//从在线pk加载过来的
 				CompetitionOnline competitionOnline=  ompetitionOnlineService.selectOne(new EntityWrapper<CompetitionOnline>());
@@ -67,5 +67,19 @@ public class BattlePlatformServiceImpl extends ServiceImpl<BattlePlatformDao, Ba
 	}
 
 
+	//计算在线pk游戏次数根据人
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public int PkCountByUser(String uid) {
+		int i= battlePlatformDao.PkCountByUser(uid);
+		return i;
+	}
 
+	//计算玩打擂台游戏次数根据人
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public int leitaiCountByUser(String uid) {
+		int i= battlePlatformDao.leitaiCountByUser(uid);
+		return i;
+	}
 }
