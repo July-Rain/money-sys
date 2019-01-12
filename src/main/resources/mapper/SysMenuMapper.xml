@@ -97,4 +97,17 @@
      <!--<delete id="delete"  parameterType="String">-->
        <!--delete from LAW_SYS_MENU where id=#{id}-->
      <!--</delete>-->
+
+    <!-- 查找子节点记录 -->
+    <select id="queryChildById" resultType="com.lawschool.beans.SysMenu" parameterType="java.lang.String">
+        SELECT
+            *
+        FROM
+            LAW_SYS_MENU
+        WHERE
+            TYPE != '2'
+        AND is_show = '1' START WITH ID = #{id} CONNECT BY PRIOR ID = PARENT_ID
+        ORDER BY
+            order_num ASC
+    </select>
 </mapper>

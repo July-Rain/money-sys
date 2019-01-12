@@ -20,4 +20,13 @@ public interface SysMenuDao extends BaseMapper<SysMenu> {
 
 	public List<SysMenu> listMenuAuth(String roleId);
 	List<SysMenu> queryNotButtonList();
+
+	/**
+	 * @Author MengyuWu
+	 * @Description 根据菜单id查询子节点
+	 * @Date 11:07 2019-1-12
+	 * @Param [id]
+	 * @return java.util.List<com.lawschool.beans.SysMenu>
+	 **/
+	List<SysMenu> queryChildById(String id);
 }
