@@ -25,7 +25,7 @@ var vm = new Vue({
                     qId: id,
                     answer: answer,
                     right: right,
-                    typeName: typeName
+                    themeName: typeName
                 }]
             };
 

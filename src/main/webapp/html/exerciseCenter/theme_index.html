@@ -13,35 +13,40 @@
         <el-table
                 :data="tableData"
                 style="width: 100%"
-                stripe>
+                stripe
+                broder>
             <el-table-column
-                    prop="typeName"
+                    prop="themeName"
                     label="主题类型"
                     width="480"
-                    header-align="center">
+                    header-align="center"
+                    align="center">
             </el-table-column>
             <el-table-column
                     prop="total"
                     label="总题数"
                     width="200"
-                    header-align="center">
+                    header-align="center"
+                    align="center">
             </el-table-column>
             <el-table-column
-                    prop="answerNum"
                     label="已答题"
                     width="200"
-                    header-align="center">
+                    header-align="center"
+                    align="center"
+                    prop="answerNum">
             </el-table-column>
             <el-table-column
                     label="操作"
                     header-align="center"
                     align="center"
-                    prop="status">
+                    prop="status"
+                    align="center">
                 <template slot-scope="scope">
-                    <el-button v-if="scope.row.status == 0"
-                            type="primary"
+                    <el-button v-if="scope.row.status == 0 || scope.row.status == null"
+                            type="primary"s
                             size="mini"
-                            @click="start(scope.row.id, scope.row.status, scope.row.typeId, scope.row.typeName)"
+                            @click="start(scope.$index)"
                             >开始练习
                     </el-button>
                     <el-button
@@ -49,7 +54,7 @@
                             type="success"
                             size="mini"
                             v-if="scope.row.status == 1"
-                            @click="continues(scope.row.id, scope.row.typeId)"
+                            @click="start(scope.$index)"
                             >继续练习
                     </el-button>
                     <el-button
@@ -64,6 +69,7 @@
                             type="warning"
                             size="mini"
                             v-if="scope.row.status == 2"
+                            @click="reStart(scope.row.id)"
                             >清空重做
                     </el-button>
                 </template>

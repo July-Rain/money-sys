@@ -1,18 +1,22 @@
 package com.lawschool.controller.practicecenter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.beans.practicecenter.TaskExerciseEntity;
 import com.lawschool.beans.practicecenter.ThemeExerciseEntity;
-import com.lawschool.form.AnalysisForm;
-import com.lawschool.form.QuestForm;
-import com.lawschool.form.ThemeForm;
+import com.lawschool.form.*;
+import com.lawschool.service.TestQuestionService;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.lawschool.beans.User;
-import com.lawschool.form.ThemeExerciseForm;
 import com.lawschool.service.practicecenter.ThemeExerciseService;
 import com.lawschool.util.RedisUtil;
 import com.lawschool.util.Result;
@@ -25,20 +29,13 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @RestController
 @RequestMapping("/exercise/theme")
-public class ThemeExerciseController  extends AbstractController {
+public class ThemeExerciseController extends AbstractController {
 
     @Autowired
     private ThemeExerciseService themeExerciseService;
 
     @Autowired
-    private RedisUtil redisUtil;
-
-    @RequestMapping("/index")
-    public ModelAndView index(){
-        ModelAndView mv = new ModelAndView("/exerciseCenter/theme_index");
-
-        return mv;
-    }
+    private TestQuestionService testQuestionService;
 
     /**
      * 主题练习首页列表
@@ -46,6 +43,7 @@ public class ThemeExerciseController  extends AbstractController {
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result indexList(){
+
         User user = getUser();
         String userId = user.getId();
         
@@ -55,86 +53,71 @@ public class ThemeExerciseController  extends AbstractController {
     }
 
     /**
-     * 开始练习、重新练习
-     * @param id 主题练习ID
-     * @param status 主题练习状态，0待开始、2已提交
-     * @param typeId 主题类型ID
-     * @return 返回新的主题任务ID，用于获取题目
-     */
-    @RequestMapping(value = "/start", method = RequestMethod.GET)
-    public Result startTask(@RequestParam(required = false) String id,
-                            @RequestParam Integer status,
-                            @RequestParam String typeId,
-                            @RequestParam String typeName) {
-
-        User user = this.getUser();
-
-        String result = themeExerciseService.startTheme(id, status, typeId, user.getId(), typeName);
-    	
-    	return Result.ok().put("id", result);
-    }
-
-    /**
-     * 主题练习获取题目
-     * @return 返回题目
-     */
-    @ResponseBody
-    @RequestMapping(value = "/questions", method = RequestMethod.POST)
-    public Result getQuestions(@RequestBody ThemeForm form){
-        User user = getUser();
-        String userId = user.getId();
-        form.setUserId(userId);
-
-        List<QuestForm> list = themeExerciseService.saveAndGetQuestions(form);
-        // 返回题目list
-        return Result.ok().put("list", list);
-    }
-
-    /**
-     * 主题练习保存操作
+     * 生成个人任务
      * @param form
      * @return
      */
-    @RequestMapping(value = "/preserve", method = RequestMethod.POST)
-    public Result preserve(@RequestBody ThemeForm form){
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public Result save(@RequestBody ThemeExerciseForm form){
+        User user = getUser();
+        String userId = user.getId();
 
-        form.setStatus(ThemeExerciseEntity.STATUS_ON);
-        themeExerciseService.preserve(form);
+        String id = themeExerciseService.saveTask(form, userId);
+
+        return Result.ok().put("id", id);
+    }
+
+    /**
+     * 开始任务
+     * @param id 个人任务ID
+     * @param limit 每页显示题目数量
+     * @param page 当前页
+     * @return
+     */
+    @RequestMapping(value = "/paper", method = RequestMethod.GET)
+    public Result start(@RequestParam String id,
+                        @RequestParam Integer limit,
+                        @RequestParam Integer page){
+
+        Map<String, Object> resultMap = themeExerciseService.showPaper(id, getUser().getId(), limit, page);
+
+        return Result.ok().put("result", resultMap).put("id", id);
+    }
+
+    /**
+     *
+     * @param form
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "/preserve/{type}", method = RequestMethod.POST)
+    public Result preserve(@RequestBody ThemeForm form,
+                           @PathVariable("type") Integer type){
+
+        User user = getUser();
+
+        themeExerciseService.preserve(form.getList(), user.getId(), type, form.getId());
 
         return Result.ok();
     }
 
-    /**
-     * 提交主题练习
-     * @param form
-     * @return
-     */
-    @RequestMapping(value = "/commit", method = RequestMethod.POST)
-    public Result commit(@RequestBody ThemeForm form){
+    @RequestMapping(value = "/analysis/{id}", method = RequestMethod.GET)
+    public Result commit(@PathVariable("id") String id){
 
-        AnalysisForm resultForm = themeExerciseService.commit(form);
+        AnalysisForm resultForm = themeExerciseService.analysisAnswer(id);
 
         return Result.ok().put("form", resultForm);
     }
 
     /**
-     * 获取主题练习的统计信息
+     * 清空重做
      * @param id
      * @return
      */
-    @RequestMapping(value = "/analysis", method = RequestMethod.GET)
-    public Result analysisAnswer(@RequestParam String id){
+    @RequestMapping(value = "/restart/{id}", method = RequestMethod.POST)
+    public Result restart(@PathVariable("id") String id){
 
-        AnalysisForm form = themeExerciseService.analysisAnswer(id);
-
-        return Result.ok().put("result", form);
-    }
-
-    @RequestMapping(value = "/answer", method = RequestMethod.GET)
-    public ModelAndView answer(@RequestParam String id){
-        ModelAndView mv = new ModelAndView("/exerciseCenter/theme_answer");
-
-        mv.addObject("id", id);
-        return mv;
+        String idNew = themeExerciseService.restart(id);
+        return Result.ok().put("id", idNew);
     }
 }

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>练习任务配置（部门）</title>
+    <#include "/header.html">
+</head>
+<body>
+    <div id="app" v-cloak>
+        <el-button size="mini" type="primary" @click="addConfigure" >新增配置</el-button>
+        <br/>
+    <div class="container">
+        <el-table
+                :data="tableData"
+                style="width: 100%"
+                stripe
+                border>
+            <el-table-column
+                    type="index"
+                    width="50"
+                    label="序号"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="任务名称"
+                    width="320"
+                    header-align="center"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="themeName"
+                    label="主题类型"
+                    width="160"
+                    header-align="center"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="type"
+                    label="题目类型"
+                    width="160"
+                    header-align="center"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="difficulty"
+                    label="题目难度"
+                    width="140"
+                    header-align="center"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="classify"
+                    label="题目分类"
+                    width="140"
+                    header-align="center"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="total"
+                    label="题目总数"
+                    width="120"
+                    header-align="center"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    label="操作"
+                    header-align="center"
+                    align="center">
+                <template slot-scope="scope">
+                    <el-button
+                            plain
+                            type="danger"
+                            size="mini"
+                            @click="deletes(scope.row.id)"
+                    >删除
+                    </el-button>
+                    <el-button
+                            plain
+                            type="info"
+                            size="mini"
+                            @click="info(scope.row.id)"
+                    >查看详情
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurChange"
+                :current-page="formInline.page"
+                :page-sizes="[10, 20, 30, 40]"
+                :page-size="formInline.limit"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="formInline.count">
+        </el-pagination>
+
+        <el-dialog title="新增配置" :visible.sync="dialogConfig" :before-close="closeDia">
+            <el-row>
+                <el-col :span="12">
+                    <el-form :model="configureEntity" label-width="100px" size="small">
+                        <el-form-item label="练习卷名称：" size="medium">
+                            <el-input v-model="configureEntity.name"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="试题难度：" size="medium">
+                            <el-checkbox-group v-model="configureEntity.difficultys">
+                                <el-checkbox v-for="item in diffList" :label="item.key">{{item.value}}</el-checkbox>
+                            </el-checkbox-group>
+                        </el-form-item>
+
+                        <el-form-item label="试题分类：" size="medium">
+                            <el-checkbox-group v-model="configureEntity.classifys">
+                                <el-checkbox v-for="item in typeList" :label="item.key">{{item.value}}</el-checkbox>
+                            </el-checkbox-group>
+                        </el-form-item>
+
+                        <el-form-item label="试题类型：" size="medium">
+                            <el-checkbox-group v-model="configureEntity.types">
+                                <el-checkbox v-for="item in qtList" :label="item.key" v-if="item.value != '主观题'">
+                                    {{item.value}}
+                                </el-checkbox>
+                            </el-checkbox-group>
+                        </el-form-item>
+
+                        <el-form-item label="主题类型：" size="small">
+                            <el-select multiple collapse-tags
+                                       v-model="configureEntity.topics"
+                                       placeholder="请选择">
+                                <el-option
+                                        v-for="item in topicList"
+                                        :key="item.key"
+                                        :label="item.value"
+                                        :value="item.key">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item>
+                            <el-button type="primary" @click="save">保存设置</el-button>
+                        </el-form-item>
+
+                    </el-form>
+                </el-col>
+            </el-row>
+        </el-dialog>
+    </div>
+</div>
+</body>
+    <script src="${rc.contextPath}/js/practiceCen/task_configure_department.js?_${.now?long}"></script>
+</html>

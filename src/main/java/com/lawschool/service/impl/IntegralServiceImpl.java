@@ -127,4 +127,25 @@ public class IntegralServiceImpl extends AbstractServiceImpl<IntegralDao, Integr
 
         return SUCCESS;
     }
+
+
+    @Override
+    public int chuangguanCountByUser(String uid) {
+
+        int i=  integralDao.chuangguanCountByUser(uid);
+        return i;
+    }
+    @Override
+    public int pkByUser(String uid) {
+
+        int i=  integralDao.pkByUser(uid);
+        return i;
+    }
+
+    @Override
+    public int leitaiByUser(String uid) {
+
+        int i=  integralDao.leitaiByUser(uid);
+        return i;
+    }
 }

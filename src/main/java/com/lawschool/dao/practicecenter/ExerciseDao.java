@@ -7,6 +7,7 @@ import com.lawschool.form.RandomExerciseForm;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @version V1.0
@@ -24,5 +25,5 @@ public interface ExerciseDao extends AbstractDao<ExerciseEntity> {
      */
     void updateAnswerRecord(ExerciseEntity entity);
 
-    AnalysisForm analysis(@Param("month") String month, @Param("userId") String userId);
+    List<Map<String, String>> analysis(@Param("month") String month, @Param("userId") String userId);
 }

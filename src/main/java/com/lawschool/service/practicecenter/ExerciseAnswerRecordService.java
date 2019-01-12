@@ -12,8 +12,7 @@ import java.util.List;
  * @author: 中石电子科技 徐祥
  * @date: 2018-12-14 09:33
  */
-public interface ExerciseAnswerRecordService extends AbstractService<ExerciseAnswerRecordEntity> {
-    void saveBatch(List<ExerciseAnswerRecordEntity> list);
+public interface ExerciseAnswerRecordService extends AnswerRecordService<ExerciseAnswerRecordEntity> {
 
     List<ThemeAnswerForm> analysisAnswer(String randomId);
 }

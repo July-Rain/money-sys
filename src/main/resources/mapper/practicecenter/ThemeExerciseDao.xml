@@ -8,19 +8,9 @@
 		a.answer_num AS "answerNum",
 		a.status AS "status",
 		a.type_id AS "typeId",
-		a.type_name AS "typeName"
+		a.type_name AS "typeName",
+		a.create_user AS "createUser"
 	</sql>
-	
-	<!-- 根据条件查询用户进行的练习 -->
-	<select id="findAllByUser" resultType="com.lawschool.form.ThemeExerciseForm">
-		SELECT 
-			<include refid="themeColumns"/>
-		FROM law_theme_exercise a
-		<where>
-			a.create_user = #{createUser}
-			AND a.status &lt;&gt; #{status}
-		</where> 
-	</select>
 
 	<!-- 创建练习信息 -->
 	<insert id="save">
@@ -29,24 +19,22 @@
         	id,
         	type_id,
         	total,
-        	answer_number,
         	status,
-        	user_id,
-        	answer_time,
-        	update_time,
+        	create_time,
+        	opt_time,
          	type_name,
-         	right_num
+         	create_user,
+         	opt_user
         ) VALUES (
         	#{id},
         	#{typeId},
         	#{total},
-        	#{answerNumber},
         	#{status},
-        	#{userId},
-        	#{answerTime},
-        	#{updateTime},
+        	#{createTime},
+        	#{optTime},
             #{typeName},
-            #{rightNum}
+            #{createUser},
+            #{optUser}
         )
 	</insert>
 
@@ -72,13 +60,79 @@
 
 	<select id="analysis" resultType="com.lawschool.form.AnalysisForm">
 		SELECT
-	        count(DISTINCT exercise_id) as typeNum,
+	        count(DISTINCT task_id) as typeNum,
 	        COUNT (*) AS total,
-	        SUM (IS_RIGHT) AS rightNum
+	        SUM (RIGHT) AS rightNum
         FROM
 	        law_theme_record
         WHERE
-	        TO_CHAR (ANSWER_TIME, 'YYYY-MM') = #{month}
+	        TO_CHAR (CREATE_TIME, 'YYYY-MM') = #{month}
 	        AND create_user = #{userId}
 	</select>
+
+	<select id="findAllByUser" resultType="com.lawschool.form.ThemeExerciseForm">
+		SELECT
+		    T . NAME AS "themeName",
+		    T . ID AS "themeId",
+		    E . ID AS "id",
+		    E .total AS "total",
+		    E .status AS "status",
+		    E .ANSWER_NUM AS "answerNum"
+		FROM
+		    LAW_SYS_TOPIC T
+		    LEFT JOIN LAW_THEME_EXERCISE E ON T . ID = E .TYPE_ID
+		    AND E .CREATE_USER = #{userId}
+		    AND E .status <![CDATA[ <> ]]> #{status}
+		WHERE
+		    T .IS_ENABLE = 1
+		    AND T .DEL_FLAG = 0
+	</select>
+
+	<select id="getQuestions" resultType="com.lawschool.form.QuestForm">
+		SELECT
+			t.id,
+			t.com_content,
+			t.question_difficulty,
+			t.question_type,
+			t.answer_id,
+			t.legal_basis,
+			t.answer_describle,
+			t.answer_choice_number,
+			c.name AS "themeName",
+			r.ANSWER AS "userAnswer",
+			r.right AS "right"
+		FROM law_testquestions t
+		LEFT JOIN law_theme_record r ON t.id = r.question_id
+		AND r.task_id = #{id}
+		AND r.create_user = #{userId}
+		LEFT JOIN law_sys_topic c ON c.id = t.SPECIAL_KNOWLEDGE_ID
+		<where>
+			t.id IN
+			<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</where>
+		ORDER BY t.create_time
+	</select>
+
+	<select id="findOne" resultType="com.lawschool.beans.practicecenter.ThemeExerciseEntity">
+		SELECT
+		<include refid="themeColumns"/>
+		FROM LAW_THEME_EXERCISE a
+		<where>
+		    a.id = #{id}
+		</where>
+	</select>
+
+	<update id="updateAnswerNum">
+		UPDATE LAW_THEME_EXERCISE
+		SET ANSWER_NUM = ANSWER_NUM + #{answerNum},
+			RIGHT_NUM = RIGHT_NUM + #{rightNum}
+			<if test="type != -1">
+				, STATUS = #{type}
+			</if>
+		<where>
+			id = #{id}
+		</where>
+	</update>
 </mapper>

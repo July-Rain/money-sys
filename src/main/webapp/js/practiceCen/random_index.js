@@ -18,7 +18,8 @@ var vm = new Vue({
             this.dialogConfig = false;
             vm.reload();
         },
-        start: function(){
+        saveTask: function(){
+            // 保存配置，并跳转页面
             $.ajax({
                 type: "POST",
                 url: baseURL + "exercise/random/start",
@@ -27,12 +28,18 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         var id = result.id;
-                        window.location.href = baseURL + "exercise/random/answer?id=" + id;
+                        vm.jump(id);
                     } else {
                         alert(result.msg);
                     }
                 }
             });
+        },
+        jump: function(id){
+            // 跳转页面
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/exerciseCenter/random_answer.html?id='+id;
         },
         addExercise: function(){
             vm.title = '随机练习设置';

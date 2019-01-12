@@ -2,6 +2,7 @@ package com.lawschool.dao.practicecenter;
 
 import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.practicecenter.PaperExerciseEntity;
+import com.lawschool.form.AnalysisForm;
 import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
 import org.apache.ibatis.annotations.Param;
@@ -38,4 +39,6 @@ public interface PaperExerciseDao extends AbstractDao<PaperExerciseEntity> {
                             @Param("num") Integer num);
 
     boolean updateStatus(@Param("id") String id, @Param("status") Integer status);
+
+    AnalysisForm analysis(@Param("month") String month, @Param("userId") String userId);
 }

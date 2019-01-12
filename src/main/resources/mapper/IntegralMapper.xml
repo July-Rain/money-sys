@@ -2,4 +2,44 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lawschool.dao.IntegralDao">
 
+    
+    
+    
+    
+    
+    <select id="chuangguanCountByUser" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT
+            CASE
+            WHEN "SUM" ("POINT") IS null THEN 0
+            ELSE "SUM" ("POINT")  END sorce
+        FROM
+            LAW_INTEGRAL
+        WHERE
+            USER_ID = #{uid}
+        AND SRC = 'Checkpoint'
+    </select>
+
+    <select id="pkByUser" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT
+           	CASE
+            WHEN "SUM" ("POINT") IS null THEN 0
+            ELSE "SUM" ("POINT")  END sorce
+        FROM
+            LAW_INTEGRAL
+        WHERE
+            USER_ID =  #{uid}
+        AND (SRC = 'OnlinPk' OR SRC='OnlinPkByCode' OR src='teamOnline')
+    </select>
+
+    <select id="leitaiByUser" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT
+        	CASE
+            WHEN "SUM" ("POINT") IS null THEN 0
+            ELSE "SUM" ("POINT")  END sorce
+        FROM
+        LAW_INTEGRAL
+        WHERE
+        USER_ID = #{uid}
+        AND SRC = 'leitai'
+    </select>
 </mapper>

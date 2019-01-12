@@ -4,8 +4,8 @@ import java.util.*;
 
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
-import com.lawschool.beans.practicecenter.ThemeAnswerRecordEntity;
 import com.lawschool.form.*;
+
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.practicecenter.ThemeAnswerRecordService;
@@ -14,7 +14,6 @@ import com.lawschool.util.RedisUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.lawschool.beans.practicecenter.ThemeExerciseEntity;
@@ -48,253 +47,207 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 
 	/**
 	 * 主题练习首页列表数据
+	 * Version2.0
 	 * @param userId
 	 * @return
 	 */
     @Override
     public List<ThemeExerciseForm> indexList(String userId){
 
-        // 获取当前用户进行中的练习
-    	ThemeExerciseEntity entity = new ThemeExerciseEntity();
-    	entity.setCreateUser(userId);
-    	// 已结束
-    	entity.setStatus(3);
-    	// 用户已进行的主题练习
-    	List<ThemeExerciseForm> list = dao.findAllByUser(entity);
-    	
-    	// 用于存放已有练习的主题信息
-    	List<String> hasList = new ArrayList<>(list.size());
-    	for(ThemeExerciseForm form : list) {
-    		hasList.add(form.getTypeId());
-    	}
+    	// 获取主题信息关联已做任务信息
+		List<ThemeExerciseForm> list = dao.findAllByUser(userId, ThemeExerciseEntity.STATUS_FILE);
 
-    	// 获取所有主题信息(除进行中的主题)
-		List<CommonForm> formList = topicTypeService.findAll(hasList);
+		List<ThemeExerciseForm> resultList = new ArrayList<>(list.size());
 
-    	// 定义返回结果集，并初始化大小
-    	List<ThemeExerciseForm> resultList = new ArrayList<>(formList.size());
-    	
-    	if(CollectionUtils.isNotEmpty(list)) {
-    		resultList.addAll(list);
-    	}
-    	
-    	if(CollectionUtils.isEmpty(formList)) {
-    		// 所有主题都已进行 或 数据问题(无主题类型信息)
-    		return resultList;
-    	}
+		// 获取主题对应的题库数量
+		Map<String, String> numMap = testQuestionService.countByThemeId();
 
-    	// 对尚未开始的练习进行初始化，便于页面展示
+		for(ThemeExerciseForm form : list){
+			String key = form.getThemeId();
+			String total = form.getTotal();
+			if(StringUtils.isNotBlank(total) && Integer.parseInt(total) > 0){
+				resultList.add(form);
+			} else {
+				String value = numMap.get(key);
 
-    	for(CommonForm cf : formList) {
-			// 专项知识IDS
-			List<String> problems = this.getTotalQuestions(cf.getKey());
-
-    		ThemeExerciseForm form = new ThemeExerciseForm();
-    		form.setId("");
-    		form.setStatus("0");
-    		form.setTotal(problems.size() + "");
-    		form.setAnswerNum("0");
-    		form.setTypeId(cf.getKey());
-    		form.setTypeName(cf.getValue());
-    		
-    		resultList.add(form);
-    	}
+				if(value != null){
+					form.setTotal(value);
+					resultList.add(form);
+				}
+			}
+		}
     	
         return resultList;
     }
-    
-    /**
-     * 新建主题练习
-     */
-    @Override
-    public boolean mysave(ThemeExerciseEntity entity) {
-		dao.save(entity);
-    	
-    	return false;
-    }
 
 	/**
-	 * 开始练习、重新练习
-	 * @param id 主题练习任务ID
-	 * @param status 状态
-	 * @param typeId 主题类型ID
-	 * @param userId 用户ID
-	 * @return
-	 */
-	@Transactional
-	@Override
-	public String startTheme(String id, Integer status, String typeId, String userId, String typeName){
-
-		String result = "";
-		ThemeExerciseEntity entity = new ThemeExerciseEntity();
-		entity.setStatus(status);
-		entity.setTypeId(typeId);
-		entity.setCreateUser(userId);
-		entity.setCreateTime(new Date());
-		entity.setOptUser(userId);
-		entity.setOptTime(new Date());
-		entity.setAnswerNum(0);
-		entity.setRightNum(0);
-		entity.setTypeName(typeName);
-
-		entity.setStatus(ThemeExerciseEntity.STATUS_ON);
-
-		List<String> questionList = this.getTotalQuestions(typeId);
-
-		entity.setTotal(questionList.size());
-
-		if(StringUtils.isNotBlank(id)){
-			// 归档原先主题任务，并创建新的主题任务
-			this.updateStatus(id, ThemeExerciseEntity.STATUS_FILE);
-			// 并且移除redis中的记录信息
-			String key = "theme" + userId + id;
-			redisUtil.delete(key);
-		}
-		this.save(entity);
-		result = entity.getId();
-		String key = "theme" + userId + result;
-		redisUtil.set(key, questionList, -1);
-
-    	return result;
-	}
-
-	/**
-	 * 更新主题任务状态
-	 * @param id
-	 * @param status
-	 * @return
-	 */
-	public boolean updateStatus(String id, Integer status){
-		boolean result = dao.updateStatus(id, status);
-
-		return result;
-	}
-
-	/**
-	 * 主题练习获取题目
-	 * @param id 主题ID
-	 * @param userId 用户ID
-	 * @return
-	 */
-	public List<QuestForm> getQuestions(String id, String userId, List<String> removeList){
-
-		// 先从redis中取剩余的题目ID，然后去取题目具体信息
-		String key = "theme" + userId + id;
-		List<String> ids = redisUtil.get(key, List.class, -1);
-
-		if(CollectionUtils.isNotEmpty(ids) && CollectionUtils.isNotEmpty(removeList)){
-			ids.removeAll(removeList);
-		}
-
-		List<String> questList = new ArrayList<>();
-
-		// 根据系统配置题目数量取题目，如果没有配置，默认取50
-		if(CollectionUtils.isNotEmpty(ids)){
-			String qid = ids.get(0);
-			questList.add(qid);
-		}
-
-		List<QuestForm> result = new ArrayList<>();
-		if(CollectionUtils.isNotEmpty(removeList)){
-			redisUtil.set(key, ids, -1);
-		}
-
-		if(CollectionUtils.isNotEmpty(questList)){
-
-			result	= testQuestionService.getQuestions(questList);
-		}
-
-		return result;
-	}
-
-	/**
-	 * 主题练习保存
+	 * 保存个人任务并返回id
 	 * @param form
+	 * @return
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public String saveTask(ThemeExerciseForm form, String userId){
+		String total = form.getTotal();
+		int num = 0;
+		if(StringUtils.isNotBlank(total)){
+			num = Integer.parseInt(total);
+		}
+
+		ThemeExerciseEntity entity
+				= new ThemeExerciseEntity(
+						form.getThemeId(),
+						form.getThemeName(),
+						num,
+						ThemeExerciseEntity.STATUS_ON);
+		entity.preInsert(userId);
+
+		int result = dao.save(entity);
+		if(result != 1){
+			throw new RuntimeException("保存失败...");
+		}
+
+		String id = entity.getId();
+		return id;
+	}
+
+	/**
+	 * 根据题目IDs获取题目信息，
+	 * 此处与testQuestionService中的区别在于需要回显用户的答题情况
+	 * @param ids
+	 * @return
+	 */
+	@Override
+	public List<QuestForm> getQuestions(List<String> ids, String id, String userId){
+
+		return dao.getQuestions(ids, id, userId);
+	}
+
+	/**
+	 * 题目展示
+	 * @param id 个人任务ID
+	 * @param userId 当前用户ID
+	 * @param limit 每页显示题目数量
+	 * @param page 当前页（为-1时，根据answerNum去计算，否则直接取当前页）
+	 * @return
 	 */
 	@Transactional(rollbackFor = Exception.class)
+	public Map<String, Object> showPaper(String id, String userId, Integer limit, Integer page){
+		// 定义返回结果的Map
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+
+		ThemeExerciseEntity entity = dao.findOne(id);
+		int total = entity.getTotal() == null ? 0 : entity.getTotal();
+		int answerNum = entity.getAnswerNum()==null ? 0 : entity.getAnswerNum();
+
+		// 计算取题范围
+		Integer[] pageResult = CommonUtils.computeDataRange(total, answerNum, limit, page);
+		if(pageResult[0] == -1){
+			resultMap.put("list", null);
+			return resultMap;
+		}
+
+		// 封装查询参数
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("start", pageResult[0]);
+		params.put("end", pageResult[1]);
+		params.put("themeId", entity.getTypeId());
+
+		List<String> ids = testQuestionService.selectIdsForPage(params);
+
+		if(CollectionUtils.isEmpty(ids)){
+			resultMap.put("list", null);
+			return resultMap;
+		}
+
+		// 获取题目详细信息
+		List<QuestForm> resultList = this.getQuestions(ids, id, userId);
+
+		if(CollectionUtils.isEmpty(resultList)){
+			resultMap.put("list", null);
+			return resultMap;
+		}
+		resultMap.put("list", resultList);
+
+		List<AnswerForm> answerForms = answerService.findByQuestionIds(ids);
+
+		if(CollectionUtils.isEmpty(answerForms)){
+			return resultMap;
+		}
+		resultList = testQuestionService.handleAnswers(resultList, answerForms);
+		resultMap.put("list", resultList);
+		resultMap.put("count", total);
+		resultMap.put("pageCount", pageResult[3]);
+		resultMap.put("typeName", entity.getTypeName());
+
+		return resultMap;
+	}
+
+	/**
+	 * 保存个人主题任务信息
+	 * @param entity
+	 * @return
+	 */
+	private Integer mySave (ThemeExerciseEntity entity){
+
+		return dao.save(entity);
+	}
+
+	/**
+	 * 保存答题记录
+	 * @param list
+	 * @param userId
+	 */
 	@Override
-	public List<String> preserve(ThemeForm form){
-		List<String> removeList = new ArrayList<>();
-		// 答题记录
-		List<ThemeAnswerForm> list = form.getList();
-		String themeId = form.getId();
+	@Transactional(rollbackFor = Exception.class)
+	public void preserve(List<ThemeAnswerForm> list, String userId, Integer type, String id){
+		Date date = new Date();
 
-		ThemeExerciseEntity theme = null;
+		// 记录正确答题数量
+		int rightNum = 0;
 
-		if(CollectionUtils.isNotEmpty(list) && StringUtils.isNotBlank(themeId)){
+		for(ThemeAnswerForm form : list){
+			form.setCreateUser(userId);
+			form.setId(IdWorker.getIdStr());
+			form.setCreateTime(date);
 
-			// 若无答题记录或主题ID为空，不做任何操作
-			int total = list.size();// 本次总答题数
-			List<ThemeAnswerRecordEntity> saveList = new ArrayList<>(total);
-			// 回答正确数
-			int rightNum = 0;
-
-			for(ThemeAnswerForm af : list){
-				removeList.add(af.getqId());
-
-				ThemeAnswerRecordEntity entity = new ThemeAnswerRecordEntity();
-				entity.setId(IdWorker.getIdStr());
-				entity.setAnswer(af.getAnswer());
-				entity.setQuestionId(af.getqId());
-				entity.setRight(af.getRight());
-				entity.setThemeId(themeId);
-				entity.setTypeName(af.getTypeName());
-				entity.setAnswerTime(new Date());
-				entity.setCreateUser(form.getId());
-				saveList.add(entity);
-
-				if(af.getRight().intValue() == 1){
-					rightNum ++;
-				}
+			if(form.getRight() == 1){
+				rightNum++;
 			}
-
-			// 保存答题记录
-			themeAnswerRecordService.saveBatch(saveList);
-
-			// 更新主题任务
-			theme = dao.selectById(themeId);
-			Integer right = theme.getRightNum();
-			theme.setRightNum(right + rightNum);
-			theme.setAnswerNum(total + theme.getAnswerNum());
-			theme.setStatus(form.getStatus());
-			theme.setOptTime(new Date());
-
-		} else if(StringUtils.isNotBlank(themeId)){
-			// 特殊情况，未答题直接提交，更新主题任务
-			theme = dao.selectById(themeId);
-			theme.setStatus(form.getStatus());
+			themeAnswerRecordService.saveForm(form);
 		}
 
-		if(theme != null){
-			dao.updateAnswerRecord(theme);
+		// 更新整体练习答题情况
+		int num = list.size();
+		if(type == 1){
+			// 提交
+			type = ThemeExerciseEntity.STATUS_OFF;
+		} else {
+			type = -1;
 		}
-
-		return removeList;
+		dao.updateAnswerNum(id, num, rightNum, type);
 	}
 
 	/**
-	 * 提交主题任务，并返回统计分析信息
+	 * 保存 OR 提交
 	 * @param form
 	 * @return
 	 */
-	@Transactional(rollbackFor = Exception.class)
-	@Override
 	public AnalysisForm commit(ThemeForm form){
+		AnalysisForm result = null;
+		if(form.getList() != null && CollectionUtils.isNotEmpty(form.getList())){
+			// 若有答题记录，先保存答题记录
+			// this.preserve(form);
+		}
 
-		// 先判断是否需要保存答题信息
-		this.preserve(form);
-
-		// 获取主题任务的分析统计数据
-		AnalysisForm result = this.analysisAnswer(form.getId());
+		if(form.getStatus() == ThemeExerciseEntity.STATUS_OFF){
+			// 提交练习，获取分析信息
+			result = this.analysisAnswer(form.getId());
+		}
 
 		return result;
 	}
 
-	/**
-	 * 获取主题任务的分析统计信息
-	 * @param themeId
-	 * @return
-	 */
 	@Override
 	public AnalysisForm analysisAnswer(String themeId){
 		AnalysisForm result = new AnalysisForm();
@@ -312,50 +265,26 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 		return result;
 	}
 
-	/**
-	 *
-	 * @param form
-	 * @return
-	 */
-	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public List<QuestForm> saveAndGetQuestions(ThemeForm form){
+	@Transactional(rollbackFor = Exception.class)
+	public String restart(String id){
+		// 更新原先任务状态
+		ThemeExerciseEntity entityOld = dao.findOne(id);
 
-		List<String> removeList = new ArrayList<>();
+		// 归档
+		dao.updateStatus(id, ThemeExerciseEntity.STATUS_FILE);
 
-		if(CollectionUtils.isNotEmpty(form.getList())){
-			// 保存答题信息
-			removeList = this.preserve(form);
-		}
+		// 获取主题对应的题库数量
+		Map<String, String> numMap = testQuestionService.countByThemeId();
 
-		List<QuestForm> questions = this.getQuestions(form.getId(), form.getUserId(), removeList);
+		ThemeExerciseForm form = new ThemeExerciseForm();
+		form.setTotal(numMap.get(entityOld.getTypeId()));
+		form.setStatus(ThemeExerciseEntity.STATUS_ON+"");
+		form.setThemeId(entityOld.getTypeId());
+		form.setThemeName(entityOld.getTypeName());
 
-		return questions;
-	}
-
-	/**
-	 * 获取符合条件的题目IDs
-	 * @param konwId
-	 * @return
-	 */
-	private List<String> getTotalQuestions(String konwId){
-		List<String> resultList = new ArrayList<>();
-
-		Map<String, Object> paramsMap = new HashMap<String, Object>();
-		paramsMap.put("isEnble", "0");// 启用
-
-		// 题目类型
-		List<String> questionType = new ArrayList<>();
-		questionType.add("4");
-		questionType.add("5");
-		questionType.add("6");
-
-		paramsMap.put("list", questionType);
-		paramsMap.put("specialKnowledgeId", konwId);
-
-		resultList = testQuestionService.findIdBySpecialKnowledgeId(paramsMap);
-
-		return resultList;
+		String idNew = this.saveTask(form, entityOld.getCreateUser());
+		return idNew;
 	}
 
 	@Override
@@ -364,4 +293,5 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 
 		return form;
 	}
+
 }

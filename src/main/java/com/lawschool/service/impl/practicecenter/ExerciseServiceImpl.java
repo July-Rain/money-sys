@@ -3,6 +3,7 @@ package com.lawschool.service.impl.practicecenter;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.beans.User;
 import com.lawschool.beans.practicecenter.ExerciseAnswerRecordEntity;
 import com.lawschool.beans.practicecenter.ExerciseEntity;
 import com.lawschool.beans.practicecenter.ThemeExerciseEntity;
@@ -15,6 +16,7 @@ import com.lawschool.service.practicecenter.ExerciseService;
 import com.lawschool.util.RedisUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +58,7 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
         paramsMap.put("specialKnowledgeId", form.getTopic());
         paramsMap.put("questionDifficulty", form.getDifficulty());
         paramsMap.put("questionType", form.getType());
-        paramsMap.put("typeId", form.getType());
+        paramsMap.put("typeId", form.getClassify());
         List<String> idList = testQuestionService.findIdBySpecialKnowledgeId(paramsMap);
 
         String key = "random" + id;
@@ -101,23 +103,19 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
 
             // 若无答题记录或主题ID为空，不做任何操作
             int total = list.size();// 本次总答题数
-            List<ExerciseAnswerRecordEntity> saveList = new ArrayList<>(total);
             // 回答正确数
             int rightNum = 0;
+
+            Date createTime = new Date();
+            User user = (User) SecurityUtils.getSubject().getPrincipal();
 
             for(ThemeAnswerForm af : list){
                 removeList.add(af.getqId());
 
-                ExerciseAnswerRecordEntity entity = new ExerciseAnswerRecordEntity();
-                entity.setId(IdWorker.getIdStr());
-                entity.setAnswer(af.getAnswer());
-                entity.setQuestionId(af.getqId());
-                entity.setRight(af.getRight());
-                entity.setExerciseId(themeId);
-                entity.setAnswerTime(new Date());
-                entity.setTypeName(af.getTypeName());
-                entity.setCreateUser(form.getUserId());
-                saveList.add(entity);
+                af.setCreateTime(createTime);
+                af.setCreateUser(user.getId());
+                af.setTaskId(form.getId());
+                af.setId(IdWorker.getIdStr());
 
                 if(af.getRight().intValue() == 1){
                     rightNum ++;
@@ -125,7 +123,7 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
             }
 
             // 保存答题记录
-            exerciseAnswerRecordService.saveBatch(saveList);
+            exerciseAnswerRecordService.saveBatch(list);
 
             // 更新随机练习任务
             exercise = dao.selectById(themeId);
@@ -223,10 +221,45 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
      * @return
      */
     @Override
-    public AnalysisForm analysis(String month, String userId){
-        AnalysisForm form = dao.analysis(month, userId);
+    public Map<String, Object> analysis(String month, String userId){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
 
-        return form;
+        List<Map<String, String>> mapList = dao.analysis(month, userId);
+
+        Set<String> idSet = new HashSet<String>();// 存放ID,利用set去重
+        int total = 0;// 总回答数
+        int right = 0;// 回答正确数
+
+        for(Map<String, String> temp : mapList){
+            String id = temp.get("id");
+            idSet.add(id);
+
+            String themeName = temp.get("themeName");
+            Integer answerNum = Integer.parseInt(temp.get("answerNum"));
+            Integer rightNum = Integer.parseInt(temp.get("rightNum"));
+
+            total += answerNum;
+            right += rightNum;
+
+            List<Integer> list = new ArrayList<Integer>(2);
+            if(resultMap.get(themeName) != null){
+                list = (List<Integer>) resultMap.get(themeName);
+                list.add(0, list.get(0) + answerNum);
+                list.add(1, list.get(1) + rightNum);
+            } else {
+                // 初始化
+                list.add(0, answerNum);
+                list.add(1, rightNum);
+            }
+
+            resultMap.put(themeName, list);
+        }
+
+        resultMap.put("total", total);// 回答总数
+        resultMap.put("right", right);// 回答正确数
+        resultMap.put("num", idSet.size());// 练习次数
+
+        return resultMap;
     }
 
 }

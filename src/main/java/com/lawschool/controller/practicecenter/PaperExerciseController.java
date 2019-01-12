@@ -112,6 +112,11 @@ public class PaperExerciseController extends AbstractController {
         return Result.ok();
     }
 
+    /**
+     * 提交
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/commit/{id}", method = RequestMethod.POST)
     public Result commit(@PathVariable("id") String id){
         User user = getUser();
