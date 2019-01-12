@@ -60,7 +60,16 @@ public class SysMenuController {
 
     @RequestMapping("/menuNav")
     public Result menuNav(String id){
-        List<SysMenu> menuList = sysMenuService.queryChildById(id);
+        List<SysMenu> menuList = new ArrayList<>();
+        if(UtilValidate.isEmpty(id)){
+            id="0";
+            menuList = sysMenuService.selectList(
+                    new EntityWrapper<SysMenu>().ne("type","2").eq("is_show","1").orderBy("ORDER_NUM", true)
+            );
+        }else{
+            menuList = sysMenuService.queryChildById(id);
+        }
+
         return Result.ok().put("menuList", bulidDeptTree(menuList,id));
 
     }
