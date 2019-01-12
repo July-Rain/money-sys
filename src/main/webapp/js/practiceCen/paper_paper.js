@@ -43,7 +43,8 @@ var vm = new Vue({
                 taskId: id,
                 qId: obj.id,
                 answer: checkList.join(','),
-                right: obj.right
+                right: obj.right,
+                themeName: obj.themeName
             };
 
             vm.preserved.push(form);
@@ -52,6 +53,7 @@ var vm = new Vue({
             var obj = vm.questionList[index];
             var answerId = obj.answerId;
             var userAnswer = obj.userAnswer;
+            var themeName = obj.themeName;
 
             if(userAnswer == answerId){
                 obj.right = 1;
@@ -63,7 +65,8 @@ var vm = new Vue({
                 taskId: id,
                 qId: obj.id,
                 answer: userAnswer,
-                right: obj.right
+                right: obj.right,
+                themeName: themeName
             };
 
             vm.preserved.push(form);

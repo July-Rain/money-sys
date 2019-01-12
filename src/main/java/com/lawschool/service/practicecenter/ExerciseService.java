@@ -9,6 +9,7 @@ import com.lawschool.form.RandomExerciseForm;
 import com.lawschool.form.ThemeForm;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @version V1.0
@@ -33,6 +34,6 @@ public interface ExerciseService extends AbstractService<ExerciseEntity> {
 
     AnalysisForm analysisAnswer(String themeId);
 
-    AnalysisForm analysis(String month, String userId);
+    Map<String, Object> analysis(String month, String userId);
 
 }

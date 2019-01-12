@@ -3,15 +3,16 @@
 <mapper namespace="com.lawschool.dao.practicecenter.PaperAnswerRecordDao">
 
     <insert id="saveForm" parameterType="com.lawschool.form.ThemeAnswerForm">
-        INSERT INTO LAW_TASK_RECORD
+        INSERT INTO LAW_PAPER_RECORD
         (
             id,
-            CONFIGURE_ID,
+            TASK_ID,
             QUESTION_ID,
-            ANSWER_ID,
+            ANSWER,
             RIGHT,
             CREATE_TIME,
-            CREATE_USER
+            CREATE_USER,
+            THEME_NAME
         )
         VALUES
         (
@@ -21,7 +22,21 @@
             #{answer},
             #{right},
             #{createTime},
-            #{createUser}
+            #{createUser},
+            #{themeName}
         )
     </insert>
+
+    <select id="analysisAnswer" resultType="com.lawschool.form.ThemeAnswerForm">
+        SELECT
+            theme_name AS "themeName",
+            right AS "right",
+            count(*) AS "rightNum"
+        FROM law_paper_record
+        <where>
+            task_id = #{id}
+        </where>
+        GROUP BY theme_name, right
+        ORDER BY theme_name
+    </select>
 </mapper>

@@ -2,6 +2,7 @@ package com.lawschool.service.practicecenter;
 
 import com.lawschool.base.AbstractService;
 import com.lawschool.beans.practicecenter.PaperExerciseEntity;
+import com.lawschool.form.AnalysisForm;
 import com.lawschool.form.CommonForm;
 import com.lawschool.form.ThemeAnswerForm;
 
@@ -50,4 +51,12 @@ public interface PaperExerciseService extends AbstractService<PaperExerciseEntit
      * @return
      */
     boolean updateStatus(String id, Integer status);
+
+    /**
+     * 统计分析
+     * @param month
+     * @param userId
+     * @return
+     */
+    AnalysisForm analysis(String month, String userId);
 }

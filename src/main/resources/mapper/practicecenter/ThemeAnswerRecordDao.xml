@@ -26,17 +26,42 @@
         )
 	</insert>
 
+	<insert id="saveForm" parameterType="com.lawschool.form.ThemeAnswerForm">
+        INSERT INTO LAW_THEME_RECORD
+        (
+            id,
+            TASK_ID,
+            QUESTION_ID,
+            ANSWER,
+            RIGHT,
+            CREATE_TIME,
+            CREATE_USER,
+            THEME_NAME
+        )
+        VALUES
+        (
+            #{id},
+            #{taskId},
+            #{qId},
+            #{answer},
+            #{right},
+            #{createTime},
+            #{createUser},
+            #{themeName}
+        )
+    </insert>
+
 	<!-- 分组统计答题情况 -->
 	<select id="analysisAnswer" resultType="com.lawschool.form.ThemeAnswerForm">
 		SELECT
-		       type_name AS "typeName",
-		       is_right AS "right",
+		       theme_name AS "typeName",
+		       right AS "right",
 		       count(*) AS "rightNum"
 		FROM law_theme_record
 		<where>
-			theme_id = #{themeId}
+			task_id = #{themeId}
 		</where>
-		GROUP BY type_name, is_right
-		ORDER BY type_name
+		GROUP BY theme_name, right
+		ORDER BY theme_name
 	</select>
 </mapper>

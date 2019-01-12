@@ -3,6 +3,7 @@ package com.lawschool.service;
 
 import com.lawschool.base.AbstractService;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity;
 import com.lawschool.form.AnswerForm;
 import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
@@ -50,8 +51,6 @@ public interface TestQuestionService extends AbstractService<TestQuestions> {
      */
     List<QuestForm> findByIds(List<String> list);
 
-
-
     TestQuestions findByEntity(TestQuestions t);
 
     List<CommonForm> selectByTopicAndNum(String topic, Integer num);
@@ -77,4 +76,19 @@ public interface TestQuestionService extends AbstractService<TestQuestions> {
     QuestForm findTestQuestionById(String id);
 
     List<QuestForm> handleAnswers(List<QuestForm> questForms, List<AnswerForm> answerList);
+
+    Integer getNumByConditions(Map<String, String> params);
+
+    /**
+     * 根据查询条件查询题目IDs(带分页效果)
+     * @param params
+     * @return
+     */
+    List<String> selectIdsForPage(Map<String, Object> params);
+
+    /**
+     *
+     * @return
+     */
+    Map<String, String> countByThemeId();
 }

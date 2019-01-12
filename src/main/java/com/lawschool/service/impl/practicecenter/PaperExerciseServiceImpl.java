@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.practicecenter.PaperExerciseEntity;
 import com.lawschool.dao.practicecenter.PaperExerciseDao;
-import com.lawschool.form.AnswerForm;
-import com.lawschool.form.CommonForm;
-import com.lawschool.form.QuestForm;
-import com.lawschool.form.ThemeAnswerForm;
+import com.lawschool.form.*;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.ExerciseConfigureService;
 import com.lawschool.service.TestQuestionService;
@@ -40,7 +37,7 @@ public class PaperExerciseServiceImpl extends AbstractServiceImpl<PaperExerciseD
     private AnswerService answerService;
 
     @Autowired
-    private PaperAnswerRecordService taskAnswerRecordService;
+    private PaperAnswerRecordService paperAnswerRecordService;
 
     public List<CommonForm> findByUserAndConIds(String userId, List<String> list){
         List<CommonForm> resultList = dao.findByUserAndConIds(userId, list);
@@ -216,7 +213,7 @@ public class PaperExerciseServiceImpl extends AbstractServiceImpl<PaperExerciseD
             form.setCreateUser(userId);
             form.setId(IdWorker.getIdStr());
             form.setCreateTime(date);
-            taskAnswerRecordService.saveForm(form);
+            paperAnswerRecordService.saveForm(form);
         }
 
         // 更新整体练习答题情况
@@ -230,5 +227,12 @@ public class PaperExerciseServiceImpl extends AbstractServiceImpl<PaperExerciseD
     public boolean updateStatus(String id, Integer status){
 
         return dao.updateStatus(id, status);
+    }
+
+    public AnalysisForm analysis(String month, String userId){
+        AnalysisForm result = new AnalysisForm();
+
+        result = dao.analysis(month, userId);
+        return result;
     }
 }

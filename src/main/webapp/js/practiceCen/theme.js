@@ -1,39 +1,57 @@
 var vm = new Vue({
     el: '#app',
     data:{
-        navData : [
-            {
-                icon: 'el-icon-tickets',
-                name: ' 主题练习'
-            }, {
-                icon: 'el-icon-tickets',
-                name: ' 随机练习'
-            }
-        ],
         tableData: []
     },
     methods: {
-        start: function(id, status, typeId, typeName){
+        start: function(index){
+            var obj = vm.tableData[index];
+
+            var id = obj.id;
+            if(id == null || id == ''){
+                vm.found(obj);
+            } else {
+                vm.jump(id);
+            }
+
+        },
+        found: function (obj) {
+            // 创建任务
             $.ajax({
-                type: "GET",
-                url: baseURL + "exercise/theme/start",
-                dataType: "json",
-                data: {
-                    id: id,
-                    status: status,
-                    typeId: typeId,
-                    typeName: typeName
-                },
+                type: "POST",
+                url: baseURL + "exercise/theme/save",
+                data: JSON.stringify(obj),
+                contentType: "application/json",
                 success: function (result) {
-                    if (result.code == 0) {
-                        var vid = result.id;
-                        window.location.href = baseURL + "exercise/theme/answer?id=" + vid;
+                    if (result.code === 0) {
+                        var id = result.id;
+                        vm.jump(id);
+                    } else {
+                        alert(result.msg);
                     }
                 }
             });
         },
-        continues: function(id, typeId) {
-            window.location.href = baseURL + "exercise/theme/answer?id=" + id;
+        jump: function (id) {
+            // 跳转页面
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/exerciseCenter/theme_answer.html?id='+id;
+        },
+        reStart: function (id) {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "exercise/theme/restart/" + id,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        var nid = result.id;
+                        vm.jump(nid);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         }
     },
     created: function(){

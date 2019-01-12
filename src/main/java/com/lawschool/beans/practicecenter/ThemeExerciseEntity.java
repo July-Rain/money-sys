@@ -90,16 +90,14 @@ public class ThemeExerciseEntity extends DataEntity<ThemeExerciseEntity> {
         return rightNum;
     }
 
-    @Override
-    public String toString() {
-        return "ThemeExerciseEntity{" +
-                "typeId='" + typeId + '\'' +
-                ", typeName='" + typeName + '\'' +
-                ", total=" + total +
-                ", answerNum=" + answerNum +
-                ", status=" + status +
-                ", rightNum=" + rightNum +
-                ", id='" + id + '\'' +
-                '}';
+    public ThemeExerciseEntity() {
+
+    }
+
+    public ThemeExerciseEntity(String typeId, String typeName, Integer total, Integer status) {
+        this.typeId = typeId;
+        this.typeName = typeName;
+        this.total = total;
+        this.status = status;
     }
 }

@@ -9,8 +9,10 @@ import com.lawschool.service.DictService;
 import com.lawschool.service.practicecenter.ExerciseService;
 import com.lawschool.service.system.TopicTypeService;
 import com.lawschool.util.Result;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -97,6 +99,16 @@ public class RandomExerciseController extends AbstractController {
         return Result.ok().put("id", id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @RequestMapping(value = "/preserve/{type}", method = RequestMethod.POST)
+    public Result preserve(@RequestBody ThemeForm form){
+        User user = getUser();
+
+        exerciseService.preserve(form);
+
+        return Result.ok();
+    }
+
     @ResponseBody
     @RequestMapping(value = "/questions", method = RequestMethod.POST)
     public Result getQuestions(@RequestBody ThemeForm form){
@@ -104,19 +116,11 @@ public class RandomExerciseController extends AbstractController {
         if(user == null){
             throw new RuntimeException("用户信息获取失败，请重新登陆");
         }
-        form.setUserId(form.getId());
+        form.setUserId(user.getId());
 
         List<QuestForm> list = exerciseService.saveAndGetQuestions(form);
         // 返回题目list
         return Result.ok().put("list", list);
-    }
-
-    @RequestMapping(value = "/answer", method = RequestMethod.GET)
-    public ModelAndView answer(@RequestParam String id){
-        ModelAndView mv = new ModelAndView("/exerciseCenter/random_answer");
-
-        mv.addObject("id", id);
-        return mv;
     }
 
     /**

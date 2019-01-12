@@ -7,10 +7,16 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface ThemeAnswerRecordDao extends AbstractDao<ThemeAnswerRecordEntity> {
+/**
+ * 主题练习--答题记录
+ */
+public interface ThemeAnswerRecordDao extends AnswerRecordDao<ThemeAnswerRecordEntity> {
 
-    void save(ThemeAnswerRecordEntity entity);
-
+    /**
+     * 分析答题结果
+     * @param themeId
+     * @return
+     */
     List<ThemeAnswerForm> analysisAnswer(@Param("themeId") String themeId);
 
 }

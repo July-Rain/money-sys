@@ -13,8 +13,12 @@ import java.util.List;
  * @author: 中石电子科技 徐祥
  * @date: 2018-12-14 09:37
  */
-public interface ExerciseAnswerRecordDao extends AbstractDao<ExerciseAnswerRecordEntity> {
-    void save(ExerciseAnswerRecordEntity entity);
+public interface ExerciseAnswerRecordDao extends AnswerRecordDao<ExerciseAnswerRecordEntity> {
 
+    /**
+     * 分析答题结果
+     * @param exerciseId
+     * @return
+     */
     List<ThemeAnswerForm> analysisAnswer(@Param("exerciseId") String exerciseId);
 }

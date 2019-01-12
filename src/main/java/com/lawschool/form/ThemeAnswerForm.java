@@ -6,10 +6,11 @@ import java.util.Date;
  * 主题练习提交From
  */
 public class ThemeAnswerForm {
+
     private String qId;// 题目ID
     private String answer;// 回答
     private Integer right;// 回答是否正确
-    private String typeName;// 题目类型
+    private String themeName;// 主题类型
 
     private String id;// 主键
     private String createUser;
@@ -44,12 +45,12 @@ public class ThemeAnswerForm {
         this.right = right;
     }
 
-    public String getTypeName() {
-        return typeName;
+    public String getThemeName() {
+        return themeName;
     }
 
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
+    public void setThemeName(String themeName) {
+        this.themeName = themeName;
     }
 
     public Integer getErrorNum() {

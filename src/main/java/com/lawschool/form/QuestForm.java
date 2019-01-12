@@ -26,6 +26,7 @@ public class QuestForm {
     private String questionId;//题目Id
     private String userAnswer;// 用户答案
     private Integer right;// 用户回答是否正确
+    private String themeName;// 主題类型
 
     private List<String> checkList = new ArrayList<>();
 
@@ -127,5 +128,13 @@ public class QuestForm {
 
     public void setCheckList(List<String> checkList) {
         this.checkList = checkList;
+    }
+
+    public String getThemeName() {
+        return themeName;
+    }
+
+    public void setThemeName(String themeName) {
+        this.themeName = themeName;
     }
 }
