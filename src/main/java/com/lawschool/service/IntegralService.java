@@ -32,5 +32,8 @@ public interface IntegralService {
     **/
     int addIntegralRecord(Integral integer, User user);
 
+    int chuangguanCountByUser(String uid);
 
+    int pkByUser(String uid);
+    int leitaiByUser(String uid);
 }

@@ -51,4 +51,22 @@ public class IntegralController extends AbstractController {
         return Result.ok();
     }
 
+
+    @RequestMapping("/chuangguanCountByUser")
+    public Result chuangguanCountByUser(String uid){
+        int i=integralService.chuangguanCountByUser(uid);
+        return Result.ok().put("CheckpointSorce", i);
+    }
+
+    @RequestMapping("/pkByUser")
+    public Result pkByUser(String uid){
+        int i=integralService.pkByUser(uid);
+        return Result.ok().put("PkSorce", i);
+    }
+
+    @RequestMapping("/leitaiByUser")
+    public Result leitaiByUser(String uid){
+        int i=integralService.leitaiByUser(uid);
+        return Result.ok().put("leitaiSorce", i);
+    }
 }

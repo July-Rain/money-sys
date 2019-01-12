@@ -47,7 +47,40 @@ var vm = new Vue({
 
 
 
-//然后的数据dataBySorce【】
+            //然后的数据dataBySorce【】
+            //       ------1查闯关分数
+            $.ajax({
+                type: "POST",
+                url: baseURL + "integral/chuangguanCountByUser",
+                Type: "json",
+                data: {"uid":this.user.id},
+                async:false,
+                success: function (data) {
+                    vm.dataBySorce.push({value:Number(data.CheckpointSorce), name:'竞赛闯关'});
+                }
+            });
+            //       ------2查在线pk分数
+            $.ajax({
+                type: "POST",
+                url: baseURL + "integral/pkByUser",
+                Type: "json",
+                data: {"uid":this.user.id},
+                async:false,
+                success: function (data) {
+                    vm.dataBySorce.push({value:Number(data.PkSorce), name:'在线比武'});
+                }
+            });
+            //       ------3查打擂台分数
+            $.ajax({
+                type: "POST",
+                url: baseURL + "integral/leitaiByUser",
+                Type: "json",
+                data: {"uid":this.user.id},
+                async:false,
+                success: function (data) {
+                    vm.dataBySorce.push({value:Number(data.leitaiSorce), name:'擂台赛'});
+                }
+            });
 
             this.reload();
         })
@@ -80,7 +113,7 @@ var vm = new Vue({
 
                 tooltip : {
                     trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c} "
+                    formatter: "{a} <br/>{b} : {c} 次"
                 },
 
                 visualMap: {
@@ -155,7 +188,7 @@ var vm = new Vue({
 
                 tooltip : {
                     trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    formatter: "{a} <br/>{b} : {c} 分"
                 },
 
                 visualMap: {
@@ -168,17 +201,11 @@ var vm = new Vue({
                 },
                 series : [
                     {
-                        name:'访问来源',
+                        name:'游戏类型',
                         type:'pie',
                         radius : [30, 150],
                         center: ['50%', '50%'],
-                        data:[
-                            {value:335, name:'直接访问'},
-                            {value:310, name:'邮件营销'},
-                            {value:274, name:'联盟广告'},
-                            {value:235, name:'视频广告'},
-                            {value:400, name:'搜索未未未引擎'}
-                        ].sort(function (a, b) { return a.value - b.value; }),
+                        data:vm.dataBySorce,
                         roseType: 'radius',
                         label: {
                             normal: {
