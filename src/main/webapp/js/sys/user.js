@@ -10,10 +10,11 @@ var vm = new Vue({
             userName: '',
             userCode: '',
             orgCode:'',
-            identify:'0',//表明是教官
+            identify:'0',//表明是用户
             currPage: 1,
             pageSize:10,
             totalCount: 0
+
         },//检索条件
         tableData: [],//表格数据
 
@@ -37,11 +38,14 @@ var vm = new Vue({
             password:"",
             photo:"",
             orgCode:"",
-            identify:0,//添加为教官
+            identify:0,//添加为用户
             orgName:"",
             userPoliceId:"",
+            roles:"",//角色
+        },
 
-        }
+        roles:[],
+        tmroles:[],
     },
     created: function () {
         this.$nextTick(function () {
@@ -74,11 +78,36 @@ var vm = new Vue({
         //用户添加
         handleAdd:function(){
             vm.dialogtch=true;
+            vm.handleRoles();
         },
         //用户修改vm.
         handleUpt:function(index,row){
             vm.dialogtch=true;
             vm.teacher=row;
+            vm.handleRoles();
+            //debugger;
+            if(vm.teacher.roles){
+                vm.tmroles=vm.teacher.roles.split(",");
+            }else{
+                vm.tmroles=[];
+            }
+
+        },
+
+        //获取角色列表
+        handleRoles:function(){
+            $.ajax({
+                type : "POST",
+                url: baseURL + "role/getAllRoles",
+                contentType: "application/json",
+                success:function (result) {
+                    if(result.code==0){
+                        vm.roles=result.roles;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            })
         },
 
         //密码重置
@@ -240,6 +269,15 @@ var vm = new Vue({
 
         //保存
         saveOrUpdate:function () {
+
+            var rs="";
+            vm.tmroles.map(function (item,index) {
+                if(!(index==vm.roles.length-1  || index==0)){
+                    rs=rs+",";
+                }
+                rs=rs+item;
+            });
+            vm.teacher.roles=rs;
             var url=baseURL + "sys/add";
             debugger
             console.log(vm.teacher.id);

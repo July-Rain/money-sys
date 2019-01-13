@@ -85,8 +85,8 @@ public class UserController extends AbstractController {
 
     @RequestMapping("/add")
     public Result addUorT(@RequestBody User user){
-        int result=userService.addUser(user);
-        return result==SUCCESS?Result.ok():Result.error("添加失败");
+        Result result= userService.addUser(user);
+        return result;
     }
 
 
