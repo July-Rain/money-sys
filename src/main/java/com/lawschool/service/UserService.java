@@ -79,7 +79,7 @@ public interface UserService  extends AbstractService<User> {
      * @param user
      * @return
      */
-    public int addUser(User user);
+    public Result addUser(User user);
 
     /**
      * @Author zjw

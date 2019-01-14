@@ -76,4 +76,11 @@ public class SysRoleController {
         return Result.ok();
     }
 
+
+    @RequestMapping(value = "/getAllRoles", method = RequestMethod.POST)
+    public Result getAllRoles(){
+        List<SysRoleEntity> all = roleService.findAll();
+        return Result.ok().put("roles", all);
+    }
+
 }
