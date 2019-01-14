@@ -261,7 +261,9 @@ var vm = new Vue({
                 integral : 0,//目标积分
                 credited : 0,//学分
                 integraled : 0//积分
-            }
+            },
+            playTime:0,//播放时间
+            oldTime:0,//原来播放时间
         }
     },
     created: function () {
@@ -668,6 +670,59 @@ var vm = new Vue({
                 }
             });
         },
+        onPause: function (id,event) {
+            debugger
+            var el = event.currentTarget;
+            var temp =0;
+            //var playTime= $(el).currentTime;
+            vm.oldTime=vm.playTime;
+
+            vm.playTime= el.currentTime;
+
+            temp=vm.playTime-vm.oldTime;
+
+            var finishFlag =false;
+            if(el.currentTime == el.duration ){
+                finishFlag=true;
+            }
+            //获取当前选择对象
+
+            //媒介因素暂停事件
+            //请求后台记录观看时长
+            $.ajax({
+                type: "POST",
+                url: baseURL + "stumedia/countTime?stuId="+id+"&stuFrom=videocen&playTime="+temp+"&finishFlag="+finishFlag,
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        goLaw: function (id) {
+            //查看详情
+            //记录学习记录
+            this.insertRecord(id);
+        },
+        insertRecord: function (id) {
+            //插入学习记录
+            //请求后台修改播放量 记录学习记录
+            $.ajax({
+                type: "POST",
+                url: baseURL +  "sturecord/insertRecord?stuId="+id+"&stuType=law"+"&stuFrom=law",
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
         loadTasks: function () {//学习任务
             $.ajax({
                 type: "POST",
@@ -676,6 +731,24 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.learnTasks = result.learnTasks;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+            var loadInline={
+                limit: 10,
+                page: 1,
+                count: 0};
+            //练习任务
+            $.ajax({
+                type: "GET",
+                url: baseURL + "exercise/task/list",
+                dataType: "json",
+                data:loadInline,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.practiceTasks = result.page.count;
                     } else {
                         alert(result.msg);
                     }

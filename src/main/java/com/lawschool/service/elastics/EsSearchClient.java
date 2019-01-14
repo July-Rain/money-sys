@@ -1,3 +1,4 @@
+/*
 package com.lawschool.service.elastics;
 
 import com.alibaba.fastjson.JSON;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * ClassName: EsSearchClient
  * Description: EsSearchClient
@@ -22,7 +24,8 @@ import java.util.List;
  *
  * @author MengyuWu
  * @since JDK 1.8
- */
+ *//*
+
 @Service("searchClient")
 public class EsSearchClient implements ISearchClient {
     @Autowired
@@ -81,9 +84,11 @@ public class EsSearchClient implements ISearchClient {
         try {
             IndexRequest indexRequest = new IndexRequest(index, type , id);
             indexRequest.source(JSON.toJSONString(t) , XContentType.JSON);
-            /*BulkRequest bulkRequest = new BulkRequest();
+            */
+/*BulkRequest bulkRequest = new BulkRequest();
             bulkRequest.add(indexRequest);
-            Header basicHeader = new BasicHeader("Content-Type:application" , "json");*/
+            Header basicHeader = new BasicHeader("Content-Type:application" , "json");*//*
+
             //this.client.bulk(bulkRequest , basicHeader);
             indexResponse = this.client.index(indexRequest);
 
@@ -93,3 +98,4 @@ public class EsSearchClient implements ISearchClient {
         return indexResponse;
     }
 }
+*/

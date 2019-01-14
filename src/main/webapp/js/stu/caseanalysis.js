@@ -16,7 +16,10 @@ var vm = new Vue({
             currPage: 1,
             pageSize: 10,
             totalCount:0,
-            caseLawid:""
+            caseLawid:"",
+            lawLevel:"",
+            startTime:"",
+            endTime:""
         },
         tableData: [],//表格数据
         visible: false,
@@ -90,6 +93,7 @@ var vm = new Vue({
         caseProcessOption:[],//裁判程序
         videoFlag:false,
         videoUploadPercent:0,
+        deptCheckData:[]//部门默认选中节点
     },
     created: function () {
 
@@ -142,7 +146,7 @@ var vm = new Vue({
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
                 async:false,
-                data: {type:"POLICACLASS",Parentcode:"0"},
+                data: {type:"CASETYPE",Parentcode:"0"},
                 success: function (result) {
                     vm.caseTypeOption=result.dictlist;
                 }
@@ -153,7 +157,7 @@ var vm = new Vue({
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
                 async:false,
-                data: {type:"POLICACLASS",Parentcode:"0"},
+                data: {type:"LAWLEVEL",Parentcode:"0"},
                 success: function (result) {
                     vm.lawLevelOption=result.dictlist;
                 }
@@ -164,7 +168,7 @@ var vm = new Vue({
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
                 async:false,
-                data: {type:"POLICACLASS",Parentcode:"0"},
+                data: {type:"CASEPROCESS",Parentcode:"0"},
                 success: function (result) {
                     vm.caseProcessOption=result.dictlist;
                 }
@@ -259,6 +263,7 @@ var vm = new Vue({
         handleEdit: function (index, row){
             this.title="修改";
             this.dialogCaseAna=true;
+            this.deptCheckData=[];
             $.ajax({
                 type: "POST",
                 url: baseURL + 'caseana/info?id=' + row.id,
@@ -266,6 +271,7 @@ var vm = new Vue({
                 success: function (result) {
                     if(result.code === 0){
                         vm.caseAna = result.data;
+                        vm.deptCheckData=result.data.deptArr;
                        /* if(vm.caseAna.contentType=='1'){
                             loadEditor();
                         }*/
@@ -437,7 +443,7 @@ var vm = new Vue({
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
             for(var i=0;i<this.multipleDeptSelection.length;i++){
-                if (this.caseAna.deptIds == "") {
+                if (!this.caseAna.deptIds) {
                     this.caseAna.deptIds=this.multipleDeptSelection[i].id;
                     this.caseAna.deptName=this.multipleDeptSelection[i].orgName;
                 }else{
@@ -492,7 +498,7 @@ var vm = new Vue({
             this.multipleSelection = val;
             //遍历最终的人员信息
             for (var i=0;i<val.length;i++){
-                if (this.caseAna.userIds == "") {
+                if (!this.caseAna.userIds ) {
                     this.caseAna.userIds=val[i].id;
                     this.caseAna.userName=val[i].userName;
                 }else{

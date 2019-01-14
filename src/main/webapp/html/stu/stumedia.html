@@ -35,14 +35,14 @@
                     <el-tab-pane label="检索">
                         <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                            <el-form-item prop="stuTitle">
+                            <el-form-item prop="stuTitle" label="课程标题">
                                 <el-input v-model="formInline.stuTitle" placeholder="课程标题" size="mini"></el-input>
                             </el-form-item>
-                            <el-form-item prop="stuPoliceclass">
+                            <el-form-item prop="stuPoliceclass" label="警种">
                                 <el-input v-model="formInline.stuPoliceclass" placeholder="警种" size="mini"></el-input>
                             </el-form-item>
 
-                            <el-form-item prop="stuType">
+                            <el-form-item prop="stuType"  label="类型">
                                 <el-select v-model="formInline.stuType" placeholder="类型" size="mini">
                                     <el-option label="文字" value="1"></el-option>
                                     <el-option label="音频" value="2"></el-option>
@@ -224,6 +224,7 @@
                     @check-change="handleCheckChange"
                     node-key="id"
                     :default-expanded-keys="[2079]"
+                    :default-checked-keys="deptCheckData"
                     >
             </el-tree>
             <el-button type="primary" size="mini" @click="confimDept">保存</el-button>

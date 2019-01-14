@@ -8,8 +8,6 @@ var menuId=$("#menuId").val();
 var vm = new Vue({
     el: '#app',
     data: {
-        //menuId:"",//菜单id
-        navData: [],//导航
         formInline: { // 搜索表单
             stuTitle: '',
             stuPoliceclass: '',
@@ -85,24 +83,11 @@ var vm = new Vue({
         stuPoliceclassOption:[],//所属警种
         videoFlag:false,
         videoUploadPercent:0,
+        deptCheckData:[]//部门默认选中节点
     },
     created: function () {
 
         this.$nextTick(function () {
-            console.log(vm.deptData);
-            //加载菜单
-            $.ajax({
-                type: "POST",
-                url: baseURL + "menu/nav?id="+menuId,
-                contentType: "application/json",
-                success: function(result){
-                    if(result.code === 0){
-                        vm.navData = result.menuList;
-                    }else{
-                        alert(result.msg);
-                    }
-                }
-            });
             //法律分类树数据
             $.ajax({
                 type: "POST",
@@ -228,13 +213,16 @@ var vm = new Vue({
         handleEdit: function (index, row){
             this.title="修改";
             this.dialogStuMedia=true;
+            this.deptCheckData=[];
             $.ajax({
                 type: "POST",
                 url: baseURL + 'stumedia/info?id=' + row.id,
                 contentType: "application/json",
                 success: function (result) {
                     if(result.code === 0){
+                        debugger
                         vm.stuMedia = result.data;
+                        vm.deptCheckData=result.data.deptArr;
                         editor.txt.html(vm.stuMedia.comContent);
                         for (var i=0;i<vm.stuMedia.length;i++){
                             if(vm.stuMedia.stuType!='1'&&vm.stuMedia.comContent){
@@ -294,6 +282,7 @@ var vm = new Vue({
                 data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
+                        debugger
                         vm.tableData = result.page.list;
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
@@ -306,6 +295,7 @@ var vm = new Vue({
         },
         // el-tree节点点击事件
         handleNodeClick: function (data) {
+            debugger
             vm.stuMedia.stuLawid=data.id;
             vm.stuMedia.stuKnowledge=data.classifyName;
             vm.formInline.stuLawid=data.id;
@@ -410,7 +400,7 @@ var vm = new Vue({
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
             for(var i=0;i<this.multipleDeptSelection.length;i++){
-                if (this.stuMedia.deptIds == "") {
+                if (!this.stuMedia.deptIds) {
                     this.stuMedia.deptIds=this.multipleDeptSelection[i].id;
                     this.stuMedia.deptName=this.multipleDeptSelection[i].orgName;
                 }else{
@@ -473,7 +463,7 @@ var vm = new Vue({
             this.multipleSelection = val;
             //遍历最终的人员信息
             for (var i=0;i<val.length;i++){
-                if (this.stuMedia.userIds == "") {
+                if (!this.stuMedia.userIds) {
                     this.stuMedia.userIds=val[i].id;
                     this.stuMedia.userName=val[i].userName;
                 }else{
