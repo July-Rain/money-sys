@@ -68,6 +68,9 @@ var vm = new Vue({
             if(item.url === 'container.html'){
                 vm.navData.splice(-1,1);
             }
+            if(item.name == "退出"){
+                window.location.href = baseURL + '/index.html'
+            }
             if (item.url) {
                 if(item.url.indexOf("?") == -1){
                     vm.childUrl = item.url + "?id=" + item.id;
