@@ -36,4 +36,22 @@ public class UserQuestRecordController {
     @Autowired
     private UserQuestRecordService userQuestRecordService;
 
+
+
+    @RequestMapping("CheckpointByUser")
+    public Result CheckpointByUser(String uid){
+        int i= userQuestRecordService.CheckpointByUser(uid);
+        return Result.ok().put("CheckpointByUser",i );
+    }
+
+    @RequestMapping("OnlinByUser")
+    public Result OnlinByUser(String uid){
+        int i= userQuestRecordService.OnlinByUser(uid);
+        return Result.ok().put("OnlinByUser",i );
+    }
+    @RequestMapping("leitaiByUser")
+    public Result leitaiByUser(String uid){
+        int i= userQuestRecordService.leitaiByUser(uid);
+        return Result.ok().put("leitaiByUser",i );
+    }
 }
