@@ -204,10 +204,13 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 						 }
 						 else//说明这个人 偷跑了
 						 {
+
+							 competitionOnlineService.recordScore(battlePlatformId,"0","0","OnlinPk",loginUser.getId());
 							 if(loginUser.getId().equals(battlePlatform.getPlay1()))
 							 {
 								 //当前人是玩家1，给玩家2发消息
 								 msg.setText(loginUser.getFullName()+"已经离开了,恭喜你获胜");
+								 msg.setBattlePlatform(battlePlatform);
 								 msg.setMycore(timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()).getWinReward());
 								 msg.setTo(battlePlatform.getPlay2());//为了传到前端页面
 								 TextMessage message = new TextMessage(GsonUtils.toJson(msg));
@@ -220,6 +223,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 							 {
 								 //当前人是玩家1，给玩家2发消息
 								 msg.setText(loginUser.getFullName()+"已经离开了,恭喜你获胜");
+								 msg.setBattlePlatform(battlePlatform);
 								 msg.setMycore(timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()).getWinReward());
 								 msg.setTo(battlePlatform.getPlay1());//为了传到前端页面
 								 TextMessage message = new TextMessage(GsonUtils.toJson(msg));

@@ -1,5 +1,6 @@
 package com.lawschool.beans.competition;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -27,6 +28,16 @@ public class BattleRecord implements Serializable {
 	private String battlePlatformId;
 	//用户id
 	private String userId;
+
+	//用户名字中中文
+	@TableField(exist = false)
+	private  String userName;
+	//对方id
+	@TableField(exist = false)
+	 private String enemyid;
+	//对方中文
+	@TableField(exist = false)
+	private String enemyName;
 	//是否获胜   0失败   1获胜
 	private String whetherWin;
 	//获得分值
@@ -50,6 +61,22 @@ public class BattleRecord implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date createTime;//记录时间
 
+	public String getEnemyid() {
+		return enemyid;
+	}
+
+	public void setEnemyid(String enemyid) {
+		this.enemyid = enemyid;
+	}
+
+	public String getEnemyName() {
+		return enemyName;
+	}
+
+	public void setEnemyName(String enemyName) {
+		this.enemyName = enemyName;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -58,6 +85,13 @@ public class BattleRecord implements Serializable {
 		this.id = id;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
 	public String getBattlePlatformId() {
 		return battlePlatformId;

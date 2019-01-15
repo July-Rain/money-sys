@@ -3,6 +3,9 @@ package com.lawschool.service.competition;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.competition.BattleRecord;
+import com.lawschool.util.PageUtils;
+
+import java.util.Map;
 
 /**
  * 
@@ -16,4 +19,8 @@ public interface BattleRecordService extends IService<BattleRecord> {
 
 
     public void updaterecord(String type);
+
+    PageUtils queryPage(Map<String, Object> params, String uid);
+
+    PageUtils queryPageByLeitai(Map<String, Object> params, String uid);
 }
