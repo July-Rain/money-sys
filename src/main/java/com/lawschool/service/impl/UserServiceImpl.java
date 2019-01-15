@@ -3,9 +3,11 @@ package com.lawschool.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.lawschool.base.AbstractServiceImpl;
+import com.lawschool.beans.SysUserRole;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserExample;
 import com.lawschool.config.ShiroUtils;
+import com.lawschool.dao.SysUserRoleDao;
 import com.lawschool.dao.UserMapper;
 import com.lawschool.service.UserService;
 import com.lawschool.util.*;
@@ -20,10 +22,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sun.security.util.Password;
 
+import javax.rmi.CORBA.Util;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.lang.reflect.Array;
+import java.util.*;
 
 import static com.lawschool.util.Constant.*;
 
@@ -32,6 +34,10 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    SysUserRoleDao sysUserRoleDao;
+
 
 
     /**
@@ -62,10 +68,6 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         //Page<User> page=new Page<>(pageNo,pageSize);
 
         EntityWrapper<User> ew = new EntityWrapper<>();//默认所有的用户
-
-
-
-        ew.setSqlSelect("ID,ORG_CODE,USER_NAME,USER_POLICE_ID,USER_CODE,ORG_NAME");
 
         if(UtilValidate.isNotEmpty(params.get("identify"))){
             ew.eq("IDENTIFY",params.get("identify"));// 0-普通用户  1-教官
@@ -236,7 +238,8 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
      * @return int
     **/
     @Override
-    public int addUser(User user) {
+    @Transactional(rollbackFor = Exception.class)
+    public Result addUser(User user) {
         String salt = RandomStringUtils.randomAlphanumeric(20);//生成盐
         String pass2=MD5Util.Md5Hex(user.getPassword()+salt);//数据库中新密码
         user.setSalt(salt);
@@ -245,8 +248,41 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
             user.setId(GetUUID.getUUIDs("T"));
         }
         user.setId(GetUUID.getUUIDs("U"));
+        if(UtilValidate.isEmpty(user.getUserName())){
+            return  Result.error("名字不能用空");
+        }
+        user.setFullName(user.getUserName());
+        if(UtilValidate.isEmpty(user.getUserCode())){
+            return  Result.error("用户账号不能为空");
+        }
+
+        if(UtilValidate.isEmpty(user.getUserPoliceId())){
+            return  Result.error("警号不能为空");
+        }
+
+        if(UtilValidate.isEmpty(user.getUserPoliceId())){
+            return  Result.error("警号不能为空");
+        }
+
+        if(UtilValidate.isEmpty(user.getPassword())){
+            return  Result.error("密码不能为空");
+        }
+
+        String roles=user.getRoles();
+        if(UtilValidate.isNotEmpty(roles)){
+            String[] strs = roles.split(",");
+            String uid = user.getId();
+            Arrays.stream(strs).forEach(e->{
+                SysUserRole ur=new SysUserRole();
+                ur.setId(GetUUID.getUUIDs("UR"));
+                ur.setUserId(uid);
+                ur.setRoleId(e);
+                sysUserRoleDao.insert(ur);
+            });
+
+        }
         int i = userMapper.insert(user);
-        return i==1?SUCCESS:ERROR;
+        return Result.ok();
     }
 
     /**

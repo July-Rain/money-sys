@@ -49,7 +49,7 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         String startTime = (String)params.get("startTime");
         String endTime = (String)params.get("endTime");
         EntityWrapper<CaseAnalysisEntity> ew = new EntityWrapper<>();
-        ew.setSqlSelect("ID,CASE_TITLE,CASE_CONTENT,CONTENT_TYPE,CASE_TIME,CASE_PROCESS,CASE_TYPE,LAW_LEVEL,VIDEO_PIC_ACC");
+        ew.setSqlSelect("ID,CASE_TITLE,CASE_CONTENT,CONTENT_TYPE,CASE_TIME,DICTCODE2VALE(CASE_PROCESS) as CASE_PROCESS,DICTCODE2VALE(CASE_TYPE) as CASE_TYPE,DICTCODE2VALE(LAW_LEVEL) as LAW_LEVEL,VIDEO_PIC_ACC");
         if(UtilValidate.isNotEmpty(caseTitle)){
             ew.like("CASE_TITLE",caseTitle);
         }
@@ -70,10 +70,10 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
             ew.in("CASE_LAWID",lawArr);
         }
         if(UtilValidate.isNotEmpty(startTime)){
-            ew.addFilter("(create_time >= TO_DATE('"+startTime+"', 'yyyy-mm-dd'))");
+            ew.addFilter("(case_time >= TO_DATE('"+startTime+"', 'yyyy-mm-dd'))");
         }
         if(UtilValidate.isNotEmpty(endTime)){
-            ew.addFilter("(create_time <= TO_DATE('"+endTime+"', 'yyyy-mm-dd'))");
+            ew.addFilter("(case_time <= TO_DATE('"+endTime+"', 'yyyy-mm-dd'))");
         }
 
         ew.orderBy("CREATE_TIME");

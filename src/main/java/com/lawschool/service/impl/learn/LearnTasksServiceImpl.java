@@ -333,6 +333,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         //数据权限使用
         String userId=(String)params.get("userId");
         EntityWrapper<LearnTasksEntity> ew = new EntityWrapper<>();
+        ew.eq("is_use","1");
         int count = mapper.selectCount(ew);
         return count;
     }

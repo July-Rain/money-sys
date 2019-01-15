@@ -53,8 +53,24 @@ public class SysMenuController {
         if(UtilValidate.isNotEmpty(id)){
             return Result.ok().put("menuList", menuList);
         }else{
-            return Result.ok().put("menuList", bulidDeptTree(menuList));
+            return Result.ok().put("menuList", bulidDeptTree(menuList,"0"));
         }
+
+    }
+
+    @RequestMapping("/menuNav")
+    public Result menuNav(String id){
+        List<SysMenu> menuList = new ArrayList<>();
+        if(UtilValidate.isEmpty(id)){
+            id="0";
+            menuList = sysMenuService.selectList(
+                    new EntityWrapper<SysMenu>().ne("type","2").eq("is_show","1").orderBy("ORDER_NUM", true)
+            );
+        }else{
+            menuList = sysMenuService.queryChildById(id);
+        }
+
+        return Result.ok().put("menuList", bulidDeptTree(menuList,id));
 
     }
     /**
@@ -71,7 +87,7 @@ public class SysMenuController {
         List<SysMenu> menuList = sysMenuService.selectList(
                 ew.eq("is_show","1").orderBy("ORDER_NUM", true)
         );
-        return Result.ok().put("menuList", bulidDeptTree(menuList));
+        return Result.ok().put("menuList", bulidDeptTree(menuList,"0"));
 
     }
     /**
@@ -79,13 +95,13 @@ public class SysMenuController {
      * @param list 传入的树节点列表
      * @return
      */
-    private List<SysMenu> bulidDeptTree(List<SysMenu> list) {
+    private List<SysMenu> bulidDeptTree(List<SysMenu> list,String id) {
 
         List<SysMenu> finalTrees = new ArrayList<SysMenu>();
 
         for (SysMenu menu : list) {
 
-            if ("0".equals(menu.getParentId())) {
+            if (id.equals(menu.getParentId())) {
                 finalTrees.add(menu);
             }
             List<SysMenu> menuList = new ArrayList<SysMenu>();

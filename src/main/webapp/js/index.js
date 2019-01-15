@@ -37,7 +37,7 @@ var vm = new Vue({
             var _menuId = menuId?"?id="+menuId:"";
             $.ajax({
                 type: "POST",
-                url: baseURL + "menu/nav" + _menuId,
+                url: baseURL + "menu/menuNav" + _menuId,
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
@@ -78,14 +78,15 @@ var vm = new Vue({
                 if(
                     item.url === 'container.html'
                     || item.parentId == "0"
-                    || item.name === "系统管理"
-                    || item.name === "管理中心"
-                    || item.name === "评估中心"
-                    || item.name === "学情统计"
-                    || item.name === "考情统计"
-                    || item.name === "学分统计"
-                    || item.name === "积分统计"
-                    || item.name === "任务统计"
+                    || item.list.length != 0
+                    // || item.name === "系统管理"
+                    // || item.name === "管理中心"
+                    // || item.name === "评估中心"
+                    // || item.name === "学情统计"
+                    // || item.name === "考情统计"
+                    // || item.name === "学分统计"
+                    // || item.name === "积分统计"
+                    // || item.name === "任务统计"
                 ){
                     this.loadNav(item.id,item.url)
                 }

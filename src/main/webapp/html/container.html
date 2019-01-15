@@ -142,7 +142,7 @@
                         <el-row :gutter="66">
                             <el-col :span="12" v-for="(item, index) in videoData">
                                 <el-card :body-style="{ padding: '0px' }">
-                                    <video class="video" width="315" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,item.comContent)">
+                                    <video class="video" width="315" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,item.comContent)" @pause="onPause(item.id,$event)">
                                         <source :src="item.contentUrl" type="video/mp4">
                                         您的浏览器不支持视频播放
                                     </video>
@@ -171,7 +171,7 @@
                     <div class="content fast">
                         <ul>
                             <li v-for="item in newsData">
-                                <a href="javascript:;" class="title">{{item.lawTitle}}</a>
+                                <a href="javascript:;" class="title" @click="goLaw(item.id)">{{item.lawTitle}}</a>
                                 <img v-if="item.tipShow" src="${rc.contextPath}/statics/img/new.png">
                                 <span class="date">{{item.issueTime}}</span>
                             </li>

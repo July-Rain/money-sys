@@ -36,7 +36,9 @@ var vm = new Vue({
             pageSize: 10,
             totalCount: 0,
             taskClass:"",
-            policeclass:""
+            policeclass:"",
+            startTime:"",
+            endTime:""
         },
         tableData: [],//表格数据
         visible: false,
@@ -101,8 +103,9 @@ var vm = new Vue({
             label: 'infoName'
         },//法律法规树默认数据
         taskClassOption:[],//所属分类
-        policeclassOption:[]//所属警种
+        policeclassOption:[],//所属警种
        // multipleClassSelection:[]//法律法规数据选择框
+        deptCheckData:[]//部门默认选中节点
     },
     created: function () {
         this.$nextTick(function () {
@@ -239,6 +242,7 @@ var vm = new Vue({
         handleEdit: function (index, row) {
             this.title = "修改学习任务";
             this.dialogLearnTask = true;
+            this.deptCheckData=[];
             $.ajax({
                 type: "POST",
                 url: baseURL + 'learntasks/info?id=' + row.id,
@@ -246,6 +250,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.learnTasks = result.data;
+                        vm.deptCheckData=result.data.deptArr;
                     } else {
                         alert(result.msg);
                     }

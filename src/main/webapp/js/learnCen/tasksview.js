@@ -33,7 +33,9 @@ var vm = new Vue({
             taskName: '',
             currPage: 1,
             pageSize: 10,
-            totalCount: 0
+            totalCount: 0,
+            endTime:"",
+            startTime:""
         },
         tableData: [],//表格数据
         visible: false,

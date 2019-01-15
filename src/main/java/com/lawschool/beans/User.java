@@ -93,7 +93,7 @@ public class User extends DataEntity<User> {
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date workTime;
 
-    private String roles;
+    private String roles;//用户角色
 
     private Date quaStartTime;//有效期开始
 

@@ -111,12 +111,28 @@
                             </el-select>
                         </el-form-item>
 
-                        <!--<el-form-item prop="status">
-                            <el-select v-model="formInline.status" placeholder="状态" size="mini" clearable>
-                                <el-option label="有效" value="1"></el-option>
-                                <el-option label="无效" value="0"></el-option>
-                            </el-select>
-                        </el-form-item>-->
+                        <el-form-item label="开始日期" prop="startTime">
+                            <el-date-picker
+                                    v-model="formInline.startTime"
+                                    type="date"
+                                    format="yyyy年MM月dd日"
+                                    value-format="yyyy-MM-dd"
+                                    placeholder="开始时间"
+                                    size="mini"
+                            >
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="结束日期" prop="endTime">
+                            <el-date-picker
+                                    v-model="formInline.endTime"
+                                    type="date"
+                                    format="yyyy年MM月dd日"
+                                    value-format="yyyy-MM-dd"
+                                    placeholder="结束时间"
+                                    size="mini"
+                            >
+                            </el-date-picker>
+                        </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
                             <el-button size="mini" @click="resetForm('formInline')">重置</el-button>
@@ -200,7 +216,7 @@
                                 <template slot-scope="scope">
                                     <el-button v-if="scope.row.isUse=='0'"
                                             size="mini"
-                                            @click="handleStart(scope.$index, scope.row)">启动
+                                            @click="handleStart(scope.$index, scope.row)">启用
                                     </el-button>
                                     <el-button
                                             size="mini"
@@ -320,6 +336,7 @@
                     @check-change="handleCheckChange"
                     node-key="id"
                     :default-expanded-keys="[2079]"
+                    :default-checked-keys="deptCheckData"
             >
             </el-tree>
             <el-button type="primary" size="mini" @click="confimDept">保存</el-button>

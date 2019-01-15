@@ -2,7 +2,7 @@
 .content{
     min-width: 1366px;
     min-height: 768px;
-    background: url("${rc.contextPath}/statics/img/competeCenter/bg_big.jpg") no-repeat fixed top;
+    background: url("../img/competeCenter/bg_competition_center.jpg") no-repeat fixed top;
     background-size: cover;
 }
 .el-scrollbar__wrap {
@@ -12,131 +12,97 @@
     min-width: 1280px;
     height: 629px;
     margin: 0 auto;
-    padding-left: 70px;
+    padding: 50px 100px;
 }
-.innner_content .title{
-    margin-bottom: 70px;
-}
-.innner_content .title img{
-    margin: 0;
-    padding-top: 43px;
+.innner_content .back{
+    margin-bottom: 75px;
 }
 .innner_content .part{
-    width: 347px;
-    height: 190px;
-    background: url("${rc.contextPath}/statics/img/competeCenter/bg_small.png") no-repeat;
-    display: inline-block;
-    position: relative;
-    margin-bottom: 30px;
-    margin-right: 24px;
+    width: 365px;
+    height: 150px;
+    text-align: center;
+}
+.innner_content .part:first-child{
+    background: url("../img/competeCenter/pai_chuangguan.png") no-repeat;
+}
+.innner_content .part:nth-of-type(2){
+    background: url("../img/competeCenter/pai_biwu.png") no-repeat;
+}
+.innner_content .part:last-child{
+    background: url("../img/competeCenter/pai_leitai.png") no-repeat;
 }
 .innner_content .part:hover{
     cursor: pointer;
 }
-.innner_content .part:hover .imgP{
-    animation: myfirst 1s infinite;
-    animation-iteration-count: 2;
-}
-@keyframes myfirst {
-    0% {
-        transform: translate(0px, 0px);
-    }
-    25% {
-        transform: translate(0px, -10px);
-    }
-    50% {
-        transform: translate(0px, -20px);
-    }
-    100% {
-        transform: translate(0px, 0px);
-    }
-}
-.innner_content .part .imgP{
-    position: absolute;
-    top: -77px;
-    left: -22px;
-    z-index: 10;
-}
-.innner_content .part:nth-of-type(3) .imgP{
-    top: -60px;
-    left: 0;
-}
-.innner_content .part:nth-of-type(3) .words{
-    right: 40px;
+.innner_content .part .words,
+.innner_content .part .imgGo{
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 155px;
 }
 .innner_content .part .words{
-    display: block;
-    line-height: 190px;
     font-size: 36px;
-    color: #fff;
-    position: absolute;
-    right: 20px;
+    color: #acbaff;
 }
-.top .top_title{
-    background: url("${rc.contextPath}/statics/img/competeCenter/bg_title.png") no-repeat;
-    height: 43px;
-    width: 485px;
-    margin-top: -70px;
-    opacity: 0.8;
+.top .top_content{
+    width: 620px;
+    height: 450px;
+    background: url("../img/competeCenter/longhubang_frame.png") no-repeat;
+    padding: 55px 35px 0;
+    float: right;
 }
-.top .top_title span{
-    display: block;
+.top .top_content .el-tabs__header{
+    width: 100%;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+.top .top_content .el-tabs--card>.el-tabs__header,
+.top .top_content .el-tabs--card>.el-tabs__header .el-tabs__nav{
+    border: none;
+}
+.top .top_content .el-tabs__nav{
+    width: 100%;
+}
+.top .top_content .el-tabs__nav div{
+    border: none;
+    width: 33.33%;
     text-align: center;
-    line-height: 43px;
-    font-size: 30px;
+    font-family: PingFang-SC-Bold;
+    font-size: 25px;
     font-weight: normal;
     font-stretch: normal;
     letter-spacing: 0px;
-    color: #19348c;
+    color: #dce8fb;
 }
-.top .top_content{
-    margin-top: 30px;
-    width: 477px;
-    height: 392px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    border: solid 4px rgba(187, 226, 255, 0.6);
-    opacity: 0.9;
-    padding: 0 17px;
-}
-.el-tabs__header.is-top{
-    border: none;
-    margin-bottom: 0;
-}
-.el-tabs__nav{
-    width: 100%;
-    border: none;
-}
-.el-tabs__nav>div{
-    width: 33.33%;
-    text-align: center;
-    font-size: 24px;
-    color: #999999;
-    border: none;
-}
-.el-tabs__nav>div:hover{
-    color: #194da0;
-}
-.el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
-    border-bottom-color: #fff;
-    color: #194da0;
-    border-top: 6px solid #194da0;
-}
-.el-tabs__content {
+.top .top_content .el-tab-pane{
     position: relative;
-    height: 335px;
+}
+.top .top_content .activedImg{
+    position: absolute;
+    top: -14px;
+    left: 33px;
+}
+.top .top_content .activedImg2{
+    position: absolute;
+    top: 0;
+    left: 40%;
+}
+.top .top_content .activedImg3{
+    position: absolute;
+    top: 0;
+    right: 33px;
 }
 .firstList li{
     height: 55px;
-    background: rgba(179, 179, 179, 0.1);
-    border-radius: 10px;
     line-height: 55px;
-    padding: 0 7px;
-    color: #666666;
+    color: #d9daf0;
     font-size: 16px;
     margin: 10px 0;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    position: relative;
+    padding-right: 175px;
 }
-.firstList li .ranking,
 .firstList li .headImg,
 .firstList li .name,
 .firstList li .score{
@@ -144,17 +110,22 @@
     display: inline-block;
 }
 .firstList li .ranking{
-    width: 46px;
-    height: 37px;
+    position: absolute;
+    left: 10px;
+    top: -10px;
 }
-.firstList li:first-child .ranking{
-    background: url('${rc.contextPath}/statics/img/competeCenter/123.png') -10px -6px;
+.firstList li .headImg{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #253b75;
 }
-.firstList li:nth-of-type(2) .ranking{
-    background: url('${rc.contextPath}/statics/img/competeCenter/123.png') -73px -6px;
-}
-.firstList li:nth-of-type(3) .ranking{
-    background: url('${rc.contextPath}/statics/img/competeCenter/123.png') -10px -60px;
+.firstList li:first-child .headImg,
+.firstList li:nth-of-type(2) .headImg,
+.firstList li:nth-of-type(3) .headImg
+{
+    margin-left: 30px;
 }
 .firstList .ranking2{
     display: inline-block;
@@ -164,11 +135,20 @@
     text-align: center;
     font-weight: bold;
 }
-.firstList li .name,
-.firstList li .score{
-    height: 55px;
-    line-height: 55px;
+.firstList li:first-child .name{
+    font-size: 20px;
+    color: #fff114;
+}
+.firstList li:nth-of-type(2) .name{
+    color: #ffffff;
+}
+.firstList li:nth-of-type(3) .name{
+    color: #dba472;
 }
 .firstList li .name{
     margin: 0 40px 0 30px;
+}
+.firstList li .score{
+    float: right;
+    color: #e4e5ff;
 }
