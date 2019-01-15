@@ -106,7 +106,7 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 
 		if(msg.getMyanswer()!=null && msg.getTq()!=null)
 		{
-			competitionOnlineService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom());
+			competitionOnlineService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom(),"OnlinPkByCode");
 		}
 
 

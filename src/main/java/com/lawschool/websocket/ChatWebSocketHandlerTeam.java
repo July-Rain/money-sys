@@ -219,7 +219,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 
         if( (msg.getMyanswer()!=null && !"".equals(msg.getMyanswer())) && (msg.getTq()!=null))
         {
-            competitionOnlineService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom());
+            competitionOnlineService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom(),"teamOnline");
         }
 
 		if(!"addroom".equals(msg.getText()) && !"joinroom".equals(msg.getText()) && msg.getTeamOrGame().equals("1")) //当触发新建房间事件

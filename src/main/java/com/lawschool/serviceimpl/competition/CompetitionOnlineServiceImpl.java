@@ -335,7 +335,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 
 
 	@Override
-	public void saveQuestion(TestQuestions testQuestions, String myanswer,String userid) {
+	public void saveQuestion(TestQuestions testQuestions, String myanswer,String userid,String Source) {
 	try{
 		UserQuestRecord userQuestRecord=new UserQuestRecord();
 		userQuestRecord.setId(IdWorker.getIdStr());//id
@@ -347,12 +347,13 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 		userQuestRecord.setQuestionDifficulty(testQuestions.getQuestionDifficulty());//难度
 		userQuestRecord.setQuestionType(testQuestions.getQuestionType());//题目类型
 		userQuestRecord.setSpecialKnowledgeId(testQuestions.getSpecialKnowledgeId());//知识点
-		userQuestRecord.setSource("onlinPk");//添加来源
-		userQuestRecordService.insert(userQuestRecord);}
-	catch(Exception e)
-	{
-		System.out.println(e);
-	}
+		userQuestRecord.setSource(Source);//添加来源
+		userQuestRecordService.insert(userQuestRecord);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
 
 	}
 
