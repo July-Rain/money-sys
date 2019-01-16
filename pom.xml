@@ -55,7 +55,7 @@
         <!-- shiro 版本号-->
         <shiro.version>1.4.0</shiro.version>
         <!-- elasticsearch 版本-->
-        <elasticsearch.version>6.5.4</elasticsearch.version>
+        <!--<elasticsearch.version>6.5.4</elasticsearch.version>-->
     </properties>
 
     <dependencies>
@@ -368,7 +368,7 @@
         </dependency>
 
         <!-- 引入Elasticsearch相关jar包-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
             <version>${elasticsearch.version}</version>
@@ -384,7 +384,7 @@
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
             <version>${elasticsearch.version}</version>
-        </dependency>
+        </dependency>-->
 
 
     </dependencies>

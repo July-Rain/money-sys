@@ -1,3 +1,4 @@
+/*
 package com.lawschool.config.elastics;
 
 import org.apache.http.HttpHost;
@@ -6,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
+*/
 /**
  * ClassName: ElasticsConfig
  * Description: ElasticsConfig
@@ -13,15 +15,18 @@ import org.springframework.context.annotation.Scope;
  *
  * @author MengyuWu
  * @since JDK 1.8
- */
+ *//*
+
 
 @Configuration
 public class ElasticsConfig {
 
 
-    /**
+    */
+/**
      * 初始化
-     */
+     *//*
+
     @Bean
     public RestHighLevelClient restHighLevelClient() {
         return getEsClientDecorator().getRestHighLevelClient();
@@ -34,3 +39,4 @@ public class ElasticsConfig {
         return new ESClientDecorator(new HttpHost("192.168.0.188",9200));
     }
 }
+*/

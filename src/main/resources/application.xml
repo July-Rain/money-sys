@@ -86,12 +86,12 @@
     
     
     <!-- quartz scheduler -->
-    <bean id="schedulerFactoryBean"	class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<property name="dataSource">
-			<ref bean="dataSource" /><!-- 数据源引用指向，包含集群所需的所有11张表 -->
-		</property>
-		<property name="configLocation" value="classpath:properties/quartz.properties" />
-	</bean>
+    <!--<bean id="schedulerFactoryBean"	class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
+		<!--<property name="dataSource">-->
+			<!--<ref bean="dataSource" />&lt;!&ndash; 数据源引用指向，包含集群所需的所有11张表 &ndash;&gt;-->
+		<!--</property>-->
+		<!--<property name="configLocation" value="classpath:properties/quartz.properties" />-->
+	<!--</bean>-->
 
     <!-- 自动扫描注解的bean -->
     <!--<context:component-scan base-package="com.lawschool.service" />-->

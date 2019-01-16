@@ -106,7 +106,7 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 
 		if(msg.getMyanswer()!=null && msg.getTq()!=null)
 		{
-			competitionOnlineService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom());
+			competitionOnlineService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom(),"OnlinPkByCode");
 		}
 
 
@@ -203,11 +203,14 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 				}
 				else//说明这个人 偷跑了
 				{
+
+					competitionOnlineService.recordScore(battlePlatformId,"0","0","OnlinPkByCode",loginUser.getId());
 					if(loginUser.getId().equals(battlePlatform.getPlay1()))
 					{
 						//当前人是玩家1，给玩家2发消息
 						msg.setText(loginUser.getFullName()+"已经离开了,恭喜你获胜");
 						msg.setMycore(timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()).getWinReward());
+						msg.setBattlePlatform(battlePlatform);
 						msg.setTo(battlePlatform.getPlay2());//为了传到前端页面
 						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 						sendMessageToUser(battlePlatform.getPlay2(),message);//给另一个人发消息
@@ -217,6 +220,7 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 					{
 						//当前人是玩家1，给玩家2发消息
 						msg.setText(loginUser.getFullName()+"已经离开了,恭喜你获胜");
+						msg.setBattlePlatform(battlePlatform);
 						msg.setMycore(timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()).getWinReward());
 						msg.setTo(battlePlatform.getPlay1());//为了传到前端页面
 						TextMessage message = new TextMessage(GsonUtils.toJson(msg));

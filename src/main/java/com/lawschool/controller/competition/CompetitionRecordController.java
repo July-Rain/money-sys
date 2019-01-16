@@ -5,6 +5,7 @@ import com.lawschool.beans.User;
 import com.lawschool.beans.competition.CompetitionRecord;
 import com.lawschool.service.accessory.AccessoryService;
 import com.lawschool.service.competition.CompetitionRecordService;
+import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +31,7 @@ public class CompetitionRecordController extends AbstractController {
     private CompetitionRecordService competitionRecordService;
 
 
-    //查询
-    @ResponseBody
-    @RequestMapping("/list")
-    public Result list(@RequestParam Map<String, Object> params){
-        CompetitionRecord competitionRecord = new CompetitionRecord();
 
-        return Result.ok().put("competitionRecordList", competitionRecordService.findAll());
-    }
 
     //根据id来找数据
     @RequestMapping("/info")
@@ -97,6 +91,16 @@ public class CompetitionRecordController extends AbstractController {
         int i=competitionRecordService.chuangguanCountByUser(uid);
         System.out.println(i);
         return Result.ok().put("count",i);
+    }
+
+
+
+    //查询分页
+    @RequestMapping("/list")
+    public Result list(@RequestParam Map<String,Object> params){
+        User u = (User) SecurityUtils.getSubject().getPrincipal();
+        PageUtils page = competitionRecordService.queryPage(params,u.getId());
+        return Result.ok().put("page", page);
     }
 
 }

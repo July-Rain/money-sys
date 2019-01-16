@@ -219,13 +219,15 @@ websocket.onmessage = function(event) {
 
             if(data.strus=="0")//队友跑了
             {
+
+                // recordScore(news.battlePlatform.id,'0','0','teamOnline',vm.u.id);
                 alert("队友离开，不获得积分");
             }
 
             else if(data.strus=="1")//对方跑了
             {
                 vm.jifen=data.jifen;
-                recordScore(news.battlePlatform.id,'1',vm.jifen,'teamOnline',vm.u.id);
+                // recordScore(news.battlePlatform.id,'1',vm.jifen,'teamOnline',vm.u.id);
                 alert("对手弃权,恭喜胜利,获得积分"+vm.jifen);
 
             }

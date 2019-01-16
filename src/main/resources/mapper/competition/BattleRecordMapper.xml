@@ -15,6 +15,116 @@
 
     </update>
 
+    <select id="selectListPage" resultType="com.lawschool.beans.competition.BattleRecord" parameterType="Map">
+                            (SELECT
+                              aaa.ID as "id",
+                              aaa.BATTLE_PLATFORM_ID as "battlePlatformId",
+                              aaa.USER_ID as "userId",
+                              USERID2NAME(aaa.USER_ID) as "userName",
+                              aaa.WHETHER_WIN as "whetherWin",
+                              aaa.SCORE as "score",
+                              aaa.TYPE as "type",
+                              aaa.CREATE_TIME as "createTime",
+                              CASE WHEN aaa.user_id= BBB.play1 THEN BBB.play2
+                              WHEN aaa.user_id= BBB.play2 THEN  BBB.play1
+                              END AS enemyid ,
+                              CASE WHEN aaa.user_id= BBB.play1 THEN  USERID2NAME(BBB.play2)
+                              WHEN aaa.user_id= BBB.play2 THEN   USERID2NAME(BBB.play1)
+                              END AS enemyName
+                         FROM
+                        (SELECT * from LAW_BATTLE_RECORD WHERE USER_ID=#{uid} and (type='OnlinPk' or type='OnlinPkByCode'))aaa ,
 
 
+                        (SELECT * from LAW_BATTLE_PLATFORM WHERE "ID" IN (
+                        SELECT BATTLE_PLATFORM_ID from LAW_BATTLE_RECORD WHERE USER_ID=#{uid}  and (type='OnlinPk' or type='OnlinPkByCode')
+
+                        ))bbb
+                        WHERE AAA.BATTLE_PLATFORM_ID=BBB.id  AND (AAA.USER_ID=BBB.play1 OR AAA.USER_ID=BBB.play2)
+
+            )
+            UNION
+            (SELECT
+                              aaa.ID as "id",
+                              aaa.BATTLE_PLATFORM_ID as "battlePlatformId",
+                              aaa.USER_ID as "userId",
+                              USERID2NAME(aaa.USER_ID) as "userName",
+                              aaa.WHETHER_WIN as "whetherWin",
+                              aaa.SCORE as "score",
+                              aaa.TYPE as "type",
+                              aaa.CREATE_TIME as "createTime",
+                                                BBB.USER_ID AS enemyid ,
+                              USERID2NAME(BBB.USER_ID) AS enemyName
+            FROM
+
+            (
+                SELECT * FROM LAW_BATTLE_RECORD where USER_ID=#{uid} and TYPE='teamOnline'
+            ) aaa,
+            (
+                SELECT
+
+                LAW_COMPETITION_TEAM.*,COPY.xxx ,COPY."ID" AS id2
+
+                FROM
+
+                LAW_COMPETITION_TEAM,
+
+                (
+                SELECT  id,
+                    CASE WHEN play1 IN(SELECT team_id FROM LAW_TEAM_USER WHERE user_id=#{uid}) THEN play2
+                    WHEN play2 IN(SELECT team_id FROM LAW_TEAM_USER WHERE user_id=#{uid}) THEN play1
+                    END AS xxx
+                FROM LAW_BATTLE_PLATFORM
+                WHERE id IN
+                (
+                    SELECT BATTLE_PLATFORM_ID FROM LAW_BATTLE_RECORD where USER_ID=#{uid} and TYPE='teamOnline'
+                )
+                and PLAY1 IS NOT NULL
+                AND PLAY2 IS NOT NULL
+                AND (PLAY1 IN(SELECT team_id FROM LAW_TEAM_USER WHERE user_id=#{uid}) OR play2 IN(SELECT team_id FROM LAW_TEAM_USER WHERE user_id=#{uid}))
+                ) copy
+
+                WHERE LAW_COMPETITION_TEAM."ID"=copy.xxx
+            ) bbb
+            WHERE AAA.BATTLE_PLATFORM_ID=BBB.id2
+            )
+    </select>
+
+
+    <select id="selectListPageCount" resultType="java.lang.Integer" parameterType="Map">
+         SELECT count(*) from LAW_BATTLE_RECORD WHERE USER_ID=#{uid} and (type='OnlinPk' or type='OnlinPkByCode' or type='teamOnline')
+
+    </select>
+
+
+    <select id="selectListPageByLeitai" resultType="com.lawschool.beans.competition.BattleRecord" parameterType="Map">
+        SELECT
+                  aaa.ID as "id",
+                  aaa.BATTLE_PLATFORM_ID as "battlePlatformId",
+                  aaa.USER_ID as "userId",
+                  USERID2NAME(aaa.USER_ID) as "userName",
+                  aaa.WHETHER_WIN as "whetherWin",
+                  aaa.SCORE as "score",
+                  aaa.TYPE as "type",
+                  aaa.CREATE_TIME as "createTime",
+                  CASE WHEN aaa.user_id= BBB.play1 THEN BBB.play2
+                  WHEN aaa.user_id= BBB.play2 THEN  BBB.play1
+                  END AS enemyid ,
+                  CASE WHEN aaa.user_id= BBB.play1 THEN  USERID2NAME(BBB.play2)
+                  WHEN aaa.user_id= BBB.play2 THEN   USERID2NAME(BBB.play1)
+                  END AS enemyName
+             FROM
+            (SELECT * from LAW_BATTLE_RECORD WHERE USER_ID=#{uid}  and (type='leitai'))aaa ,
+
+
+            (SELECT * from LAW_BATTLE_PLATFORM WHERE "ID" IN (
+            SELECT BATTLE_PLATFORM_ID from LAW_BATTLE_RECORD WHERE USER_ID=#{uid}  and (type='leitai')
+
+            ))bbb
+            WHERE AAA.BATTLE_PLATFORM_ID=BBB.id  AND (AAA.USER_ID=BBB.play1 OR AAA.USER_ID=BBB.play2)
+    </select>
+
+
+    <select id="selectListPageCountByLeitai" resultType="java.lang.Integer" parameterType="Map">
+         SELECT count(*) from LAW_BATTLE_RECORD WHERE USER_ID=#{uid} and (type='leitai')
+    </select>
 </mapper>
