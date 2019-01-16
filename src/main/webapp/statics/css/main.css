@@ -556,3 +556,17 @@
 .info_card .card_contain{
     padding: 10px 20px 0;
 }
+.el-button--primary{
+    background-image: none;
+}
+.el-button--primary:focus, .el-button--primary:hover{
+    background-image: url("../img/btn_hover.png");
+    background-size: 100% 100%;
+    /*box-shadow: 1px 2px 5px 1px #1381e3;*/
+    border-color: transparent;
+}
+.el-button--primary.is-active, .el-button--primary:active{
+    background-image: url("../img/btn_pressed.png");
+    background-size: 100% 100%;
+    box-shadow: none;
+}
