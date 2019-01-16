@@ -23,4 +23,9 @@ public interface BattleRecordService extends IService<BattleRecord> {
     PageUtils queryPage(Map<String, Object> params, String uid);
 
     PageUtils queryPageByLeitai(Map<String, Object> params, String uid);
+
+    int PkCountBydept(String deptcode);
+    int leitaiCountBydept(String deptcode);
+    int pkSorceBydept(String deptcode);
+    int leitaiSorceBydept(String deptcode);
 }

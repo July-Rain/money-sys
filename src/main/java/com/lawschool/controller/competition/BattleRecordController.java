@@ -29,15 +29,45 @@ public class BattleRecordController {
     private BattleRecordService battleRecordService;
 
     @RequestMapping("/list")
-    public Result list(@RequestParam Map<String,Object> params){
-        User u = (User) SecurityUtils.getSubject().getPrincipal();
-        PageUtils page = battleRecordService.queryPage(params,u.getId());
+    public Result list(@RequestParam Map<String,Object> params,String userid){
+//        User u = (User) SecurityUtils.getSubject().getPrincipal();
+        PageUtils page = battleRecordService.queryPage(params,userid);
         return Result.ok().put("page", page);
     }
     @RequestMapping("/listByLeitai")
-    public Result listByLeitai(@RequestParam Map<String,Object> params){
-        User u = (User) SecurityUtils.getSubject().getPrincipal();
-        PageUtils page = battleRecordService.queryPageByLeitai(params,u.getId());
+    public Result listByLeitai(@RequestParam Map<String,Object> params,String userid){
+//        User u = (User) SecurityUtils.getSubject().getPrincipal();
+        PageUtils page = battleRecordService.queryPageByLeitai(params,userid);
         return Result.ok().put("page", page);
+    }
+
+
+    @RequestMapping("/PkCountBydept")
+    public Result PkCountBydept(String deptcode){
+
+        int i=battleRecordService.PkCountBydept(deptcode);
+
+        return Result.ok().put("count", i);
+    }
+
+    @RequestMapping("/leitaiCountBydept")
+    public Result leitaiCountBydept(String deptcode){
+
+        int i=battleRecordService.leitaiCountBydept(deptcode);
+
+        return Result.ok().put("count", i);
+    }
+
+
+    @RequestMapping("/pkSorceBydept")
+    public Result pkSorceBydept(String deptcode){
+        int i=battleRecordService.pkSorceBydept(deptcode);
+        return Result.ok().put("Sorce", i);
+    }
+
+    @RequestMapping("/leitaiSorceBydept")
+    public Result leitaiSorceBydept(String deptcode){
+        int i=battleRecordService.leitaiSorceBydept(deptcode);
+        return Result.ok().put("Sorce", i);
     }
 }

@@ -31,7 +31,7 @@ public class BattleRecordServiceImpl extends ServiceImpl<BattleRecordDao, Battle
 
 
 		params.put("uid",uid);
-      Page<BattleRecord> page = new Page<BattleRecord>(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
+        Page<BattleRecord> page = new Page<BattleRecord>(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
 
         page.setRecords(battleRecordDao.selectListPage(page,params));
         page.setTotal(battleRecordDao.selectListPageCount(params));
@@ -50,5 +50,30 @@ public class BattleRecordServiceImpl extends ServiceImpl<BattleRecordDao, Battle
 		page.setTotal(battleRecordDao.selectListPageCountByLeitai(params));
 
 		return new PageUtils(page);
+	}
+
+
+	@Override
+	public int PkCountBydept(String deptcode) {
+	   int i=battleRecordDao.PkCountBydept(deptcode);
+		return i;
+	}
+
+	@Override
+	public int leitaiCountBydept(String deptcode) {
+		int i=battleRecordDao.leitaiCountBydept(deptcode);
+		return i;
+	}
+
+	@Override
+	public int pkSorceBydept(String deptcode) {
+		int i=battleRecordDao.pkSorceBydept(deptcode);
+		return i;
+	}
+
+	@Override
+	public int leitaiSorceBydept(String deptcode) {
+		int i=battleRecordDao.leitaiSorceBydept(deptcode);
+		return i;
 	}
 }

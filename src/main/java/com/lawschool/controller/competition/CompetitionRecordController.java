@@ -97,10 +97,28 @@ public class CompetitionRecordController extends AbstractController {
 
     //查询分页
     @RequestMapping("/list")
-    public Result list(@RequestParam Map<String,Object> params){
-        User u = (User) SecurityUtils.getSubject().getPrincipal();
-        PageUtils page = competitionRecordService.queryPage(params,u.getId());
+    public Result list(@RequestParam Map<String,Object> params,String userid){
+//        User u = (User) SecurityUtils.getSubject().getPrincipal();
+        PageUtils page = competitionRecordService.queryPage(params,userid);
         return Result.ok().put("page", page);
     }
 
+    //根据部门code 来查 玩了闯关的次数
+    @RequestMapping("/chuangguanCountBydept")
+    public Result chuangguanCountBydept(String deptcode){
+
+        int i=competitionRecordService.chuangguanCountBydept(deptcode);
+        System.out.println(i);
+        return Result.ok().put("count",i);
+    }
+
+
+    //根据部门code 来查 玩了闯关的次数
+    @RequestMapping("/chuangguanSorceBydept")
+    public Result chuangguanSorceBydept(String deptcode){
+
+        int i=competitionRecordService.chuangguanSorceBydept(deptcode);
+        System.out.println(i);
+        return Result.ok().put("Sorce",i);
+    }
 }
