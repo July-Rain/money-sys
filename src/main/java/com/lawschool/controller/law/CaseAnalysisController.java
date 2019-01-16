@@ -47,7 +47,24 @@ public class CaseAnalysisController extends AbstractController {
     
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String,Object> params){
-        PageUtils page = analysisService.queryPage(params);
+        params.put("isAuth",true);
+        PageUtils page = analysisService.queryPage(params,getUser());
+        return Result.ok().put("page", page);
+    }
+
+    /**
+     * @Author MengyuWu
+     * @Description 查询我创建的
+     * @Date 11:17 2019-1-16
+     * @Param [params]
+     * @return com.lawschool.util.Result
+     **/
+    
+    @RequestMapping("/listICreate")
+    public Result listICreate(@RequestParam Map<String,Object> params){
+        User user = getUser();
+        params.put("createUser",user.getId());
+        PageUtils page = analysisService.queryPage(params,getUser());
         return Result.ok().put("page", page);
     }
 
