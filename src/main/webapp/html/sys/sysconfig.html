@@ -251,7 +251,7 @@
 
 
 
-        <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
+        <el-dialog :title="title" :visible.sync="dialogConfig" :before-clo se="closeDia">
             <el-row>
                 <el-col :span="12">
                     <el-form :model="sysConfig" :rules="rules" ref="sysConfig" label-width="100px" class="demo-sysConfig" size="mini">
@@ -259,6 +259,7 @@
                             <el-input v-model="sysConfig.code" placeholder="请输入参数编码" clearable></el-input>
                         </el-form-item>
                         <el-form-item label="参数值" prop="value">
+
                             <el-input v-model="sysConfig.value" placeholder="请输入参数值" clearable></el-input>
                         </el-form-item>
 
