@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<style>
+
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="container">
+        <el-row class="content5-3">
+            <el-col :span="24">
+                <div class="box-card boardCard">
+                    <div class="header header_special">
+                        <span>学情看板</span>
+                        <div class="more">
+                            <!--<el-form :model="dateRange"  ref="formInline">
+                            <el-form-item prop="startTime">-->
+                            <el-date-picker
+                                    v-model="dateRange.startTime"
+                                    type="date"
+                                    size="mini"
+                                    placeholder="开始日期">
+                            </el-date-picker>
+                            <!--</el-form-item>-->
+                            至
+                            <!--<el-form-item prop="endTime">-->
+                            <el-date-picker
+                                    v-model="dateRange.endTime"
+                                    type="date"
+                                    size="mini"
+                                    placeholder="结束日期">
+                            </el-date-picker>
+                            <!--</el-form-item>
+                            <el-form-item>-->
+                            <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
+                            <!-- <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
+                         </el-form-item>
+                         </el-form>-->
+                        </div>
+                    </div>
+                    <div class="content board" style="padding-top: 17px;">
+                        <el-row :gutter="20">
+                            <el-col :span="6" class="pieArea">
+                                <el-tabs type="border-card">
+                                    <el-tab-pane label="学习知识点分布">
+                                        <div id="pie1" style="width: 300px;height:220px;"></div>
+                                    </el-tab-pane>
+                                    <el-tab-pane label="学习知识点分布">
+                                    </el-tab-pane>
+                                </el-tabs>
+                            </el-col>
+
+                            <el-col :span="6" class="pieArea">
+                                <el-tabs type="border-card">
+                                    <div id="pienum" style="width: 300px;height:220px;"></div>
+                                </el-tabs>
+                            </el-col>
+                            <el-col :span="6" class="infoCount">
+                                <div class="span-title">学情统计</div>
+                                <div class="infoMsg">
+                                    <ul>
+
+                                        <li  v-for="(item, index) in stuInfo">
+                                            <p class="info"><i></i>{{item.name}}:<span>{{item.countTime}}h</span></p>
+                                            <p class="contrast">击败了<span>{{item.ratio}}</span>的同学</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </el-col>
+                            <!--<el-col :span="12" class="rate">
+                                <div class="span-title">练习正确率</div>
+                                <div id="bar1" style="width: 640px;height:220px;"></div>
+                            </el-col>-->
+                        </el-row>
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
+    </div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/personalCen/multidiagnosis.js?_${.now?long}"></script>
+</html>

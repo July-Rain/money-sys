@@ -264,6 +264,13 @@ var vm = new Vue({
             },
             playTime:0,//播放时间
             oldTime:0,//原来播放时间
+            seriesData:[],
+            stuInfo:{
+                stuCount:0,//学习时长
+                ratio:"0%",//超过百分比
+                type:"",//类型
+                name:""//文字描述
+            },//学情统计数据
         }
     },
     created: function () {
@@ -281,8 +288,10 @@ var vm = new Vue({
         })
 
         this.$nextTick(function () {
+            this.getStuDia();
             this.initPie1()
             this.initBar1()
+
         })
 
         this.$nextTick(function () {
@@ -340,6 +349,7 @@ var vm = new Vue({
         },
         // 查询
         onSubmit: function () {
+            this.getStuDia();
             console.log('submit!');
             console.log(vm.formInline);
         },
@@ -410,17 +420,11 @@ var vm = new Vue({
                 },
                 series : [
                     {
-                        name:'访问来源',
+                        name:'学习时长统计',
                         type:'pie',
                         radius : '55%',
                         center: ['50%', '50%'],
-                        data:[
-                            {value:335, name:'直接访问'},
-                            {value:310, name:'邮件营销'},
-                            {value:274, name:'联盟广告'},
-                            {value:235, name:'视频广告'},
-                            {value:400, name:'搜索引擎'}
-                        ].sort(function (a, b) { return a.value - b.value; }),
+                        data:vm.seriesData.sort(function (a, b) { return a.value - b.value; }),
                         roseType: 'radius',
                         label: {
                             normal: {
@@ -755,6 +759,27 @@ var vm = new Vue({
                 }
             });
 
+        },
+        getStuDia: function () {
+            var loadInline={
+                currPage: 1,
+                pageSize: 2,
+                totalCount:0};
+            $.ajax({
+                async:false,
+                type: "POST",
+                url: baseURL + "diagnosis/getStuDiagnosis",
+                dataType: "json",
+                data: vm.dateRange,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.seriesData = result.data;
+                        vm.stuInfo=result.stuInfo;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         },
     }
 });
