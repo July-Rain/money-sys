@@ -6,19 +6,14 @@
 </head>
 <body>
     <div id="app" v-cloak>
-    <div class="header">
-        <div class="header-left">
-            <img src="${rc.contextPath}/statics/img/logo.png">
-            <a href="javascript:;">江苏省公安厅法律学校</a>
-        </div>
-    </div>
     <div class="container">
         <el-button size="mini" type="primary" @click="addExercise" >随机练习</el-button>
         <br/>
         <el-table
                 :data="tableData"
                 style="width: 100%"
-                stripe>
+                stripe
+                border>
             <el-table-column
                     prop="createTime"
                     label="练习时间"

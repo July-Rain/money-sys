@@ -570,3 +570,21 @@
     background-size: 100% 100%;
     box-shadow: none;
 }
+/*表格样式*/
+thead.has-gutter th{
+    background-color: #f5f7fa;
+    /*font-size: 14px;*/
+    background:-webkit-linear-gradient(#fbfcfd 5%,#f5f7fa 94%,#eef0f2 1%);
+    background:-o-linear-gradient(#fbfcfd 5%,#f5f7fa 94%,#eef0f2 1%);
+    background:-moz-linear-gradient(#fbfcfd 5%,#f5f7fa 94%,#eef0f2 1%);
+    background:linear-gradient(#fbfcfd 5%,#f5f7fa 94%,#eef0f2 1%);
+}
+thead.has-gutter th > .cell{
+    font-size: 14px;
+    color: #666;
+}
+.el-table__row:hover td{
+    background: #e9f3ff!important;
+    border-top: 1px solid #b7d8ff;
+    border-bottom: 1px solid #b7d8ff;
+}

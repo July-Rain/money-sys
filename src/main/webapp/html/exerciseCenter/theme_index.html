@@ -14,7 +14,7 @@
                 :data="tableData"
                 style="width: 100%"
                 stripe
-                broder>
+                border>
             <el-table-column
                     prop="themeName"
                     label="主题类型"
@@ -43,35 +43,67 @@
                     prop="status"
                     align="center">
                 <template slot-scope="scope">
-                    <el-button v-if="scope.row.status == 0 || scope.row.status == null"
-                            type="primary"s
-                            size="mini"
-                            @click="start(scope.$index)"
-                            >开始练习
-                    </el-button>
-                    <el-button
-                            plain
-                            type="success"
-                            size="mini"
-                            v-if="scope.row.status == 1"
-                            @click="start(scope.$index)"
-                            >继续练习
-                    </el-button>
-                    <el-button
-                            plain
-                            type="danger"
-                            size="mini"
-                            v-if="scope.row.status == 1 || scope.row.status == 2"
-                            >错题回顾
-                    </el-button>
-                    <el-button
-                            plain
-                            type="warning"
-                            size="mini"
-                            v-if="scope.row.status == 2"
-                            @click="reStart(scope.row.id)"
-                            >清空重做
-                    </el-button>
+                    <el-popover
+                            placement="top-start"
+                            width="200"
+                            trigger="hover"
+                            title="开始练习"
+                            content="点击开始练习">
+                        <el-button v-if="scope.row.status == 0 || scope.row.status == null"
+                                   type="primary"
+                                   size="mini"
+                                   @click="start(scope.$index)"
+                                   slot="reference"
+                        >开始练习
+                        </el-button>
+                    </el-popover>
+                    <el-popover
+                            placement="top-start"
+                            title="标题"
+                            width="200"
+                            trigger="hover"
+                            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+                        <el-button
+                                plain
+                                type="success"
+                                size="mini"
+                                v-if="scope.row.status == 1"
+                                @click="start(scope.$index)"
+                                slot="reference"
+                        >继续练习
+                        </el-button>
+                    </el-popover>
+                    <el-popover
+                            placement="top-start"
+                            title="标题"
+                            width="200"
+                            trigger="hover"
+                            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+                        <el-button
+                                plain
+                                type="danger"
+                                size="mini"
+                                v-if="scope.row.status == 1 || scope.row.status == 2"
+                                slot="reference"
+                        >错题回顾
+                        </el-button>
+                    </el-popover>
+                    <el-popover
+                            placement="top-start"
+                            title="标题"
+                            width="200"
+                            trigger="hover"
+                            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+                        <el-button
+                                plain
+                                type="warning"
+                                size="mini"
+                                v-if="scope.row.status == 2"
+                                @click="reStart(scope.row.id)"
+                                slot="reference"
+                        >清空重做
+                        </el-button>
+                    </el-popover>
                 </template>
             </el-table-column>
         </el-table>
