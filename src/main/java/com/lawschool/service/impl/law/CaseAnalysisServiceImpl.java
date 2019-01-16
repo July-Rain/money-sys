@@ -39,7 +39,7 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
 
     @Autowired
     private AuthRelationService authService;
-    public PageUtils queryPage(Map<String,Object> params){
+    public PageUtils queryPage(Map<String,Object> params,User user){
         String caseTitle = (String)params.get("caseTitle");
         String caseProcess = (String)params.get("caseProcess");
         String lawLevel = (String)params.get("lawLevel");
@@ -48,6 +48,7 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         String caseLawid = (String)params.get("caseLawid");
         String startTime = (String)params.get("startTime");
         String endTime = (String)params.get("endTime");
+        String createUser=(String)params.get("createUser");
         EntityWrapper<CaseAnalysisEntity> ew = new EntityWrapper<>();
         ew.setSqlSelect("ID,CASE_TITLE,CASE_CONTENT,CONTENT_TYPE,CASE_TIME,DICTCODE2VALE(CASE_PROCESS) as CASE_PROCESS,DICTCODE2VALE(CASE_TYPE) as CASE_TYPE,DICTCODE2VALE(LAW_LEVEL) as LAW_LEVEL,VIDEO_PIC_ACC");
         if(UtilValidate.isNotEmpty(caseTitle)){
@@ -69,11 +70,24 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
             String[] lawArr=caseLawid.split(",");
             ew.in("CASE_LAWID",lawArr);
         }
+        if(UtilValidate.isNotEmpty(createUser)){
+            ew.in("create_user",createUser);
+        }
         if(UtilValidate.isNotEmpty(startTime)){
             ew.addFilter("(case_time >= TO_DATE('"+startTime+"', 'yyyy-mm-dd'))");
         }
         if(UtilValidate.isNotEmpty(endTime)){
             ew.addFilter("(case_time <= TO_DATE('"+endTime+"', 'yyyy-mm-dd'))");
+        }
+        if(UtilValidate.isNotEmpty(params.get("isAuth"))){
+            //需要权限过滤
+            String[] authArr= authService.listAllIdByUser(user.getOrgId(),user.getId(),"CASEANA");
+            if(authArr.length>0){
+                ew.in("id",authArr);
+            }else{
+                String[] arr={"0"};
+                ew.in("id",arr);
+            }
         }
 
         ew.orderBy("CREATE_TIME");

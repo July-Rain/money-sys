@@ -240,6 +240,7 @@ var vm = new Vue({
                 console.log(data);
                 vm.teacher.orgCode= data.localOrgCode;
                 vm.teacher.orgName= data.localOrgName;
+                vm.teacher.orgId= data.id;
             }
         },
 

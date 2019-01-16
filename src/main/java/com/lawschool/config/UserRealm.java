@@ -1,12 +1,10 @@
 package com.lawschool.config;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
 import com.lawschool.beans.*;
 import com.lawschool.dao.*;
 import com.lawschool.util.Constant;
-import com.lawschool.util.RedisUtil;
 import com.lawschool.util.UtilValidate;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
@@ -22,7 +20,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**

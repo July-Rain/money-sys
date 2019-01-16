@@ -55,7 +55,7 @@ public interface LearnTasksService extends AbstractService<LearnTasksEntity> {
      **/
     
 
-    PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryPage(Map<String, Object> params,User user);
     /**
      * @Author MengyuWu
      * @Description 分页查询  --查询我创建的学习分类

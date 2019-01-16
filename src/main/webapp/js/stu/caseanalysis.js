@@ -82,7 +82,8 @@ var vm = new Vue({
             orgCode:"",
             currPage: 1,
             pageSize: 10,
-            totalCount:0
+            totalCount:0,
+            identify:'0',//表明是用户
 
         },//人员查询
         userTableData:[],//人员表格信息
@@ -328,7 +329,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "caseana/list?isMp=true",
+                url: baseURL + "caseana/listICreate?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
@@ -469,7 +470,7 @@ var vm = new Vue({
         reloadUser: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sys/getAllUsers",
+                url: baseURL + "sys/getUorT?isMp=true",
                 dataType: "json",
                 data: vm.userForm,
                 success: function (result) {
@@ -477,7 +478,7 @@ var vm = new Vue({
                         vm.userTableData = result.page.list;
                         vm.userForm.currPage = result.page.currPage;
                         vm.userForm.pageSize = result.page.pageSize;
-                        vm.userForm.totalCount = parseInt(result.page.count);
+                        vm.userForm.totalCount = parseInt(result.page.totalCount);
                     } else {
                         alert(result.msg);
                     }
