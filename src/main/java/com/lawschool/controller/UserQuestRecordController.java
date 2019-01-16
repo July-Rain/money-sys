@@ -54,4 +54,23 @@ public class UserQuestRecordController {
         int i= userQuestRecordService.leitaiByUser(uid);
         return Result.ok().put("leitaiByUser",i );
     }
+
+
+    @RequestMapping("chuangguanCorrectBydept")
+    public Result chuangguanCorrectBydept(String deptcode){
+        int i= userQuestRecordService.chuangguanCorrectBydept(deptcode);
+        return Result.ok().put("Correct",i );
+    }
+
+    @RequestMapping("OnlinCorrectBydept")
+    public Result OnlinCorrectBydept(String deptcode){
+        int i= userQuestRecordService.OnlinCorrectBydept(deptcode);
+        return Result.ok().put("Correct",i );
+    }
+
+    @RequestMapping("leitaiCorrectBydept")
+    public Result leitaiCorrectBydept(String deptcode){
+        int i= userQuestRecordService.leitaiCorrectBydept(deptcode);
+        return Result.ok().put("Correct",i );
+    }
 }

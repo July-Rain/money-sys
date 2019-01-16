@@ -127,4 +127,85 @@
     <select id="selectListPageCountByLeitai" resultType="java.lang.Integer" parameterType="Map">
          SELECT count(*) from LAW_BATTLE_RECORD WHERE USER_ID=#{uid} and (type='leitai')
     </select>
+    
+    
+    
+    <select id="PkCountBydept" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT
+            count(*)
+        FROM
+            (
+                SELECT
+                    LAW_BATTLE_RECORD.*, LAW_USER.ORG_CODE
+                FROM
+                    LAW_BATTLE_RECORD,
+                    LAW_USER
+                WHERE
+                    LAW_BATTLE_RECORD.USER_ID = LAW_USER. ID
+            )
+        where org_code=#{deptcode}
+        AND (TYPE='OnlinPk'  OR  TYPE='OnlinPkByCode' or TYPE='teamOnline')
+
+
+    </select>
+
+    <select id="leitaiCountBydept" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT
+        count(*)
+        FROM
+        (
+        SELECT
+        LAW_BATTLE_RECORD.*, LAW_USER.ORG_CODE
+        FROM
+        LAW_BATTLE_RECORD,
+        LAW_USER
+        WHERE
+        LAW_BATTLE_RECORD.USER_ID = LAW_USER. ID
+        )
+        where org_code=#{deptcode}
+        AND TYPE='leitai'
+
+
+    </select>
+
+
+    <select id="pkSorceBydept" resultType="java.lang.Integer" parameterType="java.lang.String">
+       SELECT
+            "SUM" (score)
+        FROM
+            (
+                SELECT
+                    LAW_BATTLE_RECORD.*, LAW_USER.ORG_CODE
+                FROM
+                    LAW_BATTLE_RECORD,
+                    LAW_USER
+                WHERE
+                    LAW_BATTLE_RECORD.USER_ID = LAW_USER. ID
+            )
+        WHERE
+            org_code = #{deptcode}
+        AND (
+            TYPE = 'OnlinPk'
+            OR TYPE = 'OnlinPkByCode'
+            OR TYPE = 'teamOnline'
+            )
+    </select>
+    <select id="leitaiSorceBydept" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT
+        "SUM" (score)
+        FROM
+        (
+        SELECT
+        LAW_BATTLE_RECORD.*, LAW_USER.ORG_CODE
+        FROM
+        LAW_BATTLE_RECORD,
+        LAW_USER
+        WHERE
+        LAW_BATTLE_RECORD.USER_ID = LAW_USER. ID
+        )
+        WHERE
+        org_code = #{deptcode}
+        AND TYPE='leitai'
+
+    </select>
 </mapper>

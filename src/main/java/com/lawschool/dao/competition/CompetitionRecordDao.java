@@ -9,4 +9,8 @@ public interface CompetitionRecordDao extends BaseMapper<CompetitionRecord> {
 
 
     public void updateRecordStatus();
+
+
+    public int chuangguanCountBydept(String deptcode);
+    public int chuangguanSorceBydept(String deptcode);
 }

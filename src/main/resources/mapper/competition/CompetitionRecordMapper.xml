@@ -15,5 +15,39 @@
 
     </update>
     
-    
+    <select id="chuangguanCountBydept" resultType="java.lang.Integer" parameterType="java.lang.String">
+
+        SELECT
+            count(*)
+        FROM
+            (
+                SELECT
+                    LAW_COMPETITION_RECORD.*, LAW_USER.ORG_CODE
+                FROM
+                    LAW_COMPETITION_RECORD,
+                    LAW_USER
+                WHERE
+                    LAW_COMPETITION_RECORD.USER_ID = LAW_USER. ID
+            )
+        where org_code=#{deptcode}
+    </select>
+
+
+
+    <select id="chuangguanSorceBydept" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT
+            "SUM" (score)
+        FROM
+            (
+                SELECT
+                    LAW_COMPETITION_RECORD.*, LAW_USER.ORG_CODE
+                FROM
+                    LAW_COMPETITION_RECORD,
+                    LAW_USER
+                WHERE
+                    LAW_COMPETITION_RECORD.USER_ID = LAW_USER. ID
+            )
+        WHERE
+            org_code = #{deptcode}
+    </select>
 </mapper>

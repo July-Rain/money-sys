@@ -23,4 +23,10 @@ public interface UserQuestRecordService extends IService<UserQuestRecord> {
     int OnlinByUser(String uid);
 
     int leitaiByUser(String uid);
+
+  int chuangguanCorrectBydept(String deptcode);
+
+  int OnlinCorrectBydept(String deptcode);
+
+  int leitaiCorrectBydept(String deptcode);
 }

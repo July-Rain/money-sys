@@ -22,4 +22,10 @@ public interface BattleRecordDao extends BaseMapper<BattleRecord> {
     List<BattleRecord> selectListPageByLeitai(Page page, Map<String, Object> params);
 
     int selectListPageCountByLeitai(Map<String, Object> params);
+
+    int PkCountBydept(String deptcode);
+    int leitaiCountBydept(String deptcode);
+
+    int pkSorceBydept(String deptcode);
+    int leitaiSorceBydept(String deptcode);
 }

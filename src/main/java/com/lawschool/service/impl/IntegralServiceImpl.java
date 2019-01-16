@@ -8,6 +8,7 @@ import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.Integral;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserIntegral;
+import com.lawschool.beans.vo.CompetitionStatisticsByDeptVo;
 import com.lawschool.dao.IntegralDao;
 import com.lawschool.dao.UserIntegralDao;
 import com.lawschool.service.IntegralService;
@@ -147,5 +148,18 @@ public class IntegralServiceImpl extends AbstractServiceImpl<IntegralDao, Integr
 
         int i=  integralDao.leitaiByUser(uid);
         return i;
+    }
+
+
+    @Override
+    public PageUtils userByDeptList(Map<String, Object> params, String deptcode) {
+
+        params.put("deptcode",deptcode);
+        Page<CompetitionStatisticsByDeptVo> page = new Page<CompetitionStatisticsByDeptVo>(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
+
+        page.setRecords(integralDao.userByDeptList(page,params));
+        page.setTotal(integralDao.userByDeptListCount(params));
+
+        return new PageUtils(page);
     }
 }
