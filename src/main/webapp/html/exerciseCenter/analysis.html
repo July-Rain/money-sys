@@ -6,11 +6,7 @@
 </head>
 <body>
     <div id="app" v-cloak>
-        总的分析：<div class="container">
-            <div v-for="(value,key) in overall">
-                {{key}}: {{value}} 次
-            </div>
-        </div>
+        <div id="bar1" style="width: 640px;height:220px;"></div>
         <br/>
         总答题量：{{total}}、答对：{{right}}、答错：{{total - right}}
         <br/>
