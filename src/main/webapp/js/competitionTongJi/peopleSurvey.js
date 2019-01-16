@@ -11,7 +11,7 @@ var vm = new Vue({
     created: function () {
         this.$nextTick(function () {
            this.user=jsgetUser();
-//先得到数据dataByNum
+//先得到数据dataByNum---------------------------------------------------------------------------------------------------------------
            // 查次数//最笨的一个个查  没什么影响
            //       ------1查闯关次数
             $.ajax({
@@ -48,7 +48,7 @@ var vm = new Vue({
 
 
 
-            //然后的数据dataBySorce【】
+//然后的数据dataBySorce【】-----------------------------------------------------------------------------------------------------
             //       ------1查闯关分数
             $.ajax({
                 type: "POST",
@@ -82,7 +82,38 @@ var vm = new Vue({
                     vm.dataBySorce.push({value:Number(data.leitaiSorce), name:'擂台赛'});
                 }
             });
+//然后的数据dataByCorrect【】-----------------------------------------------------------------------------------------------------
+            $.ajax({
+                type: "POST",
+                url: baseURL + "userQuestRecord/CheckpointByUser",
+                Type: "json",
+                data: {"uid":this.user.id},
+                async:false,
+                success: function (data) {
+                    vm.dataByCorrect.push({value:Number(data.CheckpointByUser), name:'竞赛闯关'});
+                }
+            });
 
+            $.ajax({
+                type: "POST",
+                url: baseURL + "userQuestRecord/OnlinByUser",
+                Type: "json",
+                data: {"uid":this.user.id},
+                async:false,
+                success: function (data) {
+                    vm.dataByCorrect.push({value:Number(data.OnlinByUser), name:'在线比武'});
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: baseURL + "userQuestRecord/leitaiByUser",
+                Type: "json",
+                data: {"uid":this.user.id},
+                async:false,
+                success: function (data) {
+                    vm.dataByCorrect.push({value:Number(data.leitaiByUser), name:'擂台赛'});
+                }
+            });
             this.reload();
         })
     },
@@ -281,7 +312,7 @@ var vm = new Vue({
                         type:'pie',
                         radius : [30, 150],
                         center: ['50%', '50%'],
-                        data:vm.dataBySorce,
+                        data:vm.dataByCorrect,
                         roseType: 'radius',
                         label: {
                             normal: {

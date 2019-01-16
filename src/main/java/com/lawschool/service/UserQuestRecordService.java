@@ -19,5 +19,8 @@ import java.util.Map;
  */
 public interface UserQuestRecordService extends IService<UserQuestRecord> {
 
+  int CheckpointByUser(String uid);
+    int OnlinByUser(String uid);
 
+    int leitaiByUser(String uid);
 }
