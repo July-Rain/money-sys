@@ -8,6 +8,7 @@
 var vm = new Vue({
     el: '#app',
     data: {
+        userid:"",//人id
         tableData: [],//表格数据
         tableData2: [],//表格数据
         tableData3: [],//表格数据
@@ -66,9 +67,25 @@ var vm = new Vue({
             vm.reload();
         },
         reload: function () {
+
+
+            if(getUrlParam("uid")==null)
+            {
+                console.info("!!!!!!!");
+                vm.userid=jsgetUser().id;//获得人id
+                console.info( vm.userid);
+
+            }
+            else
+            {
+                console.info("@@@@@@@");
+                vm.userid=getUrlParam("uid");//获得人id
+                console.info(vm.userid);
+            }
+
             $.ajax({
                 type: "POST",
-                url: baseURL + "competitionRecord/list?isMp=true",
+                url: baseURL + "competitionRecord/list?isMp=true&userid="+vm.userid,
                 dataType: "json",
                 async:false,
                 data: vm.formInline,
@@ -87,7 +104,7 @@ var vm = new Vue({
 
             $.ajax({
                 type: "POST",
-                url: baseURL + "battleRecord/list",
+                url: baseURL + "battleRecord/list?userid="+vm.userid,
                 dataType: "json",
                 async:false,
                 data: vm.formInline2,
@@ -105,7 +122,7 @@ var vm = new Vue({
 
             $.ajax({
                 type: "POST",
-                url: baseURL + "battleRecord/listByLeitai",
+                url: baseURL + "battleRecord/listByLeitai?userid="+vm.userid,
                 dataType: "json",
                 async:false,
                 data: vm.formInline3,

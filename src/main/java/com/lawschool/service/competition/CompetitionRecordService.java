@@ -35,4 +35,7 @@ public interface CompetitionRecordService extends IService<CompetitionRecord> {
 
     public int chuangguanCountByUser(String uid);
     PageUtils queryPage(Map<String, Object> params,String uid);
+
+    public int chuangguanCountBydept(String deptcode);
+    public int chuangguanSorceBydept(String deptcode);
 }

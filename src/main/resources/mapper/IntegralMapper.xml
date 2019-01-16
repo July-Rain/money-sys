@@ -42,4 +42,323 @@
         USER_ID = #{uid}
         AND SRC = 'leitai'
     </select>
+    
+    
+    
+    <select id="userByDeptList" resultType="com.lawschool.beans.vo.CompetitionStatisticsByDeptVo" parameterType="Map">
+            SELECT
+                LASTTABLE."ID" AS "userid", USERID2NAME(LASTTABLE."ID") as "userName",LASTTABLE."Checkpoint" as "checkpoint",LASTTABLE."pk" AS  "pk",LASTTABLE."leitai" AS  "leitai"
+            FROM
+                (
+                    SELECT
+                        AAAA."ID",
+                        AAAA. POINT AS "Checkpoint",
+                        (
+                            BBBB. POINT + cccc. POINT + dddd. POINT
+                        ) AS "pk",
+                        eeee. POINT AS "leitai"
+                    FROM
+                        (
+                            SELECT
+                                LAW_USER."ID",
+                                TT.SRC,
+                                CASE
+                            WHEN TT. POINT IS NULL THEN
+                                0
+                            ELSE
+                                TT. POINT
+                            END POINT
+                            FROM
+                                LAW_USER
+                            LEFT JOIN (
+                                SELECT
+                                    LAW_INTEGRAL.USER_ID,
+                                    LAW_INTEGRAL.src,
+                                    "SUM" (LAW_INTEGRAL."POINT") AS POINT
+                                FROM
+                                    LAW_INTEGRAL
+                                WHERE
+                                    SRC = 'Checkpoint'
+                                GROUP BY
+                                    LAW_INTEGRAL.USER_ID,
+                                    LAW_INTEGRAL.src
+                            ) tt ON TT.USER_ID = LAW_USER."ID"
+                            WHERE
+                                LAW_USER.ORG_CODE =#{deptcode}
+                        ) aaaa,
+                        (
+                            SELECT
+                                LAW_USER."ID",
+                                TT.SRC,
+                                CASE
+                            WHEN TT. POINT IS NULL THEN
+                                0
+                            ELSE
+                                TT. POINT
+                            END POINT
+                            FROM
+                                LAW_USER
+                            LEFT JOIN (
+                                SELECT
+                                    LAW_INTEGRAL.USER_ID,
+                                    LAW_INTEGRAL.src,
+                                    "SUM" (LAW_INTEGRAL."POINT") AS POINT
+                                FROM
+                                    LAW_INTEGRAL
+                                WHERE
+                                    SRC = 'OnlinPk'
+                                GROUP BY
+                                    LAW_INTEGRAL.USER_ID,
+                                    LAW_INTEGRAL.src
+                            ) tt ON TT.USER_ID = LAW_USER."ID"
+                            WHERE
+                                LAW_USER.ORG_CODE =#{deptcode}
+                        ) bbbb,
+                        (
+                            SELECT
+                                LAW_USER."ID",
+                                TT.SRC,
+                                CASE
+                            WHEN TT. POINT IS NULL THEN
+                                0
+                            ELSE
+                                TT. POINT
+                            END POINT
+                            FROM
+                                LAW_USER
+                            LEFT JOIN (
+                                SELECT
+                                    LAW_INTEGRAL.USER_ID,
+                                    LAW_INTEGRAL.src,
+                                    "SUM" (LAW_INTEGRAL."POINT") AS POINT
+                                FROM
+                                    LAW_INTEGRAL
+                                WHERE
+                                    SRC = 'OnlinPkByCode'
+                                GROUP BY
+                                    LAW_INTEGRAL.USER_ID,
+                                    LAW_INTEGRAL.src
+                            ) tt ON TT.USER_ID = LAW_USER."ID"
+                            WHERE
+                                LAW_USER.ORG_CODE =#{deptcode}
+                        ) cccc,
+                        (
+                            SELECT
+                                LAW_USER."ID",
+                                TT.SRC,
+                                CASE
+                            WHEN TT. POINT IS NULL THEN
+                                0
+                            ELSE
+                                TT. POINT
+                            END POINT
+                            FROM
+                                LAW_USER
+                            LEFT JOIN (
+                                SELECT
+                                    LAW_INTEGRAL.USER_ID,
+                                    LAW_INTEGRAL.src,
+                                    "SUM" (LAW_INTEGRAL."POINT") AS POINT
+                                FROM
+                                    LAW_INTEGRAL
+                                WHERE
+                                    SRC = 'teamOnline'
+                                GROUP BY
+                                    LAW_INTEGRAL.USER_ID,
+                                    LAW_INTEGRAL.src
+                            ) tt ON TT.USER_ID = LAW_USER."ID"
+                            WHERE
+                                LAW_USER.ORG_CODE =#{deptcode}
+                        ) dddd,
+                        (
+                            SELECT
+                                LAW_USER."ID",
+                                TT.SRC,
+                                CASE
+                            WHEN TT. POINT IS NULL THEN
+                                0
+                            ELSE
+                                TT. POINT
+                            END POINT
+                            FROM
+                                LAW_USER
+                            LEFT JOIN (
+                                SELECT
+                                    LAW_INTEGRAL.USER_ID,
+                                    LAW_INTEGRAL.src,
+                                    "SUM" (LAW_INTEGRAL."POINT") AS POINT
+                                FROM
+                                    LAW_INTEGRAL
+                                WHERE
+                                    SRC = 'leitai'
+                                GROUP BY
+                                    LAW_INTEGRAL.USER_ID,
+                                    LAW_INTEGRAL.src
+                            ) tt ON TT.USER_ID = LAW_USER."ID"
+                            WHERE
+                                 LAW_USER.ORG_CODE =#{deptcode}
+                        ) eeee
+                    WHERE
+                        AAAA. ID = BBBB."ID"
+                    AND AAAA. ID = cccc."ID"
+                    AND AAAA. ID = dddd."ID"
+                    AND AAAA. ID = eeee."ID"
+                ) lasttable
+            ORDER BY lasttable."Checkpoint" DESC,lasttable."pk" DESC,lasttable."leitai" DESC
+
+    </select>
+
+    <select id="userByDeptListCount"   resultType="java.lang.Integer" parameterType="Map">
+
+          	    SELECT
+                    count(*)
+                FROM
+                    (
+                        SELECT
+                            LAW_USER."ID",
+                            TT.SRC,
+                            CASE
+                        WHEN TT. POINT IS NULL THEN
+                            0
+                        ELSE
+                            TT. POINT
+                        END POINT
+                        FROM
+                            LAW_USER
+                        LEFT JOIN (
+                            SELECT
+                                LAW_INTEGRAL.USER_ID,
+                                LAW_INTEGRAL.src,
+                                "SUM" (LAW_INTEGRAL."POINT") AS POINT
+                            FROM
+                                LAW_INTEGRAL
+                            WHERE
+                                SRC = 'Checkpoint'
+                            GROUP BY
+                                LAW_INTEGRAL.USER_ID,
+                                LAW_INTEGRAL.src
+                        ) tt ON TT.USER_ID = LAW_USER."ID"
+                        WHERE
+                            LAW_USER.ORG_CODE =#{deptcode}
+                    ) aaaa,
+                    (
+                        SELECT
+                            LAW_USER."ID",
+                            TT.SRC,
+                            CASE
+                        WHEN TT. POINT IS NULL THEN
+                            0
+                        ELSE
+                            TT. POINT
+                        END POINT
+                        FROM
+                            LAW_USER
+                        LEFT JOIN (
+                            SELECT
+                                LAW_INTEGRAL.USER_ID,
+                                LAW_INTEGRAL.src,
+                                "SUM" (LAW_INTEGRAL."POINT") AS POINT
+                            FROM
+                                LAW_INTEGRAL
+                            WHERE
+                                SRC = 'OnlinPk'
+                            GROUP BY
+                                LAW_INTEGRAL.USER_ID,
+                                LAW_INTEGRAL.src
+                        ) tt ON TT.USER_ID = LAW_USER."ID"
+                        WHERE
+                            LAW_USER.ORG_CODE =#{deptcode}
+                    ) bbbb,
+                    (
+                        SELECT
+                            LAW_USER."ID",
+                            TT.SRC,
+                            CASE
+                        WHEN TT. POINT IS NULL THEN
+                            0
+                        ELSE
+                            TT. POINT
+                        END POINT
+                        FROM
+                            LAW_USER
+                        LEFT JOIN (
+                            SELECT
+                                LAW_INTEGRAL.USER_ID,
+                                LAW_INTEGRAL.src,
+                                "SUM" (LAW_INTEGRAL."POINT") AS POINT
+                            FROM
+                                LAW_INTEGRAL
+                            WHERE
+                                SRC = 'OnlinPkByCode'
+                            GROUP BY
+                                LAW_INTEGRAL.USER_ID,
+                                LAW_INTEGRAL.src
+                        ) tt ON TT.USER_ID = LAW_USER."ID"
+                        WHERE
+                            LAW_USER.ORG_CODE =#{deptcode}
+                    ) cccc,
+                    (
+                        SELECT
+                            LAW_USER."ID",
+                            TT.SRC,
+                            CASE
+                        WHEN TT. POINT IS NULL THEN
+                            0
+                        ELSE
+                            TT. POINT
+                        END POINT
+                        FROM
+                            LAW_USER
+                        LEFT JOIN (
+                            SELECT
+                                LAW_INTEGRAL.USER_ID,
+                                LAW_INTEGRAL.src,
+                                "SUM" (LAW_INTEGRAL."POINT") AS POINT
+                            FROM
+                                LAW_INTEGRAL
+                            WHERE
+                                SRC = 'teamOnline'
+                            GROUP BY
+                                LAW_INTEGRAL.USER_ID,
+                                LAW_INTEGRAL.src
+                        ) tt ON TT.USER_ID = LAW_USER."ID"
+                        WHERE
+                            LAW_USER.ORG_CODE =#{deptcode}
+                    ) dddd,
+                    (
+                        SELECT
+                            LAW_USER."ID",
+                            TT.SRC,
+                            CASE
+                        WHEN TT. POINT IS NULL THEN
+                            0
+                        ELSE
+                            TT. POINT
+                        END POINT
+                        FROM
+                            LAW_USER
+                        LEFT JOIN (
+                            SELECT
+                                LAW_INTEGRAL.USER_ID,
+                                LAW_INTEGRAL.src,
+                                "SUM" (LAW_INTEGRAL."POINT") AS POINT
+                            FROM
+                                LAW_INTEGRAL
+                            WHERE
+                                SRC = 'leitai'
+                            GROUP BY
+                                LAW_INTEGRAL.USER_ID,
+                                LAW_INTEGRAL.src
+                        ) tt ON TT.USER_ID = LAW_USER."ID"
+                        WHERE
+                            LAW_USER.ORG_CODE =#{deptcode}
+                    ) eeee
+                WHERE
+                    AAAA. ID = BBBB."ID"
+                AND AAAA. ID = cccc."ID"
+                AND AAAA. ID = dddd."ID"
+                AND AAAA. ID = eeee."ID"
+
+
+    </select>
 </mapper>

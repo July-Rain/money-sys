@@ -100,8 +100,6 @@ public class CompetitionRecordServiceImpl extends ServiceImpl<CompetitionRecordD
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public int chuangguanCountByUser(String uid) {
-
-
 		int i= this.selectCount(new EntityWrapper<CompetitionRecord>().eq("USER_ID",uid));
 		return i;
 	}
@@ -119,4 +117,17 @@ public class CompetitionRecordServiceImpl extends ServiceImpl<CompetitionRecordD
 		return new PageUtils(page);
 	}
 
+
+	@Override
+	public int chuangguanCountBydept(String deptcode) {
+
+	   int i=competitionrecordDao.chuangguanCountBydept(deptcode);
+		return i;
+	}
+
+	@Override
+	public int chuangguanSorceBydept(String deptcode) {
+		int i=competitionrecordDao.chuangguanSorceBydept(deptcode);
+		return i;
+	}
 }
