@@ -3,75 +3,101 @@
 <head>
     <title>个人竞赛详情</title>
     <#include "/header.html">
-        </head>
-        <style>
-            .header-right ul{
-                background: transparent;
-            }
-            .header-right ul li:after{
-                content: '';
-            }
-            .el-menu--horizontal .el-menu-item,
-            .el-menu--horizontal .el-submenu{
-                float: left;
-                height: 70px;
-                /*line-height: 70px;*/
-                margin: 0;
-                border-bottom: 2px solid transparent;
-                color: #fff;
-            }
-            .el-menu--horizontal>.el-submenu .el-submenu__title {
-                height: 70px;
-                /* line-height: 70px; */
-                border-bottom: 2px solid transparent;
-                color: #909399;
-            }
-            .header-right ul li a{
-                text-align: center;
-                padding: 0;
-                /*margin: 10px 0;*/
-                box-sizing: border-box;
-                height: auto;
-                display: inline-block;
-            }
-            .header-right .el-menu-item [class^=el-icon-],
-            .header-right .el-submenu [class^=el-icon-],
-            .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
-                font-size: 30px;
-                color: #fff;
-            }
-            /*.header-right .el-submenu [class^=el-icon-]*/
-            .header-right ul li a span{
-                display: block;
-                margin-top: -10px;
-                line-height: 10px;
-            }
-            .header-right .el-menu-item:hover a,
-            .header-right .el-submenu:hover a,
-            .header-right .el-menu-item:hover [class^=el-icon-],
-            .header-right .el-submenu:hover [class^=el-icon-],
-            .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
-                color: #909399;
-            }
-            .el-submenu__icon-arrow{
-                margin-top: 16px;
-            }
-            .el-menu--horizontal .el-menu .el-menu-item a{
-                color: #909399;
-            }
-            .el-menu--horizontal .el-menu .el-menu-item a:hover{
-                color: #000;
-            }
-            .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
-                background-color: #fff;
-                float: none;
-                height: 36px;
-                line-height: 36px;
-                padding: 0 10px;
-                color: #909399;
-                display: inline-block;//悬浮块横向显示
-            }
-        </style>
+</head>
+<style>
+    .header-right ul {
+        background: transparent;
+    }
+
+    .header-right ul li:after {
+        content: '';
+    }
+
+    .el-menu--horizontal .el-menu-item,
+    .el-menu--horizontal .el-submenu {
+        float: left;
+        height: 70px;
+        /*line-height: 70px;*/
+        margin: 0;
+        border-bottom: 2px solid transparent;
+        color: #fff;
+    }
+
+    .el-menu--horizontal > .el-submenu .el-submenu__title {
+        height: 70px;
+        /* line-height: 70px; */
+        border-bottom: 2px solid transparent;
+        color: #909399;
+    }
+
+    .header-right ul li a {
+        text-align: center;
+        padding: 0;
+        /*margin: 10px 0;*/
+        box-sizing: border-box;
+        height: auto;
+        display: inline-block;
+    }
+
+    .header-right .el-menu-item [class^=el-icon-],
+    .header-right .el-submenu [class^=el-icon-],
+    .el-menu--horizontal > .el-submenu .el-submenu__icon-arrow {
+        font-size: 30px;
+        color: #fff;
+    }
+
+    /*.header-right .el-submenu [class^=el-icon-]*/
+    .header-right ul li a span {
+        display: block;
+        margin-top: -10px;
+        line-height: 10px;
+    }
+
+    .header-right .el-menu-item:hover a,
+    .header-right .el-submenu:hover a,
+    .header-right .el-menu-item:hover [class^=el-icon-],
+    .header-right .el-submenu:hover [class^=el-icon-],
+    .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-] {
+        color: #909399;
+    }
+
+    .el-submenu__icon-arrow {
+        margin-top: 16px;
+    }
+
+    .el-menu--horizontal .el-menu .el-menu-item a {
+        color: #909399;
+    }
+
+    .el-menu--horizontal .el-menu .el-menu-item a:hover {
+        color: #000;
+    }
+
+    .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+        background-color: #fff;
+        float: none;
+        height: 36px;
+        line-height: 36px;
+        padding: 0 10px;
+        color: #909399;
+        display: inline-block;
+    / / 悬浮块横向显示
+    }
+
+    .el-dialog {
+        width: 90%;
+    }
+
+    iframe {
+        border: none;
+    }
+    .dialogIfr{
+        min-height: 60vh;
+    }
+    .el-dialog__body{
+        padding: 0 10px 30px;
+    }
+</style>
 <body>
 <div id="app" v-cloak>
     <div class="header">
@@ -86,7 +112,8 @@
             <el-col :span="24">
                 <el-tabs type="border-card">
                     <el-tab-pane label="部门人员竞赛详情">
-                        <div>  因为没有部门账号  默认后台查ORG_CODE = '320000000000'   部门code  写在了IntegralController的userByDeptList的方法里了</div>
+                        <div> 因为没有部门账号 默认后台查ORG_CODE = '320000000000' 部门code 写在了IntegralController的userByDeptList的方法里了
+                        </div>
                         <div>
 
                             <el-table
@@ -157,11 +184,8 @@
         </el-row>
 
 
-
-
-
-        <el-dialog  :visible.sync="dialog2" >
-            <iframe   :src="src"   width="1400px" height="600px"   frameborder="1"  name="iframe名称">
+        <el-dialog :visible.sync="dialog2">
+            <iframe class="dialogIfr" :src="src" width="100%" height="auto" frameborder="1" name="iframe名称">
 
             </iframe>
 
