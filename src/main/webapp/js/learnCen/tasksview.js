@@ -383,5 +383,8 @@ var vm = new Vue({
             //继续学习
             window.location.href = baseURL + "learntasks/continueStudy?id=" + row.id;
         },
+        toHome: function () {
+            parent.location.reload()
+        }
     }
 });
