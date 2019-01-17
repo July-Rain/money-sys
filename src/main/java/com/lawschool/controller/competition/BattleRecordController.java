@@ -1,6 +1,7 @@
 package com.lawschool.controller.competition;
 
 import com.lawschool.beans.User;
+import com.lawschool.beans.competition.CompetitionRecord;
 import com.lawschool.service.competition.BattleRecordService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,5 +71,17 @@ public class BattleRecordController {
     public Result leitaiSorceBydept(String deptcode){
         int i=battleRecordService.leitaiSorceBydept(deptcode);
         return Result.ok().put("Sorce", i);
+    }
+    //获取在线pk 排行榜
+    @RequestMapping("/firstListByPk")
+    public Result firstListByPk(){
+        List<Map> firstListByPk= battleRecordService.firstListByPk();
+        return Result.ok().put("firstListByPk",firstListByPk);
+    }
+    //获取擂台赛排行榜
+    @RequestMapping("/firstListByleitai")
+    public Result firstListByleitai(){
+        List<Map> firstListByleitai= battleRecordService.firstListByleitai();
+        return Result.ok().put("firstListByleitai",firstListByleitai);
     }
 }

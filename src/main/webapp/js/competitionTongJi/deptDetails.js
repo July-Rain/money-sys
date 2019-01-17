@@ -39,8 +39,6 @@ var vm = new Vue({
 
         look: function(index,row)
         {
-            console.info(index);
-            console.info(row);
             vm.dialog2=true;
             vm.src=baseURL+"modules/competitionTongJi/peopleDetails.html?uid="+row.userid;
         },

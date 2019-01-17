@@ -47,6 +47,9 @@ var vm = new Vue({
         },
         reload: function () {
 
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     },
     created: function(){

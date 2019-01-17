@@ -10,39 +10,54 @@ var vm = new Vue({
     data: {
         navData: [],//导航
         rankTop5: 'first',
-        firstList: [
-            {
-                headImg: 'photo1.png',
-                name: '飞翔的企鹅',
-                score: 1824
-            },
-            {
-                headImg: 'photo1.png',
-                name: '飞翔的鸭子',
-                score: 1324
-            },
-            {
-                headImg: 'photo1.png',
-                name: '飞翔的小鸡',
-                score: 1214
-            },
-            {
-                headImg: 'photo1.png',
-                name: '飞翔的老鹰',
-                score: 1114
-            },
-            {
-                headImg: 'photo1.png',
-                name: '飞翔的兔子',
-                score: 1018
-            }
-        ]
+        firstListByChaungGuan: [],
+        firstListByPk: [],
+        firstListByleitai: [],
     },
     created: function () {
+        this.$nextTick(function () {
+            //获取闯关排名
+            $.ajax({
+                type: "POST",
+                url: baseURL + "competitionRecord/chuangGuanRanking",//闯关排名
+                Type: "json",
+                async:false,
+                success: function (data) {
+                   vm.firstListByChaungGuan=data.competitionRecordList.slice(0,5);
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: baseURL + "battleRecord/firstListByPk",//闯关排名
+                Type: "json",
+                async:false,
+                success: function (data) {
+                    vm.firstListByPk=data.firstListByPk.slice(0,5);
+                    console.info(vm.firstListByPk);
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: baseURL + "battleRecord/firstListByleitai",//闯关排名
+                Type: "json",
+                async:false,
+                success: function (data) {
+                    vm.firstListByleitai=data.firstListByleitai.slice(0,5);
+
+                    console.info(vm.firstListByleitai);
+                }
+            });
+
+
+        })
+
     },
     methods: {
-        handleClick(tab, event) {
+        handleClick : function(tab, event){
             console.log(tab, event);
-        }
+        },
+
+
+
     }
 });

@@ -130,4 +130,9 @@ public class CompetitionRecordServiceImpl extends ServiceImpl<CompetitionRecordD
 		int i=competitionrecordDao.chuangguanSorceBydept(deptcode);
 		return i;
 	}
+
+	@Override
+	public List<CompetitionRecord> chuangGuanRanking() {
+		return competitionrecordDao.chuangGuanRanking();
+	}
 }

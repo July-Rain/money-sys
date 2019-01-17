@@ -37,6 +37,9 @@ var vm = new Vue({
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
                 = 'modules/exerciseCenter/task_paper.html?id='+id+'&taskId='+taskId;
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     },
     created: function () {

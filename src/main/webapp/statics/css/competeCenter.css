@@ -101,7 +101,7 @@
     background: rgba(255,255,255,0.1);
     border-radius: 4px;
     position: relative;
-    padding-right: 175px;
+    padding-right: 125px;
 }
 .firstList li .headImg,
 .firstList li .name,
@@ -152,3 +152,7 @@
     float: right;
     color: #e4e5ff;
 }
+.firstList li .score{
+    float: left;
+}
+

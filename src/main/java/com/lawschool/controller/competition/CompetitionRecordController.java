@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.AbstractCollection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -120,5 +121,12 @@ public class CompetitionRecordController extends AbstractController {
         int i=competitionRecordService.chuangguanSorceBydept(deptcode);
         System.out.println(i);
         return Result.ok().put("Sorce",i);
+    }
+
+    //获取闯关排行榜
+    @RequestMapping("/chuangGuanRanking")
+    public Result chuangGuanRanking(){
+        List<CompetitionRecord> competitionRecordList= competitionRecordService.chuangGuanRanking();
+        return Result.ok().put("competitionRecordList",competitionRecordList);
     }
 }
