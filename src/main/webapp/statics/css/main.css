@@ -601,3 +601,27 @@ thead.has-gutter th > .cell{
 .el-table td, .el-table th.is-leaf{
     border-bottom-color: #dddddd;
 }
+/*面包屑底部*/
+.el-breadcrumb{
+    margin-bottom: 20px;
+}
+.el-breadcrumb__inner.is-link{
+    color: #1381e3;
+    font-size: 14px;
+}
+.el-breadcrumb__inner.is-link:hover{
+    text-decoration: underline;
+}
+.el-breadcrumb > span:first-child .el-icon-arrow-right{
+    position: relative;
+    padding-right: 10px;
+}
+.el-breadcrumb > span:first-child .el-icon-arrow-right:before{
+    position: absolute;
+    right: 3px;
+    top: -10px;
+    content: '';
+    width: 1px;
+    height: 12px;
+    background: #aaa;
+}
