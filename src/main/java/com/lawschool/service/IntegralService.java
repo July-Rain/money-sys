@@ -36,4 +36,8 @@ public interface IntegralService {
 
     int pkByUser(String uid);
     int leitaiByUser(String uid);
+
+
+
+    PageUtils userByDeptList(Map<String, Object> params, String deptcode);
 }

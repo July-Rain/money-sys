@@ -124,10 +124,25 @@ public class StuMediaController extends AbstractController {
     
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String,Object> params){
-        PageUtils page = stuMediaService.queryPage(params);
+        params.put("isAuth",true);
+        PageUtils page = stuMediaService.queryPage(params,getUser());
         return Result.ok().put("page", page);
     }
-
+    /**
+     * @Author MengyuWu
+     * @Description 获取我创建的数据
+     * @Date 10:20 2019-1-16
+     * @Param [params]
+     * @return com.lawschool.util.Result
+     **/
+    
+    @RequestMapping("/listICreate")
+    public Result listICreate(@RequestParam Map<String,Object> params){
+        User user=getUser();
+        params.put("createUser",user.getId());
+        PageUtils page = stuMediaService.queryPage(params,getUser());
+        return Result.ok().put("page", page);
+    }
 
     /**
      * @Author MengyuWu

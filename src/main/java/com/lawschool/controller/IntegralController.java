@@ -69,4 +69,13 @@ public class IntegralController extends AbstractController {
         int i=integralService.leitaiByUser(uid);
         return Result.ok().put("leitaiSorce", i);
     }
+
+
+    @RequestMapping("/userByDeptList")
+    public Result userByDeptList(@RequestParam Map<String,Object> params){
+
+        String deptcode="320000000000";
+        PageUtils page = integralService.userByDeptList(params,deptcode);
+        return Result.ok().put("page", page);
+    }
 }

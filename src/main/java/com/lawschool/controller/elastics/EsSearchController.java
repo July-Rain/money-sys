@@ -1,3 +1,4 @@
+/*
 package com.lawschool.controller.elastics;
 
 import com.lawschool.beans.User;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
+*/
 /**
  * ClassName: EsSearchController
  * Description: EsSearchController
@@ -23,7 +25,8 @@ import java.util.List;
  *
  * @author MengyuWu
  * @since JDK 1.8
- */
+ *//*
+
 @Controller
 @RequestMapping("essearch")
 public class EsSearchController {
@@ -86,3 +89,4 @@ public class EsSearchController {
         System.out.println("user :"+users.toString());
     }
 }
+*/

@@ -8,8 +8,6 @@ var menuId=$("#menuId").val();
 var vm = new Vue({
     el: '#app',
     data: {
-        //menuId:"",//菜单id
-        navData: [],//导航
         formInline: { // 搜索表单
             stuTitle: '',
             stuPoliceclass: '',
@@ -42,7 +40,7 @@ var vm = new Vue({
             ],
             stuTitle: [
                 {required: true, message: '请输入标题', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
+                {max: 100, message: '最大长度100', trigger: 'blur'}
             ],
             comContent: [
                 {required: true, message: '请添加内容', trigger: 'blur'}
@@ -76,7 +74,8 @@ var vm = new Vue({
             orgCode:"",
             currPage: 1,
             pageSize: 10,
-            totalCount:0
+            totalCount:0,
+            identify:'0'//表明是用户
 
         },//人员查询
         userTableData:[],//人员表格信息
@@ -85,28 +84,15 @@ var vm = new Vue({
         stuPoliceclassOption:[],//所属警种
         videoFlag:false,
         videoUploadPercent:0,
+        deptCheckData:[]//部门默认选中节点
     },
     created: function () {
 
         this.$nextTick(function () {
-            console.log(vm.deptData);
-            //加载菜单
-            $.ajax({
-                type: "POST",
-                url: baseURL + "menu/nav?id="+menuId,
-                contentType: "application/json",
-                success: function(result){
-                    if(result.code === 0){
-                        vm.navData = result.menuList;
-                    }else{
-                        alert(result.msg);
-                    }
-                }
-            });
             //法律分类树数据
             $.ajax({
                 type: "POST",
-                url: baseURL + "law/tree",
+                url: baseURL + "law/alltree",
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -199,6 +185,7 @@ var vm = new Vue({
         },
         // 表单重置
         resetForm: function (formName) {
+            debugger
             this.$refs[formName].resetFields();
         },
         addStuMedia: function () {
@@ -222,19 +209,25 @@ var vm = new Vue({
                 stuKnowledge:lawName,//专项知识
                 videoPicAcc:"",//视频首页
             },
+                //清空editor
+            editor.txt.html("");
             this.title="新增";
             this.dialogStuMedia=true;
         },
         handleEdit: function (index, row){
             this.title="修改";
             this.dialogStuMedia=true;
+            this.deptCheckData=[];
+            editor.txt.html("");
             $.ajax({
                 type: "POST",
                 url: baseURL + 'stumedia/info?id=' + row.id,
                 contentType: "application/json",
                 success: function (result) {
                     if(result.code === 0){
+                        debugger
                         vm.stuMedia = result.data;
+                        vm.deptCheckData=result.data.deptArr;
                         editor.txt.html(vm.stuMedia.comContent);
                         for (var i=0;i<vm.stuMedia.length;i++){
                             if(vm.stuMedia.stuType!='1'&&vm.stuMedia.comContent){
@@ -289,11 +282,12 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "stumedia/list?isMp=true",
+                url: baseURL + "stumedia/listICreate?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
+                        debugger
                         vm.tableData = result.page.list;
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
@@ -306,6 +300,7 @@ var vm = new Vue({
         },
         // el-tree节点点击事件
         handleNodeClick: function (data) {
+            debugger
             vm.stuMedia.stuLawid=data.id;
             vm.stuMedia.stuKnowledge=data.classifyName;
             vm.formInline.stuLawid=data.id;
@@ -329,7 +324,7 @@ var vm = new Vue({
                 vm.stuMedia.contentUrl=baseURL+"sys/download?accessoryId="+response.accessoryId;
                 setTimeout(function () {
                     vm.stuMedia.stuTime=document.getElementsByClassName("avatar")[0].duration;
-                    console.info("啊啊啊",document.getElementsByClassName("avatar")[0].currentTime,document.getElementsByClassName("avatar")[0].duration);
+                    //console.info("啊啊啊",document.getElementsByClassName("avatar")[0].currentTime,document.getElementsByClassName("avatar")[0].duration);
                 },800)
             }else{
                 this.$message.error('视频上传失败，请重新上传！');
@@ -348,26 +343,26 @@ var vm = new Vue({
         },
         beforeAvatarUpload: function (file) {
             /*if(!checkFile(file)) return false;*/
-            var  isLt10M = file.size / 1024 / 1024  < 10;
+            var  isLt10M = file.size / 1024 / 1024  < 100;
             if (['video/mp4', 'video/ogg', 'video/flv','video/avi','video/wmv','video/rmvb'].indexOf(file.type) == -1) {
                 this.$message.error('请上传正确的视频格式');
                 return false;
             }
             if (!isLt10M) {
-                this.$message.error('上传视频大小不能超过10MB哦!');
+                this.$message.error('上传视频大小不能超过100MB哦!');
                 return false;
             }
 
         },
         beforeAudioUpload: function (file) {
             /*if(!checkFile(file)) return false;*/
-            var  isLt10M = file.size / 1024 / 1024  < 10;
+            var  isLt10M = file.size / 1024 / 1024  < 100;
             if (['audio/ogg', 'audio/mpeg', 'audio/mp3', 'audio/wav'].indexOf(file.type) == -1) {
                 this.$message.error('请上传正确的音频格式');
                 return false;
             }
             if (!isLt10M) {
-                this.$message.error('上传音频大小不能超过10MB哦!');
+                this.$message.error('上传音频大小不能超过100MB哦!');
                 return false;
             }
 
@@ -375,20 +370,20 @@ var vm = new Vue({
         beforePicUpload: function (file) {
             //图片上传之前的判断
             /*if(!checkFile(file)) return false;*/
-            var  isLt10M = file.size / 1024 / 1024  < 10;
+            var  isLt10M = file.size / 1024 / 1024  < 100;
             if (['image/jpeg', 'image/jpg', 'image/png','image/gif','image/bpm'].indexOf(file.type) == -1) {
                 this.$message.error('请上传正确的图片格式');
                 return false;
             }
             if (!isLt10M) {
-                this.$message.error('上传图片大小不能超过10MB哦!');
+                this.$message.error('上传图片大小不能超过100MB哦!');
                 return false;
             }
 
         },
         uploadVideoProcess(event, file, fileList){
             this.videoFlag = true;
-            this.videoUploadPercent = file.percentage;
+            this.videoUploadPercent = file.percentage.toFixed(2);
         },
 
         changeStuType: function () {
@@ -410,7 +405,7 @@ var vm = new Vue({
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
             for(var i=0;i<this.multipleDeptSelection.length;i++){
-                if (this.stuMedia.deptIds == "") {
+                if (!this.stuMedia.deptIds) {
                     this.stuMedia.deptIds=this.multipleDeptSelection[i].id;
                     this.stuMedia.deptName=this.multipleDeptSelection[i].orgName;
                 }else{
@@ -436,7 +431,7 @@ var vm = new Vue({
         reloadUser: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sys/getAllUsers",
+                url: baseURL + "sys/getUorT?isMp=true",
                 dataType: "json",
                 data: vm.userForm,
                 success: function (result) {
@@ -444,7 +439,7 @@ var vm = new Vue({
                         vm.userTableData = result.page.list;
                         vm.userForm.currPage = result.page.currPage;
                         vm.userForm.pageSize = result.page.pageSize;
-                        vm.userForm.totalCount = parseInt(result.page.count);
+                        vm.userForm.totalCount = parseInt(result.page.totalCount);
                     } else {
                         alert(result.msg);
                     }
@@ -473,7 +468,7 @@ var vm = new Vue({
             this.multipleSelection = val;
             //遍历最终的人员信息
             for (var i=0;i<val.length;i++){
-                if (this.stuMedia.userIds == "") {
+                if (!this.stuMedia.userIds) {
                     this.stuMedia.userIds=val[i].id;
                     this.stuMedia.userName=val[i].userName;
                 }else{
@@ -498,7 +493,7 @@ var vm = new Vue({
         setTimeout(() => {
             this.$refs.stuDialog.close();
             loadEditor();
-    }, 2000);
+    }, 200);
     }
 });
 function loadEditor(){

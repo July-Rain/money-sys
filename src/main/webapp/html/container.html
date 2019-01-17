@@ -101,7 +101,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <p><a href="javascript:;">开始考试</a></p>
+                            <el-button type="primary" style="float:right;">开始考试</el-button>
                         </div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                         <el-row :gutter="66">
                             <el-col :span="12" v-for="(item, index) in videoData">
                                 <el-card :body-style="{ padding: '0px' }">
-                                    <video class="video" width="315" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,item.comContent)">
+                                    <video class="video" width="315" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,item.comContent)" @pause="onPause(item.id,$event)">
                                         <source :src="item.contentUrl" type="video/mp4">
                                         您的浏览器不支持视频播放
                                     </video>
@@ -171,7 +171,7 @@
                     <div class="content fast">
                         <ul>
                             <li v-for="item in newsData">
-                                <a href="javascript:;" class="title">{{item.lawTitle}}</a>
+                                <a href="javascript:;" class="title" @click="goLaw(item.id)">{{item.lawTitle}}</a>
                                 <img v-if="item.tipShow" src="${rc.contextPath}/statics/img/new.png">
                                 <span class="date">{{item.issueTime}}</span>
                             </li>
@@ -222,17 +222,9 @@
                                 <div class="span-title">学情统计</div>
                                 <div class="infoMsg">
                                     <ul>
-                                        <li>
-                                            <p class="info"><i></i>累计学习时长:<span>15h</span></p>
-                                            <p class="contrast">击败了<span>20%</span>的同学</p>
-                                        </li>
-                                        <li>
-                                            <p class="info"><i></i>累计学习时长:<span>15h</span></p>
-                                            <p class="contrast">击败了<span>20%</span>的同学</p>
-                                        </li>
-                                        <li>
-                                            <p class="info"><i></i>累计学习时长:<span>15h</span></p>
-                                            <p class="contrast">击败了<span>20%</span>的同学</p>
+                                        <li  v-for="(item, index) in stuInfo">
+                                            <p class="info"><i></i>{{item.name}}:<span>{{item.countTime}}h</span></p>
+                                            <p class="contrast">击败了<span>{{item.ratio}}</span>的同事</p>
                                         </li>
                                     </ul>
                                 </div>

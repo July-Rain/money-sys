@@ -4,8 +4,10 @@ package com.lawschool.service.competition;
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.User;
 import com.lawschool.beans.competition.CompetitionRecord;
+import com.lawschool.util.PageUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -32,4 +34,10 @@ public interface CompetitionRecordService extends IService<CompetitionRecord> {
     public void updateRecordStatus();
 
     public int chuangguanCountByUser(String uid);
+    PageUtils queryPage(Map<String, Object> params,String uid);
+
+    public int chuangguanCountBydept(String deptcode);
+    public int chuangguanSorceBydept(String deptcode);
+
+    List<CompetitionRecord> chuangGuanRanking();
 }

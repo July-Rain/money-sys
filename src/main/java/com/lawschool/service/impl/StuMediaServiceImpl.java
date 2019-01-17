@@ -22,10 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static com.lawschool.util.Constant.ERROR;
 import static com.lawschool.util.Constant.SUCCESS;
@@ -178,7 +178,7 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
     }
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
+    public PageUtils queryPage(Map<String, Object> params,User user) {
         String stuTitle = (String)params.get("stuTitle");
         String comContent = (String)params.get("comContent");
         String stuPoliceclass = (String)params.get("stuPoliceclass");
@@ -210,11 +210,31 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         if(UtilValidate.isNotEmpty(stuIssuer)){
             ew.like("stu_issuer",stuIssuer);
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if(UtilValidate.isNotEmpty(startTime)){
-            ew.addFilter("(stu_isstime >= TO_DATE('"+startTime+"', 'yyyy-mm-dd'))");
+            Date startParse = null;
+            try {
+                startParse = sdf.parse(startTime);
+                ew.ge("stu_isstime", startParse);
+            } catch (ParseException e) {
+                throw new RuntimeException();
+            }
         }
         if(UtilValidate.isNotEmpty(endTime)){
-            ew.addFilter("(stu_isstime <= TO_DATE('"+endTime+"', 'yyyy-mm-dd'))");
+            Date endParse = null;
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                Format f = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar c = Calendar.getInstance();
+                c.setTime(format.parse(endTime));
+                c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
+                Date tomorrow = c.getTime();
+                endParse = tomorrow;
+                //以开始时间搞
+                ew.le("stu_isstime", endParse);
+            } catch (ParseException e) {
+                throw new RuntimeException();
+            }
         }
 
         if(UtilValidate.isNotEmpty(createUser)){  //创建人
@@ -222,6 +242,16 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         }
         if(UtilValidate.isNotEmpty(addsrc)){  //添加来源
             ew.eq("ADDSRC",addsrc);
+        }
+        if(UtilValidate.isNotEmpty(params.get("isAuth"))){
+            //需要权限过滤
+           String[] authArr= authService.listAllIdByUser(user.getOrgId(),user.getId(),"STUMEDIA");
+           if(authArr.length>0){
+               ew.in("id",authArr);
+           }else{
+               String[] arr={"0"};
+               ew.in("id",arr);
+           }
         }
 
         ew.orderBy("STU_ISSTIME",false);

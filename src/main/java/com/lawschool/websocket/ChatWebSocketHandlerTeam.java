@@ -219,7 +219,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 
         if( (msg.getMyanswer()!=null && !"".equals(msg.getMyanswer())) && (msg.getTq()!=null))
         {
-            competitionOnlineService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom());
+            competitionOnlineService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom(),"teamOnline");
         }
 
 		if(!"addroom".equals(msg.getText()) && !"joinroom".equals(msg.getText()) && msg.getTeamOrGame().equals("1")) //当触发新建房间事件
@@ -535,6 +535,9 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 						}
 						else if(i!=0)//说明偷跑
 						{
+
+
+							competitionOnlineService.recordScore(battlePlatform.getId(),"0","0","teamOnline",loginUser.getId());
 							count.put((competitionTeamService.selectById(team1)).getTeamCode(),count.get((competitionTeamService.selectById(team1)).getTeamCode())+1);
 							count.put((competitionTeamService.selectById(team2)).getTeamCode(),count.get((competitionTeamService.selectById(team2)).getTeamCode())+1);
 
@@ -548,17 +551,20 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 									WebSocketSession SocketSession=USER_SOCKETSESSION_MAP.get(id);
 									if(idsA.contains(loginUser.getId())==true)
 									{
+										competitionOnlineService.recordScore(battlePlatform.getId(),"0","0","teamOnline",id);
 										msg.setText(loginUser.getFullName()+"离开,很遗憾，游戏结束");
+										msg.setJifen(timussettingMap.get(battlePlatform.getBattleCode()).getLoserReward());
 										msg.setStrus("0");//队友跑了
 									}
 									else
 									{
+										competitionOnlineService.recordScore(battlePlatform.getId(),"1",timussettingMap.get(battlePlatform.getBattleCode()).getWinReward(),"teamOnline",id);
 										msg.setText(loginUser.getFullName()+"离开,恭喜你，游戏结束");
 										msg.setJifen(timussettingMap.get(battlePlatform.getBattleCode()).getWinReward());
 										msg.setStrus("1");//对方跑了
 									}
 
-
+									msg.setBattlePlatform(battlePlatform);
 									TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 									sendMessageToUser(id,message);
 									SocketSession.close();
@@ -574,17 +580,22 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 									WebSocketSession SocketSession=USER_SOCKETSESSION_MAP.get(id);
 									if(idsB.contains(loginUser.getId())==true)
 									{
+										competitionOnlineService.recordScore(battlePlatform.getId(),"0","0","teamOnline",id);
+
 										msg.setText(loginUser.getFullName()+"离开,很遗憾，游戏结束");
+										msg.setJifen(timussettingMap.get(battlePlatform.getBattleCode()).getLoserReward());
 										msg.setStrus("0");//队友跑了
 									}
 									else
 									{
+										competitionOnlineService.recordScore(battlePlatform.getId(),"1",timussettingMap.get(battlePlatform.getBattleCode()).getWinReward(),"teamOnline",id);
+
 										msg.setText(loginUser.getFullName()+"离开,恭喜你，游戏结束");
 										msg.setJifen(timussettingMap.get(battlePlatform.getBattleCode()).getWinReward());
 										msg.setStrus("1");//对方跑了
 									}
 
-
+									msg.setBattlePlatform(battlePlatform);
 									TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 									sendMessageToUser(id,message);
 									SocketSession.close();

@@ -4,13 +4,14 @@ var vm = new Vue({
     data: {
             dataByNum:[],
             dataBySorce:[],
+            dataByCorrect:[],
             user:{},
 
     },
     created: function () {
         this.$nextTick(function () {
            this.user=jsgetUser();
-//先得到数据dataByNum
+//先得到数据dataByNum---------------------------------------------------------------------------------------------------------------
            // 查次数//最笨的一个个查  没什么影响
            //       ------1查闯关次数
             $.ajax({
@@ -47,7 +48,7 @@ var vm = new Vue({
 
 
 
-            //然后的数据dataBySorce【】
+//然后的数据dataBySorce【】-----------------------------------------------------------------------------------------------------
             //       ------1查闯关分数
             $.ajax({
                 type: "POST",
@@ -81,7 +82,38 @@ var vm = new Vue({
                     vm.dataBySorce.push({value:Number(data.leitaiSorce), name:'擂台赛'});
                 }
             });
+//然后的数据dataByCorrect【】-----------------------------------------------------------------------------------------------------
+            $.ajax({
+                type: "POST",
+                url: baseURL + "userQuestRecord/CheckpointByUser",
+                Type: "json",
+                data: {"uid":this.user.id},
+                async:false,
+                success: function (data) {
+                    vm.dataByCorrect.push({value:Number(data.CheckpointByUser), name:'竞赛闯关'});
+                }
+            });
 
+            $.ajax({
+                type: "POST",
+                url: baseURL + "userQuestRecord/OnlinByUser",
+                Type: "json",
+                data: {"uid":this.user.id},
+                async:false,
+                success: function (data) {
+                    vm.dataByCorrect.push({value:Number(data.OnlinByUser), name:'在线比武'});
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: baseURL + "userQuestRecord/leitaiByUser",
+                Type: "json",
+                data: {"uid":this.user.id},
+                async:false,
+                success: function (data) {
+                    vm.dataByCorrect.push({value:Number(data.leitaiByUser), name:'擂台赛'});
+                }
+            });
             this.reload();
         })
     },
@@ -245,9 +277,85 @@ var vm = new Vue({
             // 使用刚指定的配置项和数据显示图表。
             vm.echartsOption(myChart, option)
         },
+        initPie3: function () {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('pie3'));
+            // 指定图表的配置项和数据
+            var option = {
+                backgroundColor: '#fff',
+
+                title: {
+                    text: '',
+                    left: 'center',
+                    top: 20,
+                    textStyle: {
+                        color: '#ccc'
+                    }
+                },
+
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} %"
+                },
+
+                visualMap: {
+                    show: false,
+                    min: 80,
+                    max: 600,
+                    inRange: {
+                        colorLightness: [0, 1]
+                    }
+                },
+                series : [
+                    {
+                        name:'游戏类型',
+                        type:'pie',
+                        radius : [30, 150],
+                        center: ['50%', '50%'],
+                        data:vm.dataByCorrect,
+                        roseType: 'radius',
+                        label: {
+                            normal: {
+                                textStyle: {
+                                    color: '#666'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                lineStyle: {
+                                    color: '#666'
+                                },
+                                smooth: 0.2,
+                                length: 10,
+                                length2: 20
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                // 定制显示（按顺序）
+                                color: function(params) {
+                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
+                                    return colorList[params.dataIndex]
+                                }
+                            },
+                        },
+
+                        animationType: 'scale',
+                        animationEasing: 'elasticOut',
+                        animationDelay: function (idx) {
+                            return Math.random() * 200;
+                        }
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            vm.echartsOption(myChart, option)
+        },
         reload: function () {
-            this.initPie1()
-            this.initPie2()
+            this.initPie1();
+            this.initPie2();
+            this.initPie3();
         }
     }
 });

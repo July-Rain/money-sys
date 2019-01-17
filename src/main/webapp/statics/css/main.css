@@ -530,20 +530,14 @@
 .pieArea .el-icon-arrow-left,.pieArea .el-icon-arrow-right{
     display: none
 }
+/*检索*/
 .info_card{
-    border: 1px solid #dcdcdc;
-    border-radius: 4px;
     margin-bottom: 20px;
 }
 .info_card .card_title{
-    background-color: #f5f5f5;
-    border-bottom: 1px #dcdcdc solid;
-    line-height: 48px;
-    height: 48px;
-    color: #333;
-    font-size: 18px;
-
-
+    height: 6px;
+    background: #1381e3;
+    border-radius: 4px 4px 0 0;
 }
 .info_card .card_title i{
     color: #9eacb8;
@@ -553,6 +547,95 @@
     display: inline-block;
     font-weight: normal;
 }
+.info_card .card_contain .el-form-item{
+    margin-bottom: 10px;
+}
 .info_card .card_contain{
+    border-left: 1px solid #dcdcdc;
+    border-bottom: 1px solid #dcdcdc;
+    border-right: 1px solid #dcdcdc;
     padding: 10px 20px 0;
+}
+.info_card .reset_btn{
+    background: #cae6fe;
+    color: #0079d7;
+}
+.info_card button{
+    padding: 6px 8px;
+}
+.el-button--primary{
+    background-image: none;
+}
+.el-button--primary:focus, .el-button--primary:hover{
+    background-image: url("../img/btn_hover.png");
+    background-size: 100% 100%;
+    /*box-shadow: 1px 2px 5px 1px #1381e3;*/
+    border-color: transparent;
+}
+.el-button--primary.is-active, .el-button--primary:active{
+    background-image: url("../img/btn_pressed.png");
+    background-size: 100% 100%;
+    box-shadow: none;
+}
+/*表格样式*/
+thead.has-gutter th{
+    background-color: #f5f7fa;
+    /*font-size: 14px;*/
+    background:-webkit-linear-gradient(#fbfcfd 5%,#f5f7fa 94%,#eef0f2 1%);
+    background:-o-linear-gradient(#fbfcfd 5%,#f5f7fa 94%,#eef0f2 1%);
+    background:-moz-linear-gradient(#fbfcfd 5%,#f5f7fa 94%,#eef0f2 1%);
+    background:linear-gradient(#fbfcfd 5%,#f5f7fa 94%,#eef0f2 1%);
+    border-color: transparent;
+}
+thead.has-gutter th > .cell{
+    font-size: 14px;
+    color: #666;
+}
+.el-table__row:hover td{
+    background: #e9f3ff!important;
+    border-top: 1px solid #b7d8ff;
+    border-bottom: 1px solid #b7d8ff;
+}
+.el-table--border{
+    border-color: #dddddd;
+}
+.el-table--border td{
+    border-color: #dddddd;
+}
+.el-table--border::after, .el-table--group::after, .el-table::before{
+    background: #dddddd;
+}
+.el-table td, .el-table th.is-leaf{
+    border-bottom-color: #dddddd;
+}
+/*面包屑底部*/
+.el-breadcrumb{
+    margin-bottom: 20px;
+}
+.el-breadcrumb__inner.is-link{
+    color: #1381e3;
+    font-size: 14px;
+}
+.el-breadcrumb__inner.is-link:hover{
+    text-decoration: underline;
+}
+.el-breadcrumb > span:first-child .el-icon-arrow-right{
+    position: relative;
+    padding-right: 10px;
+}
+.el-breadcrumb > span:first-child .el-icon-arrow-right:before{
+    position: absolute;
+    right: 3px;
+    top: -10px;
+    content: '';
+    width: 1px;
+    height: 12px;
+    background: #aaa;
+}
+/*小气泡样式*/
+.el-popover{
+    min-width: 0px;
+}
+.el-popover--plain{
+    padding: 8px;
 }

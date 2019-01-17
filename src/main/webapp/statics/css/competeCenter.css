@@ -78,21 +78,30 @@
     position: relative;
 }
 .top .top_content .activedImg{
-    display: none;
     position: absolute;
     top: -14px;
     left: 33px;
 }
+.top .top_content .activedImg2{
+    position: absolute;
+    top: 0;
+    left: 40%;
+}
+.top .top_content .activedImg3{
+    position: absolute;
+    top: 0;
+    right: 33px;
+}
 .firstList li{
     height: 55px;
     line-height: 55px;
-    color: #e4e5ff;
+    color: #d9daf0;
     font-size: 16px;
     margin: 10px 0;
     background: rgba(255,255,255,0.1);
     border-radius: 4px;
     position: relative;
-    padding-right: 175px;
+    padding-right: 125px;
 }
 .firstList li .headImg,
 .firstList li .name,
@@ -141,4 +150,9 @@
 }
 .firstList li .score{
     float: right;
+    color: #e4e5ff;
 }
+.firstList li .score{
+    float: left;
+}
+

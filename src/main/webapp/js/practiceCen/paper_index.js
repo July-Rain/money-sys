@@ -36,15 +36,18 @@ var vm = new Vue({
         start: function (id, taskId) {
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/paper_paper.html?id='+id+'&taskId='+taskId;
+                = 'modules/exerciseCenter/paper_paper.html?id=' + id + '&taskId=' + taskId;
         },
         goon: function (id, taskId) {
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/paper_paper.html?id='+id+'&taskId='+taskId;
+                = 'modules/exerciseCenter/paper_paper.html?id=' + id + '&taskId=' + taskId;
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     },
-    created: function(){
+    created: function () {
         this.$nextTick(function () {
             vm.refresh();
         })

@@ -28,8 +28,27 @@
                             <el-form-item label="案例标题" prop="caseTitle">
                                 <el-input v-model="formInline.caseTitle" placeholder="案例标题" size="mini"></el-input>
                             </el-form-item>
-                            <el-form-item label="案例类型" prop="caseType">
-                                <el-input v-model="formInline.caseType" placeholder="案例类型" size="mini"></el-input>
+                            <el-form-item label="案件类型" prop="caseType">
+                                <el-select v-model="formInline.caseType"  size="mini" placeholder="案件类型" >
+                                    <el-option
+                                            v-for="item in caseTypeOption"
+                                            :key="item.code"
+                                            :label="item.value"
+                                            :value="item.code"
+                                    >
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="法院层级" prop="lawLevel">
+                                <el-select v-model="formInline.lawLevel" size="mini" placeholder="法院层级" >
+                                    <el-option
+                                            v-for="item in lawLevelOption"
+                                            :key="item.code"
+                                            :label="item.value"
+                                            :value="item.code"
+                                    >
+                                    </el-option>
+                                </el-select>
                             </el-form-item>
 
                             <el-form-item label="资料类型" prop="contentType">
@@ -38,6 +57,28 @@
                                     <el-option label="音频" value="2"></el-option>
                                     <el-option label="视频" value="3"></el-option>
                                 </el-select>
+                            </el-form-item>
+                            <el-form-item label="裁决开始时间" prop="startTime">
+                                <el-date-picker
+                                        v-model="formInline.startTime"
+                                        type="date"
+                                        format="yyyy年MM月dd日"
+                                        value-format="yyyy-MM-dd"
+                                        placeholder="开始时间"
+                                        size="mini"
+                                >
+                                </el-date-picker>
+                            </el-form-item>
+                            <el-form-item label="裁决结束时间" prop="endTime">
+                                <el-date-picker
+                                        v-model="formInline.endTime"
+                                        type="date"
+                                        format="yyyy年MM月dd日"
+                                        value-format="yyyy-MM-dd"
+                                        placeholder="结束时间"
+                                        size="mini"
+                                >
+                                </el-date-picker>
                             </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
@@ -148,7 +189,7 @@
                                     <i v-else-if="caseAna.caseContent =='' && videoFlag == false" class="el-icon-plus avatar-uploader-icon"></i>
                                     <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
                                 </el-upload>
-                                <P class="text">请保证音频格式正确，且不超过10M</P>
+                                <P class="text">请保证音频格式正确，且不超过100M</P>
                             </el-form-item>
                         </template>
                         <template v-if="caseAna.contentType=='3'">
@@ -171,7 +212,7 @@
                                     <i v-else-if="caseAna.caseContent =='' && videoFlag == false" class="el-icon-plus avatar-uploader-icon"></i>
                                     <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
                                 </el-upload>
-                                <P class="text">请保证视频格式正确，且不超过10M</P>
+                                <P class="text">请保证视频格式正确，且不超过100M</P>
                             </el-form-item>
                         </template>
                         <el-form-item label="案件类型" prop="caseType">
@@ -229,6 +270,7 @@
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="saveOrUpdate('caseAna')">保存</el-button>
+                            <el-button @click="closeDia">取消</el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
@@ -246,6 +288,7 @@
                     @check-change="handleCheckChange"
                     node-key="id"
                     :default-expanded-keys="[2079]"
+                    :default-checked-keys="deptCheckData"
                     >
             </el-tree>
             <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
@@ -269,10 +312,10 @@
                         <el-tab-pane label="检索">
                             <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
 
-                                <el-form-item prop="code">
+                                <el-form-item prop="userCode">
                                     <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
                                 </el-form-item>
-                                <el-form-item prop="value">
+                                <el-form-item prop="userName">
                                     <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
                                 </el-form-item>
 

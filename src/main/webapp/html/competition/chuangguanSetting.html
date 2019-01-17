@@ -74,23 +74,7 @@
         </style>
 <body>
 <div id="app" v-cloak>
-    <div class="header">
-        <div class="header-left">
-            <img src="${rc.contextPath}/statics/img/logo.png">
-            <a href="javascript:;">江苏省公安厅法律学校</a>
-        </div>
 
-        <!--<div class="header-right">-->
-        <!--<ul>-->
-        <!--<li v-for="item in navData">-->
-        <!--<a>-->
-        <!--<i :class="item.icon"></i>-->
-        <!--<p><a href="javascript:;">{{item.name}}</a></p>-->
-        <!--</a>-->
-        <!--</li>-->
-        <!--</ul>-->
-        <!--</div>-->
-    </div>
     <div class="container">
         <el-row :gutter="24">
             <el-col :span="24">
@@ -298,6 +282,7 @@
 
                         <el-form-item>
                             <el-button type="primary" @click="saveOrUpdate()">保存</el-button>
+                            <el-button @click="closeDia">取消</el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>

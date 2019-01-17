@@ -79,7 +79,245 @@
     ROWNUM &lt;= #{num}
   </select>
 
+  <select id="CheckpointByUser" resultType="java.lang.Integer" parameterType="java.lang.String">
+      SELECT
+          ROUND (
+              (
+                  COUNT (
+                      CASE
+                      WHEN MY_ASWER_ID = RIGHT_ANSWER_ID THEN
+                          1
+                      WHEN MY_ASWER_ID != RIGHT_ANSWER_ID THEN
+                          NULL
+                      END
+                  ) / COUNT (*)
+              ) * 100,
+              2
+          )
+      FROM
+          LAW_USER_QUESTION_RECORD
+      WHERE
+          USER_ID = #{uid}
+          AND "SOURCE" = 'Checkpoint'
+  </select>
+
+  <select id="OnlinByUserCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+      SELECT
+        count(*)
+      FROM
+          LAW_USER_QUESTION_RECORD
+      WHERE
+          USER_ID = #{uid}
+      AND ("SOURCE" = 'OnlinPkByCode'   OR  "SOURCE" = 'OnlinPk'   or "SOURCE" = 'teamOnline' )
+  </select>
 
 
+  <select id="OnlinByUser" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT
+    	ROUND (
+		(
+			COUNT (
+				CASE
+				WHEN MY_ASWER_ID = RIGHT_ANSWER_ID THEN
+					1
+				WHEN MY_ASWER_ID != RIGHT_ANSWER_ID THEN
+					NULL
+				END
+			) / COUNT (*)
+		) * 100,
+		2
+	)
+    FROM
+    LAW_USER_QUESTION_RECORD
+    WHERE
+    USER_ID = #{uid}
+    AND ("SOURCE" = 'OnlinPkByCode'   OR  "SOURCE" = 'OnlinPk'   or "SOURCE" = 'teamOnline' )
+  </select>
+
+  <select id="leitaiByUser" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT
+    ROUND (
+    (
+    COUNT (
+    CASE
+    WHEN MY_ASWER_ID = RIGHT_ANSWER_ID THEN
+    1
+    WHEN MY_ASWER_ID != RIGHT_ANSWER_ID THEN
+    NULL
+    END
+    ) / COUNT (*)
+    ) * 100,
+    2
+    )
+    FROM
+    LAW_USER_QUESTION_RECORD
+    WHERE
+    USER_ID = #{uid}
+    AND "SOURCE" = 'leitai'
+  </select>
+
+
+
+
+  <select id="chuangguanCorrectBydeptCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+          SELECT
+             "COUNT"(*)
+          FROM
+              (
+                  SELECT
+                      LAW_USER_QUESTION_RECORD.*, LAW_USER.ORG_CODE
+                  FROM
+                      LAW_USER_QUESTION_RECORD,
+                      LAW_USER
+                  WHERE
+                      LAW_USER_QUESTION_RECORD.USER_ID = LAW_USER. ID
+              ) ttt
+          WHERE
+              TTT.ORG_CODE = #{deptcode}
+          AND
+              ttt."SOURCE" = 'Checkpoint'
+  </select>
+  <select id="chuangguanCorrectBydept" resultType="java.lang.Integer" parameterType="java.lang.String">
+          SELECT
+              ROUND (
+                  (
+                      COUNT (
+                          CASE
+                          WHEN ttt.MY_ASWER_ID = ttt.RIGHT_ANSWER_ID THEN
+                              1
+                          WHEN ttt.MY_ASWER_ID != ttt.RIGHT_ANSWER_ID THEN
+                              NULL
+                          END
+                      ) / COUNT (*)
+                  ) * 100,
+                  2
+              )
+          FROM
+              (
+                  SELECT
+                      LAW_USER_QUESTION_RECORD.*, LAW_USER.ORG_CODE
+                  FROM
+                      LAW_USER_QUESTION_RECORD,
+                      LAW_USER
+                  WHERE
+                      LAW_USER_QUESTION_RECORD.USER_ID = LAW_USER. ID
+              ) ttt
+          WHERE
+              TTT.ORG_CODE = #{deptcode}
+          AND
+              ttt."SOURCE" = 'Checkpoint'
+
+  </select>
+
+
+  <select id="OnlinCorrectBydeptCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+           SELECT
+             "COUNT"(*)
+          FROM
+              (
+                  SELECT
+                      LAW_USER_QUESTION_RECORD.*, LAW_USER.ORG_CODE
+                  FROM
+                      LAW_USER_QUESTION_RECORD,
+                      LAW_USER
+                  WHERE
+                      LAW_USER_QUESTION_RECORD.USER_ID = LAW_USER. ID
+              ) ttt
+          WHERE
+              TTT.ORG_CODE = #{deptcode}
+          AND (
+              ttt."SOURCE" = 'OnlinPkByCode'
+              OR ttt."SOURCE" = 'OnlinPk'
+              OR ttt."SOURCE" = 'teamOnline'
+          )
+
+  </select>
+  <select id="OnlinCorrectBydept" resultType="java.lang.Integer" parameterType="java.lang.String">
+           SELECT
+              ROUND (
+                  (
+                      COUNT (
+                          CASE
+                          WHEN ttt.MY_ASWER_ID = ttt.RIGHT_ANSWER_ID THEN
+                              1
+                          WHEN ttt.MY_ASWER_ID != ttt.RIGHT_ANSWER_ID THEN
+                              NULL
+                          END
+                      ) / COUNT (*)
+                  ) * 100,
+                  2
+              )
+          FROM
+              (
+                  SELECT
+                      LAW_USER_QUESTION_RECORD.*, LAW_USER.ORG_CODE
+                  FROM
+                      LAW_USER_QUESTION_RECORD,
+                      LAW_USER
+                  WHERE
+                      LAW_USER_QUESTION_RECORD.USER_ID = LAW_USER. ID
+              ) ttt
+          WHERE
+              TTT.ORG_CODE = #{deptcode}
+          AND (
+              ttt."SOURCE" = 'OnlinPkByCode'
+              OR ttt."SOURCE" = 'OnlinPk'
+              OR ttt."SOURCE" = 'teamOnline'
+          )
+
+  </select>
+
+
+
+  <select id="leitaiCorrectBydeptCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+
+          SELECT
+              "COUNT"(*)
+          FROM
+              (
+                  SELECT
+                      LAW_USER_QUESTION_RECORD.*, LAW_USER.ORG_CODE
+                  FROM
+                      LAW_USER_QUESTION_RECORD,
+                      LAW_USER
+                  WHERE
+                      LAW_USER_QUESTION_RECORD.USER_ID = LAW_USER. ID
+              ) ttt
+          WHERE
+              TTT.ORG_CODE = #{deptcode}
+          AND
+              ttt."SOURCE" = 'leitai'
+  </select>
+  <select id="leitaiCorrectBydept" resultType="java.lang.Integer" parameterType="java.lang.String">
+          SELECT
+              ROUND (
+                  (
+                      COUNT (
+                          CASE
+                          WHEN ttt.MY_ASWER_ID = ttt.RIGHT_ANSWER_ID THEN
+                              1
+                          WHEN ttt.MY_ASWER_ID != ttt.RIGHT_ANSWER_ID THEN
+                              NULL
+                          END
+                      ) / COUNT (*)
+                  ) * 100,
+                  2
+              )
+          FROM
+              (
+                  SELECT
+                      LAW_USER_QUESTION_RECORD.*, LAW_USER.ORG_CODE
+                  FROM
+                      LAW_USER_QUESTION_RECORD,
+                      LAW_USER
+                  WHERE
+                      LAW_USER_QUESTION_RECORD.USER_ID = LAW_USER. ID
+              ) ttt
+          WHERE
+              TTT.ORG_CODE = #{deptcode}
+          AND
+              ttt."SOURCE" = 'leitai'
+
+  </select>
 
 </mapper>

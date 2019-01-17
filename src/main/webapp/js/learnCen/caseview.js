@@ -13,23 +13,14 @@ var vm = new Vue({
             currPage: 1,
             pageSize: 10,
             totalCount:0,
-            stuLawName:"",
-            stuIssuer:"",
+            caseLawName:"",
+            caseLawid:"",
             startTime:"",
-            endTime:""
+            endTime:"",
+            lawLevel:"",
+            caseType:""
         },
         visible: false,
-        stuMedia: {
-            id:"",
-            stuType: "1",
-            stuTitle: "",
-            comContent: "",
-            deptIds: "",
-            userIds: "",
-            stuDescribe:"",
-            userName:"",//适用人员姓名
-            deptName:"",//适用部门姓名
-        },
         treeData: [],//法律知识库分类树
         defaultProps: { // el-tree
             children: 'list',
@@ -39,6 +30,10 @@ var vm = new Vue({
         multipleSelection:[],//法律分类弹窗
         playTime:0,//播放时间
         oldTime:0,//原播放时间
+        caseTypeOption:[],
+        lawLevelOption:[],
+        caseProcessOption:[]
+
     },
     created: function () {
 
@@ -57,7 +52,39 @@ var vm = new Vue({
                     }
                 }
             });
-
+            // 案件类型
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async:false,
+                data: {type:"CASETYPE",Parentcode:"0"},
+                success: function (result) {
+                    vm.caseTypeOption=result.dictlist;
+                }
+            });
+            // 法院层级
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async:false,
+                data: {type:"LAWLEVEL",Parentcode:"0"},
+                success: function (result) {
+                    vm.lawLevelOption=result.dictlist;
+                }
+            });
+            // 审判程序
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async:false,
+                data: {type:"CASEPROCESS",Parentcode:"0"},
+                success: function (result) {
+                    vm.caseProcessOption=result.dictlist;
+                }
+            });
         })
         this.$nextTick(function () {
             this.reload();
@@ -79,7 +106,7 @@ var vm = new Vue({
         },
         // 表单重置
         resetForm: function (formName) {
-            this.formInline.stuLawid="";
+            this.formInline.caseLawid="";
             this.$refs[formName].resetFields();
         },
         reload: function () {
@@ -97,13 +124,6 @@ var vm = new Vue({
                                 vm.caseData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.caseData[i].videoPicAcc;
                             }else{
                                 vm.caseData[i].videoPicAccUrl="http://temp.im/640x260";
-                            }
-                            if(vm.caseData[i].contentType=='1'){
-                                vm.caseData[i].contentType="文字";
-                            }else if(vm.caseData[i].contentType=='2'){
-                                vm.caseData[i].contentType="音频";
-                            }else if(vm.caseData[i].contentType=='3'){
-                                vm.caseData[i].contentType="视频";
                             }
                         }
                         vm.formInline.currPage = result.page.currPage;
@@ -130,16 +150,16 @@ var vm = new Vue({
             this.multipleSelection=[];
         },
         confimLaw: function () {
-            this.formInline.stuLawid="";
-            this.formInline.stuLawName="";
+            this.formInline.caseLawid="";
+            this.formInline.caseLawName="";
             this.multipleSelection=this.$refs.lawtree.getCheckedNodes();
             for(var i=0;i<this.multipleSelection.length;i++){
-                if (this.formInline.stuLawid == "") {
-                    this.formInline.stuLawid=this.multipleSelection[i].id;
-                    this.formInline.stuLawName=this.multipleSelection[i].classifyName;
+                if (!this.formInline.caseLawid) {
+                    this.formInline.caseLawid=this.multipleSelection[i].id;
+                    this.formInline.caseLawName=this.multipleSelection[i].classifyName;
                 }else{
-                    this.formInline.stuLawid+=","+this.multipleSelection[i].id;
-                    this.formInline.stuLawName+=","+this.multipleSelection[i].classifyName;
+                    this.formInline.caseLawid+=","+this.multipleSelection[i].id;
+                    this.formInline.caseLawName+=","+this.multipleSelection[i].classifyName;
                 }
             }
             this.dialogLaw=false;
@@ -195,6 +215,26 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+        handleEdit:function (id) {
+            //请求后台修改播放量 记录学习记录 --案例分析模块
+
+            $.ajax({
+                type: "POST",
+                url: baseURL +  "caseana/updateCount?id="+id+"&stuType="+vm.infoFlag+"&stuFrom=caseana",
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     }
 });

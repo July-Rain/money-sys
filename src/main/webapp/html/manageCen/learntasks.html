@@ -5,14 +5,16 @@
     <#include "/header.html">
 </head>
 <style>
-    .header-right ul{
+    .header-right ul {
         background: transparent;
     }
-    .header-right ul li:after{
+
+    .header-right ul li:after {
         content: '';
     }
+
     .el-menu--horizontal .el-menu-item,
-    .el-menu--horizontal .el-submenu{
+    .el-menu--horizontal .el-submenu {
         float: left;
         height: 70px;
         /*line-height: 70px;*/
@@ -20,13 +22,15 @@
         border-bottom: 2px solid transparent;
         color: #fff;
     }
-    .el-menu--horizontal>.el-submenu .el-submenu__title {
+
+    .el-menu--horizontal > .el-submenu .el-submenu__title {
         height: 70px;
         /* line-height: 70px; */
         border-bottom: 2px solid transparent;
         color: #909399;
     }
-    .header-right ul li a{
+
+    .header-right ul li a {
         text-align: center;
         padding: 0;
         /*margin: 10px 0;*/
@@ -34,34 +38,41 @@
         height: auto;
         display: inline-block;
     }
+
     .header-right .el-menu-item [class^=el-icon-],
     .header-right .el-submenu [class^=el-icon-],
-    .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
+    .el-menu--horizontal > .el-submenu .el-submenu__icon-arrow {
         font-size: 30px;
         color: #fff;
     }
+
     /*.header-right .el-submenu [class^=el-icon-]*/
-    .header-right ul li a span{
+    .header-right ul li a span {
         display: block;
         margin-top: -10px;
         line-height: 10px;
     }
+
     .header-right .el-menu-item:hover a,
     .header-right .el-submenu:hover a,
     .header-right .el-menu-item:hover [class^=el-icon-],
     .header-right .el-submenu:hover [class^=el-icon-],
-    .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
+    .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-] {
         color: #909399;
     }
-    .el-submenu__icon-arrow{
+
+    .el-submenu__icon-arrow {
         margin-top: 16px;
     }
-    .el-menu--horizontal .el-menu .el-menu-item a{
+
+    .el-menu--horizontal .el-menu .el-menu-item a {
         color: #909399;
     }
-    .el-menu--horizontal .el-menu .el-menu-item a:hover{
+
+    .el-menu--horizontal .el-menu .el-menu-item a:hover {
         color: #000;
     }
+
     .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
         background-color: #fff;
         float: none;
@@ -69,62 +80,92 @@
         line-height: 36px;
         padding: 0 10px;
         color: #909399;
-        display: inline-block;//悬浮块横向显示
+        display: inline-block;
+    / / 悬浮块横向显示
     }
 </style>
 <body>
 <div id="app" v-cloak>
     <div class="container">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
-            <el-breadcrumb-item :to="{ path: '/' }">个人中心</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>个人中心</el-breadcrumb-item>
             <el-breadcrumb-item>我的学习</el-breadcrumb-item>
             <el-breadcrumb-item>任务配置</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row :gutter="24">
             <el-col :span="24">
                 <el-tabs type="border-card">
-                    <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+                    <div class="info_card">
+                        <div class="card_title"></div>
+                        <div class="card_contain">
+                            <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                        <el-form-item label="任务名称" prop="taskName">
-                            <el-input v-model="formInline.taskName" placeholder="任务名称" size="mini" clearable></el-input>
-                        </el-form-item>
-                        <el-form-item label="所属警种" prop="policeclass">
-                            <el-select size="mini" v-model="formInline.policeclass" placeholder="所属警种" >
-                                <el-option
-                                        v-for="item in policeclassOption"
-                                        :key="item.code"
-                                        :label="item.value"
-                                        :value="item.code"
-                                >
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="所属分类" prop="taskClass">
-                            <el-select size="mini" v-model="formInline.taskClass" placeholder="所属分类" >
-                                <el-option
-                                        v-for="item in taskClassOption"
-                                        :key="item.code"
-                                        :label="item.value"
-                                        :value="item.code"
-                                >
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
+                                <el-form-item label="任务名称" prop="taskName">
+                                    <el-input v-model="formInline.taskName" placeholder="任务名称" size="mini"
+                                              clearable></el-input>
+                                </el-form-item>
+                                <el-form-item label="所属警种" prop="policeclass">
+                                    <el-select size="mini" v-model="formInline.policeclass" placeholder="所属警种">
+                                        <el-option
+                                                v-for="item in policeclassOption"
+                                                :key="item.code"
+                                                :label="item.value"
+                                                :value="item.code"
+                                        >
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="所属分类" prop="taskClass">
+                                    <el-select size="mini" v-model="formInline.taskClass" placeholder="所属分类">
+                                        <el-option
+                                                v-for="item in taskClassOption"
+                                                :key="item.code"
+                                                :label="item.value"
+                                                :value="item.code"
+                                        >
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
 
-                        <!--<el-form-item prop="status">
-                            <el-select v-model="formInline.status" placeholder="状态" size="mini" clearable>
-                                <el-option label="有效" value="1"></el-option>
-                                <el-option label="无效" value="0"></el-option>
-                            </el-select>
-                        </el-form-item>-->
-                        <el-form-item>
-                            <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                            <el-button size="mini" @click="resetForm('formInline')">重置</el-button>
+                                <el-form-item label="开始日期" prop="startTime">
+                                    <el-date-picker
+                                            v-model="formInline.startTime"
+                                            type="date"
+                                            format="yyyy年MM月dd日"
+                                            value-format="yyyy-MM-dd"
+                                            placeholder="开始时间"
+                                            size="mini"
+                                    >
+                                    </el-date-picker>
+                                </el-form-item>
+                                <el-form-item label="结束日期" prop="endTime">
+                                    <el-date-picker
+                                            v-model="formInline.endTime"
+                                            type="date"
+                                            format="yyyy年MM月dd日"
+                                            value-format="yyyy-MM-dd"
+                                            placeholder="结束时间"
+                                            size="mini"
+                                    >
+                                    </el-date-picker>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" @click="onSubmit" size="mini">
+                                        <i class="iconfont icon-sousuo1"></i>
+                                        查询
+                                    </el-button>
+                                    <el-button class="reset_btn" size="mini" @click="resetForm('formInline')">
+                                        <i class="iconfont icon-tableresetpassword"></i>
+                                        重置
+                                    </el-button>
 
-                        </el-form-item>
-                    </el-form>
+                                </el-form-item>
+                            </el-form>
+                        </div>
+                    </div>
                     <div>
-                        <el-button size="mini" type="primary" @click="addLearnTask" >新增</el-button>
+                        <el-button size="mini" type="primary" @click="addLearnTask">新增</el-button>
                         <el-table
                                 :data="tableData"
                                 border
@@ -199,8 +240,8 @@
                                     width="180">
                                 <template slot-scope="scope">
                                     <el-button v-if="scope.row.isUse=='0'"
-                                            size="mini"
-                                            @click="handleStart(scope.$index, scope.row)">启动
+                                               size="mini"
+                                               @click="handleStart(scope.$index, scope.row)">启用
                                     </el-button>
                                     <el-button
                                             size="mini"
@@ -230,11 +271,11 @@
         </el-row>
 
 
-
         <el-dialog :title="title" :visible.sync="dialogLearnTask" :before-close="closeDia">
             <el-row>
                 <el-col :span="12">
-                    <el-form :model="learnTasks" :rules="rules" ref="learnTasks" label-width="100px" class="demo-learnTasks" size="mini">
+                    <el-form :model="learnTasks" :rules="rules" ref="learnTasks" label-width="100px"
+                             class="demo-learnTasks" size="mini">
                         <el-form-item label="任务名称" prop="taskName">
                             <el-input v-model="learnTasks.taskName" placeholder="请输入任务名称" clearable></el-input>
                         </el-form-item>
@@ -255,7 +296,7 @@
                             <ul id="classTree" class="ztree"></ul>
                         </el-form-item>
                         <el-form-item label="所属警种" prop="policeclass">
-                            <el-select v-model="learnTasks.policeclass" placeholder="所属警种" >
+                            <el-select v-model="learnTasks.policeclass" placeholder="所属警种">
                                 <el-option
                                         v-for="item in policeclassOption"
                                         :key="item.code"
@@ -266,7 +307,7 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label="所属分类" prop="taskClass">
-                            <el-select v-model="learnTasks.taskClass" placeholder="所属分类" >
+                            <el-select v-model="learnTasks.taskClass" placeholder="所属分类">
                                 <el-option
                                         v-for="item in taskClassOption"
                                         :key="item.code"
@@ -296,10 +337,12 @@
                             <el-input v-model="learnTasks.taskExecute" placeholder="请输入任务执行者" clearable></el-input>
                         </el-form-item>
                         <el-form-item label="使用部门" prop="deptName" v-if="menuForm!='person'">
-                            <el-input v-model="learnTasks.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门" clearable></el-input>
+                            <el-input v-model="learnTasks.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门"
+                                      clearable></el-input>
                         </el-form-item>
                         <el-form-item label="使用人员" prop="userName" v-if="menuForm!='person'">
-                            <el-input v-model="learnTasks.userName" readonly @focus="chooseUser" placeholder="请选择使用人员" clearable></el-input>
+                            <el-input v-model="learnTasks.userName" readonly @focus="chooseUser" placeholder="请选择使用人员"
+                                      clearable></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="saveOrUpdate('learnTasks')">保存</el-button>
@@ -309,7 +352,7 @@
             </el-row>
         </el-dialog>
 
-        <el-dialog title="选择部门" :visible.sync="dialogDept" >
+        <el-dialog title="选择部门" :visible.sync="dialogDept">
             <!--对于同一级的节点，每次只能展开一个-->
             <el-tree
                     ref="deptTree"
@@ -320,13 +363,14 @@
                     @check-change="handleCheckChange"
                     node-key="id"
                     :default-expanded-keys="[2079]"
+                    :default-checked-keys="deptCheckData"
             >
             </el-tree>
             <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
             <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
         </el-dialog>
 
-        <el-dialog title="选择人员" :visible.sync="dialogUser" >
+        <el-dialog title="选择人员" :visible.sync="dialogUser">
             <!--对于同一级的节点，每次只能展开一个-->
             <el-row>
                 <el-col :span="4">
@@ -391,7 +435,7 @@
                             </div>
                         </el-tab-pane>
                     </el-tabs>
-                    <el-button type="primary" size="mini" @click="confimUser" >保存</el-button>
+                    <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
                     <el-button type="primary" size="mini" @click="cancelUser">取消</el-button>
                 </el-col>
             </el-row>

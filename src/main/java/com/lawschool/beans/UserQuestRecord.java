@@ -29,7 +29,7 @@ public class UserQuestRecord {
     private String  specialKnowledgeId;
 
 
-    //来源     闯关禁赛：Checkpoint   /  在线比武：onlinPk /打擂台   leitai    谁用到新的来源  更新下备注
+    //来源     闯关禁赛：Checkpoint   /  在线比武：OnlinPk /打擂台   leitai//teamOnline组队   OnlinPkByCode  code码    谁用到新的来源  更新下备注
     private String source;
 
     public String getId() {

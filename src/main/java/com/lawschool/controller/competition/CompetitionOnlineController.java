@@ -115,10 +115,10 @@ public class CompetitionOnlineController {
 
     //答过的题目入库保存
     @RequestMapping("/saveQuestion")
-    public void saveQuestion(@RequestBody TestQuestions testQuestions,String myanswer){
+    public void saveQuestion(@RequestBody TestQuestions testQuestions,String myanswer,String Source){
 
         User u = (User) SecurityUtils.getSubject().getPrincipal();
-         competitionOnlineService.saveQuestion(testQuestions,myanswer,u.getId());
+         competitionOnlineService.saveQuestion(testQuestions,myanswer,u.getId(),Source);
 
     }
 

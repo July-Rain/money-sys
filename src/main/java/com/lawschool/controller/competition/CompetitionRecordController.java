@@ -5,6 +5,7 @@ import com.lawschool.beans.User;
 import com.lawschool.beans.competition.CompetitionRecord;
 import com.lawschool.service.accessory.AccessoryService;
 import com.lawschool.service.competition.CompetitionRecordService;
+import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.AbstractCollection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,14 +32,7 @@ public class CompetitionRecordController extends AbstractController {
     private CompetitionRecordService competitionRecordService;
 
 
-    //查询
-    @ResponseBody
-    @RequestMapping("/list")
-    public Result list(@RequestParam Map<String, Object> params){
-        CompetitionRecord competitionRecord = new CompetitionRecord();
 
-        return Result.ok().put("competitionRecordList", competitionRecordService.findAll());
-    }
 
     //根据id来找数据
     @RequestMapping("/info")
@@ -99,4 +94,39 @@ public class CompetitionRecordController extends AbstractController {
         return Result.ok().put("count",i);
     }
 
+
+
+    //查询分页
+    @RequestMapping("/list")
+    public Result list(@RequestParam Map<String,Object> params,String userid){
+//        User u = (User) SecurityUtils.getSubject().getPrincipal();
+        PageUtils page = competitionRecordService.queryPage(params,userid);
+        return Result.ok().put("page", page);
+    }
+
+    //根据部门code 来查 玩了闯关的次数
+    @RequestMapping("/chuangguanCountBydept")
+    public Result chuangguanCountBydept(String deptcode){
+
+        int i=competitionRecordService.chuangguanCountBydept(deptcode);
+        System.out.println(i);
+        return Result.ok().put("count",i);
+    }
+
+
+    //根据部门code 来查 玩了闯关的次数
+    @RequestMapping("/chuangguanSorceBydept")
+    public Result chuangguanSorceBydept(String deptcode){
+
+        int i=competitionRecordService.chuangguanSorceBydept(deptcode);
+        System.out.println(i);
+        return Result.ok().put("Sorce",i);
+    }
+
+    //获取闯关排行榜
+    @RequestMapping("/chuangGuanRanking")
+    public Result chuangGuanRanking(){
+        List<CompetitionRecord> competitionRecordList= competitionRecordService.chuangGuanRanking();
+        return Result.ok().put("competitionRecordList",competitionRecordList);
+    }
 }

@@ -16,4 +16,20 @@ public interface UserQuestRecordDao extends BaseMapper<UserQuestRecord> {
     List<TestQuestions> randomErrorColl(Map<String, Object> param);
 
     int cntMyError(Map<String, Object> param);
+
+    int CheckpointByUser(String uid);
+    int OnlinByUserCount(String uid);
+    int OnlinByUser(String uid);
+    int leitaiByUser(String uid);
+
+    int chuangguanCorrectBydept(String deptcode);
+    int chuangguanCorrectBydeptCount(String deptcode);
+
+    int OnlinCorrectBydept(String deptcode);
+    int OnlinCorrectBydeptCount(String deptcode);
+
+    int leitaiCorrectBydept(String deptcode);
+    int leitaiCorrectBydeptCount(String deptcode);
+
+
 }

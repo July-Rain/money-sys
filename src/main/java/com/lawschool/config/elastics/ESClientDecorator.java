@@ -1,3 +1,4 @@
+/*
 package com.lawschool.config.elastics;
 
 import org.apache.http.HttpHost;
@@ -6,6 +7,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
+*/
 /**
  * ClassName: ESClientDecorator
  * Description: ESClientDecorator
@@ -13,7 +15,8 @@ import org.springframework.beans.factory.InitializingBean;
  *
  * @author MengyuWu
  * @since JDK 1.8
- */
+ *//*
+
 public class ESClientDecorator implements InitializingBean, DisposableBean {
     private RestHighLevelClient restHighLevelClient;
 
@@ -42,3 +45,4 @@ public class ESClientDecorator implements InitializingBean, DisposableBean {
     }
 
 }
+*/

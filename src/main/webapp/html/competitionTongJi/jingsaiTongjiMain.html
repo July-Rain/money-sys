@@ -17,16 +17,26 @@
            }
           if(a=="2")
            {
-
+               parent.location.href =baseURL+"modules/competitionTongJi/peopleDetails.html";
+           }
+           if(a=="3")
+           {
+               parent.location.href =baseURL+"modules/competitionTongJi/deptSurvey.html";
+           }
+           if(a=="4")
+           {
+               parent.location.href =baseURL+"modules/competitionTongJi/deptDetails.html";
            }
 
        }
     </script>
 </head>
 <body>
-
     <div style="height: 100px;width: 100px">
         <button id="a" onclick="tiao('1')">个人统计概况</button>
+        <button id="b" onclick="tiao('2')">个人统计详情</button>
+        <button id="c" onclick="tiao('3')">部门统计概况</button>
+        <button id="d" onclick="tiao('4')">部门统计详情</button>
     </div>
 
 </body>

@@ -36,7 +36,9 @@ var vm = new Vue({
             pageSize: 10,
             totalCount: 0,
             taskClass:"",
-            policeclass:""
+            policeclass:"",
+            startTime:"",
+            endTime:""
         },
         tableData: [],//表格数据
         visible: false,
@@ -58,14 +60,20 @@ var vm = new Vue({
 
         },
         rules: {//表单验证规则
-            /*value: [
-                {required: true, message: '请输入学习任务名', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
+            taskName: [
+                {required: true, message: '请输入学习任务名称', trigger: 'blur'},
+                {max: 100, message: '最大长度100', trigger: 'blur'}
             ],
-            code: [
-                {required: true, message: '请输入学习任务值', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ]*/
+            taskContent: [
+                {required: true, message: '请输入学习任务内容', trigger: 'blur'}
+            ],
+            startTime: [
+                {required: true, message: '请输入学习任务开始时间', trigger: 'blur'}
+            ],
+            endTime: [
+                {required: true, message: '请输入学习任务结束时间', trigger: 'blur'}
+            ],
+
         },
         dialogLearnTask: false,//table弹出框可见性
         title: "",//弹窗的名称
@@ -88,7 +96,8 @@ var vm = new Vue({
             orgCode:"",
             currPage: 1,
             pageSize: 10,
-            totalCount:0
+            totalCount:0,
+            identify:'0',//表明是用户
 
         },//人员查询
         userTableData:[],//人员表格信息
@@ -101,8 +110,9 @@ var vm = new Vue({
             label: 'infoName'
         },//法律法规树默认数据
         taskClassOption:[],//所属分类
-        policeclassOption:[]//所属警种
+        policeclassOption:[],//所属警种
        // multipleClassSelection:[]//法律法规数据选择框
+        deptCheckData:[]//部门默认选中节点
     },
     created: function () {
         this.$nextTick(function () {
@@ -239,6 +249,7 @@ var vm = new Vue({
         handleEdit: function (index, row) {
             this.title = "修改学习任务";
             this.dialogLearnTask = true;
+            this.deptCheckData=[];
             $.ajax({
                 type: "POST",
                 url: baseURL + 'learntasks/info?id=' + row.id,
@@ -246,6 +257,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.learnTasks = result.data;
+                        vm.deptCheckData=result.data.deptArr;
                     } else {
                         alert(result.msg);
                     }
@@ -389,7 +401,7 @@ var vm = new Vue({
         reloadUser: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sys/getAllUsers",
+                url: baseURL + "sys/getUorT?isMp=true",
                 dataType: "json",
                 data: vm.userForm,
                 success: function (result) {
@@ -397,7 +409,7 @@ var vm = new Vue({
                         vm.userTableData = result.page.list;
                         vm.userForm.currPage = result.page.currPage;
                         vm.userForm.pageSize = result.page.pageSize;
-                        vm.userForm.totalCount = parseInt(result.page.count);
+                        vm.userForm.totalCount = parseInt(result.page.totalCount);
                     } else {
                         alert(result.msg);
                     }
@@ -438,5 +450,8 @@ var vm = new Vue({
                 ztree = $.fn.zTree.init($("#classTree"), setting, r.classifyList);
             })
         },
+        toHome: function () {
+            parent.location.reload()
+        }
     }
 });

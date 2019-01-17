@@ -35,14 +35,22 @@
                     <el-tab-pane label="检索">
                         <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                            <el-form-item prop="stuTitle">
+                            <el-form-item prop="stuTitle" label="课程标题">
                                 <el-input v-model="formInline.stuTitle" placeholder="课程标题" size="mini"></el-input>
                             </el-form-item>
-                            <el-form-item prop="stuPoliceclass">
-                                <el-input v-model="formInline.stuPoliceclass" placeholder="警种" size="mini"></el-input>
+                            <el-form-item prop="stuPoliceclass" label="所属警种">
+                                <el-select size="mini" v-model="formInline.stuPoliceclass" placeholder="所属警种" >
+                                    <el-option
+                                            v-for="item in stuPoliceclassOption"
+                                            :key="item.code"
+                                            :label="item.value"
+                                            :value="item.code"
+                                    >
+                                    </el-option>
+                                </el-select>
                             </el-form-item>
 
-                            <el-form-item prop="stuType">
+                            <el-form-item prop="stuType"  label="类型">
                                 <el-select v-model="formInline.stuType" placeholder="类型" size="mini">
                                     <el-option label="文字" value="1"></el-option>
                                     <el-option label="音频" value="2"></el-option>
@@ -158,7 +166,7 @@
                                     <i v-else-if="stuMedia.comContent =='' && videoFlag == false" class="iconfont icon-yinpin"></i>
                                     <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
                                 </el-upload>
-                                <P class="text">请保证音频格式正确，且不超过10M</P>
+                                <P class="text">请保证音频格式正确，且不超过100M</P>
                             </el-form-item>
                         </template>
                         <template v-if="stuMedia.stuType=='3'">
@@ -182,7 +190,7 @@
                                     <i v-else-if="stuMedia.comContent =='' && videoFlag == false" class="iconfont icon-shipin"></i>
                                     <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
                                 </el-upload>
-                                <P class="text">请保证视频格式正确，且不超过10M</P>
+                                <P class="text">请保证视频格式正确，且不超过100M</P>
                             </el-form-item>
                         </template>
                         <el-form-item label="所属警种" prop="stuPoliceclass">
@@ -207,6 +215,7 @@
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="saveOrUpdate('stuMedia')">保存</el-button>
+                            <el-button @click="closeDia">取消</el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
@@ -224,6 +233,7 @@
                     @check-change="handleCheckChange"
                     node-key="id"
                     :default-expanded-keys="[2079]"
+                    :default-checked-keys="deptCheckData"
                     >
             </el-tree>
             <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
@@ -247,10 +257,10 @@
                         <el-tab-pane label="检索">
                             <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
 
-                                <el-form-item prop="code">
+                                <el-form-item prop="userCode">
                                     <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
                                 </el-form-item>
-                                <el-form-item prop="value">
+                                <el-form-item prop="userName">
                                     <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
                                 </el-form-item>
 
