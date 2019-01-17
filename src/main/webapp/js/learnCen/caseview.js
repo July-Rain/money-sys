@@ -215,6 +215,9 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     }
 });
