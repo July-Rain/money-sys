@@ -444,5 +444,8 @@ var vm = new Vue({
                 ztree = $.fn.zTree.init($("#classTree"), setting, r.classifyList);
             })
         },
+        toHome: function () {
+            parent.location.reload()
+        }
     }
 });

@@ -179,5 +179,8 @@ var vm = new Vue({
         cancelLaw: function () {
             this.dialogLaw=false;
         },
+        toHome: function () {
+            parent.location.reload()
+        }
     }
 });
