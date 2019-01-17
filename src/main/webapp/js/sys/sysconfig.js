@@ -44,19 +44,6 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
-            //加载菜单
-            $.ajax({
-                type: "POST",
-                url: baseURL + "menu/nav?id=" + menuId,
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.navData = result.menuList;
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
             this.reload();
         })
     },

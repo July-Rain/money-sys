@@ -60,14 +60,20 @@ var vm = new Vue({
 
         },
         rules: {//表单验证规则
-            /*value: [
-                {required: true, message: '请输入学习任务名', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
+            taskName: [
+                {required: true, message: '请输入学习任务名称', trigger: 'blur'},
+                {max: 100, message: '最大长度100', trigger: 'blur'}
             ],
-            code: [
-                {required: true, message: '请输入学习任务值', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ]*/
+            taskContent: [
+                {required: true, message: '请输入学习任务内容', trigger: 'blur'}
+            ],
+            startTime: [
+                {required: true, message: '请输入学习任务开始时间', trigger: 'blur'}
+            ],
+            endTime: [
+                {required: true, message: '请输入学习任务结束时间', trigger: 'blur'}
+            ],
+
         },
         dialogLearnTask: false,//table弹出框可见性
         title: "",//弹窗的名称

@@ -40,6 +40,20 @@ public class LawClassifyController extends AbstractController {
                 .eq("del_flag","0"));
         return Result.ok().put("classifyList", bulidDeptTree(classifyList));
     }
+    @RequestMapping("/alltree")
+    public Result alltree(){
+        EntityWrapper<LawClassifyEntity> ew = new EntityWrapper<LawClassifyEntity>();
+        List<LawClassifyEntity> classifyList = classifyService.selectList(ew
+                .eq("del_flag","0"));
+        LawClassifyEntity classifyEntity = new LawClassifyEntity();
+        classifyEntity.setClassifyId("all");
+        classifyEntity.setId("");
+        classifyEntity.setParentId("0");
+        classifyEntity.setClassifyName("全部");
+        classifyEntity.setOrderNum(0);
+        classifyList.add(classifyEntity);
+        return Result.ok().put("classifyList", bulidDeptTree(classifyList));
+    }
     /**
      * @Author MengyuWu
      * @Description 两层循环实现建树
@@ -70,7 +84,8 @@ public class LawClassifyController extends AbstractController {
             classify.setList(classifyList);
 
         }
-        return finalTrees;
+        Collections.sort(finalTrees);
+        return  finalTrees;
     }
     @RequestMapping("/zTree")
     public Result zTree(){

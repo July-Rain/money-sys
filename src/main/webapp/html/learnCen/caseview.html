@@ -54,7 +54,7 @@
                                 </el-select>
                             </el-form-item>
 
-                            <el-form-item label="裁判日期" prop="caseTime">
+                            <el-form-item label="裁决开始时间" prop="startTime">
                                 <el-date-picker
                                         v-model="formInline.startTime"
                                         type="date"
@@ -64,6 +64,8 @@
                                         size="mini"
                                 >
                                 </el-date-picker>
+                            </el-form-item>
+                            <el-form-item label="裁决结束时间" prop="endTime">
                                 <el-date-picker
                                         v-model="formInline.endTime"
                                         type="date"
@@ -142,13 +144,7 @@
                                         <template slot-scope="scope">
                                             <el-button
                                                     size="mini"
-                                                    @click="handleEdit(scope.$index, scope.row)">编辑
-                                            </el-button>
-                                            <el-button
-                                                    plain
-                                                    type="danger"
-                                                    size="mini"
-                                                    @click="handleDel(scope.$index, scope.row)">删除
+                                                    @click="handleEdit(scope.row.id)">查看
                                             </el-button>
                                         </template>
                                     </el-table-column>

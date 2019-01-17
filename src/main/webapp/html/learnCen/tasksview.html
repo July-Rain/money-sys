@@ -89,7 +89,7 @@
                         <el-form-item label="任务名称" prop="taskName">
                             <el-input v-model="formInline.taskName" placeholder="任务名称" size="mini" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="开始日期" prop="startTime">
+                        <el-form-item label="任务开始时间" prop="startTime">
                             <el-date-picker
                                     v-model="formInline.startTime"
                                     type="date"
@@ -100,7 +100,7 @@
                             >
                             </el-date-picker>
                         </el-form-item>
-                        <el-form-item label="结束日期" prop="endTime">
+                        <el-form-item label="任务结束时间" prop="endTime">
                             <el-date-picker
                                     v-model="formInline.endTime"
                                     type="date"
@@ -125,7 +125,7 @@
                         </el-form-item>
                     </el-form>
                     <div>
-                        <el-button size="mini" type="primary" @click="addLearnTask" >新增</el-button>
+                        <!--<el-button size="mini" type="primary" @click="addLearnTask" >新增</el-button>-->
                         <el-table
                                 :data="tableData"
                                 border
@@ -233,9 +233,9 @@
                                     placeholder="结束日期">
                             </el-date-picker>
                         </el-form-item>
-                        <el-form-item label="任务执行者" prop="taskExecute">
+                        <!--<el-form-item label="任务执行者" prop="taskExecute">
                             <el-input v-model="learnTasks.taskExecute" placeholder="请输入任务执行者" clearable></el-input>
-                        </el-form-item>
+                        </el-form-item>-->
                         <el-form-item label="使用部门" prop="deptName">
                             <el-input v-model="learnTasks.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门" clearable></el-input>
                         </el-form-item>
@@ -243,7 +243,8 @@
                             <el-input v-model="learnTasks.userName" readonly @focus="chooseUser" placeholder="请选择使用人员" clearable></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="saveOrUpdate('learnTasks')">保存</el-button>
+                            <!--<el-button type="primary" @click="saveOrUpdate('learnTasks')">保存</el-button>-->
+                            <el-button @click="closeDia">取消</el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
@@ -284,10 +285,10 @@
                         <el-tab-pane label="检索">
                             <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
 
-                                <el-form-item prop="code">
+                                <el-form-item prop="userCode">
                                     <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
                                 </el-form-item>
-                                <el-form-item prop="value">
+                                <el-form-item prop="userName">
                                     <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
                                 </el-form-item>
 
