@@ -3,6 +3,8 @@ package com.lawschool.service.auth;
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.auth.AuthRelationBean;
 
+import java.util.Map;
+
 /**
  * InterfaceName: AuthRelationService
  * Description: TODO
@@ -42,4 +44,14 @@ public interface AuthRelationService extends IService<AuthRelationBean> {
      **/
     
     String[] getUserIdArr(String functionId,String functionFlag);
+
+    /**
+     * @Author MengyuWu
+     * @Description 查询功能表id
+     * @Date 10:44 2019-1-16
+     * @Param [deptId, userId, functionFlag]
+     * @return java.lang.String[]
+     **/
+
+    String [] listAllIdByUser(String deptId,String userId,String functionFlag);
 }

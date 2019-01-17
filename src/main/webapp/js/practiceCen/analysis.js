@@ -90,6 +90,9 @@ var vm = new Vue({
                 myChart.resize()
             })
         },
+        toHome: function () {
+            parent.location.reload()
+        }
     },
     created: function () {
         $.ajax({

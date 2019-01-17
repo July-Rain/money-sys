@@ -178,7 +178,7 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
     }
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
+    public PageUtils queryPage(Map<String, Object> params,User user) {
         String stuTitle = (String)params.get("stuTitle");
         String comContent = (String)params.get("comContent");
         String stuPoliceclass = (String)params.get("stuPoliceclass");
@@ -222,6 +222,16 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         }
         if(UtilValidate.isNotEmpty(addsrc)){  //添加来源
             ew.eq("ADDSRC",addsrc);
+        }
+        if(UtilValidate.isNotEmpty(params.get("isAuth"))){
+            //需要权限过滤
+           String[] authArr= authService.listAllIdByUser(user.getOrgId(),user.getId(),"STUMEDIA");
+           if(authArr.length>0){
+               ew.in("id",authArr);
+           }else{
+               String[] arr={"0"};
+               ew.in("id",arr);
+           }
         }
 
         ew.orderBy("STU_ISSTIME",false);

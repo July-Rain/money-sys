@@ -24,7 +24,7 @@ public interface CaseAnalysisService extends IService<CaseAnalysisEntity> {
      * @return com.lawschool.util.PageUtils
      **/
     
-    PageUtils queryPage(Map<String,Object> param);
+    PageUtils queryPage(Map<String,Object> param,User user);
 
     /**
      * @Author MengyuWu

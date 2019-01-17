@@ -55,7 +55,8 @@ public class LearnTasksController extends AbstractController {
     public Result list(@RequestParam Map<String, Object> params){
         User user=getUser();
         params.put("userId",user.getId());
-        PageUtils page = tasksService.queryPage(params);
+        params.put("isAuth",true);
+        PageUtils page = tasksService.queryPage(params,user);
         return Result.ok().put("page", page);
     }
 

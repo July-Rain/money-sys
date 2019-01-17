@@ -12,9 +12,7 @@ import com.lawschool.util.GetUUID;
 import com.lawschool.util.UtilValidate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * ClassName: AuthRelationServiceImpl
@@ -99,5 +97,14 @@ public class AuthRelationServiceImpl extends ServiceImpl<AuthRelationDao, AuthRe
             }
         }
         return userIdArr;
+    }
+
+    @Override
+    public String[] listAllIdByUser(String deptId, String userId, String functionFlag) {
+        Map<String,String> params=new HashMap<>();
+        params.put("deptId",deptId);
+        params.put("userId",userId);
+        params.put("functionFlag",functionFlag);
+        return baseMapper.listAllIdByUser(params);
     }
 }

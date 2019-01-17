@@ -81,6 +81,9 @@ var vm = new Vue({
             });*/
 
         },
+        toHome: function () {
+            parent.location.reload()
+        }
         /*onSubmit:function () {
             console.log(vm.questionForm.answer);
             this.showDetail=true;

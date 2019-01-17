@@ -134,7 +134,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
     }
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
+    public PageUtils queryPage(Map<String, Object> params,User user) {
         String userId=(String)params.get("userId");
         String taskName = (String)params.get("taskName");
         String taskContent = (String)params.get("taskContent");
@@ -168,7 +168,16 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         if(UtilValidate.isNotEmpty(createUser)){  //创建人
             ew.eq("CREATE_USER",createUser);
         }
-
+        if(UtilValidate.isNotEmpty(params.get("isAuth"))){
+            //需要权限过滤
+            String[] authArr= authService.listAllIdByUser(user.getOrgId(),user.getId(),"LEARNTASK");
+            if(authArr.length>0){
+                ew.in("id",authArr);
+            }else{
+                String[] arr={"0"};
+                ew.in("id",arr);
+            }
+        }
         ew.orderBy("CREATE_TIME");
         Page<LearnTasksEntity> page = this.selectPage(
                 new Query<LearnTasksEntity>(params).getPage(),ew);

@@ -80,7 +80,7 @@ public interface StuMediaService  extends AbstractService<StuMedia> {
      * @return com.lawschool.util.PageUtils
      **/
     
-    PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryPage(Map<String, Object> params,User user);
 
     /**
      * @Author MengyuWu
