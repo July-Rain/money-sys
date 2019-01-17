@@ -42,8 +42,6 @@
                 <el-tabs type="border-card">
                     <div class="info_card">
                         <div class="card_title">
-                            <i class="iconfont icon-jiansuo"></i>
-                            <h3>检索工具</h3>
                         </div>
                         <div class="card_contain">
                             <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
@@ -80,8 +78,14 @@
                                     </el-date-picker>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                                    <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
+                                    <el-button type="primary" @click="onSubmit" size="mini">
+                                        <i class="iconfont icon-sousuo1"></i>
+                                        查询
+                                    </el-button>
+                                    <el-button class="reset_btn" @click="resetForm('formInline')" size="mini">
+                                        <i class="iconfont icon-tableresetpassword"></i>
+                                        重置
+                                    </el-button>
 
                                 </el-form-item>
                             </el-form>

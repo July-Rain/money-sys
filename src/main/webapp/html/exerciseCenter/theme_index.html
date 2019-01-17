@@ -50,9 +50,8 @@
                 <template slot-scope="scope">
                     <el-popover
                             placement="top-start"
-                            width="150"
                             trigger="hover"
-                            content="点击开始练习">
+                            content="开始练习">
                         <i class="iconfont icon-lianxi" v-if="scope.row.status == 0 || scope.row.status == null"
                            @click="start(scope.$index)"
                            slot="reference"
@@ -62,9 +61,8 @@
                     </el-popover>
                     <el-popover
                             placement="top-start"
-                            width="150"
                             trigger="hover"
-                            content="点击继续练习">
+                            content="继续练习">
                         <i class="iconfont icon-lianxi"
                            v-if="scope.row.status == 1"
                            @click="start(scope.$index)"
@@ -75,9 +73,8 @@
                     </el-popover>
                     <el-popover
                             placement="top-start"
-                            width="150"
                             trigger="hover"
-                            content="点击错题回顾">
+                            content="错题回顾">
                         <i class="iconfont icon-cuotiku"
                            v-if="scope.row.status == 1 || scope.row.status == 2"
                            slot="reference"
@@ -87,9 +84,8 @@
                     </el-popover>
                     <el-popover
                             placement="top-start"
-                            width="150"
                             trigger="hover"
-                            content="点击清空重做">
+                            content="清空重做">
                         <i class="iconfont icon-zhongzuo"
                            v-if="scope.row.status == 2"
                            @click="reStart(scope.row.id)"
