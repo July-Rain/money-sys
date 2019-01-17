@@ -37,7 +37,7 @@ var vm = new Vue({
             //法律分类树数据
             $.ajax({
                 type: "POST",
-                url: baseURL + "law/tree",
+                url: baseURL + "law/alltree",
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){

@@ -216,6 +216,23 @@ var vm = new Vue({
                 }
             });
         },
+        handleEdit:function (id) {
+            //请求后台修改播放量 记录学习记录 --案例分析模块
+
+            $.ajax({
+                type: "POST",
+                url: baseURL +  "caseana/updateCount?id="+id+"&stuType="+vm.infoFlag+"&stuFrom=caseana",
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        },
         toHome: function () {
             parent.location.reload()
         }

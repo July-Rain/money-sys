@@ -40,7 +40,7 @@ var vm = new Vue({
             ],
             stuTitle: [
                 {required: true, message: '请输入标题', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
+                {max: 100, message: '最大长度100', trigger: 'blur'}
             ],
             comContent: [
                 {required: true, message: '请添加内容', trigger: 'blur'}
@@ -92,7 +92,7 @@ var vm = new Vue({
             //法律分类树数据
             $.ajax({
                 type: "POST",
-                url: baseURL + "law/tree",
+                url: baseURL + "law/alltree",
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -185,6 +185,7 @@ var vm = new Vue({
         },
         // 表单重置
         resetForm: function (formName) {
+            debugger
             this.$refs[formName].resetFields();
         },
         addStuMedia: function () {
@@ -323,7 +324,7 @@ var vm = new Vue({
                 vm.stuMedia.contentUrl=baseURL+"sys/download?accessoryId="+response.accessoryId;
                 setTimeout(function () {
                     vm.stuMedia.stuTime=document.getElementsByClassName("avatar")[0].duration;
-                    console.info("啊啊啊",document.getElementsByClassName("avatar")[0].currentTime,document.getElementsByClassName("avatar")[0].duration);
+                    //console.info("啊啊啊",document.getElementsByClassName("avatar")[0].currentTime,document.getElementsByClassName("avatar")[0].duration);
                 },800)
             }else{
                 this.$message.error('视频上传失败，请重新上传！');
@@ -342,26 +343,26 @@ var vm = new Vue({
         },
         beforeAvatarUpload: function (file) {
             /*if(!checkFile(file)) return false;*/
-            var  isLt10M = file.size / 1024 / 1024  < 10;
+            var  isLt10M = file.size / 1024 / 1024  < 100;
             if (['video/mp4', 'video/ogg', 'video/flv','video/avi','video/wmv','video/rmvb'].indexOf(file.type) == -1) {
                 this.$message.error('请上传正确的视频格式');
                 return false;
             }
             if (!isLt10M) {
-                this.$message.error('上传视频大小不能超过10MB哦!');
+                this.$message.error('上传视频大小不能超过100MB哦!');
                 return false;
             }
 
         },
         beforeAudioUpload: function (file) {
             /*if(!checkFile(file)) return false;*/
-            var  isLt10M = file.size / 1024 / 1024  < 10;
+            var  isLt10M = file.size / 1024 / 1024  < 100;
             if (['audio/ogg', 'audio/mpeg', 'audio/mp3', 'audio/wav'].indexOf(file.type) == -1) {
                 this.$message.error('请上传正确的音频格式');
                 return false;
             }
             if (!isLt10M) {
-                this.$message.error('上传音频大小不能超过10MB哦!');
+                this.$message.error('上传音频大小不能超过100MB哦!');
                 return false;
             }
 
@@ -369,20 +370,20 @@ var vm = new Vue({
         beforePicUpload: function (file) {
             //图片上传之前的判断
             /*if(!checkFile(file)) return false;*/
-            var  isLt10M = file.size / 1024 / 1024  < 10;
+            var  isLt10M = file.size / 1024 / 1024  < 100;
             if (['image/jpeg', 'image/jpg', 'image/png','image/gif','image/bpm'].indexOf(file.type) == -1) {
                 this.$message.error('请上传正确的图片格式');
                 return false;
             }
             if (!isLt10M) {
-                this.$message.error('上传图片大小不能超过10MB哦!');
+                this.$message.error('上传图片大小不能超过100MB哦!');
                 return false;
             }
 
         },
         uploadVideoProcess(event, file, fileList){
             this.videoFlag = true;
-            this.videoUploadPercent = file.percentage;
+            this.videoUploadPercent = file.percentage.toFixed(2);
         },
 
         changeStuType: function () {
@@ -492,7 +493,7 @@ var vm = new Vue({
         setTimeout(() => {
             this.$refs.stuDialog.close();
             loadEditor();
-    }, 2000);
+    }, 200);
     }
 });
 function loadEditor(){

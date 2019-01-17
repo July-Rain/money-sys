@@ -1,5 +1,6 @@
 package com.lawschool.beans.competition;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -24,6 +25,9 @@ public class CompetitionRecord implements Serializable {
 	private String id;
 	//用户id
 	private String userId;
+	//用户名字中中文
+	@TableField(exist = false)
+	private String userName;
 	//闯关小关关卡id  里面有第几大关  第几小关 题目类型的信息     --------但是有个问题  当配置被删除或者修改后（修改实质也是删除）  就找不到了  但是配份表有
 	private String foreignKeyId;
 	//类型id(作用于判断存的到底是闯关id还是比武台记录id，因为这是两张不同的表)-------------不放了  只放闯关
@@ -54,6 +58,13 @@ public class CompetitionRecord implements Serializable {
 	//备用字段5
 	private String backup5;
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
 	public String getId() {
 		return id;
