@@ -50,4 +50,42 @@
         WHERE
             org_code = #{deptcode}
     </select>
+    
+    
+    <select id="chuangGuanRanking" resultType="com.lawschool.beans.competition.CompetitionRecord">
+            SELECT
+                ttt.user_id AS "userId",
+                USERID2NAME(ttt.user_id) AS "userName",
+                ttt.score AS "score",
+                ttt.how_big AS "howBig",
+                ttt.how_lit AS "howLit",
+                ttt.create_time AS "createTime"
+            FROM
+                (
+                    SELECT
+                        *
+                    FROM
+                        (
+                            SELECT
+                                LAW_COMPETITION_RECORD.*, ROW_NUMBER () OVER (
+                                    PARTITION BY USER_ID
+                                    ORDER BY
+                                        HOW_BIG DESC,
+                                        HOW_LIT DESC
+                                ) rn
+                            FROM
+                                LAW_COMPETITION_RECORD
+                            WHERE
+                                LAW_COMPETITION_RECORD.STATUS = '1'
+                            AND LAW_COMPETITION_RECORD.SCORE != '0'
+                        )
+                    WHERE
+                        rn = 1
+                ) ttt
+            ORDER BY
+                ttt.HOW_BIG DESC,
+                ttt.HOW_LIT DESC,
+                ttt.USER_ID DESC,
+                ttt.create_time
+    </select>
 </mapper>

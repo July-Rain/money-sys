@@ -12,6 +12,7 @@ import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -75,5 +76,16 @@ public class BattleRecordServiceImpl extends ServiceImpl<BattleRecordDao, Battle
 	public int leitaiSorceBydept(String deptcode) {
 		int i=battleRecordDao.leitaiSorceBydept(deptcode);
 		return i;
+	}
+
+
+	@Override
+	public List<Map> firstListByPk() {
+		return battleRecordDao.firstListByPk();
+	}
+
+	@Override
+	public List<Map> firstListByleitai() {
+		return battleRecordDao.firstListByleitai();
 	}
 }

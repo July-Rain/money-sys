@@ -208,4 +208,41 @@
         AND TYPE='leitai'
 
     </select>
+
+
+    <select id="firstListByPk" resultType="Map">
+
+        SELECT
+        tt.USER_ID AS "userid",
+        USERID2NAME(tt.USER_ID) AS "userName",
+        tt.counts as "counts"
+        FROM
+        (
+        SELECT
+            USER_ID,"COUNT"(*) AS counts
+        FROM
+            LAW_BATTLE_RECORD
+          WHERE WHETHER_WIN='1' AND ("TYPE"='OnlinPk' or "TYPE"='OnlinPkByCode'OR "TYPE"='teamOnline')
+            GROUP BY USER_ID
+        ) tt
+        ORDER BY tt.counts DESC
+    </select>
+    
+    <select id="firstListByleitai" resultType="Map">
+
+        SELECT
+        tt.USER_ID AS "userid",
+        USERID2NAME(tt.USER_ID) AS "userName",
+        tt.counts as "counts"
+        FROM
+        (
+        SELECT
+            USER_ID,"COUNT"(*) AS counts
+        FROM
+            LAW_BATTLE_RECORD
+          WHERE WHETHER_WIN='1' AND "TYPE"='leitai'
+            GROUP BY USER_ID
+        ) tt
+        ORDER BY tt.counts DESC
+    </select>
 </mapper>

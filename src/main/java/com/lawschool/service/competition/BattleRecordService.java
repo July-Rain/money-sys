@@ -3,8 +3,10 @@ package com.lawschool.service.competition;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.competition.BattleRecord;
+import com.lawschool.beans.competition.CompetitionRecord;
 import com.lawschool.util.PageUtils;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,4 +30,8 @@ public interface BattleRecordService extends IService<BattleRecord> {
     int leitaiCountBydept(String deptcode);
     int pkSorceBydept(String deptcode);
     int leitaiSorceBydept(String deptcode);
+
+    List<Map> firstListByPk();
+    List<Map> firstListByleitai();
+
 }
