@@ -578,6 +578,7 @@ thead.has-gutter th{
     background:-o-linear-gradient(#fbfcfd 5%,#f5f7fa 94%,#eef0f2 1%);
     background:-moz-linear-gradient(#fbfcfd 5%,#f5f7fa 94%,#eef0f2 1%);
     background:linear-gradient(#fbfcfd 5%,#f5f7fa 94%,#eef0f2 1%);
+    border-color: transparent;
 }
 thead.has-gutter th > .cell{
     font-size: 14px;
@@ -587,4 +588,16 @@ thead.has-gutter th > .cell{
     background: #e9f3ff!important;
     border-top: 1px solid #b7d8ff;
     border-bottom: 1px solid #b7d8ff;
+}
+.el-table--border{
+    border-color: #dddddd;
+}
+.el-table--border td{
+    border-color: #dddddd;
+}
+.el-table--border::after, .el-table--group::after, .el-table::before{
+    background: #dddddd;
+}
+.el-table td, .el-table th.is-leaf{
+    border-bottom-color: #dddddd;
 }
