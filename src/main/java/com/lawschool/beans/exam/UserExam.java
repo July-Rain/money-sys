@@ -2,6 +2,7 @@ package com.lawschool.beans.exam;
 
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
+import org.springframework.context.annotation.Bean;
 
 /**
  * ClassName: UserExam
@@ -22,6 +23,10 @@ public class UserExam extends DataEntity<UserExam> {
     private Long queNum;    //题目数量
 
     private String examStatus;  //考试状态  （已完成/未完成）
+
+    private double score;   //考試分數
+
+    private String isFinMark;   //是否完成阅卷
 
     public String getExamConfigId() {
         return this.examConfigId;
@@ -61,5 +66,21 @@ public class UserExam extends DataEntity<UserExam> {
 
     public void setExamStatus(final String examStatus) {
         this.examStatus = examStatus;
+    }
+
+    public double getScore() {
+        return this.score;
+    }
+
+    public void setScore(final double score) {
+        this.score = score;
+    }
+
+    public String getIsFinMark() {
+        return this.isFinMark;
+    }
+
+    public void setIsFinMark(final String isFinMark) {
+        this.isFinMark = isFinMark;
     }
 }
