@@ -5,10 +5,17 @@
     <#include "/header.html">
 </head>
 <body>
-    <div id="app" v-cloak>
-        <el-button size="mini" type="primary" @click="addConfigure" >新增配置</el-button>
-        <br/>
+<div id="app" v-cloak>
+
+
     <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>个人中心</el-breadcrumb-item>
+            <el-breadcrumb-item>我的练习</el-breadcrumb-item>
+            <el-breadcrumb-item>自定义任务</el-breadcrumb-item>
+        </el-breadcrumb>
+        <el-button size="mini" type="primary" @click="addConfigure">新增配置</el-button>
         <el-table
                 :data="tableData"
                 style="width: 100%"
@@ -67,20 +74,29 @@
                     header-align="center"
                     align="center">
                 <template slot-scope="scope">
-                    <el-button
-                            plain
-                            type="danger"
-                            size="mini"
-                            @click="deletes(scope.row.id)"
-                    >删除
-                    </el-button>
-                    <el-button
-                            plain
-                            type="info"
-                            size="mini"
-                            @click="info(scope.row.id)"
-                    >查看详情
-                    </el-button>
+                    <el-popover
+                            placement="top-start"
+                            trigger="hover"
+                            content="删除">
+                        <i class="iconfont icon-tubiaozhizuo-"
+                           slot="reference"
+                           @click="deletes(scope.row.id)"
+                           style="color: #e31313;cursor: pointer;padding: 0 20px;font-size: 18px"
+                        >
+                        </i>
+                    </el-popover>
+                    <el-popover
+                            placement="top-start"
+                            trigger="hover"
+                            content="查看详情">
+                        <i class="iconfont icon-chakan"
+                           @click="info(scope.row.id)"
+                           slot="reference"
+                           style="color: #1381e3;cursor: pointer;padding: 0 20px;font-size: 12px"
+                        >
+                        </i>
+                    </el-popover>
+
                 </template>
             </el-table-column>
         </el-table>
@@ -147,5 +163,5 @@
     </div>
 </div>
 </body>
-    <script src="${rc.contextPath}/js/practiceCen/task_configure_personal.js?_${.now?long}"></script>
+<script src="${rc.contextPath}/js/practiceCen/task_configure_personal.js?_${.now?long}"></script>
 </html>

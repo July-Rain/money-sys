@@ -29,6 +29,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -158,13 +162,32 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         if(UtilValidate.isNotEmpty(policeclass)){
             ew.eq("policeclass",policeclass);
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if(UtilValidate.isNotEmpty(startTime)){
-            ew.addFilter("(START_TIME >= TO_DATE('"+startTime+"', 'yyyy-mm-dd'))");
+            Date startParse = null;
+            try {
+                startParse = sdf.parse(startTime);
+                ew.ge("START_TIME", startParse);
+            } catch (ParseException e) {
+                throw new RuntimeException();
+            }
         }
         if(UtilValidate.isNotEmpty(endTime)){
-            ew.addFilter("(END_TIME <= TO_DATE('"+endTime+"', 'yyyy-mm-dd'))");
+            Date endParse = null;
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                Format f = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar c = Calendar.getInstance();
+                c.setTime(format.parse(endTime));
+                c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
+                Date tomorrow = c.getTime();
+                endParse = tomorrow;
+                //以开始时间搞
+                ew.le("END_TIME", endParse);
+            } catch (ParseException e) {
+                throw new RuntimeException();
+            }
         }
-
         if(UtilValidate.isNotEmpty(createUser)){  //创建人
             ew.eq("CREATE_USER",createUser);
         }
@@ -178,7 +201,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
                 ew.in("id",arr);
             }
         }
-        ew.orderBy("CREATE_TIME");
+        ew.orderBy("CREATE_TIME",false);
         Page<LearnTasksEntity> page = this.selectPage(
                 new Query<LearnTasksEntity>(params).getPage(),ew);
         //设置学习任务中课程数量以及当前登陆人学习数量
@@ -214,11 +237,31 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         if(UtilValidate.isNotEmpty(policeclass)){
             ew.eq("policeclass",policeclass);
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if(UtilValidate.isNotEmpty(startTime)){
-            ew.addFilter("(START_TIME >= TO_DATE('"+startTime+"', 'yyyy-mm-dd'))");
+            Date startParse = null;
+            try {
+                startParse = sdf.parse(startTime);
+                ew.ge("START_TIME", startParse);
+            } catch (ParseException e) {
+                throw new RuntimeException();
+            }
         }
         if(UtilValidate.isNotEmpty(endTime)){
-            ew.addFilter("(END_TIME <= TO_DATE('"+endTime+"', 'yyyy-mm-dd'))");
+            Date endParse = null;
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                Format f = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar c = Calendar.getInstance();
+                c.setTime(format.parse(endTime));
+                c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
+                Date tomorrow = c.getTime();
+                endParse = tomorrow;
+                //以开始时间搞
+                ew.le("END_TIME", endParse);
+            } catch (ParseException e) {
+                throw new RuntimeException();
+            }
         }
         if(UtilValidate.isNotEmpty(orgCode)){
             ew.like("dept_code",orgCode);
@@ -230,7 +273,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         if(UtilValidate.isNotEmpty(isUse)){  //是否启用
             ew.eq("is_use",isUse);
         }
-        ew.orderBy("CREATE_TIME");
+        ew.orderBy("CREATE_TIME",false);
         Page<LearnTasksEntity> page = this.selectPage(
                 new Query<LearnTasksEntity>(params).getPage(),ew);
         //设置学习任务中课程数量以及当前登陆人学习数量

@@ -19,6 +19,10 @@ import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -73,15 +77,35 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         if(UtilValidate.isNotEmpty(createUser)){
             ew.in("create_user",createUser);
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if(UtilValidate.isNotEmpty(startTime)){
-            ew.addFilter("(case_time >= TO_DATE('"+startTime+"', 'yyyy-mm-dd'))");
+            Date startParse = null;
+            try {
+                startParse = sdf.parse(startTime);
+                ew.ge("case_time", startParse);
+            } catch (ParseException e) {
+                throw new RuntimeException();
+            }
         }
         if(UtilValidate.isNotEmpty(endTime)){
-            ew.addFilter("(case_time <= TO_DATE('"+endTime+"', 'yyyy-mm-dd'))");
+            Date endParse = null;
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                Format f = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar c = Calendar.getInstance();
+                c.setTime(format.parse(endTime));
+                c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
+                Date tomorrow = c.getTime();
+                endParse = tomorrow;
+                //以开始时间搞
+                ew.le("case_time", endParse);
+            } catch (ParseException e) {
+                throw new RuntimeException();
+            }
         }
         if(UtilValidate.isNotEmpty(params.get("isAuth"))){
             //需要权限过滤
-            String[] authArr= authService.listAllIdByUser(user.getOrgId(),user.getId(),"CASEANA");
+            String[] authArr= authService.listAllIdByUser(user.getOrgId(),user.getId(),"CASEANALYSIS");
             if(authArr.length>0){
                 ew.in("id",authArr);
             }else{
@@ -90,7 +114,7 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
             }
         }
 
-        ew.orderBy("CREATE_TIME");
+        ew.orderBy("CREATE_TIME",false);
         Page<CaseAnalysisEntity> page = this.selectPage(
                 new Query<CaseAnalysisEntity>(params).getPage(),ew);
         return new PageUtils(page);

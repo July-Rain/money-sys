@@ -5,14 +5,16 @@
     <#include "/header.html">
 </head>
 <style>
-    .header-right ul{
+    .header-right ul {
         background: transparent;
     }
-    .header-right ul li:after{
+
+    .header-right ul li:after {
         content: '';
     }
+
     .el-menu--horizontal .el-menu-item,
-    .el-menu--horizontal .el-submenu{
+    .el-menu--horizontal .el-submenu {
         float: left;
         height: 70px;
         /*line-height: 70px;*/
@@ -20,13 +22,15 @@
         border-bottom: 2px solid transparent;
         color: #fff;
     }
-    .el-menu--horizontal>.el-submenu .el-submenu__title {
+
+    .el-menu--horizontal > .el-submenu .el-submenu__title {
         height: 70px;
         /* line-height: 70px; */
         border-bottom: 2px solid transparent;
         color: #909399;
     }
-    .header-right ul li a{
+
+    .header-right ul li a {
         text-align: center;
         padding: 0;
         /*margin: 10px 0;*/
@@ -34,34 +38,41 @@
         height: auto;
         display: inline-block;
     }
+
     .header-right .el-menu-item [class^=el-icon-],
     .header-right .el-submenu [class^=el-icon-],
-    .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
+    .el-menu--horizontal > .el-submenu .el-submenu__icon-arrow {
         font-size: 30px;
         color: #fff;
     }
+
     /*.header-right .el-submenu [class^=el-icon-]*/
-    .header-right ul li a span{
+    .header-right ul li a span {
         display: block;
         margin-top: -10px;
         line-height: 10px;
     }
+
     .header-right .el-menu-item:hover a,
     .header-right .el-submenu:hover a,
     .header-right .el-menu-item:hover [class^=el-icon-],
     .header-right .el-submenu:hover [class^=el-icon-],
-    .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
+    .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-] {
         color: #909399;
     }
-    .el-submenu__icon-arrow{
+
+    .el-submenu__icon-arrow {
         margin-top: 16px;
     }
-    .el-menu--horizontal .el-menu .el-menu-item a{
+
+    .el-menu--horizontal .el-menu .el-menu-item a {
         color: #909399;
     }
-    .el-menu--horizontal .el-menu .el-menu-item a:hover{
+
+    .el-menu--horizontal .el-menu .el-menu-item a:hover {
         color: #000;
     }
+
     .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
         background-color: #fff;
         float: none;
@@ -69,101 +80,109 @@
         line-height: 36px;
         padding: 0 10px;
         color: #909399;
-        display: inline-block;//悬浮块横向显示
+        display: inline-block;
     }
 </style>
 <body>
 <div id="app" v-cloak>
     <div class="container">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
-            <el-breadcrumb-item :to="{ path: '/' }">个人中心</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>个人中心</el-breadcrumb-item>
             <el-breadcrumb-item>积分学分</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row :gutter="24">
             <el-col :span="20">
                 <el-tabs type="border-card">
                     <div>
+                        <div class="info_card">
+                            <div class="card_title"></div>
+                            <div class="card_contain">
+                                <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+                                    <el-form-item prop="type" label="类型">
+                                        <el-select v-model="formInline.type" size="mini">
+                                            <el-option key="0" label="学分" value="0"></el-option>
+                                            <el-option key="1" label="积分" value="1"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item prop="startTime" label="开始时间">
+                                        <el-date-picker type="date" format="yyyy年MM月dd日"
+                                                        value-format="yyyy-MM-dd" placeholder="开始时间"
+                                                        v-model="formInline.startTime"></el-date-picker>
+                                    </el-form-item>
 
-                            <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-                                <el-form-item prop="type">
-                                    <el-button size="mini" type="primary">类型</el-button>
-                                    <el-select v-model="formInline.type" size="mini">
-                                        <el-option key="0" label="学分"  value="0"></el-option>
-                                        <el-option key="1" label="积分"  value="1"></el-option>
-                                    </el-select>
-                                </el-form-item>
-                                <el-form-item prop="startTime">
-                                    <el-button size="mini" type="primary">开始时间</el-button>
-                                    <el-date-picker type="date" format="yyyy年MM月dd日"
-                                                    value-format="yyyy-MM-dd" placeholder="开始时间"
-                                                    v-model="formInline.startTime"></el-date-picker>
-                                </el-form-item>
+                                    <el-form-item prop="endTime" label="结束时间">
+                                        <el-date-picker type="date" format="yyyy年MM月dd日"
+                                                        value-format="yyyy-MM-dd" placeholder="结束时间"
+                                                        v-model="formInline.endTime"></el-date-picker>
+                                    </el-form-item>
 
-                                <el-form-item prop="endTime">
-                                    <el-button size="mini" type="primary">结束时间</el-button>
-                                    <el-date-picker type="date" format="yyyy年MM月dd日"
-                                                    value-format="yyyy-MM-dd" placeholder="结束时间"
-                                                    v-model="formInline.endTime"></el-date-picker>
-                                </el-form-item>
-
-                                <el-form-item>
-                                    <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                                    <el-button size="mini" @click="resetForm('formInline')">重置</el-button>
-                                </el-form-item>
-                            </el-form>
-                            <el-table
-                                    :data="tableData"
-                                    border
-                                    style="width: 100%">
-                                <el-table-column
-                                        type="index"
-                                        label="序号"
-                                        header-align="center"
-                                        align="center">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="type"
-                                        label="学分/学分"
-                                        header-align="center"
-                                        align="center"
-                                        >
-                                    <template slot-scope="scope">
-                                        <el-tag v-if="scope.row.type === '0'" size="small">学分</el-tag>
-                                        <el-tag v-else size="small" type="warning">积分</el-tag>
-                                    </template>
-                                </el-table-column>
-
-                                <el-table-column
-                                        prop="point"
-                                        label="分数"
-                                        header-align="center"
-                                        align="center" >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="src"
-                                        label="来源"
-                                        header-align="center"
-                                        align="center"
-                                        >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="createTime"
-                                        label="时间"
-                                        header-align="center"
-                                        align="center"
-                                >
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
-                            </el-pagination>
+                                    <el-form-item>
+                                        <el-button type="primary" @click="onSubmit" size="mini">
+                                            <i class="iconfont icon-sousuo1"></i>
+                                            查询</el-button>
+                                        <el-button class="reset_btn" size="mini" @click="resetForm('formInline')">
+                                            <i class="iconfont icon-tableresetpassword"></i>
+                                            重置
+                                        </el-button>
+                                    </el-form-item>
+                                </el-form>
+                            </div>
                         </div>
+
+                        <el-table
+                                :data="tableData"
+                                border
+                                style="width: 100%">
+                            <el-table-column
+                                    type="index"
+                                    label="序号"
+                                    header-align="center"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="type"
+                                    label="学分/学分"
+                                    header-align="center"
+                                    align="center"
+                            >
+                                <template slot-scope="scope">
+                                    <el-tag v-if="scope.row.type === '0'" size="small">学分</el-tag>
+                                    <el-tag v-else size="small" type="warning">积分</el-tag>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column
+                                    prop="point"
+                                    label="分数"
+                                    header-align="center"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="src"
+                                    label="来源"
+                                    header-align="center"
+                                    align="center"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="createTime"
+                                    label="时间"
+                                    header-align="center"
+                                    align="center"
+                            >
+                            </el-table-column>
+                        </el-table>
+                        <el-pagination
+                                @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange"
+                                :current-page="formInline.currPage"
+                                :page-sizes="[10, 20, 30, 40]"
+                                :page-size="formInline.pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="formInline.totalCount">
+                        </el-pagination>
+                    </div>
                 </el-tabs>
             </el-col>
 

@@ -57,6 +57,9 @@ var vm = new Vue({
         toUrl: function(url) {
             alert(1)
             window.location.href = baseURL + url
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     }
 });

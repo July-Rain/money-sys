@@ -71,7 +71,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfig> i
         String value = (String)params.get("value");
         String status = (String)params.get("status");
         EntityWrapper<SysConfig> ew = new EntityWrapper<>();
-        ew.setSqlSelect("id,code,value,status,remark"); ew.setSqlSelect("id,code,value,status,remarks");
+        ew.setSqlSelect("id,code,value,status,remark");
         if(UtilValidate.isNotEmpty(code)){
             ew.like("code",code);
         }

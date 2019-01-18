@@ -72,6 +72,9 @@ var vm = new Vue({
             alert(id);
             parentWin.document.getElementById("container").src
                 = 'modules/examCen/testPaper.html?id='+id;
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     }
 });
