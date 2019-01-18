@@ -522,6 +522,7 @@
     height: 0;
     visibility:hidden;
 
+
 }   /*==for FF/chrome/opera/IE8==*/
 .el-tabs__header.is-top{
     width: 350px;
