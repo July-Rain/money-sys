@@ -75,6 +75,8 @@ public class SysMenu implements Serializable ,Comparable<SysMenu>{
 	 */
 	@TableField(exist=false)
 	private Boolean open;
+	@TableField(exist=false)
+	private int level;//层级
 
 	@TableField(exist=false)
 	private List<SysMenu> list=new ArrayList<SysMenu>();
@@ -240,6 +242,14 @@ public class SysMenu implements Serializable ,Comparable<SysMenu>{
 
 	public void setOpen(Boolean open) {
 		this.open = open;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 	@Override

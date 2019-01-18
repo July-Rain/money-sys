@@ -108,6 +108,11 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenu> impleme
 		return baseMapper.queryChildById(id);
 	}
 
+	@Override
+	public List<SysMenu> queryParentById(String id) {
+		return baseMapper.queryParentById(id);
+	}
+
 	public  void listAllMenuTree2(SysMenu menu, List menuList)
 	{
 

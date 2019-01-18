@@ -27,6 +27,14 @@ public class OrgDiagnosisEntity implements Serializable {
     private int videoCaseCount;//案例分析视频
     private int picCaseCount;//案例分析图文
     private int audioCaseCount;//案例分析音频数据
+    private int normalExamCount; //普通考试
+    private int enforceExamCount;//执法考试
+    private int examScore1Count;//60分以下
+    private int examScore2Count;//60-70
+    private int examScore3Count;//70-80
+    private int examScore4Count;//80-90
+    private int examScore5Count;//90以上
+
 
     public String getOrgId() {
         return orgId;
@@ -146,5 +154,61 @@ public class OrgDiagnosisEntity implements Serializable {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
+    }
+
+    public int getNormalExamCount() {
+        return normalExamCount;
+    }
+
+    public void setNormalExamCount(int normalExamCount) {
+        this.normalExamCount = normalExamCount;
+    }
+
+    public int getEnforceExamCount() {
+        return enforceExamCount;
+    }
+
+    public void setEnforceExamCount(int enforceExamCount) {
+        this.enforceExamCount = enforceExamCount;
+    }
+
+    public int getExamScore1Count() {
+        return examScore1Count;
+    }
+
+    public void setExamScore1Count(int examScore1Count) {
+        this.examScore1Count = examScore1Count;
+    }
+
+    public int getExamScore2Count() {
+        return examScore2Count;
+    }
+
+    public void setExamScore2Count(int examScore2Count) {
+        this.examScore2Count = examScore2Count;
+    }
+
+    public int getExamScore3Count() {
+        return examScore3Count;
+    }
+
+    public void setExamScore3Count(int examScore3Count) {
+        this.examScore3Count = examScore3Count;
+    }
+
+    public int getExamScore4Count() {
+        return examScore4Count;
+    }
+
+    public void setExamScore4Count(int examScore4Count) {
+        this.examScore4Count = examScore4Count;
+    }
+
+    public int getExamScore5Count() {
+        return examScore5Count;
+    }
+
+    public void setExamScore5Count(int examScore5Count) {
+        this.examScore5Count = examScore5Count;
     }
 }
