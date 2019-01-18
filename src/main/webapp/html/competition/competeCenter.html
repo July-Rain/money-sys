@@ -11,89 +11,76 @@
     <div class="content">
         <div class="innner_content">
             <!--<el-scrollbar style="height: 100%">-->
-            <div class="back">
-                <a href="javascript:;"><img src="${rc.contextPath}/statics/img/competeCenter/btn_return.png"></a>
-            </div>
-            <el-row style="padding: 0 30px;">
-                <!--左侧关卡-->
-                <el-col :span="10">
-                    <div class="part">
-                        <a href="javascript:;">
-                            <span class="words">闯关竞赛</span>
-                            <img class="imgGo"
-                                 src="${rc.contextPath}/statics/img/competeCenter/btn_letgo_normal.png">
-                        </a>
-                    </div>
-                    <div class="part">
-                        <a href="javascript:;">
-                            <span class="words">在线比武</span>
-                            <img class="imgGo"
-                                 src="${rc.contextPath}/statics/img/competeCenter/btn_letgo_normal.png">
-                        </a>
-                    </div>
-                    <div class="part">
-                        <a href="javascript:;">
-                            <span class="words">擂台赛</span>
-                            <img class="imgGo"
-                                 src="${rc.contextPath}/statics/img/competeCenter/btn_letgo_normal.png">
-                        </a>
-                    </div>
-                </el-col>
-                <!--右侧排行榜-->
-                <el-col :span="14" class="top">
-                    <div class="top_content">
-                        <el-tabs v-model="rankTop5" type="card" @tab-click="handleClick">
-                            <el-tab-pane label="闯关竞赛" name="first">
-                                <img class="activedImg"
-                                     src="${rc.contextPath}/statics/img/competeCenter/btn_longhubang_selected.png">
-                                <ul class="firstList">
-                                    <li v-for="(item,index) in firstListByChaungGuan" style="padding-right: 120px">
-                                        <img class="ranking" v-if="index==0"
-                                             src="${rc.contextPath}/statics/img/competeCenter/bang_1.png">
-                                        <img class="ranking" v-if="index==1"
-                                             src="${rc.contextPath}/statics/img/competeCenter/bang_2.png">
-                                        <img class="ranking" v-if="index==2"
-                                             src="${rc.contextPath}/statics/img/competeCenter/bang_3.png">
-                                        <span class="ranking2" v-if="index>2">{{index+1}}</span>
-                                        <span class="headImg"></span>
-                                        <span class="name">{{item.userName}}</span>
-                                        <p class="score clearfix">
-                                            <span class="score">第{{item.howBig}}大关   &nbsp;&nbsp;第{{item.howLit}}小关</span>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </el-tab-pane>
-                            <el-tab-pane label="在线比武" name="second">
-                                <img class="activedImg2"
-                                     src="${rc.contextPath}/statics/img/competeCenter/btn_longhubang_selected.png">
-                                <ul class="firstList">
-                                    <li v-for="(item,index) in firstListByPk" style="padding-right: 120px">
-                                        <img class="ranking" v-if="index==0"
-                                             src="${rc.contextPath}/statics/img/competeCenter/bang_1.png">
-                                        <img class="ranking" v-if="index==1"
-                                             src="${rc.contextPath}/statics/img/competeCenter/bang_2.png">
-                                        <img class="ranking" v-if="index==2"
-                                             src="${rc.contextPath}/statics/img/competeCenter/bang_3.png">
-                                        <span class="ranking2" v-if="index>2">{{index+1}}</span>
-                                        <span class="headImg"></span>
-                                        <span class="name">{{item.userName}}</span>
-                                        <p class="score clearfix">
-                                            <span class="score">获胜次数{{item.counts}}</span>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </el-tab-pane>
-                            <el-tab-pane label="擂台榜" name="third">
-                                <img class="activedImg3"
-                                     src="${rc.contextPath}/statics/img/competeCenter/btn_longhubang_selected.png">
-                                <ul class="firstList">
+                <div class="back">
+                   <a href="javascript:;"><img src="${rc.contextPath}/statics/img/competeCenter/btn_return.png"></a>
+                </div>
+                <el-row style="padding: 0 30px;">
+                    <!--左侧关卡-->
+                    <el-col :span="10">
+                        <div class="part">
+                            <a href="javascript:;" onclick="toChuangGuan();">
+                                <span class="words">闯关竞赛</span>
+                                <img class="imgGo"
+                                     src="${rc.contextPath}/statics/img/competeCenter/btn_letgo_normal.png">
+                            </a>
+                        </div>
+                        <div class="part">
+                            <a href="javascript:;">
+                                <span class="words">在线比武</span>
+                                <img class="imgGo"
+                                     src="${rc.contextPath}/statics/img/competeCenter/btn_letgo_normal.png">
+                            </a>
+                        </div>
+                        <div class="part">
+                            <a href="javascript:;">
+                                <span class="words">擂台赛</span>
+                                <img class="imgGo"
+                                     src="${rc.contextPath}/statics/img/competeCenter/btn_letgo_normal.png">
+                            </a>
+                        </div>
+                    </el-col>
+                    <!--右侧排行榜-->
+                    <el-col :span="14" class="top">
+                        <div class="top_content">
+                            <el-tabs v-model="rankTop5" type="card" @tab-click="handleClick">
+                                <el-tab-pane label="闯关竞赛" name="first">
+                                    <img class="activedImg" src="${rc.contextPath}/statics/img/competeCenter/btn_longhubang_selected.png">
+                                    <ul class="firstList">
+                                        <li v-for="(item,index) in firstListByChaungGuan" style="padding-right: 120px">
+                                            <img class="ranking" v-if="index==0" src="${rc.contextPath}/statics/img/competeCenter/bang_1.png">
+                                            <img class="ranking" v-if="index==1" src="${rc.contextPath}/statics/img/competeCenter/bang_2.png">
+                                            <img class="ranking" v-if="index==2" src="${rc.contextPath}/statics/img/competeCenter/bang_3.png">
+                                            <span class="ranking2" v-if="index>2">{{index+1}}</span>
+                                            <span class="headImg"></span>
+                                            <span class="name">{{item.userName}}</span>
+                                            <p class="score clearfix">
+                                                <span class="score">第{{item.howBig}}大关   &nbsp;&nbsp;第{{item.howLit}}小关</span>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </el-tab-pane>
+                                <el-tab-pane label="在线比武" name="second">
+                                    <img class="activedImg2" src="${rc.contextPath}/statics/img/competeCenter/btn_longhubang_selected.png">
+                                    <ul class="firstList">
+                                        <li v-for="(item,index) in firstListByPk" style="padding-right: 120px">
+                                            <img class="ranking" v-if="index==0" src="${rc.contextPath}/statics/img/competeCenter/bang_1.png">
+                                            <img class="ranking" v-if="index==1" src="${rc.contextPath}/statics/img/competeCenter/bang_2.png">
+                                            <img class="ranking" v-if="index==2" src="${rc.contextPath}/statics/img/competeCenter/bang_3.png">
+                                            <span class="ranking2" v-if="index>2">{{index+1}}</span>
+                                            <span class="headImg"></span>
+                                            <span class="name">{{item.userName}}</span>
+                                            <p class="score clearfix">
+                                                <span class="score">获胜次数{{item.counts}}</span>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </el-tab-pane>
+                                <el-tab-pane label="擂台榜" name="third">
+                                    <img class="activedImg3" src="${rc.contextPath}/statics/img/competeCenter/btn_longhubang_selected.png"> <ul class="firstList">
                                     <li v-for="(item,index) in firstListByleitai" style="padding-right: 120px">
-                                        <img class="ranking" v-if="index==0"
-                                             src="${rc.contextPath}/statics/img/competeCenter/bang_1.png">
-                                        <img class="ranking" v-if="index==1"
-                                             src="${rc.contextPath}/statics/img/competeCenter/bang_2.png">
-                                        <img class="ranking" v-if="index==2"
-                                             src="${rc.contextPath}/statics/img/competeCenter/bang_3.png">
+                                        <img class="ranking" v-if="index==0" src="${rc.contextPath}/statics/img/competeCenter/bang_1.png">
+                                        <img class="ranking" v-if="index==1" src="${rc.contextPath}/statics/img/competeCenter/bang_2.png">
+                                        <img class="ranking" v-if="index==2" src="${rc.contextPath}/statics/img/competeCenter/bang_3.png">
                                         <span class="ranking2" v-if="index>2">{{index+1}}</span>
                                         <span class="headImg"></span>
                                         <span class="name">{{item.userName}}</span>
@@ -103,40 +90,15 @@
                                     </li>
                                 </ul>
 
-                            </el-tab-pane>
-                        </el-tabs>
-                    </div>
-                </el-col>
-            </el-row>
+                                </el-tab-pane>
+                            </el-tabs>
+                        </div>
+                    </el-col>
+                </el-row>
             <!--</el-scrollbar>-->
         </div>
     </div>
 </div>
-
-<!--<div id="qiaojie">-->
-    <!--<span class="addDom">-->
-    <!--<span class="span1">&nbsp;</span>-->
-    <!--<span class="addDom">-->
-        <!--<span class="span1">&nbsp;</span>-->
-        <!--<span class="btn-group">中文姓名</span>-->
-        <!--<span>&nbsp;您好，您的-->
-            <!--<span class="addDom">-->
-                <!--<span class="span1">&nbsp;</span>-->
-                <!--<span class="btn-group">证件类型</span>-->
-                <!--<span>&nbsp;是-->
-                    <!--<span class="addDom">-->
-                        <!--<span class="span1">&nbsp;</span>-->
-                        <!--<span class="btn-group">证件号码</span>-->
-                        <!--<span>&nbsp;，请确认！</span>-->
-                    <!--</span>-->
-                <!--</span>-->
-            <!--</span>-->
-        <!--</span>-->
-    <!--</span>-->
-<!--</span>-->
-
-<!--</div>-->
-
 </body>
 
 <!-- import [current] JavaScript -->
