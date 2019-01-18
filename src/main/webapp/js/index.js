@@ -11,7 +11,8 @@ var vm = new Vue({
             childUrl: 'container.html',
             navData: [],//导航
             iframeSrc: '',
-            backShow: true
+            backShow: true,
+            loginType: 0// 登陆方式
         }
     },
     created: function () {

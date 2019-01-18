@@ -61,3 +61,9 @@ var vm = new Vue({
 
     }
 });
+
+
+function toChuangGuan()
+{
+    parent.location.href =baseURL+"modules/competition/chuangguanGame.html";
+}
