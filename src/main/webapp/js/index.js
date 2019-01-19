@@ -23,7 +23,6 @@ var vm = new Vue({
     },
 
     methods: {
-
         loadFrame: function (obj) {
             var _src = $("#container").attr("src");
             if(_src === vm.iframeSrc){
