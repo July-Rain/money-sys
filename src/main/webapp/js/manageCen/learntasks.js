@@ -4,6 +4,7 @@
  * Description:学习任务管理
  */
 var menu=getUrlParam("menu");//获取页面标识
+var menuId = getUrlParam('id');
 var ztree;
 var setting = {
     data: {
@@ -112,7 +113,8 @@ var vm = new Vue({
         taskClassOption:[],//所属分类
         policeclassOption:[],//所属警种
        // multipleClassSelection:[]//法律法规数据选择框
-        deptCheckData:[]//部门默认选中节点
+        deptCheckData:[],//部门默认选中节点
+        breadArr:[]//面包屑数据
     },
     created: function () {
         this.$nextTick(function () {
@@ -169,6 +171,7 @@ var vm = new Vue({
             this.reload();
             this.reloadUser();
             vm.menuForm=menu;
+            this.breadArr=getBreadcrumb(menuId);
         })
     },
     methods: {
@@ -286,7 +289,7 @@ var vm = new Vue({
                         });
 
                     }
-                });s
+                });
             }).catch(function () {
                 vm.$message({
                     type: 'info',
