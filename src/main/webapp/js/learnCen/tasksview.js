@@ -24,6 +24,7 @@ var setting = {
         nocheckInherit:true
     }
 };
+var menuId = getUrlParam('id');
 var vm = new Vue({
     el: '#app',
     data: {
@@ -97,6 +98,7 @@ var vm = new Vue({
             children: 'child',
             label: 'infoName'
         },//法律法规树默认数据
+        breadArr:[]//面包屑数据
         // multipleClassSelection:[]//法律法规数据选择框
     },
     created: function () {
@@ -130,6 +132,7 @@ var vm = new Vue({
             });
             this.reload();
             this.reloadUser();
+            this.breadArr=getBreadcrumb(menuId);
 
         })
     },
