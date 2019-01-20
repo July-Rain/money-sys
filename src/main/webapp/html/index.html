@@ -10,7 +10,7 @@
     <!--<link rel="stylesheet" href="${rc.contextPath}/statics/plugins/froala_editor/css/font-awesome.min.css">-->
 
     <!-- 引入element-ui样式 -->
-    <!--<link rel="stylesheet" href="${rc.contextPath}/statics/plugins/element/element.css">-->
+    <link rel="stylesheet" href="${rc.contextPath}/statics/plugins/element/element.css">
 
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
@@ -31,68 +31,81 @@
 <div class="login-box" id="rrapp" v-cloak>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <div class="pull-left">
-            <div class="left-con">
-                <p><img src="${rc.contextPath}/statics/img/login.png"></p>
-                <p class="logintit">江苏省公安机关<br>网上法律学校</p>
-            </div>
-        </div>
-        <div class="pull-right">
-            <div class="right-con">
-                <ul class="login_tab">
-                    <li><p class="login-box-msg">密码登录</p></li>
-                    <li><p class="login-box-msg">证书登陆</p></li>
-                </ul>
-                <ul>
-                    <li>
-                        <!--<div v-if="error" class="alert alert-danger alert-dismissible">-->
-                        <!--<h4 style="margin-bottom: 0px;"><i class="fa fa-exclamation-triangle"></i> {{errorMsg}}</h4>-->
-                        <!--</div>-->
-                        <div class="form-group has-feedback">
-                            <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                            <input type="text" class="form-control" v-model="username" value="" placeholder="账号">
-                        </div>
-                        <div class="form-group has-feedback">
-                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                            <input type="password" class="form-control" v-model="password" value="" placeholder="密码">
-                        </div>
-                        <!--<div class="form-group has-feedback">-->
-                        <!--<input type="text" class="form-control" v-model="captcha" @keyup.enter="login" placeholder="验证码">-->
-                        <!--<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>-->
-                        <!--</div>-->
-                        <!--<div class="form-group has-feedback">-->
-                        <!--<img alt="如果看不清楚，请单击图片刷新！" class="pointer" :src="src" @click="refreshCode">-->
-                        <!--&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" @click="refreshCode">点击刷新</a>-->
-                        <!--</div>-->
-
-
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <el-checkbox v-model="checked" style="padding-left: 0px;margin-bottom: 10px">记住密码12</el-checkbox>
+        <el-row :gutter="30">
+            <el-col :span="10" class="pull-left">
+                <div class="left-con">
+                    <p><img src="${rc.contextPath}/statics/img/logo_login.png"></p>
+                    <p class="logintit">江苏省公安机关<br>网上法律学校</p>
+                </div>
+            </el-col>
+            <el-col :span="14" class="pull-right">
+                <div class="right-con">
+                    <el-tabs v-model="activeName" @tab-click="handleClick">
+                        <el-tab-pane label="密码登录" name="password">
+                            <div>
+                                <!--<div v-if="error" class="alert alert-danger alert-dismissible">-->
+                                <!--<h4 style="margin-bottom: 0px;"><i class="fa fa-exclamation-triangle"></i> {{errorMsg}}</h4>-->
+                                <!--</div>-->
+                                <div class="form-group has-feedback">
+                                    <el-input prefix-icon="el-icon-search" v-model="userName" placeholder="账号" clearable></el-input>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <el-input prefix-icon="el-icon-search" v-model="password" type="password" placeholder="密码" clearable></el-input>
+                                </div>
+                                <!--<div class="form-group has-feedback">-->
+                                    <!--<el-row :gutter="20">-->
+                                        <!--<el-col :span="14">-->
+                                            <!--<el-input prefix-icon="el-icon-search" v-model="captcha" placeholder="验证码" @keyup.enter="login" clearable></el-input>-->
+                                        <!--</el-col>-->
+                                        <!--<el-col :span="10" class="login-captcha">-->
+                                            <!--<img :src="src" alt="">-->
+                                        <!--</el-col>-->
+                                    <!--</el-row>-->
+                                    <!--&lt;!&ndash;<input type="text" class="form-control" v-model="captcha" @keyup.enter="login"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;placeholder="验证码">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="form-group has-feedback">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<img alt="如果看不清楚，请单击图片刷新！" class="pointer" :src="src" @click="refreshCode">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" @click="refreshCode">点击刷新</a>&ndash;&gt;-->
+                                <!--</div>-->
+                                <div class="form-group has-feedback row" style="margin-bottom: 0;">
+                                    <div class="col-lg-12">
+                                        <el-checkbox v-model="checked" style="padding-left: 0px;margin-bottom: 10px">记住用户名</el-checkbox>
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <!--<div class="col-lg-12">-->
+                                        <el-button class="login-btn" @click="login">登录</el-button>
+                                        <!--<button type="button" class="btn login-key btn-primary btn-block btn-flat" @click="login">登录</button>-->
+                                    <!--</div>-->
+                                    <!-- /.col -->
+                                </div>
                             </div>
-                        </div>
-                        <div class="row" style="margin-top: 20px;">
-                            <div class="col-lg-12">
-                                <button type="button" class="btn login-key btn-primary btn-block btn-flat" @click="login">登录</button>
+                        </el-tab-pane>
+                        <el-tab-pane label="证书登陆" name="certificate">
+                            <div>
+                                <p class="credit-word">请插入数字证书完成登录</p>
+                                <p>
+                                    <img src="${rc.contextPath}/statics/img/zhengshu_left.png">
+                                    <img src="${rc.contextPath}/statics/img/zhengshu_right.png">
+                                </p>
                             </div>
-                            <!-- /.col -->
-                        </div>
-                    </li>
-                    <li></li>
-                </ul>
-
-            </div>
-        </div>
+                        </el-tab-pane>
+                    </el-tabs>
+                </div>
+            </el-col>
+        </el-row>
 
         <!-- /.social-auth-links -->
     </div>
-    <div class="footer">
-        <span>CopyRight @2018 STATE ADMINISTRATION OF WORK SAFETY ALL Rights Reserved</span>
-    </div>
+    <!--<div class="footer">-->
+        <!--<span>CopyRight @2018 STATE ADMINISTRATION OF WORK SAFETY ALL Rights Reserved</span>-->
+    <!--</div>-->
     <!-- /.login-box-body -->
 </div>
 
-<p class="login-browser-msg">本系统建议使用Chrome浏览器，点击 <a href="https://sm.myapp.com/original/Browser/69.0.3497.92_chrome_installer_x64.exe">下载</a></p>
+<!--<p class="login-browser-msg">本系统建议使用Chrome浏览器，点击 <a href="https://sm.myapp.com/original/Browser/69.0.3497.92_chrome_installer_x64.exe">下载</a></p>-->
 <!-- /.login-box -->
 <!--<script src="${rc.contextPath}/statics/plugins/IE9/html5shiv.min.js"></script>-->
 <!--<script src="${rc.contextPath}/statics/plugins/IE9/respond.min.js"></script>-->
@@ -104,8 +117,8 @@
 <!--<script src="${rc.contextPath}/statics/plugins/vue/Vue.v2.5.17.prod.js"></script>-->
 
 <!-- 引入element-ui组件库 -->
-<!--<script src="${rc.contextPath}/statics/plugins/element/element.js"></script>-->
-<!--<script src="${rc.contextPath}/statics/plugins/layer/layer.js"></script>-->
+<script src="${rc.contextPath}/statics/plugins/element/element.js"></script>
+<script src="${rc.contextPath}/statics/plugins/layer/layer.js"></script>
 <script type="text/javascript">
     $(function () {
         if(top!=self){
@@ -170,7 +183,8 @@
 //		error: false,
 //		errorMsg: '',
             checked: false,
-            src: 'captcha.jpg'
+            src: 'captcha.jpg',
+            activeName: 'password'
         },
         beforeCreate: function(){
             if(self != top){
@@ -178,6 +192,9 @@
             }
         },
         methods: {
+            handleClick: function (tab, event) {
+                console.log(tab, event);
+            },
             refreshCode: function(){
                 this.src = "captcha.jpg?t=" + $.now();
             },
