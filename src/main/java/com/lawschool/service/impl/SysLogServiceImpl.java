@@ -11,6 +11,11 @@ import com.lawschool.util.Query;
 import com.lawschool.util.UtilValidate;
 import org.springframework.stereotype.Service;
 
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -19,12 +24,41 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogDao, SysLogEntity> impl
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        String key = (String)params.get("key");
+        String username = (String)params.get("username");
+        String operation = (String)params.get("operation");
+        String startTime = (String)params.get("startTime");
+        String endTime = (String)params.get("endTime");
         EntityWrapper<SysLogEntity> ew = new EntityWrapper<>();
 
-        if(UtilValidate.isNotEmpty(key)){
-            key="%"+key+"%";
-            ew .addFilter("username like {0} or operation like {1}",key,key);
+        if(UtilValidate.isNotEmpty(username)){
+            ew .like("username",username);
+        }
+        if(UtilValidate.isNotEmpty(operation)){
+            ew .like("operation",operation);
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if(UtilValidate.isNotEmpty(startTime)){
+            Date startParse = null;
+            try {
+                startParse = sdf.parse(startTime);
+                ew.ge("create_date", startParse);
+            } catch (ParseException e) {
+                throw new RuntimeException();
+            }
+        }
+        if(UtilValidate.isNotEmpty(endTime)){
+            Date endParse = null;
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Calendar c = Calendar.getInstance();
+                c.setTime(format.parse(endTime));
+                Date tomorrow = c.getTime();
+                endParse = tomorrow;
+                //以开始时间搞
+                ew.le("create_date", endParse);
+            } catch (ParseException e) {
+                throw new RuntimeException();
+            }
         }
         Page<SysLogEntity> page = this.selectPage(
             new Query<SysLogEntity>(params).getPage(),ew);
