@@ -163,6 +163,12 @@ var vm = new Vue({
                     label: 'label'
                 }
             },
+
+            chuangguan:"",
+            onlPkSum:"",
+            leitaiCount:"",
+
+
             rules: {//表单验证规则
                 name: [
                     {required: true, message: '请输入活动名称', trigger: 'blur'},
@@ -285,15 +291,13 @@ var vm = new Vue({
             this.loadVideo();
             this.loadNewsData();
             this.loadTasks();
-        })
+        });
 
         this.$nextTick(function () {
             this.getStuDia();
-            this.initPie1()
-            this.initBar1()
-
-        })
-
+            this.initPie1();
+            this.initBar1();
+        });
         this.$nextTick(function () {
 
             //学年目标
@@ -325,8 +329,12 @@ var vm = new Vue({
                     }
                 }
             });
-        })
-
+        });
+        this.$nextTick(function () {
+            this.getChuangguan();
+            this.onlPk();
+            this.leitai();
+        });
     },
     methods: {
         // 导航栏
@@ -560,11 +568,11 @@ var vm = new Vue({
                 parent.location.href = baseURL + item.list[0].url + "?id=" + item.id;
             }
         },
-        inToCompetition: function () {
-            //这是要跳转了
-            //     parent.location.href =baseURL+item.list[0].url+"?id="+item.id;
-            alert("wo jinlaile !!!!");
-        },
+        // inToCompetition: function () {
+        //     //这是要跳转了
+        //     //     parent.location.href =baseURL+item.list[0].url+"?id="+item.id;
+        //     alert("wo jinlaile !!!!");
+        // },
         // 菜单树选中
         menuListTreeCurrentChangeHandle: function (data) {
             // this.ruleForm.parentId = data.menuId
@@ -764,6 +772,40 @@ var vm = new Vue({
                     } else {
                         alert(result.msg);
                     }
+                }
+            });
+        },
+        getChuangguan: function () {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "competitionRecord/chuangGuanRankingByUser",//闯关排名
+                Type: "json",
+                async:false,
+                success: function (data) {
+                    vm.chuangguan="第"+data.competitionRecord.howBig+"大关，第"+data.competitionRecord.howLit+"小关";
+
+                }
+            });
+        },
+        onlPk: function () {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "battleRecord/pkSum",//闯关排名
+                Type: "json",
+                async:false,
+                success: function (data) {
+                    vm.onlPkSum=data.pkSum;
+                }
+            });
+        },
+        leitai: function () {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "battleRecord/leitaiWinCount",//闯关排名
+                Type: "json",
+                async:false,
+                success: function (data) {
+                    vm.leitaiCount=data.leitaiWinCount;
                 }
             });
         },

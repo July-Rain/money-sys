@@ -3,12 +3,14 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.beans.StuMedia;
+import com.lawschool.beans.User;
 import com.lawschool.beans.competition.BattleRecord;
 import com.lawschool.dao.competition.BattleRecordDao;
 import com.lawschool.service.competition.BattleRecordService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;
 import com.lawschool.util.UtilValidate;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,5 +89,19 @@ public class BattleRecordServiceImpl extends ServiceImpl<BattleRecordDao, Battle
 	@Override
 	public List<Map> firstListByleitai() {
 		return battleRecordDao.firstListByleitai();
+	}
+
+	@Override
+	public int leitaiWinCount() {
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
+		return this.selectCount(new EntityWrapper<BattleRecord>().eq("USER_ID",u.getId()).eq("TYPE","leitai").eq("WHETHER_WIN","1").eq("STATUS","1"));
+	}
+
+
+	@Override
+	public int pkSum() {
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
+		int i=battleRecordDao.pkSum(u.getId());
+		return i;
 	}
 }

@@ -57,13 +57,13 @@
                         </div>
                     </el-col>
                     <el-col :span="12">
-                        <div class="small-box bg-red"  @click="inToCompetition()">
+                        <div class="small-box bg-red">
                             <div class="inner">
                                 <h3>竞赛中心</h3>
                                 <div class="competition">
-                                    <p>闯关竞赛到第五关，击败了20%同学</p>
-                                    <p>擂台赛擂主5次，击败了20%同学</p>
-                                    <p>在线比武累计1025分，击败了20%同学</p>
+                                    <p>闯关竞赛到{{chuangguan}}</p>
+                                    <p>擂台赛擂主{{leitaiCount}}次</p>
+                                    <p>在线比武累计{{onlPkSum}}分</p>
                                 </div>
                             </div>
                             <div class="icon">
