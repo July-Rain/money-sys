@@ -75,6 +75,23 @@ public class SysMenuController {
     }
     /**
      * @Author MengyuWu
+     * @Description 获取请求菜单的上级菜单
+     * @Date 17:50 2019-1-18
+     * @Param [id]
+     * @return com.lawschool.util.Result
+     **/
+    
+    @RequestMapping("/getParent")
+    public Result getParent(String id){
+        if(UtilValidate.isEmpty(id)){
+            id="0";
+        }
+        List<SysMenu> parentList = sysMenuService.queryParentById(id);
+        return Result.ok().put("parentList", parentList);
+    }
+
+    /**
+     * @Author MengyuWu
      * @Description 查询首页的菜单
      * @Date 15:19 2018-12-5
      * @Param []

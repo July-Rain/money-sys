@@ -22,11 +22,13 @@ public class UserExam extends DataEntity<UserExam> {
 
     private Long queNum;    //题目数量
 
-    private String examStatus;  //考试状态  （已完成/未完成）
+    private String examStatus;  //考试状态  （已完成/未完成） 0：完成 1：未完成
 
     private double score;   //考試分數
 
-    private String isFinMark;   //是否完成阅卷
+    private String isFinMark;   //是否完成阅卷  0:完成 1：未完成
+
+    private String orgId;
 
     public String getExamConfigId() {
         return this.examConfigId;
@@ -82,5 +84,13 @@ public class UserExam extends DataEntity<UserExam> {
 
     public void setIsFinMark(final String isFinMark) {
         this.isFinMark = isFinMark;
+    }
+
+    public String getOrgId() {
+        return this.orgId;
+    }
+
+    public void setOrgId(final String orgId) {
+        this.orgId = orgId;
     }
 }

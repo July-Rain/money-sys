@@ -84,12 +84,12 @@
 }
 .top .top_content .activedImg2{
     position: absolute;
-    top: 0;
+    top: -14px;
     left: 40%;
 }
 .top .top_content .activedImg3{
     position: absolute;
-    top: 0;
+    top: -14px;
     right: 33px;
 }
 .firstList li{

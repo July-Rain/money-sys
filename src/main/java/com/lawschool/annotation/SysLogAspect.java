@@ -8,6 +8,7 @@ import com.lawschool.util.GetUUID;
 import com.lawschool.util.HttpContextUtils;
 import com.lawschool.util.IpUtil;
 import com.lawschool.util.UtilValidate;
+import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -79,7 +80,7 @@ public class SysLogAspect extends HandlerInterceptorAdapter {
 		sysLog.setIp(IpUtil.getIpAddr(request));
 
 		//用户名
-		User user=(User)request.getSession().getAttribute("user");
+		User user=(User) SecurityUtils.getSubject().getPrincipal();
 		String username ="";
 		if(UtilValidate.isNotEmpty(user)){
 			username =user.getUserName();

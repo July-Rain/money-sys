@@ -29,4 +29,13 @@ public interface SysMenuDao extends BaseMapper<SysMenu> {
 	 * @return java.util.List<com.lawschool.beans.SysMenu>
 	 **/
 	List<SysMenu> queryChildById(String id);
+	/**
+	 * @Author MengyuWu
+	 * @Description  根据菜单id查询父节点
+	 * @Date 17:37 2019-1-18
+	 * @Param [id]
+	 * @return java.util.List<com.lawschool.beans.SysMenu>
+	 **/
+	
+	List<SysMenu> queryParentById(String id);
 }
