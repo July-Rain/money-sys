@@ -52,7 +52,7 @@ var vm = new Vue({
         //返回首页跳转
         tomain:function()
         {
-            parent.location.href =baseURL+"main.html";
+            parent.location.href =baseURL+"modules/competition/competeCenter.html";
         },
 
         //接受挑战
