@@ -43,7 +43,20 @@ var vm = new Vue({
             userPoliceId:"",
             roles:"",//角色
         },
-
+        rules: {//表单验证规则
+            userName: [
+                {required: true, message: '请输入用户名', trigger: 'blur'},
+            ],
+            userCode: [
+                {required: true, message: '请输入登陆账号', trigger: 'blur'},
+            ],
+            userPoliceId: [
+                {required: true, message: '请输入警号', trigger: 'blur'},
+            ],
+            role: [
+                {required: true, message: '请选择角色', trigger: 'blur'},
+            ],
+        },
         roles:[],
         tmroles:[],
     },
@@ -77,6 +90,19 @@ var vm = new Vue({
         },
         //用户添加
         handleAdd:function(){
+            vm.teacher={
+                    id:"",
+                    userName:"",
+                    userCode:"",
+                    password:"",
+                    photo:"",
+                    orgCode:"",
+                    identify:0,//添加为用户
+                    orgName:"",
+                    userPoliceId:"",
+                    roles:"",//角色
+            },
+                vm.tmroles=[];
             vm.dialogtch=true;
             vm.handleRoles();
         },
@@ -233,15 +259,12 @@ var vm = new Vue({
 
 
         // 部门选择事件
-        handleCheckChange: function (data, checked, node) {
-            if(checked == true){
+        handleNodeClick: function (data) {
                 this.checkedId = data.id;
-                this.$refs.treeForm.setCheckedNodes([data]);
                 console.log(data);
                 vm.teacher.orgCode= data.localOrgCode;
                 vm.teacher.orgName= data.localOrgName;
                 vm.teacher.orgId= data.id;
-            }
         },
 
         //确定部门
