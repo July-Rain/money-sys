@@ -3,11 +3,12 @@ var vm = new Vue({
     data: {
         levelList: [],
         position: [{left: 0, top: 102}, {left: 471, top: 0}, {left: 942, top: 102},{left: 1342, top: 102}],
-        moveClass: false
+        moveClass: false,
+        coinNum: ""
     },
     mounted() {
+        this.coinNum = "2.23万";
         this.getLevel(2);
-        this.rushAnimation()
     },
     methods: {
         // index 为当前面对关数
@@ -25,6 +26,9 @@ var vm = new Vue({
                 return
             }
             this.moveClass = true;
+            setTimeout(function () {
+                // 跳转闯关页面
+            },1000)
         }
     },
     filters: {
