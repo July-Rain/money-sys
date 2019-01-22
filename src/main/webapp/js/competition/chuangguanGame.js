@@ -350,7 +350,18 @@ var vm = new Vue({
 
         reload: function () {
             vm.dialogBegin = true;
+        },
+        dateFormat: function (row, column) {
+            var daterc = arguments.length === 1? row + "":row[column.property] + "";
+            if (daterc != null) {
+                var dateMat = new Date(parseInt(daterc.replace("/Date(", "").replace(")/", ""), 10));
+                return dateMat.getFullYear() + "/" + (dateMat.getMonth() + 1) + "/" + dateMat.getDate();
+            }
+
         }
     }
 });
+
+
+
 
