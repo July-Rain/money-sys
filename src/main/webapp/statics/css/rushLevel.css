@@ -22,7 +22,9 @@ button{
     background-size: 100% auto;
     height: 100vh;
     position: relative;
-
+    padding-top: 22.47437774524158vw;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .gray {
@@ -62,10 +64,255 @@ button{
     width: 66px;
     height: 55px;
 }
-.integral p{
+.integral p,.integral p span{
     color: #fef73b;
     font-size: 24px;
 }
 .rule_info{
     right: 96px;
+}
+.level_list{
+    width: 1175px;
+    height: 343px;
+    margin: 0 auto;
+    position: relative;
+}
+.level_list li{
+    position: absolute;
+    width: 233px;
+    height: 241px;
+    background-size: 100% 100%;
+
+}
+.level_list li:nth-child(1){
+    background-image: url("../img/competeCenter/1.png");
+    left: 0;
+    top: 102px;
+}
+.level_list li:nth-child(2){
+    background-image: url("../img/competeCenter/2.png");
+    left: 471px;
+    top: 0;
+}
+.level_list li:nth-child(3){
+    background-image: url("../img/competeCenter/2.png");
+    left: 942px;
+    top: 102px;
+}
+.level_list li:nth-child(4){
+    background-image: url("../img/competeCenter/2.png");
+    left: 1342px;
+    top: 102px;
+}
+.level_list li p{
+    text-align: center;
+}
+.level_list li p:first-child{
+    line-height: 84px;
+    height: 84px;
+    color: #fef73b;
+    font-size: 30px;
+}
+.level_list li p:last-child{
+    line-height: 157px;
+    height: 157px;
+    font-size: 30px;
+    color: #fff;
+}
+.level_list li i{
+    display: inline-block;
+    width: 20px;
+    height: 27px;
+    background: url("../img/competeCenter/coin_little.png") 100% 100% no-repeat;
+}
+.opacity0{
+    opacity: 0;
+}
+.level_list > .move_class:nth-child(1){
+    animation:levelMove1 1s;
+    -webkit-animation:levelMove1 1s; /* Safari 和 Chrome */
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+}
+.level_list > .move_class:nth-child(2){
+    animation:levelMove2 1s;
+    -webkit-animation:levelMove2 1s; /* Safari 和 Chrome */
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+}
+.level_list > .move_class:nth-child(3){
+    animation:levelMove3 1s;
+    -webkit-animation:levelMove3 1s; /* Safari 和 Chrome */
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+}
+.level_list > .move_class:nth-child(4){
+    animation:levelMove4 1s;
+    -webkit-animation:levelMove4 1s; /* Safari 和 Chrome */
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+}
+@keyframes levelMove1 {
+    from {
+        left: 0;
+        top: 102px;
+    }
+    to {
+        left: -400px;
+        top: 102px;
+    }
+}
+@-webkit-keyframes levelMove1 {
+    from {
+        left: 0;
+        top: 102px;
+    }
+    to {
+        left: -400px;
+        top: 102px;
+    }
+}
+@keyframes levelMove2 {
+/*left: 471px;*/
+/*top: 0;*/
+    from {
+        left: 471px;
+        top: 0;
+    }
+    to {
+        left: 0;
+        top: 102px;
+    }
+}
+@-webkit-keyframes levelMove2 {
+    /*left: 471px;*/
+    /*top: 0;*/
+    from {
+        left: 471px;
+        top: 0;
+    }
+    to {
+        left: 0;
+        top: 102px;
+    }
+}
+@keyframes levelMove3 {
+/*left: 942px;*/
+/*top: 102px;*/
+    from {
+        left: 942px;
+        top: 102px;
+    }
+    to {
+        left: 471px;
+        top: 0;
+    }
+}
+@-webkit-keyframes levelMove3 {
+    /*left: 942px;*/
+    /*top: 102px;*/
+    from {
+        left: 942px;
+        top: 102px;
+    }
+    to {
+        left: 471px;
+        top: 0;
+    }
+}
+@keyframes levelMove4 {
+/*left: 1342px;*/
+/*top: 102px;*/
+    from {
+        left: 1342px;
+        top: 102px;
+    }
+    to {
+        left: 942px;
+        top: 102px;
+    }
+}
+@-webkit-keyframes levelMove4 {
+    /*left: 1342px;*/
+    /*top: 102px;*/
+    from {
+        left: 1342px;
+        top: 102px;
+    }
+    to {
+        left: 942px;
+        top: 102px;
+    }
+}
+.level_list .car{
+    background-image: url("../img/competeCenter/police_car.png");
+    width: 251px;
+    height: 176px;
+    position: absolute;
+    left: 460px;
+    top: 218px;
+}
+/*背景灯光*/
+.city_light{
+    position: fixed;
+    left: 0;
+    top: 5.85651537335286vw;
+    width: 100vw;
+    height: 30vw;
+    background: url(../img/competeCenter/city_light.png) repeat;
+    background-size: 100vw 100%;
+    animation: 50s bgMove1 linear infinite;
+    -webkit-animation: 50s bgMove1 linear infinite;
+}
+@keyframes bgMove1{
+    form {
+        background-position-x: 0;
+    }
+    to {
+        background-position-x: -100vw;
+    }
+}
+@-webkit-keyframes bgMove1{
+    form {
+        background-position-x: 0;
+    }
+    to {
+        background-position-x: -100vw;
+    }
+}
+/*第三层背景*/
+.build_third{
+    position: fixed;
+    left: 0;
+    top: 18.856515vw;
+    width: 100vw;
+    height: 18vw;
+    background: url(../img/competeCenter/build_third.png) repeat;
+    background-size: 100vw 100%;
+    animation: 40s bgMove1 linear infinite;
+    -webkit-animation: 40s bgMove1 linear infinite;
+}
+/*第二层背景*/
+.build_second{
+    position: fixed;
+    left: 0;
+    top: 10.856515vw;
+    width: 100vw;
+    height: 25vw;
+    background: url(../img/competeCenter/build_second.png) repeat;
+    background-size: 100vw 100%;
+    animation: 30s bgMove1 linear infinite;
+    -webkit-animation: 30s bgMove1 linear infinite;
+}
+/*第一层背景*/
+.build_fist{
+    position: fixed;
+    left: 0;
+    top: 26.856515vw;
+    width: 100vw;
+    height: 10vw;
+    background: url(../img/competeCenter/build_fist.png) repeat;
+    background-size: 100vw 100%;
+    animation: 20s bgMove1 linear infinite;
+    -webkit-animation: 20s bgMove1 linear infinite;
 }

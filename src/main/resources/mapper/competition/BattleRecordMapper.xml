@@ -245,4 +245,15 @@
         ) tt
         ORDER BY tt.counts DESC
     </select>
+
+    <select id="pkSum" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT
+        "SUM"(SCORE)
+        FROM
+            LAW_BATTLE_RECORD
+        WHERE
+            USER_ID = #{uid}
+        AND (TYPE='OnlinPk' OR TYPE='OnlinPkByCode'  OR TYPE='teamOnline')
+        AND STATUS='1'
+    </select>
 </mapper>

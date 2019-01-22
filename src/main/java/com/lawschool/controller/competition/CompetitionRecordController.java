@@ -129,4 +129,11 @@ public class CompetitionRecordController extends AbstractController {
         List<CompetitionRecord> competitionRecordList= competitionRecordService.chuangGuanRanking();
         return Result.ok().put("competitionRecordList",competitionRecordList);
     }
+
+    //获取闯关最高档
+    @RequestMapping("/chuangGuanRankingByUser")
+    public Result chuangGuanRankingByUser(){
+        CompetitionRecord competitionRecord= competitionRecordService.chuangGuanRankingByUser();
+        return Result.ok().put("competitionRecord",competitionRecord);
+    }
 }

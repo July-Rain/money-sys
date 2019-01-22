@@ -135,4 +135,11 @@ public class CompetitionRecordServiceImpl extends ServiceImpl<CompetitionRecordD
 	public List<CompetitionRecord> chuangGuanRanking() {
 		return competitionrecordDao.chuangGuanRanking();
 	}
+
+	@Override
+	public CompetitionRecord chuangGuanRankingByUser() {
+
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
+		return this.selectOne(new EntityWrapper<CompetitionRecord>().eq("USER_ID",u.getId()).eq("STATUS","1").ne("SCORE","0").orderBy("SCORE",true));
+	}
 }

@@ -33,5 +33,5 @@ public interface BattleRecordDao extends BaseMapper<BattleRecord> {
 
     List<Map> firstListByPk();
     List<Map> firstListByleitai();
-
+    int pkSum(String uid);
 }
