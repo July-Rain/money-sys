@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawschool.base.DataEntity;
+import com.lawschool.beans.system.SysMenuEntity;
 import com.lawschool.beans.system.SysRoleEntity;
-import sun.awt.image.IntegerInterleavedRaster;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -112,7 +112,7 @@ public class User extends DataEntity<User> {
 
 
     @TableField(exist = false) //菜单管理
-    private List<SysMenu> menuAuth;
+    private List<SysMenuEntity> menuAuth;
 
     @TableField(exist = false) //角色list
     private List<SysRoleEntity> roleList;
@@ -480,11 +480,11 @@ public class User extends DataEntity<User> {
         this.orgDataAuth = orgDataAuth;
     }
 
-    public List<SysMenu> getMenuAuth() {
+    public List<SysMenuEntity> getMenuAuth() {
         return menuAuth;
     }
 
-    public void setMenuAuth(List<SysMenu> menuAuth) {
+    public void setMenuAuth(List<SysMenuEntity> menuAuth) {
         this.menuAuth = menuAuth;
     }
 
