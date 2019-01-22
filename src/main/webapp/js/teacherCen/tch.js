@@ -74,7 +74,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sys/getUorT",
+                url: baseURL + "sys/getUorT?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
@@ -103,5 +103,8 @@ var vm = new Vue({
         beforeAvatarUpload: function () {
             if(!checkFile(file)) return false;
         },
+        toUrl: function (url) {
+            window.location.href = baseURL + url
+        }
     }
 }).$mount('#app');
