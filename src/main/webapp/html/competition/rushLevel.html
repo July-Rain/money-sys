@@ -2,27 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>闯关竞赛</title>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
     <link rel="stylesheet" href="${rc.contextPath}/statics/css/rushLevel.css">
 </head>
 <body>
-<div class="container">
-    <button class="return_back">
-        <img src="${rc.contextPath}/statics/img/competeCenter/btn_return.png" alt="">
-    </button>
-    <div class="integral">
-        <p>积分 <span>2.23万</span></p>
+<div id="app" v-cloak>
+    <div class="container">
+
+        <!--背景动画-->
+        <div class="city_light"></div>
+        <div class="build_third"></div>
+        <div class="build_second"></div>
+        <div class="build_fist"></div>
+
+
+
+        <button class="return_back">
+            <img src="${rc.contextPath}/statics/img/competeCenter/btn_return.png" alt="">
+        </button>
+        <div class="integral">
+            <p>积分 <span>2.23万</span></p>
+        </div>
+        <button class="rule_info">
+            <img src="${rc.contextPath}/statics/img/competeCenter/btn_gonglue.png" alt="">
+        </button>
+        <ul class="level_list">
+            <li @click="rushAnimation(index)" :class="moveClass?'move_class':''" v-for="(list,index) in levelList" :key="index" v-show="list.indexName!=0">
+                <p :class="index?'':'opacity0'"><i></i> 200</p>
+                <p>第{{list.indexName | capitalize}}关</p>
+            </li>
+            <li class="car"></li>
+        </ul>
     </div>
-    <button class="rule_info">
-        <img src="${rc.contextPath}/statics/img/competeCenter/btn_gonglue.png" alt="">
-    </button>
-    <ul>
-        <li>
-
-            <p>第一关</p>
-
-        </li>
-    </ul>
 </div>
 </body>
+<script src="${rc.contextPath}/js/competition/rushLevel.js"></script>
 </html>
