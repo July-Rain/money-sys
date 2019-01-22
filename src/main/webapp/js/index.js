@@ -12,7 +12,8 @@ var vm = new Vue({
             navData: [],//导航
             iframeSrc: '',
             backShow: true,
-            loginType: 0// 登陆方式
+            loginType: 0,// 登陆方式
+            headerHide: false
         }
     },
     created: function () {
@@ -24,6 +25,7 @@ var vm = new Vue({
     methods: {
         loadFrame: function (obj) {
             var _src = $("#container").attr("src");
+
             if(_src === vm.iframeSrc){
                 // window.location.reload()
             }
@@ -70,7 +72,6 @@ var vm = new Vue({
 
 
         toChild: function (item) {
-            console.info("item!!!", item);
             if(item.url === 'container.html'){
                 vm.navData.splice(-1,1);
             }
@@ -93,6 +94,11 @@ var vm = new Vue({
                 if (item.list.length == 0) {
                     alert("暂无链接")
                 }
+            }
+            if(item.url.indexOf("competition")>=0) {
+                this.headerHide = true
+            }else {
+                this.headerHide = false
             }
 
         }
