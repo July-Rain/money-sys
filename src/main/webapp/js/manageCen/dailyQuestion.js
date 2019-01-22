@@ -3,22 +3,14 @@ var vm = new Vue({
     el: '#app',
     data: {
         dailyConfig:{
-            id:"",
-            createRule:"",//生成规则
-            createUser:"",
-            beginTime:"",//开始时间
-            endTime:"",//结束时间
-            questionType:"",//题目类型
-            questionWay:"",//出题方式
-            isShowAnswer:"",
-            specialKnowledgeId:"",
-            isShowLegal:"",//是否显示法律依据
-            questionDifficulty:""
+
         },
         specialKnowledgeIds:[],
+
+        //试题难度
+        itemjibie:[],
         navData: [],//导航
         formInline: { // 搜索表单
-            
             value: '',
             name: '',
             status: "",
@@ -39,14 +31,14 @@ var vm = new Vue({
             status: "1"
         },*/
         rules: {//表单验证规则
-            value: [
-                {required: true, message: '请输入参数名', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ],
-            code: [
-                {required: true, message: '请输入参数值', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ]
+            // value: [
+            //     {required: true, message: '请输入参数名', trigger: 'blur'},
+            //     {max: 50, message: '最大长度50', trigger: 'blur'}
+            // ],
+            // code: [
+            //     {required: true, message: '请输入参数值', trigger: 'blur'},
+            //     {max: 50, message: '最大长度50', trigger: 'blur'}
+            // ]
         },
         dialogConfig: false,//table弹出框可见性
         title: "",//弹窗的名称
@@ -54,38 +46,51 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
-            //加载菜单
-            $.ajax({
-                type: "POST",
-                url: baseURL + "menu/nav?id=" + menuId,
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.navData = result.menuList;
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
-            this.reload();
+            vm.reload();
         })
     },
     methods: {
-        loadTopic: function(){
+        dateFormat : function(row, column, cellValue, index){
+            var daterc = row[column.property]+"";
+            if(daterc!=null){
+                const dateMat= new Date(parseInt(daterc.replace("/Date(", "").replace(")/", ""), 10));
+                const year = dateMat.getFullYear();
+                const month = dateMat.getMonth() + 1;
+                const day = dateMat.getDate();
+                const hh = dateMat.getHours();
+                const mm = dateMat.getMinutes();
+                const ss = dateMat.getSeconds();
+                const timeFormat= year + "/" + month + "/" + day;
+                return timeFormat;
+            }
+
+        },
+        sss: function(){
+
+            //专项知识
             $.ajax({
-                type: "GET",
-                url: baseURL + "topic/list",
+                type: "POST",
+                url: baseURL + "recruitConfiguration/findAllTopic",
                 dataType: "json",
                 async:false,
                 success: function (result) {
-                    if (result.code == 0) {
-                        vm.specialKnowledgeIds = result.page.list;
-                    } else {
-                        alert(result.page);
-                    }
+                    console.info("asfasf");
+                    console.info(result);
+                    vm.specialKnowledgeIds=result.data;
                 }
             });
-
+            //试题难度
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async:false,
+                data: {type:"QUESTION_DIFF",Parentcode:"0"},
+                success: function (result) {
+                    console.info(result);
+                    vm.itemjibie=result.dictlist;
+                }
+            });
         },
         handleChange:function(){
 
@@ -105,9 +110,7 @@ var vm = new Vue({
 
         // 保存和修改
         saveOrUpdate: function (formName) {
-            console.info(vm.dailyConfig.id);
 
-            console.info(vm.dailyConfig);
 
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
@@ -142,20 +145,8 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         addConfig: function () {
-                vm.dailyConfig={
-                    id:'',
-                    createRule : '',
-                    createUser:"",
-                    beginTime:'',
-                    endTime:'',
-                    questionType:'',
-                    questionWay:'',
-                    isShowAnswer:'',
-                    specialKnowledgeId:'',
-                    isShowLegal:'',
-                    questionDifficulty:''
-                };
-                vm.loadTopic();
+                vm.dailyConfig={};//新增的时候制空
+                vm.sss();//获取专项知识点
                 this.title = "新增";
                 this.dialogConfig = true;
             //parent.location.href =baseURL+"modules/examCen/examConfig.html";
@@ -216,7 +207,7 @@ var vm = new Vue({
                 type: "GET",
                 url: baseURL + "dailyQuestion/list",
                 dataType: "json",
-                //data: vm.formInline,
+
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;

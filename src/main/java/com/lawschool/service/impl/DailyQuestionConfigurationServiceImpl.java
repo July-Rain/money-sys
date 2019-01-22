@@ -15,6 +15,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -50,17 +51,54 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
     }
 
     @Override
-    public void insertDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration) {
-        dailyQuestionConfiguration.setId(IdWorker.getIdStr());
-        //一题对应多个知识点
-            /*List<String>  specialKnowledgeIds= dailyQuestionConfiguration.getSpecialKnowledgeIds();
-            String str=String.join(",", specialKnowledgeIds);
-            dailyQuestionConfiguration.setSpecialKnowledgeId(str);*/
+    public int insertDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration) {
+            int i=0;
+//        保存前  先判断时间区间有没有重叠
+         List<DailyQuestionConfiguration> list= this.selectList(new EntityWrapper<DailyQuestionConfiguration>());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Boolean b=true;
+//        循环list的得到实体
+        for(DailyQuestionConfiguration dailyQuestion:list)
+        {
+            try{
+                String s1 = sdf.format( dailyQuestion.getBeginTime());
+                Date beginTime =  sdf.parse(s1);
+                String s2 = sdf.format( dailyQuestion.getEndTime());
+                Date endTime =  sdf.parse(s2);
+
+                if ( (sdf.parse(sdf.format(dailyQuestionConfiguration.getEndTime())).getTime()< beginTime.getTime()) || (sdf.parse(sdf.format(dailyQuestionConfiguration.getBeginTime())).getTime()> endTime.getTime()))
+                {
+                    //无交集
+                }
+                else
+                {
+                    //有交集
+
+                    b=false;
+                    break;
+                }
+
+            }catch (Exception e)
+            {
+                System.out.println(e);
+            }
+        }
+        if(b==true)
+        {
+            //没交集 正常添加
+            User u = (User) SecurityUtils.getSubject().getPrincipal();
+            dailyQuestionConfiguration.setCreateUser(u.getId());
+            dailyQuestionConfiguration.setId(IdWorker.getIdStr());
             dailyQuestionConfigurationDao.insert(dailyQuestionConfiguration);
-
-//            dailyQuestionConfigurationDao.insertDailyConfig(dailyQuestionConfiguration);
+           i=1;
+        }
+        else if(b==false)
+        {
+            //有交集  不能添加
+           i=0;
+        }
+        return i;
     }
-
     @Override
     public void updateByDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration) {
         dailyQuestionConfigurationDao.update(dailyQuestionConfiguration);
@@ -96,7 +134,7 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
             question.setAnswer(listAnswer);
 
             //随机不同
-            if(0==currentConfig.getCreateRule()){
+            if("0".equals(currentConfig.getCreateRule())){
                 //把做过题目插入记录表
                 DailyRecord record = new DailyRecord();
                 record.setId(IdWorker.getIdStr());
@@ -113,7 +151,7 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
                 dailyRecordDao.insertRecord(record);
             }
             //统一出题
-            if(1==currentConfig.getCreateRule()){
+            if("1".equals(currentConfig.getCreateRule())){
                 //随机一题插入(统一试题记录表:LAW_DAILY_SAME)
                 DailySame record = new DailySame();
                 record.setId(IdWorker.getIdStr());
@@ -128,7 +166,7 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
                 dailySameDao.insert(record);
             }
        }else{
-            if(1==currentConfig.getCreateRule())//统一出题
+            if("1".equals(currentConfig.getCreateRule()))//统一出题
             {
                 DailySame questionSame = dailySameDao.findCurrentSameTest();
                 List<AnswerForm> listAnswer = answerDao.findByQuesId(questionSame.getQuestionId());//答案
@@ -143,7 +181,7 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
                 question.setLegalBasis(questionSame.getLegalBasis());
                 question.setAnswerDescrible(questionSame.getAnswerDescrible());
             }
-            else if(0==currentConfig.getCreateRule())//随机出题
+            else if("0".equals(currentConfig.getCreateRule()))//随机出题
             {
                 DailyRecord questionSame = dailyRecordDao.findCurrentRecord(u.getId());
                 List<AnswerForm> listAnswer = answerDao.findByQuesId(questionSame.getQuestionId());//答案
