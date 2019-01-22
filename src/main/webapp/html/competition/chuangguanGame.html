@@ -3,152 +3,75 @@
 <head>
     <title>闯关游戏</title>
     <#include "/header.html">
-        </head>
-        <style>
-            .header-right ul{
-                background: transparent;
-            }
-            .header-right ul li:after{
-                content: '';
-            }
-            .el-menu--horizontal .el-menu-item,
-            .el-menu--horizontal .el-submenu{
-                float: left;
-                height: 70px;
-                /*line-height: 70px;*/
-                margin: 0;
-                border-bottom: 2px solid transparent;
-                color: #fff;
-            }
-            .el-menu--horizontal>.el-submenu .el-submenu__title {
-                height: 70px;
-                /* line-height: 70px; */
-                border-bottom: 2px solid transparent;
-                color: #909399;
-            }
-            .header-right ul li a{
-                text-align: center;
-                padding: 0;
-                /*margin: 10px 0;*/
-                box-sizing: border-box;
-                height: auto;
-                display: inline-block;
-            }
-            .header-right .el-menu-item [class^=el-icon-],
-            .header-right .el-submenu [class^=el-icon-],
-            .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
-                font-size: 30px;
-                color: #fff;
-            }
-            /*.header-right .el-submenu [class^=el-icon-]*/
-            .header-right ul li a span{
-                display: block;
-                margin-top: -10px;
-                line-height: 10px;
-            }
-            .header-right .el-menu-item:hover a,
-            .header-right .el-submenu:hover a,
-            .header-right .el-menu-item:hover [class^=el-icon-],
-            .header-right .el-submenu:hover [class^=el-icon-],
-            .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
-                color: #909399;
-            }
-            .el-submenu__icon-arrow{
-                margin-top: 16px;
-            }
-            .el-menu--horizontal .el-menu .el-menu-item a{
-                color: #909399;
-            }
-            .el-menu--horizontal .el-menu .el-menu-item a:hover{
-                color: #000;
-            }
-            .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
-                background-color: #fff;
-                float: none;
-                height: 36px;
-                line-height: 36px;
-                padding: 0 10px;
-                color: #909399;
-                display: inline-block;//悬浮块横向显示
-            }
-        </style>
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/chuangguanGame.css">
+</head>
 <body>
 <div id="app" v-cloak>
-    <div class="header">
-        <div class="header-left">
-            <img src="${rc.contextPath}/statics/img/logo.png">
-            <a href="javascript:;">江苏省公安厅法律学校</a>
+    <div class="container">
+        <button class="return_back">
+            <img src="${rc.contextPath}/statics/img/competeCenter/btn_return.png" alt="">
+        </button>
+        <div class="title">
+            第{{nowBignum}}大关
+        </div>
+        <div class="rest">
+            剩余<span>{{nowLitnum}}</span>题
         </div>
 
-    </div>
-    <div class="container">
-        <el-row :gutter="24">
-            <el-col :span="24">
-                <el-tabs type="border-card">
-                    <el-tab-pane label="闯关Game">
-                        <div style="height: 500px" >
+        <div class="questionArea">
+            <div class="questionType">
+                {{Question.questionType==10004?'单选题':Question.questionType==10005?'多选题':'判断题'}}
+            </div>
+            <p class="questionTitle">
+                {{Question.comContent}}
+            </p>
 
-                            <el-form :model="Question" v-show="dialogQuestion" ref="Question" label-width="100px" class="demo-Question" size="mini">
-                                <div>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 第{{nowBignum}}大关
-                                    <br/>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第{{nowLitnum}}小题
-                                    <br/>
-                                    [{{Question.questionType==10004?'单选题':Question.questionType==10005?'多选题':'判断题'}}] {{Question.comContent}}
-                                    <br/>
-                                    <br/>
-                                    <el-checkbox-group v-model="answers" v-if="Question.questionType==10005">
-                                        <el-checkbox :label="answer.id" v-for="answer in Question.answerList">
-                                            {{answer.questionContent}}
-                                        </el-checkbox>
-                                    <br/>
-                                    </el-checkbox-group>
+            <el-form :class="Question.questionType==10004?'radioStyle':''" :model="Question" v-show="dialogQuestion" ref="Question" label-width="100px" class="demo-Question" size="mini">
+                <el-checkbox-group v-model="answers" v-if="Question.questionType==10005">
+                    <el-checkbox :label="answer.id" v-for="answer in Question.answerList">
+                        {{answer.questionContent}}
+                    </el-checkbox>
+                    <br/>
+                </el-checkbox-group>
 
-                                    <el-button type="primary" v-if="Question.questionType==10005" @click="thisSubmit(Question.answerId)">提交</el-button>
+                <el-button type="primary" v-if="Question.questionType==10005"
+                           @click="thisSubmit(Question.answerId)">提交
+                </el-button>
 
 
-                                    <el-radio-group v-model="answers" v-if="Question.questionType==10004 || Question.questionType==10006"
-                                                    :disabled="radio_disabled">
-                                        <el-radio :label="answer.id" v-for="answer in Question.answerList"
-                                                  @change="radioCheck(answer.id, Question.answerId, Question.questionType)">
-                                            {{answer.questionContent}}
-                                        </el-radio>
-                                        <br/>
-                                    </el-radio-group>
-                                    <br/>
+                <el-radio-group v-model="answers"
+                                v-if="Question.questionType==10004 || Question.questionType==10006"
+                                :disabled="radio_disabled">
+                    <el-radio :label="answer.id" v-for="answer in Question.answerList"
+                              @change="radioCheck(answer.id, Question.answerId, Question.questionType)">
+                        {{answer.questionContent}}
+                    </el-radio>
+                </el-radio-group>
+
+            </el-form>
+        </div>
 
 
-                                </div>
-
-                            </el-form>
-
-                        </div>
-                    </el-tab-pane>
-                </el-tabs>
-            </el-col>
-        </el-row>
-
-
-
-        <el-dialog :title="title" :visible.sync="dialogBegin" :before-close="closeBegin" :show-close="closedialog" :close-on-click-modal="false">
-                        <div style="height: 200px;text-align: center">
-                                准备好开始接受挑战了吗？
-                                <br/><br/><br/><br/><br/><br/>
-                            <el-button type="primary" @click="tomain">返回</el-button>
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-                            <el-button type="primary" @click="begin">挑战</el-button>
-                        </div>
+        <el-dialog :title="title" :visible.sync="dialogBegin" :before-close="closeBegin" :show-close="closedialog"
+                   :close-on-click-modal="false">
+            <div style="height: 200px;text-align: center">
+                准备好开始接受挑战了吗？
+                <br/><br/><br/><br/><br/><br/>
+                <el-button type="primary" @click="tomain">返回</el-button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <el-button type="primary" @click="begin">挑战</el-button>
+            </div>
         </el-dialog>
-        <el-dialog :title="title" :visible.sync="dialogyes"  :show-close="closedialog" :close-on-click-modal="false">
+        <el-dialog :title="title" :visible.sync="dialogyes" :show-close="closedialog" :close-on-click-modal="false">
             <div style="height: 200px;text-align: center">
                 {{textmag}}
                 <br/><br/><br/><br/><br/><br/>
                 <el-button type="primary" @click="questionError('over')" icon="el-icon">结束答题</el-button>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <el-button type="primary"  @click="goon()" icon="el-icon">继续答题</el-button>
+                <el-button type="primary" @click="goon()" icon="el-icon">继续答题</el-button>
             </div>
         </el-dialog>
-        <el-dialog :title="title" :visible.sync="dialogerror"  :show-close="closedialog" :close-on-click-modal="false">
+        <el-dialog :title="title" :visible.sync="dialogerror" :show-close="closedialog" :close-on-click-modal="false">
             <div style="height: 200px;text-align: center">
                 {{textmag}}
                 <br/><br/><br/><br/><br/><br/>

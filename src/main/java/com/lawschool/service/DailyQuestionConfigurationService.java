@@ -14,9 +14,9 @@ public interface DailyQuestionConfigurationService extends AbstractService<Daily
 
     void deleteByDailyId(String id);//删除每日一题配置
 
-    void insertDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration);
+    int insertDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration);
 
-    void updateByDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration);
+    int updateByDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration);
 
     Result dailyTestCreate();//返回每日一题 以及 当前每日一题配置
 }

@@ -62,7 +62,11 @@ public class DailyQuestionConfigurationController {
     @SysLog("新增每日一题规则")
     @RequestMapping("/insert")
     public Result insert(@RequestBody DailyQuestionConfiguration dailyQuestionConfiguration){
-        dailyQuestionConfigurationService.insertDailyConfig(dailyQuestionConfiguration);
+         int i=  dailyQuestionConfigurationService.insertDailyConfig(dailyQuestionConfiguration);
+         if(i==0)
+         {
+            return Result.ok().put("code",1).put("msg","添加失败，输入的时间区间和已添加的时间段有交集");
+         }
         return Result.ok();
     }
 
@@ -72,7 +76,11 @@ public class DailyQuestionConfigurationController {
     @SysLog("修改配置")
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public Result updateDailyConfig(@RequestBody DailyQuestionConfiguration dailyQuestionConfiguration){
-        dailyQuestionConfigurationService.updateByDailyConfig(dailyQuestionConfiguration);
+      int i=  dailyQuestionConfigurationService.updateByDailyConfig(dailyQuestionConfiguration);
+        if(i==0)
+        {
+            return Result.ok().put("code",1).put("msg","修改失败，输入的时间区间和已添加的时间段有交集");
+        }
         return Result.ok().put("id",dailyQuestionConfiguration.getId());
     }
 

@@ -22,6 +22,14 @@ public class DailyQuestionConfiguration extends DataEntity<DailyQuestionConfigur
     /*@TableId
     private String id;*/
 
+
+    //每日一题规则名称
+    private String ruleName;
+
+
+    //创建人中文姓名
+    @TableField(exist = false)
+    private String creatUserName;
     /**
      * 专项知识点
      */
@@ -34,27 +42,27 @@ public class DailyQuestionConfiguration extends DataEntity<DailyQuestionConfigur
     /**
      *出题规则 1:统一试题.0:随机不同
      */
-    private Integer createRule;
+    private String createRule;
 
     /**
      * 获得积分
      */
-    private Integer obtainPoint;
+    private String obtainPoint;
 
     /**
      * 是否显示法律依据 （是：1 ，否：0）
      */
-    private Integer isShowLegal;
+    private String isShowLegal;
 
     /**
      * 出题方式（2: 随机、1: 自定义）
      */
-    private Integer createWay;
+    private String createWay;
 
     /**
      * 是否显示答案（是：1，否：0）
      */
-    private Integer isShowAnswer;
+    private String isShowAnswer;
 
     /**
      * 试题难度（初级：10001，中级：10002，高级：10003）
@@ -79,13 +87,14 @@ public class DailyQuestionConfiguration extends DataEntity<DailyQuestionConfigur
     /**
      *每日一题规则开始时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date beginTime;
 
     /**
      *每日一题规则结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
 
     /**
@@ -99,6 +108,22 @@ public class DailyQuestionConfiguration extends DataEntity<DailyQuestionConfigur
 
     public void setSpecialKnowledgeIds(List<String> specialKnowledgeIds) {
         this.specialKnowledgeIds = specialKnowledgeIds;
+    }
+
+    public String getRuleName() {
+        return ruleName;
+    }
+
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
+    }
+
+    public String getCreatUserName() {
+        return creatUserName;
+    }
+
+    public void setCreatUserName(String creatUserName) {
+        this.creatUserName = creatUserName;
     }
 
     public String getId() {
@@ -117,45 +142,7 @@ public class DailyQuestionConfiguration extends DataEntity<DailyQuestionConfigur
         this.specialKnowledgeId = specialKnowledgeId;
     }
 
-    public Integer getCreateRule() {
-        return createRule;
-    }
 
-    public void setCreateRule(Integer createRule) {
-        this.createRule = createRule;
-    }
-
-    public Integer getObtainPoint() {
-        return obtainPoint;
-    }
-
-    public void setObtainPoint(Integer obtainPoint) {
-        this.obtainPoint = obtainPoint;
-    }
-
-    public Integer getIsShowLegal() {
-        return isShowLegal;
-    }
-
-    public void setIsShowLegal(Integer isShowLegal) {
-        this.isShowLegal = isShowLegal;
-    }
-
-    public Integer getCreateWay() {
-        return createWay;
-    }
-
-    public void setCreateWay(Integer createWay) {
-        this.createWay = createWay;
-    }
-
-    public Integer getIsShowAnswer() {
-        return isShowAnswer;
-    }
-
-    public void setIsShowAnswer(Integer isShowAnswer) {
-        this.isShowAnswer = isShowAnswer;
-    }
 
     public String getQuestionDifficulty() {
         return questionDifficulty;
@@ -211,6 +198,47 @@ public class DailyQuestionConfiguration extends DataEntity<DailyQuestionConfigur
 
     public void setQuestionType(String questionType) {
         this.questionType = questionType;
+    }
+
+
+    public String getCreateRule() {
+        return createRule;
+    }
+
+    public void setCreateRule(String createRule) {
+        this.createRule = createRule;
+    }
+
+    public String getObtainPoint() {
+        return obtainPoint;
+    }
+
+    public void setObtainPoint(String obtainPoint) {
+        this.obtainPoint = obtainPoint;
+    }
+
+    public String getIsShowLegal() {
+        return isShowLegal;
+    }
+
+    public void setIsShowLegal(String isShowLegal) {
+        this.isShowLegal = isShowLegal;
+    }
+
+    public String getCreateWay() {
+        return createWay;
+    }
+
+    public void setCreateWay(String createWay) {
+        this.createWay = createWay;
+    }
+
+    public String getIsShowAnswer() {
+        return isShowAnswer;
+    }
+
+    public void setIsShowAnswer(String isShowAnswer) {
+        this.isShowAnswer = isShowAnswer;
     }
 
     @Override

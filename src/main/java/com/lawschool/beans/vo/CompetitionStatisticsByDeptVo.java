@@ -1,15 +1,6 @@
 package com.lawschool.beans.vo;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lawschool.base.DataEntity;
-import com.lawschool.beans.SysMenu;
-import com.lawschool.beans.system.SysRoleEntity;
-
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 /**
  *

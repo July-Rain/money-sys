@@ -1,0 +1,91 @@
+button{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.container{
+    background: url("../img/competeCenter/chuangguanbg.jpg");
+    height: 100vh;
+    background-size: cover;
+    padding: 65px 0 0;
+}
+.return_back{
+    width: 68px;
+    height: auto;
+    position: fixed;
+    top: 50px;
+    left: 98px;
+}
+.title{
+    background-image: url("../img/competeCenter/timu_xiaoshiban.png");
+    text-align: center;
+    font-size: 24px;
+    color: #fff;
+    line-height: 54px;
+    height: 68px;
+    width: 336px;
+    margin: 0 auto;
+}
+.rest{
+    line-height: 42px;
+    height: 42px;
+    color: #07c0f5;
+    font-size: 18px;
+    text-align: center;
+}
+.rest span{
+    display: inline-block;
+    margin: 6px 10px 0;
+    font-size: 14px;
+    background: #1d1c2b;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    border-radius: 2px;
+}
+.questionArea{
+    width: 852px;
+    height: 483px;
+    background: url("../img/competeCenter/dati_frame.png");
+    margin: 0 auto;
+    position: relative;
+    padding: 35px 89px 0;
+}
+.questionType{
+    position: absolute;
+    font-size: 18px;
+    color: #fff;
+    left: 17px;
+    top: 71px;
+    writing-mode: vertical-lr;/*从左向右 从右向左是 writing-mode: vertical-rl;*/
+    writing-mode: tb-lr;/*IE浏览器的从左向右 从右向左是 writing-mode: tb-rl；*/
+    font-weight: bolder;
+    width: 43px;
+    text-align: center;
+}
+.questionTitle{
+    font-size: 16px;
+    line-height: 39px;
+    color: #fffc12;
+    padding-bottom: 20px;
+    text-indent: 38px;
+}
+.radioStyle .el-radio__inner{
+    display: none;
+}
+.radioStyle .el-radio-group .el-radio{
+    color: #fff;
+    font-size: 14px;
+    display: block;
+    height: 41px;
+    line-height: 41px;
+    background-color: rgba(255,255,255,.1);
+    border-radius: 5px;
+    border: 1px solid #908fd7;
+    width: 655px;
+    padding-left: 25px;
+    margin: 18px 0 0;
+}
+.el-radio__label{
+    padding: 0;
+}

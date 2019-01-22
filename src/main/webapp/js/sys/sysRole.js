@@ -18,14 +18,18 @@ var vm = new Vue({
         treeData1: [],
         treeData2: [],
         defaultProps: {
-            children: 'list',
+            children: 'children',
             label: 'name'
         },
         defaultProps2: {
             children: 'child',
             label: 'fullName'
         },
-
+        inline: {
+            limit: 10,
+            page: 1,
+            count: 0
+        }
     },
     mounted: function () {
     },
@@ -138,25 +142,19 @@ var vm = new Vue({
                     }
                 });
             });
-
-
         },
         reload: function () {
             $.ajax({
                 type: "GET",
                 url: baseURL + "role/list",
                 dataType: "json",
-                data: {
-                    pageNo: 1,
-                    limit: 10
-                },
+                data: vm.inline,
                 success: function (result) {
-                    console.info("result",result);
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
-                        vm.form.pageNo = result.page.pageNo;
-                        vm.form.pageSize = result.page.pageSize;
-                        vm.form.count = parseInt(result.page.count);
+                        vm.inline.page = result.page.pageNo;
+                        vm.inline.limit = result.page.pageSize;
+                        vm.inline.count = parseInt(result.page.count);
                     } else {
                         alert(result.msg);
                     }
@@ -170,13 +168,14 @@ var vm = new Vue({
             $.ajax({
                 type: "GET",
                 url: baseURL + "role/list",
+                data: vm.inline,
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
                         vm.tableData = result.page.list;
-                        vm.form.pageNo = result.page.pageNo;
-                        vm.form.pageSize = result.page.pageSize;
-                        vm.form.count = parseInt(result.page.count);
+                        vm.inline.pageNo = result.page.pageNo;
+                        vm.inline.pageSize = result.page.pageSize;
+                        vm.inline.count = parseInt(result.page.count);
                     } else {
                         alert(result.msg);
                     }
@@ -188,11 +187,10 @@ var vm = new Vue({
             var that = this;
             $.ajax({
                 type: "GET",
-                url: baseURL + "menu/elTree",
+                url: baseURL + "sysmenu/elTree",
                 contentType: "application/json",
                 success: function (result) {
-                    that.treeData1 = result.menuList;
-                    console.info("功能权限", result);
+                    that.treeData1 = result.list;
 
                 }
             })
@@ -202,8 +200,6 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     that.treeData2 = result.orgList;
-                    console.info("数据权限", result);
-
                 }
             })
         })

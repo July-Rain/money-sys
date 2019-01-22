@@ -1,7 +1,7 @@
 package com.lawschool.service;
 
+import com.lawschool.beans.system.SysMenuEntity;
 import com.lawschool.beans.system.SysRoleEntity;
-import com.lawschool.beans.SysMenu;
 import com.lawschool.beans.User;
 
 import java.util.List;
@@ -23,7 +23,6 @@ public interface SysAuthService  {
      * @Param [userId]
      * @return com.lawschool.beans.User
      **/
-    
     public User getAllAuthList(String userId);
     
     /**
@@ -33,8 +32,6 @@ public interface SysAuthService  {
      * @Param [roleId]
      * @return java.util.List<com.lawschool.beans.Org>
      **/
-    
-
     public List<String> listAllOrgAuth(String roleId);
 
     /**
@@ -42,10 +39,9 @@ public interface SysAuthService  {
      * @Description 获取用户的菜单权限
      * @Date 11:07 2018-11-29
      * @Param [roleId]
-     * @return java.util.List<com.lawschool.beans.SysMenu>
+     * @return java.util.List<com.lawschool.beans.system.SysMenuEntity>
      **/
-    
-    public List<SysMenu> listAllMenuAuth(String roleId);
+    public List<SysMenuEntity> listAllMenuAuth(String roleId);
 
     /**
      * @Author MengyuWu
@@ -54,7 +50,6 @@ public interface SysAuthService  {
      * @Param [userId]
      * @return java.util.List<com.lawschool.beans.system.SysRoleEntity>
      **/
-    
     public List<SysRoleEntity> listAllRole(String userId);
 
     /**
@@ -64,7 +59,6 @@ public interface SysAuthService  {
      * @Param [roleId]
      * @return int
      **/
-    
     public int deleteAuth(String roleId);
 
     /**
@@ -74,7 +68,6 @@ public interface SysAuthService  {
      * @Param [role]
      * @return int
      **/
-    
     //public int insertAuth(SysRoleEntity role);
 
 }

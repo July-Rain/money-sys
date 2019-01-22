@@ -809,5 +809,9 @@ var vm = new Vue({
                 }
             });
         },
+        everyDay:function()
+        {
+            // parent.location.href =baseURL+"modules/practiceCen/Daily.html";
+        }
     }
 });
