@@ -100,8 +100,61 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
         return i;
     }
     @Override
-    public void updateByDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration) {
-        dailyQuestionConfigurationDao.update(dailyQuestionConfiguration);
+    public int updateByDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration) {
+
+        int i=0;
+//        保存前  先判断时间区间有没有重叠
+        List<DailyQuestionConfiguration> list= this.selectList(new EntityWrapper<DailyQuestionConfiguration>());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Boolean b=true;
+//        循环list的得到实体
+        for(DailyQuestionConfiguration dailyQuestion:list)
+        {
+            //前提 不比较自己
+            if(dailyQuestion.getId().equals(dailyQuestionConfiguration.getId()))
+            {
+
+            }
+            else{
+
+                try{
+                    String s1 = sdf.format( dailyQuestion.getBeginTime());
+                    Date beginTime =  sdf.parse(s1);
+                    String s2 = sdf.format( dailyQuestion.getEndTime());
+                    Date endTime =  sdf.parse(s2);
+
+                    if ( (sdf.parse(sdf.format(dailyQuestionConfiguration.getEndTime())).getTime()< beginTime.getTime()) || (sdf.parse(sdf.format(dailyQuestionConfiguration.getBeginTime())).getTime()> endTime.getTime()))
+                    {
+                        //无交集
+                    }
+                    else
+                    {
+                        //有交集
+
+                        b=false;
+                        break;
+                    }
+
+                }catch (Exception e)
+                {
+                    System.out.println(e);
+                }
+
+            }
+
+        }
+        if(b==true)
+        {
+            //没交集 正常修改
+            dailyQuestionConfigurationDao.updateById(dailyQuestionConfiguration);
+            i=1;
+        }
+        else if(b==false)
+        {
+            //有交集  不能添加
+            i=0;
+        }
+        return i;
     }
 
     /**

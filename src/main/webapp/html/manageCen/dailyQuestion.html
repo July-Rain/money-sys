@@ -82,7 +82,7 @@
                                     <template slot-scope="scope">
                                         <el-button
                                                 size="mini"
-                                                @click="handleEdit(scope.$index, scope.row)">查看
+                                                @click="handlelook(scope.$index, scope.row)">查看
                                         </el-button>
                                         <el-button
                                                 size="mini"
@@ -210,7 +210,7 @@
                             </el-radio-group>
                         </el-form-item>
                     </el-col>
-                    <el-col >
+                    <el-col  v-if="xxx">
                         <el-form-item>
                             <el-button type="primary" @click="saveOrUpdate('dailyConfig')">保存</el-button>
                             <el-button @click="closeDia">取消</el-button>
