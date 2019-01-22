@@ -43,22 +43,18 @@
                     </div>
                     <div class="content board" style="padding-top: 17px;">
                         <el-row :gutter="20">
-                            <el-col :span="6" class="pieArea">
+                            <el-col :span="8" class="pieArea">
                                 <el-tabs type="border-card">
-                                    <el-tab-pane label="学习知识点分布">
-                                        <div id="pie1" style="width: 300px;height:220px;"></div>
-                                    </el-tab-pane>
-                                    <el-tab-pane label="学习知识点分布">
-                                    </el-tab-pane>
+                                    <div id="pie1" style="width: 300px;height:220px;"></div>
                                 </el-tabs>
                             </el-col>
 
-                            <el-col :span="6" class="pieArea">
+                            <el-col :span="8" class="pieArea">
                                 <el-tabs type="border-card">
                                     <div id="pienum" style="width: 300px;height:220px;"></div>
                                 </el-tabs>
                             </el-col>
-                            <el-col :span="6" class="infoCount">
+                            <el-col :span="8" class="infoCount">
                                 <div class="span-title">学情统计</div>
                                 <div class="infoMsg">
                                     <ul>
@@ -76,6 +72,89 @@
                             </el-col>-->
                         </el-row>
                     </div>
+                </div>
+                <div class="box-card boardCard">
+                    <div class="header header_special">
+                        <span>考情看板</span>
+                    </div>
+                    <el-tabs type="border-card" >
+                            <div class="content board" style="padding-top: 17px;">
+                                <el-row :gutter="20">
+                                    <el-col :span="8" class="pieArea">
+                                        <el-tabs type="border-card">
+                                            <div id="pieExam1" style="width: 300px;height:220px;"></div>
+                                        </el-tabs>
+                                    </el-col>
+                                    <el-col :span="8" class="pieArea">
+                                        <el-tabs type="border-card">
+                                            <div id="pieExam2" style="width: 300px;height:220px;"></div>
+                                        </el-tabs>
+                                    </el-col>
+
+                                </el-row>
+                            </div>
+                    </el-tabs>
+
+                </div>
+                <div class="box-card boardCard">
+                    <div class="header header_special">
+                        <span>练习看板 </span>
+                        <div class="more">
+                            总答题量：{{total}}、答对：{{right}}、答错：{{total - right}}
+                        </div>
+                    </div>
+                    <el-tabs type="border-card" >
+                        <div class="content board" style="padding-top: 17px;">
+                            <el-row :gutter="20">
+
+                                <el-col :span="8" class="pieArea">
+                                    <el-tabs type="border-card">
+                                        <div id="piePrac1" style="width: 640px;height:220px;"></div>
+                                    </el-tabs>
+                                </el-col>
+                                <el-col :span="8" class="pieArea">
+                                    <el-tabs type="border-card">
+                                        <div id="piePrac2" style="width: 640px;height:220px;"></div>
+                                    </el-tabs>
+                                </el-col>
+                                <el-col :span="8" class="pieArea">
+                                    <el-tabs type="border-card">
+                                        <div id="bar1" style="width: 640px;height:220px;"></div>
+                                    </el-tabs>
+                                </el-col>
+
+                            </el-row>
+                        </div>
+                    </el-tabs>
+
+                </div>
+                <div class="box-card boardCard">
+                    <div class="header header_special">
+                        <span>竞赛看板</span>
+                    </div>
+                    <el-tabs type="border-card" >
+                        <div class="content board" style="padding-top: 17px;">
+                            <el-row :gutter="20">
+                                <el-col :span="8" class="pieArea">
+                                    <el-tabs type="border-card">
+                                        <div id="pieGame1" style="width: 640px;height:220px;"></div>
+                                    </el-tabs>
+                                </el-col>
+                                <el-col :span="8" class="pieArea">
+                                    <el-tabs type="border-card">
+                                        <div id="pieGame2" style="width: 640px;height:220px;"></div>
+                                    </el-tabs>
+                                </el-col>
+                                <el-col :span="8" class="pieArea">
+                                    <el-tabs type="border-card">
+                                        <div id="pieGame3" style="width: 640px;height:220px;"></div>
+                                    </el-tabs>
+                                </el-col>
+
+                            </el-row>
+                        </div>
+                    </el-tabs>
+
                 </div>
             </el-col>
         </el-row>
