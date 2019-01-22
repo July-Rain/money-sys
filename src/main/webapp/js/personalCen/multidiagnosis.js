@@ -20,6 +20,21 @@ var vm = new Vue({
                 name:""//文字描述
             },//学情统计数据
             seriesNumData:[],//学习情况统计
+            seriesExamData:[],
+            seriesExamScoreData:[],
+            overall: [],
+            total: 0,
+            right: 0,
+            themeAnswerNum: [],
+            themeRightNum: [],
+            themeAnswerPieData: [],
+            themeRightPieData: [],
+            showNames: [],
+            showValues:[],
+            dataByNum:[],
+            dataBySorce:[],
+            dataByCorrect:[],
+            user:{},
 
         }
     },
@@ -27,15 +42,30 @@ var vm = new Vue({
 
         this.$nextTick(function () {
             this.getStuDia();
-            this.initPie1()
-            this.initPieNum()
-        })
+            this.getExamDia();
+            this.getExamDiaScore();
+            this.getGameDia();
+            this.getPracDia();
+            this.initPie1();
+            this.initPieNum();
+            this.initPieExam1();
+            this.initPieExam2();
+            this.initBar1();
+            this.initPieGame1();
+            this.initPieGame2();
+            this.initPieGame3();
+            this.initPiePrac1();
+            this.initPiePrac2();
+        });
+
 
 
     },
     methods: {
         onSubmit: function(){
             this.getStuDia();
+            this.getExamDia();
+            this.getExamDiaScore();
         },
         // 表单立即创建
         // 表单重置
@@ -201,7 +231,158 @@ var vm = new Vue({
             // 使用刚指定的配置项和数据显示图表。
             vm.echartsOption(myChart, option)
         },
-        /*initBar1: function () {
+        //echarts
+        initPieExam1: function () {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('pieExam1'));
+            // 指定图表的配置项和数据
+            var option = {
+                backgroundColor: '#fff',
+
+                title: {
+                    text: '',
+                    left: 'center',
+                    top: 20,
+                    textStyle: {
+                        color: '#ccc'
+                    }
+                },
+
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+
+                visualMap: {
+                    show: false,
+                    min: 80,
+                    max: 600,
+                    inRange: {
+                        colorLightness: [0, 1]
+                    }
+                },
+                series : [
+                    {
+                        name:'学习时长统计',
+                        type:'pie',
+                        radius : '55%',
+                        center: ['50%', '50%'],
+                        data:vm.seriesExamData.sort(function (a, b) { return a.value - b.value; }),
+                        roseType: 'radius',
+                        label: {
+                            normal: {
+                                textStyle: {
+                                    color: '#666'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                lineStyle: {
+                                    color: '#666'
+                                },
+                                smooth: 0.2,
+                                length: 10,
+                                length2: 20
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                // 定制显示（按顺序）
+                                color: function(params) {
+                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
+                                    return colorList[params.dataIndex]
+                                }
+                            },
+                        },
+
+                        animationType: 'scale',
+                        animationEasing: 'elasticOut',
+                        animationDelay: function (idx) {
+                            return Math.random() * 200;
+                        }
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            vm.echartsOption(myChart, option)
+        },
+        initPieExam2: function () {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('pieExam2'));
+            // 指定图表的配置项和数据
+            var option = {
+                backgroundColor: '#fff',
+
+                title: {
+                    text: '',
+                    left: 'center',
+                    top: 20,
+                    textStyle: {
+                        color: '#ccc'
+                    }
+                },
+
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+
+                visualMap: {
+                    show: false,
+                    min: 80,
+                    max: 600,
+                    inRange: {
+                        colorLightness: [0, 1]
+                    }
+                },
+                series : [
+                    {
+                        name:'学习情况统计',
+                        type:'pie',
+                        radius : '55%',
+                        center: ['50%', '50%'],
+                        data:vm.seriesExamScoreData.sort(function (a, b) { return a.value - b.value; }),
+                        roseType: 'radius',
+                        label: {
+                            normal: {
+                                textStyle: {
+                                    color: '#666'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                lineStyle: {
+                                    color: '#666'
+                                },
+                                smooth: 0.2,
+                                length: 10,
+                                length2: 20
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                // 定制显示（按顺序）
+                                color: function(params) {
+                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
+                                    return colorList[params.dataIndex]
+                                }
+                            },
+                        },
+
+                        animationType: 'scale',
+                        animationEasing: 'elasticOut',
+                        animationDelay: function (idx) {
+                            return Math.random() * 200;
+                        }
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            vm.echartsOption(myChart, option)
+        },
+        initBar1: function () {
             var myChart = echarts.init(document.getElementById('bar1'));
             var option = {
                 color: ['#3398DB'],
@@ -209,9 +390,6 @@ var vm = new Vue({
                     trigger: 'axis',
                     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                        // },
-                        // formatter: function (value) {
-                        //     return value[0].axisValue + ':<br/>' + num[value[0].dataIndex] + '人（' + value[0].data + '%）'
                     }
                 },
                 grid: {
@@ -224,7 +402,7 @@ var vm = new Vue({
                 xAxis: [
                     {
                         type: 'category',
-                        data: ['刑法', '宪法', '民商法', '行政法', '社会法', '经济法', '诉讼及非讼程序法'],
+                        data: vm.showNames,
                         axisTick: {
                             alignWithLabel: true
                         },
@@ -236,7 +414,6 @@ var vm = new Vue({
                         },
                         axisLabel: {
                             interval: 0,
-                            // rotate: 20,
                             textStyle: {
                                 fontSize: 12 // 让字体变大
                             }
@@ -247,10 +424,9 @@ var vm = new Vue({
                     {
                         type: 'value',
                         axisLabel: {
-                            formatter: '{value} %'
+                            formatter: '{value}'
                         },
                         interval: 25,
-                        max: 100,
                         min: 0,
                         // 设置坐标轴字体颜色和宽度
                         axisLine: {
@@ -265,17 +441,6 @@ var vm = new Vue({
                     {
                         type: 'bar',
                         barWidth: 25,
-                        // itemStyle: {
-                        //     normal: {
-                        //         color: new echarts.graphic.LinearGradient(
-                        //             0, 0, 0, 0.3,
-                        //             [
-                        //                 {offset: 0, color: '#1994d7'},
-                        //                 {offset: 1, color: '#004b95'}
-                        //             ]
-                        //         )
-                        //     }
-                        // },
                         itemStyle: {
                             normal: {
                                 // 定制显示（按顺序）
@@ -285,12 +450,390 @@ var vm = new Vue({
                                 }
                             },
                         },
-                        data: [82, 52, 62, 41, 93, 63, 43]
+                        data: vm.showValues
                     }
                 ]
             }
             vm.echartsOption(myChart, option)
-        },*/
+        },
+        initPieGame1: function () {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('pieGame1'));
+            // 指定图表的配置项和数据
+            var option = {
+                backgroundColor: '#fff',
+
+                //目前没有title
+                // title: {
+                //     text: '',
+                //     left: 'center',
+                //     top: 20,
+                //     textStyle: {
+                //         color: 'red'
+                //     }
+                // },
+
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} 次"
+                },
+
+                visualMap: {
+                    show: false,
+                    min: 80,
+                    max: 600,
+                    inRange: {
+                        colorLightness: [0, 1]
+                    }
+                },
+                series : [
+                    {
+                        name:'游戏类型',
+                        type:'pie',
+                        radius : '55%',
+                        center: ['50%', '50%'],
+                        data:vm.dataByNum,
+                        roseType: 'radius',
+                        label: {
+                            normal: {
+                                textStyle: {
+                                    color: '#666'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                lineStyle: {
+                                    color: '#666'
+                                },
+                                smooth: 0.2,
+                                length: 10,
+                                length2: 20
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                // 定制显示（按顺序）
+                                color: function(params) {
+                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
+                                    return colorList[params.dataIndex]
+                                }
+                            },
+                        },
+
+                        animationType: 'scale',
+                        animationEasing: 'elasticOut',
+                        animationDelay: function (idx) {
+                            return Math.random() * 200;
+                        }
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            vm.echartsOption(myChart, option)
+        },
+        initPieGame2: function () {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('pieGame2'));
+            // 指定图表的配置项和数据
+            var option = {
+                backgroundColor: '#fff',
+
+                title: {
+                    text: '',
+                    left: 'center',
+                    top: 20,
+                    textStyle: {
+                        color: '#ccc'
+                    }
+                },
+
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} 分"
+                },
+
+                visualMap: {
+                    show: false,
+                    min: 80,
+                    max: 600,
+                    inRange: {
+                        colorLightness: [0, 1]
+                    }
+                },
+                series : [
+                    {
+                        name:'游戏类型',
+                        type:'pie',
+                        radius : '55%',
+                        center: ['50%', '50%'],
+                        data:vm.dataBySorce,
+                        roseType: 'radius',
+                        label: {
+                            normal: {
+                                textStyle: {
+                                    color: '#666'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                lineStyle: {
+                                    color: '#666'
+                                },
+                                smooth: 0.2,
+                                length: 10,
+                                length2: 20
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                // 定制显示（按顺序）
+                                color: function(params) {
+                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
+                                    return colorList[params.dataIndex]
+                                }
+                            },
+                        },
+
+                        animationType: 'scale',
+                        animationEasing: 'elasticOut',
+                        animationDelay: function (idx) {
+                            return Math.random() * 200;
+                        }
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            vm.echartsOption(myChart, option)
+        },
+        initPieGame3: function () {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('pieGame3'));
+            // 指定图表的配置项和数据
+            var option = {
+                backgroundColor: '#fff',
+
+                title: {
+                    text: '',
+                    left: 'center',
+                    top: 20,
+                    textStyle: {
+                        color: '#ccc'
+                    }
+                },
+
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} %"
+                },
+
+                visualMap: {
+                    show: false,
+                    min: 80,
+                    max: 600,
+                    inRange: {
+                        colorLightness: [0, 1]
+                    }
+                },
+                series : [
+                    {
+                        name:'游戏类型',
+                        type:'pie',
+                        radius : '55%',
+                        center: ['50%', '50%'],
+                        data:vm.dataByCorrect,
+                        roseType: 'radius',
+                        label: {
+                            normal: {
+                                textStyle: {
+                                    color: '#666'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                lineStyle: {
+                                    color: '#666'
+                                },
+                                smooth: 0.2,
+                                length: 10,
+                                length2: 20
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                // 定制显示（按顺序）
+                                color: function(params) {
+                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
+                                    return colorList[params.dataIndex]
+                                }
+                            },
+                        },
+
+                        animationType: 'scale',
+                        animationEasing: 'elasticOut',
+                        animationDelay: function (idx) {
+                            return Math.random() * 200;
+                        }
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            vm.echartsOption(myChart, option)
+        },
+        initPiePrac1: function () {
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('piePrac1'));
+            // 指定图表的配置项和数据
+            var option = {
+                backgroundColor: '#fff',
+
+                //目前没有title
+                // title: {
+                //     text: '',
+                //     left: 'center',
+                //     top: 20,
+                //     textStyle: {
+                //         color: 'red'
+                //     }
+                // },
+
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} 次"
+                },
+
+                visualMap: {
+                    show: false,
+                    min: 80,
+                    max: 600,
+                    inRange: {
+                        colorLightness: [0, 1]
+                    }
+                },
+                series : [
+                    {
+                        name:'游戏类型',
+                        type:'pie',
+                        radius : '55%',
+                        center: ['50%', '50%'],
+                        data:vm.themeAnswerPieData,
+                        roseType: 'radius',
+                        label: {
+                            normal: {
+                                textStyle: {
+                                    color: '#666'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                lineStyle: {
+                                    color: '#666'
+                                },
+                                smooth: 0.2,
+                                length: 10,
+                                length2: 20
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                // 定制显示（按顺序）
+                                color: function(params) {
+                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
+                                    return colorList[params.dataIndex]
+                                }
+                            },
+                        },
+
+                        animationType: 'scale',
+                        animationEasing: 'elasticOut',
+                        animationDelay: function (idx) {
+                            return Math.random() * 200;
+                        }
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            vm.echartsOption(myChart, option)
+        },
+        initPiePrac2: function () {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('piePrac2'));
+            // 指定图表的配置项和数据
+            var option = {
+                backgroundColor: '#fff',
+
+                title: {
+                    text: '',
+                    left: 'center',
+                    top: 20,
+                    textStyle: {
+                        color: '#ccc'
+                    }
+                },
+
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} 分"
+                },
+
+                visualMap: {
+                    show: false,
+                    min: 80,
+                    max: 600,
+                    inRange: {
+                        colorLightness: [0, 1]
+                    }
+                },
+                series : [
+                    {
+                        name:'游戏类型',
+                        type:'pie',
+                        radius : '55%',
+                        center: ['50%', '50%'],
+                        data:vm.themeRightPieData,
+                        roseType: 'radius',
+                        label: {
+                            normal: {
+                                textStyle: {
+                                    color: '#666'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                lineStyle: {
+                                    color: '#666'
+                                },
+                                smooth: 0.2,
+                                length: 10,
+                                length2: 20
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                // 定制显示（按顺序）
+                                color: function(params) {
+                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
+                                    return colorList[params.dataIndex]
+                                }
+                            },
+                        },
+
+                        animationType: 'scale',
+                        animationEasing: 'elasticOut',
+                        animationDelay: function (idx) {
+                            return Math.random() * 200;
+                        }
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            vm.echartsOption(myChart, option)
+        },
         getStuDia: function () {
             var loadInline={
                 currPage: 1,
@@ -312,6 +855,184 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+        getExamDia: function () {
+            $.ajax({
+                async:false,
+                type: "POST",
+                url: baseURL + "examstat/getDiaInfo",
+                dataType: "json",
+                data: vm.dateRange,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.seriesExamData = result.data;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        getExamDiaScore: function () {
+            $.ajax({
+                async:false,
+                type: "POST",
+                url: baseURL + "examstat/DiaStat",
+                dataType: "json",
+                data: vm.dateRange,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.seriesExamScoreData = result.data;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        getPracDia:function(){
+            $.ajax({
+                type: "GET",
+                async:false,
+                url: baseURL + "/analysis/exercise/count",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.overall = result.map.overall;
+                        vm.total = result.map.total;
+                        vm.right = result.map.right;
+                        vm.themeAnswerNum = result.map.themeAnswerNum;
+                        vm.themeRightNum = result.map.themeRightNum;
+                        for(var key in result.map.overall){
+                            vm.showNames.push(key);
+                            vm.showValues.push(result.map.overall[key]);
+                        }
+                        vm.themeAnswerPieData=[];
+                        for(var info in vm.themeAnswerNum){
+                            var answerinfo={
+                                name:info,
+                                value:vm.themeAnswerNum[info]
+                            };
+                            vm.themeAnswerPieData.push(answerinfo);
+                        }
+                        vm.themeRightPieData=[];
+                        for(var info in vm.themeRightNum){
+                            var answerinfo={
+                                name:info,
+                                value:vm.themeRightNum[info]
+                            };
+                            vm.themeRightPieData.push(answerinfo);
+                        }
+
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        getGameDia: function () {
+                this.user=jsgetUser();
+//先得到数据dataByNum---------------------------------------------------------------------------------------------------------------
+                // 查次数//最笨的一个个查  没什么影响
+                //       ------1查闯关次数
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "competitionRecord/chuangguanCountByUser",
+                    Type: "json",
+                    data: {"uid":this.user.id},
+                    async:false,
+                    success: function (data) {
+                        vm.dataByNum.push({value:Number(data.count), name:'竞赛闯关'});
+                    }
+                });
+                //       ------2查在线pk次数（包括随机，code码  组队）
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "battlePlatform/PkCountByUser",
+                    Type: "json",
+                    data: {"uid":this.user.id},
+                    async:false,
+                    success: function (data) {
+                        vm.dataByNum.push({value:Number(data.count), name:'在线比武'});
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "battlePlatform/leitaiCountByUser",
+                    Type: "json",
+                    data: {"uid":this.user.id},
+                    async:false,
+                    success: function (data) {
+                        vm.dataByNum.push({value:Number(data.count), name:'擂台赛'});
+                    }
+                });
+
+
+
+//然后的数据dataBySorce【】-----------------------------------------------------------------------------------------------------
+                //       ------1查闯关分数
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "integral/chuangguanCountByUser",
+                    Type: "json",
+                    data: {"uid":this.user.id},
+                    async:false,
+                    success: function (data) {
+                        vm.dataBySorce.push({value:Number(data.CheckpointSorce), name:'竞赛闯关'});
+                    }
+                });
+                //       ------2查在线pk分数
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "integral/pkByUser",
+                    Type: "json",
+                    data: {"uid":this.user.id},
+                    async:false,
+                    success: function (data) {
+                        vm.dataBySorce.push({value:Number(data.PkSorce), name:'在线比武'});
+                    }
+                });
+                //       ------3查打擂台分数
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "integral/leitaiByUser",
+                    Type: "json",
+                    data: {"uid":this.user.id},
+                    async:false,
+                    success: function (data) {
+                        vm.dataBySorce.push({value:Number(data.leitaiSorce), name:'擂台赛'});
+                    }
+                });
+                //然后的数据dataByCorrect【】-----------------------------------------------------------------------------------------------------
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "userQuestRecord/CheckpointByUser",
+                    Type: "json",
+                    data: {"uid":this.user.id},
+                    async:false,
+                    success: function (data) {
+                        vm.dataByCorrect.push({value:Number(data.CheckpointByUser), name:'竞赛闯关'});
+                    }
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "userQuestRecord/OnlinByUser",
+                    Type: "json",
+                    data: {"uid":this.user.id},
+                    async:false,
+                    success: function (data) {
+                        vm.dataByCorrect.push({value:Number(data.OnlinByUser), name:'在线比武'});
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "userQuestRecord/leitaiByUser",
+                    Type: "json",
+                    data: {"uid":this.user.id},
+                    async:false,
+                    success: function (data) {
+                        vm.dataByCorrect.push({value:Number(data.leitaiByUser), name:'擂台赛'});
+                    }
+                });
         }
     }
 });
