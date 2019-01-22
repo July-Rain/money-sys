@@ -1,9 +1,13 @@
 package com.lawschool.controller.system;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.base.AbstractController;
+import com.lawschool.beans.accessory.AccessoryEntity;
+import com.lawschool.service.accessory.AccessoryService;
 import com.lawschool.util.FileUtil;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * ClassName: SysCommonController
@@ -32,6 +38,8 @@ import java.util.List;
 @RequestMapping("/sys")
 public class SysCommonController extends AbstractController {
 
+    @Autowired
+    private AccessoryService accessoryService;
     /**
      * @Author MengyuWu
      * @Description 系统文件上传
@@ -72,13 +80,44 @@ public class SysCommonController extends AbstractController {
      * @return void
      **/
     
-    @RequestMapping("/download")
+    /*@RequestMapping("/download")
     public void downLoad(@RequestParam(value = "accessoryId") String accessoryId, HttpServletResponse response) throws IOException {
         if (UtilValidate.isEmpty(accessoryId)) {
             throw new RuntimeException("文件路径错误");
         }
+        //根据附件id下载相关的附件
+        AccessoryEntity accessoryEntity = accessoryService.selectById(accessoryId);
+        if(UtilValidate.isEmpty(accessoryEntity)){
+            logger.info("文件不存在");
+        }
         ServletOutputStream outputStream = response.getOutputStream();
-        FileUtil.downloadFromFileServer(accessoryId,outputStream);
+        response=FileUtil.downloadFromFileServer(accessoryId,outputStream,response);
+        outputStream.close();
+    }*/
+    @RequestMapping("/download")
+    public void downLoad(@RequestParam String accessoryId, HttpServletResponse response) throws IOException {
+
+        if (UtilValidate.isEmpty(accessoryId)) {
+            throw new RuntimeException("附件id为空");
+        }
+        ServletOutputStream outputStream = response.getOutputStream();
+
+            AccessoryEntity accessoryEntity = accessoryService.selectOne(new EntityWrapper<AccessoryEntity>().eq("id", accessoryId));
+            if (UtilValidate.isNotEmpty(accessoryEntity)) {
+                String fileName = null;
+                if (UtilValidate.isNotEmpty(accessoryEntity.getAccessoryName())) {
+                    fileName = java.net.URLEncoder.encode(accessoryEntity.getAccessoryName(), "UTF-8");
+                } else {
+                    fileName = "未知名称的附件";
+                }
+                if (fileName.contains(",")) {
+                    fileName = fileName.replaceAll(",", "");
+                }
+                response.setHeader("Content-Disposition",
+                        "attachment; filename=" + fileName);
+                outputStream=(ServletOutputStream)FileUtil.downloadFromFileServer(accessoryId,outputStream);
+            }
+
         outputStream.close();
     }
 

@@ -206,6 +206,26 @@ var vm = new Vue({
         },
         toHome: function () {
             parent.location.reload()
+        },
+        collect:function (id) {
+            var coll={
+                comStucode:id,
+                type:'10'
+            };
+            //收藏课程
+            $.ajax({
+                type: "POST",
+                url: baseURL + "coll/addColl?comStucode="+id+"&type=10",
+                contentType: "application/json",
+                data: JSON.stringify(coll),
+                success: function(result){
+                    if(result.code === 0){
+                        alert("收藏成功！");
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
         }
     }
 });
