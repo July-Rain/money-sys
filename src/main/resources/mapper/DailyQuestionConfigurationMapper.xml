@@ -3,26 +3,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lawschool.dao.DailyQuestionConfigurationDao">
-    <resultMap id="BaseResultMap" type="com.lawschool.beans.DailyQuestionConfiguration">
-        <id column="ID" jdbcType="VARCHAR" property="id" />
-        <result column="SPECIAL_KNOWLEDGE_ID" jdbcType="VARCHAR" property="specialKnowledgeId" />
-        <result column="CREATE_RULE" jdbcType="INTEGER" property="createRule" />
-        <result column="OBTAIN_POINT" jdbcType="INTEGER" property="obtainPoint" />
-        <result column="IS_SHOW_LEGAL" jdbcType="INTEGER" property="isShowLegal" />
-        <result column="CREATE_WAY" jdbcType="INTEGER" property="createWay" />
-        <result column="IS_SHOW_ANSWER" jdbcType="INTEGER" property="isShowAnswer" />
-        <result column="QUESTION_DIFFICULTY" jdbcType="VARCHAR" property="questionDifficulty" />
-        <result column="JOIN_PEOPLE" jdbcType="VARCHAR" property="joinPeople" />
-        <result column="JOIN_DEPT" jdbcType="VARCHAR" property="joinDept" />
-        <result column="QUESTION_ID" jdbcType="VARCHAR" property="questionId" />
-        <result column="BEGIN_TIME" jdbcType="DATE" property="beginTime" />
-        <result column="END_TIME" jdbcType="DATE" property="endTime" />
-        <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
-        <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
-        <result column="OPT_USER" jdbcType="VARCHAR" property="optUser" />
-        <result column="OPT_TIME" jdbcType="DATE" property="optTime" />
-        <result column="QUESTION_TYPE" jdbcType="VARCHAR" property="questionType"/>
-    </resultMap>
+
+
     <!--查询某类型每日一题规则-->
     <select id="findList" parameterType="map" resultType="java.util.Map">
         SELECT
@@ -40,7 +22,9 @@
         BEGIN_TIME as "beginTime",
         END_TIME as "endTime",
         CREATE_USER as "createUser",
-        QUESTION_TYPE as "questionType"
+        QUESTION_TYPE as "questionType",
+        RULE_NAME as "ruleName",
+        USERID2NAME(CREATE_USER) AS "creatUserName"
         FROM LAW_DAILY_QUESTION d
         where
             1 = 1
@@ -80,7 +64,9 @@
         BEGIN_TIME as "beginTime",
         END_TIME as "endTime",
         CREATE_USER as "createUser",
-        QUESTION_TYPE as "questionType"
+        QUESTION_TYPE as "questionType",
+        RULE_NAME as "ruleName",
+USERID2NAME(CREATE_USER) AS "creatUserName"
         FROM LAW_DAILY_QUESTION d
         where
         d.id = #{id}
@@ -259,7 +245,9 @@
         QUESTION_TYPE as "questionType",
         SPECIAL_KNOWLEDGE_ID as "specialKnowledgeId",
         CREATE_RULE as "createRule",
-        OBTAIN_POINT as "obtainPoint"
+        OBTAIN_POINT as "obtainPoint",
+        RULE_NAME as "ruleName",
+USERID2NAME(CREATE_USER) AS "creatUserName"
         FROM
             LAW_DAILY_QUESTION
         WHERE

@@ -25,10 +25,6 @@
                                     border
                                     style="width: 100%">
                                 <el-table-column
-                                        prop="orgIds"
-                                        label="角色ID">
-                                </el-table-column>
-                                <el-table-column
                                         prop="roleName"
                                         label="角色名称">
                                 </el-table-column>
@@ -66,11 +62,11 @@
                             <el-pagination
                                     @size-change="handleSizeChange"
                                     @current-change="handleCurrentChange"
-                                    :current-page="form.pageNo"
+                                    :current-page="inline.pageNo"
                                     :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="form.limit"
+                                    :page-size="inline.pageSize"
                                     layout="total, sizes, prev, pager, next, jumper"
-                                    :total="form.count">
+                                    :total="inline.count">
                             </el-pagination>
                         </div>
                     </el-tab-pane>
@@ -131,5 +127,5 @@
 </div>
 </body>
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/sys/sysRole.js"></script>
+<script src="${rc.contextPath}/js/sys/sysRole.js?_${.now?long}"></script>
 </html>

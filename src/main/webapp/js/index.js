@@ -36,10 +36,16 @@ var vm = new Vue({
         // 加载菜单
         loadNav: function (menuId,url) {
             var _menuId = menuId?"?id="+menuId:"";
+            if(menuId == '' || menuId == null){
+                menuId = '0';
+            }
             $.ajax({
-                type: "POST",
-                url: baseURL + "menu/menuNav" + _menuId,
+                type: "GET",
+                url: baseURL + "sysmenu/nav" + _menuId,
                 contentType: "application/json",
+                data: {
+                    parentId: menuId
+                },
                 success: function (result) {
                     if (result.code === 0) {
                         vm.navData = result.menuList;
@@ -47,11 +53,12 @@ var vm = new Vue({
                             vm.navData.push({
                                 icon: "icon-zaixianxuexi",
                                 name: "返回首页",
-                                url: 'container.html'
+                                url: 'container.html',
+                                type: '0',
+                                parentId: '0'
                             });
                         }
 
-                        console.info("nav with menuId", result)
                     } else {
                         alert(result.msg);
                     }
@@ -78,11 +85,8 @@ var vm = new Vue({
                     vm.childUrl = item.url + "&id=" + item.id;
                 }
 
-                if(
-                    item.url === 'container.html'
-                    || item.parentId == "0"
-                    || item.list.length != 0
-                ){
+                if(item.type == '0'){
+
                     this.loadNav(item.id,item.url)
                 }
 
