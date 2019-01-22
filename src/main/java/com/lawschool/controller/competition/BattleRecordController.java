@@ -84,4 +84,17 @@ public class BattleRecordController {
         List<Map> firstListByleitai= battleRecordService.firstListByleitai();
         return Result.ok().put("firstListByleitai",firstListByleitai);
     }
+    //获取擂台赛擂主次数
+    @RequestMapping("/leitaiWinCount")
+    public Result leitaiWinCount(){
+        int i= battleRecordService.leitaiWinCount();
+
+        return Result.ok().put("leitaiWinCount",i);
+    }
+    //获取pk总分
+    @RequestMapping("/pkSum")
+    public Result pkSum(){
+        int i= battleRecordService.pkSum();
+        return Result.ok().put("pkSum",i);
+    }
 }

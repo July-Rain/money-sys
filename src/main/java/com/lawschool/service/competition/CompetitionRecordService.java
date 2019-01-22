@@ -40,4 +40,5 @@ public interface CompetitionRecordService extends IService<CompetitionRecord> {
     public int chuangguanSorceBydept(String deptcode);
 
     List<CompetitionRecord> chuangGuanRanking();
+    CompetitionRecord chuangGuanRankingByUser();
 }
