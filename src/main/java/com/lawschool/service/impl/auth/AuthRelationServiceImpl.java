@@ -2,11 +2,8 @@ package com.lawschool.service.impl.auth;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.lawschool.beans.SysMenu;
 import com.lawschool.beans.auth.AuthRelationBean;
-import com.lawschool.dao.SysMenuDao;
 import com.lawschool.dao.auth.AuthRelationDao;
-import com.lawschool.service.SysMenuService;
 import com.lawschool.service.auth.AuthRelationService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.UtilValidate;
