@@ -26,7 +26,7 @@ public class Collection {
 
     private Integer type;//类型  10-课程 20-试卷
 
-    private Integer delStatus ;//状态
+    private int delStatus ;//状态
 
     public String getId() {
         return id;
@@ -76,7 +76,7 @@ public class Collection {
         this.type = type;
     }
 
-    public Integer getDelStatus() {
+    public int getDelStatus() {
         return delStatus;
     }
 

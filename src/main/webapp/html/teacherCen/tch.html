@@ -22,10 +22,10 @@
                         </div>
                         <div class="card_contain">
                             <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-                                <el-form-item prop="userName">
+                                <el-form-item prop="userName" label="姓名">
                                     <el-input v-model="formInline.userName" placeholder="姓名" size="mini"></el-input>
                                 </el-form-item>
-                                <el-form-item prop="userCode">
+                                <el-form-item prop="userCode" label="身份证号">
                                     <el-input v-model="formInline.userCode" placeholder="身份证号" size="mini"></el-input>
                                 </el-form-item>
                                 <el-form-item>

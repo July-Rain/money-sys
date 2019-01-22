@@ -1,25 +1,11 @@
 package com.lawschool.controller;
 
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.toolkit.IdWorker;
-import com.lawschool.annotation.SysLog;
-import com.lawschool.beans.SysMenu;
-import com.lawschool.service.SysMenuService;
 import com.lawschool.service.UserQuestRecordService;
-import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
-import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -35,8 +21,6 @@ public class UserQuestRecordController {
 
     @Autowired
     private UserQuestRecordService userQuestRecordService;
-
-
 
     @RequestMapping("CheckpointByUser")
     public Result CheckpointByUser(String uid){
@@ -54,7 +38,6 @@ public class UserQuestRecordController {
         int i= userQuestRecordService.leitaiByUser(uid);
         return Result.ok().put("leitaiByUser",i );
     }
-
 
     @RequestMapping("chuangguanCorrectBydept")
     public Result chuangguanCorrectBydept(String deptcode){

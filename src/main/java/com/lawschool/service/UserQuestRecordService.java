@@ -1,13 +1,7 @@
 package com.lawschool.service;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.lawschool.beans.SysMenu;
 import com.lawschool.beans.UserQuestRecord;
-import com.lawschool.util.PageUtils;
-
-import java.util.List;
-import java.util.Map;
-
 
 /**
  * 
@@ -18,15 +12,15 @@ import java.util.Map;
  *
  */
 public interface UserQuestRecordService extends IService<UserQuestRecord> {
+    int CheckpointByUser(String uid);
 
-  int CheckpointByUser(String uid);
     int OnlinByUser(String uid);
 
     int leitaiByUser(String uid);
 
-  int chuangguanCorrectBydept(String deptcode);
+    int chuangguanCorrectBydept(String deptcode);
 
-  int OnlinCorrectBydept(String deptcode);
+    int OnlinCorrectBydept(String deptcode);
 
-  int leitaiCorrectBydept(String deptcode);
+    int leitaiCorrectBydept(String deptcode);
 }

@@ -80,12 +80,9 @@ var vm = new Vue({
             //     $(list[i]).text("");//清空里面内容
             //     $(list[i]).text(dds.substring(0,200) + "...")//截取200个字符
             // }
+        },
+        toUrl: function (_url) {
+            window.location.href =baseURL+"modules/competition/"+ _url +".html";
         }
     }
 });
-
-
-function toChuangGuan()
-{
-    parent.location.href =baseURL+"modules/competition/chuangguanGame.html";
-}

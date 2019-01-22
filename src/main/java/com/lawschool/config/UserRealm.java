@@ -3,7 +3,9 @@ package com.lawschool.config;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
 import com.lawschool.beans.*;
+import com.lawschool.beans.system.SysMenuEntity;
 import com.lawschool.dao.*;
+import com.lawschool.dao.system.SysMenuDao;
 import com.lawschool.util.Constant;
 import com.lawschool.util.UtilValidate;
 import org.apache.commons.lang3.StringUtils;
@@ -33,8 +35,6 @@ import java.util.stream.Collectors;
 public class UserRealm extends AuthorizingRealm {
     @Autowired
     private UserMapper sysUserDao;
-    @Autowired
-    private SysMenuDao sysMenuDao;
 
     @Autowired
     private OrgDao orgDao;
@@ -48,6 +48,8 @@ public class UserRealm extends AuthorizingRealm {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    @Autowired
+    private SysMenuDao sysMenuDao;
 
     @PostConstruct
     public void initCredentialsMatcher() {
@@ -68,9 +70,9 @@ public class UserRealm extends AuthorizingRealm {
         //系统管理员，拥有最高权限
         if (user.getIsAdmin() == Constant.SUPER_ADMIN) {
             //所有菜单
-            List<SysMenu> menuList = sysMenuDao.selectList(null);
+            List<SysMenuEntity> menuList = sysMenuDao.findUserMenu(null, null);
             permsList = new ArrayList<>(menuList.size());
-            for (SysMenu menu : menuList) {
+            for (SysMenuEntity menu : menuList) {
                 permsList.add(menu.getPerms());
             }
         } else {
