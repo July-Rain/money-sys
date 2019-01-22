@@ -1,148 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>菜单管理</title>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
     <#include "/header.html">
-
-        <link rel="stylesheet" href="${rc.contextPath}/tree-menu/bootstrap-table.min.css">
-        <link rel="stylesheet" href="${rc.contextPath}/tree-menu/jquery.treegrid.css">
-
 </head>
 <style>
-
+    .header-right ul{
+        background: transparent;
+    }
+    .header-right ul li:after{
+        content: '';
+    }
+    .el-menu--horizontal .el-menu-item,
+    .el-menu--horizontal .el-submenu{
+        float: left;
+        height: 70px;
+        /*line-height: 70px;*/
+        margin: 0;
+        border-bottom: 2px solid transparent;
+        color: #fff;
+    }
+    .el-menu--horizontal>.el-submenu .el-submenu__title {
+        height: 70px;
+        /* line-height: 70px; */
+        border-bottom: 2px solid transparent;
+        color: #909399;
+    }
+    .header-right ul li a{
+        text-align: center;
+        padding: 0;
+        /*margin: 10px 0;*/
+        box-sizing: border-box;
+        height: auto;
+        display: inline-block;
+    }
+    .header-right .el-menu-item [class^=el-icon-],
+    .header-right .el-submenu [class^=el-icon-],
+    .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
+        font-size: 30px;
+        color: #fff;
+    }
+    /*.header-right .el-submenu [class^=el-icon-]*/
+    .header-right ul li a span{
+        display: block;
+        margin-top: -10px;
+        line-height: 10px;
+    }
+    .header-right .el-menu-item:hover a,
+    .header-right .el-submenu:hover a,
+    .header-right .el-menu-item:hover [class^=el-icon-],
+    .header-right .el-submenu:hover [class^=el-icon-],
+    .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
+        color: #909399;
+    }
+    .el-submenu__icon-arrow{
+        margin-top: 16px;
+    }
+    .el-menu--horizontal .el-menu .el-menu-item a{
+        color: #909399;
+    }
+    .el-menu--horizontal .el-menu .el-menu-item a:hover{
+        color: #000;
+    }
+    .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+        background-color: #fff;
+        float: none;
+        height: 36px;
+        line-height: 36px;
+        padding: 0 10px;
+        color: #909399;
+        display: inline-block;//悬浮块横向显示
+    }
+    .row-expand-cover td:first-child div{
+        display: none;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
-    <div class="header">
-        <div class="header-left">
-            <img src="${rc.contextPath}/statics/img/logo.png">
-            <a href="javascript:;">江苏省公安厅法律学校</a>
-            <input style="display: none" id="menuId" value="${menuId}">
-        </div>
-        <div class="header-right">
-            <ul>
-                <li v-for="item in navData">
-                    <a>
-                        <i :class="item.icon"></i>
-                        <p><a href="javascript:;">{{item.name}}</a></p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
     <div class="container">
         <el-row :gutter="24">
             <el-col :span="24">
                 <el-tabs type="border-card">
-                    <el-tab-pane label="检索">
-                        <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-
-                            <!--<el-form-item prop="value">-->
-                                <!--<el-input v-model="formInline.value" placeholder="参数值" size="mini" clearable></el-input>-->
-                            <!--</el-form-item>-->
-
-                            <!--<el-form-item prop="status">-->
-                                <!--<el-select v-model="formInline.status" placeholder="状态" size="mini" clearable>-->
-                                    <!--<el-option label="有效" value="1"></el-option>-->
-                                    <!--<el-option label="无效" value="0"></el-option>-->
-                                <!--</el-select>-->
-                            <!--</el-form-item>-->
-                            <!--<el-form-item>-->
-                                <!--<el-button type="primary" @click="onSubmit" size="mini">查询</el-button>-->
-                                <!--<el-button size="mini" @click="resetForm('formInline')">重置</el-button>-->
-
-                            <!--</el-form-item>-->
-                        </el-form>
-                        <div>
-
-                            <el-button size="mini" type="primary" @click="addConfig" >新增目录</el-button>
-                            <el-button size="mini" type="primary" @click="handleEdit" >修改</el-button>
-                            <el-button size="mini" type="primary" @click="handleDel" >删除</el-button>
-
-
-                            <table id="menuTable" data-mobile-responsive="true" data-click-to-select="true">
-                                <thead>
-                                <tr>
-                                    <th data-field="selectItem" data-checkbox="true"></th>
-                                </tr>
-                                </thead>
-                            </table>
-
-                        </div>
-                    </el-tab-pane>
+                    <div>
+                        <el-button size="mini" type="primary" @click="add">新增</el-button>
+                        <el-table @expand-change="change"
+                                :data="tableData"
+                                border
+                                style="width: 100%"
+                                :row-class-name="getRowClass">
+                            <el-table-column type="expand">
+                                <el-table
+                                          :data="childData"
+                                          border
+                                          style="width: 100%">
+                                    <el-table-column
+                                            prop="name"
+                                            label="名称"
+                                            width="280"
+                                            header-align="center"
+                                            align="center">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="url"
+                                            label="路由"
+                                            header-align="center"
+                                            align="center">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="type"
+                                            label="类型"
+                                            width="280"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="操作"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                        <template slot-scope="scope">
+                                            <el-button
+                                                    size="mini"
+                                            >编辑
+                                            </el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="name"
+                                    label="名称"
+                                    width="280"
+                                    header-align="center"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="url"
+                                    label="路由"
+                                    header-align="center"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="type"
+                                    label="类型"
+                                    width="280"
+                                    header-align="center"
+                                    align="center"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    label="操作"
+                                    header-align="center"
+                                    align="center"
+                            >
+                                <template slot-scope="scope">
+                                    <el-button
+                                            size="mini"
+                                            @click="edit(scope.row.id)"
+                                    >编辑
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
                 </el-tabs>
             </el-col>
         </el-row>
 
-
-
-
-        <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
+        <el-dialog title="菜单维护" :visible.sync="dialogConfig" :before-close="closeDia">
             <el-row>
                 <el-col :span="12">
-                    <el-form :model="sysMenu" :rules="rules" ref="sysMenu" label-width="100px" class="demo-sysMenu" size="mini">
-                        <el-form-item label="菜单名称" prop="name">
+                    <el-form :model="sysMenu" ref="sysMenu" label-width="100px" class="demo-sysDict" size="mini">
+                        <el-form-item label="类型">
+                            <el-radio-group v-model="sysMenu.type">
+                                <el-radio :label="0">目录</el-radio>
+                                <el-radio :label="1">菜单</el-radio>
+                                <el-radio :label="2">按钮</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                        <el-form-item label="名称">
                             <el-input v-model="sysMenu.name" placeholder="请输入菜单名称" clearable></el-input>
                         </el-form-item>
-
-                        <el-form-item label="上级菜单" prop="parentName">
+                        <el-form-item label="上级菜单">
                             <el-popover
                                     ref="menuListPopover"
                                     placement="bottom-start"
                                     trigger="click"
-                                    v-model="sysMenu.visible">
+                            >
                                 <el-tree
-                                        :data="menuList"
-                                        :props="menuListTreeProps"
-                                        node-key="sysMenu.parentId"
-                                        ref="menuListTree"
-                                        @current-change="menuListTreeCurrentChangeHandle"
+                                        :data="parentData"
+                                        node-key="sysMenu.id"
                                         :default-expand-all="false"
                                         :highlight-current="true"
-                                        :expand-on-click-node="false">
+                                        :props="defaultProps"
+                                        :expand-on-click-node="false"
+                                        @node-click="nodeCheck"
+                                >
                                 </el-tree>
-                                <el-input v-model="sysMenu.parentName" v-popover:menuListPopover slot="reference" :readonly="true"  placeholder="点击选择上级菜单"></el-input>
+                                <el-input v-popover:menuListPopover v-model="nodeName" slot="reference" :readonly="true"  placeholder="点击选择上级菜单"></el-input>
                             </el-popover>
                         </el-form-item>
-                        <el-form-item label="菜单url" prop="url">
-                            <el-input v-model="sysMenu.url" placeholder="菜单url" ></el-input>
+                        <el-form-item label="路由">
+                            <el-input v-model="sysMenu.url" placeholder="请输入菜单路由" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="授权标识" prop="perms">
-                            <el-input v-model="sysMenu.perms" placeholder="授权标识" ></el-input>
+                        <el-form-item label="排序">
+                            <el-input v-model="sysMenu.orderNum" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="排序号" prop="orderNum">
-                            <el-input v-model="sysMenu.orderNum" placeholder="排序号" ></el-input>
+                        <el-form-item label="授权标识">
+                            <el-input v-model="sysMenu.perms" placeholder="多个用逗号分隔" clearable></el-input>
                         </el-form-item>
-
-                        <el-form-item label="状态" prop="isShow">
-                            <el-switch v-model="sysMenu.isShow" active-text="有效"  inactive-text="无效" active-value="1"  inactive-value="0" ></el-switch>
-                        </el-form-item>
-
-                        <el-form-item label="图标" prop="icon">
-                            <el-input v-model="sysMenu.icon" placeholder="菜单图标" ></el-input>
+                        <el-form-item label="图标">
+                            <el-input v-model="sysMenu.icon" clearable></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="saveOrUpdate('sysMenu')">保存</el-button>
+                            <el-button type="primary" @click="save">保存</el-button>
+                            <el-button type="primary" @click="cancel">取消</el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
             </el-row>
         </el-dialog>
-
     </div>
-
-
-
 </div>
-
 </body>
-<script src="${rc.contextPath}/tree-menu/bootstrap-table.min.js"></script>
-<script src="${rc.contextPath}/tree-menu/jquery.treegrid.min.js"></script>
-<script src="${rc.contextPath}/tree-menu/jquery.treegrid.bootstrap3.js"></script>
-<script src="${rc.contextPath}/tree-menu/jquery.treegrid.extension.js"></script>
-<script src="${rc.contextPath}/tree-menu/tree.table.js"></script>
-<script src="${rc.contextPath}/tree-menu/layer.js"></script>
-<!-- import [current] JavaScript -->
+
 <script src="${rc.contextPath}/js/sys/sysmenu.js?_${.now?long}"></script>
 </html>
