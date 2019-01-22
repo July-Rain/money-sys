@@ -2,12 +2,15 @@ package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.beans.*;
+import com.lawschool.beans.system.SysMenuEntity;
 import com.lawschool.beans.system.SysRoleEntity;
 import com.lawschool.dao.*;
 import com.lawschool.dao.system.SysRoleDao;
 import com.lawschool.service.SysAuthService;
+import com.lawschool.service.system.SysMenuService;
 import com.lawschool.util.UtilMisc;
 import com.lawschool.util.UtilValidate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,15 +40,16 @@ public class SysAuthServiceImpl implements SysAuthService {
     private SysRoleDao sysRoleDao;
 
     @Resource
-    private SysMenuDao sysMenuDao;
-
-    @Resource
     private UserMapper userMapper;
+
+    @Autowired
+    private SysMenuService sysMenuService;
+
     @Override
     public User getAllAuthList(String userId) {
         List<SysUserRole> userRoleList=userRoleMapper.selectList(new EntityWrapper<SysUserRole>().eq("user_id",userId));
         List<String> orgDataAuth = new ArrayList<>();
-        List<SysMenu> menuAuth =new ArrayList<>();
+        List<SysMenuEntity> menuAuth =new ArrayList<>();
         List<SysRoleEntity> roleList=listAllRole(userId);
         for(SysUserRole userRole: userRoleList){
             orgDataAuth.addAll(listAllOrgAuth(userRole.getRoleId()));
@@ -74,9 +78,16 @@ public class SysAuthServiceImpl implements SysAuthService {
         return orgList;
     }
 
+    /**
+     * 获取角色所有的菜单
+     * @param roleId
+     * @return
+     */
     @Override
-    public List<SysMenu> listAllMenuAuth(String roleId) {
-        List<SysMenu> roleMenuList=sysMenuDao.listMenuAuth(roleId);
+    public List<SysMenuEntity> listAllMenuAuth(String roleId) {
+
+        List<SysMenuEntity> roleMenuList = sysMenuService.findAllByRole(roleId);
+
         return roleMenuList;
     }
 
