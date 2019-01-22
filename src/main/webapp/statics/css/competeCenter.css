@@ -4,6 +4,7 @@
     min-height: 768px;
     background: url("../img/competeCenter/bg_competition_center.jpg") no-repeat fixed top;
     background-size: cover;
+    height: 100vh;
 }
 .el-scrollbar__wrap {
     overflow-x: hidden;

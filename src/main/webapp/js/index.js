@@ -12,19 +12,20 @@ var vm = new Vue({
             navData: [],//导航
             iframeSrc: '',
             backShow: true,
-            loginType: 0// 登陆方式
+            loginType: 0,// 登陆方式
+            headerHide: false
         }
     },
     created: function () {
-        console.log("created")
         this.$nextTick(function () {
-            vm.loadNav()
+            vm.loadNav();
         })
     },
 
     methods: {
         loadFrame: function (obj) {
             var _src = $("#container").attr("src");
+
             if(_src === vm.iframeSrc){
                 // window.location.reload()
             }
@@ -64,7 +65,6 @@ var vm = new Vue({
 
 
         toChild: function (item) {
-            console.info("item!!!", item);
             if(item.url === 'container.html'){
                 vm.navData.splice(-1,1);
             }
@@ -82,14 +82,6 @@ var vm = new Vue({
                     item.url === 'container.html'
                     || item.parentId == "0"
                     || item.list.length != 0
-                    // || item.name === "系统管理"
-                    // || item.name === "管理中心"
-                    // || item.name === "评估中心"
-                    // || item.name === "学情统计"
-                    // || item.name === "考情统计"
-                    // || item.name === "学分统计"
-                    // || item.name === "积分统计"
-                    // || item.name === "任务统计"
                 ){
                     this.loadNav(item.id,item.url)
                 }
@@ -98,6 +90,11 @@ var vm = new Vue({
                 if (item.list.length == 0) {
                     alert("暂无链接")
                 }
+            }
+            if(item.url.indexOf("competition")>=0) {
+                this.headerHide = true
+            }else {
+                this.headerHide = false
             }
 
         }
