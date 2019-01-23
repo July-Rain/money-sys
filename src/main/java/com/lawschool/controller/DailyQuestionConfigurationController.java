@@ -3,10 +3,13 @@ package com.lawschool.controller;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.Page;
 import com.lawschool.beans.DailyQuestionConfiguration;
+import com.lawschool.beans.TestQuestions;
+import com.lawschool.beans.User;
 import com.lawschool.form.QuestForm;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.DailyQuestionConfigurationService;
 import com.lawschool.util.Result;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,7 +93,33 @@ public class DailyQuestionConfigurationController {
     @SysLog("题目展示")
     @RequestMapping(value = "/showDailyTest",method = RequestMethod.POST)
     public Result showTest(){
-        Result result = dailyQuestionConfigurationService.dailyTestCreate();
-        return result;
+        Result r=  dailyQuestionConfigurationService.dailyTestCreate();
+        return r;
     }
+    /**
+     * 每日一题题目展示
+     */
+    @SysLog("新题目展示")
+    @RequestMapping(value = "/newshowDailyTest",method = RequestMethod.POST)
+    public Result newshowDailyTest(){
+        Result r=  dailyQuestionConfigurationService.newDailyTestCreate();
+        return r;
+    }
+
+    //答过的题目入库保存
+    @RequestMapping("/saveQuestion")
+    public void saveQuestion(@RequestBody TestQuestions testQuestions, String myanswer){
+
+        dailyQuestionConfigurationService.saveQuestion(testQuestions,myanswer);
+
+    }
+
+    //保存分数
+    @RequestMapping("/recordScore")
+    public Result recordScore(String sorce){
+        User u = (User) SecurityUtils.getSubject().getPrincipal();
+        dailyQuestionConfigurationService.recordScore(u,sorce);
+        return Result.ok();
+    }
+
 }

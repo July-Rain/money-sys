@@ -3,6 +3,7 @@ package com.lawschool.service;
 import com.lawschool.base.AbstractService;
 import com.lawschool.beans.DailyQuestionConfiguration;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.beans.User;
 import com.lawschool.form.QuestForm;
 import com.lawschool.util.Result;
 
@@ -19,4 +20,10 @@ public interface DailyQuestionConfigurationService extends AbstractService<Daily
     int updateByDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration);
 
     Result dailyTestCreate();//返回每日一题 以及 当前每日一题配置
+    Result  newDailyTestCreate();// （  新的   ）返回每日一题 以及 当前每日一题配置
+    public void saveQuestion(TestQuestions testQuestions,String myanswer);
+
+    public void recordScore( User u, String sorce);
+
+
 }

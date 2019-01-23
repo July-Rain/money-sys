@@ -1,6 +1,7 @@
 package com.lawschool.controller;
 
 
+import com.lawschool.beans.UserQuestRecord;
 import com.lawschool.service.UserQuestRecordService;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,15 @@ public class UserQuestRecordController {
     public Result leitaiCorrectBydept(String deptcode){
         int i= userQuestRecordService.leitaiCorrectBydept(deptcode);
         return Result.ok().put("Correct",i );
+    }
+
+    @RequestMapping("everyDayByUser")
+    public Result everyDayByUser(){
+        UserQuestRecord userQuestRecord=  userQuestRecordService.everyDayByUser();
+        if (userQuestRecord==null)
+        {
+            return Result.ok().put("have","no");
+        }
+        return Result.ok().put("have","yes");
     }
 }

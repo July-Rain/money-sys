@@ -3,15 +3,19 @@ package com.lawschool.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
+import com.lawschool.beans.User;
 import com.lawschool.beans.UserQuestRecord;
 
 import com.lawschool.dao.UserQuestRecordDao;
 
 import com.lawschool.service.UserQuestRecordService;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Service
@@ -77,5 +81,21 @@ public class UserQuestRecordServiceImpl extends ServiceImpl<UserQuestRecordDao, 
 			return 0;
 		}
 		return serQuestRecordDao.leitaiCorrectBydept(deptcode);
+	}
+
+	@Override
+	public UserQuestRecord everyDayByUser() {
+		String s=null;
+		User u = (User) SecurityUtils.getSubject().getPrincipal();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try{
+			s = sdf.format(new Date());
+		}catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		UserQuestRecord userQuestRecord=this.selectOne(new EntityWrapper<UserQuestRecord>().eq("TO_CHAR(OPT_TIME,'YYYY-MM-DD')",s).eq("USER_ID",u.getId()).eq("SOURCE","everyDay"));
+
+		return userQuestRecord;
 	}
 }
