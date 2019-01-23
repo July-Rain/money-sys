@@ -20,47 +20,32 @@ import java.util.List;
 public class TestQuestions extends DataEntity<TestQuestions> {
 
     private String typeId;//类型  对应字典表
-
     private String comContent;//内容
-
     private String questionDifficulty;//难度   id  应该存code
-
     private String questionType;//题型  选择题，判断   应该存code
-
     private String answerChoiceNumber;//答案个数
 
     private String answerId;//正确答案的id
-
     private String specialKnowledgeId;//专项知识id   对应专项知识库
-
     private String policeClassification;//警种
-
     private String legalBasis;//法律依据
-
     private String answerDescrible;//答案描述
 
     private String releaseStatus;//发布状态
-
     private String stuIssuer;//发布人
-
     private String stuIssdepartment;//发布单位
-
     private Date stuIsstim;//发布时间
-
     private String stuOptdepartment;//使用单位
 
     private String useNumber;//使用次数
-
     private String rigthNumber;//正确次数
-
     private Boolean isEnble;//启用禁用
+    private String video;// 视频
 
     @TableField(exist = false)
     private String collectionId;//收藏id
-
     @TableField(exist = false)
     private String questiontypeValue;
-
     @TableField(exist = false)
     private String answerValue;
     @TableField(exist = false)
@@ -68,12 +53,11 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     @TableField(exist = false)
     private String specialknowledgeValue;
 
-
     @TableField(exist = false)
     private String typeValue;
-
     @TableField(exist = false)
     private List<Answer> answerList=new ArrayList<Answer>();
+
     public String getTypeId() {
         return typeId;
     }
@@ -274,38 +258,11 @@ public class TestQuestions extends DataEntity<TestQuestions> {
         this.answerList = answerList;
     }
 
-    @Override
-    public String toString() {
-        return "TestQuestions{" +
-                "id='" + id + '\'' +
-                ", typeId='" + typeId + '\'' +
-                ", comContent='" + comContent + '\'' +
-                ", questionDifficulty='" + questionDifficulty + '\'' +
-                ", questionType='" + questionType + '\'' +
-                ", answerChoiceNumber=" + answerChoiceNumber +
-                ", answerId='" + answerId + '\'' +
-                ", specialKnowledgeId='" + specialKnowledgeId + '\'' +
-                ", policeClassification='" + policeClassification + '\'' +
-                ", legalBasis='" + legalBasis + '\'' +
-                ", answerDescrible='" + answerDescrible + '\'' +
-                ", releaseStatus=" + releaseStatus + '\'' +
-                ", stuIssuer='" + stuIssuer + '\'' +
-                ", stuIssdepartment='" + stuIssdepartment + '\'' +
-                ", stuIsstim=" + stuIsstim + '\'' +
-                ", stuOptdepartment='" + stuOptdepartment + '\'' +
-                ", useNumber=" + useNumber + '\'' +
-                ", rigthNumber=" + rigthNumber + '\'' +
-                ", isEnble=" + isEnble + '\'' +
-                ", collectionId='" + collectionId + '\'' +
-                ", questiontypeValue='" + questiontypeValue + '\'' +
-                ", answerValue='" + answerValue + '\'' +
-                ", questiondifficultyValue='" + questiondifficultyValue + '\'' +
-                ", specialknowledgeValue='" + specialknowledgeValue + '\'' +
-                ", typeValue='" + typeValue + '\'' +
-                ", createUser='" + createUser + '\'' +
-                ", createTime=" + createTime + '\'' +
-                ", optUser='" + optUser + '\'' +
-                ", optTime=" + optTime +
-                '}';
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
 }
