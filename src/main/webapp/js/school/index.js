@@ -186,7 +186,6 @@ var vm = new Vue({
                 url: baseURL + 'post/collection/' + id,
                 dataType: "json",
                 success: function (result) {
-                    console.info("哈哈哈", result);
                     vm.reload();
                 }
             })

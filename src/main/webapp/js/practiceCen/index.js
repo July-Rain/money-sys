@@ -237,7 +237,6 @@ var vm = new Vue({
         }
     },
     created: function () {
-        console.log("进入页面触发一次")
         this.$nextTick(function () {
             var myPlayer = videojs('my-video');
             videojs("my-video").ready(function () {

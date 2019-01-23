@@ -163,7 +163,6 @@ var vm = new Vue({
             });
         },
         onPause: function (id,event) {
-            debugger
             var el = event.currentTarget;
             var temp =0;
             vm.oldTime=vm.playTime;

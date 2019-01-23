@@ -121,7 +121,6 @@ var vm = new Vue({
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
-                    debugger
                     if (result.code == 0) {
                         vm.videoData = result.result.list;
                         for(var i=0;i<vm.videoData.length;i++){

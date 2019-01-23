@@ -151,7 +151,6 @@ var vm = new Vue({
                 async:false,
                 data: {type:"TASKCLASS",Parentcode:"0"},
                 success: function (result) {
-                    debugger
                     vm.taskClassOption=result.dictlist;
                 }
             });

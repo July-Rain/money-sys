@@ -280,7 +280,6 @@ var vm = new Vue({
             console.log(vm.deptStatData);
         },
         handleTabClick:function (tab,event) {
-            debugger
             if(tab.name=='org'){
                 this.loadTabTreeData();
                 console.log("加载数据");

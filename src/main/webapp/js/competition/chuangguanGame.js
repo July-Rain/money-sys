@@ -61,42 +61,42 @@ var vm = new Vue({
             vm.dialogQuestion = true;//打开答题框
             vm.radio_disabled = false;//让答题框可选
             vm.dialogyes = false;//关闭回答正确提示框
-            vm.Score = "0", //开启新的一轮 将成绩执委0
-                vm.answers = [],//答案集合制空
-                //题目集合
-                vm.QuestionList = [],
-                //题目
-                vm.Question = {},
+            vm.Score = "0"; //开启新的一轮 将成绩执委0
+            vm.answers = [];//答案集合制空
+            //题目集合
+            vm.QuestionList = [];
+            //题目
+            vm.Question = {};
 
-                $.ajax({
-                    type: "POST",
-                    url: baseURL + 'recruitConfiguration/findAll2',
-                    dataType: "json",
-                    async: false,
-                    // data:{"id": row.id},
-                    success: function (result) {
-                        if (result.code === 0) {
-                            console.info(result);
-                            vm.BigGuanList = result.data;
-                            //接下来我要给4个属性赋值
-                            //获得一共几大关
-                            // alert("一共"+result.data.length+"关");
-                            //一共几大关
-                            vm.allBignum = result.data.length;
-                            // alert("当前一进来肯定第一关，不用想");
-                            //现在第几大关
-                            vm.nowBignum = "1";
-                            // alert("当前第一关有"+result.data[0].recruitCheckpointConfigurationList.length+"小关");
-                            // 当前大关多少小关
-                            vm.allLitnum = result.data[0].recruitCheckpointConfigurationList.length;
-                            //当前第几小关
-                            // alert("当前一进来肯定第一关的第一小关，不用想");
-                            vm.nowLitnum = "1";
-                        } else {
-                            alert(result.msg);
-                        }
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'recruitConfiguration/findAll2',
+                dataType: "json",
+                async: false,
+                // data:{"id": row.id},
+                success: function (result) {
+                    if (result.code === 0) {
+                        console.info(result);
+                        vm.BigGuanList = result.data;
+                        //接下来我要给4个属性赋值
+                        //获得一共几大关
+                        // alert("一共"+result.data.length+"关");
+                        //一共几大关
+                        vm.allBignum = result.data.length;
+                        // alert("当前一进来肯定第一关，不用想");
+                        //现在第几大关
+                        vm.nowBignum = "1";
+                        // alert("当前第一关有"+result.data[0].recruitCheckpointConfigurationList.length+"小关");
+                        // 当前大关多少小关
+                        vm.allLitnum = result.data[0].recruitCheckpointConfigurationList.length;
+                        //当前第几小关
+                        // alert("当前一进来肯定第一关的第一小关，不用想");
+                        vm.nowLitnum = "1";
+                    } else {
+                        alert(result.msg);
                     }
-                });
+                }
+            });
 
             $.ajax({
                 type: "POST",
@@ -121,7 +121,6 @@ var vm = new Vue({
         },
 
         thisSubmit: function (answerId) {
-            console.info(vm.answers)
             var answer = answerId.split(',');
             console.info(answer);
             //先判断个数一不一样
@@ -350,7 +349,18 @@ var vm = new Vue({
 
         reload: function () {
             vm.dialogBegin = true;
+        },
+        dateFormat: function (row, column) {
+            var daterc = arguments.length === 1 ? row + "" : row[column.property] + "";
+            if (daterc != null) {
+                var dateMat = new Date(parseInt(daterc.replace("/Date(", "").replace(")/", ""), 10));
+                return dateMat.getFullYear() + "/" + (dateMat.getMonth() + 1) + "/" + dateMat.getDate();
+            }
+
         }
     }
 });
+
+
+
 

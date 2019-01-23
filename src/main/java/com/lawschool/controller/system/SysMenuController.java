@@ -6,6 +6,7 @@ import com.lawschool.beans.system.SysMenuEntity;
 import com.lawschool.form.TreeForm;
 import com.lawschool.service.system.SysMenuService;
 import com.lawschool.util.Result;
+import com.lawschool.util.UtilValidate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -119,5 +120,21 @@ public class SysMenuController extends AbstractController {
         List<TreeForm> resultList = sysMenuService.getAllCatalog(typeList);
 
         return Result.ok().put("list", resultList);
+    }
+    /**
+     * @Author MengyuWu
+     * @Description 获取请求菜单的上级菜单
+     * @Date 17:50 2019-1-18
+     * @Param [id]
+     * @return com.lawschool.util.Result
+     **/
+
+    @RequestMapping("/getParent")
+    public Result getParent(String id){
+        if(UtilValidate.isEmpty(id)){
+            id="0";
+        }
+        List<SysMenuEntity> parentList = sysMenuService.queryParentById(id);
+        return Result.ok().put("parentList", parentList);
     }
 }
