@@ -9,9 +9,14 @@ import com.lawschool.beans.TestQuestions;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.util.Result;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -60,15 +65,36 @@ public class TestQuestionController {
      */
     @SysLog("保存试题")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @Transactional(rollbackFor = Exception.class)
     public Result save(@RequestBody TestQuestions testQuestions) {
+        List<Answer> answerList = testQuestions.getAnswerList();
+        if(CollectionUtils.isEmpty(answerList)){
+            return Result.error("请设置选项信息...");
+        } else {
+            testQuestions.setAnswerChoiceNumber(answerList.size()+"");
+        }
+
         testQuestionService.save(testQuestions);
-        //先删除问题下的答案
+
+        // 先删除问题下的答案
         answerService.deleteByQuestionId(testQuestions.getId());
-        //重新保存答案
-        for (Answer answer : testQuestions.getAnswerList()){
+
+        String answerId = "";// 正确答案ID
+        // 重新保存答案
+        for (Answer answer : answerList){
             answer.setQuestionId(testQuestions.getId());
             answerService.save(answer);
+            if(answer.getIsAnswer() == 1){
+                answerId += answer.getId() + ",";
+            }
         }
+        if(StringUtils.isNotBlank(answerId)){
+            // 更新实体信息
+            testQuestionService.updateAnswerId(testQuestions.getId(), answerId.substring(0, answerId.length()-1));
+        } else {
+            throw new RuntimeException("请设置正确答案...");
+        }
+
         return Result.ok();
     }
 
@@ -86,10 +112,13 @@ public class TestQuestionController {
      * 删除试题
      */
     @SysLog("删除试题")
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Result deleteById(@RequestBody List<String> idList) {
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    public Result deleteById(@PathVariable("id") String id) {
+        List<String> idList = new ArrayList<>(1);
+        idList.add(id);
+
         testQuestionService.delete(idList);
-        //删除答案
+        // 删除答案
         answerService.deleteByQuestionIds(idList);
         return Result.ok();
     }
