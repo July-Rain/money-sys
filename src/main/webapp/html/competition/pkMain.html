@@ -3,21 +3,47 @@
 <head>
     <title>在线PK大页面</title>
     <#include "/header.html">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/pkMain.css">
 </head>
 <body>
+<div id="app" v-cloak>
+    <div class="container">
+        <button class="return_back">
+            <img src="${rc.contextPath}/statics/img/competeCenter/btn_return.png" alt="">
+        </button>
+        <div class="integral">
+            <p>积分 <span>{{coinNum}}</span></p>
+        </div>
+        <button class="rule_info">
+            <img src="${rc.contextPath}/statics/img/competeCenter/btn_gonglue.png" alt="">
+        </button>
 
-<div style="height: 100px;width: 100px">
-    <button id="a" onclick="tiao('1')">单人随机</button>
-</div>
-<div>
-    <button id="b" onclick="tiao('2')">单人邀请码建房</button>
-    <button id="c" onclick="tiao('3')">单人邀请码进房间</button>
-</div>
-<div>
-    <button id="d" onclick="tiaole('2','add')">多人组队（建房）（2v2）</button>
-    <button id="e" onclick="tiaole('2','join')">多人组队（进房）（2v2）</button>
-    <button id="f" onclick="tiaole('5','add')">多人组队（建房）（5v5）</button>
-    <button id="g" onclick="tiaole('5','join2')">多人组队（进房）（5v5）</button>
+        <ul class="typeLayout">
+            <li class="bounceInLeft">
+                <img src="${rc.contextPath}/statics/img/competeCenter/figure_team.png" alt="">
+                <img src="${rc.contextPath}/statics/img/competeCenter/shi_team.png" alt="">
+            </li>
+            <li class="bounceInDown" @click="toUrl('pkGame')">
+                <img src="${rc.contextPath}/statics/img/competeCenter/figure_suiji.png" alt="">
+                <img src="${rc.contextPath}/statics/img/competeCenter/shi_suiji.png" alt="">
+            </li>
+            <li class="bounceInRight">
+                <img src="${rc.contextPath}/statics/img/competeCenter/figure_zhanqu.png" alt="">
+                <img src="${rc.contextPath}/statics/img/competeCenter/shi_zhanqu.png" alt="">
+            </li>
+        </ul>
+
+    </div>
+    <div>
+        <button onclick="tiao('2')">单人邀请码建房</button>
+        <button onclick="tiao('3')">单人邀请码进房间</button>
+    </div>
+    <div>
+        <button onclick="tiaole('2','add')">多人组队（建房）（2v2）</button>
+        <button onclick="tiaole('2','join')">多人组队（进房）（2v2）</button>
+        <button onclick="tiaole('5','add')">多人组队（建房）（5v5）</button>
+        <button onclick="tiaole('5','join2')">多人组队（进房）（5v5）</button>
+    </div>
 </div>
 
 
@@ -53,10 +79,6 @@
 
 function tiao(a)
 {
-    if(a=="1")
-    {
-        parent.location.href =baseURL+"modules/competition/pkGame.html";
-    }
     if(a=="2")
     {
         parent.location.href =baseURL+"modules/competition/alonePkGameByCode.html?type=add&code=0";
@@ -93,8 +115,8 @@ function tiaole(num,type)
 
 function join()
 {
-             var code=$("#yqm").val();
-            parent.location.href =baseURL+"modules/competition/alonePkGameByCode.html?type=join&code="+code;
+     var code=$("#yqm").val();
+    parent.location.href =baseURL+"modules/competition/alonePkGameByCode.html?type=join&code="+code;
 }
 function join2()
 {
@@ -107,5 +129,5 @@ function join3()
     parent.location.href =baseURL+"modules/competition/teamGame.html?peopleNum=5&type=join&code="+code;
 }
 </script>
-<!--<script src="${rc.contextPath}/statics/js/index2.js"></script>-->
+<script src="${rc.contextPath}/js/competition/pkMain.js"></script>
 </html>
