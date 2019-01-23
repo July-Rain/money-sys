@@ -97,14 +97,15 @@
                             </el-table>
 
 
+
                             <el-pagination
                                     @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
+                                    @current-change="handleCurChange"
+                                    :current-page="formInline.page"
                                     :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
+                                    :page-size="formInline.limit"
                                     layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
+                                    :total="formInline.count">
                             </el-pagination>
                         </div>
                     </el-tab-pane>
@@ -224,5 +225,5 @@
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/manageCen/dailyQuestion.js"></script>
+<script src="${rc.contextPath}/js/manageCen/dailyQuestion.js?_${.now?long}"></script>
 </html>
