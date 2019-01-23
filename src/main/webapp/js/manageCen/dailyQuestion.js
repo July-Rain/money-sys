@@ -10,13 +10,9 @@ var vm = new Vue({
         //试题难度
         itemjibie:[],
         navData: [],//导航
-        formInline: { // 搜索表单
-            value: '',
-            name: '',
-            status: "",
-            pageNo: 1,
-            pageSize: 1,
-            limit : 10,
+        formInline: {
+            limit: 10,
+            page: 1,
             count: 0
         },
         tableData: [],//表格数据
@@ -98,13 +94,13 @@ var vm = new Vue({
         onSubmit: function () {
             this.reload();
         },
-        handleSizeChange: function (val) {
-            this.formInline.pageSize = val;
-            this.reload();
+        handleSizeChange: function (event) {
+            vm.formInline.limit = event;
+            vm.refresh();
         },
-        handleCurrentChange: function (val) {
-            this.formInline.currPage = val;
-            this.reload();
+        handleCurChange: function (event) {
+            vm.formInline.page = event;
+            vm.refresh();
         },
 
         // 保存和修改
@@ -232,14 +228,12 @@ var vm = new Vue({
             $.ajax({
                 type: "GET",
                 url: baseURL + "dailyQuestion/list",
-                dataType: "json",
-
+                contentType: "application/json",
+                data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
-                        vm.formInline.currPage = result.page.pageNo;
-                        vm.formInline.pageSize = result.page.pageSize;
-                        vm.formInline.totalCount = parseInt(result.page.count)+1;
+                        vm.formInline.count = result.page.count;
                     } else {
                         alert(result.msg);
                     }

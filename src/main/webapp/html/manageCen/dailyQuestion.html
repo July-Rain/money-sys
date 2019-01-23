@@ -97,14 +97,15 @@
                             </el-table>
 
 
+
                             <el-pagination
                                     @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
+                                    @current-change="handleCurChange"
+                                    :current-page="formInline.page"
                                     :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
+                                    :page-size="formInline.limit"
                                     layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
+                                    :total="formInline.count">
                             </el-pagination>
                         </div>
                     </el-tab-pane>
@@ -191,13 +192,13 @@
                         </el-form-item>
                     </el-col>
                     <el-col>
-                        <el-form-item label="显示答案" style="width: auto">
+                        <el-form-item label="显示答案提示" style="width: auto">
                             <el-select v-model="dailyConfig.isShowAnswer"
                                        collapse-tags
                                        style="width: auto"
-                                       placeholder="请选择是否显示答案" size="mini">
+                                       placeholder="请选择是否显示答案提示" size="mini">
                                 <el-option label="不显示" value="0"></el-option>
-                                <el-option label="答题完显示" value="1"></el-option>
+                                <el-option label="显示" value="1"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -224,5 +225,5 @@
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/manageCen/dailyQuestion.js"></script>
+<script src="${rc.contextPath}/js/manageCen/dailyQuestion.js?_${.now?long}"></script>
 </html>

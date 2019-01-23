@@ -167,7 +167,7 @@ var vm = new Vue({
             chuangguan:"",
             onlPkSum:"",
             leitaiCount:"",
-
+            everyDay:"",
 
             rules: {//表单验证规则
                 name: [
@@ -330,10 +330,31 @@ var vm = new Vue({
                 }
             });
         });
+        //竞赛中心
         this.$nextTick(function () {
             this.getChuangguan();
             this.onlPk();
             this.leitai();
+        });
+
+        //每日一题
+        this.$nextTick(function () {
+            $.ajax({
+                type: "GET",
+                url: baseURL + "userQuestRecord/everyDayByUser",
+                Type: "json",
+                success: function (result) {
+                    if(result.have=='no')
+                    {
+                        vm.everyDay="未完成"
+                    }
+                    else if(result.have=='yes')
+                    {
+                        vm.everyDay="已完成"
+                    }
+
+                }
+            });
         });
     },
     methods: {
@@ -808,9 +829,9 @@ var vm = new Vue({
                 }
             });
         },
-        everyDay:function()
-        {
+        // everyDay:function()
+        // {
             // parent.location.href =baseURL+"modules/practiceCen/Daily.html";
-        }
+        // }
     }
 });
