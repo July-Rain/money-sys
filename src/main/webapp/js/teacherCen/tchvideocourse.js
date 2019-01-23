@@ -65,7 +65,6 @@ var vm = new Vue({
                 url: baseURL + "stumedia/list",
                 contentType: "application/json",
                 success: function(result){
-                    debugger
                     if(result.code === 0){
                         vm.videoData = result.page.list;
                         for(var i=0;i<vm.videoData.length;i++){

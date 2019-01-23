@@ -106,7 +106,6 @@ function getBreadcrumb(menuId) {
         dataType: "json",
         async: false,
         success: function (result) {
-            debugger
             breadArr = result.parentList;
         }
     });

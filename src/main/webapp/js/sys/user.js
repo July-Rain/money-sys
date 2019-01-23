@@ -111,7 +111,6 @@ var vm = new Vue({
             vm.dialogtch=true;
             vm.teacher=row;
             vm.handleRoles();
-            //debugger;
             if(vm.teacher.roles){
                 vm.tmroles=vm.teacher.roles.split(",");
             }else{
@@ -303,7 +302,6 @@ var vm = new Vue({
             });
             vm.teacher.roles=rs;
             var url=baseURL + "sys/add";
-            debugger
             console.log(vm.teacher.id);
             if (vm.teacher.id != null && vm.teacher.id != '') {
                 url=baseURL+"sys/updata";
