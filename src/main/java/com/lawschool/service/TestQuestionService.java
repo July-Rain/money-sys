@@ -91,4 +91,6 @@ public interface TestQuestionService extends AbstractService<TestQuestions> {
      * @return
      */
     Map<String, String> countByThemeId();
+
+    boolean updateAnswerId(String id, String answerId);
 }
