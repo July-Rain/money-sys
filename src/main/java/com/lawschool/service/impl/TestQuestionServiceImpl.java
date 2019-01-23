@@ -2,7 +2,6 @@ package com.lawschool.service.impl;
 
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.TestQuestions;
-import com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity;
 import com.lawschool.dao.TestQuestionsDao;
 import com.lawschool.form.AnswerForm;
 import com.lawschool.form.CommonForm;
@@ -26,7 +25,7 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
     private AnswerService answerService;
 
     @Autowired
-    TestQuestionsDao testQuestionsDao;
+    private TestQuestionsDao testQuestionsDao;
 
     /**
      * 启用禁用
@@ -188,5 +187,16 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
         }
 
         return result;
+    }
+
+    /**
+     * 更新答案信息
+     * @param id
+     * @param answerId
+     * @return
+     */
+    public boolean updateAnswerId(String id, String answerId){
+
+        return dao.updateAnswerId(id, answerId);
     }
 }
