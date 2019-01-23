@@ -185,7 +185,6 @@ var vm = new Vue({
         },
         // 表单重置
         resetForm: function (formName) {
-            debugger
             this.$refs[formName].resetFields();
         },
         addStuMedia: function () {
@@ -225,7 +224,6 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if(result.code === 0){
-                        debugger
                         vm.stuMedia = result.data;
                         vm.deptCheckData=result.data.deptArr;
                         editor.txt.html(vm.stuMedia.comContent);
@@ -287,7 +285,6 @@ var vm = new Vue({
                 data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
-                        debugger
                         vm.tableData = result.page.list;
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
@@ -300,7 +297,6 @@ var vm = new Vue({
         },
         // el-tree节点点击事件
         handleNodeClick: function (data) {
-            debugger
             vm.stuMedia.stuLawid=data.id;
             vm.stuMedia.stuKnowledge=data.classifyName;
             vm.formInline.stuLawid=data.id;

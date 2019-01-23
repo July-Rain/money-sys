@@ -102,7 +102,7 @@ function getBreadcrumb(menuId) {
     var breadArr = [];
     $.ajax({
         type: "POST",
-        url: baseURL + "menu/getParent?id=" + menuId,
+        url: baseURL + "sysmenu/getParent?id=" + menuId,
         dataType: "json",
         async: false,
         success: function (result) {
