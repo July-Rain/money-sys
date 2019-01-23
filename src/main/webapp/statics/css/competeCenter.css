@@ -22,15 +22,26 @@
     width: 365px;
     height: 150px;
     text-align: center;
+    animation-delay: 1s;
+    -webkit-animation-delay: 1s;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+    opacity: 0;
 }
 .innner_content .part:first-child{
     background: url("../img/competeCenter/pai_chuangguan.png") no-repeat;
+    animation-duration: 0.2s;
+    -webkit-animation-duration: 0.2s;
 }
 .innner_content .part:nth-of-type(2){
     background: url("../img/competeCenter/pai_biwu.png") no-repeat;
+    animation-duration: 0.8s;
+    -webkit-animation-duration: 0.8s;
 }
 .innner_content .part:last-child{
     background: url("../img/competeCenter/pai_leitai.png") no-repeat;
+    animation-duration: 1.2s;
+    -webkit-animation-duration: 1.2s;
 }
 .innner_content .part:hover{
     cursor: pointer;
@@ -152,5 +163,14 @@
 .firstList li .score{
     float: right;
     color: #e4e5ff;
+}
+.firstList > li{
+    animation-duration: 0.4s;
+    -webkit-animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-delay: 0.1s;
+    -webkit-animation-delay: 0.1s;
+    opacity: 0;
 }
 
