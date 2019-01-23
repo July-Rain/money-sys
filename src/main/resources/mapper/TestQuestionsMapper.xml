@@ -78,7 +78,8 @@
              create_user,
              create_time,
              opt_user,
-             opt_time
+             opt_time,
+             video
         ) VALUES (
             #{id},
             #{typeId},
@@ -102,7 +103,8 @@
             #{createUser},
             #{createTime},
             #{optUser},
-            #{optTime}
+            #{optTime},
+            #{video}
         )
     </insert>
 
@@ -587,4 +589,12 @@
         AND special_Knowledge_Id IS NOT NULL
         GROUP BY special_Knowledge_Id
     </select>
+
+    <update id="updateAnswerId">
+        UPDATE LAW_TESTQUESTIONS
+        SET answer_id = #{answerId}
+        <where>
+            id = #{id}
+        </where>
+    </update>
 </mapper>
