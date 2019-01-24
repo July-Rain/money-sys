@@ -147,7 +147,7 @@
                                 </template>
                                 <el-menu-item index="1" v-for="child in item.list">
                                     <a href="javascript:;" @click="toChild(child)">
-                                        <i class="el-icon-tickets"></i>
+                                        <i class="iconfont" :class="child.icon?child.icon:'icon-085shucezhongxin'"></i>
                                         <span>{{child.name}}</span>
                                     </a>
                                 </el-menu-item>

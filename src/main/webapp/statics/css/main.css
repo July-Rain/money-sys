@@ -88,7 +88,7 @@
     box-shadow: 3px 3px 5px #888888;
 }
 .small-box.bg-blue{
-    background: #43abeb;
+    background: #e06971;
 }
 .small-box.bg-blue .inner h3{
     padding: 31px 0 0 141px;
@@ -99,7 +99,7 @@
     padding-left: 152px;
 }
 .small-box.bg-green{
-    background: #e06971;
+    background: #43abeb;
 }
 .small-box.bg-green .inner h3{
     padding: 19px 0 0 138px;
@@ -137,17 +137,38 @@
     right: 18px;
     color: #47b845;
 }
+.small-box.bg-red .icon i{
+    font-size: 105px;
+}
 .small-box .icon{
     position: absolute;
-    top: 0;
-    left: 10px;
+    top: 22px;
+    left: 36px;
     z-index: 0;
-    font-size: 100px;
-
-
-
+    font-size: 68px;
 }
 .small-box.bg-blue .icon i{
+    background: -webkit-linear-gradient(90deg,
+    #ffffff 0%,
+    #fbd1d4 65%,
+    #f7a3a8 100%); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(90deg,
+    #ffffff 0%,
+    #fbd1d4 65%,
+    #f7a3a8 100%); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(90deg,
+    #ffffff 0%,
+    #fbd1d4 65%,
+    #f7a3a8 100%); /* Firefox 3.6 - 15 */
+    background: linear-gradient(90deg,
+    #ffffff 0%,
+    #fbd1d4 65%,
+    #f7a3a8 100%); /* 标准的语法 */
+    -webkit-background-clip: text;
+    color: transparent;
+
+}
+.small-box.bg-green .icon i{
     background: -webkit-linear-gradient(-90deg,
     #9fd6f7 0%,
     #e0f2fc 50%,
@@ -172,26 +193,6 @@
     #e8f5fd 58%,
     #f4fafe 68%,
     #ffffff 100%); /* 标准的语法 */
-    -webkit-background-clip: text;
-    color: transparent;
-}
-.small-box.bg-green .icon i{
-    background: -webkit-linear-gradient(90deg,
-    #ffffff 0%,
-    #fbd1d4 65%,
-    #f7a3a8 100%); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(90deg,
-    #ffffff 0%,
-    #fbd1d4 65%,
-    #f7a3a8 100%); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(90deg,
-    #ffffff 0%,
-    #fbd1d4 65%,
-    #f7a3a8 100%); /* Firefox 3.6 - 15 */
-    background: linear-gradient(90deg,
-    #ffffff 0%,
-    #fbd1d4 65%,
-    #f7a3a8 100%); /* 标准的语法 */
     -webkit-background-clip: text;
     color: transparent;
 }
@@ -230,7 +231,7 @@
     right: 18px;
 }
 .small-box .icon i{
-    font-size: 100px;
+    font-size: 68px;
 }
 .small-box .inner{
     height: 100%;
@@ -268,12 +269,21 @@
     height: 32px;
     color: #ffffff;
     font-size: 16px;
-    padding: 1px 12px;
-    line-height: 28px;
+    padding: 0;
+    line-height: 32px;
+}
+.box-card .pl12{
+    padding-left: 12px;
 }
 .box-card .header .more{
     float: right;
     color: #1381e3;
+    padding-right: 14px;
+}
+.box-card .header .date{
+    float: right;
+    padding-right: 10px;
+    color: #446279;
 }
 .box-card .content{
     background: #ffffff;
@@ -308,6 +318,7 @@
     position: absolute;
     top: 5px;
     left: 52px;
+    font-weight: 600;
 }
 .content.exam .minContent{
     padding: 10px;
@@ -316,11 +327,12 @@
     height: 30px;
 }
 .content.exam .minContent table td:first-child{
-    color: #666666;
+    color: #333;
     min-width: 60px;
 }
 .content.exam .minContent table td:last-child{
-    color: #a9a9a9;
+    color: #666;
+    padding-left: 20px;
 }
 .content.exam .minContent p{
     height: 40px;
@@ -345,6 +357,23 @@
 }
 .content.target .target-div .title{
     margin-bottom: 8px;
+    padding: 0 7px;
+}
+.content.target .target-div .left{
+    float: left;
+    width: 10%;
+    color: #5ebc5c;
+    padding-top: 6px;
+}
+.content.target .target-div:last-child .left{
+    color: #feae23;
+}
+.content.target .target-div .left i{
+    font-size: 27px;
+}
+.content.target .target-div .right{
+    float: right;
+    width: 88%;
 }
 .content.target span{
     color: #4db49a;
@@ -421,6 +450,7 @@
     width: 80px!important;
     text-align: center!important;
     float: left!important;
+    border-radius: 2px;
 }
 .content5-2 .header .search{
     position: absolute;
@@ -639,4 +669,10 @@ thead.has-gutter th > .cell{
 }
 .el-popover--plain{
     padding: 8px;
+}
+.el-tabs--border-card>.el-tabs__header .el-tabs__item{
+    color: #1381e3;
+}
+el-tabs__item is-top.is-active{
+    border-radius: 2px;
 }
