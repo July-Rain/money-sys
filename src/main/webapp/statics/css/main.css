@@ -676,3 +676,6 @@ thead.has-gutter th > .cell{
 el-tabs__item is-top.is-active{
     border-radius: 2px;
 }
+.el-breadcrumb{
+    padding-left: 10px!important;
+}
