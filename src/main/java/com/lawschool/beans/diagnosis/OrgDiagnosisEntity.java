@@ -34,6 +34,8 @@ public class OrgDiagnosisEntity implements Serializable {
     private int examScore3Count;//70-80
     private int examScore4Count;//80-90
     private int examScore5Count;//90以上
+    private String userId;
+    private String userName;
 
 
     public String getOrgId() {
@@ -210,5 +212,21 @@ public class OrgDiagnosisEntity implements Serializable {
 
     public void setExamScore5Count(int examScore5Count) {
         this.examScore5Count = examScore5Count;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

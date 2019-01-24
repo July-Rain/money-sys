@@ -67,7 +67,7 @@
         FROM
         LAW_ORG o
         LEFT JOIN (SELECT count(1)  as VALUE,UE.org_id as orgId ,'普通考试' as name  from LAW_USER_EXAM ue LEFT JOIN  LAW_EXAM_CONFIG ec on ue.exam_config_id = EC.id where ec.exam_type='10025' GROUP BY UE.org_id)a
-        on o.ORG_ID = a.orgId WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000
+        on o.ORG_ID = a.orgId WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgId} Connect By  Prior o.ORG_ID = o.parent_id
         ) normalExam,
 
         -- 执法考试
@@ -80,7 +80,7 @@
         FROM
         LAW_ORG o
         LEFT JOIN (SELECT count(1)  as VALUE,UE.org_id as orgId ,'执法资格考试' as name  from LAW_USER_EXAM ue LEFT JOIN  LAW_EXAM_CONFIG ec on ue.exam_config_id = EC.id where ec.exam_type='10026' GROUP BY UE.org_id)a
-        on o.ORG_ID = a.orgId WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000
+        on o.ORG_ID = a.orgId WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgId} Connect By  Prior o.ORG_ID = o.parent_id
         ) enforceExam,
 
         --60分以下
@@ -93,7 +93,7 @@
         FROM
         LAW_ORG o
         LEFT JOIN (SELECT count(1)  as VALUE,UE.org_id as orgId ,'60分以下' as name  from LAW_USER_EXAM ue LEFT JOIN  LAW_EXAM_CONFIG ec on ue.exam_config_id = EC.id where <![CDATA[ UE.SCORE<60 ]]> GROUP BY UE.org_id)a
-        on o.ORG_ID = a.orgId WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000
+        on o.ORG_ID = a.orgId WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgId} Connect By  Prior o.ORG_ID = o.parent_id
         ) examScore1,
 
         -- 60-70分
@@ -106,7 +106,7 @@
         FROM
         LAW_ORG o
         LEFT JOIN (SELECT count(1)  as VALUE,UE.org_id as orgId ,'60-70分' as name  from LAW_USER_EXAM ue LEFT JOIN  LAW_EXAM_CONFIG ec on ue.exam_config_id = EC.id where <![CDATA[ UE.SCORE>=60 and UE.SCORE<70 ]]> GROUP BY UE.org_id)a
-        on o.ORG_ID = a.orgId WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000
+        on o.ORG_ID = a.orgId WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgId} Connect By  Prior o.ORG_ID = o.parent_id
         ) examScore2,
 
         -- 70分到80分
@@ -119,7 +119,7 @@
         FROM
         LAW_ORG o
         LEFT JOIN (SELECT count(1)  as VALUE,UE.org_id as orgId ,'70分到80分' as name  from LAW_USER_EXAM ue LEFT JOIN  LAW_EXAM_CONFIG ec on ue.exam_config_id = EC.id where <![CDATA[ UE.SCORE>=70 and UE.SCORE<80 ]]> GROUP BY UE.org_id)a
-        on o.ORG_ID = a.orgId WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000
+        on o.ORG_ID = a.orgId WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgId} Connect By  Prior o.ORG_ID = o.parent_id
         ) examScore3,
 
         -- 80-90
@@ -132,7 +132,7 @@
         FROM
         LAW_ORG o
         LEFT JOIN (SELECT count(1)  as VALUE,UE.org_id as orgId ,'80分到90分' as name  from LAW_USER_EXAM ue LEFT JOIN  LAW_EXAM_CONFIG ec on ue.exam_config_id = EC.id where <![CDATA[ UE.SCORE>=80 and UE.SCORE<90 ]]> GROUP BY UE.org_id)a
-        on o.ORG_ID = a.orgId WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000
+        on o.ORG_ID = a.orgId WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgId} Connect By  Prior o.ORG_ID = o.parent_id
         ) examScore4,
 
         -- 90-100
@@ -145,7 +145,7 @@
         FROM
         LAW_ORG o
         LEFT JOIN (SELECT count(1)  as VALUE,UE.org_id as orgId ,'90分以上' as name  from LAW_USER_EXAM ue LEFT JOIN  LAW_EXAM_CONFIG ec on ue.exam_config_id = EC.id where UE.SCORE>=90  GROUP BY UE.org_id)a
-        on o.ORG_ID = a.orgId WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000
+        on o.ORG_ID = a.orgId WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgId} Connect By  Prior o.ORG_ID = o.parent_id
         ) examScore5
 
 
@@ -156,4 +156,135 @@
         and normalExam.ORG_ID=examScore4.ORG_ID
         and normalExam.ORG_ID=examScore5.ORG_ID
     </select>
+
+    <select id="allExamStatByOrgId" resultType="com.lawschool.beans.diagnosis.OrgDiagnosisEntity" parameterType="map">
+        select nomalN.id as userId,nomalN.FULL_NAME as userName,nomalN.normalExamCount,
+        enforceN.enforceExamCount,examScore1.examScore1Count,examScore2.examScore2Count,
+        examScore3.examScore3Count,examScore4.examScore4Count,examScore5.examScore5Count
+        from
+
+        (SELECT
+        U . ID,
+        U .FULL_NAME,
+        ls.value as normalExamCount
+
+        FROM
+        LAW_USER U LEFT JOIN(
+        SELECT
+        COUNT (1) AS
+        VALUE
+        ,
+        '普通考试' AS NAME,UE.USER_ID
+        FROM
+        LAW_USER_EXAM ue
+        LEFT JOIN LAW_EXAM_CONFIG ec ON ue.exam_config_id = EC. ID
+        WHERE
+        ec.exam_type = '10025'
+        GROUP BY UE.USER_ID) ls on ls.user_id = u.id where u.ORG_ID=#{orgId}) nomalN,
+
+        (SELECT
+        U . ID,
+        U .FULL_NAME,
+        ls.value as enforceExamCount
+
+        FROM
+        LAW_USER U LEFT JOIN(
+        SELECT
+        COUNT (1) AS
+        VALUE
+        ,
+        '普通考试' AS NAME,UE.USER_ID
+        FROM
+        LAW_USER_EXAM ue
+        LEFT JOIN LAW_EXAM_CONFIG ec ON ue.exam_config_id = EC. ID
+        WHERE
+        ec.exam_type = '10026'
+        GROUP BY UE.USER_ID) ls on ls.user_id = u.id where u.ORG_ID=#{orgId}) enforceN,
+
+
+        (SELECT
+        U . ID,
+        U .FULL_NAME,
+        ls.value as examScore1Count
+
+        FROM
+        LAW_USER U LEFT JOIN(
+        SELECT
+        COUNT (1) AS value,
+        UE.USER_ID
+        FROM
+        LAW_USER_EXAM ue LEFT JOIN LAW_EXAM_CONFIG ec ON ue.exam_config_id = EC. ID
+        WHERE <![CDATA[ UE.SCORE < 60 ]]>
+        GROUP BY UE.USER_ID) ls on ls.user_id = u.id where u.ORG_ID=#{orgId}) examScore1,
+
+        (SELECT
+        U . ID,
+        U .FULL_NAME,
+        ls.value as examScore2Count
+
+        FROM
+        LAW_USER U LEFT JOIN(
+        SELECT
+        COUNT (1) AS value,
+        UE.USER_ID
+        FROM
+        LAW_USER_EXAM ue LEFT JOIN LAW_EXAM_CONFIG ec ON ue.exam_config_id = EC. ID
+        WHERE  <![CDATA[ UE.SCORE >= 60 and UE.SCORE < 70 ]]>
+        GROUP BY UE.USER_ID) ls on ls.user_id = u.id where u.ORG_ID=#{orgId}) examScore2,
+
+        (SELECT
+        U . ID,
+        U .FULL_NAME,
+        ls.value as examScore3Count
+
+        FROM
+        LAW_USER U LEFT JOIN(
+        SELECT
+        COUNT (1) AS value,
+        UE.USER_ID
+        FROM
+        LAW_USER_EXAM ue LEFT JOIN LAW_EXAM_CONFIG ec ON ue.exam_config_id = EC. ID
+        WHERE  <![CDATA[ UE.SCORE >= 70 and UE.SCORE < 80 ]]>
+        GROUP BY UE.USER_ID) ls on ls.user_id = u.id where u.ORG_ID=#{orgId}) examScore3,
+
+        (SELECT
+        U . ID,
+        U .FULL_NAME,
+        ls.value as examScore4Count
+
+        FROM
+        LAW_USER U LEFT JOIN(
+        SELECT
+        COUNT (1) AS value,
+        UE.USER_ID
+        FROM
+        LAW_USER_EXAM ue LEFT JOIN LAW_EXAM_CONFIG ec ON ue.exam_config_id = EC. ID
+        WHERE   <![CDATA[ UE.SCORE >= 80 and UE.SCORE < 90 ]]>
+        GROUP BY UE.USER_ID) ls on ls.user_id = u.id where u.ORG_ID=#{orgId}) examScore4,
+
+
+        (SELECT
+        U . ID,
+        U .FULL_NAME,
+        ls.value as examScore5Count
+
+        FROM
+        LAW_USER U LEFT JOIN(
+        SELECT
+        COUNT (1) AS value,
+        UE.USER_ID
+        FROM
+        LAW_USER_EXAM ue LEFT JOIN LAW_EXAM_CONFIG ec ON ue.exam_config_id = EC. ID
+        WHERE  <![CDATA[  UE.SCORE >= 90 ]]>
+        GROUP BY UE.USER_ID) ls on ls.user_id = u.id where u.ORG_ID=#{orgId}) examScore5
+
+        where nomalN.id= enforceN.id
+        and nomalN.id= examScore1.id
+        and nomalN.id= examScore2.id
+        and nomalN.id= examScore3.id
+        and nomalN.id= examScore4.id
+        and nomalN.id= examScore5.id
+
+    </select>
+
 </mapper>

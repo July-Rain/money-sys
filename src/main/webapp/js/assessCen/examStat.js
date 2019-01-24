@@ -10,6 +10,9 @@ var vm = new Vue({
             dateRange: { //学情看板日期区间
                 startTime: '',
                 endTime: '',
+                currPage: 1,
+                pageSize: 10,
+                totalCount:0
             },
             echartsTab: '',//学情看板分页
             seriesData:[],
@@ -24,7 +27,8 @@ var vm = new Vue({
             tabLoading:true,
             opacity0:true,
             deptTempData:[],//部门临时数据
-            activeName:"person"
+            activeName:"person",
+            tableData:[],//表格中的数据
 
         }
     },
@@ -32,10 +36,6 @@ var vm = new Vue({
 
         this.$nextTick(function () {
             this.getExamDia();
-            this.getExamDiaScore();
-            this.initPie1();
-            this.initPie2();
-            //this.loadTabTreeData();
         })
 
 
@@ -43,7 +43,6 @@ var vm = new Vue({
     methods: {
         onSubmit: function(){
             this.getStuDia();
-            this.getExamDiaScore();
         },
         // 表单立即创建
         // 表单重置
@@ -59,187 +58,32 @@ var vm = new Vue({
             })
         },
         //echarts
-        initPie1: function () {
-            // 基于准备好的dom，初始化echarts实例
-            var myChart = echarts.init(document.getElementById('pie1'));
-            // 指定图表的配置项和数据
-            var option = {
-                backgroundColor: '#fff',
-
-                title: {
-                    text: '',
-                    left: 'center',
-                    top: 20,
-                    textStyle: {
-                        color: '#ccc'
-                    }
-                },
-
-                tooltip : {
-                    trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
-                },
-
-                visualMap: {
-                    show: false,
-                    min: 80,
-                    max: 600,
-                    inRange: {
-                        colorLightness: [0, 1]
-                    }
-                },
-                series : [
-                    {
-                        name:'学习时长统计',
-                        type:'pie',
-                        radius : '55%',
-                        center: ['50%', '50%'],
-                        data:vm.seriesData.sort(function (a, b) { return a.value - b.value; }),
-                        roseType: 'radius',
-                        label: {
-                            normal: {
-                                textStyle: {
-                                    color: '#666'
-                                }
-                            }
-                        },
-                        labelLine: {
-                            normal: {
-                                lineStyle: {
-                                    color: '#666'
-                                },
-                                smooth: 0.2,
-                                length: 10,
-                                length2: 20
-                            }
-                        },
-                        itemStyle: {
-                            normal: {
-                                // 定制显示（按顺序）
-                                color: function(params) {
-                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
-                                    return colorList[params.dataIndex]
-                                }
-                            },
-                        },
-
-                        animationType: 'scale',
-                        animationEasing: 'elasticOut',
-                        animationDelay: function (idx) {
-                            return Math.random() * 200;
-                        }
-                    }
-                ]
-            };
-            // 使用刚指定的配置项和数据显示图表。
-            vm.echartsOption(myChart, option)
-        },
-        initPie2: function () {
-            // 基于准备好的dom，初始化echarts实例
-            var myChart = echarts.init(document.getElementById('pie2'));
-            // 指定图表的配置项和数据
-            var option = {
-                backgroundColor: '#fff',
-
-                title: {
-                    text: '',
-                    left: 'center',
-                    top: 20,
-                    textStyle: {
-                        color: '#ccc'
-                    }
-                },
-
-                tooltip : {
-                    trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
-                },
-
-                visualMap: {
-                    show: false,
-                    min: 80,
-                    max: 600,
-                    inRange: {
-                        colorLightness: [0, 1]
-                    }
-                },
-                series : [
-                    {
-                        name:'学习情况统计',
-                        type:'pie',
-                        radius : '55%',
-                        center: ['50%', '50%'],
-                        data:vm.seriesScoreData.sort(function (a, b) { return a.value - b.value; }),
-                        roseType: 'radius',
-                        label: {
-                            normal: {
-                                textStyle: {
-                                    color: '#666'
-                                }
-                            }
-                        },
-                        labelLine: {
-                            normal: {
-                                lineStyle: {
-                                    color: '#666'
-                                },
-                                smooth: 0.2,
-                                length: 10,
-                                length2: 20
-                            }
-                        },
-                        itemStyle: {
-                            normal: {
-                                // 定制显示（按顺序）
-                                color: function(params) {
-                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
-                                    return colorList[params.dataIndex]
-                                }
-                            },
-                        },
-
-                        animationType: 'scale',
-                        animationEasing: 'elasticOut',
-                        animationDelay: function (idx) {
-                            return Math.random() * 200;
-                        }
-                    }
-                ]
-            };
-            // 使用刚指定的配置项和数据显示图表。
-            vm.echartsOption(myChart, option)
-        },
         getExamDia: function () {
             $.ajax({
                 async:false,
                 type: "POST",
-                url: baseURL + "examstat/getDiaInfo",
+                url: baseURL + "examstat/getAllExamDiagnosis?isMp=true",
                 dataType: "json",
                 data: vm.dateRange,
                 success: function (result) {
                     if (result.code == 0) {
-                        vm.seriesData = result.data;
+                        vm.tableData = result.page.list;
+                        vm.dateRange.currPage = result.page.currPage;
+                        vm.dateRange.pageSize = result.page.pageSize;
+                        vm.dateRange.totalCount = parseInt(result.page.totalCount);
                     } else {
                         alert(result.msg);
                     }
                 }
             });
         },
-        getExamDiaScore: function () {
-            $.ajax({
-                async:false,
-                type: "POST",
-                url: baseURL + "examstat/DiaStat",
-                dataType: "json",
-                data: vm.dateRange,
-                success: function (result) {
-                    if (result.code == 0) {
-                        vm.seriesScoreData = result.data;
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
+        handleSizeChange: function (val) {
+            this.dateRange.pageSize = val;
+            this.getExamDia();
+        },
+        handleCurrentChange: function (val) {
+            this.dateRange.currPage = val;
+            this.getExamDia();
         },
         //初始话表格部门树
         loadTabTreeData :function (){
