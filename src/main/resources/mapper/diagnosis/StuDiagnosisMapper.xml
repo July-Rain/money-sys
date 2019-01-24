@@ -216,8 +216,8 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ID = #{orgid}
-            Connect By  Prior o.ID = o.parent_id) lawAll,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgid}
+            Connect By  Prior o.ORG_ID = o.parent_id) lawAll,
 
          -- 全部视频数据
         (SELECT
@@ -240,8 +240,8 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ID = #{orgid}
-            Connect By  Prior o.ID = o.parent_id) videoAll,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgid}
+            Connect By  Prior o.ORG_ID = o.parent_id) videoAll,
 
         --全部图文数据
         (SELECT
@@ -264,8 +264,8 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ID = #{orgid}
-            Connect By  Prior o.ID = o.parent_id) picAll,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgid}
+            Connect By  Prior o.ORG_ID = o.parent_id) picAll,
 
         -- 全部音频数据
         (SELECT
@@ -288,8 +288,8 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ID = #{orgid}
-            Connect By  Prior o.ID = o.parent_id) audioAll,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgid}
+            Connect By  Prior o.ORG_ID = o.parent_id) audioAll,
 
         -- 学习任务法律法规
         (SELECT
@@ -312,8 +312,8 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ID = #{orgid}
-            Connect By  Prior o.ID = o.parent_id) lawTask,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgid}
+            Connect By  Prior o.ORG_ID = o.parent_id) lawTask,
 
         -- 学习任务视频
         (SELECT
@@ -336,8 +336,8 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ID = #{orgid}
-            Connect By  Prior o.ID = o.parent_id) videoTask,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgid}
+            Connect By  Prior o.ORG_ID = o.parent_id) videoTask,
 
         -- 学习任务图文
         (SELECT
@@ -360,8 +360,8 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ID = #{orgid}
-            Connect By  Prior o.ID = o.parent_id) picTask,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgid}
+            Connect By  Prior o.ORG_ID = o.parent_id) picTask,
 
         -- 学习任务音频数据
         (SELECT
@@ -384,8 +384,8 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ID = #{orgid}
-            Connect By  Prior o.ID = o.parent_id) audioTask,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgid}
+            Connect By  Prior o.ORG_ID = o.parent_id) audioTask,
 
 
         -- 案例分析视频
@@ -409,8 +409,8 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ID = #{orgid}
-            Connect By  Prior o.ID = o.parent_id) videoCase,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgid}
+            Connect By  Prior o.ORG_ID = o.parent_id) videoCase,
 
 
         -- 案例分析图文
@@ -434,8 +434,8 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ID = #{orgid}
-            Connect By  Prior o.ID = o.parent_id) picCase,
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgid}
+            Connect By  Prior o.ORG_ID = o.parent_id) picCase,
 
 
         -- 案例分析音频数据
@@ -459,8 +459,8 @@
                 DEPT_ID
 
         ) a
-        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ID = #{orgid}
-            Connect By  Prior o.ID = o.parent_id) audioCase
+        on o.ORG_ID = a.DEPT_ID WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgid}
+            Connect By  Prior o.ORG_ID = o.parent_id) audioCase
 
 
          where lawAll.ORG_ID=videoAll.ORG_ID
