@@ -29,6 +29,14 @@ var vm = new Vue({
         },
         tabLoading:true,
         opacity0:true,
+        activeName:"person",
+        dateRange: { //学情看板日期区间
+            startTime: '',
+            endTime: '',
+            currPage: 1,
+            pageSize: 10,
+            totalCount:0
+        },
     },
     created: function () {
         this.$nextTick(function () {
@@ -195,6 +203,14 @@ var vm = new Vue({
                 }
             });
         },
+        handleTabClick:function (tab,event) {
+            if(tab.name=='org'){
+                this.obtainTableData();
+                console.log("加载数据");
+            }else{
+                this.redeptReload();
+            }
+        }
     },
     filters: {
         objTstring: function (value) {
