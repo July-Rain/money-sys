@@ -23,7 +23,7 @@
                                 </div>
                             </div>
                             <div class="icon">
-                                <i class="el-icon-tickets"></i>
+                                <i class="iconfont icon-ai-book"></i>
                             </div>
                         </div>
                     </el-col>
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                             <div class="icon">
-                                <i class="el-icon-check"></i>
+                                <i class="iconfont icon-renwu2"></i>
                             </div>
                         </div>
                     </el-col>
@@ -46,13 +46,13 @@
                     <el-col :span="12">
                         <div class="small-box bg-orange">
                             <div class="inner">
-                                <h3>我要投稿</h3>
+                                <h3>我要出题</h3>
                                 <div>
-                                    <p>---- ->投稿</p>
+                                    <p>---- ->出题</p>
                                 </div>
                             </div>
                             <div class="icon">
-                                <i class="el-icon-edit"></i>
+                                <i class="iconfont icon-bi"></i>
                             </div>
                         </div>
                     </el-col>
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                             <div class="icon">
-                                <i class="el-icon-news"></i>
+                                <i class="iconfont icon-zaixianxuexi"></i>
                             </div>
                         </div>
                     </el-col>
@@ -75,7 +75,7 @@
             </el-col>
             <el-col :span="6">
                 <div class="box-card">
-                    <div class="header">
+                    <div class="header pl12">
                         <span>我的考试</span>
                     </div>
                     <div class="content exam">
@@ -108,23 +108,33 @@
             </el-col>
             <el-col :span="6">
                 <div class="box-card">
-                    <div class="header">
+                    <div class="header pl12">
                         <span>学年目标</span>
                     </div>
                     <div class="content target">
-                        <div class="target-div">
-                            <div class="title">
-                                <span>学年积分</span>
-                                <span><span>{{yearPlan.integraled}}</span>/<span>{{yearPlan.integral}}</span></span>
+                        <div class="target-div clearfix">
+                            <div class="left">
+                                <i class="iconfont icon-jifen"></i>
                             </div>
-                            <el-progress :show-text="false" :stroke-width="12" :percentage="yearPlan.integraled/yearPlan.integral*100 || 0" color="rgb(77,180,154)"></el-progress>
+                            <div class="right">
+                                <div class="title">
+                                    <span>学年积分</span>
+                                    <span><span>{{yearPlan.integraled || 0}}</span><span>/{{yearPlan.integral}}</span></span>
+                                </div>
+                                <el-progress :show-text="false" :stroke-width="12" :percentage="yearPlan.integraled/yearPlan.integral*100 || 0" color="rgb(77,180,154)"></el-progress>
+                            </div>
                         </div>
-                        <div class="target-div">
-                            <div class="title">
-                                <span>学年学分</span>
-                                <span><span>{{yearPlan.credited}}</span>/<span>{{yearPlan.credit}}</span></span>
+                        <div class="target-div clearfix">
+                            <div class="left">
+                                <i class="iconfont icon-xuefen"></i>
                             </div>
-                            <el-progress :show-text="false" :stroke-width="12" :percentage="yearPlan.credited/yearPlan.credit || 0" color="#feae23"></el-progress>
+                            <div class="right">
+                                <div class="title">
+                                    <span>学年学分</span>
+                                    <span><span>{{yearPlan.credited || 0}}</span><span>/{{yearPlan.credit}}</span></span>
+                                </div>
+                                <el-progress :show-text="false" :stroke-width="12" :percentage="yearPlan.credited/yearPlan.credit*100 || 0" color="#feae23"></el-progress>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -165,7 +175,7 @@
             <el-col :span="12">
                 <div class="box-card">
                     <div class="header header_special">
-                        <span>新法速递</span>
+                        <span>法律新知</span>
                         <a href="javascript:;" class="more"> 更多>></a>
                     </div>
                     <div class="content fast">
@@ -186,7 +196,7 @@
                 <div class="box-card boardCard">
                     <div class="header header_special">
                         <span>学情看板</span>
-                        <div class="more">
+                        <div class="date">
                             <!--<el-form :model="dateRange" :rules="validateactInfo" ref="dateRange">-->
                             <!--<el-form-item prop="startDate">-->
                             <el-date-picker
