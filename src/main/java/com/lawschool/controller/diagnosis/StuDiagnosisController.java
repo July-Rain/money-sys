@@ -41,6 +41,7 @@ public class StuDiagnosisController extends AbstractController {
         //获取部门统计数据
         User user = getUser();
         params.put("userId",user.getId());
+        params.put("orgid",user.getOrgId());
         List<OrgDiagnosisEntity> orgDiaList = diagnosisService.orgDiaStat(params);
         return  Result.ok().put("data",orgDiaList);
     }
