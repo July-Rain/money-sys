@@ -206,6 +206,7 @@ USERID2NAME(CREATE_USER) AS "creatUserName"
             WHERE
             SPECIAL_KNOWLEDGE_ID = #{specialKnowledgeId}
             AND QUESTION_DIFFICULTY = #{questionDifficulty}
+            AND   QUESTION_TYPE!='10007'
             ORDER BY
             dbms_random. RANDOM
             ) l

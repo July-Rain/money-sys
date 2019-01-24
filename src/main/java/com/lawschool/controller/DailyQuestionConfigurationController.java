@@ -36,11 +36,8 @@ public class DailyQuestionConfigurationController extends AbstractController {
     @SysLog("展示每日一题配置")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public Result findPage(@RequestParam Map<String, Object> params){
-
-
         // 获取登录用户信息
         User user = getUser();
-
         // 初始化查询参数
         DailyQuestionConfiguration entity = new DailyQuestionConfiguration();
         entity.setCreateUser(user.getId());
@@ -49,7 +46,6 @@ public class DailyQuestionConfigurationController extends AbstractController {
                 new Page<DailyQuestionConfiguration>(params), entity
         );
 //        Page<DailyQuestionConfiguration> page = dailyQuestionConfigurationService.findPage(new Page<DailyQuestionConfiguration>(params),entity);
-
         return Result.ok().put("page",page);
     }
 
