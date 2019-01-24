@@ -7,82 +7,193 @@ var vm = new Vue({
         themeAnswerNum: [],
         themeRightNum: [],
         showNames: [],
-        showValues:[]
+        showValues:[],
+        themeAnswerNames:[],
+        themeAnswerData:[],
+        themeRightNames:[],
+        themeRightData:[]
     },
     methods: {
         initBar1: function () {
             var myChart = echarts.init(document.getElementById('bar1'));
             var option = {
                 color: ['#3398DB'],
-                tooltip: {
+                tooltip : {
                     trigger: 'axis',
-                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                        type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                     }
                 },
                 grid: {
-                    left: '6%',
-                    right: '7%',
-                    bottom: '5%',
-                    top: '10%',
+                    left: '8%',
+                    right: '8%',
+                    bottom: '3%',
                     containLabel: true
                 },
-                xAxis: [
+                xAxis : [
                     {
-                        type: 'category',
-                        data: vm.showNames,
+                        type : 'category',
+                        data : vm.showNames,
                         axisTick: {
                             alignWithLabel: true
                         },
-                        // 设置坐标轴字体颜色和宽度
-                        axisLine: {
-                            lineStyle: {
-                                color: ['#abafb2']
-                            }
-                        },
-                        axisLabel: {
-                            interval: 0,
-                            textStyle: {
-                                fontSize: 12 // 让字体变大
-                            }
+                        nameTextStyle:{
+                            color:'#333',
+                            fontSize: '14'
                         }
                     }
                 ],
-                yAxis: [
+                yAxis : [
                     {
-                        type: 'value',
-                        axisLabel: {
-                            formatter: '{value}'
-                        },
-                        interval: 25,
-                        min: 0,
-                        // 设置坐标轴字体颜色和宽度
-                        axisLine: {
-                            lineStyle: {
-                                width: 0,
-                                color: ['#abafb2']
-                            }
-                        }
+                        type : 'value'
                     }
                 ],
-                series: [
+                series : [
                     {
-                        type: 'bar',
-                        barWidth: 25,
+                        name:'直接访问',
+                        type:'bar',
+                        barWidth: '40%',
+                        data:vm.showValues,
                         itemStyle: {
                             normal: {
-                                // 定制显示（按顺序）
                                 color: function(params) {
-                                    var colorList = ["#36aae0","#feae24","#de6870","#1381e3","#81bdd8","#f97a1f","#5ebd5c"];
+                                    var colorList = ["#32c5e9","#9fe6b8","#ffdb5c","#ff9f7f","#81bdd8","#f97a1f","#5ebd5c"];
                                     return colorList[params.dataIndex]
                                 }
                             },
                         },
-                        data: vm.showValues
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        }
                     }
                 ]
-            }
+            };
             vm.echartsOption(myChart, option)
+        },
+        initBar2: function (){
+            var myChart = echarts.init(document.getElementById('bar2'));
+            var option2 = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                grid: {
+                    left: '8%',
+                    right: '8%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                legend: {
+                    orient: 'horizontal',
+                    x: 'center',
+                    y:'bottom',
+                    width: '100%',
+                    data:vm.themeAnswerNames
+                },
+                series: [
+                    {
+                        name:'访问来源',
+                        type:'pie',
+                        radius: ['50%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '30',
+                                    fontWeight: 'bold',
+                                    color: '#333'
+                                },
+                                formatter:"{c}题\n{b}"
+                            },
+
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data:vm.themeAnswerData,
+                        itemStyle: {
+                            normal: {
+                                color: function(params) {
+                                    var colorList = ["#37a2da","#32c5e9","#67e0e3","#9fe6b8","#ffdb5c","#ff9f7f","#37a2da","#32c5e9","#67e0e3","#9fe6b8","#ffdb5c","#ff9f7f"];
+                                    return colorList[params.dataIndex]
+                                }
+                            },
+                        }
+                    }
+                ]
+            };
+            vm.echartsOption(myChart, option2)
+        },
+        initBar3: function (){
+            var myChart = echarts.init(document.getElementById('bar3'));
+            var option3 = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                grid: {
+                    left: '8%',
+                    right: '8%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                legend: {
+                    orient: 'horizontal',
+                    x: 'center',
+                    y:'bottom',
+                    width: '100%',
+                    data:vm.themeRightNames
+                },
+                series: [
+                    {
+                        name:'访问来源',
+                        type:'pie',
+                        radius: ['50%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '30',
+                                    fontWeight: 'bold',
+                                    color: '#333'
+                                },
+                                formatter:"{c}题\n{b}"
+                            },
+
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data:vm.themeRightData,
+                        itemStyle: {
+                            normal: {
+                                color: function(params) {
+                                    var colorList = ["#37a2da","#32c5e9","#67e0e3","#9fe6b8","#ffdb5c","#ff9f7f","#37a2da","#32c5e9","#67e0e3","#9fe6b8","#ffdb5c","#ff9f7f"];
+                                    return colorList[params.dataIndex]
+                                }
+                            },
+                        }
+                    }
+                ]
+            };
+            vm.echartsOption(myChart, option3)
         },
         echartsOption: function (myChart, option) {
             myChart.setOption(option)
@@ -107,12 +218,29 @@ var vm = new Vue({
                     vm.themeAnswerNum = result.map.themeAnswerNum;
                     vm.themeRightNum = result.map.themeRightNum;
 
-                    for(var key in result.map.overall){
+                    for(var key in vm.overall){
                         vm.showNames.push(key);
-                        vm.showValues.push(result.map.overall[key]);
+                        vm.showValues.push(vm.overall[key]);
+                    }
+
+                    for(var key in vm.themeAnswerNum){
+                        vm.themeAnswerNames.push(key);
+                        vm.themeAnswerData.push({
+                            value: vm.themeAnswerNum[key],
+                            name: key
+                        })
+                    }
+                    for(var key in vm.themeRightNum){
+                        vm.themeRightNames.push(key);
+                        vm.themeRightData.push({
+                            value: vm.themeRightNum[key],
+                            name: key
+                        })
                     }
 
                     vm.initBar1();
+                    vm.initBar2();
+                    vm.initBar3();
 
                 } else {
                     alert(result.msg);
