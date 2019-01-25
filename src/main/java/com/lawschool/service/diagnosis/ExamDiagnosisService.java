@@ -2,6 +2,7 @@ package com.lawschool.service.diagnosis;
 
 import com.lawschool.beans.diagnosis.DiagnosisEntity;
 import com.lawschool.beans.diagnosis.OrgDiagnosisEntity;
+import com.lawschool.util.PageUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -44,4 +45,14 @@ public interface ExamDiagnosisService {
      **/
 
     List<OrgDiagnosisEntity> orgDiaStat(Map<String,String> param);
+
+    /**
+     * @Author MengyuWu
+     * @Description 部门下的人员统计数据
+     * @Date 16:39 2019-1-24
+     * @Param [param]
+     * @return com.lawschool.util.PageUtils
+     **/
+    
+    PageUtils allExamStatByOrgId(Map<String,String> param);
 }
