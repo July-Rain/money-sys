@@ -75,129 +75,128 @@
 <body>
 <div id="app" v-cloak>
     <div class="container">
-        <el-row :gutter="24">
-            <el-col :span="24">
-                <el-tabs type="border-card">
-                    <el-tab-pane label="检索">
-                        <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>系统管理</el-breadcrumb-item>
+            <el-breadcrumb-item>系统日志</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="info_card">
+            <div class="card_title"></div>
+            <div class="card_contain">
+                <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                            <el-form-item prop="username" label="用户名">
-                                <el-input v-model="formInline.username" placeholder="用户名" size="mini" clearable></el-input>
-                            </el-form-item>
-                            <el-form-item prop="operation" label="用户操作">
-                                <el-input v-model="formInline.operation" placeholder="用户操作" size="mini" clearable></el-input>
-                            </el-form-item>
-                            <el-form-item label="开始日期" prop="startTime">
-                                <el-date-picker
-                                        v-model="formInline.startTime"
-                                        type="datetime"
-                                        format="yyyy年MM月dd日 HH时mm分ss秒"
-                                        value-format="yyyy-MM-dd HH:mm:ss"
-                                        placeholder="开始时间"
-                                        size="mini"
-                                >
-                                </el-date-picker>
-                            </el-form-item>
-                            <el-form-item label="结束日期" prop="endTime">
-                                <el-date-picker
-                                        v-model="formInline.endTime"
-                                        type="datetime"
-                                        format="yyyy年MM月dd日 HH时mm分ss秒"
-                                        value-format="yyyy-MM-dd HH:mm:ss"
-                                        placeholder="结束时间"
-                                        size="mini"
-                                >
-                                </el-date-picker>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                                <el-button size="mini" @click="resetForm('formInline')">重置</el-button>
+                    <el-form-item prop="username" label="用户名">
+                        <el-input v-model="formInline.username" placeholder="用户名" size="mini" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item prop="operation" label="用户操作">
+                        <el-input v-model="formInline.operation" placeholder="用户操作" size="mini" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="开始日期" prop="startTime">
+                        <el-date-picker
+                                v-model="formInline.startTime"
+                                type="datetime"
+                                format="yyyy年MM月dd日 HH时mm分ss秒"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="开始时间"
+                                size="mini"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="结束日期" prop="endTime">
+                        <el-date-picker
+                                v-model="formInline.endTime"
+                                type="datetime"
+                                format="yyyy年MM月dd日 HH时mm分ss秒"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="结束时间"
+                                size="mini"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
+                        <el-button size="mini" @click="resetForm('formInline')">重置</el-button>
 
-                            </el-form-item>
-                        </el-form>
-                        <div>
-                            <el-table
-                                    :data="tableData"
-                                    border
-                                    style="width: 100%">
-                                <el-table-column
-                                        type="index"
-                                        width="50">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="nickName"
-                                        label="用户名"
-                                        width="180"
-                                        header-align="center"
-                                        align="center">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="operation"
-                                        label="用户操作"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
-                                        >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="method"
-                                        label="请求方法"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
-                                        >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="time"
-                                        label="执行时长"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
-                                        >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="ip"
-                                        label="ip"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
-                                        >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="time"
-                                        label="执行时长"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
-                                        >
-                                </el-table-column>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </div>
+        <div>
+            <el-table
+                    :data="tableData"
+                    border
+                    style="width: 100%">
+                <el-table-column
+                        type="index"
+                        width="50">
+                </el-table-column>
+                <el-table-column
+                        prop="nickName"
+                        label="用户名"
+                        width="180"
+                        header-align="center"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="operation"
+                        label="用户操作"
+                        width="280"
+                        header-align="center"
+                        align="center"
+                        >
+                </el-table-column>
+                <el-table-column
+                        prop="method"
+                        label="请求方法"
+                        width="280"
+                        header-align="center"
+                        align="center"
+                        >
+                </el-table-column>
+                <el-table-column
+                        prop="time"
+                        label="执行时长"
+                        width="280"
+                        header-align="center"
+                        align="center"
+                        >
+                </el-table-column>
+                <el-table-column
+                        prop="ip"
+                        label="ip"
+                        width="280"
+                        header-align="center"
+                        align="center"
+                        >
+                </el-table-column>
+                <el-table-column
+                        prop="time"
+                        label="执行时长"
+                        width="280"
+                        header-align="center"
+                        align="center"
+                        >
+                </el-table-column>
 
-                                <el-table-column
-                                        prop="createDate"
-                                        label="创建时间"
-                                        header-align="center"
-                                        align="center"
-                                        :show-overflow-tooltip="true"
-                                        >
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
-                            </el-pagination>
-                        </div>
-                    </el-tab-pane>
-                </el-tabs>
-            </el-col>
-        </el-row>
-
-
-
+                <el-table-column
+                        prop="createDate"
+                        label="创建时间"
+                        header-align="center"
+                        align="center"
+                        :show-overflow-tooltip="true"
+                        >
+                </el-table-column>
+            </el-table>
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="formInline.currPage"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="formInline.pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="formInline.totalCount">
+            </el-pagination>
+        </div>
 
     </div>
 </div>
