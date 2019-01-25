@@ -71,14 +71,14 @@ var vm = new Vue({
 
             if(getUrlParam("uid")==null)
             {
-                console.info("!!!!!!!");
+
                 vm.userid=jsgetUser().id;//获得人id
                 console.info( vm.userid);
 
             }
             else
             {
-                console.info("@@@@@@@");
+
                 vm.userid=getUrlParam("uid");//获得人id
                 console.info(vm.userid);
             }
