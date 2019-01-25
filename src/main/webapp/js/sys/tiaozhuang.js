@@ -13,5 +13,8 @@ var vm = new Vue({
     created: function () {
     },
     methods: {
+        toHome:function () {
+            parent.location.reload()
+        }
     }
 });
