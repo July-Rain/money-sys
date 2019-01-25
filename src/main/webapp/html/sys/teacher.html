@@ -9,24 +9,12 @@
 </style>
 <body>
 <div id="app" v-cloak>
-    <div class="header">
-        <div class="header-left">
-            <img src="${rc.contextPath}/statics/img/logo.png">
-            <a href="javascript:;">江苏省公安厅法律学校</a>
-            <input style="display: none" id="menuId" value="${menuId}">
-        </div>
-        <div class="header-right">
-            <ul>
-                <li v-for="item in navData">
-                    <a>
-                        <i :class="item.icon"></i>
-                        <p><a href="javascript:;">{{item.name}}</a></p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
     <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>管理中心</el-breadcrumb-item>
+            <el-breadcrumb-item>教官管理</el-breadcrumb-item>
+        </el-breadcrumb>
         <el-row :gutter="24">
             <el-col :span="4">
                 <!--对于同一级的节点，每次只能展开一个-->
@@ -38,8 +26,9 @@
                 </el-tree>
             </el-col>
             <el-col :span="20">
-                <el-tabs type="border-card">
-                    <el-tab-pane label="检索">
+                <div class="info_card">
+                    <div class="card_title"></div>
+                    <div class="card_contain">
                         <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
                             <el-form-item prop="userName">
                                 <el-input v-model="formInline.userName" placeholder="姓名" size="mini"></el-input>
@@ -52,75 +41,75 @@
                                 <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
                             </el-form-item>
                         </el-form>
-                        <el-button @click="handleAdd">增加</el-button>
+                    </div>
+                </div>
+                <el-button @click="handleAdd">增加</el-button>
 
-                        <div>
-                            <el-table
-                                    :data="tableData"
-                                    border
-                                    style="width: 100%">
-                                <el-table-column
-                                        prop="userName"
-                                        label="姓名"
-                                        width="280"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="userPoliceId"
-                                        label="警号"
-                                        width="280"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="userCode"
-                                        label="身份证号"
-                                        width="180"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="orgName"
-                                        label="部门名称"
-                                >
-                                </el-table-column>
+                <div>
+                    <el-table
+                            :data="tableData"
+                            border
+                            style="width: 100%">
+                        <el-table-column
+                                prop="userName"
+                                label="姓名"
+                                width="280"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="userPoliceId"
+                                label="警号"
+                                width="280"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="userCode"
+                                label="身份证号"
+                                width="180"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="orgName"
+                                label="部门名称"
+                        >
+                        </el-table-column>
 
-                                </el-table-column>
+                        </el-table-column>
 
-                                <el-table-column label="操作"  prop="userStatus">
-                                    <template slot-scope="scope">
-                                        <el-button
-                                                size="mini"
-                                                @click="handleEdit(scope.$index, scope.row)">重置密码
-                                        </el-button>
+                        <el-table-column label="操作" prop="userStatus">
+                            <template slot-scope="scope">
+                                <el-button
+                                        size="mini"
+                                        @click="handleEdit(scope.$index, scope.row)">重置密码
+                                </el-button>
 
 
-                                        <el-button
-                                                size="mini" v-if="scope.row.userStatus == '2000'"
-                                                type="danger"
-                                                @click="handleDel(scope.$index, scope.row)">禁用
-                                        </el-button>
+                                <el-button
+                                        size="mini" v-if="scope.row.userStatus == '2000'"
+                                        type="danger"
+                                        @click="handleDel(scope.$index, scope.row)">禁用
+                                </el-button>
 
-                                        <el-button
-                                                size="mini" v-if="scope.row.userStatus == '800'"
-                                                type="primary"
-                                                @click="handleRecovery(scope.$index, scope.row)">恢复
-                                        </el-button>
+                                <el-button
+                                        size="mini" v-if="scope.row.userStatus == '800'"
+                                        type="primary"
+                                        @click="handleRecovery(scope.$index, scope.row)">恢复
+                                </el-button>
 
-                                        <el-button @click="handleUpt(scope.$index, scope.row)">修改</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
-                            </el-pagination>
-                        </div>
-                    </el-tab-pane>
-                </el-tabs>
+                                <el-button @click="handleUpt(scope.$index, scope.row)">修改</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="formInline.currPage"
+                            :page-sizes="[10, 20, 30, 40]"
+                            :page-size="formInline.pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="formInline.totalCount">
+                    </el-pagination>
+                </div>
             </el-col>
         </el-row>
 
@@ -144,8 +133,10 @@
                         </el-form-item>
 
                         <el-form-item label="照片" prop="photo">
-                            <el-upload name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false"
-                                       :on-success="uploadSuccess" :before-upload="beforeUpload" :on-progress="uploadProcess">
+                            <el-upload name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl"
+                                       :show-file-list="false"
+                                       :on-success="uploadSuccess" :before-upload="beforeUpload"
+                                       :on-progress="uploadProcess">
                                 <el-button v-if="teacher.photo ==''">点击上传</el-button>
                                 <img v-if="teacher.photo !=''"
                                      :src="'${rc.contextPath}/sys/download?accessoryId='+teacher.photo"
@@ -169,7 +160,7 @@
         </el-dialog>
     </div>
 
-    <el-dialog title="选择部门" :visible.sync="dialogDept"  width="500px" height="500px">
+    <el-dialog title="选择部门" :visible.sync="dialogDept" width="500px" height="500px">
         <!--对于同一级的节点，每次只能展开一个-->
         <el-tree
                 ref="treeForm"
