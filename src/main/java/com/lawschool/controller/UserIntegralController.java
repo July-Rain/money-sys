@@ -3,6 +3,7 @@ package com.lawschool.controller;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.CrdStatOrg;
 import com.lawschool.beans.ItrStatOrg;
+import com.lawschool.beans.User;
 import com.lawschool.beans.UserIntegral;
 import com.lawschool.service.UserIntegralService;
 import com.lawschool.util.PageUtils;
@@ -59,6 +60,8 @@ public class UserIntegralController extends AbstractController {
     **/
     @RequestMapping("crdStatUser")
     public Result crdStatUser(@RequestParam  Map<String,Object> param){
+        User user=getUser();
+        param.put("orgId",user.getOrgId());
         PageUtils page= userIntegralService.crdStatUser(param);
         return Result.ok().put("page", page);
     }
@@ -71,8 +74,10 @@ public class UserIntegralController extends AbstractController {
      * @return com.lawschool.util.Result
      **/
     @RequestMapping("crdStatOrg")
-    public Result crdStatOrg(){
-        List<CrdStatOrg> orgList = userIntegralService.crdStatOrg();
+    public Result crdStatOrg(@RequestParam  Map<String,Object> param){
+        User user=getUser();
+        param.put("orgId",user.getOrgId());
+        List<CrdStatOrg> orgList = userIntegralService.crdStatOrg(param);
 
         return Result.ok().put("orgList", orgList);
     }
@@ -88,6 +93,8 @@ public class UserIntegralController extends AbstractController {
      **/
     @RequestMapping("itrStatUser")
     public Result itrStatUser(@RequestParam  Map<String,Object> param){
+        User user=getUser();
+        param.put("orgId",user.getOrgId());
         PageUtils page= userIntegralService.itrStatUser(param);
         return Result.ok().put("page", page);
     }
@@ -101,8 +108,10 @@ public class UserIntegralController extends AbstractController {
      * @return com.lawschool.util.Result
      **/
     @RequestMapping("itrStatOrg")
-    public Result itrStatOrg(){
-        List<ItrStatOrg> orgList = userIntegralService.itrStatOrg();
+    public Result itrStatOrg(@RequestParam  Map<String,Object> param){
+        User user=getUser();
+        param.put("orgId",user.getOrgId());
+        List<ItrStatOrg> orgList = userIntegralService.itrStatOrg(param);
         return Result.ok().put("orgList", orgList);
     }
     /**
