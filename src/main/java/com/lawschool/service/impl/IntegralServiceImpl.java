@@ -9,6 +9,7 @@ import com.lawschool.beans.Integral;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserIntegral;
 import com.lawschool.beans.vo.CompetitionStatisticsByDeptVo;
+import com.lawschool.beans.vo.OrgCompetitionVO;
 import com.lawschool.dao.IntegralDao;
 import com.lawschool.dao.UserIntegralDao;
 import com.lawschool.service.IntegralService;
@@ -162,5 +163,10 @@ public class IntegralServiceImpl extends AbstractServiceImpl<IntegralDao, Integr
         page.setTotal(integralDao.userByDeptListCount(params));
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<OrgCompetitionVO> orgDiaStat(Map<String, String> param) {
+        return integralDao.orgDiaStat(param);
     }
 }

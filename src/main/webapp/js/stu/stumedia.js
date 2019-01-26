@@ -482,6 +482,9 @@ var vm = new Vue({
             if(vm.stuMedia.stuType=='1'){
                 loadEditor();
             }
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     },
     mounted() {

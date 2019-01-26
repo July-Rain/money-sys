@@ -9,106 +9,96 @@
 </style>
 <body>
 <div id="app" v-cloak>
-    <div class="header">
-        <div class="header-left">
-            <img src="${rc.contextPath}/statics/img/logo.png">
-            <a href="javascript:;">江苏省公安厅法律学校</a>
-        </div>
-    </div>
     <div class="container">
-        <el-row :gutter="24">
-            <el-col :span="24">
-                <el-tabs type="border-card">
-                    <el-tab-pane label="站内信息">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>系统管理</el-breadcrumb-item>
+            <el-breadcrumb-item>站内信设置</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div>
+            <div class="grid-btn">
+                <el-button icon="el-icon-circle-plus-outline" @click="addConfig">新增</el-button>
+            </div>
+            <el-table
+                    :data="tableData"
+                    border
+                    style="width: 100%">
+                <el-table-column
+                        prop="id"
+                        label="序号"
+                        width="150"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="title"
+                        label="消息标题"
+                        width="200"
+                >
+                </el-table-column>
 
-                        <div>
-                            <div class="grid-btn">
-                                <el-button icon="el-icon-circle-plus-outline" @click="addConfig">新增</el-button>
-                            </div>
-                            <el-table
-                                    :data="tableData"
-                                    border
-                                    style="width: 100%">
-                                <el-table-column
-                                        prop="id"
-                                        label="序号"
-                                        width="150"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="title"
-                                        label="消息标题"
-                                        width="200"
-                                >
-                                </el-table-column>
+                <el-table-column
+                        prop="content"
+                        label="消息内容"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="releaseDate"
+                        label="发送时间"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="recieveDate"
+                        label="接收时间"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="noticeType"
+                        label="消息类型"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="releaseState"
+                        label="状态"
+                        width="180"
+                        header-align="center"
+                        align="center"
+                        width="100">
+                    <template slot-scope="scope">
+                        <el-tag v-if="scope.row.releaseState === '0'" size="small" type="danger">未发布</el-tag>
+                        <el-tag v-else size="small">已发布</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="300">
+                    <template slot-scope="scope">
+                        <el-button
+                                size="mini"
+                                @click="send(scope.$index, scope.row)">发送
+                        </el-button>
+                        <el-button
+                                size="mini"
+                                @click="handleEdit(scope.$index, scope.row)">编辑
+                        </el-button>
+                        <el-button
+                                size="mini"
+                                @click="handleDel(scope.$index, scope.row)">删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
 
-                                <el-table-column
-                                        prop="content"
-                                        label="消息内容"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="releaseDate"
-                                        label="发送时间"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="recieveDate"
-                                        label="接收时间"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="noticeType"
-                                        label="消息类型"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="releaseState"
-                                        label="状态"
-                                        width="180"
-                                        header-align="center"
-                                        align="center"
-                                        width="100">
-                                    <template slot-scope="scope">
-                                        <el-tag v-if="scope.row.releaseState === '0'" size="small" type="danger">未发布</el-tag>
-                                        <el-tag v-else size="small">已发布</el-tag>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column label="操作" width="300">
-                                    <template slot-scope="scope">
-                                        <el-button
-                                                size="mini"
-                                                @click="send(scope.$index, scope.row)">发送
-                                        </el-button>
-                                        <el-button
-                                                size="mini"
-                                                @click="handleEdit(scope.$index, scope.row)">编辑
-                                        </el-button>
-                                        <el-button
-                                                size="mini"
-                                                @click="handleDel(scope.$index, scope.row)">删除
-                                        </el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
-                            </el-pagination>
-                        </div>
-                    </el-tab-pane>
-                </el-tabs>
-            </el-col>
-        </el-row>
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="formInline.currPage"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="formInline.pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="formInline.totalCount">
+            </el-pagination>
+        </div>
 
 
-       <el-dialog :title="title02" :visible.sync="dialogConfig" :before-close="closeDia">
+        <el-dialog :title="title02" :visible.sync="dialogConfig" :before-close="closeDia">
             <el-form :model="sysMsg" :rules="rules" ref="sysMsg" label-width="100px" class="demo-sysMsg"
                      size="mini">
                 <el-row>
@@ -134,7 +124,8 @@
                     <el-col span="11">
                         <el-form-item label="消息内容：" prop="content">
                             <template>
-                                <el-input v-model="sysMsg.content" @change="handleChange" :min="0" :max="10000" placeholder="请输入消息内容"></el-input>
+                                <el-input v-model="sysMsg.content" @change="handleChange" :min="0" :max="10000"
+                                          placeholder="请输入消息内容"></el-input>
                             </template>
                         </el-form-item>
                     </el-col>
@@ -156,12 +147,14 @@
                             </el-input>
                         </el-form-item>-->
                         <el-form-item label="接收部门" prop="deptName">
-                            <el-input v-model="sysMsg.recieveDept" @focus="chooseDept" placeholder="请选择接收部门" clearable></el-input>
+                            <el-input v-model="sysMsg.recieveDept" @focus="chooseDept" placeholder="请选择接收部门"
+                                      clearable></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="11">
                         <el-form-item label="接收人：" prop="recievePeople">
-                            <el-input v-model="sysMsg.recievePeople" @focus="chooseUser" placeholder="请输接收人" clearable></el-input>
+                            <el-input v-model="sysMsg.recievePeople" @focus="chooseUser" placeholder="请输接收人"
+                                      clearable></el-input>
                         </el-form-item>
                     </el-col>
 
@@ -176,7 +169,7 @@
         </el-dialog>
 
 
-        <el-dialog title="选择法律分类" :visible.sync="dialogDept" >
+        <el-dialog title="选择法律分类" :visible.sync="dialogDept">
             <!--对于同一级的节点，每次只能展开一个-->
             <el-tree
                     ref="deptTree"
@@ -191,7 +184,7 @@
             <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
         </el-dialog>
 
-        <el-dialog title="选择人员" :visible.sync="dialogUser" >
+        <el-dialog title="选择人员" :visible.sync="dialogUser">
             <!--对于同一级的节点，每次只能展开一个-->
             <el-row>
                 <el-col :span="4">
@@ -256,7 +249,7 @@
                             </div>
                         </el-tab-pane>
                     </el-tabs>
-                    <el-button type="primary" size="mini" @click="confimUser" >保存</el-button>
+                    <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
                     <el-button type="primary" size="mini" @click="cancelUser">取消</el-button>
                 </el-col>
             </el-row>

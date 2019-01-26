@@ -2,13 +2,18 @@ package com.lawschool.controller;
 
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.Integral;
+import com.lawschool.beans.User;
+import com.lawschool.beans.diagnosis.OrgDiagnosisEntity;
+import com.lawschool.beans.vo.OrgCompetitionVO;
 import com.lawschool.service.IntegralService;
 import com.lawschool.service.UserIntegralService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -74,8 +79,20 @@ public class IntegralController extends AbstractController {
     @RequestMapping("/userByDeptList")
     public Result userByDeptList(@RequestParam Map<String,Object> params){
 
-        String deptcode="320000000000";
+        User u = (User) SecurityUtils.getSubject().getPrincipal();
+        String deptcode=u.getOrgCode();
         PageUtils page = integralService.userByDeptList(params,deptcode);
         return Result.ok().put("page", page);
+    }
+
+
+    @RequestMapping("getOrgDiaStat")
+    public Result getOrgDiaStat(@RequestParam  Map<String,String> params){
+        //获取部门统计数据
+        User user = getUser();
+        params.put("userId",user.getId());
+        params.put("orgid",user.getOrgId());
+        List<OrgCompetitionVO> orgComList = integralService.orgDiaStat(params);
+        return  Result.ok().put("data",orgComList);
     }
 }

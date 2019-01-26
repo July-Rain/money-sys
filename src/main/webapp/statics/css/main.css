@@ -36,25 +36,28 @@
 .header-right ul li{
     /*display: inline-block;*/
     float: left;
-    padding: 23px 8px;
+    padding: 23px 7px 8px;
     /*border-right: 1px solid #fff;*/
     text-align: center;
     position: relative;
 }
-.header-right ul li:after{
-    position: absolute;
-    content: '|';
-    color: #ffffff;
-    background: #fff;
-    height: 30px;
-    display: inline-block;
-    right: 0;
-    top: 8px;
-    font-size: 1px;
+.header-right ul li:hover{
+    background-color: #056fcd;
 }
-.header-right ul li:last-child:after{
-    content: '';
-}
+/*.header-right ul li:after{*/
+    /*position: absolute;*/
+    /*content: '|';*/
+    /*color: #ffffff;*/
+    /*background: #fff;*/
+    /*height: 30px;*/
+    /*display: inline-block;*/
+    /*right: 0;*/
+    /*top: 8px;*/
+    /*font-size: 1px;*/
+/*}*/
+/*.header-right ul li:last-child:after{*/
+    /*content: '';*/
+/*}*/
 .header-right ul li i{
     font-size: 29px;
 }
@@ -675,4 +678,7 @@ thead.has-gutter th > .cell{
 }
 el-tabs__item is-top.is-active{
     border-radius: 2px;
+}
+.el-breadcrumb{
+    padding-left: 10px!important;
 }

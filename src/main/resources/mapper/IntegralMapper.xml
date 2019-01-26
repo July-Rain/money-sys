@@ -361,4 +361,182 @@
 
 
     </select>
+
+
+    <select id="orgDiaStat" resultType="com.lawschool.beans.vo.OrgCompetitionVO" parameterType="map">
+        SELECT
+            AAA.ORG_ID AS "orgId",
+            AAA.ORG_NAME AS "orgName",
+            AAA.org_level AS "orgLevel",
+            AAA.parent_id AS "parentId",
+            AAA.AllCount AS "AllCount",
+            BBB.ChuangGuanCount AS "ChuangGuanCount",
+            CCC.pkAllCount AS "pkAllCount",
+            DDD.pkwinCount AS "pkwinCount",
+            EEE.leitaiAllCount AS "leitaiAllCount",
+            FFF.leitaiwinCount AS "leitaiwinCount"
+        FROM
+
+            (
+                SELECT
+                    o.ORG_ID,
+                    o.ORG_NAME,
+                    o.parent_id,
+                    o.org_level,
+                    A.AllCount
+                FROM
+                    LAW_ORG o
+                LEFT JOIN (
+                    SELECT
+                        "SUM" (LAW_INTEGRAL."POINT") AS AllCount,
+                        LAW_USER.ORG_ID
+                    FROM
+                        LAW_INTEGRAL
+                    LEFT JOIN LAW_USER ON LAW_INTEGRAL.USER_ID = LAW_USER."ID"
+                    WHERE
+                        (
+                            LAW_INTEGRAL.src = 'Checkpoint'
+                            OR LAW_INTEGRAL.src = 'OnlinPk'
+                            OR LAW_INTEGRAL.src = 'teamOnline'
+                            OR LAW_INTEGRAL.src = 'leitai'
+                        )
+                    GROUP BY
+                        LAW_USER.ORG_ID
+                ) A ON o.ORG_ID = A .ORG_ID
+                WHERE
+                    o.ORG_TYPE IN (10, 70, - 1, 0)
+                AND o.org_status >= 2000 START WITH o.ORG_ID = #{orgid} CONNECT BY PRIOR o.ORG_ID = o.parent_id
+            ) AAA,
+            (
+                SELECT
+                    o.ORG_ID,
+                    o.ORG_NAME,
+                    o.parent_id,
+                    o.org_level,
+                    A.ChuangGuanCount
+                FROM
+                    LAW_ORG o
+                LEFT JOIN (
+                    SELECT
+                        "SUM" (LAW_INTEGRAL."POINT") AS ChuangGuanCount,
+                        LAW_USER.ORG_ID
+                    FROM
+                        LAW_INTEGRAL
+                    LEFT JOIN LAW_USER ON LAW_INTEGRAL.USER_ID = LAW_USER."ID"
+                    WHERE
+                            LAW_INTEGRAL.src = 'Checkpoint'
+                    GROUP BY
+                        LAW_USER.ORG_ID
+                ) A ON o.ORG_ID = A .ORG_ID
+                WHERE
+                    o.ORG_TYPE IN (10, 70, - 1, 0)
+                AND o.org_status >= 2000 START WITH o.ORG_ID = #{orgid} CONNECT BY PRIOR o.ORG_ID = o.parent_id
+            ) BBB,
+            (
+                SELECT
+                    o.ORG_ID,
+                    o.ORG_NAME,
+                    o.parent_id,
+                    o.org_level,
+                    A.pkAllCount
+                FROM
+                    LAW_ORG o
+                LEFT JOIN (
+                    SELECT
+                        count(LAW_BATTLE_RECORD.WHETHER_WIN) AS pkAllCount,
+                        LAW_USER.ORG_ID
+                    FROM
+                        LAW_BATTLE_RECORD
+                    LEFT JOIN LAW_USER ON LAW_BATTLE_RECORD.USER_ID = LAW_USER."ID"
+                    WHERE
+                            (LAW_BATTLE_RECORD."TYPE" = 'OnlinPk' OR  LAW_BATTLE_RECORD."TYPE" = 'OnlinPkByCode' OR LAW_BATTLE_RECORD."TYPE" = 'teamOnline' )
+                    GROUP BY
+                        LAW_USER.ORG_ID
+                ) A ON o.ORG_ID = A .ORG_ID
+                WHERE
+                    o.ORG_TYPE IN (10, 70, - 1, 0)
+                AND o.org_status >= 2000 START WITH o.ORG_ID = #{orgid} CONNECT BY PRIOR o.ORG_ID = o.parent_id
+            ) CCC,
+        (
+                SELECT
+                    o.ORG_ID,
+                    o.ORG_NAME,
+                    o.parent_id,
+                    o.org_level,
+                    A.pkwinCount
+                FROM
+                    LAW_ORG o
+                LEFT JOIN (
+                    SELECT
+                        "SUM" (LAW_BATTLE_RECORD.WHETHER_WIN) AS pkwinCount,
+                        LAW_USER.ORG_ID
+                    FROM
+                        LAW_BATTLE_RECORD
+                    LEFT JOIN LAW_USER ON LAW_BATTLE_RECORD.USER_ID = LAW_USER."ID"
+                    WHERE
+                            (LAW_BATTLE_RECORD."TYPE" = 'OnlinPk' OR  LAW_BATTLE_RECORD."TYPE" = 'OnlinPkByCode' OR LAW_BATTLE_RECORD."TYPE" = 'teamOnline' )
+                    GROUP BY
+                        LAW_USER.ORG_ID
+                ) A ON o.ORG_ID = A .ORG_ID
+                WHERE
+                    o.ORG_TYPE IN (10, 70, - 1, 0)
+                AND o.org_status >= 2000 START WITH o.ORG_ID = #{orgid} CONNECT BY PRIOR o.ORG_ID = o.parent_id
+            ) DDD,
+        (
+                SELECT
+                    o.ORG_ID,
+                    o.ORG_NAME,
+                    o.parent_id,
+                    o.org_level,
+                    A.leitaiAllCount
+                FROM
+                    LAW_ORG o
+                LEFT JOIN (
+                    SELECT
+                        "COUNT"(LAW_BATTLE_RECORD.WHETHER_WIN) AS leitaiAllCount,
+                        LAW_USER.ORG_ID
+                    FROM
+                        LAW_BATTLE_RECORD
+                    LEFT JOIN LAW_USER ON LAW_BATTLE_RECORD.USER_ID = LAW_USER."ID"
+                    WHERE
+                            (LAW_BATTLE_RECORD."TYPE" = 'leitai')
+                    GROUP BY
+                        LAW_USER.ORG_ID
+                ) A ON o.ORG_ID = A .ORG_ID
+                WHERE
+                    o.ORG_TYPE IN (10, 70, - 1, 0)
+                AND o.org_status >= 2000 START WITH o.ORG_ID = #{orgid} CONNECT BY PRIOR o.ORG_ID = o.parent_id
+            ) EEE,
+        (
+                SELECT
+                    o.ORG_ID,
+                    o.ORG_NAME,
+                    o.parent_id,
+                    o.org_level,
+                    A.leitaiwinCount
+                FROM
+                    LAW_ORG o
+                LEFT JOIN (
+                    SELECT
+                        sum(LAW_BATTLE_RECORD.WHETHER_WIN) AS leitaiwinCount,
+                        LAW_USER.ORG_ID
+                    FROM
+                        LAW_BATTLE_RECORD
+                    LEFT JOIN LAW_USER ON LAW_BATTLE_RECORD.USER_ID = LAW_USER."ID"
+                    WHERE
+                            (LAW_BATTLE_RECORD."TYPE" = 'leitai')
+                    GROUP BY
+                        LAW_USER.ORG_ID
+                ) A ON o.ORG_ID = A .ORG_ID
+                WHERE
+                    o.ORG_TYPE IN (10, 70, - 1, 0)
+                AND o.org_status >= 2000 START WITH o.ORG_ID = #{orgid} CONNECT BY PRIOR o.ORG_ID = o.parent_id
+            ) FFF
+        WHERE
+            AAA.ORG_ID = BBB.ORG_ID
+            AND AAA.ORG_ID = CCC.ORG_ID
+            AND AAA.ORG_ID = DDD.ORG_ID
+            AND AAA.ORG_ID = EEE.ORG_ID
+            AND AAA.ORG_ID = FFF.ORG_ID
+    </select>
 </mapper>

@@ -102,7 +102,22 @@ var vm = new Vue({
             vm.formInline.page = event;
             vm.refresh();
         },
-
+        refresh: function () {
+            $.ajax({
+                type: "GET",
+                url: baseURL + "dailyQuestion/list",
+                contentType: "application/json",
+                data: vm.formInline,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.tableData = result.page.list;
+                        vm.formInline.count = result.page.count;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
         // 保存和修改
         saveOrUpdate: function (formName) {
             console.info(vm.dailyConfig);
@@ -225,20 +240,7 @@ var vm = new Vue({
             vm.reload();
         },
         reload: function () {
-            $.ajax({
-                type: "GET",
-                url: baseURL + "dailyQuestion/list",
-                contentType: "application/json",
-                data: vm.formInline,
-                success: function (result) {
-                    if (result.code == 0) {
-                        vm.tableData = result.page.list;
-                        vm.formInline.count = result.page.count;
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
+            vm.refresh();
         },
 
 
@@ -246,6 +248,9 @@ var vm = new Vue({
 
             parent.location.href =baseURL+item.url+"?id="+item.id;
 
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     }
 });

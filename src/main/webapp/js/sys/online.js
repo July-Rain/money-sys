@@ -119,5 +119,8 @@ var vm = new Vue({
         beforeAvatarUpload: function () {
             if(!checkFile(file)) return false;
         },
+        toHome: function () {
+            parent.location.reload()
+        }
     }
 });
