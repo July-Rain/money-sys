@@ -45,7 +45,7 @@ public interface UserIntegralService {
       * @Param []
       * @return java.util.List<com.lawschool.beans.CrdStatOrg>
      **/
-     List<CrdStatOrg> crdStatOrg();
+     List<CrdStatOrg> crdStatOrg(Map<String,Object> param);
 
 
     /**
@@ -66,7 +66,7 @@ public interface UserIntegralService {
      * @Param []
      * @return java.util.List<com.lawschool.beans.ItrStatOrg>
      **/
-    List<ItrStatOrg> itrStatOrg();
+    List<ItrStatOrg> itrStatOrg(Map<String,Object> param);
 
      /**
       * @Author zjw

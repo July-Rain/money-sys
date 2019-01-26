@@ -10,9 +10,9 @@ public class UserIntegral extends DataEntity<UserIntegral> {
 
     private String userId;
 
-    private Integer integralPoint;//积分
+    private int integralPoint;//积分
 
-    private Integer creditPoint;//学分
+    private int creditPoint;//学分
 
     private String orgCode;//部门code
 
@@ -22,18 +22,20 @@ public class UserIntegral extends DataEntity<UserIntegral> {
 
     private String orgName;//部门名字
 
+    private String orgId;//部门id
+
 
     @TableField(exist = false)
-    private Integer allItrRank;//用户积分全排名
+    private int allItrRank;//用户积分全排名
 
     @TableField(exist = false)
-    private Integer orgItrRank;//用户积分部门全排名
+    private int orgItrRank;//用户积分部门全排名
 
     @TableField(exist = false)
-    private Integer allCdtRank;//用户学分全排名
+    private int allCdtRank;//用户学分全排名
 
     @TableField(exist = false)
-    private Integer orgCdtRank;//用户学分部门全排名
+    private int orgCdtRank;//用户学分部门全排名
 
 
 
@@ -66,51 +68,51 @@ public class UserIntegral extends DataEntity<UserIntegral> {
         this.orgCode = orgCode;
     }
 
-    public Integer getIntegralPoint() {
+    public int getIntegralPoint() {
         return integralPoint;
     }
 
-    public void setIntegralPoint(Integer integralPoint) {
+    public void setIntegralPoint(int integralPoint) {
         this.integralPoint = integralPoint;
     }
 
-    public Integer getCreditPoint() {
+    public int getCreditPoint() {
         return creditPoint;
     }
 
-    public void setCreditPoint(Integer creditPoint) {
+    public void setCreditPoint(int creditPoint) {
         this.creditPoint = creditPoint;
     }
 
-    public Integer getAllItrRank() {
+    public int getAllItrRank() {
         return allItrRank;
     }
 
-    public void setAllItrRank(Integer allItrRank) {
+    public void setAllItrRank(int allItrRank) {
         this.allItrRank = allItrRank;
     }
 
-    public Integer getOrgItrRank() {
+    public int getOrgItrRank() {
         return orgItrRank;
     }
 
-    public void setOrgItrRank(Integer orgItrRank) {
+    public void setOrgItrRank(int orgItrRank) {
         this.orgItrRank = orgItrRank;
     }
 
-    public Integer getAllCdtRank() {
+    public int getAllCdtRank() {
         return allCdtRank;
     }
 
-    public void setAllCdtRank(Integer allCdtRank) {
+    public void setAllCdtRank(int allCdtRank) {
         this.allCdtRank = allCdtRank;
     }
 
-    public Integer getOrgCdtRank() {
+    public int getOrgCdtRank() {
         return orgCdtRank;
     }
 
-    public void setOrgCdtRank(Integer orgCdtRank) {
+    public void setOrgCdtRank(int orgCdtRank) {
         this.orgCdtRank = orgCdtRank;
     }
 
@@ -136,5 +138,13 @@ public class UserIntegral extends DataEntity<UserIntegral> {
 
     public void setOrgName(String orgName) {
         this.orgName = orgName;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
     }
 }
