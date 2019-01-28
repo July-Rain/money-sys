@@ -1,6 +1,7 @@
 package com.lawschool.service.impl;
 
 import com.lawschool.base.AbstractServiceImpl;
+import com.lawschool.beans.Answer;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.dao.TestQuestionsDao;
 import com.lawschool.form.AnswerForm;
@@ -8,6 +9,8 @@ import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
+import com.lawschool.util.Result;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -198,5 +201,37 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
     public boolean updateAnswerId(String id, String answerId){
 
         return dao.updateAnswerId(id, answerId);
+    }
+
+    public boolean mySave(TestQuestions entity){
+        List<Answer> answerList = entity.getAnswerList();
+        if(org.apache.commons.collections.CollectionUtils.isEmpty(answerList)){
+            return false;
+        } else {
+            entity.setAnswerChoiceNumber(answerList.size()+"");
+        }
+
+        this.save(entity);
+
+        // 先删除问题下的答案
+        answerService.deleteByQuestionId(entity.getId());
+
+        String answerId = "";// 正确答案ID
+        // 重新保存答案
+        for (Answer answer : answerList){
+            answer.setQuestionId(entity.getId());
+            answer.setId(null);
+            answerService.save(answer);
+            if(answer.getIsAnswer() == 1){
+                answerId += answer.getId() + ",";
+            }
+        }
+        if(StringUtils.isNotBlank(answerId)){
+            // 更新实体信息
+            this.updateAnswerId(entity.getId(), answerId.substring(0, answerId.length()-1));
+        } else {
+            return false;
+        }
+        return true;
     }
 }
