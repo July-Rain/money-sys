@@ -15,7 +15,7 @@ public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
     /**
      * 启用禁用
      */
-    void updateStatus(String id, String isEnble);
+    void updateStatus(@Param("id") String id, @Param("isEnble") String isEnble);
 
     //我的收藏-重点试题（我收藏的题目）-zjw
     List<TestQuestions> listMyCollection(Map<String, Object> param);
