@@ -10,4 +10,10 @@ import com.lawschool.beans.ManuscriptEntity;
  * @Versiom 1.0
  **/
 public interface ManuscriptService extends AbstractService<ManuscriptEntity> {
+
+    Boolean mySave(ManuscriptEntity entity);
+
+    Boolean myDelete(String id);
+
+    Boolean examine(String id, String type);
 }
