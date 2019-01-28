@@ -6,6 +6,7 @@ import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.*;
 import com.lawschool.dao.IntegralDao;
 import com.lawschool.dao.UserIntegralDao;
+import com.lawschool.dao.diagnosis.StuDiagnosisDao;
 import com.lawschool.service.UserIntegralService;
 import com.lawschool.service.UserService;
 import com.lawschool.util.PageUtils;
@@ -34,6 +35,9 @@ public class UserIntegralServiceImpl extends AbstractServiceImpl<UserIntegralDao
     @Autowired
     private UserIntegralDao userIntegralDao;
 
+    @Autowired
+    private StuDiagnosisDao diagnosisDao;
+
     /**
      * @Author zjw
      * @Description 获取某用户分级学分排名等总体信息
@@ -60,8 +64,8 @@ public class UserIntegralServiceImpl extends AbstractServiceImpl<UserIntegralDao
         int pageNo= parseInt(Optional.ofNullable(param.get("currPage")).orElse("1").toString());
         int pageSize= parseInt(Optional.ofNullable(param.get("pageSize")).orElse("10").toString());
         Page<UserIntegral> page=new Page(pageNo,pageSize);
-        page.setRecords(userIntegralDao.crdStatUser(page,param.get("orgCode").toString()));
-        page.setTotal(userIntegralDao.selectCount(new EntityWrapper<UserIntegral>().eq("ORG_CODE", param.get("orgCode").toString())));
+        page.setRecords(userIntegralDao.crdStatUser(page,param.get("orgId").toString()));
+        page.setTotal(diagnosisDao.countUser(param.get("orgId").toString()));
         return new PageUtils(page);
     }
 
@@ -73,8 +77,8 @@ public class UserIntegralServiceImpl extends AbstractServiceImpl<UserIntegralDao
      * @return java.util.List<com.lawschool.beans.CrdStatOrg>
     **/
     @Override
-    public List<CrdStatOrg> crdStatOrg() {
-        return userIntegralDao.crdStatOrg();
+    public List<CrdStatOrg> crdStatOrg(Map<String,Object> param) {
+        return userIntegralDao.crdStatOrg(param.get("orgId").toString());
     }
 
 
@@ -91,14 +95,14 @@ public class UserIntegralServiceImpl extends AbstractServiceImpl<UserIntegralDao
         int pageNo= parseInt(Optional.ofNullable(param.get("currPage")).orElse("1").toString());
         int pageSize= parseInt(Optional.ofNullable(param.get("pageSize")).orElse("10").toString());
         Page<UserIntegral> page=new Page(pageNo,pageSize);
-        page.setRecords(userIntegralDao.itrStatUser(page,param.get("orgCode").toString()));
-        page.setTotal(userIntegralDao.selectCount(new EntityWrapper<UserIntegral>().eq("ORG_CODE", param.get("orgCode").toString())));
+        page.setRecords(userIntegralDao.itrStatUser(page,param.get("orgId").toString()));
+        page.setTotal(diagnosisDao.countUser(param.get("orgId").toString()));
         return new PageUtils(page);
     }
 
     @Override
-    public List<ItrStatOrg> itrStatOrg() {
-        return userIntegralDao.itrStatOrg();
+    public List<ItrStatOrg> itrStatOrg(Map<String,Object> param) {
+        return userIntegralDao.itrStatOrg(param.get("orgId").toString());
     }
 
     @Override

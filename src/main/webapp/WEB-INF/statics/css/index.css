@@ -10,6 +10,7 @@ td{
 tr:hover{
     background-color: #dedede;
     cursor: pointer;
+    padding: 12px 0 11px 0;
 }
 
 .searchArea{
