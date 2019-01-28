@@ -164,6 +164,28 @@ var vm = new Vue({
                 }
             },
 
+
+            textmag:"",
+            myAnswer:"",//我的答案ID
+            questionForm: {},
+            answers:[],//我的答案
+            //接收每日一题
+            currentConfig:{
+                id:"",
+            },//当前每日一题配置
+            singleAnswer:{
+                id:""
+            },
+            qtOption: [],//题目类型
+            showDetail:true,//展示细节
+            answerShow: false,//是否显示答案
+            legalBasisShow:false,//显示法律依据
+            radioData: "",
+            radio_disabled: false,
+            checkboxdisabled:false,//多选情况下 复选框 禁用 选项
+            dialogyes: false,//答对提示
+
+
             chuangguan:"",
             onlPkSum:"",
             leitaiCount:"",
@@ -325,7 +347,8 @@ var vm = new Vue({
                         vm.yearPlan.credited = result.info.creditPoint;
                         vm.yearPlan.integraled = result.info.integralPoint;
                     } else {
-                        alert(result.msg);
+                         alert(result.msg);
+
                     }
                 }
             });
@@ -343,6 +366,7 @@ var vm = new Vue({
                 type: "GET",
                 url: baseURL + "userQuestRecord/everyDayByUser",
                 Type: "json",
+                async:false,
                 success: function (result) {
                     if(result.have=='no')
                     {
@@ -353,6 +377,60 @@ var vm = new Vue({
                         vm.everyDay="已完成"
                     }
 
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dailyQuestion/newshowDailyTest",
+                dataType: "json",
+                async:false,
+                success: function (result) {
+                    console.info(result);
+                    if (result.code === 0) {
+
+                        vm.questionForm = result.question;//返回一道试题
+                        // vm.questionForm.answer = result.question.answer;//答案
+                        vm.curretConfig = result.currentConfig;//配置
+                        console.info(vm.questionForm);
+                        console.info(vm.questionForm.questionType);
+                        if(result.currentConfig.isShowLegal=="1"){
+                            vm.legalBasisShow=true;
+                        }else{
+                            vm.legalBasisShow=false;
+                        }
+                        if(result.currentConfig.isShowAnswer=="1"){
+                            vm.answerShow=true;
+                        }else{
+                            vm.answerShow=false;
+                        }
+                        if(result.myaswerid==null)  //如果没带我的答案过来  说明没做过
+                        {
+
+                        }
+                        else//做过了题目
+                        {
+                            vm.checkboxdisabled=true;//多选情况下 复选框 禁用 选项
+                            vm.radio_disabled=true;//单选 情况下  不能选
+
+                            if(result.myaswerid.indexOf(",")>-1){
+                                alert('str中包含,字符串');
+                                var answer = result.myaswerid.split(',');
+                                for (var i = 0; i < answer.length; i++) {
+                                    vm.answers.push(answer[i]);
+                                }
+                            }
+
+                            else
+                            {
+                                vm.answers = result.myaswerid;
+                            }
+
+                        }
+
+                    } else {
+                        vm.textmag=result.msg;
+                        // alert(result.msg);
+                    }
                 }
             });
         });
@@ -829,9 +907,10 @@ var vm = new Vue({
                 }
             });
         },
-        // everyDay:function()
-        // {
-            // parent.location.href =baseURL+"modules/practiceCen/Daily.html";
-        // }
+        everyTi:function()
+        {
+            vm.dialogyes= true;
+
+        }
     }
 });
