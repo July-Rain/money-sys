@@ -68,8 +68,7 @@ var vm = new Vue({
             }
 
         },
-        questionError:function()
-        {
+        questionError:function() {
             //答错了  0分
             vm.recordScore('0');
             vm.oryesorno();//答完题目入库保存记录
@@ -110,6 +109,9 @@ var vm = new Vue({
                 }
             });
         },
+        toHome: function () {
+            parent.location.reload()
+        }
     },
     created: function () {
         this.$nextTick(function () {

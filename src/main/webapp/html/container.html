@@ -5,6 +5,50 @@
     <#include "/header.html">
 </head>
 <style>
+.daliy .el-dialog__body{
+    background: #f2f9ff;
+}
+.daliy .el-dialog__body{
+    padding: 34px 44px;
+}
+.daliy_title{
+    line-height: 28px;
+    font-size: 20px;
+    color: #2a2a2a;
+    margin-bottom: 20px;
+}
+.daliy_title span{
+    display: inline-block;
+    background: #f3eee8;
+    color: #ff9019;
+    border: 1px solid #ff9019;
+    padding: 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 14px;
+}
+.daliy .el-radio{
+    display: block;
+    line-height: 52px;
+}
+
+.daliy .el-radio span{
+    color: #2a2a2a;
+    font-size: 16px;
+    line-height: 52px;
+}
+.daliy .is-disabled span{
+    color: #2a2a2a!important;
+}
+.daliy .el-radio.is-disabled.is-checked{
+    background: #e1f1ff;
+}
+.daliy .el-radio-group{
+    display: block;
+}
+.daliy .el-radio+.el-radio{
+    margin: 0;
+}
 
 </style>
 <body>
@@ -586,12 +630,10 @@
             </div>
         </el-dialog>
     </div>
-    <el-dialog :title="title" :visible.sync="dialogyes"  :close-on-click-modal="false">
-        <div style="height: 200px;text-align: center">
+    <el-dialog class="daliy" title="每日一题" :visible.sync="dialogyes"  :close-on-click-modal="false">
+        <div>
             {{textmag}}
-            <br/>
-            <span>题目类型：[{{questionForm.questionType==10004?'单选题':questionForm.questionType==10005?'多选题':'判断题'}}]</span><br/>
-            <p> 题目：{{questionForm.comContent}}</p>
+            <p class="daliy_title"><span>{{questionForm.questionType==10004?'单选题':questionForm.questionType==10005?'多选题':'判断题'}}</span> 题目：{{questionForm.comContent}}</p>
             <!--单选 与判断-->
             <el-radio-group v-model="answers" v-if="questionForm.questionType==10004 || questionForm.questionType==10006"
                             :disabled="radio_disabled">
