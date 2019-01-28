@@ -2,21 +2,16 @@ package com.lawschool.controller;
 
 
 import com.lawschool.annotation.SysLog;
-import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
-import com.lawschool.beans.Answer;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.util.Result;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +24,6 @@ public class TestQuestionController {
 
     @Autowired
     private AnswerService answerService;
-
 
     /**
      * 查询所有的专项知识试题
@@ -67,35 +61,13 @@ public class TestQuestionController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
     public Result save(@RequestBody TestQuestions testQuestions) {
-        List<Answer> answerList = testQuestions.getAnswerList();
-        if(CollectionUtils.isEmpty(answerList)){
-            return Result.error("请设置选项信息...");
+
+        boolean result = testQuestionService.mySave(testQuestions);
+        if(result){
+            return Result.ok();
         } else {
-            testQuestions.setAnswerChoiceNumber(answerList.size()+"");
+            return Result.error("保存失败");
         }
-
-        testQuestionService.save(testQuestions);
-
-        // 先删除问题下的答案
-        answerService.deleteByQuestionId(testQuestions.getId());
-
-        String answerId = "";// 正确答案ID
-        // 重新保存答案
-        for (Answer answer : answerList){
-            answer.setQuestionId(testQuestions.getId());
-            answerService.save(answer);
-            if(answer.getIsAnswer() == 1){
-                answerId += answer.getId() + ",";
-            }
-        }
-        if(StringUtils.isNotBlank(answerId)){
-            // 更新实体信息
-            testQuestionService.updateAnswerId(testQuestions.getId(), answerId.substring(0, answerId.length()-1));
-        } else {
-            throw new RuntimeException("请设置正确答案...");
-        }
-
-        return Result.ok();
     }
 
     /**
