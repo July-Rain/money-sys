@@ -108,6 +108,7 @@ var vm = new Vue({
             visible: false,
             ruleForm: {
                 name: '',
+                phone: '',
                 region: '',
                 date1: '',
                 date2: '',
@@ -195,6 +196,10 @@ var vm = new Vue({
                 name: [
                     {required: true, message: '请输入活动名称', trigger: 'blur'},
                     {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+                ],
+                phone: [
+                    {required: true, message: '不能为空', trigger: 'blur'},
+                    { pattern: regularExp("phone"), message: '正则不匹配' }
                 ],
                 region: [
                     {required: true, message: '请选择活动区域', trigger: 'change'}
@@ -317,7 +322,7 @@ var vm = new Vue({
 
         this.$nextTick(function () {
             this.getStuDia();
-            this.initPie1();
+
             this.initBar1();
         });
         this.$nextTick(function () {
@@ -482,13 +487,13 @@ var vm = new Vue({
             // this[chartName].hideLoading() // Chart提示关闭
         },
         //echarts
-        initPie1: function () {
+        initPie1: function (_data) {
+            console.info("data",_data,typeof _data);
             // 基于准备好的dom，初始化echarts实例
             var myChart = echarts.init(document.getElementById('pie1'));
             // 指定图表的配置项和数据
             var option = {
                 backgroundColor: '#fff',
-
                 title: {
                     text: '',
                     left: 'center',
@@ -497,18 +502,16 @@ var vm = new Vue({
                         color: '#ccc'
                     }
                 },
-
                 tooltip : {
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
                 },
-
                 visualMap: {
                     show: false,
                     min: 80,
                     max: 600,
                     inRange: {
-                        colorLightness: [0, 1]
+                        // colorLightness: [0, 1]
                     }
                 },
                 series : [
@@ -517,7 +520,7 @@ var vm = new Vue({
                         type:'pie',
                         radius : '55%',
                         center: ['50%', '50%'],
-                        data:vm.seriesData.sort(function (a, b) { return a.value - b.value; }),
+                        data: _data.sort(function (a, b) { return a.value - b.value; }),
                         roseType: 'radius',
                         label: {
                             normal: {
@@ -865,7 +868,17 @@ var vm = new Vue({
                 data: vm.dateRange,
                 success: function (result) {
                     if (result.code == 0) {
-                        vm.seriesData = result.data;
+                        for(var i = 0;i<result.data.length;i++){
+                            var _info = {
+                                value: result.data[i].value,
+                                name: result.data[i].name
+                            };
+                            vm.seriesData.push(_info)
+                        }
+                        if(result.data[i].value !== 0){
+                            vm.initPie1(vm.seriesData);
+                        }
+
                         vm.stuInfo=result.stuInfo;
                     } else {
                         alert(result.msg);

@@ -340,17 +340,18 @@
             </el-col>
         </el-row>
 
-        <!--<div>-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;表单验证-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</div>-->
-        <!--<ol>-->
-            <!--<li>输入框控制输入长度：最大输入长度maxlength='40',最小输入长度minlength</li>-->
-            <!--<li>是否可清空:clearable,禁用:disabled,只读:readonly</li>-->
-            <!--<li>当一个 form 元素中只有一个输入框时，在该输入框中按下回车应提交该表单。如果希望阻止这一默认行为，可以在 'el-form' 标签上添加 @submit.native.prevent。</li>-->
-            <!--<li>model:表单数据对象,rules:表单验证规则,size:用于控制该表单内组件的尺寸medium / small / mini,prop:表单域 model 字段</li>-->
-            <!--<li>表单重置:一、el-form 加ref属性，二、el-form-item 加prop属性</li>-->
-            <!--<li>表单验证:一、rules 属性为验证规则，二、el-form-item 加prop属性设置为需校验的字段名即可</li>-->
-        <!--</ol>-->
+        <div>---------表单验证---------</div>
+        <ol>
+            <li>输入框控制输入长度：最大输入长度maxlength='40',最小输入长度minlength</li>
+            <li>是否可清空:clearable,禁用:disabled,只读:readonly</li>
+            <li>当一个 form 元素中只有一个输入框时，在该输入框中按下回车应提交该表单。如果希望阻止这一默认行为，可以在 'el-form' 标签上添加 @submit.native.prevent。</li>
+            <li>model:表单数据对象,rules:表单验证规则,size:用于控制该表单内组件的尺寸medium / small / mini,prop:表单域 model 字段</li>
+            <li>表单重置:一、el-form 加ref属性，二、el-form-item 加prop属性</li>
+            <li>表单验证:一、
+                属性为验证规则，二、el-form-item 加prop属性设置为需校验的字段名即可</li>
+        </ol>
         <!--表单验证-->
-        <el-row v-if="false">
+        <el-row>
             <el-col :span="12">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" size="mini">
                     <el-form-item label="上级菜单" prop="parentName">
@@ -374,6 +375,9 @@
                     </el-form-item>
                     <el-form-item label="活动名称" prop="name">
                         <el-input v-model="ruleForm.name" placeholder="提示语句" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="正则表达式" prop="phone">
+                        <el-input v-model="ruleForm.phone" placeholder="提示语句" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="活动区域" prop="region">
                         <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
