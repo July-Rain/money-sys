@@ -65,9 +65,7 @@ var vm = new Vue({
                 {required: true, message: '请输入学习任务名称', trigger: 'blur'},
                 {max: 100, message: '最大长度100', trigger: 'blur'}
             ],
-            taskContent: [
-                {required: true, message: '请输入学习任务内容', trigger: 'blur'}
-            ],
+
             startTime: [
                 {required: true, message: '请输入学习任务开始时间', trigger: 'blur'}
             ],

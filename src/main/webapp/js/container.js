@@ -924,6 +924,93 @@ var vm = new Vue({
         {
             vm.dialogyes= true;
 
-        }
+        },
+        onSubmit:function(answerId) {
+            console.info(vm.answers)
+            var answer = answerId.split(',');
+            console.info(answer);
+            //先判断个数一不一样
+            if (answer.length != vm.answers.length) {
+                //个数不一样，说明错了
+                vm.questionError();
+                console.info("出错")
+                return;
+            } else if (answer.length == vm.answers.length) {
+                for (var i = 0; i < answer.length; i++) {
+                    if ($.inArray(answer[i], vm.answers) == "-1") {
+                        //如果-1 就是不包含  就错了
+                        vm.questionError();
+                        console.info("出错")
+                        alert("答错了");
+                        return;
+                    }
+                }
+
+                //对的
+                vm.questionYes();
+                console.info("对的")
+                alert("答对了");
+            }
+        },
+
+        //单选题的答案结果
+        radioCheck: function (id, answerId, typeName) {
+            vm.radio_disabled = true;
+            // var answer = vm.answers[0];
+            // alert(vm.answers);
+            // alert("我选的"+id);
+            // alert("正确的"+answerId);
+            //如果答对了
+            if (id == answerId) {
+                vm.questionYes();
+                alert("答对了");
+            } else {
+                vm.questionError();
+                alert("答错了");
+            }
+
+        },
+        questionError:function()
+        {
+            //答错了  0分
+            vm.recordScore('0');
+            vm.oryesorno();//答完题目入库保存记录
+        },
+        questionYes:function(){
+            //答对了 才会 添加分数啊
+            vm.recordScore(vm.curretConfig.obtainPoint);
+            vm.oryesorno();//答完题目入库保存记录
+        },
+        //不管答对答错 都要入库方法
+        oryesorno:function () {
+            vm.checkboxdisabled=true;
+            console.info("!!!!!");
+            console.info(vm.answers);
+            console.info(vm.questionForm);
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'dailyQuestion/saveQuestion?myanswer='+vm.answers,
+                contentType: "application/json",
+                async:false,
+                data: JSON.stringify(vm.questionForm),
+                success: function (result) {
+
+                }
+            });
+
+        },
+
+        recordScore: function (sorce) {
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'dailyQuestion/recordScore',
+                dataType: "json",
+                async: false,
+                data: {"sorce": sorce},
+                success: function (result) {
+
+                }
+            });
+        },
     }
 });
