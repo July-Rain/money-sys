@@ -199,7 +199,7 @@ var vm = new Vue({
                 ],
                 phone: [
                     {required: true, message: '不能为空', trigger: 'blur'},
-                    { pattern: /^modules\/.*?html$/, message: '正则不匹配' }
+                    { pattern: regularExp("phone"), message: '正则不匹配' }
                 ],
                 region: [
                     {required: true, message: '请选择活动区域', trigger: 'change'}
