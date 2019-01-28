@@ -227,7 +227,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         String orgCode = (String)params.get("orgCode");
         String isUse = (String)params.get("isUse");
         EntityWrapper<LearnTasksEntity> ew = new EntityWrapper<>();
-        ew.setSqlSelect("ID,TASK_NAME,START_TIME,END_TIME,TASK_CONTENT,CREATE_USER,DEPT_CODE,DICTCODE2VALE(POLICECLASS) as policeclassName,DICTCODE2VALE(TASK_CLASS) as taskClassName,is_use");
+        ew.setSqlSelect("ID,TASK_NAME,START_TIME,END_TIME,TASK_CONTENT,CREATE_USER,DEPT_CODE,DICTCODE2VALE(POLICECLASS) as policeclassName,DICTCODE2VALE(TASK_CLASS) as taskClassName,is_use,count_user");
         if(UtilValidate.isNotEmpty(taskName)){
             ew.like("TASK_NAME",taskName);
         }
@@ -258,7 +258,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
                 Date tomorrow = c.getTime();
                 endParse = tomorrow;
                 //以开始时间搞
-                ew.le("END_TIME", endParse);
+                ew.le("to_date(substr(END_TIME,1,10), 'yyyy-MM-dd')", endParse);
             } catch (ParseException e) {
                 throw new RuntimeException();
             }
@@ -304,16 +304,26 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         authService.delete(new EntityWrapper<AuthRelationBean>().eq("function_flag","LEARNTASK").eq("function_Id",learnTask.getId()));
         //删除任务表
         desicService.delete(new EntityWrapper<TaskDesicEntity>().eq("task_id",learnTask.getId()));
+        //删除用户和任务关联表
+        tasksUserService.delete(new EntityWrapper<TasksUserEntity>().eq("task_id",learnTask.getId()));
+        int countUser=0;
         //存权限表
         if("person".equals(menuForm)){
             String[] userIdArr={user.getId()};
             authService.insertAuthRelation(null,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getOptUser());
+            //保存对应的任务和人员信息
+            countUser = tasksUserService.insertLearnUser(null,userIdArr,learnTask.getId());
+
         }else{
             //存权限表
             String[] deptIdArr=learnTask.getDeptArr();
             String[] userIdArr=learnTask.getUserArr();
             authService.insertAuthRelation(deptIdArr,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getOptUser());
+            //保存对应的任务和人员信息
+            countUser = tasksUserService.insertLearnUser(deptIdArr,userIdArr,learnTask.getId());
+
         }
+        learnTask.setCountUser(countUser);
         //保存任务节点
         insertBathTaskDesic(learnTask.getTaskContentList(),learnTask.getId());
     }

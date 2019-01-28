@@ -129,12 +129,12 @@ public class StuRecordServiceImpl extends ServiceImpl<StuRecordDao,StuRecordEnti
 
     @Override
     public int updateUseFinish(User user, String taskId) {
-        TasksUserEntity userEntity = tasksUserService.selectOne(new EntityWrapper<TasksUserEntity>().eq("user_id",user.getUserId()).eq("task_id",taskId));
+        TasksUserEntity userEntity = tasksUserService.selectOne(new EntityWrapper<TasksUserEntity>().eq("user_id",user.getId()).eq("task_id",taskId));
         if(UtilValidate.isNotEmpty(userEntity)&&"0".equals(userEntity.getIsFinish())){
             //获取当前登陆人的学习记录条数
-            int stuRecordCount = baseMapper.selectCount(new EntityWrapper<StuRecordEntity>().eq("user_id",user.getUserId()).eq("task_id",taskId));
+            int stuRecordCount = baseMapper.selectCount(new EntityWrapper<StuRecordEntity>().eq("user_id",user.getId()).eq("task_id",taskId));
             int taskDataCount = desicService.selectCount(new EntityWrapper<TaskDesicEntity>().eq("task_id",taskId).like("info_type","_data"));
-            if(stuRecordCount==taskDataCount){
+            if(stuRecordCount+1>=taskDataCount){
                 //说明用户已完成 更新状态和时间
                 userEntity.setIsFinish("1");
                 userEntity.setFinishTime(new Date());
