@@ -17,7 +17,10 @@ var vm = new Vue({
             stuOptdepartment: '',
             page: 1,
             limit: 10,
-            count: 0
+            count: 0,
+            video: '',
+            videoUrl: '',
+            answerList: []
         },
         formLabelWidth: '120px',
         fileList: [],
@@ -25,11 +28,52 @@ var vm = new Vue({
         typeList: [],
         qtList: [],
         topicList: [],
+        importFileUrl: baseURL+"sys/upload",//文件上传url
+        videoFlag:false,
+        videoUploadPercent: 0,
+        addConfigFlag: false,
+        answer: {
+            questionContent: '',
+            score: 0,
+            ordersort: 1,
+            isAnswer: 0
+        },
+        formInline: {
+            page: 1,
+            limit: 10,
+            count: 0
+        }
     },
     mounted: function () {
 
     },
     methods: {
+        uploadVideoProcess(event, file, fileList){
+            this.videoFlag = true;
+            this.videoUploadPercent = file.percentage.toFixed(2);
+        },
+        beforeAvatarUpload: function (file) {
+            var  isLt10M = file.size / 1024 / 1024  < 100;
+            if (['video/mp4', 'video/ogg', 'video/flv','video/avi','video/wmv','video/rmvb'].indexOf(file.type) == -1) {
+                this.$message.error('请上传正确的视频格式');
+                return false;
+            }
+            if (!isLt10M) {
+                this.$message.error('上传视频大小不能超过100MB哦!');
+                return false;
+            }
+
+        },
+        uploadSuccess: function (response, file, fileList) {
+            this.videoFlag = false;
+            this.videoUploadPercent = 0;
+            if(response.code == 0){
+                vm.form.video = response.accessoryId;
+                vm.form.videoUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
+            }else{
+                this.$message.error('视频上传失败，请重新上传！');
+            }
+        },
         layFn() {
             $(".el-dialog").css("height", "auto")
         },
@@ -48,13 +92,14 @@ var vm = new Vue({
         },
 
         handleSizeChange: function (val) {
-            console.log('每页' + val + '条');
+            vm.formInline.limit = val;
+            vm.reload();
         },
         handleCurrentChange: function (val) {
-            console.log('当前页:' + val);
+            vm.formInline.page = val;
+            vm.reload();
         },
         addExam: function () {
-            console.log(22)
             vm.dialogFormVisible = true
         },
         batchImport: function () {
@@ -80,11 +125,8 @@ var vm = new Vue({
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: baseURL + "testQuestion/delete",
-                    dataType: "json",
-                    data: {
-                        idList: [row.id]
-                    },
+                    url: baseURL + "testQuestion/delete/" + row.id,
+                    contentType: "application/json",
                     success: function (result) {
                         if (result.code === 0) {
                             vm.reload();
@@ -115,6 +157,24 @@ var vm = new Vue({
                             callback: function () {
                                 vm.dialogFormVisible = false;
                                 vm.reload();
+                                vm.form = {
+                                    typeId: '',
+                                    questionType: '',
+                                    comContent: '',
+                                    specialKnowledgeId: '',
+                                    questionDifficulty: '',
+                                    legalBasis: '',
+                                    answerId: '',
+                                    isEnble: true,
+                                    optUser: '',
+                                    stuOptdepartment: '',
+                                    page: 1,
+                                    limit: 10,
+                                    count: 0,
+                                    video: '',
+                                    videoUrl: '',
+                                    answerList: []
+                                };
                             }
                         });
                     } else {
@@ -128,21 +188,31 @@ var vm = new Vue({
                 type: "GET",
                 url: baseURL + "testQuestion/list",
                 dataType: "json",
-                data: {
-                    page: 1,
-                    limit: 10
-                },
+                data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
-                        vm.form.page = result.page.page;
-                        vm.form.pageSize = result.page.pageSize;
-                        vm.form.count = parseInt(result.page.count);
+                        vm.formInline.page = result.page.pageNo;
+                        vm.formInline.limit = result.page.pageSize;
+                        vm.formInline.count = parseInt(result.page.count);
                     } else {
                         alert(result.msg);
                     }
                 }
             });
+        },
+        addAnswer: function () {
+            vm.addConfigFlag = true;
+        },
+        sure: function () {
+            vm.form.answerList.push(vm.answer);
+            vm.answer = {
+                questionContent: '',
+                score: 0,
+                ordersort: 1,
+                isAnswer: 0
+            }
+            vm.addConfigFlag = false;
         },
         toHome: function () {
             parent.location.reload()
@@ -150,22 +220,7 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
-            $.ajax({
-                type: "GET",
-                url: baseURL + "testQuestion/list",
-                contentType: "application/json",
-                data: vm.form,
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.tableData = result.page.list;
-                        vm.form.page = result.page.page;
-                        vm.form.pageSize = result.page.pageSize;
-                        vm.form.count = parseInt(result.page.count);
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
+            vm.reload();
 
             $.ajax({
                 type: "GET",

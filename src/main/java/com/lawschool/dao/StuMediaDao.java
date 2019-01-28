@@ -5,6 +5,7 @@ import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.law.ClassifyDesicEntity;
 import com.lawschool.beans.law.TaskDesicEntity;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -43,4 +44,5 @@ public interface StuMediaDao extends AbstractDao<StuMedia> {
 
     int countListStuByTask( TaskDesicEntity desicEntity);
 
+    boolean updateStatus(@Param("id") String id, @Param("status") String status);
 }

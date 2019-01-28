@@ -303,4 +303,38 @@
         INNER JOIN LAW_STU_MEDIA c ON M .DATA_ID = c. ID
         LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
   </select>
+
+  <delete id="deleteById">
+        DELETE FROM LAW_STU_MEDIA WHERE ID = #{id}
+  </delete>
+
+  <select id="findOne" resultType="com.lawschool.beans.StuMedia">
+      SELECT
+          id AS "id",
+          stu_code AS "stuCode",
+          stu_title AS "stuTitle",
+          com_content AS "comContent",
+          stu_describe AS "stuDescribe",
+          stu_time AS "stuTime",
+          video_pic_acc AS "videoPicAcc"，
+          stu_creat AS "stuCreat",
+          stu_Issuer AS "stuIssuer",
+          stu_Issdepartment AS "stuIssdepartment",
+          stu_Optdepartment AS "stuOptdepartment",
+          stu_Policeclass AS "stuPoliceclass",
+          stu_From AS "stuFrom",
+          stu_Type AS "stuType",
+          stu_Knowledge AS "stuKnowledge",
+          stu_Lawid AS "stuLawid",
+          user_Name AS "userName",
+          dept_Name AS "deptName"
+      FROM LAW_STU_MEDIA
+      WHERE ID = #{id}
+  </select>
+
+    <update id="updateStatus">
+        UPDATE LAW_STU_MEDIA
+        SET DEL_STATUS = #{status}
+        WHERE id = #{id}
+    </update>
 </mapper>

@@ -22,6 +22,89 @@
     </sql>
 
     <insert id="insert">
-
+        INSERT INTO LAW_MANUSCRIPT
+        (
+            id,
+            type,
+            source_id,
+            status,
+            author,
+            create_user,
+            create_time,
+            opt_user,
+            opt_time
+        ) VALUES (
+            #{id},
+            #{type},
+            #{sourceId},
+            #{status},
+            #{author},
+            #{createUser},
+            #{createTime},
+            #{optUser},
+            #{optTime}
+        )
     </insert>
+
+    <select id="findList" resultType="com.lawschool.beans.ManuscriptEntity">
+        SELECT
+            id AS "id",
+            type AS "type",
+            source_id AS "sourceId",
+            status AS "status",
+            auditor AS "auditor",
+            opinion AS "opinion",
+            author AS "author",
+            create_time AS "createTime"
+        FROM LAW_MANUSCRIPT
+        <where>
+            1 = 1
+            <if test="createUser != null and createUser != ''">
+                create_user = #{createUser}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY create_time DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findOne" resultType="com.lawschool.beans.ManuscriptEntity">
+        SELECT
+            id AS "id",
+            type AS "type",
+            source_id AS "sourceId"
+        FROM LAW_MANUSCRIPT
+        <where>
+            id = #{id}
+        </where>
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM LAW_MANUSCRIPT WHERE ID = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE LAW_MANUSCRIPT
+        SET
+            type = #{type},
+            source_id = #{sourceId},
+            status = #{status},
+            author = #{author},
+            opt_user = #{optUser},
+            opt_time = #{optTime}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateExamine">
+        UPDATE LAW_MANUSCRIPT
+        SET
+            status = #{status}
+        WHERE
+            id = #{id}
+    </update>
 </mapper>
