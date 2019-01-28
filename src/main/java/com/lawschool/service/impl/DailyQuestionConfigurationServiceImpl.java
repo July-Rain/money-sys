@@ -283,7 +283,10 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
         QuestForm question = null;
         DailyQuestionConfiguration  currentConfig = dailyQuestionConfigurationDao.findCurrentConfig();//查询当前每日一题的配置情况
 
-
+         if(currentConfig==null)
+         {
+             return Result.ok().put("code",1).put("msg","当天没有每日一题配置,请联系管理员");
+         }
         //去答题记录表中 找数据，看有没有做过每日一题，因为做过的每日一题都会在答题记录表中有记录的
         //先处理下今天的时间
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
