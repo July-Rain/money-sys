@@ -396,6 +396,9 @@ var vm = new Vue({
 
             parent.location.href =baseURL+item.url+"?id="+item.id;
 
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     }
 });

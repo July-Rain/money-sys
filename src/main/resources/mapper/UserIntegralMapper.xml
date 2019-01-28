@@ -37,7 +37,7 @@ SELECT
 				FROM
 					LAW_USER_INTEGRAL lui
 				WHERE
-					ORG_CODE = #{orgCode}
+					ORG_CODE = #{orgId}
 			)
 		WHERE
 			USER_ID = #{id}
@@ -67,7 +67,7 @@ SELECT
 				FROM
 					LAW_USER_INTEGRAL lui
 				WHERE
-					ORG_CODE = #{orgCode}
+					ORG_ID = #{orgId}
 			)
 		WHERE
 			USER_ID = #{id}
@@ -82,7 +82,11 @@ WHERE
 
 	<!--学分 人员-->
 	<select id="crdStatUser" resultType="com.lawschool.beans.UserIntegral">
-	SELECT
+	select a.USER_CODE,a.CREDIT_POINT,u.id as USER_ID,u.FULL_NAME,u.ORG_NAME,u.ORG_CODE,
+	ROW_NUMBER () OVER (ORDER BY A.CREDIT_POINT) AS orgCdtRank,
+ 	A.allCdtRank
+	from LAW_USER u LEFT JOIN (
+SELECT
 	USER_ID,
 	ORG_CODE,
 	FULL_NAME,
@@ -90,15 +94,25 @@ WHERE
 	ORG_NAME,
 	CREDIT_POINT,
 	ROW_NUMBER () OVER (ORDER BY CREDIT_POINT) AS orgCdtRank,
-	(SELECT allCdtRank FROM(
-			SELECT LUI.USER_ID,ROW_NUMBER () OVER (ORDER BY CREDIT_POINT) AS allCdtRank FROM LAW_USER_INTEGRAL lui)
-	  WHERE
-		USER_ID = LAW_USER_INTEGRAL.USER_ID) as allCdtRank
-	FROM
-		LAW_USER_INTEGRAL
-	WHERE
-		ORG_CODE = #{orgCode}
-	order by CREDIT_POINT
+	(
+		SELECT
+			allCdtRank
+		FROM
+			(
+				SELECT
+					LUI.USER_ID,
+					ROW_NUMBER () OVER (ORDER BY CREDIT_POINT) AS allCdtRank
+				FROM
+					LAW_USER_INTEGRAL lui
+			)
+		WHERE
+			USER_ID = LAW_USER_INTEGRAL.USER_ID
+	) AS allCdtRank
+FROM
+	LAW_USER_INTEGRAL
+
+ORDER BY
+	CREDIT_POINT) a on u."ID" = a.USER_ID where u.ORG_ID=#{orgId}
 	</select>
 
 
@@ -106,7 +120,7 @@ WHERE
 
 
 <!--学分 部门-->
-	<select id="crdStatOrg" resultType="com.lawschool.beans.CrdStatOrg">
+	<select id="crdStatOrg" resultType="com.lawschool.beans.CrdStatOrg" parameterType="java.lang.String">
 
 	  select
 		TAB.org_id as orgId,
@@ -124,6 +138,7 @@ WHERE
 		(select sum(CREDIT_POINT)  from LAW_USER_INTEGRAL where ORG_CODE=LAW_ORG.org_code ) as orgAllCrd
 		from LAW_ORG
 		WHERE ORG_TYPE IN (10, 70, -1,0)   and org_status >=2000
+		Start With ORG_ID = #{orgId} Connect By  Prior ORG_ID = parent_id
 		) tab
 	</select>
 
@@ -132,28 +147,52 @@ WHERE
 
 <!--积分 人员-->
 	<select id="itrStatUser" resultType="com.lawschool.beans.UserIntegral">
-	SELECT
-	USER_ID,
-	ORG_CODE,
-	FULL_NAME,
-	USER_CODE,
-	ORG_NAME,
-	INTEGRAL_POINT,
-	ROW_NUMBER () OVER (ORDER BY INTEGRAL_POINT) AS orgItrRank,
-	(SELECT allItrRank FROM(
-			SELECT LUI.USER_ID,ROW_NUMBER () OVER (ORDER BY INTEGRAL_POINT) AS allItrRank FROM LAW_USER_INTEGRAL lui)
-	  WHERE
-		USER_ID = LAW_USER_INTEGRAL.USER_ID) as allItrRank
-	FROM
-		LAW_USER_INTEGRAL
-	WHERE
-		ORG_CODE = #{orgCode}
-	order by INTEGRAL_POINT
+		SELECT
+			A .USER_CODE,
+			A .INTEGRAL_POINT,
+			U . ID AS USER_ID,
+			U .FULL_NAME,
+			U .ORG_NAME,
+			U .ORG_CODE,
+			ROW_NUMBER () OVER (ORDER BY A .INTEGRAL_POINT) AS orgItrRank,
+			A .allItrRank
+		FROM
+			LAW_USER U
+		LEFT JOIN (
+			SELECT
+				USER_ID,
+				ORG_CODE,
+				FULL_NAME,
+				USER_CODE,
+				ORG_NAME,
+				INTEGRAL_POINT,
+				ROW_NUMBER () OVER (ORDER BY INTEGRAL_POINT) AS orgItrRank,
+				(
+					SELECT
+						allItrRank
+					FROM
+						(
+							SELECT
+								LUI.USER_ID,
+								ROW_NUMBER () OVER (ORDER BY INTEGRAL_POINT) AS allItrRank
+							FROM
+								LAW_USER_INTEGRAL lui
+						)
+					WHERE
+						USER_ID = LAW_USER_INTEGRAL.USER_ID
+				) AS allItrRank
+			FROM
+				LAW_USER_INTEGRAL
+			ORDER BY
+				INTEGRAL_POINT
+		) A ON U ."ID" = A .USER_ID
+		WHERE
+			U .ORG_ID = #{orgId}
 	</select>
 
 
 	<!--积分 部门-->
-	<select id="itrStatOrg" resultType="com.lawschool.beans.ItrStatOrg">
+	<select id="itrStatOrg" resultType="com.lawschool.beans.ItrStatOrg" parameterType="java.lang.String">
 		select
 			TAB.org_id as orgId,
 			TAB.parent_id as parentId,
@@ -170,6 +209,7 @@ WHERE
 					 (select sum(INTEGRAL_POINT)  from LAW_USER_INTEGRAL where ORG_CODE=LAW_ORG.org_code ) as orgAllItr
 				 from LAW_ORG
 				 WHERE ORG_TYPE IN (10, 70, -1,0)   and org_status >=2000
+				 Start With ORG_ID = #{orgId} Connect By  Prior ORG_ID = parent_id
 			 ) tab
 	</select>
 </mapper>

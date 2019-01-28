@@ -3,48 +3,57 @@
 <head>
     <title>江苏省公安厅法律学校 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .el-tabs__header.is-top{
+            padding: 0;
+            background: #efefef;
+            width: 100%;
+        }
+        .el-tabs__item.is-top.is-active{
+            padding: 0 23px!important;
+            height: 28px;
+            line-height: 30px;
+            font-size: 16px;
+            color: #36a9e0!important;
+            background-color: #fff!important;
+            border-radius: 3px 3px 0 0;
+            border-color:#80c5e6 #80c5e6 transparent!important;
+        }
+        .content ul li{
+            width: 20%;
+            float: left;
+        }
+        .content ul li .item{
+            padding-right: 25px;
+        }
+        .content ul li .item video{
+            width: 100%;
+            height: 9.15080527086384vw;
+            border-radius: 5px;
+        }
+        .content .video-content{
+            position: relative;
+        }
+        .content .video-content a{
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+        }
+        .stuType{
+            background: #f97a1f;
+            padding: 0 5px;
+            color: #fff;
+            border-radius: 2px;
+        }
+        .stuIssuer{
+            float: left;
+        }
+        .stuCreat{
+            float: right;
+        }
+    </style>
 </head>
-<style>
-.el-tabs__header.is-top{
-    padding: 0;
-    background: #efefef;
-    width: 100%;
-}
-.el-tabs__item.is-top.is-active{
-    padding: 0 23px!important;
-    height: 28px;
-    line-height: 30px;
-    font-size: 16px;
-    color: #36a9e0!important;
-    background-color: #fff!important;
-    border-radius: 3px 3px 0 0;
-    border-color:#80c5e6 #80c5e6 transparent!important;
-}
-.content ul li{
-    width: 20%;
-    float: left;
-}
-.content ul li .item{
-    padding-right: 25px;
-}
-.content ul li .item video{
-    width: 100%;
-    height: 9.15080527086384vw;
-    border-radius: 5px;
-}
-.stuType{
-    background: #f97a1f;
-    padding: 0 5px;
-    color: #fff;
-    border-radius: 2px;
-}
-.stuIssuer{
-    float: left;
-}
-.stuCreat{
-    float: right;
-}
-</style>
 <body>
 <div id="app" v-cloak>
     <div class="container">
@@ -112,10 +121,13 @@
                                 <ul class="clearfix">
                                     <li v-for="(item, index) in videoData">
                                         <div class="item">
-                                            <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id)" @pause="onPause(item.id,$event)">
-                                                <source :src="item.contentUrl" type="video/mp4">
-                                                您的浏览器不支持视频播放
-                                            </video>
+                                            <div class="video-content">
+                                                <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id)" @pause="onPause(item.id,$event)">
+                                                    <source :src="item.contentUrl" type="video/mp4">
+                                                    您的浏览器不支持视频播放
+                                                </video>
+                                                <a href="javascript:;" @click="onVideoDialog(item.id,item.contentUrl,item.videoPicAccUrl)"></a>
+                                            </div>
                                             <div>
                                                 <p>
                                                     <span @click="collect(item.id)">收藏</span>
@@ -144,9 +156,15 @@
                 </el-tabs>
             </el-col>
         </el-row>
-
     </div>
-
+    <el-dialog title="视频课堂" :visible.sync="dialogVideo" >
+        <div v-if="dialogVideo">
+            <video style="width:100%; height:auto;" controls autoplay preload="none" :poster="thisVideoPicAccUrl" @play="onPlay(thisVideoId)" @pause="onPause(thisVideoId,$event)">
+                <source :src="thisVideoContentUrl" type="video/mp4">
+                您的浏览器不支持视频播放
+            </video>
+        </div>
+    </el-dialog>
     <el-dialog title="选择法律分类" :visible.sync="dialogLaw" >
         <!--对于同一级的节点，每次只能展开一个-->
         <el-tree

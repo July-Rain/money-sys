@@ -657,7 +657,7 @@ var vm = new Vue({
         loadNewsData: function () {//新法速递
             var loadInline={
                 currPage: 1,
-                pageSize: 2,
+                pageSize: 8,
                 totalCount:0,};
             $.ajax({
                 type: "POST",

@@ -48,57 +48,112 @@
                     <el-tabs v-model="activeName" type="border-card" @tab-click="handleTabClick">
                         <el-tab-pane label="个人统计" name="person">
                             <div class="content board" style="padding-top: 17px;">
-                                <el-row :gutter="20">
-                                    <el-col :span="6" class="pieArea">
-                                        <el-tabs type="border-card">
-                                            <div id="pie1" style="width: 300px;height:220px;"></div>
-                                            <div id="pie2" style="width: 300px;height:220px;"></div>
-                                        </el-tabs>
-                                    </el-col>
+                                <el-tabs type="border-card">
+                                    <div>
+                                        <el-table
+                                                :data="tableData"
+                                                border
+                                                style="width: 100%">
+                                            <el-table-column
+                                                    prop="userName"
+                                                    label="姓名"
+                                                    width="280"
+                                            >
+                                            </el-table-column>
 
-                                </el-row>
+                                            <el-table-column
+                                                    prop="normalExamCount"
+                                                    label="普通考试次数"
+                                            >
+                                            </el-table-column>
+
+                                            <el-table-column
+                                                    prop="enforceExamCount"
+                                                    label="执法考试次数"
+                                            >
+                                            </el-table-column>
+
+                                            <el-table-column
+                                                    prop="examScore1Count"
+                                                    label="60分以下"
+                                            >
+                                            </el-table-column>
+
+                                            <el-table-column
+                                                    prop="examScore2Count"
+                                                    label="60分至70分"
+                                            >
+                                            </el-table-column>
+
+                                            <el-table-column
+                                                    prop="examScore3Count"
+                                                    label="70分至80分"
+                                            >
+                                            </el-table-column>
+
+                                            <el-table-column
+                                                    prop="examScore4Count"
+                                                    label="80分至90分"
+                                            >
+                                            </el-table-column>
+
+                                            <el-table-column
+                                                    prop="examScore5Count"
+                                                    label="90以上"
+                                            >
+                                            </el-table-column>
+
+
+                                        </el-table>
+                                        <el-pagination
+                                                @size-change="handleSizeChange"
+                                                @current-change="handleCurrentChange"
+                                                :current-page="dateRange.currPage"
+                                                :page-sizes="[10, 20, 30, 40]"
+                                                :page-size="dateRange.pageSize"
+                                                layout="total, sizes, prev, pager, next, jumper"
+                                                :total="dateRange.totalCount">
+                                        </el-pagination>
+                                    </div>
+                                </el-tabs>
                             </div>
                         </el-tab-pane>
                         <el-tab-pane label="单位统计" name="org">
                             <div class="container" >
                                 <el-row :gutter="24">
                                     <el-col :span="24">
-                                        <el-tabs type="border-card">
-                                            <el-tab-pane >
-                                                <div>
-                                                    <table v-loading="tabLoading" id="tb1" class="tree_table">
-                                                        <thead >
-                                                        <tr>
-                                                            <th colspan="" rowspan="2">单位名称</th>
-                                                            <th colspan="2">考试分类</th>
-                                                            <th colspan="5">成绩分布</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="">普通考试</th>
-                                                            <th colspan="">执法资格考试</th>
-                                                            <th colspan="">60分以下</th>
-                                                            <th colspan="">60至70分</th>
-                                                            <th colspan="">70至80分</th>
-                                                            <th colspan="">80分至90分</th>
-                                                            <th colspan="">90以上</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody :class="opacity0?'opacity0':''" style="overflow: auto;">
-                                                        <tr v-for="(item,index) in deptStatData">
-                                                            <td :lang="item | objTstring">{{item.data.orgName}}</td>
-                                                            <td>{{item.data.normalExamCount}}</td>
-                                                            <td>{{item.data.enforceExamCount}}</td>
-                                                            <td>{{item.data.examScore1Count}}</td>
-                                                            <td>{{item.data.examScore2Count}}</td>
-                                                            <td>{{item.data.examScore3Count}}</td>
-                                                            <td>{{item.data.examScore4Count}}</td>
-                                                            <td>{{item.data.examScore5Count}}</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </el-tab-pane>
-                                        </el-tabs>
+                                        <div>
+                                            <table v-loading="tabLoading" id="tb1" class="tree_table">
+                                                <thead >
+                                                <tr>
+                                                    <th colspan="" rowspan="2">单位名称</th>
+                                                    <th colspan="2">考试分类</th>
+                                                    <th colspan="5">成绩分布</th>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="">普通考试</th>
+                                                    <th colspan="">执法资格考试</th>
+                                                    <th colspan="">60分以下</th>
+                                                    <th colspan="">60至70分</th>
+                                                    <th colspan="">70至80分</th>
+                                                    <th colspan="">80分至90分</th>
+                                                    <th colspan="">90以上</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody :class="opacity0?'opacity0':''" style="overflow: auto;">
+                                                <tr v-for="(item,index) in deptStatData">
+                                                    <td :lang="item | objTstring">{{item.data.orgName}}</td>
+                                                    <td>{{item.data.normalExamCount}}</td>
+                                                    <td>{{item.data.enforceExamCount}}</td>
+                                                    <td>{{item.data.examScore1Count}}</td>
+                                                    <td>{{item.data.examScore2Count}}</td>
+                                                    <td>{{item.data.examScore3Count}}</td>
+                                                    <td>{{item.data.examScore4Count}}</td>
+                                                    <td>{{item.data.examScore5Count}}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </el-col>
                                 </el-row>
                             </div>

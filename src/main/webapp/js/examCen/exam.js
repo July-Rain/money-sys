@@ -1,4 +1,4 @@
-var menuId =getUrlParam('id');
+var menuId = getUrlParam('id');
 var vm = new Vue({
     el: '#app',
     data: {
@@ -10,14 +10,14 @@ var vm = new Vue({
             status: "",
             pageNo: 1,
             pageSize: 1,
-            limit : 10,
+            limit: 10,
             count: 0
         },
         tableData: [],//表格数据
         visible: false,
         examConfig: {
             id: '',
-            examName:'',
+            examName: '',
             code: '',
             value: '',
             remark: '',
@@ -69,7 +69,7 @@ var vm = new Vue({
             this.reload();
         },
         addConfig: function () {
-            parent.location.href =baseURL+"modules/examCen/examConfig.html";
+            parent.location.href = baseURL + "modules/examCen/examConfig.html";
         },
         handleEdit: function (index, row) {
             this.title = "修改参数";
@@ -117,6 +117,8 @@ var vm = new Vue({
             });
 
         },
+        handleChange: function () {
+        },
         closeDia: function () {
             this.dialogConfig = false;
             vm.reload();
@@ -143,8 +145,11 @@ var vm = new Vue({
 
         toChild: function (item) {
 
-            parent.location.href =baseURL+item.url+"?id="+item.id;
+            parent.location.href = baseURL + item.url + "?id=" + item.id;
 
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     }
 });

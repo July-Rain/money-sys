@@ -213,6 +213,9 @@ var vm = new Vue({
                 isAnswer: 0
             }
             vm.addConfigFlag = false;
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     },
     created: function () {

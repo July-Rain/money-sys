@@ -10,97 +10,100 @@
 <body>
 <div id="app" v-cloak>
     <div class="container">
-        <el-row :gutter="24">
-            <el-col :span="24">
-                <el-tabs type="border-card">
-                    <el-tab-pane label="检索">
-                        <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>管理中心</el-breadcrumb-item>
+            <el-breadcrumb-item>考试管理</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="info_card">
+            <div class="card_title"></div>
+            <div class="card_contain">
+                <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                            <el-form-item prop="code">
-                                <el-input v-model="formInline.code" placeholder="参数编码" size="mini"></el-input>
-                            </el-form-item>
-                            <el-form-item prop="value">
-                                <el-input v-model="formInline.value" placeholder="参数值" size="mini"></el-input>
-                            </el-form-item>
+                    <el-form-item prop="code">
+                        <el-input v-model="formInline.code" placeholder="参数编码" size="mini"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="value">
+                        <el-input v-model="formInline.value" placeholder="参数值" size="mini"></el-input>
+                    </el-form-item>
 
-                            <el-form-item prop="status">
-                                <el-select v-model="formInline.status" placeholder="状态" size="mini">
-                                    <el-option label="有效" value="1"></el-option>
-                                    <el-option label="无效" value="0"></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                                <el-button @click="resetForm('formInline')">重置</el-button>
+                    <el-form-item prop="status">
+                        <el-select v-model="formInline.status" placeholder="状态" size="mini">
+                            <el-option label="有效" value="1"></el-option>
+                            <el-option label="无效" value="0"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
+                        <el-button @click="resetForm('formInline')">重置</el-button>
 
-                            </el-form-item>
-                        </el-form>
-                        <div>
-                            <el-button type="primary" @click="addConfig">新增</el-button>
-                            <el-table
-                                    :data="tableData"
-                                    border
-                                    style="width: 100%">
-                                <el-table-column
-                                        prop="examName"
-                                        label="试卷名称"
-                                        width="280"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="examTypeName"
-                                        label="试卷类型"
-                                        width="130"
-                                >
-                                </el-table-column>
+                    </el-form-item>
+                </el-form>
 
-                                <el-table-column
-                                        prop="organizedOrgCode"
-                                        label="组考单位"
-                                        width="150"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="startTime"
-                                        label="考试开始时间"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="endTime"
-                                        label="考试结束时间"
-                                >
-                                </el-table-column>
-                                <el-table-column label="操作" width="300">
-                                    <template slot-scope="scope">
-                                        <el-button
-                                                size="mini"
-                                                @click="handleEdit(scope.$index, scope.row)">查看
-                                        </el-button>
-                                        <el-button
-                                                size="mini"
-                                                @click="handleEdit(scope.$index, scope.row)">编辑
-                                        </el-button>
-                                        <el-button
-                                                size="mini"
-                                                @click="handleDel(scope.$index, scope.row)">删除
-                                        </el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
-                            </el-pagination>
-                        </div>
-                    </el-tab-pane>
-                </el-tabs>
-            </el-col>
-        </el-row>
+            </div>
+        </div>
+        <div>
+            <el-button type="primary" @click="addConfig">新增</el-button>
+            <el-table
+                    :data="tableData"
+                    border
+                    style="width: 100%">
+                <el-table-column
+                        prop="examName"
+                        label="试卷名称"
+                        width="280"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="examTypeName"
+                        label="试卷类型"
+                        width="130"
+                >
+                </el-table-column>
+
+                <el-table-column
+                        prop="organizedOrgCode"
+                        label="组考单位"
+                        width="150"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="startTime"
+                        label="考试开始时间"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="endTime"
+                        label="考试结束时间"
+                >
+                </el-table-column>
+                <el-table-column label="操作" width="300">
+                    <template slot-scope="scope">
+                        <el-button
+                                size="mini"
+                                @click="handleEdit(scope.$index, scope.row)">查看
+                        </el-button>
+                        <el-button
+                                size="mini"
+                                @click="handleEdit(scope.$index, scope.row)">编辑
+                        </el-button>
+                        <el-button
+                                size="mini"
+                                @click="handleDel(scope.$index, scope.row)">删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="formInline.currPage"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="formInline.pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="formInline.totalCount">
+            </el-pagination>
+        </div>
 
 
         <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
@@ -250,7 +253,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="11">
-                        <el-form-item label="组考单位：" prop="organizedOrgCode">
+                        <el-form-item label="组考单位：" prop="organizedOrgCode"></el-form-item>
                     </el-col>
                     <el-col :span="11">
                         <el-form-item label="阅卷方式：" prop="reachRewardType">

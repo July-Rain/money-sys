@@ -255,6 +255,9 @@ var vm = new Vue({
                     result.dictList;
                 }
             });*/
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     }
 });

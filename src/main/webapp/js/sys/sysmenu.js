@@ -149,6 +149,9 @@ var vm = new Vue({
                 perms: '',
                 parentId: '0'
             };
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     }
 });

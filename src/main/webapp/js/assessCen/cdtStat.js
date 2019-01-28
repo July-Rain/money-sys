@@ -29,25 +29,16 @@ var vm = new Vue({
         },
         tabLoading:true,
         opacity0:true,
+        activeName:"person",
+        dateRange: { //学情看板日期区间
+            startTime: '',
+            endTime: '',
+            currPage: 1,
+            pageSize: 10,
+            totalCount:0
+        },
     },
     created: function () {
-        this.$nextTick(function () {
-            //加载部门树
-            $.ajax({
-                type: "POST",
-                url: baseURL + "org/tree",
-                contentType: "application/json",
-                success: function(result){
-
-                    if(result.code === 0){
-                        vm.treeData = result.orgList;
-                        console.info("tree",vm.treeData)
-                    }else{
-                        alert(result.msg);
-                    }
-                }
-            });
-        })
         this.$nextTick(function () {
             this.redeptReload();
         })
@@ -70,9 +61,9 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
-                        vm.formInline.currPage = result.page.currPage;
-                        vm.formInline.pageSize = result.page.pageSize;
-                        vm.formInline.totalCount = parseInt(result.page.totalCount);
+                        vm.dateRange.currPage = result.page.currPage;
+                        vm.dateRange.pageSize = result.page.pageSize;
+                        vm.dateRange.totalCount = parseInt(result.page.totalCount);
                     } else {
                         alert(result.msg);
                     }
@@ -195,6 +186,14 @@ var vm = new Vue({
                 }
             });
         },
+        handleTabClick:function (tab,event) {
+            if(tab.name=='org'){
+                this.obtainTableData();
+                console.log("加载数据");
+            }else{
+                this.redeptReload();
+            }
+        }
     },
     filters: {
         objTstring: function (value) {

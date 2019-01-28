@@ -9,108 +9,78 @@
 </style>
 <body>
 <div id="app" v-cloak>
-    <div class="header">
-        <div class="header-left">
-            <img src="${rc.contextPath}/statics/img/logo.png">
-            <a href="javascript:;">江苏省公安厅法律学校</a>
-        </div>
-    </div>
     <div class="container">
-        <el-row :gutter="24">
-            <el-col>
-                <el-tabs type="border-card">
-                    <el-tab-pane label="每日一题配置">
-                        <!--<el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>管理中心</el-breadcrumb-item>
+            <el-breadcrumb-item>每日一题</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div>
+            <el-button type="primary" @click="addConfig">新增</el-button>
+            <el-table
+                    :data="tableData"
+                    border
+                    style="width: 100%">
+                <el-table-column
+                        prop="id"
+                        label="序号"
+                        width="200"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="ruleName"
+                        label="规则名称"
+                        width="240"
+                >
+                </el-table-column>
 
-                            <el-form-item prop="code">
-                                <el-input v-model="formInline.code" placeholder="规则名称" size="mini"></el-input>
-                            </el-form-item>
-                            <el-form-item prop="value">
-                                <el-input v-model="formInline.value" placeholder="参数值" size="mini"></el-input>
-                            </el-form-item>
-
-                            <el-form-item prop="status">
-                                <el-select v-model="formInline.status" placeholder="状态" size="mini">
-                                    <el-option label="有效" value="1"></el-option>
-                                    <el-option label="无效" value="0"></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                                <el-button @click="resetForm('formInline')">重置</el-button>
-
-                            </el-form-item>
-                        </el-form>-->
-                        <div>
-                            <el-button type="primary" @click="addConfig">新增</el-button>
-                            <el-table
-                                    :data="tableData"
-                                    border
-                                    style="width: 100%">
-                                <el-table-column
-                                        prop="id"
-                                        label="序号"
-                                        width="200"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="ruleName"
-                                        label="规则名称"
-                                        width="240"
-                                >
-                                </el-table-column>
-
-                                <el-table-column
-                                        prop="creatUserName"
-                                        label="配置人"
-                                        width="240"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        :formatter="dateFormat"
-                                        prop="beginTime"
-                                        label="规则开始时间"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        :formatter="dateFormat"
-                                        prop="endTime"
-                                        label="规则结束时间"
-                                >
-                                </el-table-column>
-                                <el-table-column label="操作" width="300">
-                                    <template slot-scope="scope">
-                                        <el-button
-                                                size="mini"
-                                                @click="handlelook(scope.$index, scope.row)">查看
-                                        </el-button>
-                                        <el-button
-                                                size="mini"
-                                                @click="handleEdit(scope.$index, scope.row)">编辑
-                                        </el-button>
-                                        <el-button
-                                                size="mini"
-                                                @click="handleDel(scope.$index, scope.row)">删除
-                                        </el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
+                <el-table-column
+                        prop="creatUserName"
+                        label="配置人"
+                        width="240"
+                >
+                </el-table-column>
+                <el-table-column
+                        :formatter="dateFormat"
+                        prop="beginTime"
+                        label="规则开始时间"
+                >
+                </el-table-column>
+                <el-table-column
+                        :formatter="dateFormat"
+                        prop="endTime"
+                        label="规则结束时间"
+                >
+                </el-table-column>
+                <el-table-column label="操作" width="300">
+                    <template slot-scope="scope">
+                        <el-button
+                                size="mini"
+                                @click="handlelook(scope.$index, scope.row)">查看
+                        </el-button>
+                        <el-button
+                                size="mini"
+                                @click="handleEdit(scope.$index, scope.row)">编辑
+                        </el-button>
+                        <el-button
+                                size="mini"
+                                @click="handleDel(scope.$index, scope.row)">删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
 
 
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
-                            </el-pagination>
-                        </div>
-                    </el-tab-pane>
-                </el-tabs>
-            </el-col>
-        </el-row>
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurChange"
+                    :current-page="formInline.page"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="formInline.limit"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="formInline.count">
+            </el-pagination>
+        </div>
 
 
         <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
@@ -118,12 +88,12 @@
                      size="mini">
                 <el-row>
                     <el-col>
-                        <el-form-item label="每日一题规则名称" >
+                        <el-form-item label="每日一题规则名称">
                             <el-input v-model="dailyConfig.ruleName" placeholder="请输入考试名称" clearable></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col >
-                        <el-form-item label="出题规则" >
+                    <el-col>
+                        <el-form-item label="出题规则">
                             <el-radio-group v-model="dailyConfig.createRule">
                                 <el-radio label="1">统一试题</el-radio>
                                 <el-radio label="2">随机不同</el-radio>
@@ -133,12 +103,14 @@
                     <el-col>
                         <el-form-item label="奖励积分">
                             <template>
-                                <el-input-number v-model="dailyConfig.obtainPoint" @change="handleChange" :min="0" :max="1000" label="请输入">
-                                </el-input-number>分
+                                <el-input-number v-model="dailyConfig.obtainPoint" @change="handleChange" :min="0"
+                                                 :max="1000" label="请输入">
+                                </el-input-number>
+                                分
                             </template>
                         </el-form-item>
                     </el-col>
-                    <el-col >
+                    <el-col>
                         <el-form-item label="是否显示法律依据">
                             <el-radio-group v-model="dailyConfig.isShowLegal">
                                 <el-radio label="1">是</el-radio>
@@ -178,7 +150,7 @@
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col >
+                    <el-col>
                         <el-form-item label="结束时间">
                             <el-date-picker
                                     v-model="dailyConfig.endTime"
@@ -202,7 +174,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col>
-                        <el-form-item label="试题难度" >
+                        <el-form-item label="试题难度">
                             <el-radio-group v-model="dailyConfig.questionDifficulty">
                                 <el-radio :label="item.code" v-for="item in itemjibie">
                                     {{item.value}}
@@ -210,7 +182,7 @@
                             </el-radio-group>
                         </el-form-item>
                     </el-col>
-                    <el-col  v-if="xxx">
+                    <el-col v-if="xxx">
                         <el-form-item>
                             <el-button type="primary" @click="saveOrUpdate('dailyConfig')">保存</el-button>
                             <el-button @click="closeDia">取消</el-button>
@@ -224,5 +196,5 @@
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/manageCen/dailyQuestion.js"></script>
+<script src="${rc.contextPath}/js/manageCen/dailyQuestion.js?_${.now?long}"></script>
 </html>

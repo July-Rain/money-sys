@@ -36,6 +36,10 @@ var vm = new Vue({
             label: 'classifyName'
         },
         dialogLaw:false,//法律分类的弹窗
+        dialogVideo:false, // 视频播放弹窗
+        thisVideoId:null, // 视频播放 - id
+        thisVideoContentUrl:'', // 视频播放 - 视频图片url
+        thisVideoPicAccUrl:'', // 视频播放 - 视频图片url
         multipleSelection:[],//法律分类弹窗
         playTime:0,//播放时间
         oldTime:0,//原来播放时间
@@ -43,7 +47,6 @@ var vm = new Vue({
     created: function () {
 
         this.$nextTick(function () {
-
             //法律分类树数据
             $.ajax({
                 type: "POST",
@@ -57,12 +60,8 @@ var vm = new Vue({
                     }
                 }
             });
-
-        })
-        this.$nextTick(function () {
             this.reload();
-        })
-
+        });
     },
     methods: {
         // 查询
@@ -116,8 +115,6 @@ var vm = new Vue({
                 }
             });
         },
-
-
         // el-tree节点点击事件
         handleNodeClick: function (data) {
             vm.formInline.stuLawid=data.id;
@@ -148,6 +145,15 @@ var vm = new Vue({
         },
         cancelLaw: function () {
             this.dialogLaw=false;
+        },
+        onVideoDialog: function (id,contentUrl,videoPicAccUrl){
+            this.dialogVideo = true;
+            this.$nextTick(function () {
+                this.onPlay(id);
+                this.thisVideoId = id;
+                this.thisVideoContentUrl = contentUrl;
+                this.thisVideoPicAccUrl = videoPicAccUrl;
+            })
         },
         onPlay:function (id) {
             //获取当前选择对象

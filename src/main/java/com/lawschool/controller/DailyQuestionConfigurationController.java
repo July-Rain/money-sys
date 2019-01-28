@@ -1,10 +1,12 @@
 package com.lawschool.controller;
 
 import com.lawschool.annotation.SysLog;
+import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.DailyQuestionConfiguration;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
+import com.lawschool.beans.practicecenter.TaskExerciseEntity;
 import com.lawschool.form.QuestForm;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.DailyQuestionConfigurationService;
@@ -21,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/dailyQuestion")
-public class DailyQuestionConfigurationController {
+public class DailyQuestionConfigurationController extends AbstractController {
     @Autowired
     DailyQuestionConfigurationService dailyQuestionConfigurationService;
 
@@ -34,8 +36,16 @@ public class DailyQuestionConfigurationController {
     @SysLog("展示每日一题配置")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public Result findPage(@RequestParam Map<String, Object> params){
+        // 获取登录用户信息
+        User user = getUser();
+        // 初始化查询参数
         DailyQuestionConfiguration entity = new DailyQuestionConfiguration();
-        Page<DailyQuestionConfiguration> page = dailyQuestionConfigurationService.findPage(new Page<DailyQuestionConfiguration>(params),entity);
+        entity.setCreateUser(user.getId());
+
+        Page<DailyQuestionConfiguration> page = dailyQuestionConfigurationService.findPage(
+                new Page<DailyQuestionConfiguration>(params), entity
+        );
+//        Page<DailyQuestionConfiguration> page = dailyQuestionConfigurationService.findPage(new Page<DailyQuestionConfiguration>(params),entity);
         return Result.ok().put("page",page);
     }
 

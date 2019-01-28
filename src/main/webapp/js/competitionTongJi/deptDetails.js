@@ -40,7 +40,7 @@ var vm = new Vue({
         look: function(index,row)
         {
             vm.dialog2=true;
-            vm.src=baseURL+"modules/competitionTongJi/peopleDetails.html?uid="+row.userid;
+            vm.src=baseURL+"modules/contestTongJi/peopleDetails.html?uid="+row.userid;
         },
         reload: function () {
 

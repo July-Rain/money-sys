@@ -10,6 +10,11 @@
 <body>
 <div id="app" v-cloak>
     <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>系统管理</el-breadcrumb-item>
+            <el-breadcrumb-item>字典管理</el-breadcrumb-item>
+        </el-breadcrumb>
         <el-row :gutter="24">
             <el-col :span="4">
                 <!--对于同一级的节点，每次只能展开一个-->
@@ -21,8 +26,9 @@
                 </el-tree>
             </el-col>
             <el-col :span="20">
-                <el-tabs type="border-card">
-                    <el-tab-pane label="检索">
+                <div class="info_card">
+                    <div class="card_title"></div>
+                    <div class="card_contain">
                         <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
                             <el-form-item prop="userName" label="姓名">
                                 <el-input v-model="formInline.userName" placeholder="姓名" size="mini"></el-input>
@@ -35,79 +41,80 @@
                                 <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
                             </el-form-item>
                         </el-form>
-                        <el-button @click="handleAdd">增加</el-button>
+                    </div>
+                </div>
 
-                        <div>
-                            <el-table
-                                    :data="tableData"
-                                    border
-                                    style="width: 100%">
-                                <el-table-column
-                                        type="index"
-                                        width="50">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="userName"
-                                        label="姓名"
-                                        width="280"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="userPoliceId"
-                                        label="警号"
-                                        width="280"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="userCode"
-                                        label="身份证号"
-                                        width="180"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="orgName"
-                                        label="部门名称"
-                                >
-                                </el-table-column>
+                <el-button @click="handleAdd">增加</el-button>
 
-                                </el-table-column>
+                <div>
+                    <el-table
+                            :data="tableData"
+                            border
+                            style="width: 100%">
+                        <el-table-column
+                                type="index"
+                                width="50">
+                        </el-table-column>
+                        <el-table-column
+                                prop="userName"
+                                label="姓名"
+                                width="280"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="userPoliceId"
+                                label="警号"
+                                width="280"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="userCode"
+                                label="身份证号"
+                                width="180"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="orgName"
+                                label="部门名称"
+                        >
+                        </el-table-column>
 
-                                <el-table-column label="操作"  prop="userStatus">
-                                    <template slot-scope="scope">
-                                        <el-button
-                                                size="mini"
-                                                @click="handleEdit(scope.$index, scope.row)">重置密码
-                                        </el-button>
+                        </el-table-column>
+
+                        <el-table-column label="操作"  prop="userStatus">
+                            <template slot-scope="scope">
+                                <el-button
+                                        size="mini"
+                                        @click="handleEdit(scope.$index, scope.row)">重置密码
+                                </el-button>
 
 
-                                        <el-button
-                                                size="mini" v-if="scope.row.userStatus == '2000'"
-                                                type="danger"
-                                                @click="handleDel(scope.$index, scope.row)">禁用
-                                        </el-button>
+                                <el-button
+                                        size="mini" v-if="scope.row.userStatus == '2000'"
+                                        type="danger"
+                                        @click="handleDel(scope.$index, scope.row)">禁用
+                                </el-button>
 
-                                        <el-button
-                                                size="mini" v-if="scope.row.userStatus == '800'"
-                                                type="primary"
-                                                @click="handleRecovery(scope.$index, scope.row)">恢复
-                                        </el-button>
+                                <el-button
+                                        size="mini" v-if="scope.row.userStatus == '800'"
+                                        type="primary"
+                                        @click="handleRecovery(scope.$index, scope.row)">恢复
+                                </el-button>
 
-                                        <el-button @click="handleUpt(scope.$index, scope.row)">修改</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
-                            </el-pagination>
-                        </div>
-                    </el-tab-pane>
-                </el-tabs>
+                                <el-button @click="handleUpt(scope.$index, scope.row)">修改</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="formInline.currPage"
+                            :page-sizes="[10, 20, 30, 40]"
+                            :page-size="formInline.pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="formInline.totalCount">
+                    </el-pagination>
+                </div>
             </el-col>
         </el-row>
 

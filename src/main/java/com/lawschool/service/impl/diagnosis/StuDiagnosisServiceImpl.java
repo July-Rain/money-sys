@@ -1,12 +1,17 @@
 package com.lawschool.service.impl.diagnosis;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.lawschool.beans.User;
 import com.lawschool.beans.diagnosis.DiagnosisEntity;
 import com.lawschool.beans.diagnosis.OrgDiagnosisEntity;
+import com.lawschool.beans.diagnosis.StuDiagnosisEntity;
+import com.lawschool.beans.law.CaseAnalysisEntity;
+import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.dao.diagnosis.StuDiagnosisDao;
 import com.lawschool.service.UserService;
 import com.lawschool.service.diagnosis.StuDiagnosisService;
+import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,5 +129,14 @@ public class StuDiagnosisServiceImpl implements StuDiagnosisService {
     @Override
     public List<OrgDiagnosisEntity> orgDiaStat(Map<String, String> param) {
         return diagnosisDao.orgDiaStat(param);
+    }
+
+    @Override
+    public PageUtils allStuStatByOrgId(Map<String, String> param) {
+        Page<StuDiagnosisEntity> page = new Page<StuDiagnosisEntity>(Integer.parseInt(param.get("currPage")),Integer.parseInt(param.get("pageSize")));
+        page.setRecords(diagnosisDao.allStuStatByOrgId(page,param));
+        int userNum =diagnosisDao.countUser(param.get("orgId"));
+        page.setTotal(userNum);
+        return new PageUtils(page);
     }
 }
