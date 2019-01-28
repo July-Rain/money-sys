@@ -396,7 +396,6 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
 
 
     @Override
-    @SysLog("保存做过的每日一题")
     @Transactional(rollbackFor = Exception.class)
     public void saveQuestion(TestQuestions testQuestions, String myanswer) {
         User u = (User) SecurityUtils.getSubject().getPrincipal();
