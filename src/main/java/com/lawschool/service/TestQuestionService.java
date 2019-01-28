@@ -93,4 +93,6 @@ public interface TestQuestionService extends AbstractService<TestQuestions> {
     Map<String, String> countByThemeId();
 
     boolean updateAnswerId(String id, String answerId);
+
+    boolean mySave(TestQuestions entity);
 }

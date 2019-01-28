@@ -113,5 +113,5 @@ public interface StuMediaService  extends AbstractService<StuMedia> {
     
     int updateCount(String stuId);
 
-    
+    boolean updateStatus(String id, String status);
 }
