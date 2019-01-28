@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+        </head>
+        <style>
+
+        </style>
+<body>
+<div id="app" v-cloak>
+
+    <div class="container">
+        <el-row :gutter="24">
+            <el-col :span="24">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="个人统计饼图" style="height:600px;">
+                        <div id="pie1" style="width: 300px;height:200px;margin: 0 auto"></div>
+                        <div id="pie2" style="width: 300px;height:200px;margin: 0 auto"></div>
+                        <div id="pie3" style="width: 300px;height:200px;margin: 0 auto"></div>
+                    </el-tab-pane>
+                    <el-tab-pane label="个人统计详情" style="height:600px;">
+                        <div>
+
+                            <el-table
+                                    :data="tableData"
+                                    border
+                                    style="width: 100%">
+
+                                <el-table-column
+                                        prop="userName"
+                                        label="人员"
+                                        width="400"
+                                        header-align="center"
+                                        align="center">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="checkpoint"
+                                        label="闯关竞赛积分"
+                                        width="400"
+                                        header-align="center"
+                                        align="center"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="pk"
+                                        label="在线比武积分"
+                                        width="400"
+                                        header-align="center"
+                                        align="center"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="leitai"
+                                        label="擂台赛积分"
+                                        width="400"
+                                        header-align="center"
+                                        align="center"
+                                >
+                                </el-table-column>
+
+                                <el-table-column
+                                        label="操作"
+                                        header-align="center"
+                                        align="center"
+                                        width="180">
+                                    <template slot-scope="scope">
+                                        <el-button
+                                                size="mini"
+                                                @click="look(scope.$index, scope.row)">查看详情
+                                        </el-button>
+
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="formInline.currPage"
+                                    :page-sizes="[10, 20, 30, 40]"
+                                    :page-size="formInline.pageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="formInline.totalCount">
+                            </el-pagination>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="部门统计" style="height:600px;">
+                        <div>
+                            <table v-loading="tabLoading" id="tb1" class="tree_table">
+                                <thead >
+                                <tr>
+                                    <th>单位名称</th>
+                                    <th>总积分</th>
+                                    <th>闯关总积分</th>
+                                    <th>在线比武总次数</th>
+                                    <th>在线比武胜利次数</th>
+                                    <th>擂台赛总次数</th>
+                                    <th>擂台赛胜利次数</th>
+                                </tr>
+
+                                </thead>
+                                <tbody :class="opacity0?'opacity0':''" style="overflow: auto;">
+                                <tr v-for="(item,index) in deptStatData">
+                                    <td :lang="item | objTstring">{{item.data.orgName}}</td>
+                                    <td>{{item.data.allCount}}</td>
+                                    <td>{{item.data.chuangGuanCount}}</td>
+                                    <td>{{item.data.pkAllCount}}</td>
+                                    <td>{{item.data.pkwinCount}}</td>
+                                    <td>{{item.data.leitaiAllCount}}</td>
+                                    <td>{{item.data.leitaiwinCount}}</td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
+
+        <el-dialog :visible.sync="dialog2">
+            <iframe class="dialogIfr" :src="src" width="100%" height="auto" frameborder="1" name="iframe名称">
+
+            </iframe>
+
+        </el-dialog>
+    </div>
+</div>
+</body>
+
+
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/competitionTongJi/deptTree.js?_${.now?long}"></script>
+<script src="${rc.contextPath}/statics/plugins/otreetable/otreetable.js"></script>
+</html>

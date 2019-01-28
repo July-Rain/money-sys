@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.Integral;
 import com.lawschool.beans.vo.CompetitionStatisticsByDeptVo;
+import com.lawschool.beans.vo.OrgCompetitionVO;
 
 import java.util.List;
 import java.util.Map;
@@ -17,4 +18,6 @@ public interface IntegralDao  extends AbstractDao<Integral> {
 
     List<CompetitionStatisticsByDeptVo> userByDeptList(Page page, Map<String, Object> params);
     int userByDeptListCount(Map<String, Object> params);
+
+    List<OrgCompetitionVO> orgDiaStat(Map<String,String> param);
 }

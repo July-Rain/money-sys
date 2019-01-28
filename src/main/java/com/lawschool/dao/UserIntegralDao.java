@@ -17,17 +17,17 @@ public interface UserIntegralDao extends AbstractDao<UserIntegral> {
     UserIntegral getInfo(User user);
 
     //学分 人员维度
-    List<UserIntegral> crdStatUser(Pagination page,@Param("orgCode") String orgCode);
+    List<UserIntegral> crdStatUser(Pagination page,@Param("orgId") String orgId);
 
     //学分 部门维度
-    List<CrdStatOrg> crdStatOrg();
+    List<CrdStatOrg> crdStatOrg(@Param("orgId") String orgId);
 
     //积分 人员维度
-    List<UserIntegral> itrStatUser(Pagination page,@Param("orgCode") String orgCode);
+    List<UserIntegral> itrStatUser(Pagination page,@Param("orgId") String orgId);
 
 
     //积分 部门维度
-    List<ItrStatOrg> itrStatOrg();
+    List<ItrStatOrg> itrStatOrg(@Param("orgId") String orgId);
 
 
 }

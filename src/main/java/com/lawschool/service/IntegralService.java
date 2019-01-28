@@ -2,8 +2,11 @@ package com.lawschool.service;
 
 import com.lawschool.beans.Integral;
 import com.lawschool.beans.User;
+import com.lawschool.beans.diagnosis.OrgDiagnosisEntity;
+import com.lawschool.beans.vo.OrgCompetitionVO;
 import com.lawschool.util.PageUtils;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,4 +43,7 @@ public interface IntegralService {
 
 
     PageUtils userByDeptList(Map<String, Object> params, String deptcode);
+
+    List<OrgCompetitionVO> orgDiaStat(Map<String,String> param);
+
 }
