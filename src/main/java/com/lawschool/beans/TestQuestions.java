@@ -39,7 +39,7 @@ public class TestQuestions extends DataEntity<TestQuestions> {
 
     private String useNumber;//使用次数
     private String rigthNumber;//正确次数
-    private Boolean isEnble;//启用禁用
+    private String isEnble;//启用禁用
     private String video;// 视频
 
     @TableField(exist = false)
@@ -242,11 +242,11 @@ public class TestQuestions extends DataEntity<TestQuestions> {
         this.typeValue = typeValue;
     }
 
-    public Boolean getIsEnble() {
+    public String getIsEnble() {
         return isEnble;
     }
 
-    public void setIsEnble(Boolean isEnble) {
+    public void setIsEnble(String isEnble) {
         this.isEnble = isEnble;
     }
 
