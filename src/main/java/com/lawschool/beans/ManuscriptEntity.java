@@ -1,5 +1,7 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
 
 /**
@@ -8,28 +10,99 @@ import com.lawschool.base.DataEntity;
  * @Date 2018/12/26 19:07
  * @Versiom 1.0
  **/
+@TableName("LAW_MANUSCRIPT")
 public class ManuscriptEntity extends DataEntity<ManuscriptEntity> {
 
-    private String auditUser;//审核人
-    private String auditTime;//审核时间
-    private String auditStatus;//审核状态
-    private String manuscriptType;//稿件类型（试题、学习内容）
+    private static final long serialVersionUID = 3559417694371003546L;
 
-    //*******=================== 试题类型字段 =====================*******
-    private String typeId;//试题类型
-    private String questionDifficulty;//难度
-    private String questionType;//题型
-    private String answerChoiceNumber;//答案个数
-    private String answerId;//正确答案的id
-    private String specialKnowledgeId;//专项知识id
-    private String policeClassification;//警种
-    private String legalBasis;//法律依据
-    private String answerDescrible;//答案描述
+    public static final Integer FILE_TYPE_QUE = 0;// 题库
+    public static final Integer FILE_TYPE_STU = 1;// 学习
+    public static final Integer STATUS_WAIT = 0;// 待审核
+    public static final Integer STATUS_PASS = 1;// 审核通过
+    public static final Integer STATUS_FAIL = 2;// 审核失败
 
-    //*******=================== 学习内容类型字段 =====================*******
-    private String stuCode;//课件编码
-    private String stuTitle;//标题
+    private Integer type;// 投稿类型，0题库、1学习
+    private String sourceId;// 来源ID
+    private Integer status;// 审核状态
+    private String auditor;// 审核人
+    private String opinion;// 审核意见
+    private String author;// 作者
+    private String orgCode;// 作者部门
 
-    //*******=================== 共用字段 =====================*******
-    private String comContent;//内容
+    @TableField(exist = false)
+    private TestQuestions test;
+    @TableField(exist = false)
+    private StuMedia stu;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getAuditor() {
+        return auditor;
+    }
+
+    public void setAuditor(String auditor) {
+        this.auditor = auditor;
+    }
+
+    public String getOpinion() {
+        return opinion;
+    }
+
+    public void setOpinion(String opinion) {
+        this.opinion = opinion;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public TestQuestions getTest() {
+        return test;
+    }
+
+    public void setTest(TestQuestions test) {
+        this.test = test;
+    }
+
+    public StuMedia getStu() {
+        return stu;
+    }
+
+    public void setStu(StuMedia stu) {
+        this.stu = stu;
+    }
+
+    public String getOrgCode() {
+        return orgCode;
+    }
+
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
+    }
 }

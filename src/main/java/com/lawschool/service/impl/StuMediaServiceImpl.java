@@ -312,4 +312,9 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         stuMedia.setId(stuId);
         return baseMapper.updateById(stuMedia);
     }
+
+    public boolean updateStatus(String id, String status){
+
+        return dao.updateStatus(id, status);
+    }
 }

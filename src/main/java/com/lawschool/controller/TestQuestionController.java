@@ -2,16 +2,16 @@ package com.lawschool.controller;
 
 
 import com.lawschool.annotation.SysLog;
-import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
-import com.lawschool.beans.Answer;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +24,6 @@ public class TestQuestionController {
 
     @Autowired
     private AnswerService answerService;
-
 
     /**
      * 查询所有的专项知识试题
@@ -60,16 +59,15 @@ public class TestQuestionController {
      */
     @SysLog("保存试题")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @Transactional(rollbackFor = Exception.class)
     public Result save(@RequestBody TestQuestions testQuestions) {
-        testQuestionService.save(testQuestions);
-        //先删除问题下的答案
-        answerService.deleteByQuestionId(testQuestions.getId());
-        //重新保存答案
-        for (Answer answer : testQuestions.getAnswerList()){
-            answer.setQuestionId(testQuestions.getId());
-            answerService.save(answer);
+
+        boolean result = testQuestionService.mySave(testQuestions);
+        if(result){
+            return Result.ok();
+        } else {
+            return Result.error("保存失败");
         }
-        return Result.ok();
     }
 
     /**
@@ -86,10 +84,13 @@ public class TestQuestionController {
      * 删除试题
      */
     @SysLog("删除试题")
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Result deleteById(@RequestBody List<String> idList) {
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    public Result deleteById(@PathVariable("id") String id) {
+        List<String> idList = new ArrayList<>(1);
+        idList.add(id);
+
         testQuestionService.delete(idList);
-        //删除答案
+        // 删除答案
         answerService.deleteByQuestionIds(idList);
         return Result.ok();
     }

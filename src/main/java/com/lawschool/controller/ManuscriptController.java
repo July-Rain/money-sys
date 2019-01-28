@@ -2,12 +2,18 @@ package com.lawschool.controller;
 
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
-import com.lawschool.beans.ManuscriptEntity;
+import com.lawschool.beans.*;
+import com.lawschool.form.CommonForm;
+import com.lawschool.service.AnswerService;
 import com.lawschool.service.ManuscriptService;
+import com.lawschool.service.StuMediaService;
+import com.lawschool.service.TestQuestionService;
 import com.lawschool.util.Result;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -24,39 +30,92 @@ public class ManuscriptController extends AbstractController {
     @Autowired
     private ManuscriptService manuscriptService;
 
+    @Autowired
+    private TestQuestionService testQuestionService;
+
+    @Autowired
+    private StuMediaService StuMediaService;
+
+    @Autowired
+    private AnswerService answerService;
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result list(@RequestParam Map<String, Object> params){
-        Page<ManuscriptEntity> page = manuscriptService.findPage(new Page<ManuscriptEntity>(params), new ManuscriptEntity());
+        Page<ManuscriptEntity> page = manuscriptService.findPage(new Page<ManuscriptEntity>(params),
+                new ManuscriptEntity());
         return Result.ok().put("page", page);
     }
 
-    @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
-    public Result info(@PathVariable("id") String id){
-        ManuscriptEntity manuscriptEntity = manuscriptService.findOne(id);
-        return Result.ok().put("data", manuscriptEntity);
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public Result info(@RequestParam("id") String id){
+        ManuscriptEntity entity = manuscriptService.findOne(id);
+
+        Integer type = entity.getType();
+        String sourceId = entity.getSourceId();
+        if(type == 0){
+            TestQuestions test = testQuestionService.findOne(sourceId);
+            // 获取习题的选项信息
+            List<Answer> anList = answerService.getAnswerByQid(test.getId());
+            String answerIds = test.getAnswerId();
+            if(StringUtils.isBlank(answerIds)){
+                throw new RuntimeException("习题信息错误...");
+            }
+            String[] arr = answerIds.split(",");
+
+            for(Answer answer : anList){
+                String key = answer.getId();
+                if(Arrays.asList(arr).contains(key)){
+                    answer.setIsAnswer(1);
+                } else {
+                    answer.setIsAnswer(0);
+                }
+            }
+            test.setAnswerList(anList);
+            entity.setTest(test);
+        } else {
+            StuMedia media = StuMediaService.findOne(sourceId);
+            entity.setStu(media);
+        }
+
+        return Result.ok().put("data", entity);
     }
 
+    /**
+     * 保存
+     * @param entity
+     * @return
+     */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody ManuscriptEntity entity){
-        manuscriptService.save(entity);
+        User user = getUser();
+
+        String author = user.getUserName();
+        entity.setAuthor(author);
+
+        boolean result = manuscriptService.mySave(entity);
+        if(result){
+            return Result.ok();
+        } else {
+            return Result.error("保存失败...");
+        }
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    public Result delete(@PathVariable("id") String id){
+        manuscriptService.myDelete(id);
         return Result.ok();
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Result delete(@RequestBody List<String> ids){
-        manuscriptService.delete(ids);
-        return Result.ok();
-    }
+    @RequestMapping(value = "/examine", method = RequestMethod.POST)
+    public Result examine(@RequestBody CommonForm form){
+        String id = form.getKey();
+        String type = form.getValue();
 
-    @RequestMapping(value = "/auditList", method = RequestMethod.GET)
-    public Result auditList(@RequestParam Map<String, Object> params){
-
-        return Result.ok();
-    }
-
-    @RequestMapping(value = "/audit", method = RequestMethod.POST)
-    public Result audit(@RequestParam String id, @RequestParam String audit){
-
-        return Result.ok();
+        boolean result = manuscriptService.examine(id, type);
+        if(result){
+            return Result.ok();
+        } else {
+            return Result.error("审核失败，请重新审核...");
+        }
     }
 }

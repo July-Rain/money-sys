@@ -78,7 +78,8 @@
              create_user,
              create_time,
              opt_user,
-             opt_time
+             opt_time,
+             video
         ) VALUES (
             #{id},
             #{typeId},
@@ -102,7 +103,8 @@
             #{createUser},
             #{createTime},
             #{optUser},
-            #{optTime}
+            #{optTime},
+            #{video}
         )
     </insert>
 
@@ -120,15 +122,14 @@
             legal_basis             = #{legalBasis},
             answer_describle        = #{answerDescrible},
             release_status          = #{releaseStatus},
-            disable_status          = #{disableStatus},
             stu_issuer              = #{stuIssuer},
             stu_issdepartment       = #{stuIssdepartment},
             stu_isstim              = #{stuIsstim},
             stu_optdepartment       = #{stuOptdepartment},
             use_number              = #{useNumber},
             rigth_number            = #{rigthNumber},
-            opt_user                = #{optuser},
-            opt_time                = #{opttime}
+            opt_user                = #{optUser},
+            opt_time                = #{optTime}
         <where>
             id = #{id}
         </where>
@@ -159,22 +160,22 @@
 
   <!--列表：我收藏的重点试题zjw-->
   <select id="listMyCollection" parameterType="map"  resultType="com.lawschool.beans.TestQuestions">
-    select
-    collectionId,
-    ID,
-    COM_CONTENT,
-    QUESTION_TYPE,
-    questiontypeValue,
-    ANSWER_ID,
-    QUESTION_DIFFICULTY,
-    questiondifficultyValue,
-    TYPE_ID,
-    typeValue,
-    SPECIAL_KNOWLEDGE_ID,
-    specialknowledgeValue,
-      ANSWER_DESCRIBLE
-    from
-    (
+      SELECT
+            collectionId,
+            ID,
+            COM_CONTENT,
+            QUESTION_TYPE,
+            questiontypeValue,
+            ANSWER_ID,
+            QUESTION_DIFFICULTY,
+            questiondifficultyValue,
+            TYPE_ID,
+            typeValue,
+            SPECIAL_KNOWLEDGE_ID,
+            specialknowledgeValue,
+            ANSWER_DESCRIBLE
+      FROM
+      (
     SELECT
     LAW_COLLECTION. ID as collectionId,
     LAW_TESTQUESTIONS.ANSWER_DESCRIBLE,
@@ -260,7 +261,7 @@
     <!--更新启用禁用状态-->
     <update id="updateStatus">
         UPDATE law_testquestions
-        SET is_enable = #{isEnble}
+        SET is_enble = #{isEnble}
         WHERE id = #{id}
     </update>
 
@@ -270,7 +271,7 @@
         a.id
         FROM law_testquestions a
         <where>
-            1 = 1
+            a.is_enble = '0'
             <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
                 AND a.special_knowledge_id = #{specialKnowledgeId}
             </if>
@@ -299,7 +300,7 @@
         <include refid="questionColumn"/>
         FROM law_testquestions a
         <where>
-            1 = 1
+            a.is_enble = '0'
             <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
                 AND a.special_knowledge_id = #{specialKnowledgeId}
             </if>
@@ -359,7 +360,7 @@
         <include refid="questionColumn"/>
         FROM law_testquestions a
         <where>
-            1 = 1
+            a.is_enble = '0'
             <if test="typeId != null and typeId != ''">
                 AND a.type_id = #{typeId}
             </if>
@@ -393,7 +394,7 @@
         <include refid="questionColumn"/>
         FROM law_testquestions a
         <where>
-            1 = 1
+            a.is_enble = '0'
             <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
                 AND a.special_knowledge_id = #{specialKnowledgeId}
             </if>
@@ -434,7 +435,8 @@
           FROM
             LAW_TESTQUESTIONS
           WHERE
-            SPECIAL_KNOWLEDGE_ID = #{topicId}
+            is_enble = '0'
+            AND SPECIAL_KNOWLEDGE_ID = #{topicId}
         ) T
         WHERE
         <![CDATA[ T .rn <= #{num} ]]>
@@ -450,7 +452,7 @@
         a.id
         FROM law_testquestions a
         <where>
-            1 = 1
+            a.is_enble = '0'
             <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
                 AND a.special_knowledge_id = #{specialKnowledgeId}
             </if>
@@ -466,7 +468,8 @@
             </if>
         </where>
     </select>
-<!--根据题目id查询试题 lh-->
+
+    <!--根据题目id查询试题 lh-->
     <select id="findTestQuestionById" parameterType="java.lang.String" resultType="com.lawschool.form.QuestForm">
         select
         id,
@@ -587,4 +590,16 @@
         AND special_Knowledge_Id IS NOT NULL
         GROUP BY special_Knowledge_Id
     </select>
+
+    <update id="updateAnswerId">
+        UPDATE LAW_TESTQUESTIONS
+        SET answer_id = #{answerId}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM LAW_TESTQUESTIONS WHERE ID = #{id}
+    </delete>
 </mapper>

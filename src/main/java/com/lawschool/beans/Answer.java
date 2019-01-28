@@ -1,5 +1,6 @@
 package com.lawschool.beans;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
 
@@ -7,14 +8,13 @@ import java.math.BigDecimal;
 @TableName("LAW_ANSWER")
 public class Answer extends DataEntity<Answer> {
 
-    private String questionId;
+    private String questionId;// 试题ID
+    private String questionContent;// 选项内容
+    private BigDecimal ordersort;// 排序
+    private BigDecimal score;// 分数
 
-    private String questionContent;
-
-    private BigDecimal ordersort;
-
-    private BigDecimal score;
-
+    @TableField(exist = false)
+    private Integer isAnswer;// 是否为答案
 
     public String getQuestionId() {
         return questionId;
@@ -48,16 +48,11 @@ public class Answer extends DataEntity<Answer> {
         this.score = score;
     }
 
-    @Override
-    public String toString() {
-        return "Answer{" +
-                "id='" + id + '\'' +
-                ", questionId='" + questionId + '\'' +
-                ", questionContent='" + questionContent + '\'' +
-                ", ordersort=" + ordersort +
-                ", score=" + score +
-                ", optuser='" + optUser + '\'' +
-                ", opttime=" + optTime +
-                '}';
+    public Integer getIsAnswer() {
+        return isAnswer;
+    }
+
+    public void setIsAnswer(Integer isAnswer) {
+        this.isAnswer = isAnswer;
     }
 }

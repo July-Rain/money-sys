@@ -51,9 +51,7 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
     private String stuIssdepartment;//发布单位
 
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
-
     private Date stuIsstime;//发布时间
-
 
     private String stuOptdepartment;//使用单位
 
