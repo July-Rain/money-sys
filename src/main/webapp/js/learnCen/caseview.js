@@ -18,7 +18,8 @@ var vm = new Vue({
             startTime:"",
             endTime:"",
             lawLevel:"",
-            caseType:""
+            caseType:"",
+            caseProcess:""
         },
         visible: false,
         treeData: [],//法律知识库分类树

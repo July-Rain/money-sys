@@ -258,6 +258,8 @@ var vm = new Vue({
                 caseTime:"",//裁决时间
                 caseProcess:""//裁决程序
             },
+            //清空editor
+            editor.txt.html("");
             this.title="新增";
             this.dialogCaseAna=true;
         },

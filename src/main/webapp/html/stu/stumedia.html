@@ -66,8 +66,12 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                                <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
+                                <el-button type="primary" @click="onSubmit" size="mini">
+                                    <i class="iconfont icon-sousuo1"></i>
+                                    查询</el-button>
+                                <el-button @click="resetForm('formInline')" size="mini">
+                                    <i class="iconfont icon-tableresetpassword"></i>
+                                    重置</el-button>
 
                             </el-form-item>
                         </el-form>
@@ -83,30 +87,39 @@
                         <el-table-column
                                 prop="stuTitle"
                                 label="标题"
-                                width="280"
                         >
                         </el-table-column>
                         <el-table-column
                                 prop="stuCount"
                                 label="观看次数"
-                                width="280"
+                                width="200"
+                                header-align="center"
+                                align="center"
                         >
                         </el-table-column>
 
                         <el-table-column
                                 prop="stuIssuer"
                                 label="发布人"
-                                width="180"
+                                width="200"
+                                header-align="center"
+                                align="center"
                         >
                         </el-table-column>
                         <el-table-column
                                 prop="stuPoliceclassName"
                                 label="警种"
+                                width="200"
+                                header-align="center"
+                                align="center"
                         >
                         </el-table-column>
                         <el-table-column
                                 prop="stuType"
                                 label="课件类型"
+                                width="200"
+                                header-align="center"
+                                align="center"
                         >
                             <template slot-scope="scope">
                                 <el-tag v-if="scope.row.stuType === '1'" size="small" type="success">文字</el-tag>
@@ -114,7 +127,9 @@
                                 <el-tag v-if="scope.row.stuType === '3'" size="small" type="warning">视频</el-tag>
                             </template>
                         </el-table-column>
-                        <el-table-column label="操作" width="180">
+                        <el-table-column label="操作"
+                                         header-align="center"
+                                         align="center">
                             <template slot-scope="scope">
                                 <el-button
                                         size="mini"
