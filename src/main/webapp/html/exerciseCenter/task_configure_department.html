@@ -150,7 +150,7 @@
                         </el-form-item>
 
                         <el-form-item >
-                            <el-button type="primary" @click="save">保存设置</el-button>
+                            <el-button v-if="!isEdit" type="primary" @click="save('configureEntity')">保存设置</el-button>
                             <el-button type="primary" @click="cancle">取消</el-button>
                         </el-form-item>
 
