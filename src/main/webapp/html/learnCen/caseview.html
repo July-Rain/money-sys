@@ -73,29 +73,43 @@
                                 </el-form-item>
 
                                 <el-form-item label="裁判日期" prop="caseTime">
-                                    <el-date-picker
-                                            v-model="formInline.startTime"
-                                            type="date"
-                                            format="yyyy年MM月dd日"
-                                            value-format="yyyy-MM-dd"
-                                            placeholder="开始时间"
-                                            size="mini"
-                                    >
-                                    </el-date-picker>
-                                    <el-date-picker
-                                            v-model="formInline.endTime"
-                                            type="date"
-                                            format="yyyy年MM月dd日"
-                                            value-format="yyyy-MM-dd"
-                                            placeholder="结束时间"
-                                            size="mini"
-                                    >
-                                    </el-date-picker>
+                                    <el-col :span="11">
+                                        <el-form-item prop="examineStartTime">
+                                            <el-date-picker
+                                                    v-model="formInline.startTime"
+                                                    type="date"
+                                                    format="yyyy年MM月dd日"
+                                                    value-format="yyyy-MM-dd"
+                                                    placeholder="开始时间"
+                                                    size="mini"
+                                            >
+                                            </el-date-picker>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col class="line text-center" :span="2">-</el-col>
+                                    <el-col :span="11">
+                                        <el-form-item prop="examineEndTime">
+                                            <el-date-picker
+                                                    v-model="formInline.endTime"
+                                                    type="date"
+                                                    format="yyyy年MM月dd日"
+                                                    value-format="yyyy-MM-dd"
+                                                    placeholder="结束时间"
+                                                    size="mini" >
+                                            </el-date-picker>
+                                        </el-form-item>
+                                    </el-col>
                                 </el-form-item>
-                                <el-form-item  label="类型" prop="contentType">
-                                    <el-radio label="1" v-model="formInline.contentType" @change="changeType"> 文字</el-radio>
-                                    <el-radio label="2" v-model="formInline.contentType" @change="changeType"> 音频</el-radio>
-                                    <el-radio label="3" v-model="formInline.contentType" @change="changeType"> 视频</el-radio>
+                                <el-form-item label="类型" prop="contentType">
+                                    <el-select v-model="formInline.contentType"  size="mini" placeholder="案件类型" @change="changeType" >
+                                        <el-option
+                                                v-for="item in contentTypeOption"
+                                                :key="item.code"
+                                                :label="item.value"
+                                                :value="item.code"
+                                        >
+                                        </el-option>
+                                    </el-select>
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" @click="onSubmit" size="mini">

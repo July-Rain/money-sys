@@ -86,7 +86,6 @@
         <el-row :gutter="24">
             <el-col :span="24">
                 <el-tabs type="border-card">
-
                     <div>
                         <el-button size="mini" type="primary" @click="add">新增</el-button>
                         <el-table @expand-change="change"
@@ -96,9 +95,71 @@
                                 :row-class-name="getRowClass">
                             <el-table-column type="expand">
                                 <el-table
-                                          :data="childData"
-                                          border
-                                          style="width: 100%">
+                                        :data="childData"
+                                        @expand-change="changeTwo"
+                                        border
+                                        style="width: 100%"
+                                        :row-class-name="getRowClass">
+                                    <el-table-column type="expand">
+                                        <el-table
+                                                :data="childDataTwo"
+                                                border
+                                                style="width: 100%">
+                                            <el-table-column
+                                                    prop="name"
+                                                    label="名称"
+                                                    width="280"
+                                                    header-align="center"
+                                                    align="center">
+                                            </el-table-column>
+                                            <el-table-column
+                                                    label="图标"
+                                                    width="80"
+                                                    header-align="center"
+                                                    align="center">
+                                                <template slot-scope="scope">
+                                                    <i class="iconfont" :class="scope.row.icon ? scope.row.icon:'icon-085shucezhongxin'" style="color: #000000"></i>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                                    prop="url"
+                                                    label="路由"
+                                                    header-align="center"
+                                                    align="center"
+                                                    width="340">
+                                            </el-table-column>
+                                            <el-table-column
+                                                    prop="type"
+                                                    label="类型"
+                                                    width="80"
+                                                    header-align="center"
+                                                    align="center"
+                                            >
+                                                <template slot-scope="scope">
+                                                    {{scope.row.type == 0 ? "目录" : scope.row.type == 1 ? "菜单" : "按钮"}}
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                                    label="操作"
+                                                    header-align="center"
+                                                    align="center"
+                                            >
+                                                <template slot-scope="scope">
+                                                    <el-button
+                                                            size="mini"
+                                                            @click="edit(scope.row.id)"
+                                                    >编辑
+                                                    </el-button>
+                                                    <el-button
+                                                            size="mini"
+                                                            @click="remove(scope.row.id, scope.row.type)"
+                                                            type="danger"
+                                                    >删除
+                                                    </el-button>
+                                                </template>
+                                            </el-table-column>
+                                        </el-table>
+                                    </el-table-column>
                                     <el-table-column
                                             prop="name"
                                             label="名称"
@@ -107,18 +168,31 @@
                                             align="center">
                                     </el-table-column>
                                     <el-table-column
+                                            label="图标"
+                                            width="80"
+                                            header-align="center"
+                                            align="center">
+                                        <template slot-scope="scope">
+                                            <i class="iconfont" :class="scope.row.icon ? scope.row.icon:'icon-085shucezhongxin'" style="color: #000000"></i>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
                                             prop="url"
                                             label="路由"
                                             header-align="center"
-                                            align="center">
+                                            align="center"
+                                            width="340">
                                     </el-table-column>
                                     <el-table-column
                                             prop="type"
                                             label="类型"
-                                            width="280"
+                                            width="80"
                                             header-align="center"
                                             align="center"
                                     >
+                                        <template slot-scope="scope">
+                                            {{scope.row.type == 0 ? "目录" : scope.row.type == 1 ? "菜单" : "按钮"}}
+                                        </template>
                                     </el-table-column>
                                     <el-table-column
                                             label="操作"
@@ -128,7 +202,14 @@
                                         <template slot-scope="scope">
                                             <el-button
                                                     size="mini"
+                                                    @click="edit(scope.row.id)"
                                             >编辑
+                                            </el-button>
+                                            <el-button
+                                                    size="mini"
+                                                    @click="remove(scope.row.id, scope.row.type)"
+                                                    type="danger"
+                                            >删除
                                             </el-button>
                                         </template>
                                     </el-table-column>
@@ -142,18 +223,30 @@
                                     align="center">
                             </el-table-column>
                             <el-table-column
+                                    label="图标"
+                                    width="80"
+                                    header-align="center"
+                                    align="center">
+                                <template slot-scope="scope">
+                                    <i class="iconfont" :class="scope.row.icon ? scope.row.icon:'icon-085shucezhongxin'" style="color: #000000"></i>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
                                     prop="url"
                                     label="路由"
                                     header-align="center"
-                                    align="center">
+                                    align="center"
+                                    width="340">
                             </el-table-column>
                             <el-table-column
-                                    prop="type"
                                     label="类型"
-                                    width="280"
+                                    width="80"
                                     header-align="center"
                                     align="center"
                             >
+                                <template slot-scope="scope">
+                                    {{scope.row.type == 0 ? "目录" : scope.row.type == 1 ? "菜单" : "按钮"}}
+                                </template>
                             </el-table-column>
                             <el-table-column
                                     label="操作"
@@ -166,6 +259,12 @@
                                             @click="edit(scope.row.id)"
                                     >编辑
                                     </el-button>
+                                    <el-button
+                                            size="mini"
+                                            @click="remove(scope.row.id, scope.row.type)"
+                                            type="danger"
+                                    >删除
+                                    </el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -176,16 +275,15 @@
 
         <el-dialog title="菜单维护" :visible.sync="dialogConfig" :before-close="closeDia">
             <el-row>
-                <el-col :span="12">
-                    <el-form :model="sysMenu" ref="sysMenu" label-width="100px" class="demo-sysDict" size="mini">
+                <el-col :span="24">
+                    <el-form :model="sysMenu" :rules="rules" ref="sysMenu" label-width="100px" class="demo-sysDict" size="mini">
                         <el-form-item label="类型">
-                            <el-radio-group v-model="sysMenu.type">
+                            <el-radio-group v-model="sysMenu.type" @change="typeChange">
                                 <el-radio :label="0">目录</el-radio>
                                 <el-radio :label="1">菜单</el-radio>
-                                <el-radio :label="2">按钮</el-radio>
                             </el-radio-group>
                         </el-form-item>
-                        <el-form-item label="名称">
+                        <el-form-item label="名称" prop="name">
                             <el-input v-model="sysMenu.name" placeholder="请输入菜单名称" clearable></el-input>
                         </el-form-item>
                         <el-form-item label="上级菜单">
@@ -204,14 +302,14 @@
                                         @node-click="nodeCheck"
                                 >
                                 </el-tree>
-                                <el-input v-popover:menuListPopover v-model="nodeName" slot="reference" :readonly="true"  placeholder="点击选择上级菜单"></el-input>
+                                <el-input v-popover:menuListPopover v-model="nodeName" slot="reference" :readonly="true" placeholder="点击选择上级菜单"></el-input>
                             </el-popover>
                         </el-form-item>
-                        <el-form-item label="路由">
+                        <el-form-item label="路由" prop="url">
                             <el-input v-model="sysMenu.url" placeholder="请输入菜单路由" clearable></el-input>
                         </el-form-item>
                         <el-form-item label="排序">
-                            <el-input v-model="sysMenu.orderNum" clearable></el-input>
+                            <el-input type="number" v-model="sysMenu.orderNum" clearable></el-input>
                         </el-form-item>
                         <el-form-item label="授权标识">
                             <el-input v-model="sysMenu.perms" placeholder="多个用逗号分隔" clearable></el-input>
@@ -220,7 +318,7 @@
                             <el-input v-model="sysMenu.icon" clearable></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="save">保存</el-button>
+                            <el-button type="primary" @click="save('sysMenu')">保存</el-button>
                             <el-button type="primary" @click="cancel">取消</el-button>
                         </el-form-item>
                     </el-form>

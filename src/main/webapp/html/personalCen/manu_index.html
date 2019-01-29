@@ -12,8 +12,10 @@
             <el-breadcrumb-item>个人中心</el-breadcrumb-item>
             <el-breadcrumb-item>我要投稿</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-button size="mini" type="primary" @click="addQue">习题投稿</el-button>
-        <el-button size="mini" type="primary" @click="addStu">学习投稿</el-button>
+        <div class="info_btn">
+            <el-button size="mini" type="primary" @click="addQue">习题投稿</el-button>
+            <el-button size="mini" type="primary" @click="addStu">学习投稿</el-button>
+        </div>
         <el-table
                 :data="tableData"
                 style="width: 100%"

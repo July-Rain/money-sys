@@ -36,6 +36,8 @@ public class AnalysisServiceImpl extends AbstractServiceImpl<AnalysisDao, Analys
         int total = 0;
         // 总正确数
         int right = 0;
+        // 总练习次数
+        int sum = 0;
 
         // 处理返回格式
         String key = "";
@@ -48,6 +50,7 @@ public class AnalysisServiceImpl extends AbstractServiceImpl<AnalysisDao, Analys
                 if(!key.equals(typeName)){
                     // key与typeName不同，说明某一类型练习已处理完毕
                     overall.put(key, idSet.size());
+                    sum += idSet.size();
 
                     // 初始化容器
                     key = typeName;
@@ -85,12 +88,14 @@ public class AnalysisServiceImpl extends AbstractServiceImpl<AnalysisDao, Analys
 
         // 最后的练习类型信息
         overall.put(key, idSet.size());
+        sum += idSet.size();
 
         resultMap.put("overall", overall);
         resultMap.put("themeAnswerNum", themeAnswerNum);
         resultMap.put("themeRightNum", themeRightNum);
         resultMap.put("total", total);
         resultMap.put("right", right);
+        resultMap.put("sum", sum);
 
         return resultMap;
     }
