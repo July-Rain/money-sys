@@ -67,7 +67,7 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
 
     private String deptCode;//所属部门code
 
-    private int countUser; //任务下人员的个数
+    private Integer countUser; //任务下人员的个数
 
 
     private String isUse;//是否使用
@@ -226,14 +226,13 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
         this.deptCode = deptCode;
     }
 
-    public int getCountUser() {
+    public Integer getCountUser() {
         return countUser;
     }
 
-    public void setCountUser(int countUser) {
+    public void setCountUser(Integer countUser) {
         this.countUser = countUser;
     }
-
 
     public String getIsUse() {
         return isUse;

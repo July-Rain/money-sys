@@ -206,3 +206,44 @@ function animation(_function,fps){
     }
     tick()
 }
+
+/**
+ * 获取指定正则
+ * 参数：type 正则类型
+ *      phone:手机号码
+ *      password:密码
+ *      id:身份证号
+ *      number:数字
+ *      chinese:中文
+ *      character:字母或数字或下划线
+ *      menuUrl:菜单管理正则（modules/开头 html结尾
+ * 调用方法:regularExp("phone")
+ * 返回值:正则表达式
+ */
+function regularExp(type) {
+    switch(type)
+    {
+        case "phone":
+            return "^1[345789]\\d{9}$";
+            break;
+        case "password":
+            return "^[0-9A-Za-z]{6,20}$";
+            break;
+        case "id":
+            return "^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$";
+            break;
+        case "number":
+            return "^[0-9]*$";
+            break;
+        case "chinese":
+            return "^[\u4e00-\u9fa5]{0,}$";
+            break;
+        case "character":
+            return "^[\u4E00-\u9FA5A-Za-z0-9_]+$";
+            break;
+        case "menuUrl":
+            return "^modules\\/.*?html$";
+            break;
+        default:
+    }
+}

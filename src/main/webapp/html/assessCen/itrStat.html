@@ -63,83 +63,86 @@
                                             >
                                             </el-table-column>
 
-                                            <el-table-column
-                                                    prop="userCode"
-                                                    label="身份证号"
-                                                    width="180"
-                                            >
+                                <el-table-column
+                                        prop="userCode"
+                                        label="身份证号"
+                                        width="180"
+                                >
 
-                                            </el-table-column>
+                                </el-table-column>
 
-                                            <el-table-column
-                                                    prop="orgName"
-                                                    label="部门名称"
-                                            >
+                                <el-table-column
+                                        prop="orgName"
+                                        label="部门名称"
+                                >
 
-                                            </el-table-column>
-
-                                            <el-table-column
-                                                    prop="integralPoint"
-                                                    label="积分"
-                                            >
-                                            </el-table-column>
-
-                                            <el-table-column
-                                                    prop="orgItrRank"
-                                                    label="部门排名"
-                                            >
-                                            </el-table-column>
-
-                                            <el-table-column
-                                                    prop="allItrRank"
-                                                    label="全警排名"
-                                            >
-                                            </el-table-column>
+                                </el-table-column>
 
 
-                                        </el-table>
-                                        <el-pagination
-                                                @size-change="handleSizeChange"
-                                                @current-change="handleCurrentChange"
-                                                :current-page="dateRange.currPage"
-                                                :page-sizes="[10, 20, 30, 40]"
-                                                :page-size="dateRange.pageSize"
-                                                layout="total, sizes, prev, pager, next, jumper"
-                                                :total="dateRange.totalCount">
-                                        </el-pagination>
-                                    </div>
-                                </el-tabs>
-                            </div>
-                        </el-tab-pane>
-                        <el-tab-pane label="单位统计" name="org">
-                            <div class="container" >
-                                <el-row :gutter="24">
-                                    <el-col :span="24">
-                                        <div>
-                                            <table v-loading="tabLoading" id="tb1" class="tree_table">
-                                                <thead >
-                                                <tr>
-                                                    <th colspan="">单位名称</th>
-                                                    <th colspan="">单位总学分</th>
-                                                    <th colspan="">单位排名</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody :class="opacity0?'opacity0':''" style="overflow: auto;">
-                                                <tr v-for="(item,index) in tableData2">
-                                                    <td :lang="item | objTstring">{{item.data.orgName}}</td>
-                                                    <td>{{item.data.orgAllItr}}</td>
-                                                    <td>{{item.data.orgAllItrRank}}</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </el-col>
-                                </el-row>
-                            </div>
-                        </el-tab-pane>
-                    </el-tabs>
+                                <el-table-column
+                                        prop="integralPoint"
+                                        label="积分"
+                                >
+                                </el-table-column>
 
-                </div>
+                                <el-table-column
+                                        prop="orgItrRank"
+                                        label="部门排名"
+                                >
+                                </el-table-column>
+
+                                <el-table-column
+                                        prop="allItrRank"
+                                        label="全警排名"
+                                >
+                                </el-table-column>
+
+
+                                </el-table-column>
+
+
+                            </el-table>
+                            <el-pagination
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="formInline.currPage"
+                                    :page-sizes="[10, 20, 30, 40]"
+                                    :page-size="formInline.pageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="formInline.totalCount">
+                            </el-pagination>
+                        </div>
+                </el-tabs>
+            </el-col>
+        </el-row>
+
+    </div>
+
+    <div class="container" v-if="!userStatDiv">
+        <el-row :gutter="24">
+            <el-col :span="24">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="单位维度">
+                        <div>
+                            <table v-loading="tabLoading" id="tb1" class="tree_table">
+                                <thead >
+                                <tr>
+                                    <th colspan="">单位名称</th>
+                                    <th colspan="">单位总学分</th>
+                                    <th colspan="">单位排名</th>
+                                </tr>
+                                </thead>
+                                <tbody :class="opacity0?'opacity0':''" style="overflow: auto;">
+                                <tr v-for="(item,index) in tableData2">
+                                    <td :lang="item | objTstring">{{item.data.orgName}}</td>
+                                    <td>{{item.data.orgAllItr}}</td>
+                                    <td>{{item.data.orgAllItrRank}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
             </el-col>
         </el-row>
 
