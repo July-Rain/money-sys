@@ -24,3 +24,22 @@ a{
 ul li{
     list-style:none;
 }
+
+/*element 公共样式修改 start*/
+.container>.el-row>.el-col,.container>.el-row>.el-col>.el-tabs--border-card>.el-tabs__content {
+    padding: 0;
+}
+.container>.el-row{
+    margin-bottom: 0px;
+}
+.el-row {
+    margin-bottom: 20px;
+}
+.el-pagination{
+    text-align: right;
+    margin-top: 6px;
+}
+.el-submenu{
+    margin-top: -51px!important;
+}
+/*element 公共样式修改  end */
