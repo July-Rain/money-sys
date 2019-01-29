@@ -24,7 +24,6 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     private String questionDifficulty;//难度   id  应该存code
     private String questionType;//题型  选择题，判断   应该存code
     private String answerChoiceNumber;//答案个数
-
     private String answerId;//正确答案的id
     private String specialKnowledgeId;//专项知识id   对应专项知识库
     private String policeClassification;//警种
