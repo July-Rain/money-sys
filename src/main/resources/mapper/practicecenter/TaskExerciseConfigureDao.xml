@@ -79,6 +79,27 @@
         )
     </insert>
 
+    <update id="update">
+        UPDATE LAW_EXERCISE_TASK_CONFIGURE
+        SET
+            name = #{name},
+            source = #{source},
+            theme_id = #{themeId},
+            difficulty = #{difficulty},
+            classify = #{classify},
+            type = #{type},
+            total = #{total},
+            users = #{users},
+            depts = #{depts},
+            del_Flag = #{delFlag},
+            opt_user = #{optUser},
+            opt_time = #{optTime},
+            theme_name = #{themeName},
+            create_name = #{createName}
+        WHERE
+            id = #{id}
+    </update>
+
     <update id="logicDelete">
         UPDATE LAW_EXERCISE_TASK_CONFIGURE
         SET del_flag = #{delFlag}

@@ -10,22 +10,31 @@ var vm = new Vue({
     data: {
         bigcheckNum:[],//大关数量数据
         tableData: [],//表格数据
-        daguannum:'',
         daguanArray: [],
+        daguannum:0,
         formInline: { // 搜索表单
-
             currPage: 1,
             pageSize: 10,
             totalCount: 0
         },
+        rules1:[
+            {required: true, message: '请输入参数名11', trigger: 'blur'},
+            {pattern: regularExp("number"), message: '正则不匹配55', trigger: 'blur'}
+        ],
         rules: {//表单验证规则
             // smallNum: [
-            //     {required: true, message: '请输入参数名', trigger: 'blur'},
-            //     {max: 3, message: '最大长度3', trigger: 'blur'}
+            //     // {required: true, message: '请输入参数名11', trigger: 'blur'},
+            //     { required: true,pattern: regularExp("number"), message: '正则不匹配55', trigger: 'blur'}
             // ],
-            // code: [
-            //     {required: true, message: '请输入参数值', trigger: 'blur'},
-            //     {max: 50, message: '最大长度50', trigger: 'blur'}
+            // markReward: [
+            //     {required: true, message: '不能为空', trigger: 'blur'},
+            //     { pattern: regularExp("number"), message: '正则不匹配' }
+            // ],
+            // xiala: [
+            //     {required: true, message: '不能为空', trigger: 'blur'}
+            // ],
+            // itemDifficulty: [
+            //     {required: true, message: '不能为空', trigger: 'blur'}
             // ]
         },
         dialogConfig: false,//table弹出框可见性
@@ -56,39 +65,51 @@ var vm = new Vue({
             this.reload();
         },
         // 保存和修改
-        saveOrUpdate: function () {
-
-            //保存前默认先删除一波
-            $.ajax({
-                type: "POST",
-                url: baseURL + 'recruitConfiguration/delete',
-
-                async:false,
-                dataType: "json",
-                success: function (result) {
-                    var url ="recruitConfiguration/save";
+        saveOrUpdate: function (formName) {
+            this.$refs[formName].validate(function (valid) {
+                if (valid) {
+                    //保存前默认先删除一波
                     $.ajax({
                         type: "POST",
-                        url: baseURL + url,
-                        contentType: "application/json",
+                        url: baseURL + 'recruitConfiguration/delete',
+
                         async:false,
-                        data: JSON.stringify(vm.daguanArray),
+                        dataType: "json",
                         success: function (result) {
-                            if (result.code === 0) {
-                                vm.$alert('操作成功', '提示', {
-                                    confirmButtonText: '确定',
-                                    callback: function () {
-                                        vm.dialogConfig = false;
-                                        vm.reload();
+                            var url ="recruitConfiguration/save";
+                            $.ajax({
+                                type: "POST",
+                                url: baseURL + url,
+                                contentType: "application/json",
+                                async:false,
+                                data: JSON.stringify(vm.daguanArray),
+                                success: function (result) {
+                                    if (result.code === 0) {
+                                        vm.$alert('操作成功', '提示', {
+                                            confirmButtonText: '确定',
+                                            callback: function () {
+                                                vm.dialogConfig = false;
+                                                vm.reload();
+                                            }
+                                        });
+                                    } else {
+                                        alert(result.msg);
                                     }
-                                });
-                            } else {
-                                alert(result.msg);
-                            }
+                                }
+                            });
                         }
                     });
+                    console.log(vm.ruleForm)//多的表单
+                } else {
+                    console.log('error submit!!');
+                    return false;
                 }
             });
+
+
+
+
+
 
 
         },
@@ -164,7 +185,14 @@ var vm = new Vue({
                 success: function (result) {
 
 
-                    vm.itemtype=result.dictlist;
+                    // vm.itemtype=result.dictlist;
+                    for(var tt=0;tt<result.dictlist.length;tt++)
+                    {
+                        if((result.dictlist[tt].value=="单选题")||(result.dictlist[tt].value=="判断题") ||(result.dictlist[tt].value=="多选题") )
+                        {
+                            vm.itemtype.push(result.dictlist[tt]);
+                        }
+                    }
                 }
             });
 
@@ -335,7 +363,14 @@ var vm = new Vue({
                 success: function (result) {
 
 
-                    vm.itemtype=result.dictlist;
+                    // vm.itemtype=result.dictlist;
+                    for(var tt=0;tt<result.dictlist.length;tt++)
+                    {
+                        if((result.dictlist[tt].value=="单选题")||(result.dictlist[tt].value=="判断题") ||(result.dictlist[tt].value=="多选题"))
+                        {
+                            vm.itemtype.push(result.dictlist[tt]);
+                        }
+                    }
                 }
             });
 

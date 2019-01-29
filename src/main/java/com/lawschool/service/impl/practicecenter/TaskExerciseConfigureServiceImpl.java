@@ -5,6 +5,7 @@ import com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity;
 import com.lawschool.dao.practicecenter.TaskExerciseConfigureDao;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.practicecenter.TaskExerciseConfigureService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,9 +46,14 @@ public class TaskExerciseConfigureServiceImpl
 
         entity.setTotal(num);
         entity.setDelFlag(TaskExerciseConfigureEntity.DEL_NORMAL);
-        entity.preInsert(entity.getCreateUser());
+        if(StringUtils.isBlank(entity.getId())){
+            entity.preInsert(entity.getCreateUser());
+            dao.insert(entity);
+        } else {
+            entity.preUpdate(entity.getCreateUser());
+            dao.update(entity);
+        }
 
-        dao.insert(entity);
     }
 
     /**

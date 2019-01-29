@@ -22,7 +22,15 @@ var vm = new Vue({
         topicList: [],
         diffList: [],
         typeList: [],
-        qtList: []
+        qtList: [],
+        rules: {
+            name: [
+                {required: true, message: '请输入任务名称', trigger: 'blur'},
+                {max: 25, message: '最大长度25', trigger: 'blur'}
+            ]
+        },
+        isEdit: false,
+        title: ''
     },
     methods: {
         handleSizeChange: function (event) {
@@ -51,6 +59,7 @@ var vm = new Vue({
         },
         addConfigure: function () {
             vm.dialogConfig = true;
+            vm.title = "新增配置信息";
         },
         save: function () {
             if(vm.configureEntity.topics.length == 1){
@@ -102,6 +111,10 @@ var vm = new Vue({
                 depts: []
             };
             vm.dialogConfig = false;
+            vm.isEdit = false;
+        },
+        cancle: function(){
+            vm.closeDia();
         },
         deletes: function (id) {
             $.ajax({
@@ -119,6 +132,8 @@ var vm = new Vue({
             });
         },
         info: function (id) {
+            vm.isEdit = true;
+            vm.title = "配置信息";
             $.ajax({
                 type: "GET",
                 url: baseURL + "taskConfigure/info/" + id,
@@ -148,6 +163,91 @@ var vm = new Vue({
         },
         toHome:function () {
             parent.location.reload()
+        },
+        edit: function (id) {
+            $.ajax({
+                type: "GET",
+                url: baseURL + "taskConfigure/info/" + id,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.configureEntity = result.info;
+                        if(result.info.difficulty != null){
+                            vm.configureEntity.difficultys = result.info.difficulty.split(',');
+                        }
+                        if(result.info.classify != null){
+                            vm.configureEntity.classifys = result.info.classify.split(',');
+                        }
+                        if(result.info.type != null){
+                            vm.configureEntity.types = result.info.type.split(',');
+                        }
+                        if(result.info.themeId != null){
+                            vm.configureEntity.topics = result.info.themeId.split(',');
+                        }
+                        vm.dialogConfig = true;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        getDiff: function (row, column) {
+            var msg = '';
+            var str = row.difficulty;
+            if(str != null && str != ''){
+                var arr = new Array();
+                arr = str.split(',');
+                for(var i=0; i<arr.length; i++){
+                    if(arr[i] == '10001'){
+                        msg += "初级，";
+                    } else if(arr[i] == '10002'){
+                        msg += "中级，";
+                    } else {
+                        msg += "高级，";
+                    }
+                }
+                msg = msg.substr(0, msg.length -1);
+            }
+            
+            return msg;
+        },
+        getClass: function (row, column) {
+            var msg = "";
+            var classify = row.classify;
+            if(classify != null && classify != ''){
+                var arr = new Array();
+                arr = classify.split(',');
+                for(var i=0; i<arr.length; i++){
+                    if(arr[i] == 0){
+                        msg += "文字，";
+                    } else {
+                        msg += "视频，";
+                    }
+                }
+                msg = msg.substr(0, msg.length - 1);
+            }
+
+            return msg;
+        },
+        getType: function (row, column) {
+            var msg = "";
+            var type = row.type;
+            if(type != null && type != ''){
+                var arr = new Array();
+                arr = type.split(',');
+                for(var i=0; i<arr.length; i++){
+                    if(arr[i] == 10004){
+                        msg += "单选，";
+                    } else if(arr[i] == 10005){
+                        msg += "多选，";
+                    } else {
+                        msg += "判断，";
+                    }
+                }
+                msg = msg.substr(0, msg.length - 1);
+            }
+
+            return msg;
         }
     },
     created: function () {
