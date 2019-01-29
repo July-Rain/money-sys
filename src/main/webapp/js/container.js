@@ -322,7 +322,7 @@ var vm = new Vue({
 
         this.$nextTick(function () {
             this.getStuDia();
-
+            this.initPie1();
             this.initBar1();
         });
         this.$nextTick(function () {
@@ -520,7 +520,7 @@ var vm = new Vue({
                         type:'pie',
                         radius : '55%',
                         center: ['50%', '50%'],
-                        data: _data.sort(function (a, b) { return a.value - b.value; }),
+                        data: vm.seriesData.sort(function (a, b) { return a.value - b.value; }),
                         roseType: 'radius',
                         label: {
                             normal: {
@@ -856,10 +856,7 @@ var vm = new Vue({
 
         },
         getStuDia: function () {
-            var loadInline={
-                currPage: 1,
-                pageSize: 2,
-                totalCount:0};
+            vm.seriesData=[];
             $.ajax({
                 async:false,
                 type: "POST",
@@ -870,15 +867,11 @@ var vm = new Vue({
                     if (result.code == 0) {
                         for(var i = 0;i<result.data.length;i++){
                             var _info = {
-                                value: result.data[i].value,
+                                value: result.data[i].value?result.data[i].value:0,
                                 name: result.data[i].name
                             };
                             vm.seriesData.push(_info)
                         }
-                        if(result.data[i].value !== 0){
-                            vm.initPie1(vm.seriesData);
-                        }
-
                         vm.stuInfo=result.stuInfo;
                     } else {
                         alert(result.msg);
