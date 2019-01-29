@@ -29,4 +29,11 @@ public interface SysMenuDao extends AbstractDao<SysMenuEntity> {
     List<TreeForm> getAllCatalog(@Param("list") List<Integer> list);
 
     List<SysMenuEntity> queryParentById(@Param("id") String id);
+
+    /**
+     * 查询所有本级和下级菜单/目录
+     * @param list
+     * @return
+     */
+    List<String> findAllByList(@Param("list") List<String> list);
 }
