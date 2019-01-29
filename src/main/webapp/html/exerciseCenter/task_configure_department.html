@@ -27,7 +27,7 @@
             <el-table-column
                     prop="name"
                     label="任务名称"
-                    width="320"
+                    width="290"
                     header-align="center"
                     align="center">
             </el-table-column>
@@ -43,26 +43,28 @@
                     label="题目类型"
                     width="160"
                     header-align="center"
-                    align="center">
+                    align="center" :formatter="getType">
             </el-table-column>
             <el-table-column
                     prop="difficulty"
                     label="题目难度"
                     width="140"
                     header-align="center"
-                    align="center">
+                    align="center"
+                    :formatter="getDiff">
             </el-table-column>
             <el-table-column
                     prop="classify"
                     label="题目分类"
                     width="140"
                     header-align="center"
-                    align="center">
+                    align="center"
+                    :formatter="getClass">
             </el-table-column>
             <el-table-column
                     prop="total"
                     label="题目总数"
-                    width="120"
+                    width="80"
                     header-align="center"
                     align="center">
             </el-table-column>
@@ -71,6 +73,13 @@
                     header-align="center"
                     align="center">
                 <template slot-scope="scope">
+                    <el-button
+                            plain
+                            type="primary"
+                            size="mini"
+                            @click="edit(scope.row.id)"
+                    >编辑
+                    </el-button>
                     <el-button
                             plain
                             type="danger"
@@ -99,36 +108,36 @@
                 :total="formInline.count">
         </el-pagination>
 
-        <el-dialog title="新增配置" :visible.sync="dialogConfig" :before-close="closeDia">
+        <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia" :close-on-click-modal="false">
             <el-row>
-                <el-col :span="12">
-                    <el-form :model="configureEntity" label-width="100px" size="small">
-                        <el-form-item label="练习卷名称：" size="medium">
-                            <el-input v-model="configureEntity.name"></el-input>
+                <el-col :span="24">
+                    <el-form :model="configureEntity" :rules="rules" ref="configureEntity" label-width="110px" size="mini">
+                        <el-form-item label="练习卷名称：" prop="name">
+                            <el-input v-model="configureEntity.name" :disabled="isEdit"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="试题难度：" size="medium">
+                        <el-form-item label="试题难度：">
                             <el-checkbox-group v-model="configureEntity.difficultys">
-                                <el-checkbox v-for="item in diffList" :label="item.key">{{item.value}}</el-checkbox>
+                                <el-checkbox :disabled="isEdit" v-for="item in diffList" :label="item.key">{{item.value}}</el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
 
-                        <el-form-item label="试题分类：" size="medium">
+                        <el-form-item label="试题分类：">
                             <el-checkbox-group v-model="configureEntity.classifys">
-                                <el-checkbox v-for="item in typeList" :label="item.key">{{item.value}}</el-checkbox>
+                                <el-checkbox :disabled="isEdit" v-for="item in typeList" :label="item.key">{{item.value}}</el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
 
-                        <el-form-item label="试题类型：" size="medium">
+                        <el-form-item label="试题类型：">
                             <el-checkbox-group v-model="configureEntity.types">
-                                <el-checkbox v-for="item in qtList" :label="item.key" v-if="item.value != '主观题'">
+                                <el-checkbox :disabled="isEdit" v-for="item in qtList" :label="item.key" v-if="item.value != '主观题'">
                                     {{item.value}}
                                 </el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
 
-                        <el-form-item label="主题类型：" size="small">
-                            <el-select multiple collapse-tags
+                        <el-form-item label="主题类型：">
+                            <el-select :disabled="isEdit" multiple collapse-tags
                                        v-model="configureEntity.topics"
                                        placeholder="请选择">
                                 <el-option
@@ -140,8 +149,9 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item>
+                        <el-form-item >
                             <el-button type="primary" @click="save">保存设置</el-button>
+                            <el-button type="primary" @click="cancle">取消</el-button>
                         </el-form-item>
 
                     </el-form>
