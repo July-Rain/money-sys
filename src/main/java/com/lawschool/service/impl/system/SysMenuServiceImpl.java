@@ -7,11 +7,14 @@ import com.lawschool.dao.UserMapper;
 import com.lawschool.dao.system.SysMenuDao;
 import com.lawschool.form.CommonForm;
 import com.lawschool.form.TreeForm;
+import com.lawschool.service.SysRoleMenuService;
 import com.lawschool.service.system.SysMenuService;
 import com.lawschool.util.Constant;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -25,6 +28,9 @@ public class SysMenuServiceImpl extends AbstractServiceImpl<SysMenuDao, SysMenuE
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private SysRoleMenuService sysRoleMenuService;
 
     @Override
     public List<SysMenuEntity> findList(String parentId){
@@ -169,5 +175,23 @@ public class SysMenuServiceImpl extends AbstractServiceImpl<SysMenuDao, SysMenuE
         List<SysMenuEntity> list = dao.findUserMenu(roleIds, null);
 
         return list;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean remove(List<String> ids){
+        // 批量删除，并且删除下级目录
+        if(CollectionUtils.isEmpty(ids)){
+            return true;
+        }
+
+        // 获取所有本级和下级IDS
+        List<String> list_all = dao.findAllByList(ids);
+        // 批量删除
+        this.delete(list_all);
+
+        // 删除角色和菜单关联信息
+        sysRoleMenuService.deleteByMenuId(list_all);
+        return true;
     }
 }

@@ -21,6 +21,20 @@ var vm = new Vue({
         radioData: "",
         radio_disabled: false,
         checkboxdisabled:false,//多选情况下 复选框 禁用 选项
+        daliyDate: null,
+        dateList:[{
+            day: '今日',
+            date: '2019-01-19',
+            active: true
+        },{
+            day: '周一',
+            date: '2019-01-18',
+            active:false
+        },{
+            day: '周日',
+            date: '2019-01-17',
+            active:false
+        }]//左侧时间选项卡
     },
     methods: {
         onSubmit:function(answerId) {
@@ -50,7 +64,6 @@ var vm = new Vue({
                 alert("答对了");
             }
         },
-
         //单选题的答案结果
         radioCheck: function (id, answerId, typeName) {
             vm.radio_disabled = true;
@@ -111,6 +124,12 @@ var vm = new Vue({
         },
         toHome: function () {
             parent.location.reload()
+        },
+        dateChange: function (index) {
+            for(var i = 0;i<vm.dateList.length;i++){
+                vm.dateList[i].active = false
+            }
+            vm.dateList[index].active = true
         }
     },
     created: function () {

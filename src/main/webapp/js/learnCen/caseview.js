@@ -33,8 +33,17 @@ var vm = new Vue({
         oldTime:0,//原播放时间
         caseTypeOption:[],
         lawLevelOption:[],
-        caseProcessOption:[]
-
+        caseProcessOption:[],
+        contentTypeOption:[{
+            code:'1',
+            value:'文字'
+        },{
+            code:'2',
+            value:'音频'
+        },{
+            code:'3',
+            value:'视频'
+        }]
     },
     created: function () {
 

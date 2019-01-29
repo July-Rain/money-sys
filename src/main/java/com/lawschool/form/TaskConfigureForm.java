@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class TaskConfigureForm {
 
+    private String id;
     private String name;
     private List<String> difficultys;
     private List<String> classifys;
@@ -81,5 +82,13 @@ public class TaskConfigureForm {
 
     public void setThemeName(String themeName) {
         this.themeName = themeName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -95,10 +95,16 @@
                                     >
                                     </el-date-picker>
                                 </el-form-item>
-                                <el-form-item  label="类型" prop="contentType">
-                                    <el-radio label="1" v-model="formInline.contentType" @change="changeType"> 文字</el-radio>
-                                    <el-radio label="2" v-model="formInline.contentType" @change="changeType"> 音频</el-radio>
-                                    <el-radio label="3" v-model="formInline.contentType" @change="changeType"> 视频</el-radio>
+                                <el-form-item label="类型" prop="contentType">
+                                    <el-select v-model="formInline.contentType"  size="mini" placeholder="案件类型" @change="changeType" >
+                                        <el-option
+                                                v-for="item in contentTypeOption"
+                                                :key="item.code"
+                                                :label="item.value"
+                                                :value="item.code"
+                                        >
+                                        </el-option>
+                                    </el-select>
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" @click="onSubmit" size="mini">
