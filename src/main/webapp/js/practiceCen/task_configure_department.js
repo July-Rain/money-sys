@@ -61,43 +61,47 @@ var vm = new Vue({
             vm.dialogConfig = true;
             vm.title = "新增配置信息";
         },
-        save: function () {
-            if(vm.configureEntity.topics.length == 1){
-
-                var tid = vm.configureEntity.topics[0];
-                for(var i=0; i<vm.topicList.length; i++){
-                    if(vm.topicList[i].key == tid){
-                        vm.configureEntity.themeName = vm.topicList[i].value;
-                        break;
-                    }
-                }
-            } else {
-                vm.configureEntity.themeName = '综合类';
-            }
-            $.ajax({
-                type: "POST",
-                url: baseURL + "taskConfigure/save/1",
-                contentType: "application/json",
-                data: JSON.stringify(vm.configureEntity),
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.dialogConfig = false;
-                        vm.configureEntity = {
-                            name: '',
-                            difficultys: [],
-                            classifys: [],
-                            types: [],
-                            topics: [],
-                            themeName: '',
-                            users: [],
-                            depts: []
-                        };
-                        vm.refresh();
+        save: function (formName) {
+            this.$refs[formName].validate(function (valid) {
+                if (valid) {
+                    if(vm.configureEntity.topics.length == 1){
+                        var tid = vm.configureEntity.topics[0];
+                        for(var i=0; i<vm.topicList.length; i++){
+                            if(vm.topicList[i].key == tid){
+                                vm.configureEntity.themeName = vm.topicList[i].value;
+                                break;
+                            }
+                        }
                     } else {
-                        alert(result.msg);
+                        vm.configureEntity.themeName = '综合类';
                     }
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + "taskConfigure/save/1",
+                        contentType: "application/json",
+                        data: JSON.stringify(vm.configureEntity),
+                        success: function (result) {
+                            if (result.code === 0) {
+                                vm.dialogConfig = false;
+                                vm.configureEntity = {
+                                    name: '',
+                                    difficultys: [],
+                                    classifys: [],
+                                    types: [],
+                                    topics: [],
+                                    themeName: '',
+                                    users: [],
+                                    depts: []
+                                };
+                                vm.refresh();
+                            } else {
+                                alert(result.msg);
+                            }
+                        }
+                    });
                 }
             });
+
         },
         closeDia: function () {
             vm.configureEntity = {
@@ -117,19 +121,36 @@ var vm = new Vue({
             vm.closeDia();
         },
         deletes: function (id) {
-            $.ajax({
-                type: "POST",
-                url: baseURL + "taskConfigure/delete/" + id,
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        alert('删除成功');
-                        vm.refresh();
-                    } else {
-                        alert(result.msg);
+            this.$confirm('确定删除此任务设置吗？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(function () {
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "taskConfigure/delete/" + id,
+                    contentType: "application/json",
+                    success: function (result) {
+                        if (result.code === 0) {
+                            vm.$alert('操作成功', '提示', {
+                                confirmButtonText: '确定',
+                                callback: function () {
+                                }
+                            });
+                            vm.refresh();
+                        } else {
+                            alert(result.msg);
+                        }
                     }
-                }
+                });
+
+            }).catch(function () {
+                vm.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
             });
+
         },
         info: function (id) {
             vm.isEdit = true;
