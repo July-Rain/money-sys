@@ -11,16 +11,13 @@
     <div class="container">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
             <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
-            <el-breadcrumb-item>练习管理</el-breadcrumb-item>
-            <el-breadcrumb-item>个人任务设置</el-breadcrumb-item>
-        </el-breadcrumb>
-        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
-            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
             <el-breadcrumb-item>个人中心</el-breadcrumb-item>
             <el-breadcrumb-item>我的练习</el-breadcrumb-item>
             <el-breadcrumb-item>自定义任务</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-button size="mini" type="primary" @click="addConfigure">新增配置</el-button>
+        <div class="info_btn">
+            <el-button size="mini" type="primary" @click="addConfigure"><i class="iconfont icon-htmal5icon18"></i>新增配置</el-button>
+        </div>
         <el-table
                 :data="tableData"
                 style="width: 100%"

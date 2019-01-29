@@ -12,14 +12,11 @@
             <el-breadcrumb-item>管理中心</el-breadcrumb-item>
             <el-breadcrumb-item>题库管理</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-form :inline="true" class="demo-form-inline">
-
-            <el-form-item>
-                <el-button type="primary" @click="addExam()" size="mini">新增试题</el-button>
-                <el-button type="primary" @click="batchImport()" size="mini">批量导入</el-button>
-                <el-button type="primary" @click="downloadTemp()" size="mini">下载导入模板</el-button>
-            </el-form-item>
-        </el-form>
+        <div class="info_btn">
+            <el-button size="mini" type="primary" @click="addExam"><i class="iconfont icon-suiji1"></i>新增试题</el-button>
+            <el-button size="mini" type="primary" @click="batchImport"><i class="iconfont icon-shangchuan"></i>批量导入</el-button>
+            <el-button size="mini" type="primary" @click="downloadTemp"><i class="iconfont icon-xiazai"></i>下载导入模板</el-button>
+        </div>
         <div>
             <el-table
                     :data="tableData"
