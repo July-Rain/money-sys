@@ -3,6 +3,7 @@ package com.lawschool.controller;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.beans.SysConfig;
 import com.lawschool.service.SysConfigService;
+import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -65,7 +67,8 @@ public class SysConfigController {
     @SysLog("添加参数配置")
     @RequestMapping("/insert")
     public Result insert(@RequestBody SysConfig config){
-//        config.setId(GetUUID.getUUIDs("SC"));
+        config.setId(GetUUID.getUUIDs("SC"));
+        config.setCreateTime(new Date());
         configService.insert(config);
         return Result.ok().put("id",config.getId());
     }

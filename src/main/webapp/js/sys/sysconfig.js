@@ -29,13 +29,17 @@ var vm = new Vue({
             status: "1"
         },
         rules: {//表单验证规则
+
             value: [
+                {required: true, message: '请输入参数值', trigger: 'blur'},
+                {max: 200, message: '最大长度200', trigger: 'blur'}
+            ],
+            code: [
                 {required: true, message: '请输入参数名', trigger: 'blur'},
                 {max: 50, message: '最大长度50', trigger: 'blur'}
             ],
-            code: [
-                {required: true, message: '请输入参数值', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
+            remark: [
+                {max: 200, message: '最大长度200', trigger: 'blur'}
             ]
         },
         dialogConfig: false,//table弹出框可见性
