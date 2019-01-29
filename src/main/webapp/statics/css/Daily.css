@@ -1,0 +1,128 @@
+.daliy .el-dialog__body{
+    background: #f2f9ff;
+}
+.daliy .el-dialog__body{
+    padding: 34px 44px;
+}
+.daliy_title{
+    line-height: 28px;
+    font-size: 20px;
+    color: #2a2a2a;
+    margin-bottom: 20px;
+    padding-left: 44px;
+    padding-top: 30px;
+}
+.daliy_title span{
+    display: inline-block;
+    background: #f3eee8;
+    color: #ff9019;
+    border: 1px solid #ff9019;
+    padding: 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 14px;
+}
+.daliy .el-radio{
+    display: block;
+    line-height: 52px;
+    padding: 0 44px;
+}
+
+.daliy .el-radio span{
+    color: #2a2a2a;
+    font-size: 16px;
+    line-height: 52px;
+}
+.daliy .is-disabled span{
+    color: #2a2a2a!important;
+}
+.daliy .el-radio.is-checked{
+    background: #e1f1ff;
+}
+.daliy .el-radio-group{
+    display: block;
+}
+.daliy .el-radio+.el-radio{
+    margin: 0;
+}
+/*checkbox*/
+.daliy .el-checkbox{
+    display: block;
+    line-height: 52px;
+    padding: 0 44px;
+}
+
+.daliy .el-checkbox span{
+    color: #2a2a2a;
+    font-size: 16px;
+    line-height: 52px;
+}
+.daliy .is-disabled span{
+    color: #2a2a2a!important;
+}
+.daliy .el-checkbox.is-checked{
+    background: #e1f1ff;
+}
+.daliy .el-checkbox-group{
+    display: block;
+}
+.daliy .el-checkbox+.el-checkbox{
+    margin: 0;
+}
+
+.daliy .el-button{
+    padding: 8px 22px;
+    margin: 0 auto;
+    display: block;
+}
+.clearfix .date{
+    float: left;
+    width: 11vw;
+    border-radius: 4px;
+    box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.1);
+    margin-right: 1.3vw;
+}
+.clearfix .daliy{
+    float: left;
+    width: 84vw;
+}
+.el-date-editor.el-input, .el-date-editor.el-input__inner{
+    width: 9vw;
+    margin: 9px auto;
+    display: block;
+}
+.el-input__inner{
+    height: 28px;
+}
+.el-input__icon{
+    line-height: 28px;
+}
+.date > ul{
+    border-top: 1px solid #e1e1e4;
+    padding: 15px 0 21px;
+}
+.date > ul li{
+    text-align: center;
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+.date > ul li span{
+    display: block;
+}
+.date > ul li span:first-child{
+    line-height: 25px;
+}
+.date > ul li span:last-child{
+    line-height: 22px;
+}
+.date > ul li.active{
+    border-right: 3px solid #1381e3;
+}
+.date > ul li.active span{
+    color: #1381e3;
+}
+.daliy {
+    border: 1px solid #dddddd;
+    background: #e1f1ff;
+}

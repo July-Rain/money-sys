@@ -21,6 +21,7 @@ var vm = new Vue({
         radioData: "",
         radio_disabled: false,
         checkboxdisabled:false,//多选情况下 复选框 禁用 选项
+        daliyDate: null
     },
     methods: {
         onSubmit:function(answerId) {
