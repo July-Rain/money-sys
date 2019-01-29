@@ -42,4 +42,11 @@ public interface SysMenuService extends AbstractService<SysMenuEntity> {
      * @return
      */
     List<SysMenuEntity> findAllByRole(String roleId);
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    boolean remove(List<String> ids);
 }

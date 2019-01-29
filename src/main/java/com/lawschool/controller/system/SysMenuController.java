@@ -1,5 +1,6 @@
 package com.lawschool.controller.system;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.User;
 import com.lawschool.beans.system.SysMenuEntity;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -79,11 +81,20 @@ public class SysMenuController extends AbstractController {
      * @param entity
      * @return
      */
+    @SysLog("菜单/目录保存")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody SysMenuEntity entity){
 
         if(StringUtils.isBlank(entity.getParentId())){
             entity.setParentId("0");
+        }
+
+        int type = entity.getType();
+        String url = entity.getUrl();
+        if(type == 1){// 菜单
+            if(StringUtils.isBlank(url)){
+                return Result.error("请输入路由信息");
+            }
         }
 
         boolean result = sysMenuService.save(entity);
@@ -121,6 +132,7 @@ public class SysMenuController extends AbstractController {
 
         return Result.ok().put("list", resultList);
     }
+
     /**
      * @Author MengyuWu
      * @Description 获取请求菜单的上级菜单
@@ -128,7 +140,6 @@ public class SysMenuController extends AbstractController {
      * @Param [id]
      * @return com.lawschool.util.Result
      **/
-
     @RequestMapping("/getParent")
     public Result getParent(String id){
         if(UtilValidate.isEmpty(id)){
@@ -136,5 +147,12 @@ public class SysMenuController extends AbstractController {
         }
         List<SysMenuEntity> parentList = sysMenuService.queryParentById(id);
         return Result.ok().put("parentList", parentList);
+    }
+
+    @SysLog("删除目录/菜单")
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public Result delete(@RequestBody List<String> ids){
+        boolean result = sysMenuService.remove(ids);
+        return Result.ok();
     }
 }

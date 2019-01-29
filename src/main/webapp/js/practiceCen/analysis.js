@@ -11,7 +11,9 @@ var vm = new Vue({
         themeAnswerNames:[],
         themeAnswerData:[],
         themeRightNames:[],
-        themeRightData:[]
+        themeRightData:[],
+        userName: '',
+        sum: 0,
     },
     methods: {
         initBar1: function () {
@@ -217,6 +219,8 @@ var vm = new Vue({
                     vm.right = result.map.right;
                     vm.themeAnswerNum = result.map.themeAnswerNum;
                     vm.themeRightNum = result.map.themeRightNum;
+                    vm.userName = result.map.userName;
+                    vm.sum = result.map.sum;
 
                     for(var key in vm.overall){
                         vm.showNames.push(key);

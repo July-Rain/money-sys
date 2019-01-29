@@ -96,6 +96,23 @@
         )
     </insert>
 
+    <update id="update">
+        UPDATE LAW_SYS_MENU
+        SET
+            NAME = #{name},
+            URL = #{url},
+            ICON = #{icon},
+            perms = #{perms},
+            parent_id = #{parentId},
+            type = #{type},
+            order_num = #{orderNum},
+            opt_user = #{optUser},
+            opt_time = #{optTime}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
     <select id="findOne" resultType="com.lawschool.beans.system.SysMenuEntity">
         SELECT
             id AS "id",
@@ -126,4 +143,28 @@
         ORDER BY
             LEVEL DESC
     </select>
+
+    <!-- 查询本级和下级所有数据 -->
+    <select id="findAllByList" resultType="string">
+        SELECT
+	        id
+        FROM LAW_SYS_MENU START WITH ID
+        <if test="list != null and list.size > 0">
+            IN
+            <foreach collection="list" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+	    CONNECT BY PRIOR ID = PARENT_ID
+    </select>
+
+    <!-- 批量删除 -->
+    <delete id="delete">
+        DELETE FROM LAW_SYS_MENU
+        WHERE
+            ID IN
+            <foreach collection="list" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+    </delete>
 </mapper>
