@@ -72,7 +72,7 @@
                                     </el-select>
                                 </el-form-item>
 
-                                <el-form-item label="裁判日期" prop="startTime">
+                                <!--<el-form-item label="裁判日期" prop="startTime">
                                     <el-date-picker
                                             v-model="formInline.startTime"
                                             type="date"
@@ -94,6 +94,34 @@
                                             size="mini"
                                     >
                                     </el-date-picker>
+                                </el-form-item>-->
+                                <el-form-item label="裁判日期" prop="startTime">
+                                    <el-col :span="11">
+                                        <el-form-item prop="startTime">
+                                            <el-date-picker
+                                                    v-model="formInline.startTime"
+                                                    type="date"
+                                                    format="yyyy年MM月dd日"
+                                                    value-format="yyyy-MM-dd"
+                                                    placeholder="开始时间"
+                                                    size="mini"
+                                            >
+                                            </el-date-picker>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col class="line text-center" :span="2">-</el-col>
+                                    <el-col :span="11">
+                                        <el-form-item prop="endTime">
+                                            <el-date-picker
+                                                    v-model="formInline.endTime"
+                                                    type="date"
+                                                    format="yyyy年MM月dd日"
+                                                    value-format="yyyy-MM-dd"
+                                                    placeholder="结束时间"
+                                                    size="mini" >
+                                            </el-date-picker>
+                                        </el-form-item>
+                                    </el-col>
                                 </el-form-item>
                                 <el-form-item label="类型" prop="contentType">
                                     <el-select v-model="formInline.contentType"  size="mini" placeholder="案件类型" @change="changeType" >
