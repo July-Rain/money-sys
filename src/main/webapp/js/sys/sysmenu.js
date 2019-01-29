@@ -8,6 +8,7 @@ var vm = new Vue({
             parentId: '0'
         },
         childData: [],
+        childDataTwo: [],
         dialogConfig: false,
         sysMenu: {
             id: '',
@@ -23,7 +24,16 @@ var vm = new Vue({
             children: 'children',
             label: 'name'
         },
-        nodeName: ''
+        nodeName: '',
+        rules: {//表单验证规则
+            name: [
+                {required: true, message: '请输入目录/菜单名称', trigger: 'blur'},
+                {max: 25, message: '最大长度25', trigger: 'blur'}
+            ],
+            url: [
+                {max: 100, message: '最大长度100', trigger: 'blur'}
+            ]
+        },
     },
     created: function () {
         this.$nextTick(function () {
@@ -32,6 +42,19 @@ var vm = new Vue({
         })
     },
     methods: {
+        typeChange: function(){
+            var type = vm.sysMenu.type;
+            if(type == 0){// 目录
+                vm.rules.url = [
+                    {max: 100, message: '最大长度100', trigger: 'blur'}
+                ];
+            } else {
+                vm.rules.url = [
+                    {max: 100, message: '最大长度100', trigger: 'blur'},
+                    {required: true, message: '请输入路由信息', trigger: 'blur'},
+                ];
+            }
+        },
         refresh: function () {
             $.ajax({
                 type: "GET",
@@ -61,6 +84,26 @@ var vm = new Vue({
                     if (result.code === 0) {
                         vm.childData.splice(result.list.length);
                         vm.childData = result.list;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        changeTwo: function(row, expandedRows){
+            if(expandedRows.length > 1){
+                expandedRows.shift();
+            }
+            vm.formInline.parentId = row.id;
+            $.ajax({
+                type: "GET",
+                url: baseURL + "sysmenu/list",
+                contentType: "application/json",
+                data: vm.formInline,
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.childDataTwo.splice(result.list.length);
+                        vm.childDataTwo = result.list;
                     } else {
                         alert(result.msg);
                     }
@@ -97,31 +140,38 @@ var vm = new Vue({
             vm.sysMenu.parentId = obj.id;
 
         },
-        save: function () {
-            $.ajax({
-                type: "POST",
-                url: baseURL + "sysmenu/save",
-                data: JSON.stringify(vm.sysMenu),
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.dialogConfig = false;
-                        vm.sysMenu = {
-                            id: '',
-                            type: 0,
-                            name: '',
-                            url: '',
-                            icon: '',
-                            perms: '',
-                            parentId: '0'
-                        };
-                        vm.formInline.parentId = '0';
-                        vm.refresh();
-                    } else {
-                        alert(result.msg);
-                    }
+        save: function (formName) {
+            this.$refs[formName].validate(function (valid) {
+                if (valid) {
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + "sysmenu/save",
+                        data: JSON.stringify(vm.sysMenu),
+                        contentType: "application/json",
+                        success: function (result) {
+                            if (result.code === 0) {
+                                vm.dialogConfig = false;
+                                vm.sysMenu = {
+                                    id: '',
+                                    type: 0,
+                                    name: '',
+                                    url: '',
+                                    icon: '',
+                                    perms: '',
+                                    parentId: '0'
+                                };
+                                vm.formInline.parentId = '0';
+                                vm.refresh();
+                            } else {
+                                alert(result.msg);
+                            }
+                        }
+                    });
+                } else {
+                    return false;
                 }
             });
+
         },
         edit: function (id) {
             $.ajax({
@@ -131,6 +181,16 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.sysMenu = result.info;
+                        if(vm.sysMenu.type == 0){
+                            vm.rules.url = [
+                                {max: 100, message: '最大长度100', trigger: 'blur'}
+                            ];
+                        } else {
+                            vm.rules.url = [
+                                {max: 100, message: '最大长度100', trigger: 'blur'},
+                                {required: true, message: '请输入路由信息', trigger: 'blur'}
+                            ];
+                        }
                         vm.dialogConfig = true;
                     } else {
                         alert(result.msg);
@@ -152,6 +212,42 @@ var vm = new Vue({
         },
         toHome: function () {
             parent.location.reload()
+        },
+        remove: function (id, type) {
+            var msg = "";
+            if(type == 0){
+                msg = "是否确认删除当前目录及下级目录和菜单";
+            } else {
+                msg = "是否确认删除当前菜单";
+            }
+            this.$confirm(msg, '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(function () {
+                var arr = new Array();
+                arr.push(id);
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "sysmenu/delete",
+                    contentType: "application/json",
+                    data: JSON.stringify(arr),
+                    success: function (result) {
+                        if (result.code === 0) {
+                            vm.formInline.parentId = '0';
+                            vm.refresh();
+                        } else {
+                            alert(result.msg);
+                        }
+                    }
+                });
+
+            }).catch(function () {
+                vm.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
         }
     }
 });
