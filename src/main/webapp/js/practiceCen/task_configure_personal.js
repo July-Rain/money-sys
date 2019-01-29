@@ -192,6 +192,8 @@ var vm = new Vue({
                     }
                 }
                 msg = msg.substr(0, msg.length -1);
+            } else {
+                msg = "不限";
             }
 
             return msg;
@@ -210,6 +212,8 @@ var vm = new Vue({
                     }
                 }
                 msg = msg.substr(0, msg.length - 1);
+            } else {
+                msg = "不限";
             }
 
             return msg;
@@ -230,6 +234,8 @@ var vm = new Vue({
                     }
                 }
                 msg = msg.substr(0, msg.length - 1);
+            } else {
+                msg = "不限";
             }
 
             return msg;
