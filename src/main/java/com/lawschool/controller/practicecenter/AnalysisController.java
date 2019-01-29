@@ -44,8 +44,10 @@ public class AnalysisController extends AbstractController {
         String month = sim.format(date);
 
         String userId = user.getId();
+        String userName = user.getUserName();
 
         Map<String, Object> resultMap = analysisService.analysis(month, userId);
+        resultMap.put("userName", userName);
 
         return result.put("map", resultMap);
     }
