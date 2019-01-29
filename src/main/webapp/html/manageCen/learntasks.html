@@ -185,21 +185,21 @@
                             <el-table-column
                                     prop="taskClassName"
                                     label="任务类型"
-                                    width="180"
+                                    width="100"
                                     header-align="center"
                                     align="center">
                             </el-table-column>
                             <el-table-column
                                     prop="policeclassName"
                                     label="所属警种"
-                                    width="180"
+                                    width="100"
                                     header-align="center"
                                     align="center">
                             </el-table-column>
                             <el-table-column
                                     prop="startTime"
                                     label="任务开始时间"
-                                    width="180"
+                                    width="150"
                                     header-align="center"
                                     align="center"
                             >
@@ -207,7 +207,7 @@
                             <el-table-column
                                     prop="endTime"
                                     label="任务结束时间"
-                                    width="180"
+                                    width="150"
                                     header-align="center"
                                     align="center"
                             >
@@ -215,7 +215,7 @@
                             <el-table-column
                                     prop="completionDegree"
                                     label="任务完成度"
-                                    width="180"
+                                    width="100"
                                     header-align="center"
                                     align="center"
                             >
@@ -223,7 +223,7 @@
                             <el-table-column
                                     prop="overDegree"
                                     label="超时完成率"
-                                    width="180"
+                                    width="100"
                                     header-align="center"
                                     align="center"
                             >
@@ -231,8 +231,8 @@
                             <el-table-column
                                     prop="isUse"
                                     label="是否启用"
-                                    width="180"
                                     align="center"
+                                    header-align="center"
                                     width="100">
                                 <template slot-scope="scope">
                                     <el-tag v-if="scope.row.isUse === '0'" size="small" type="danger">未启用</el-tag>
