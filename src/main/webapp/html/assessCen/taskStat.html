@@ -141,10 +141,16 @@
                                 border
                                 style="width: 100%">
                             <el-table-column
+                                    label="序号"
+                                    type="index"
+                                    header-align="center"
+                                    align="center"
+                                    width="50">
+                            </el-table-column>
+                            <el-table-column
                                     prop="taskName"
                                     label="任务名称"
-                                    header-align="center"
-                                    align="center">
+                                    >
                             </el-table-column>
                             <el-table-column
                                     prop="taskClassName"
@@ -192,29 +198,29 @@
                                     align="center"
                             >
                             </el-table-column>
-                            <el-table-column
-                                    prop="isUse"
-                                    label="是否启用"
-                                    width="180"
-                                    align="center"
-                                    width="100">
-                                <template slot-scope="scope">
-                                    <el-tag v-if="scope.row.isUse === '0'" size="small" type="danger">未启用</el-tag>
-                                    <el-tag v-else size="small">已启用</el-tag>
-                                </template>
-                            </el-table-column>
-                            <el-table-column
-                                    label="操作"
-                                    header-align="center"
-                                    align="center"
-                                    width="180">
-                                <template slot-scope="scope">
-                                    <el-button v-if="scope.row.isUse=='0'"
-                                            size="mini"
-                                            @click="handleEdit(scope.$index, scope.row)">查看
-                                    </el-button>
-                                </template>
-                            </el-table-column>
+                            <!--<el-table-column-->
+                                    <!--prop="isUse"-->
+                                    <!--label="是否启用"-->
+                                    <!--header-align="center"-->
+                                    <!--align="center"-->
+                                    <!--width="100">-->
+                                <!--<template slot-scope="scope">-->
+                                    <!--<el-tag v-if="scope.row.isUse === '0'" size="small" type="danger">未启用</el-tag>-->
+                                    <!--<el-tag v-else size="small">已启用</el-tag>-->
+                                <!--</template>-->
+                            <!--</el-table-column>-->
+                            <!--<el-table-column-->
+                                    <!--label="操作"-->
+                                    <!--header-align="center"-->
+                                    <!--align="center"-->
+                                    <!--width="180">-->
+                                <!--<template slot-scope="scope">-->
+                                    <!--<el-button v-if="scope.row.isUse=='0'"-->
+                                            <!--size="mini"-->
+                                            <!--@click="handleEdit(scope.$index, scope.row)">查看-->
+                                    <!--</el-button>-->
+                                <!--</template>-->
+                            <!--</el-table-column>-->
                         </el-table>
                         <el-pagination
                                 @size-change="handleSizeChange"
