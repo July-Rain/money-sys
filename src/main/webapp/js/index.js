@@ -6,15 +6,13 @@
 
 var vm = new Vue({
     el: '#app',
-    data() {
-        return {
-            childUrl: 'container.html',
-            navData: [],//导航
-            iframeSrc: '',
-            backShow: true,
-            loginType: 0,// 登陆方式
-            headerHide: false
-        }
+    data: {
+        childUrl: 'container.html',
+        navData: [],//导航
+        iframeSrc: '',
+        backShow: true,
+        loginType: 0,// 登陆方式
+        headerHide: false
     },
     created: function () {
         this.$nextTick(function () {
