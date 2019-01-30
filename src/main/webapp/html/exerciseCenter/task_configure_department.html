@@ -12,7 +12,10 @@
             <el-breadcrumb-item>练习管理</el-breadcrumb-item>
             <el-breadcrumb-item>部门任务设置</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-button size="mini" type="primary" @click="addConfigure" >新增配置</el-button>
+
+        <div class="info_btn">
+            <el-button size="mini" type="primary" @click="addConfigure"><i class="iconfont icon-htmal5icon18"></i>新增配置</el-button>
+        </div>
         <el-table
                 :data="tableData"
                 style="width: 100%"

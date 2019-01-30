@@ -12,8 +12,11 @@
             <el-breadcrumb-item>练习中心</el-breadcrumb-item>
             <el-breadcrumb-item>随机练习</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-button size="mini" type="primary" @click="addExercise">随机练习</el-button>
-        <br/>
+        <div class="info_btn">
+            <el-button size="mini" type="primary" @click="addExercise"><i class="iconfont icon-suiji1"></i>随机练习</el-button>
+        </div>
+
+
         <el-table
                 :data="tableData"
                 style="width: 100%"

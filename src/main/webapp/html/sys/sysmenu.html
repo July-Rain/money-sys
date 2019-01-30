@@ -87,7 +87,9 @@
             <el-col :span="24">
                 <el-tabs type="border-card">
                     <div>
-                        <el-button size="mini" type="primary" @click="add">新增</el-button>
+                        <div class="info_btn">
+                            <el-button size="mini" type="primary" @click="add"><i class="iconfont icon-htmal5icon18"></i>新增</el-button>
+                        </div>
                         <el-table @expand-change="change"
                                 :data="tableData"
                                 border

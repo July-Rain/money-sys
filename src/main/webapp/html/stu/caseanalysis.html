@@ -91,7 +91,10 @@
                             </el-form-item>
                         </el-form>
                         <div>
-                            <el-button type="primary" @click="addCaseAna" size="mini">新增</el-button>
+
+                            <div class="info_btn">
+                                <el-button size="mini" type="primary" @click="addCaseAna"><i class="iconfont icon-htmal5icon18"></i>新增</el-button>
+                            </div>
                             <el-table
                                     :data="tableData"
                                     border

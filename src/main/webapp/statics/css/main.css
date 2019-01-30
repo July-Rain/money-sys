@@ -68,6 +68,10 @@
 }
 .container .info_btn button{
     margin-bottom: 8px;
+    padding: 7px 12px;
+}
+.container .info_btn button i{
+    margin-right: 10px;
 }
 /*.m {*/
     /*width: 960px;*/
