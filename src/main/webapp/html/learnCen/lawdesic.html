@@ -3,6 +3,11 @@
 <head>
     <title>江苏省公安厅法律学校 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .info_card .el-form-item__label{
+            min-width: 96px;
+        }
+    </style>
 </head>
 <body>
 <div id="app" v-cloak>
@@ -35,16 +40,15 @@
                                 <el-form-item prop="lawTitle" label="法律决定标题">
                                     <el-input v-model="formInline.lawTitle" placeholder="标题" size="mini"></el-input>
                                 </el-form-item>
-                                <el-form-item prop="issueOrg" label="颁布单位">
-                                    <el-input v-model="formInline.issueOrg" placeholder="颁布单位" size="mini"></el-input>
-                                </el-form-item>
-
                                 <el-form-item prop="status" label="状态">
                                     <el-select v-model="formInline.status" placeholder="状态" size="mini">
                                         <el-option label="有效" value="1"></el-option>
                                         <el-option label="无效" value="2"></el-option>
                                         <el-option label="已修改" value="3"></el-option>
                                     </el-select>
+                                </el-form-item>
+                                <el-form-item prop="issueOrg" label="颁布单位">
+                                    <el-input v-model="formInline.issueOrg" placeholder="颁布单位" size="mini"></el-input>
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" @click="onSubmit" size="mini">
