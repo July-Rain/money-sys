@@ -2,6 +2,7 @@ package com.lawschool.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.beans.*;
 import com.lawschool.beans.Collection;
@@ -20,7 +21,7 @@ import static com.lawschool.util.Constant.*;
 import static java.lang.Integer.parseInt;
 
 @Service
-public class CollectionServiceImpl implements CollectionService {
+public class CollectionServiceImpl  extends ServiceImpl<CollectionDao,Collection> implements CollectionService{
 
     @Autowired
     CollectionDao collectionDao;
@@ -46,7 +47,7 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     //1 删  0 留  取消收藏
     public int delCollection(Collection collection, User user) {
-        return this.changeStatus(collection,user,true);
+        return this.changeStatus(collection,user,true)==1?SUCCESS:ERROR;
     }
 
     @Override
@@ -88,7 +89,13 @@ public class CollectionServiceImpl implements CollectionService {
     private int changeStatus(Collection collection,User user,boolean flag){
         collection.setOpttime(new Date());
         EntityWrapper<Collection> ew=new EntityWrapper();
-        ew.eq("COM_USERID",user.getId()).eq("ID",collection.getId());
+        ew.eq("COM_USERID",user.getId());
+        if(UtilValidate.isNotEmpty(collection.getId())){
+            ew.eq("ID",collection.getId());
+        }
+        if(UtilValidate.isNotEmpty(collection.getComStucode())){
+            ew.eq("com_stucode",collection.getComStucode());
+        }
         if(flag){//0-》1  取消收藏
             collection.setDelStatus(1);
             ew.eq("DEL_STATUS",0);
@@ -96,7 +103,7 @@ public class CollectionServiceImpl implements CollectionService {
             collection.setDelStatus(0);
             ew.eq("DEL_STATUS",1);
         }
-        return collectionDao.update(collection,ew)==1?SUCCESS:ERROR;//1 改变成功 0 改变失败
+        return collectionDao.update(collection,ew)==1?1:0;//1 改变成功 0 改变失败
     }
 
     //我的收藏-重点试题（我收藏的题目）-zjw

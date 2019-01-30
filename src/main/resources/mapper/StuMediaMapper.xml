@@ -223,6 +223,7 @@
     <if test="stuType != null and stuType!=''">
       and LAW_STU_MEDIA.stu_type = #{stuType}
     </if>
+      order by LAW_COLLECTION.OPTTIME desc
     )
     WHERE
     rowno &gt; #{startPage}
