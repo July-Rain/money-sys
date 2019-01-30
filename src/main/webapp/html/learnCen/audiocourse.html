@@ -3,10 +3,17 @@
 <head>
     <title>江苏省公安厅法律学校 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .content_audio{
+            text-align: center;
+            margin-top: 14px;
+            padding: 0 14px ;
+        }
+        .content_audio audio{
+            width: 100%;
+        }
+    </style>
 </head>
-<style>
-
-</style>
 <body>
 <div id="app" v-cloak>
     <div class="container">
@@ -89,10 +96,12 @@
                             <el-row :gutter="10">
                                 <el-col :span="6" v-for="(item, index) in videoData">
                                     <el-card :body-style="{ padding: '0px' }">
-                                        <audio controls="controls" preload="none" @play="onPlay(item.id)"
-                                               @pause="onPause(item.id,$event)">
-                                            <source :src="item.contentUrl" controls="controls">
-                                        </audio>
+                                        <div class="content_audio">
+                                            <audio controls="controls" preload="none" @play="onPlay(item.id)"
+                                                   @pause="onPause(item.id,$event)">
+                                                <source :src="item.contentUrl" controls="controls">
+                                            </audio>
+                                        </div>
                                         <div style="padding: 14px 14px 0 14px;">
                                             <p>
                                                 <span v-if="!item.isColl" @click="collect(item.id)">收藏</span>
