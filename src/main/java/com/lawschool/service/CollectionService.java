@@ -1,5 +1,8 @@
 package com.lawschool.service;
 
+import com.baomidou.mybatisplus.service.IService;
+import com.lawschool.base.AbstractService;
+import com.lawschool.beans.Answer;
 import com.lawschool.beans.Collection;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
@@ -16,7 +19,7 @@ import java.util.Map;
  * @Time        2018/11/29
  *
  */
-public interface CollectionService {
+public interface CollectionService extends IService<Collection> {
 
     /**
      * 取消收藏

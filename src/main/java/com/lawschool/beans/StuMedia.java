@@ -100,6 +100,11 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
     @TableField(exist = false)
     private String recordId;//记录id
 
+    @TableField(exist = false)
+    private boolean isColl;//是否被收藏过
+
+
+
     public String[] getDeptArr() {
         return deptArr;
     }
@@ -364,5 +369,13 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
 
     public void setRecordId(String recordId) {
         this.recordId = recordId;
+    }
+
+    public boolean getIsColl() {
+        return isColl;
+    }
+
+    public void setIsColl(boolean isColl) {
+        this.isColl = isColl;
     }
 }
