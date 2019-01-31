@@ -398,6 +398,10 @@ var vm = new Vue({
             //选择人员
             this.dialogUser=true;
         },
+        indexMethod: function (index) {
+
+            return index + 1 + (vm.formInline.page-1) * vm.formInline.limit;
+        }
     },
     created: function () {
         this.$nextTick(function () {
