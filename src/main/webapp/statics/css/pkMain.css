@@ -203,3 +203,126 @@ button {
     animation-timing-function: ease;
     -webkit-animation-timing-function: ease;
 }
+/*规则*/
+.rule_area{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    background-color: rgba(0,0,0,0.3);
+}
+.rule_area .inner{
+    width: 866px;
+    height: 505px;
+    margin: 200px auto 0;
+    position: relative;
+    background-image: url("../img/competeCenter/bu_gonglue.png");
+    background-size: 100% 100%;
+    padding-top: 1px;
+}
+.rule_area .inner .close{
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 91px;
+    top: 0px;
+}
+.rule_area .inner .title{
+    width: 123px;
+    height: 36px;
+    margin: 86px auto 0;
+    background-image: url("../img/competeCenter/chuangguan_gonglue.png");
+    background-size: 100% 100%;
+}
+.rule_area .inner p{
+    width: 650px;
+    font-size: 18px;
+    color: #75431f;
+    margin: 50px auto 0;
+    line-height: 23px;
+}
+.team_area {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    background-color: rgba(0,0,0,0.3);
+}
+.team_area .inner{
+    width: 347px;
+    height: 407px;
+    background: url("../img/competeCenter/shiban_zuduiduizhan.png");
+    background-size: 100% 100%;
+    margin: 200px auto 0;
+    padding-top: 1px;
+}
+.team_area .inner .title{
+    width: 207px;
+    height: 54px;
+    line-height: 48px;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    background: url("../img/competeCenter/biaoti_jinshu.png") 100% 100%;
+    margin: 50px auto 0;
+    font-weight: bolder;
+    text-shadow: rgba(0,0,0,1) 0px 0px 10px;
+}
+.team_area .inner ul{
+    margin: 0 auto;
+    width: 244px;
+}
+.team_area .inner ul li{
+    float: left;
+    line-height: 43px;
+    height: 43px;
+    width: 50%;
+    position: relative;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+.team_area .inner ul li:first-child:after{
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 14px;
+    background-color: #08132e;
+    right: 0;
+    top: 15px;
+
+}
+.team_area .inner ul li.active:before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 26px;
+    width: 70px;
+    height: 1px;
+    background: rgba(255,255,255,0.5);
+    box-shadow: 0 0 5px 5px rgba(255,255,255,.2);
+}
+.team_area .inner > button{
+    width: 227px;
+    height: 119px;
+    line-height: 119px;
+    color: #fff;
+    font-size: 18px;
+    display: block;
+    margin: 0 auto;
+    font-weight: bolder;
+    text-shadow: rgba(0,0,0,1) 0px 0px 10px;
+}
+.team_area .inner > button:nth-last-child(2){
+    background: url("../img/competeCenter/btn_blue.png");
+}
+.team_area .inner > button:last-child{
+    background: url("../img/competeCenter/btn_org.png");
+    margin-top: -24px;
+}

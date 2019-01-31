@@ -4,14 +4,17 @@ var vm = new Vue({
         coinNum: 123,
         rollAreaShow: false,
         nameList: ["乔杰","李坤宇","乔杰","李坤宇","乔杰","李坤宇","乔杰","李坤宇","乔杰","李坤宇","乔杰","李坤宇"],
-        rollStop: false
+        rollStop: false,
+        ruleAreaShow: false,
+        teamAreaShow: false,
+        teamPerNum: 3
     },
     created: function () {
     },
     methods: {
         toUrl:function (url) {
-
-            var resultName = "旗鼓相当的对手";
+            // 匹配到对手的昵称
+            var resultName = "卜楠";
 
             switch (url) {
                 case 'pkGame':
@@ -29,7 +32,16 @@ var vm = new Vue({
 
         },
         toUrlCallBack: function (url) {
-            window.location.href = baseURL+"modules/competition/" + url + ".html"
+            window.location.href = baseURL + "modules/competition/" + url + ".html"
+        },
+        goBack: function () {
+            window.location.href = baseURL + "modules/competition/competeCenter.html"
+        },
+        formationTeam: function () {
+            console.log("组建"+ vm.teamPerNum +"人组队")
+        },
+        joinTeam: function () {
+            console.log("加入"+ vm.teamPerNum +"人组队")
         }
     }
 });
