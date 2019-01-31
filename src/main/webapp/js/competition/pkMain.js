@@ -7,9 +7,21 @@ var vm = new Vue({
         rollStop: false,
         ruleAreaShow: false,
         teamAreaShow: false,
-        teamPerNum: 3
+        teamPerNum: 3,
+        formationTeamShow: false,
+        joinTeamShow:false
     },
     created: function () {
+        document.onkeydown = function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if(e && e.keyCode==13){ // enter 键
+                if(vm.joinTeamShow){
+                    vm.joinTeamShow = false;
+                    vm.formationTeamShow = true;
+                }
+
+            }
+        }
     },
     methods: {
         toUrl:function (url) {
@@ -38,10 +50,18 @@ var vm = new Vue({
             window.location.href = baseURL + "modules/competition/competeCenter.html"
         },
         formationTeam: function () {
-            console.log("组建"+ vm.teamPerNum +"人组队")
+            console.log("组建"+ vm.teamPerNum +"人组队");
+            this.teamAreaShow = false;
+            this.formationTeamShow = true;
         },
         joinTeam: function () {
-            console.log("加入"+ vm.teamPerNum +"人组队")
+            console.log("加入"+ vm.teamPerNum +"人组队");
+            this.teamAreaShow = false;
+            this.joinTeamShow = true
+        },
+        formationTeamExit: function () {
+            this.formationTeamShow = false;
+            // 退出组队
         }
     }
 });

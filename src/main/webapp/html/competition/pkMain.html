@@ -45,7 +45,7 @@
         <button onclick="tiaole('5','join2')">多人组队（进房）（5v5）</button>
     </div>
     <!--滚动匹配弹框-->
-    <div class="roll_area" v-if="rollAreaShow">
+    <div class="model_area roll_area" v-if="rollAreaShow">
         <div class="inner">
             <div class="translate">
                 <ul :class="rollStop?'stop_roll':''">
@@ -57,7 +57,7 @@
         </div>
     </div>
     <!--规则-->
-    <div class="rule_area" v-if="ruleAreaShow">
+    <div class="model_area rule_area" v-if="ruleAreaShow">
         <div class="inner">
             <button class="close" @click="ruleAreaShow = false"></button>
             <div class="title"></div>
@@ -66,7 +66,7 @@
         </div>
     </div>
 
-    <div class="team_area" v-if="teamAreaShow">
+    <div class="model_area team_area" v-if="teamAreaShow">
         <div class="inner">
             <div class="title">组队对战模式</div>
             <ul class="clearfix">
@@ -75,6 +75,40 @@
             </ul>
             <button @click="formationTeam">建立我的队伍</button>
             <button @click="joinTeam">加入他人队伍</button>
+        </div>
+    </div>
+    <!--建立我的队伍-->
+    <div class="model_area formation_area" v-if="formationTeamShow">
+        <div class="inner">
+            <div class="title"></div>
+            <div class="btns">
+                <button>刷新</button>
+                <button @click="formationTeamExit">退出</button>
+            </div>
+            <ul class="users">
+                <li>
+                    <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                    <p>我</p>
+                </li>
+                <li>
+                    <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                    <p>发范德萨</p>
+                </li>
+                <li>
+                    <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                    <p>发范德萨</p>
+                </li>
+
+            </ul>
+            <p class="team_num"><span>组队编号：</span>123456</p>
+            <p>恭喜您！队伍完成，冲啊~</p>
+        </div>
+    </div>
+    <!--加入队伍-->
+    <div class="model_area join_area" v-if="joinTeamShow">
+        <div class="inner">
+            <div class="title">加入他人队伍</div>
+            <input type="text" placeholder="输入队伍编号" @submit="alert(1)">
         </div>
     </div>
 </div>
