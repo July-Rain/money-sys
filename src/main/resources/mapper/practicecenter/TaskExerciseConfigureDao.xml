@@ -16,14 +16,13 @@
     <!-- 分页查询 -->
     <select id="findList" resultType="com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity">
         SELECT
-        <include refid="columns"/>
+        <include refid="columns"/>,
+        source AS "source"
         FROM LAW_EXERCISE_TASK_CONFIGURE
         <where>
             del_flag = #{delFlag}
             AND create_user = #{createUser}
-            <if test="source != null and source != ''">
-                AND source = #{source}
-            </if>
+            AND source = #{source}
         </where>
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">
