@@ -270,6 +270,10 @@ var vm = new Vue({
                 }
             });
         },
+        indexMethod: function (index) {
+
+            return index + 1 + (vm.formInline.page-1) * vm.formInline.limit;
+        }
     },
     created: function () {
         this.$nextTick(function () {

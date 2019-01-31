@@ -1,3 +1,4 @@
+var ztree;
 var vm = new Vue({
     el: '#app',
     data: {
@@ -17,7 +18,9 @@ var vm = new Vue({
             topics: [],
             themeName: '',
             users: [],
-            depts: []
+            depts: [],
+            deptNames: [],
+            userNames: []
         },
         topicList: [],
         diffList: [],
@@ -30,9 +33,106 @@ var vm = new Vue({
             ]
         },
         isEdit: false,
-        title: ''
+        title: '',
+        deptData:[],//部门树数据
+        userData:[],//人员树数据
+        defaultDeptProps:{
+            children: 'child',
+            label: 'orgName'
+        },//部门树的默认格式
+        defaultUserProps:{
+            children: 'child',
+            label: 'orgName'
+        },//部门人员的默认格式
+        userForm:{
+            userCode:"",
+            userName:"",
+            orgCode:"",
+            currPage: 1,
+            pageSize: 10,
+            totalCount:0
+
+        },//人员查询
+        userTableData:[],//人员表格信息
+        dialogDept: false,
+        dialogUser: false,
+
     },
     methods: {
+        confimUser: function () {
+            //  userNames
+            this.dialogUser=false;
+        },
+        cancelUser: function () {
+            this.dialogUser=false;
+        },
+        handleSelectionChange(val) {
+            this.configureEntity.users = [];
+            this.configureEntity.userNames = [];
+            //选择人员信息
+            this.multipleSelection = val;
+            //遍历最终的人员信息
+            for (var i=0;i<val.length;i++){
+                this.configureEntity.users.push(val[i].id);
+                this.configureEntity.userNames.push(val[i].userName)
+            }
+
+        },
+        userHandleSizeChange: function (val) {
+            this.userForm.pageSize=val;
+            this.reloadUser();
+        },
+        userHandleCurrentChange: function (val) {
+            this.userForm.currPage=val;
+            this.reloadUser();
+        },
+        getDept: function(){
+            //加载部门树
+            $.get(baseURL + "law/zTree", function(r){
+                ztree = $.fn.zTree.init($("#classTree"), setting, r.classifyList);
+            })
+        },
+        searchUser: function () {
+            vm.reloadUser();
+        },
+        reloadUser: function () {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "sys/getAllUsers",
+                dataType: "json",
+                data: vm.userForm,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.userTableData = result.page.list;
+                        vm.userForm.currPage = result.page.currPage;
+                        vm.userForm.pageSize = result.page.pageSize;
+                        vm.userForm.totalCount = parseInt(result.page.count);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        handleDeptNodeClick: function (data) {
+            this.userForm.orgCode=data.orgCode;
+            this.reloadUser();
+        },
+        cancelDept: function () {
+            this.dialogDept=false;
+        },
+        confimDept: function () {
+            this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
+            this.configureEntity.depts = [];
+            this.configureEntity.deptNames = [];
+            for(var i=0;i<this.multipleDeptSelection.length;i++){
+                this.configureEntity.depts.push(this.multipleDeptSelection[i].id);
+                this.configureEntity.deptNames.push(this.multipleDeptSelection[i].orgName);
+            }
+            this.dialogDept=false;
+        },
+        handleCheckChange: function (data, checked, indeterminate) {
+
+        },
         handleSizeChange: function (event) {
             vm.formInline.limit = event;
             vm.refresh();
@@ -186,6 +286,7 @@ var vm = new Vue({
             parent.location.reload()
         },
         edit: function (id) {
+            vm.title = "编辑任务配置";
             $.ajax({
                 type: "GET",
                 url: baseURL + "taskConfigure/info/" + id,
@@ -204,6 +305,18 @@ var vm = new Vue({
                         }
                         if(result.info.themeId != null){
                             vm.configureEntity.topics = result.info.themeId.split(',');
+                        }
+                        if(result.info.depts != null){
+                            vm.configureEntity.depts = result.info.depts.split(',');
+                        }
+                        if(result.info.users != null){
+                            vm.configureEntity.users = result.info.users.split(',');
+                        }
+                        if(result.info.deptNames != null){
+                            vm.configureEntity.deptNames = result.info.deptNames.split(',');
+                        }
+                        if(result.info.userNames != null){
+                            vm.configureEntity.userNames = result.info.userNames.split(',');
                         }
                         vm.dialogConfig = true;
                     } else {
@@ -275,6 +388,19 @@ var vm = new Vue({
             }
 
             return msg;
+        },
+        chooseDept: function () {
+            //选择部门
+            this.dialogDept=true;
+
+        },
+        chooseUser: function () {
+            //选择人员
+            this.dialogUser=true;
+        },
+        indexMethod: function (index) {
+
+            return index + 1 + (vm.formInline.page-1) * vm.formInline.limit;
         }
     },
     created: function () {
@@ -295,6 +421,21 @@ var vm = new Vue({
                     }
                 }
             });
+            //加载部门数据
+            $.ajax({
+                type: "POST",
+                url: baseURL + "org/tree",
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        vm.deptData = result.orgList;
+                        vm.userData = result.orgList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+            this.reloadUser();
         })
     }
 });

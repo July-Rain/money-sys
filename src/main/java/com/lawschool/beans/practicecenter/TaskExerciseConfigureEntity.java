@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @Auther: Moon
  * @Date: 2018/12/29 13:41
@@ -31,11 +34,21 @@ public class TaskExerciseConfigureEntity extends DataEntity<TaskExerciseConfigur
 
     private String themeName;// 主题信息
     private String createName;// 创建人名称
+    private String deptNames;// 使用部门
+    private String userNames;// 使用人员
 
     @TableField(exist = false)
     private Integer start;
     @TableField(exist = false)
     private Integer end;
+    @TableField(exist = false)
+    private List<String> difficultys = new ArrayList<String>();
+    @TableField(exist = false)
+    private List<String> classifys = new ArrayList<String>();
+    @TableField(exist = false)
+    private List<String> types = new ArrayList<String>();
+    @TableField(exist = false)
+    private List<String> topics = new ArrayList<String>();
 
     public String getName() {
         return name;
@@ -147,5 +160,53 @@ public class TaskExerciseConfigureEntity extends DataEntity<TaskExerciseConfigur
 
     public void setEnd(Integer end) {
         this.end = end;
+    }
+
+    public List<String> getDifficultys() {
+        return difficultys;
+    }
+
+    public void setDifficultys(List<String> difficultys) {
+        this.difficultys = difficultys;
+    }
+
+    public List<String> getClassifys() {
+        return classifys;
+    }
+
+    public void setClassifys(List<String> classifys) {
+        this.classifys = classifys;
+    }
+
+    public List<String> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<String> types) {
+        this.types = types;
+    }
+
+    public List<String> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<String> topics) {
+        this.topics = topics;
+    }
+
+    public String getDeptNames() {
+        return deptNames;
+    }
+
+    public void setDeptNames(String deptNames) {
+        this.deptNames = deptNames;
+    }
+
+    public String getUserNames() {
+        return userNames;
+    }
+
+    public void setUserNames(String userNames) {
+        this.userNames = userNames;
     }
 }

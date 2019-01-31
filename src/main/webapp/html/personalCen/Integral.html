@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
     <style>
         .header-right ul {
@@ -81,6 +81,58 @@
             color: #909399;
             display: inline-block;
         }
+        /*我的积分学分样式*/
+        .info_card .card_contain{
+            padding: 0;
+
+        }
+        .info_card .card_contain .title{
+            line-height: 48px;
+            height: 48px;
+            text-align: center;
+            color: #333;
+            font-size: 14px;
+            border-bottom: 1px solid #ddd;
+        }
+        .info_card .card_contain .item{
+            padding: 21px 0 20px 23px;
+        }
+        .info_card .card_contain .item .top{
+            padding-bottom: 12px;
+        }
+        .info_card .card_contain .item .top .icon{
+            float: left;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #fcbe53;
+            text-align: center;
+        }
+        .info_card .card_contain .item:last-child .top .icon{
+            background-color: #bba7e9;
+        }
+        .info_card .card_contain .item .top .icon i{
+            color: #fff;
+            line-height: 60px;
+            font-size: 28px;
+        }
+        .info_card .card_contain .item .top .total{
+            float: left;
+            padding-left: 14px;
+            font-size: 14px;
+        }
+        .info_card .card_contain .item .top .total > p:nth-child(1){
+            line-height: 36px;
+            color: #333;
+        }
+        .info_card .card_contain .item .top .total > p:nth-child(2){
+            line-height: 17px;
+            color: #ff7e00;
+        }
+        .info_card .card_contain .item > p{
+            line-height: 36px;
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -142,7 +194,7 @@
                             </el-table-column>
                             <el-table-column
                                     prop="type"
-                                    label="学分/学分"
+                                    label="学分/积分"
                                     header-align="center"
                                     align="center"
                             >
@@ -164,6 +216,14 @@
                                     header-align="center"
                                     align="center"
                             >
+                                <template slot-scope="scope">
+                                    <el-tag v-if="scope.row.src === 'OnlinPk'" size="small">在线比武</el-tag>
+                                    <el-tag v-if="scope.row.src === 'everyDay'" size="small">每日一题</el-tag>
+                                    <el-tag v-if="scope.row.src === 'OnlinPkByCode'" size="small">一对一比武</el-tag>
+                                    <el-tag v-if="scope.row.src === 'leitai'" size="small">擂台比武</el-tag>
+                                    <el-tag v-if="scope.row.src === 'teamOnline'" size="small">组队比拼</el-tag>
+                                    <el-tag v-if="scope.row.src === 'Checkpoint'" size="small">闯关竞赛</el-tag>
+                                </template>
                             </el-table-column>
                             <el-table-column
                                     prop="createTime"
@@ -187,16 +247,45 @@
             </el-col>
 
             <el-col :span="4">
-                <el-card>
-                    <el-button>我的总积分：{{info.integralPoint}}</el-button>
-                    <el-button>我的积分总排名：{{info.allItrRank}}</el-button>
-                    <el-button>我的积分部门排名：{{info.orgItrRank}}</el-button>
-                </el-card>
-                <el-card>
-                    <el-button>我的总学分：{{info.creditPoint}}</el-button>
-                    <el-button>我的学分总排名：{{info.allCdtRank}}</el-button>
-                    <el-button>我的学分部门排名：{{info.orgCdtRank}}</el-button>
-                </el-card>
+
+                <div class="info_card">
+                    <div class="card_title"></div>
+                    <div class="card_contain">
+                        <div class="title">
+                            我的积分学分
+                        </div>
+                        <div class="item">
+                            <div class="top clearfix">
+                                <div class="icon">
+                                    <i class="iconfont icon-jifen"></i>
+                                </div>
+                                <div class="total">
+                                    <p>我的总积分</p>
+                                    <p>{{info.integralPoint}}</p>
+                                </div>
+
+                            </div>
+                            <p>我的积分总排名：{{info.allItrRank}}</p>
+                            <p>我的积分部门排名：{{info.orgItrRank}}</p>
+                        </div>
+
+                        <div class="item">
+                            <div class="top clearfix">
+                                <div class="icon">
+                                    <i class="iconfont icon-xuefen"></i>
+                                </div>
+                                <div class="total">
+                                    <p>我的总学分</p>
+                                    <p>{{info.creditPoint}}</p>
+                                </div>
+
+                            </div>
+                            <p>我的学分总排名：{{info.allCdtRank}}</p>
+                            <p>我的学分部门排名：{{info.orgCdtRank}}</p>
+                        </div>
+                    </div>
+                </div>
+
             </el-col>
         </el-row>
     </div>

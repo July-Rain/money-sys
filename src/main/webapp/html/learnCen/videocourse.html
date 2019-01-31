@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
     <style>
         .el-tabs__header.is-top{
@@ -158,9 +158,9 @@
             </el-col>
         </el-row>
     </div>
-    <el-dialog title="视频课堂" :visible.sync="dialogVideo" >
-        <div v-if="dialogVideo">
-            <video style="width:100%; height:auto;" controls autoplay preload="none" :poster="thisVideoPicAccUrl" @play="onPlay(thisVideoId)" @pause="onPause(thisVideoId,$event)">
+    <el-dialog class="dialog_minW750" title="视频课堂" :visible.sync="dialogVideo" >
+        <div v-if="dialogVideo" style="max-height: 450px;text-align: center">
+            <video style="width:auto; max-height: 450px" controls autoplay preload="none" :poster="thisVideoPicAccUrl" @play="onPlay(thisVideoId)" @pause="onPause(thisVideoId,$event)">
                 <source :src="thisVideoContentUrl" type="video/mp4">
                 您的浏览器不支持视频播放
             </video>

@@ -16,14 +16,13 @@
     <!-- 分页查询 -->
     <select id="findList" resultType="com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity">
         SELECT
-        <include refid="columns"/>
+        <include refid="columns"/>,
+        source AS "source"
         FROM LAW_EXERCISE_TASK_CONFIGURE
         <where>
             del_flag = #{delFlag}
             AND create_user = #{createUser}
-            <if test="source != null and source != ''">
-                AND source = #{source}
-            </if>
+            AND source = #{source}
         </where>
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -55,7 +54,9 @@
             opt_user,
             opt_time,
             theme_name,
-            create_name
+            create_name,
+            dept_names,
+            user_names
         )
         VALUES
         (
@@ -75,7 +76,9 @@
             #{optUser},
             #{optTime},
             #{themeName},
-            #{createName}
+            #{createName},
+            #{deptNames},
+            #{userNames}
         )
     </insert>
 
@@ -95,7 +98,9 @@
             opt_user = #{optUser},
             opt_time = #{optTime},
             theme_name = #{themeName},
-            create_name = #{createName}
+            create_name = #{createName},
+            dept_names = #{deptNames},
+            user_names = #{userNames}
         WHERE
             id = #{id}
     </update>
@@ -110,7 +115,9 @@
 
     <select id="findOne" resultType="com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity">
         SELECT
-        <include refid="columns"/>
+            <include refid="columns"/>,
+            dept_names AS "deptNames",
+            user_names AS "userNames"
         FROM LAW_EXERCISE_TASK_CONFIGURE
         <where>
             id = #{id}

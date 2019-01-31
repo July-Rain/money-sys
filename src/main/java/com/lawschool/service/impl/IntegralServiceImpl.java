@@ -14,10 +14,7 @@ import com.lawschool.dao.IntegralDao;
 import com.lawschool.dao.UserIntegralDao;
 import com.lawschool.service.IntegralService;
 import com.lawschool.service.UserIntegralService;
-import com.lawschool.util.GetUUID;
-import com.lawschool.util.PageUtils;
-import com.lawschool.util.Result;
-import com.lawschool.util.UtilValidate;
+import com.lawschool.util.*;
 import com.sun.net.httpserver.Authenticator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,24 +50,23 @@ public class IntegralServiceImpl extends AbstractServiceImpl<IntegralDao, Integr
     **/
     @Override
     public PageUtils list(Map<String, Object> param, User user) {
-        int pageNo= parseInt(Optional.ofNullable(param.get("currPage")).orElse("1").toString());
-        int pageSize= parseInt(Optional.ofNullable(param.get("pageSize")).orElse("10").toString());
+        //int pageNo= parseInt(Optional.ofNullable(param.get("currPage")).orElse("1").toString());
+        //int pageSize= parseInt(Optional.ofNullable(param.get("pageSize")).orElse("10").toString());
 
         String startTime=(String)param.get("startTime");
         String endTime=(String)param.get("endTime");
         String type=(String)param.get("type");
 
-        Page<Integral> page=new Page<Integral>(pageNo,pageSize);
+        //Page<Integral> page=new Page<Integral>(pageNo,pageSize);
         EntityWrapper<Integral> ew=new EntityWrapper<>();
         ew.eq("USER_ID", user.getId());
 
-        ew.addFilterIfNeed(UtilValidate.isNotEmpty(startTime),"(CREATE_TIME >= TO_DATE('"+startTime+"', 'yyyy-mm-dd'))");
-        ew.addFilterIfNeed(UtilValidate.isNotEmpty(endTime),"(CREATE_TIME <= TO_DATE('"+endTime+"', 'yyyy-mm-dd'))");
+        ew.addFilterIfNeed(UtilValidate.isNotEmpty(startTime),"(TO_DATE(to_char(create_time,'yyyy-mm-dd'),'yyyy-mm-dd') >= TO_DATE('"+startTime+"', 'yyyy-mm-dd'))");
+        ew.addFilterIfNeed(UtilValidate.isNotEmpty(endTime),"(TO_DATE(to_char(create_time,'yyyy-mm-dd'),'yyyy-mm-dd') <= TO_DATE('"+endTime+"', 'yyyy-mm-dd'))");
         ew.eq(UtilValidate.isNotEmpty(type),"TYPE",type);
         ew.orderBy("CREATE_TIME", false);
-
-        List<Integral> integrals = integralDao.selectPage(page, ew);
-        PageUtils pages=new PageUtils(integrals, integrals.size(), pageSize, pageNo);
+        Page<Integral> page=this.selectPage(new Query<Integral>(param).getPage(), ew);
+        PageUtils pages=new PageUtils(page);
         return pages;
     }
 
