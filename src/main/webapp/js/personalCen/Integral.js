@@ -36,6 +36,12 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.info = result.info;
+                        vm.info.integralPoint=result.info.integralPoint==null?0:result.info.integralPoint;
+                        vm.info.allItrRank=result.info.allItrRank==0?'1':result.info.allItrRank;
+                        vm.info.orgItrRank=result.info.orgItrRank==0?'1':result.info.orgItrRank;
+                        vm.info.creditPoint=result.info.creditPoint==null?0:result.info.creditPoint;
+                        vm.info.allCdtRank=result.info.allCdtRank==0?'1':result.info.allCdtRank;
+                        vm.info.orgCdtRank=result.info.orgCdtRank==0?'1':result.info.orgCdtRank;
                     } else {
                         alert(result.msg);
                     }
@@ -68,7 +74,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "integral/list",
+                url: baseURL + "integral/list?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
