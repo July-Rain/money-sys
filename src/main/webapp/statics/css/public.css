@@ -94,4 +94,10 @@ ul li{
 }
 /*el-tree  end */
 
+.el-select>.el-input{
+    width: 220px;
+}
+.el-date-editor.el-input--mini.el-date-editor--datetime{
+    width: 220px !important;
+}
 /*element 公共样式修改  end */

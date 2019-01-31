@@ -86,12 +86,12 @@
         </div>
 
 
-        <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
-            <el-form :model="dailyConfig" :rules="rules" ref="dailyConfig" label-width="100px" class="demo-dailyConfig"
+        <el-dialog :title="title+' 每日一题'" :visible.sync="dialogConfig" :before-close="closeDia">
+            <el-form :model="dailyConfig" :rules="rules" ref="dailyConfig" label-width="125px                                                " class="demo-dailyConfig"
                      size="mini">
                 <el-row>
                     <el-col>
-                        <el-form-item label="每日一题规则名称">
+                        <el-form-item label="规则名称">
                             <el-input v-model="dailyConfig.ruleName" placeholder="请输入考试名称" clearable></el-input>
                         </el-form-item>
                     </el-col>
