@@ -3,7 +3,7 @@
  * Date: 2018/12/7
  * Description:配置
  */
-var editor;
+var editor = null;
 var menuId=$("#menuId").val();
 var vm = new Vue({
     el: '#app',
@@ -487,20 +487,50 @@ var vm = new Vue({
             parent.location.reload()
         }
     },
-    mounted() {
+    mounted: function() {
+        var that = this;
         this.$refs.stuDialog.open();
-        setTimeout(() => {
-            this.$refs.stuDialog.close();
+        setTimeout(function () {
+            that.$refs.stuDialog.close();
             loadEditor();
-    }, 200);
+        }, 200);
     }
 });
+
+
+/**
+ * wangEditor 富文本框初始
+ *
+ */
 function loadEditor(){
-    var E = window.wangEditor
-    editor = new E('#editor')
+    var E = window.wangEditor;
+    editor = new E('#editor');
     // 或者 var editor = new E( document.getElementById('editor') )
     //显示“上传图片”的tab
     editor.customConfig.uploadImgServer = baseURL+"sys/upload";// 上传图片到服务器
+    // 自定义菜单配置
+    editor.customConfig.menus = [
+        'head',  // 标题
+        'bold',  // 粗体
+        'fontSize',  // 字号
+        'fontName',  // 字体
+        'italic',  // 斜体
+        'underline',  // 下划线
+        'strikeThrough',  // 删除线
+        'foreColor',  // 文字颜色
+        // 'backColor',  // 背景颜色
+        // 'link',  // 插入链接
+        'list',  // 列表
+        'justify',  // 对齐方式
+        'quote',  // 引用
+        // 'emoticon',  // 表情
+        'image',  // 插入图片
+        'table',  // 表格
+        'video',  // 插入视频
+        // 'code',  // 插入代码
+        'undo',  // 撤销
+        'redo'  // 重复
+    ];
     editor.customConfig.uploadFileName = 'importfile';
     editor.customConfig.uploadImgHooks = {
                 // 如果服务器端返回的不是 {errno:0, data: [...]} 这种格式，可使用该配置
@@ -517,7 +547,7 @@ function loadEditor(){
     editor.customConfig.onchange = function (html) {
         // 监控变化，同步更新到 textarea
         vm.stuMedia.comContent=html;
-    }
+    };
     editor.create();
 
 }

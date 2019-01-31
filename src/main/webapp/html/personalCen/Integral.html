@@ -194,7 +194,7 @@
                             </el-table-column>
                             <el-table-column
                                     prop="type"
-                                    label="学分/学分"
+                                    label="学分/积分"
                                     header-align="center"
                                     align="center"
                             >
@@ -216,6 +216,14 @@
                                     header-align="center"
                                     align="center"
                             >
+                                <template slot-scope="scope">
+                                    <el-tag v-if="scope.row.src === 'OnlinPk'" size="small">在线比武</el-tag>
+                                    <el-tag v-if="scope.row.src === 'everyDay'" size="small">每日一题</el-tag>
+                                    <el-tag v-if="scope.row.src === 'OnlinPkByCode'" size="small">一对一比武</el-tag>
+                                    <el-tag v-if="scope.row.src === 'leitai'" size="small">擂台比武</el-tag>
+                                    <el-tag v-if="scope.row.src === 'teamOnline'" size="small">组队比拼</el-tag>
+                                    <el-tag v-if="scope.row.src === 'Checkpoint'" size="small">闯关竞赛</el-tag>
+                                </template>
                             </el-table-column>
                             <el-table-column
                                     prop="createTime"

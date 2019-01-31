@@ -73,6 +73,18 @@ var vm = new Vue({
         },
         //用户添加
         handleAdd:function(){
+            vm.teacher={
+                id:"",
+                userName:"",
+                userCode:"",
+                password:"",
+                photo:"",
+                orgCode:"",
+                identify:1,//添加为教官
+                orgName:"",
+                userPoliceId:"",
+
+            };
             vm.dialogtch=true;
         },
         //用户修改vm.
@@ -186,7 +198,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sys/getUorT",
+                url: baseURL + "sys/getUorT?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {

@@ -62,8 +62,8 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
     @Override
     public PageUtils selectAllUsers(Map<String,Object> params) {
 
-        int pageNo= Integer.parseInt( Optional.ofNullable(params.get("currPage")).orElse("1").toString());
-        int pageSize=Integer.parseInt((String) Optional.ofNullable(params.get("pageSize")).orElse("10").toString());
+        //int pageNo= Integer.parseInt( Optional.ofNullable(params.get("currPage")).orElse("1").toString());
+        //int pageSize=Integer.parseInt((String) Optional.ofNullable(params.get("pageSize")).orElse("10").toString());
 
         //Page<User> page=new Page<>(pageNo,pageSize);
 
