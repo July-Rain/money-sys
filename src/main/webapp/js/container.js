@@ -351,6 +351,7 @@ var vm = new Vue({
                     if (result.code === 0) {
                         vm.yearPlan.credited = result.info.creditPoint;
                         vm.yearPlan.integraled = result.info.integralPoint;
+
                     } else {
                          alert(result.msg);
 
@@ -886,7 +887,9 @@ var vm = new Vue({
                 Type: "json",
                 async:false,
                 success: function (data) {
-                    vm.chuangguan="第"+data.competitionRecord.howBig+"大关，第"+data.competitionRecord.howLit+"小关";
+                    if(data.competitionRecord){
+                        vm.chuangguan="第"+data.competitionRecord.howBig+"大关，第"+data.competitionRecord.howLit+"小关";
+                    }
 
                 }
             });
@@ -1005,5 +1008,13 @@ var vm = new Vue({
                 }
             });
         },
+    },
+    computed: {
+        integralPer: function(){
+            return this.yearPlan.integraled/this.yearPlan.integral*100||0
+        },
+        creditPer: function () {
+            return this.yearPlan.credited/this.yearPlan.credit*100||0
+        }
     }
 });

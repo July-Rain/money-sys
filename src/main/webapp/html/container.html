@@ -5,79 +5,92 @@
     <#include "/header.html">
 </head>
 <style>
-.daliy .el-dialog__body{
-    background: #f2f9ff;
-}
-.daliy .el-dialog__body{
-    padding: 34px 44px;
-}
-.daliy_title{
-    line-height: 28px;
-    font-size: 20px;
-    color: #2a2a2a;
-    margin-bottom: 20px;
-}
-.daliy_title span{
-    display: inline-block;
-    background: #f3eee8;
-    color: #ff9019;
-    border: 1px solid #ff9019;
-    padding: 6px;
-    border-radius: 4px;
-    font-size: 14px;
-    line-height: 14px;
-}
-.daliy .el-radio{
-    display: block;
-    line-height: 52px;
-}
+    .daliy .el-dialog__body {
+        background: #f2f9ff;
+    }
 
-.daliy .el-radio span{
-    color: #2a2a2a;
-    font-size: 16px;
-    line-height: 52px;
-}
-.daliy .is-disabled span{
-    color: #2a2a2a!important;
-}
-.daliy .el-radio.is-checked{
-    background: #e1f1ff;
-}
-.daliy .el-radio-group{
-    display: block;
-}
-.daliy .el-radio+.el-radio{
-    margin: 0;
-}
-/*checkbox*/
-.daliy .el-checkbox{
-    display: block;
-    line-height: 52px;
-}
+    .daliy .el-dialog__body {
+        padding: 34px 44px;
+    }
 
-.daliy .el-checkbox span{
-    color: #2a2a2a;
-    font-size: 16px;
-    line-height: 52px;
-}
-.daliy .is-disabled span{
-    color: #2a2a2a!important;
-}
-.daliy .el-checkbox.is-checked{
-    background: #e1f1ff;
-}
-.daliy .el-checkbox-group{
-    display: block;
-}
-.daliy .el-checkbox+.el-checkbox{
-    margin: 0;
-}
+    .daliy_title {
+        line-height: 28px;
+        font-size: 20px;
+        color: #2a2a2a;
+        margin-bottom: 20px;
+    }
 
-.daliy .el-button{
-    padding: 8px 22px;
-    margin: 0 auto;
-    display: block;
-}
+    .daliy_title span {
+        display: inline-block;
+        background: #f3eee8;
+        color: #ff9019;
+        border: 1px solid #ff9019;
+        padding: 6px;
+        border-radius: 4px;
+        font-size: 14px;
+        line-height: 14px;
+    }
+
+    .daliy .el-radio {
+        display: block;
+        line-height: 52px;
+    }
+
+    .daliy .el-radio span {
+        color: #2a2a2a;
+        font-size: 16px;
+        line-height: 52px;
+    }
+
+    .daliy .is-disabled span {
+        color: #2a2a2a !important;
+    }
+
+    .daliy .el-radio.is-checked {
+        background: #e1f1ff;
+    }
+
+    .daliy .el-radio-group {
+        display: block;
+    }
+
+    .daliy .el-radio + .el-radio {
+        margin: 0;
+    }
+
+    /*checkbox*/
+    .daliy .el-checkbox {
+        display: block;
+        line-height: 52px;
+    }
+
+    .daliy .el-checkbox span {
+        color: #2a2a2a;
+        font-size: 16px;
+        line-height: 52px;
+    }
+
+    .daliy .is-disabled span {
+        color: #2a2a2a !important;
+    }
+
+    .daliy .el-checkbox.is-checked {
+        background: #e1f1ff;
+    }
+
+    .daliy .el-checkbox-group {
+        display: block;
+    }
+
+    .daliy .el-checkbox + .el-checkbox {
+        margin: 0;
+    }
+
+    .daliy .el-button {
+        padding: 8px 22px;
+        margin: 0 auto;
+        display: block;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -193,7 +206,9 @@
                                     <span>学年积分</span>
                                     <span><span>{{yearPlan.integraled || 0}}</span><span>/{{yearPlan.integral}}</span></span>
                                 </div>
-                                <el-progress :show-text="false" :stroke-width="12" :percentage="yearPlan.integraled/yearPlan.integral*100 || 0" color="rgb(77,180,154)"></el-progress>
+                                <el-progress :show-text="false" :stroke-width="12"
+                                             :percentage="integralPer"
+                                             color="rgb(77,180,154)"></el-progress>
                             </div>
                         </div>
                         <div class="target-div clearfix">
@@ -205,7 +220,9 @@
                                     <span>学年学分</span>
                                     <span><span>{{yearPlan.credited || 0}}</span><span>/{{yearPlan.credit}}</span></span>
                                 </div>
-                                <el-progress :show-text="false" :stroke-width="12" :percentage="yearPlan.credited/yearPlan.credit*100 || 0" color="#feae23"></el-progress>
+                                <el-progress :show-text="false" :stroke-width="12"
+                                             :percentage="creditPer"
+                                             color="#feae23"></el-progress>
                             </div>
                         </div>
                     </div>
@@ -224,7 +241,9 @@
                         <el-row :gutter="66">
                             <el-col :span="12" v-for="(item, index) in videoData">
                                 <el-card :body-style="{ padding: '0px' }">
-                                    <video class="video" width="315" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,item.comContent)" @pause="onPause(item.id,$event)">
+                                    <video class="video" width="315" height="155" controls preload="none"
+                                           :poster="item.videoPicAccUrl" @play="onPlay(item.id,item.comContent)"
+                                           @pause="onPause(item.id,$event)">
                                         <source :src="item.contentUrl" type="video/mp4">
                                         您的浏览器不支持视频播放
                                     </video>
@@ -304,7 +323,7 @@
                                 <div class="span-title">学情统计</div>
                                 <div class="infoMsg">
                                     <ul>
-                                        <li  v-for="(item, index) in stuInfo">
+                                        <li v-for="(item, index) in stuInfo">
                                             <p class="info"><i></i>{{item.name}}:<span>{{item.countTime}}h</span></p>
                                             <p class="contrast">击败了<span>{{item.ratio}}</span>的同事</p>
                                         </li>
@@ -343,7 +362,7 @@
                             </el-form-item>
                             <el-form-item prop="user">
                                 <el-input v-model="formInline.user" placeholder="提示" size="mini" clearable></el-input>
-                                </el-form-item>
+                            </el-form-item>
                             <el-form-item prop="chooseDate" label="选择日期">
                                 <el-date-picker
                                         v-model="formInline.chooseDate"
@@ -420,29 +439,32 @@
             <li>model:表单数据对象,rules:表单验证规则,size:用于控制该表单内组件的尺寸medium / small / mini,prop:表单域 model 字段</li>
             <li>表单重置:一、el-form 加ref属性，二、el-form-item 加prop属性</li>
             <li>表单验证:一、
-                属性为验证规则，二、el-form-item 加prop属性设置为需校验的字段名即可</li>
+                属性为验证规则，二、el-form-item 加prop属性设置为需校验的字段名即可
+            </li>
         </ol>
         <!--表单验证-->
         <el-row>
             <el-col :span="12">
-                <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" size="mini">
+                <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"
+                         size="mini">
                     <el-form-item label="上级菜单" prop="parentName">
                         <el-popover
                                 ref="menuListPopover"
                                 placement="bottom-start"
                                 trigger="click"
                                 v-model="ruleForm.visible">
-                        <el-tree
-                                :data="ruleForm.menuList"
-                                :props="ruleForm.menuListTreeProps"
-                                node-key="ruleForm.menuId"
-                                ref="ruleForm.menuListTree"
-                                @current-change="menuListTreeCurrentChangeHandle"
-                                :default-expand-all="true"
-                                :highlight-current="true"
-                                :expand-on-click-node="false">
-                        </el-tree>
-                            <el-input v-model="ruleForm.parentName" v-popover:menuListPopover slot="reference" :readonly="true"  placeholder="点击选择上级菜单"></el-input>
+                            <el-tree
+                                    :data="ruleForm.menuList"
+                                    :props="ruleForm.menuListTreeProps"
+                                    node-key="ruleForm.menuId"
+                                    ref="ruleForm.menuListTree"
+                                    @current-change="menuListTreeCurrentChangeHandle"
+                                    :default-expand-all="true"
+                                    :highlight-current="true"
+                                    :expand-on-click-node="false">
+                            </el-tree>
+                            <el-input v-model="ruleForm.parentName" v-popover:menuListPopover slot="reference"
+                                      :readonly="true" placeholder="点击选择上级菜单"></el-input>
                         </el-popover>
                     </el-form-item>
                     <el-form-item label="活动名称" prop="name">
@@ -535,11 +557,11 @@
                    :disabled="dataListSelections.length <= 0" size="mini">批量删除
         </el-button>
         <el-table v-if="false"
-                :data="data11"
-                height="250"
-                border
-                style="width: 100%"
-                @selection-change="selectionChangeHandle">
+                  :data="data11"
+                  height="250"
+                  border
+                  style="width: 100%"
+                  @selection-change="selectionChangeHandle">
             <el-table-column
                     type="selection"
                     header-align="center"
@@ -610,13 +632,12 @@
         <el-button v-if="false" type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
 
 
-
         <el-popover v-if="false"
-                placement="top-start"
-                :title="popover.title"
-                width="200"
-                trigger="hover"
-                :content="popover.content">
+                    placement="top-start"
+                    :title="popover.title"
+                    width="200"
+                    trigger="hover"
+                    :content="popover.content">
             <el-button slot="reference">hover 激活</el-button>
         </el-popover>
         <p v-if="false">
@@ -658,12 +679,14 @@
             </div>
         </el-dialog>
     </div>
-    <el-dialog class="daliy" title="每日一题" :visible.sync="dialogyes"  :close-on-click-modal="false">
+    <el-dialog class="daliy" title="每日一题" :visible.sync="dialogyes" :close-on-click-modal="false">
         <div>
             {{textmag}}
-            <p class="daliy_title"><span>{{questionForm.questionType==10004?'单选题':questionForm.questionType==10005?'多选题':'判断题'}}</span> 题目：{{questionForm.comContent}}</p>
+            <p class="daliy_title"><span>{{questionForm.questionType==10004?'单选题':questionForm.questionType==10005?'多选题':'判断题'}}</span>
+                题目：{{questionForm.comContent}}</p>
             <!--单选 与判断-->
-            <el-radio-group v-model="answers" v-if="questionForm.questionType==10004 || questionForm.questionType==10006"
+            <el-radio-group v-model="answers"
+                            v-if="questionForm.questionType==10004 || questionForm.questionType==10006"
                             :disabled="radio_disabled">
                 <el-radio :label="answer.id" v-for="answer in questionForm.answer"
                           @change="radioCheck(answer.id, questionForm.answerId, questionForm.questionType)">
@@ -682,7 +705,9 @@
                 <br/>
             </el-checkbox-group>
 
-            <el-button type="primary" :disabled="checkboxdisabled" v-if="questionForm.questionType==10005" @click="onSubmit(questionForm.answerId)">提交</el-button>
+            <el-button type="primary" :disabled="checkboxdisabled" v-if="questionForm.questionType==10005"
+                       @click="onSubmit(questionForm.answerId)">提交
+            </el-button>
 
 
             <!--<el-button type="primary" v-if="questionForm.questionType==10005" @click="onSubmit(questionForm.answerId)">提交</el-button><br/>-->
