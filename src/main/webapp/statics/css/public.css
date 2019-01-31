@@ -25,6 +25,9 @@ ul li{
     list-style:none;
 }
 
+.dialog_minW750>.el-dialog{
+    min-width: 750px;
+}
 /*element 公共样式修改 start*/
 .container>.el-row>.el-col,.container>.el-row>.el-col>.el-tabs--border-card>.el-tabs__content {
     padding: 0;

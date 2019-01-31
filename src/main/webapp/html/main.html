@@ -3,121 +3,121 @@
 <head>
     <title>江苏省公安厅法律学校 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .header-right ul{
+            background: transparent;
+        }
+        .header-right ul li:after{
+            content: '';
+        }
+        .el-menu--horizontal .el-menu-item,
+        .el-menu--horizontal .el-submenu{
+            float: left;
+            height: 70px;
+            /*line-height: 70px;*/
+            margin: 0;
+            border-bottom: 2px solid transparent;
+            color: #fff;
+        }
+        .el-submenu{
+            margin-top: -57px;
+        }
+        .el-menu--horizontal>.el-submenu .el-submenu__title {
+            height: 70px;
+            /* line-height: 70px; */
+            border-bottom: 2px solid transparent;
+            color: #909399;
+        }
+        .header-right ul li a{
+            text-align: center;
+            padding: 0;
+            /*margin: 10px 0;*/
+            box-sizing: border-box;
+            height: auto;
+            display: inline-block;
+        }
+        .header-right .el-menu-item [class^=el-icon-],
+        .header-right .el-submenu [class^=el-icon-],
+        .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
+            font-size: 30px;
+            color: #fff;
+        }
+        /*.header-right .el-submenu [class^=el-icon-]*/
+        .header-right ul li a span{
+            display: block;
+            margin-top: -10px;
+            line-height: 10px;
+        }
+        .header-right .el-menu-item:hover a,
+        .header-right .el-submenu:hover a,
+        .header-right .el-menu-item:hover [class^=el-icon-],
+        .header-right .el-submenu:hover [class^=el-icon-],
+        .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
+            color: #909399;
+        }
+        .el-submenu__icon-arrow{
+            margin-top: 16px;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item a{
+            color: #1381e3;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item a:hover{
+            color: #000;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+            background-color: #fff;
+            float: none;
+            height: 36px;
+            line-height: 36px;
+            color: #1381e3;
+            display: inline-block;
+
+        }
+        .el-submenu__icon-arrow {
+            display: none;
+        }
+        .el-submenu__title{
+            padding: 0;
+        }
+        .spel a{
+            margin-top: -10px;
+        }
+        .el-menu--horizontal .el-submenu{
+            height: 99px;
+        }
+        .header-right > ul > li{
+            position: relative;
+            margin: 0 5px;
+        }
+        .header-right > ul > li:after{
+            content: '';
+            position: absolute;
+            width: 1px;
+            height: 30px;
+            background: #71b3ee;
+            right: -7px;
+            top: 26px;
+        }
+        .el-menu.el-menu--horizontal{
+            margin-top: 2px;
+            border-bottom: solid 1px transparent;
+        }
+        .el-submenu.is-opened i,.el-submenu.is-opened span{
+            color: #1381e3!important;
+        }
+        .el-submenu.is-opened .el-submenu__title,.el-submenu .el-submenu__title{
+            /*display: block;*/
+            border-radius: 5px;
+        }
+        .el-menu--popup{
+            background: #1381e3;
+        }
+        .el-menu-item i,el-menu-item span{
+            color: #1381e3;
+        }
+
+    </style>
 </head>
-<style>
-    .header-right ul{
-        background: transparent;
-    }
-    .header-right ul li:after{
-        content: '';
-    }
-    .el-menu--horizontal .el-menu-item,
-    .el-menu--horizontal .el-submenu{
-        float: left;
-        height: 70px;
-        /*line-height: 70px;*/
-        margin: 0;
-        border-bottom: 2px solid transparent;
-        color: #fff;
-    }
-    .el-submenu{
-        margin-top: -57px;
-    }
-    .el-menu--horizontal>.el-submenu .el-submenu__title {
-        height: 70px;
-        /* line-height: 70px; */
-        border-bottom: 2px solid transparent;
-        color: #909399;
-    }
-    .header-right ul li a{
-        text-align: center;
-        padding: 0;
-        /*margin: 10px 0;*/
-        box-sizing: border-box;
-        height: auto;
-        display: inline-block;
-    }
-    .header-right .el-menu-item [class^=el-icon-],
-    .header-right .el-submenu [class^=el-icon-],
-    .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
-        font-size: 30px;
-        color: #fff;
-    }
-    /*.header-right .el-submenu [class^=el-icon-]*/
-    .header-right ul li a span{
-        display: block;
-        margin-top: -10px;
-        line-height: 10px;
-    }
-    .header-right .el-menu-item:hover a,
-    .header-right .el-submenu:hover a,
-    .header-right .el-menu-item:hover [class^=el-icon-],
-    .header-right .el-submenu:hover [class^=el-icon-],
-    .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
-        color: #909399;
-    }
-    .el-submenu__icon-arrow{
-        margin-top: 16px;
-    }
-    .el-menu--horizontal .el-menu .el-menu-item a{
-        color: #1381e3;
-    }
-    .el-menu--horizontal .el-menu .el-menu-item a:hover{
-        color: #000;
-    }
-    .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
-        background-color: #fff;
-        float: none;
-        height: 36px;
-        line-height: 36px;
-        color: #1381e3;
-        display: inline-block;
-
-    }
-    .el-submenu__icon-arrow {
-        display: none;
-    }
-    .el-submenu__title{
-        padding: 0;
-    }
-    .spel a{
-        margin-top: -10px;
-    }
-    .el-menu--horizontal .el-submenu{
-        height: 99px;
-    }
-    .header-right > ul > li{
-        position: relative;
-        margin: 0 5px;
-    }
-    .header-right > ul > li:after{
-        content: '';
-        position: absolute;
-        width: 1px;
-        height: 30px;
-        background: #71b3ee;
-        right: -7px;
-        top: 26px;
-    }
-    .el-menu.el-menu--horizontal{
-        margin-top: 2px;
-        border-bottom: solid 1px transparent;
-    }
-    .el-submenu.is-opened i,.el-submenu.is-opened span{
-        color: #1381e3!important;
-    }
-    .el-submenu.is-opened .el-submenu__title,.el-submenu .el-submenu__title{
-        /*display: block;*/
-        border-radius: 5px;
-    }
-    .el-menu--popup{
-        background: #1381e3;
-    }
-    .el-menu-item i,el-menu-item span{
-        color: #1381e3;
-    }
-
-</style>
 <body>
 <div id="app" v-cloak>
     <div class="header" v-show="!headerHide">
@@ -128,7 +128,6 @@
         <div class="header-right">
 
             <ul>
-
                 <li v-for="item in navData" @click="toChild(item)" :data-id="item.id" :data-url="item.url">
                     <div class="spel" v-if="item.url">
                         <a>
@@ -152,17 +151,12 @@
                                     </a>
                                 </el-menu-item>
                             </el-submenu>
-
                         </el-menu>
                     </div>
-
-
                 </li>
             </ul>
         </div>
     </div>
-
-
     <div class="container-layout" :style="{height:headerHide?'100vh':'calc(100vh - 74px)'}">
         <iframe id="container" @load="loadFrame(this)" :src="[(childUrl)]" frameborder="0" width="100%" height="100%"></iframe>
     </div>
