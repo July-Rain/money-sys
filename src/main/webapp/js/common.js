@@ -4,7 +4,7 @@
  * Description:公共方法
  */
 var baseURL = contextPath + "/";
-
+var colorList = ['#52c9e7','#3e98e8','#81bdd8','#5ebd5c','#feae24','#f97a1f','#f26443','#b97deb','#7e72f2','#4f7ee9'];
 //上传图片和PDF格式、大小验证
 function checkFile(file) {
     var index1 = file.name.lastIndexOf(".");
@@ -246,4 +246,17 @@ function regularExp(type) {
             break;
         default:
     }
+}
+// ECharts - 绘制图表
+function echartsOption(myChart, option) {
+    // this[chartName].clear()
+    myChart.setOption(option)
+    window.addEventListener('resize', function () {
+        myChart.resize()
+    })
+    // this[chartName].hideLoading() // Chart提示关闭
+}
+// 到首页
+function toHome() {
+    parent.location.reload()
 }

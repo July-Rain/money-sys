@@ -702,3 +702,13 @@ el-tabs__item is-top.is-active{
     padding-left: 0px!important;
     margin-bottom: 18px;
 }
+/*小标题样式*/
+.little-title{
+    height: 20px;
+    line-height: 20px;
+    margin-left:24px;
+    border-left: 5px solid #1381e3;
+    padding-left: 12px;
+    font-size: 14px;
+    color: #333;
+}

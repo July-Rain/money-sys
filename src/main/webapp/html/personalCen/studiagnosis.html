@@ -3,78 +3,196 @@
 <head>
     <title>江苏省公安厅法律学校 | Sinorock</title>
     <#include "/header.html">
-</head>
-<style>
+    <style>
+        .container{
+            background: #f8f8f8;
+            color: #333333;
+        }
+        .layout {
+            min-width: 1319px;
+            width: 96.5592972181552vw;
+            height: 512px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .layout .lay1 {
+            float: left;
+            height: 100%;
+            margin-right: 14px;
+            min-width: 834px;
+            width: 61.0541727672035vw;
+        }
+        .layout .lay2{
+            float: right;
+            min-width: 470px;
+            width: 34.40702781844802vw;
+            height: 100%;
+            background: #fff;
+            padding-top: 21px;
+        }
+        .layout .lay1 .userInfo {
+            width: 100%;
+            height: 105px;
+            background: #fff;
+            padding:28px 0 0 38px;
+            margin-bottom: 14px;
+            box-shadow: 0px 0px 4px 0px
+            #dddddd;
+            position: relative;
+        }
+        .layout .lay1 .userInfo,
+        .studyInfo>div,
+        .lay2{
+            border-radius: 4px;
+        }
+        .userInfo p{
+            color: #333;
+            line-height: 23px;
+        }
+        .userInfo p.name ,.userInfo p.name span{
+            font-size: 18px;
+        }
 
-</style>
+        .userInfo p.num {
+            font-size: 14px;
+        }
+        .userInfo p.num span{
+            color: #1381e3;
+        }
+        .userInfo .el-select{
+            position: absolute;
+            top: 28px;
+            right: 34px;
+            height: 30px;
+            width: 123px;
+        }
+        .userInfo .el-select .el-input.el-input--suffix{
+            height: 100%;
+        }
+        .userInfo .el-select .el-input.el-input--suffix input{
+            height: 100%;
+            text-align: center;
+        }
+        .userInfo .el-select .el-input.el-input--suffix .el-input__icon{
+            line-height: 30px;
+        }
+        .layout .lay1 .studyInfo>div{
+            min-width: 410px;
+            width: 30.01464128843338vw;
+            display: inline-block;
+            background-color: #ffffff;
+            border-radius: 4px;
+            padding-top: 21px;
+        }
+        .layout .lay1 .studyInfo .chart2{
+            float: right;
+        }
+        .tip{
+            text-align: center;
+            font-size: 14px;
+            color: #666666;
+            height: 50px;
+            line-height: 50px;
+            margin-bottom: 35px;
+        }
+        .chart3 .progress:first-child .part{
+            color: #36aae0;
+        }
+        .progress:first-child .el-progress-bar__inner{
+            background-color: #36aae0;
+        }
+
+        .chart3 .progress:nth-of-type(2) .part{
+            color: #5ebd5c;
+        }
+        .progress:nth-of-type(2) .el-progress-bar__inner{
+            background-color: #5ebd5c;
+        }
+
+        .chart3 .progress:nth-of-type(3) .part{
+            color: #feae24;
+        }
+        .progress:nth-of-type(3) .el-progress-bar__inner{
+            background-color: #feae24;
+        }
+
+        .chart3 .progress:nth-of-type(4) .part{
+            color: #f97a1f;
+        }
+        .progress:nth-of-type(4) .el-progress-bar__inner{
+            background-color: #f97a1f;
+        }
+        .progress{
+            margin-bottom: 45px;
+            color: #333333;
+            padding: 0 35px;
+        }
+        .progress .part{
+            margin-right: 15px;
+        }
+        .progress .pass{
+            color: #666666;
+            float: right;
+        }
+        .progress p{
+            margin-bottom: 20px;
+        }
+        .chart3 .el-progress{
+            border: 0;
+        }
+        .chart3 .el-progress-bar__outer{
+            background-color: #ebeef5;
+        }
+    </style>
+</head>
 <body>
 <div id="app" v-cloak>
     <div class="container">
-        <el-row class="content5-3">
-            <el-col :span="24">
-                <div class="box-card boardCard">
-                    <div class="header header_special">
-                        <span>学情看板</span>
-                        <div class="more">
-                            <!--<el-form :model="dateRange"  ref="formInline">
-                            <el-form-item prop="startTime">-->
-                            <el-date-picker
-                                    v-model="dateRange.startTime"
-                                    type="date"
-                                    size="mini"
-                                    placeholder="开始日期">
-                            </el-date-picker>
-                            <!--</el-form-item>-->
-                            至
-                            <!--<el-form-item prop="endTime">-->
-                                <el-date-picker
-                                        v-model="dateRange.endTime"
-                                        type="date"
-                                        size="mini"
-                                        placeholder="结束日期">
-                                </el-date-picker>
-                            <!--</el-form-item>
-                            <el-form-item>-->
-                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                               <!-- <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
-                            </el-form-item>
-                            </el-form>-->
-                        </div>
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>个人中心</el-breadcrumb-item>
+            <el-breadcrumb-item>诊断中心</el-breadcrumb-item>
+            <el-breadcrumb-item>学习诊断</el-breadcrumb-item>
+        </el-breadcrumb>
+
+        <div class="layout clearfix">
+            <div class="lay1">
+                <div class="userInfo">
+                    <p class="name">Hi~ <span>{{userName}}</span>：</p>
+                    <p class="num">您本学年共学习了<span> {{sum}} </span>小时</p>
+                    <el-select v-model="selected" placeholder="请选择">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="studyInfo">
+                    <div class="chart1">
+                        <div class="title">学习占比</div>
+                        <div id="pie1" style="width: 100%;height:370px;"></div>
                     </div>
-                    <div class="content board" style="padding-top: 17px;">
-                        <el-row :gutter="20">
-                            <el-col :span="6" class="pieArea">
-                                <el-tabs type="border-card">
-                                    <div id="pie1" style="width: 300px;height:220px;"></div>
-                                </el-tabs>
-                            </el-col>
-
-                            <el-col :span="6" class="pieArea">
-                                <el-tabs type="border-card">
-                                    <div id="pienum" style="width: 300px;height:220px;"></div>
-                                </el-tabs>
-                            </el-col>
-                            <el-col :span="6" class="infoCount">
-                                <div class="span-title">学情统计</div>
-                                <div class="infoMsg">
-                                    <ul>
-
-                                        <li  v-for="(item, index) in stuInfo">
-                                            <p class="info"><i></i>{{item.name}}:<span>{{item.countTime}}h</span></p>
-                                            <p class="contrast">击败了<span>{{item.ratio}}</span>的同学</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </el-col>
-                            <!--<el-col :span="12" class="rate">
-                                <div class="span-title">练习正确率</div>
-                                <div id="bar1" style="width: 640px;height:220px;"></div>
-                            </el-col>-->
-                        </el-row>
+                    <div class="chart2">
+                        <div class="title">学习次数（单位：次）</div>
+                        <div id="pie2" style="width: 100%;height:370px;"></div>
                     </div>
                 </div>
-            </el-col>
-        </el-row>
+            </div>
+            <div class="lay2">
+                <div class="chart3">
+                    <div class="little-title">学情统计</div>
+                    <div class="tip">看看您的学习时间击败了多少小伙伴~</div>
+                    <ul>
+                        <li class="progress" v-for="(item, index) in stuInfo">
+                            <p><span class="part">{{item.countTime}}h</span>{{item.name}}<span class="pass">超越了{{item.ratio}}同学</span></p>
+                            <el-progress :percentage="item.per" :stroke-width="8" :show-text="false"></el-progress>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
