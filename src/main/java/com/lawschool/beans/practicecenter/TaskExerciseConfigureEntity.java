@@ -36,6 +36,7 @@ public class TaskExerciseConfigureEntity extends DataEntity<TaskExerciseConfigur
     private String createName;// 创建人名称
     private String deptNames;// 使用部门
     private String userNames;// 使用人员
+    private String numbers;// 编号
 
     @TableField(exist = false)
     private Integer start;
@@ -208,5 +209,13 @@ public class TaskExerciseConfigureEntity extends DataEntity<TaskExerciseConfigur
 
     public void setUserNames(String userNames) {
         this.userNames = userNames;
+    }
+
+    public String getNumbers() {
+        return numbers;
+    }
+
+    public void setNumbers(String numbers) {
+        this.numbers = numbers;
     }
 }
