@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.lawschool.form.CheckSetForm;
 import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
 import com.lawschool.service.DictService;
@@ -77,6 +78,13 @@ public class ExamConfigController {
         return res;
     }
 
+    @RequestMapping(value = "/checkset", method = RequestMethod.POST)
+    private  Result checkset(@RequestBody CheckSetForm checkSetForm){
+
+        System.out.println(checkSetForm.toString());
+        examConfigService.checkset(checkSetForm);
+        return Result.ok();
+    }
     @RequestMapping(value = "/dict", method = RequestMethod.GET)
     private Result dict() {
         //examType考试类型字典

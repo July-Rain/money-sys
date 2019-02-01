@@ -3,6 +3,7 @@ var vm = new Vue({
     el: '#app',
     data: {
         //menuId:"",//菜单id
+        labelPosition:'left',
         navData: [],//导航
         formInline: { // 搜索表单
             value: '',
@@ -23,6 +24,9 @@ var vm = new Vue({
             remark: '',
             status: "1"
         },
+        checkSetting:{
+
+        },
         rules: {//表单验证规则
             value: [
                 {required: true, message: '请输入参数名', trigger: 'blur'},
@@ -33,7 +37,9 @@ var vm = new Vue({
                 {max: 50, message: '最大长度50', trigger: 'blur'}
             ]
         },
+        checkSettingRules:{},
         dialogConfig: false,//table弹出框可见性
+        checkSettingDia:false,//阅卷设置弹出框
         title: "",//弹窗的名称
         delIdArr: []//删除数据
     },
@@ -123,6 +129,32 @@ var vm = new Vue({
             this.dialogConfig = false;
             vm.reload();
         },
+        closeCheckSettingDia: function () {
+            this.checkSettingDia = false;
+            vm.reload();
+        },
+        handleChange:function(){
+
+        },
+        saveCheckSet:function(){
+            console.info(vm.checkSetting);
+            $.ajax({
+                type: "POST",
+                url: baseURL + "exam/config/checkset",
+                dataType: "json",
+                data: JSON.stringify(vm.checkSetting),
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        alert("保存成功");
+                        this.checkSettingDia = false;
+                        vm.reload();
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
         reload: function () {
             $.ajax({
                 type: "POST",
@@ -141,8 +173,17 @@ var vm = new Vue({
                 }
             });
         },
+        generateOrViewCheck:function(index,row){
+            var checkPassword = row.checkPassword;
+            if(checkPassword){
+                //查看
 
-
+            }else{
+                //生成
+                this.checkSettingDia = true;
+                vm.checkSetting.id = row.id;
+            }
+        },
         toChild: function (item) {
 
             parent.location.href = baseURL + item.url + "?id=" + item.id;

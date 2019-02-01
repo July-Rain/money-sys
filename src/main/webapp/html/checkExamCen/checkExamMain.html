@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<style>
+    .header-right ul{
+        background: transparent;
+    }
+    .header-right ul li:after{
+        content: '';
+    }
+    .el-menu--horizontal .el-menu-item,
+    .el-menu--horizontal .el-submenu{
+        float: left;
+        height: 70px;
+        /*line-height: 70px;*/
+        margin: 0;
+        border-bottom: 2px solid transparent;
+        color: #fff;
+    }
+    .el-submenu{
+        margin-top: -57px;
+    }
+    .el-menu--horizontal>.el-submenu .el-submenu__title {
+        height: 70px;
+        /* line-height: 70px; */
+        border-bottom: 2px solid transparent;
+        color: #909399;
+    }
+    .header-right ul li a{
+        text-align: center;
+        padding: 0;
+        /*margin: 10px 0;*/
+        box-sizing: border-box;
+        height: auto;
+        display: inline-block;
+    }
+    .header-right .el-menu-item [class^=el-icon-],
+    .header-right .el-submenu [class^=el-icon-],
+    .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
+        font-size: 30px;
+        color: #fff;
+    }
+    /*.header-right .el-submenu [class^=el-icon-]*/
+    .header-right ul li a span{
+        display: block;
+        margin-top: -10px;
+        line-height: 10px;
+    }
+    .header-right .el-menu-item:hover a,
+    .header-right .el-submenu:hover a,
+    .header-right .el-menu-item:hover [class^=el-icon-],
+    .header-right .el-submenu:hover [class^=el-icon-],
+    .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
+        color: #909399;
+    }
+    .el-submenu__icon-arrow{
+        margin-top: 16px;
+    }
+    .el-menu--horizontal .el-menu .el-menu-item a{
+        color: #1381e3;
+    }
+    .el-menu--horizontal .el-menu .el-menu-item a:hover{
+        color: #000;
+    }
+    .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+        background-color: #fff;
+        float: none;
+        height: 36px;
+        line-height: 36px;
+        color: #1381e3;
+        display: inline-block;
+
+    }
+    .el-submenu__icon-arrow {
+        display: none;
+    }
+    .el-submenu__title{
+        padding: 0;
+    }
+    .spel a{
+        margin-top: -10px;
+    }
+    .el-menu--horizontal .el-submenu{
+        height: 99px;
+    }
+    .header-right > ul > li{
+        position: relative;
+        margin: 0 5px;
+    }
+    .header-right > ul > li:after{
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: 30px;
+        background: #71b3ee;
+        right: -7px;
+        top: 26px;
+    }
+    .el-menu.el-menu--horizontal{
+        margin-top: 2px;
+        border-bottom: solid 1px transparent;
+    }
+    .el-submenu.is-opened i,.el-submenu.is-opened span{
+        color: #1381e3!important;
+    }
+    .el-submenu.is-opened .el-submenu__title,.el-submenu .el-submenu__title{
+        /*display: block;*/
+        border-radius: 5px;
+    }
+    .el-menu--popup{
+        background: #1381e3;
+    }
+    .el-menu-item i,el-menu-item span{
+        color: #1381e3;
+    }
+
+</style>
+<body>
+<div id="app" v-cloak>
+
+    <div class="header" v-show="!headerHide">
+        <div class="header-left">
+            <img src="${rc.contextPath}/statics/img/logo.png">
+            <a href="javascript:;">江苏省公安厅法律学校</a>
+        </div>
+
+    </div>
+    <div class="container">
+        <div class="info_card">
+            <div class="card_title">
+            </div>
+            <div class="card_contain">
+                <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+                    <el-form-item prop="status">
+                        <el-select v-model="formInline.checkStatus" placeholder="阅卷状态" size="mini">
+                            <el-option label="未阅卷" value="0"></el-option>
+                            <el-option label="未完成" value="1"></el-option>
+                            <el-option label="已完成" value="2"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit" size="mini">
+                            <i class="iconfont icon-sousuo1"></i>
+                            查询
+                        </el-button>
+                        <el-button @click="resetForm('formInline')" size="mini">
+                            <i class="iconfont icon-tableresetpassword"></i>
+                            重置
+                        </el-button>
+
+                    </el-form-item>
+                </el-form>
+            </div>
+        </div>
+        <div>
+            <el-table
+                :data="tableData"
+                border
+                style="width: 100%">
+            <el-table-column
+                    prop="examName"
+                    label="试卷名称"
+                    width="280"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="examTypeName"
+                    label="试卷类型"
+                    width="130"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="examTime"
+                    label="考试时长（分钟）"
+                    width="130"
+            >
+            </el-table-column>
+
+            <el-table-column
+                    prop="organizedOrgCode"
+                    label="组考单位"
+                    width="150"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="startTime"
+                    label="考试开始时间"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="endTime"
+                    label="考试结束时间"
+            >
+            </el-table-column>
+            <el-table-column label="操作" width="300">
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            @click="startCheckExam(scope.$index, scope.row)">
+                        {{tableData[scope.$index].checkStatus==1?"继续阅卷":""}}
+                        {{tableData[scope.$index].checkStatus==2?"查看阅卷":""}}
+                        {{tableData[scope.$index].checkStatus==0?"开始阅卷":""}}
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="formInline.currPage"
+                :page-sizes="[10, 20, 30, 40]"
+                :page-size="formInline.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="formInline.totalCount">
+        </el-pagination>
+        </div>
+        <el-dialog title="个人信息完善" :visible.sync="checkExamUserDia" :before-close="closeDia"
+                   :close-on-click-modal=false :close-on-press-escape=false :show-close=false	>
+            <el-form :model="checkExamUser" ref="checkExamUser" label-width="150px" class="demo-examConfig"
+                     size="mini" >
+                <el-row>
+                    <el-col :span="24">
+                        <el-form-item label="姓名：" prop="examUserName">
+                            <el-input size="medium" v-model="checkExamUser.examUserName" placeholder="请输入姓名"  clearable
+                            ></el-input>
+                        </el-form-item>
+                    </el-col>
+
+                    <el-col :span="24">
+                        <el-form-item label="性别："  prop="examUserSex">
+                            <el-radio-group  v-model="checkExamUser.examUserSex">
+                                <el-radio label="0" >男</el-radio>
+                                <el-radio label="1" >女</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+
+                    <el-col :span="24">
+                        <el-form-item label="证件号码：" prop="examUserCode">
+                            <el-input size="medium" v-model="checkExamUser.examUserCode" placeholder="请输入证件号码"  :disabled="true" clearable
+                            ></el-input>
+                        </el-form-item>
+                    </el-col>
+
+                    <el-col :span="24">
+                        <el-form-item>
+                            <el-button type="primary" @click="saveCheckExamUser('checkExamUser')">保存</el-button>
+                        </el-form-item>
+                    </el-col>
+
+
+                </el-row>
+            </el-form>
+        </el-dialog>
+    </div>
+
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/checkExamCen/checkExamMain.js?_${.now?long}"></script>
+
+</html>

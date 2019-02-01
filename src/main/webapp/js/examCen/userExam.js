@@ -5,10 +5,9 @@ var vm = new Vue({
             value: '',
             name: '',
             status: "",
-            pageNo: 1,
-            pageSize: 1,
-            limit : 10,
-            count: 0
+            currPage: 1,
+            pageSize: 10,
+            totalCount: 0,
         },
         tableData: [],//表格数据
         visible: false,
@@ -49,17 +48,18 @@ var vm = new Vue({
             this.reload();
         },
         reload: function () {
+            console.info(vm.formInline);
             $.ajax({
                 type: "POST",
-                url: baseURL + "exam/config/list",
+                url: baseURL + "user/exam/list",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
-                        vm.formInline.currPage = result.page.pageNo;
+                        vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
-                        vm.formInline.totalCount = parseInt(result.page.count);
+                        vm.formInline.totalCount = parseInt(result.page.totalCount);
                     } else {
                         alert(result.msg);
                     }
@@ -69,10 +69,19 @@ var vm = new Vue({
         startExam : function (index,row) {
             var parentWin = window.parent;
             var id = row.id;
-            alert(id);
+            var examStatus = row.examStatus;
+            var userExamId = row.userExamId==null?'':row.userExamId;
             parentWin.document.getElementById("container").src
-                = 'modules/examCen/testPaper.html?id='+id;
+                = 'modules/examCen/testPaper.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
         },
+        // formatterEnd: function (row, column) {
+        //     var _time = new Date(row.endTime);
+        //     return _time.getFullYear() + "/" + (_time.getMonth() + 1) + "/" + _time.getDate() + " " + _time.getHours() + ":" + _time.getMinutes() + ":" + _time.getSeconds();
+        // },
+        // formatterStart: function (row, column) {
+        //     var _time = new Date(row.startTime);
+        //     return _time.getFullYear() + "/" + (_time.getMonth() + 1) + "/" + _time.getDate() + " " + _time.getHours() + ":" + _time.getMinutes() + ":" + _time.getSeconds();
+        // },
         toHome: function () {
             parent.location.reload()
         }

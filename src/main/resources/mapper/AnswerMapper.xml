@@ -52,4 +52,23 @@
     </foreach>
   </delete>
 
+  <select id="findAnsById" resultType="com.lawschool.form.AnswerForm">
+    SELECT
+    id AS "id",
+    question_content AS "questionContent",
+    question_id AS "questionId"
+    FROM law_answer
+    <where>
+      id IN
+      <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </where>
+    ORDER BY decode(
+    id,
+    <foreach item="item" collection="list" separator="," >
+      #{item}
+    </foreach>
+    ) desc
+  </select>
 </mapper>

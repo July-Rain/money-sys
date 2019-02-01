@@ -28,7 +28,19 @@ public class UserExam extends DataEntity<UserExam> {
 
     private String isFinMark;   //是否完成阅卷  0:完成 1：未完成
 
-    private String orgId;
+    private String orgId;  //部门ID
+
+    private Double remainingExamTime; //剩余时间
+
+    private String checkStatus; //阅卷状态  0 未开始  1 未完成  2 已完成
+
+    public String getCheckStatus() {
+        return this.checkStatus;
+    }
+
+    public void setCheckStatus(final String checkStatus) {
+        this.checkStatus = checkStatus;
+    }
 
     public String getExamConfigId() {
         return this.examConfigId;
@@ -92,5 +104,13 @@ public class UserExam extends DataEntity<UserExam> {
 
     public void setOrgId(final String orgId) {
         this.orgId = orgId;
+    }
+
+    public Double getRemainingExamTime() {
+        return this.remainingExamTime;
+    }
+
+    public void setRemainingExamTime(final Double remainingExamTime) {
+        this.remainingExamTime = remainingExamTime;
     }
 }
