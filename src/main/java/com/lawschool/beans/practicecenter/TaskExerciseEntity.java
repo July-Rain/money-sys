@@ -35,6 +35,8 @@ public class TaskExerciseEntity extends DataEntity<TaskExerciseEntity> {
     private String themeName;
     @TableField(exist = false)
     private String createName;
+    @TableField(exist = false)
+    private String numbers;
 
     public String getTaskId() {
         return taskId;
@@ -122,5 +124,13 @@ public class TaskExerciseEntity extends DataEntity<TaskExerciseEntity> {
 
     public void setCreateName(String createName) {
         this.createName = createName;
+    }
+
+    public String getNumbers() {
+        return numbers;
+    }
+
+    public void setNumbers(String numbers) {
+        this.numbers = numbers;
     }
 }
