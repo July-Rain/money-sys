@@ -16,8 +16,9 @@
     <!-- 分页查询 -->
     <select id="findList" resultType="com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity">
         SELECT
-        <include refid="columns"/>,
-        source AS "source"
+            <include refid="columns"/>,
+            source AS "source",
+            numbers AS "numbers"
         FROM LAW_EXERCISE_TASK_CONFIGURE
         <where>
             del_flag = #{delFlag}
@@ -56,7 +57,8 @@
             theme_name,
             create_name,
             dept_names,
-            user_names
+            user_names,
+            numbers
         )
         VALUES
         (
@@ -78,7 +80,8 @@
             #{themeName},
             #{createName},
             #{deptNames},
-            #{userNames}
+            #{userNames},
+            #{numbers}
         )
     </insert>
 

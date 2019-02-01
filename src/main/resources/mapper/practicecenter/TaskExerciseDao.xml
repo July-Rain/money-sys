@@ -14,7 +14,8 @@
             t.answer_num AS "answerNum",
             t.right_num AS "rightNum",
             c.create_name AS "createName",
-            c.create_time AS "createTime"
+            c.create_time AS "createTime",
+            c.numbers AS "numbers"
         FROM LAW_EXERCISE_TASK_CONFIGURE c
         LEFT JOIN LAW_EXERCISE_TASK t ON c.id = t.task_id
         AND t.create_user = #{createUser}
