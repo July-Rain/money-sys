@@ -29,25 +29,33 @@
                     :index="indexMethod">
             </el-table-column>
             <el-table-column
+                    prop="numbers"
+                    label="任务编号"
+                    width="140"
+                    header-align="center"
+                    align="center">
+            </el-table-column>
+            <el-table-column
                     prop="name"
                     label="任务名称"
-                    width="290"
+                    width="220"
                     header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
                     prop="themeName"
                     label="主题类型"
-                    width="160"
+                    width="130"
                     header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
                     prop="type"
                     label="题目类型"
-                    width="160"
+                    width="140"
                     header-align="center"
-                    align="center" :formatter="getType">
+                    align="center"
+                    :formatter="getType">
             </el-table-column>
             <el-table-column
                     prop="difficulty"
