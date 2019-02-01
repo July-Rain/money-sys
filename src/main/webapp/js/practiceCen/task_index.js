@@ -42,7 +42,6 @@ var vm = new Vue({
             parent.location.reload()
         },
         indexMethod: function (index) {
-
             return index + 1 + (vm.formInline.page-1) * vm.formInline.limit;
         }
     },
