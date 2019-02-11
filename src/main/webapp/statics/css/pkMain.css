@@ -477,3 +477,17 @@ button {
     top: -16px;
     transform: translateX(-50%);
 }
+.formation_war .inner{
+    width: 780px;
+    height: 427px;
+    margin: 0 auto;
+    padding-top: 155px;
+    position: relative;
+}
+.formation_war .inner .left{
+    width: 182px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}

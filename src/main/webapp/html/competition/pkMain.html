@@ -120,7 +120,33 @@
         </div>
     </div>
     <!--建立战区-->
+    <div class="model_area formation_war" v-if="formationWarShow">
+        <div class="inner">
+            <div class="left">
+                <ul>
+                    <li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>
+                    <li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>
+                    <li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>
+                </ul>
+                <p class="teamName">我的昵称战队</p>
+            </div>
+            <div class="mid">
+                <div class="title">建立新战区</div>
+                <h3>战区编号</h3>
+                <p>312312</p>
+                <p class="msg">正在等待其他队伍加入你的战区...</p>
+            </div>
+            <div class="right">
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                <p class="teamName">我的昵称战队</p>
+            </div>
+        </div>
 
+    </div>
     <!--加入战区-->
     <div class="model_area join_area join_war" v-if="joinWarShow">
         <div class="inner">

@@ -11,7 +11,7 @@ var vm = new Vue({
         formationTeamShow: false,
         joinTeamShow:false,
         warAreaShow:false,
-        formationWarShow:false,//建立战区
+        formationWarShow:true,//建立战区
         joinWarShow:false//加入战区
     },
     created: function () {
