@@ -20,7 +20,8 @@
         update
             LAW_SYS_ROLE
         set
-            ROLE_NAME = #{roleName}
+            ROLE_NAME = #{roleName},
+            remark = #{remark}
         where
             id = #{id}
     </update>
@@ -47,7 +48,9 @@
 
     <!-- 查询列表 -->
     <select id="findList" resultType="com.lawschool.beans.system.SysRoleEntity">
-        SELECT id, role_name, remark FROM law_sys_role
+        SELECT
+            id, role_name, remark, create_time
+        FROM law_sys_role
     </select>
 
     <delete id="delete">
