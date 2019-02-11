@@ -23,24 +23,33 @@
                     border
                     style="width: 100%">
                 <el-table-column
+                        type="index"
+                        width="50"
+                        label="序号"
+                        align="center"
+                        :index="indexMethod">
+                </el-table-column>
+                <el-table-column
                         prop="roleName"
-                        label="角色名称">
+                        label="角色名称"
+                        align="center"
+                        width="400">
                 </el-table-column>
                 <el-table-column
                         prop="remark"
-                        label="所属部门">
-                </el-table-column>
-                <el-table-column
-                        prop="remark"
-                        label="备注">
+                        label="备注"
+                        align="center"
+                        width="280">
                 </el-table-column>
                 <el-table-column
                         prop="createTime"
-                        label="创建时间">
+                        label="创建时间"
+                        align="center"
+                        width="180">
                 </el-table-column>
                 <el-table-column
                         prop="active"
-                        label="操作">
+                        label="操作" align="center">
                     <template slot-scope="scope">
                         <el-button
                                 size="mini"
@@ -68,7 +77,6 @@
             </el-pagination>
         </div>
 
-
         <el-dialog title="新增" :visible.sync="dialogFormVisible">
 
             <el-form :model="form">
@@ -81,7 +89,7 @@
                     </el-col>
                     <el-col :span="11">
                         <el-form-item label="备注" :label-width="formLabelWidth">
-                            <el-input v-model="form.remarks" autocomplete="off"></el-input>
+                            <el-input v-model="form.remark" autocomplete="off"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
