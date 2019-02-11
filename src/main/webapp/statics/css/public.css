@@ -100,4 +100,8 @@ ul li{
 .el-date-editor.el-input--mini.el-date-editor--datetime{
     width: 220px !important;
 }
+
+.el-input__suffix{
+    right: 32px;
+}
 /*element 公共样式修改  end */
