@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +43,7 @@ public class SysRoleServiceImpl extends AbstractServiceImpl<SysRoleDao, SysRoleE
 
         if (StringUtils.isEmpty(role.getId())) {
             role.setId(IdWorker.getIdStr());
+            role.setCreateTime(new Date());
             // 新增角色
             dao.insert(role);
 
