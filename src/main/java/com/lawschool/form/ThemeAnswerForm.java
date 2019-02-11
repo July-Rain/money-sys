@@ -1,11 +1,12 @@
 package com.lawschool.form;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 主题练习提交From
  */
-public class ThemeAnswerForm {
+public class ThemeAnswerForm implements Serializable {
 
     private String qId;// 题目ID
     private String answer;// 回答

@@ -1,89 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .header-right ul {
+            background: transparent;
+        }
+
+        .header-right ul li:after {
+            content: '';
+        }
+
+        .el-menu--horizontal .el-menu-item,
+        .el-menu--horizontal .el-submenu {
+            float: left;
+            height: 70px;
+            /*line-height: 70px;*/
+            margin: 0;
+            border-bottom: 2px solid transparent;
+            color: #fff;
+        }
+
+        .el-menu--horizontal > .el-submenu .el-submenu__title {
+            height: 70px;
+            /* line-height: 70px; */
+            border-bottom: 2px solid transparent;
+            color: #909399;
+        }
+
+        .header-right ul li a {
+            text-align: center;
+            padding: 0;
+            /*margin: 10px 0;*/
+            box-sizing: border-box;
+            height: auto;
+            display: inline-block;
+        }
+
+        .header-right .el-menu-item [class^=el-icon-],
+        .header-right .el-submenu [class^=el-icon-],
+        .el-menu--horizontal > .el-submenu .el-submenu__icon-arrow {
+            font-size: 30px;
+            color: #fff;
+        }
+
+        /*.header-right .el-submenu [class^=el-icon-]*/
+        .header-right ul li a span {
+            display: block;
+            margin-top: -10px;
+            line-height: 10px;
+        }
+
+        .header-right .el-menu-item:hover a,
+        .header-right .el-submenu:hover a,
+        .header-right .el-menu-item:hover [class^=el-icon-],
+        .header-right .el-submenu:hover [class^=el-icon-],
+        .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-] {
+            color: #909399;
+        }
+
+        .el-submenu__icon-arrow {
+            margin-top: 16px;
+        }
+
+        .el-menu--horizontal .el-menu .el-menu-item a {
+            color: #909399;
+        }
+
+        .el-menu--horizontal .el-menu .el-menu-item a:hover {
+            color: #000;
+        }
+
+        .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+            background-color: #fff;
+            float: none;
+            height: 36px;
+            line-height: 36px;
+            padding: 0 10px;
+            color: #909399;
+            display: inline-block;
+        / / 悬浮块横向显示
+        }
+    </style>
 </head>
-<style>
-    .header-right ul {
-        background: transparent;
-    }
-
-    .header-right ul li:after {
-        content: '';
-    }
-
-    .el-menu--horizontal .el-menu-item,
-    .el-menu--horizontal .el-submenu {
-        float: left;
-        height: 70px;
-        /*line-height: 70px;*/
-        margin: 0;
-        border-bottom: 2px solid transparent;
-        color: #fff;
-    }
-
-    .el-menu--horizontal > .el-submenu .el-submenu__title {
-        height: 70px;
-        /* line-height: 70px; */
-        border-bottom: 2px solid transparent;
-        color: #909399;
-    }
-
-    .header-right ul li a {
-        text-align: center;
-        padding: 0;
-        /*margin: 10px 0;*/
-        box-sizing: border-box;
-        height: auto;
-        display: inline-block;
-    }
-
-    .header-right .el-menu-item [class^=el-icon-],
-    .header-right .el-submenu [class^=el-icon-],
-    .el-menu--horizontal > .el-submenu .el-submenu__icon-arrow {
-        font-size: 30px;
-        color: #fff;
-    }
-
-    /*.header-right .el-submenu [class^=el-icon-]*/
-    .header-right ul li a span {
-        display: block;
-        margin-top: -10px;
-        line-height: 10px;
-    }
-
-    .header-right .el-menu-item:hover a,
-    .header-right .el-submenu:hover a,
-    .header-right .el-menu-item:hover [class^=el-icon-],
-    .header-right .el-submenu:hover [class^=el-icon-],
-    .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-] {
-        color: #909399;
-    }
-
-    .el-submenu__icon-arrow {
-        margin-top: 16px;
-    }
-
-    .el-menu--horizontal .el-menu .el-menu-item a {
-        color: #909399;
-    }
-
-    .el-menu--horizontal .el-menu .el-menu-item a:hover {
-        color: #000;
-    }
-
-    .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
-        background-color: #fff;
-        float: none;
-        height: 36px;
-        line-height: 36px;
-        padding: 0 10px;
-        color: #909399;
-        display: inline-block;
-    / / 悬浮块横向显示
-    }
-</style>
 <body>
 <div id="app" v-cloak>
     <div class="container">
@@ -163,35 +163,43 @@
                         </div>
                     </div>
                     <div>
-                        <el-button size="mini" type="primary" @click="addLearnTask">新增</el-button>
+                        <div class="info_btn">
+                            <el-button size="mini" type="primary" @click="addLearnTask"><i class="iconfont icon-htmal5icon18"></i>新增</el-button>
+                        </div>
                         <el-table
                                 :data="tableData"
                                 border
                                 style="width: 100%">
                             <el-table-column
+                                    label="序号"
+                                    type="index"
+                                    header-align="center"
+                                    align="center"
+                                    width="50">
+                            </el-table-column>
+                            <el-table-column
                                     prop="taskName"
                                     label="任务名称"
-                                    header-align="center"
-                                    align="center">
+                                    >
                             </el-table-column>
                             <el-table-column
                                     prop="taskClassName"
                                     label="任务类型"
-                                    width="180"
+                                    width="100"
                                     header-align="center"
                                     align="center">
                             </el-table-column>
                             <el-table-column
                                     prop="policeclassName"
                                     label="所属警种"
-                                    width="180"
+                                    width="100"
                                     header-align="center"
                                     align="center">
                             </el-table-column>
                             <el-table-column
                                     prop="startTime"
                                     label="任务开始时间"
-                                    width="180"
+                                    width="150"
                                     header-align="center"
                                     align="center"
                             >
@@ -199,7 +207,7 @@
                             <el-table-column
                                     prop="endTime"
                                     label="任务结束时间"
-                                    width="180"
+                                    width="150"
                                     header-align="center"
                                     align="center"
                             >
@@ -207,7 +215,7 @@
                             <el-table-column
                                     prop="completionDegree"
                                     label="任务完成度"
-                                    width="180"
+                                    width="100"
                                     header-align="center"
                                     align="center"
                             >
@@ -215,7 +223,7 @@
                             <el-table-column
                                     prop="overDegree"
                                     label="超时完成率"
-                                    width="180"
+                                    width="100"
                                     header-align="center"
                                     align="center"
                             >
@@ -223,8 +231,8 @@
                             <el-table-column
                                     prop="isUse"
                                     label="是否启用"
-                                    width="180"
                                     align="center"
+                                    header-align="center"
                                     width="100">
                                 <template slot-scope="scope">
                                     <el-tag v-if="scope.row.isUse === '0'" size="small" type="danger">未启用</el-tag>
@@ -235,7 +243,7 @@
                                     label="操作"
                                     header-align="center"
                                     align="center"
-                                    width="180">
+                                    >
                                 <template slot-scope="scope">
                                     <el-button v-if="scope.row.isUse=='0'"
                                                size="mini"

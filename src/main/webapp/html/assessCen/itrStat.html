@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
 <style>
@@ -11,7 +11,7 @@
 <div id="app" v-cloak>
 
 
-    <div class="container"  v-if="userStatDiv">
+    <div class="container" v-if="userStatDiv">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="padding:0 0 20px 30px">
             <el-breadcrumb-item :to="{ path: '/' }"><span>评估中心</span></el-breadcrumb-item>
             <el-breadcrumb-item>学分统计</el-breadcrumb-item>
@@ -57,62 +57,81 @@
                                                 border
                                                 style="width: 100%">
                                             <el-table-column
+                                                    label="序号"
+                                                    type="index"
+                                                    header-align="center"
+                                                    align="center"
+                                                    width="50">
+                                            </el-table-column>
+                                            <el-table-column
                                                     prop="fullName"
                                                     label="姓名"
                                                     width="280"
+                                                    header-align="center"
+                                                    align="center"
                                             >
                                             </el-table-column>
 
-                                <el-table-column
-                                        prop="userCode"
-                                        label="身份证号"
-                                        width="180"
-                                >
+                                            <el-table-column
+                                                    prop="userCode"
+                                                    label="身份证号"
+                                                    width="280"
+                                                    header-align="center"
+                                                    align="center"
+                                            >
 
-                                </el-table-column>
+                                            </el-table-column>
 
-                                <el-table-column
-                                        prop="orgName"
-                                        label="部门名称"
-                                >
+                                            <el-table-column
+                                                    prop="orgName"
+                                                    label="部门名称"
+                                                    header-align="center"
+                                                    align="center"
+                                            >
 
-                                </el-table-column>
-
-
-                                <el-table-column
-                                        prop="integralPoint"
-                                        label="积分"
-                                >
-                                </el-table-column>
-
-                                <el-table-column
-                                        prop="orgItrRank"
-                                        label="部门排名"
-                                >
-                                </el-table-column>
-
-                                <el-table-column
-                                        prop="allItrRank"
-                                        label="全警排名"
-                                >
-                                </el-table-column>
+                                            </el-table-column>
 
 
-                                </el-table-column>
+                                            <el-table-column
+                                                    prop="integralPoint"
+                                                    label="积分"
+                                                    header-align="center"
+                                                    align="center"
+                                            >
+                                            </el-table-column>
+
+                                            <el-table-column
+                                                    prop="orgItrRank"
+                                                    label="部门排名"
+                                                    header-align="center"
+                                                    align="center"
+                                            >
+                                            </el-table-column>
+
+                                            <el-table-column
+                                                    prop="allItrRank"
+                                                    label="全警排名"
+                                                    header-align="center"
+                                                    align="center"
+                                            >
+                                            </el-table-column>
 
 
-                            </el-table>
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
-                            </el-pagination>
-                        </div>
-                </el-tabs>
+                                            </el-table-column>
+
+
+                                        </el-table>
+                                        <el-pagination
+                                                @size-change="handleSizeChange"
+                                                @current-change="handleCurrentChange"
+                                                :current-page="formInline.currPage"
+                                                :page-sizes="[10, 20, 30, 40]"
+                                                :page-size="formInline.pageSize"
+                                                layout="total, sizes, prev, pager, next, jumper"
+                                                :total="formInline.totalCount">
+                                        </el-pagination>
+                                    </div>
+                                </el-tabs>
             </el-col>
         </el-row>
 
@@ -125,7 +144,7 @@
                     <el-tab-pane label="单位维度">
                         <div>
                             <table v-loading="tabLoading" id="tb1" class="tree_table">
-                                <thead >
+                                <thead>
                                 <tr>
                                     <th colspan="">单位名称</th>
                                     <th colspan="">单位总学分</th>

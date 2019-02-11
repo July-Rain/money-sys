@@ -48,6 +48,9 @@ var vm = new Vue({
 
     },
     methods: {
+        indexMethod: function (index) {
+            return index + 1 + (vm.formInline.page-1) * vm.formInline.limit;
+        },
         uploadVideoProcess(event, file, fileList){
             this.videoFlag = true;
             this.videoUploadPercent = file.percentage.toFixed(2);
@@ -108,15 +111,36 @@ var vm = new Vue({
         downloadTemp: function () {
 
         },
-        handleWatch: function (index, row) {
-            console.table({
-                "row": row
-            })
+        handleWatch: function (id) {
+            $.ajax({
+                type: "GET",
+                url: baseURL + "/testQuestion/info/" + id,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.form = result.data;
+                        vm.dialogFormVisible = true;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         },
-        handleEdit: function () {
-
+        handleEdit: function (id) {
+            $.ajax({
+                type: "GET",
+                url: baseURL + "/testQuestion/info/" + id,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.form = result.data;
+                        vm.dialogFormVisible = true;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         },
-
         handleDel: function (index, row) {
             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -137,10 +161,7 @@ var vm = new Vue({
                 });
 
             }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
+
             });
         },
 

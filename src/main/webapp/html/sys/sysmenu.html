@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
 <style>
@@ -87,7 +87,9 @@
             <el-col :span="24">
                 <el-tabs type="border-card">
                     <div>
-                        <el-button size="mini" type="primary" @click="add">新增</el-button>
+                        <div class="info_btn">
+                            <el-button size="mini" type="primary" @click="add"><i class="iconfont icon-htmal5icon18"></i>新增</el-button>
+                        </div>
                         <el-table @expand-change="change"
                                 :data="tableData"
                                 border
@@ -126,7 +128,7 @@
                                                     label="路由"
                                                     header-align="center"
                                                     align="center"
-                                                    width="340">
+                                                    width="280">
                                             </el-table-column>
                                             <el-table-column
                                                     prop="type"
@@ -138,6 +140,13 @@
                                                 <template slot-scope="scope">
                                                     {{scope.row.type == 0 ? "目录" : scope.row.type == 1 ? "菜单" : "按钮"}}
                                                 </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                                    prop="perms"
+                                                    label="授权标识"
+                                                    header-align="center"
+                                                    align="center"
+                                                    width="170">
                                             </el-table-column>
                                             <el-table-column
                                                     label="操作"
@@ -181,7 +190,7 @@
                                             label="路由"
                                             header-align="center"
                                             align="center"
-                                            width="340">
+                                            width="280">
                                     </el-table-column>
                                     <el-table-column
                                             prop="type"
@@ -193,6 +202,13 @@
                                         <template slot-scope="scope">
                                             {{scope.row.type == 0 ? "目录" : scope.row.type == 1 ? "菜单" : "按钮"}}
                                         </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="perms"
+                                            label="授权标识"
+                                            header-align="center"
+                                            align="center"
+                                            width="170">
                                     </el-table-column>
                                     <el-table-column
                                             label="操作"
@@ -236,7 +252,7 @@
                                     label="路由"
                                     header-align="center"
                                     align="center"
-                                    width="340">
+                                    width="280">
                             </el-table-column>
                             <el-table-column
                                     label="类型"
@@ -247,6 +263,13 @@
                                 <template slot-scope="scope">
                                     {{scope.row.type == 0 ? "目录" : scope.row.type == 1 ? "菜单" : "按钮"}}
                                 </template>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="perms"
+                                    label="授权标识"
+                                    header-align="center"
+                                    align="center"
+                                    width="170">
                             </el-table-column>
                             <el-table-column
                                     label="操作"
@@ -302,7 +325,7 @@
                                         @node-click="nodeCheck"
                                 >
                                 </el-tree>
-                                <el-input v-popover:menuListPopover v-model="nodeName" slot="reference" :readonly="true"  placeholder="点击选择上级菜单"></el-input>
+                                <el-input v-popover:menuListPopover v-model="nodeName" slot="reference" :readonly="true" placeholder="点击选择上级菜单"></el-input>
                             </el-popover>
                         </el-form-item>
                         <el-form-item label="路由" prop="url">

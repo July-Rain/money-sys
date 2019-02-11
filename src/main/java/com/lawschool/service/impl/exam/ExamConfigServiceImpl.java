@@ -15,6 +15,7 @@ import com.lawschool.dao.exam.ExamDetailDao;
 import com.lawschool.dao.exam.ExamQueConfigDao;
 import com.lawschool.dao.exam.ExamQuestionsDao;
 import com.lawschool.form.AnswerForm;
+import com.lawschool.form.CheckSetForm;
 import com.lawschool.form.QuestForm;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
@@ -327,6 +328,8 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 			examQuestions.setId(GetUUID.getUUIDs("EQ"));
 			examQuestions.setExamDetailId(examDetailId);
 			examQuestions.setExamLibraryId(qf.getId());
+			//
+			//examQuestions.setScore();
 			examQuestionsDao.insert(examQuestions);
 		}
 	}
@@ -367,5 +370,43 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 				saveExamQueByIdList(idLists,examConfigId,ed.getId());
 			}
 		}
+	}
+
+	@Override
+	public List<QuestForm> getQueList(List<String> idList, String examDetailId) {
+		List<QuestForm> eqList = examConfigDao.findByQueAndEdId(idList,examDetailId);
+		List<AnswerForm> answerForms = answerService.findByQuestionIds(idList);
+		// 遍历处理选项信息
+		for(QuestForm qf : eqList){
+			String qid = qf.getId();
+			List<AnswerForm> tempList = new ArrayList<AnswerForm>();
+
+			for(AnswerForm af : answerForms){
+				String aqid = af.getQuestionId();
+				if(qid.equals(aqid)){
+					tempList.add(af);
+				}
+			}
+
+			qf.setAnswer(tempList);
+		}
+		return  eqList;
+	}
+
+	@Override
+	public void checkset(CheckSetForm checkSetForm) {
+
+		checkSetForm.setCheckPassword(GetUUID.getUUIDs("CE"));
+		if("0".equals(checkSetForm.getIsAibitration())){
+			checkSetForm.setAuditCheckPass(GetUUID.getUUIDs("ACE"));
+		}
+
+		examConfigDao.checkset(checkSetForm);
+
+	}
+
+	@Override
+	public ExamConfig findByCheckPassword(String checkPassword, String checkUserType) {
+		return dao.findByCheckPassword(checkPassword,checkUserType);
 	}
 }

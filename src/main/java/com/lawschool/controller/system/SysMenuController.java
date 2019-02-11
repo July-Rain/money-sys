@@ -115,7 +115,16 @@ public class SysMenuController extends AbstractController {
 
         SysMenuEntity entity = sysMenuService.findOne(id);
 
-        return Result.ok().put("info", entity);
+        // 获取上级，目录名称
+        String parentId = entity.getParentId();
+        String parentName = "";
+        if(!"0".equals(parentId)){
+            // 非一级目录
+            SysMenuEntity parent = sysMenuService.findOne(parentId);
+            parentName = parent.getName();
+        }
+
+        return Result.ok().put("info", entity).put("parentName", parentName);
     }
 
     /**

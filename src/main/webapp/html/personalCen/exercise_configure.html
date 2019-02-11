@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
 <style>
@@ -15,7 +15,11 @@
             <el-breadcrumb-item>个人中心</el-breadcrumb-item>
             <el-breadcrumb-item>我的练习</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-button size="mini" type="primary" @click="addConfig">新增练习配置</el-button>
+        <div class="info_btn">
+            <el-button size="mini" type="primary" @click="addConfig"><i class="iconfont icon-htmal5icon18"></i>新增练习配置</el-button>
+
+        </div>
+
         <el-table
                 :data="tableData"
                 style="width: 100%"

@@ -1,24 +1,37 @@
 package com.lawschool.service.impl.exam;
 
 import com.lawschool.base.AbstractServiceImpl;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.lawschool.beans.Answer;
+import com.lawschool.beans.TestQuestions;
+import com.lawschool.beans.User;
 import com.lawschool.beans.UserQuestRecord;
 import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.beans.exam.UserExam;
 import com.lawschool.beans.exam.UserExamAnswer;
+import com.lawschool.dao.TestQuestionsDao;
+import com.lawschool.dao.exam.UserExamAnswerDao;
 import com.lawschool.dao.exam.UserExamDao;
-import com.lawschool.form.AnswerForm;
-import com.lawschool.form.QuestForm;
+import com.lawschool.form.*;
+import com.lawschool.service.AnswerService;
+import com.lawschool.service.UserService;
+import com.lawschool.service.auth.AuthRelationService;
 import com.lawschool.service.exam.ExamConfigService;
 import com.lawschool.service.exam.UserExamAnswerService;
 import com.lawschool.service.exam.UserExamService;
 import com.lawschool.util.GetUUID;
+import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.jms.*;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -37,15 +50,39 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
     @Autowired
     private UserExamAnswerService userExamAnswerService;
 
+    @Autowired
+    private UserExamAnswerDao userExamAnswerDao;
+
+    @Autowired
+    private UserExamDao userExamDao;
+
+    @Autowired
+    private AuthRelationService authService;
+
+    @Autowired
+    private TestQuestionsDao testQuestionsDao;
+
+    @Autowired
+    private AnswerService answerService;
+
+    @Autowired
+    private UserService userService;
+
     @Override
-    public Result getExam(String examConfigId) {
+    public Result getExam(String examConfigId, User user) {
+        //获取考试配置信息
+        ExamConfig examConfig = examConfigService.selectById(examConfigId);
+        Date currDate = new Date();
+        if (currDate.before(examConfig.getStartTime()) || currDate.after(examConfig.getEndTime())) {
+            return Result.error("不在考试时间范围内");
+        }
         //根据考试配置ID找到考试详情ID
         String examDetailId = dao.getExamDetailId(examConfigId);
         //根据考试详情ID获取所有题目ID
         List<String> idList = dao.getQueIdList(examDetailId);
         //获取所有题目详情
-        List<QuestForm> queList = examConfigService.getList(idList);
-        Map<String,List<QuestForm>> queMap = new HashMap<>();
+        List<QuestForm> queList = examConfigService.getQueList(idList, examDetailId);
+        Map<String, List<QuestForm>> queMap = new HashMap<>();
         //根据不同题型定义不同list返回，打乱顺序使用
         //单选
         List<QuestForm> sinChoicList = new ArrayList<>();
@@ -57,20 +94,20 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         List<QuestForm> subjectList = new ArrayList<>();
         //其他题型
         List<QuestForm> otherList = new ArrayList<>();
-        for (QuestForm que : queList){
-            if(que.getQuestionType().equals("10004")){
-                 //单选
+        for (QuestForm que : queList) {
+            if ("10004".equals(que.getQuestionType())) {
+                //单选
                 sinChoicList.add(que);
-            }else if(que.getQuestionType().equals("10005")){
+            } else if ("10005".equals(que.getQuestionType())) {
                 //多选
                 mulChoicList.add(que);
-            }else if(que.getQuestionType().equals("10006")){
+            } else if ("10006".equals(que.getQuestionType())) {
                 //判断
                 judgeList.add(que);
-            }else if(que.getQuestionType().equals("10007")){
+            } else if ("10007".equals(que.getQuestionType())) {
                 //主观
                 subjectList.add(que);
-            }else{
+            } else {
                 //其他
                 otherList.add(que);
             }
@@ -91,22 +128,21 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
             }
         }
         queMap.put(key, diffQueTypeList);*/
-        //获取考试配置信息
-        ExamConfig examConfig = examConfigService.selectById(examConfigId);
+
         //根据考试配置判断是否乱序
-        if("10031".equals(examConfig.getTopicOrderType())){
+        if ("10031".equals(examConfig.getTopicOrderType())) {
             //题目乱序
             Collections.shuffle(sinChoicList);
             Collections.shuffle(mulChoicList);
             Collections.shuffle(judgeList);
             Collections.shuffle(subjectList);
         }
-        if("10031".equals(examConfig.getOptionOrderType())){
+        if ("10031".equals(examConfig.getOptionOrderType())) {
             //选项乱序
-            for(QuestForm q : sinChoicList){
+            for (QuestForm q : sinChoicList) {
                 Collections.shuffle(q.getAnswer());
             }
-            for(QuestForm q : mulChoicList){
+            for (QuestForm q : mulChoicList) {
                 Collections.shuffle(q.getAnswer());
             }
         }
@@ -115,45 +151,199 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         userExam.setId(GetUUID.getUUIDs("UE"));
         userExam.setExamConfigId(examConfigId);
         userExam.setExamDetailId(examDetailId);
-        userExam.setExamStatus("0");
+        userExam.setExamStatus("1");
+        userExam.setUserId(user.getUserId());
         userExam.setOptTime(new Date());
+        userExam.setRemainingExamTime(examConfig.getExamTime().doubleValue());
         dao.insert(userExam);
 
         //单选
-        saveUserExamAns(examDetailId,userExam.getId(),sinChoicList);
+        saveUserExamAns(examDetailId, userExam.getId(), sinChoicList);
         //多选
-        saveUserExamAns(examDetailId,userExam.getId(),mulChoicList);
+        saveUserExamAns(examDetailId, userExam.getId(), mulChoicList);
         //判断
-        saveUserExamAns(examDetailId,userExam.getId(),judgeList);
+        saveUserExamAns(examDetailId, userExam.getId(), judgeList);
         //主观
-        saveUserExamAns(examDetailId,userExam.getId(),subjectList);
+        saveUserExamAns(examDetailId, userExam.getId(), subjectList);
 
-        return Result.ok().put("sinChoicList", sinChoicList).put("mulChoicList",mulChoicList)
-                .put("judgeList",judgeList).put("subjectList",subjectList).put("otherList",otherList).put("examConfig", examConfig);
+        return Result.ok().put("sinChoicList", sinChoicList).put("mulChoicList", mulChoicList)
+                .put("judgeList", judgeList).put("subjectList", subjectList).put("otherList", otherList).put("examConfig", examConfig).put("userExam", userExam).put("user", user);
     }
 
-    private void saveUserExamAns(String examDetailId,String userExamId,List<QuestForm> list){
+    private void saveUserExamAns(String examDetailId, String userExamId, List<QuestForm> list) {
         //循环保存答题表
-        for (int i=0;i<list.size();i++){
-            QuestForm que= list.get(i);
+        for (int i = 0; i < list.size(); i++) {
+            QuestForm que = list.get(i);
             UserExamAnswer userExamAnswer = new UserExamAnswer();
             userExamAnswer.setId(GetUUID.getUUIDs("UEA"));
             userExamAnswer.setExamDetailId(examDetailId);
+            userExamAnswer.setTestQueId(que.getId());
             userExamAnswer.setUserExamId(userExamId);
             userExamAnswer.setOrderNum(i);
+            userExamAnswer.setTestQueType(que.getQuestionType());
+            userExamAnswer.setScore(que.getScore());
             userExamAnswer.setRightAnsId(que.getAnswerId());
             List<AnswerForm> answerlist = que.getAnswer();
             StringBuffer aio = new StringBuffer();
-            for(AnswerForm answerForm : answerlist){
+            for (AnswerForm answerForm : answerlist) {
                 aio.append(answerForm.getId()).append(",");
             }
-            if(aio.length()>0) {
+            if (aio.length() > 0) {
                 String answerIdOrder = aio.deleteCharAt(aio.length() - 1).toString();
                 userExamAnswer.setAnswerIdOrder(answerIdOrder);
-            }else{
+            } else {
                 userExamAnswer.setAnswerIdOrder("");
             }
             userExamAnswerService.insert(userExamAnswer);
         }
+    }
+
+    /**
+     * 提交考试试卷
+     *
+     * @param userAnswerForm
+     */
+    @Override
+    public void commitExam(UserAnswerForm userAnswerForm) {
+
+        String userExamId = userAnswerForm.getUserExamId();
+        List<ThemeAnswerForm> themeAnswerFormsList = userAnswerForm.getAnswerForm();
+        //考试剩余时间
+        Double remainingExamTime = userAnswerForm.getRemainingExamTime();
+        Boolean isHaveSubject = false;
+        double totalScore = 0;
+        for (ThemeAnswerForm themeAnswerForm : themeAnswerFormsList) {
+            //根据用户考试ID+问题ID查询考题详情
+            UserExamAnswer userExamAnswer = userExamAnswerDao.findByuEIdAndQueId(userExamId, themeAnswerForm.getqId());
+            userExamAnswer.setUserAnsId(themeAnswerForm.getAnswer());
+            //根据题型阅卷，选择判断
+            if ("10007".equals(userExamAnswer.getTestQueType())) {
+                //主观题不判断对错只保存答案
+                isHaveSubject = true;
+            } else {
+                //单选多选判断  判断对错并且保存答案
+                String userAns = themeAnswerForm.getAnswer() == null ? "" : themeAnswerForm.getAnswer();
+                String rightAns = userExamAnswer.getRightAnsId().trim() == null ? "" : userExamAnswer.getRightAnsId().trim();
+                if (userAns.equals(rightAns)) {
+                    userExamAnswer.setUserScore(userExamAnswer.getScore());
+                    totalScore += userExamAnswer.getScore();
+                } else {
+                    userExamAnswer.setUserScore(0);
+                }
+            }
+            userExamAnswerDao.updateById(userExamAnswer.getUserAnsId(), userExamAnswer.getUserScore(), userExamAnswer.getId());
+        }
+        String isFinMark;
+        if (isHaveSubject) {
+            //有主观题，阅卷未完成
+            isFinMark = "1";
+        }
+        {
+            //无主观题  完成阅卷
+            isFinMark = "0";
+        }
+        //提交试卷设置考试状态为完成
+        String examStatus = "0";
+        userExamDao.updateFinMarkAndScoreById(isFinMark, totalScore, examStatus, remainingExamTime, userExamId);
+    }
+
+    @Override
+    public PageUtils getList(Map<String, Object> params, User user) {
+
+        String[] authArr = authService.listAllIdByUser(user.getOrgId(), user.getId(), "ExamConfig");
+        Page<UserExamForm> page = new Page<UserExamForm>(Integer.parseInt(params.get("currPage").toString()), Integer.parseInt(params.get("pageSize").toString()));
+
+//        if(authArr.length>0){
+//            params.put("id",authArr);
+//            params.put("userId",user.getUserId());
+//        }else{
+//            page.setTotal(0);
+//            return new PageUtils(page);
+//        }
+
+        page.setRecords(userExamDao.getList(page, params));
+        page.setTotal(userExamDao.getListCount(params));
+
+        return new PageUtils(page);
+    }
+
+    @Override
+    public void saveExam(UserAnswerForm userAnswerForm) {
+        String userExamId = userAnswerForm.getUserExamId();
+        //考试剩余时间
+        Double remainingExamTime = userAnswerForm.getRemainingExamTime();
+        List<ThemeAnswerForm> themeAnswerFormsList = userAnswerForm.getAnswerForm();
+        for (ThemeAnswerForm themeAnswerForm : themeAnswerFormsList) {
+            //根据用户考试ID+问题ID查询考题详情
+            UserExamAnswer userExamAnswer = userExamAnswerDao.findByuEIdAndQueId(userExamId, themeAnswerForm.getqId());
+            userExamAnswer.setUserAnsId(themeAnswerForm.getAnswer());
+            userExamAnswerDao.updateById(userExamAnswer.getUserAnsId(), userExamAnswer.getUserScore(), userExamAnswer.getId());
+        }
+        //更新考试剩余时间
+        userExamDao.updateRemainTimeById(remainingExamTime, userExamId);
+
+    }
+
+    @Override
+    public Result continueExam(String userExamId,User user) {
+
+        UserExam userExam = userExamDao.selectById(userExamId);
+        //获取本次考试所有题型
+        List<String> queTypeList = userExamAnswerDao.getQueType(userExamId);
+        //单选
+        List<UserExamAnswer> userSinChoicList = userExamAnswerDao.findByuEIdAndQueType(userExamId, "10004");
+        //多选
+        List<UserExamAnswer> userMulChoicList = userExamAnswerDao.findByuEIdAndQueType(userExamId, "10005");
+        //判断
+        List<UserExamAnswer> userJudgeList = userExamAnswerDao.findByuEIdAndQueType(userExamId, "10006");
+        //主观
+        List<UserExamAnswer> userSubjectList = userExamAnswerDao.findByuEIdAndQueType(userExamId, "10007");
+        //组装题目试卷
+        //单选
+        List<QuestForm> sinChoicList = buildExam(userSinChoicList)==null?new ArrayList<>():buildExam(userSinChoicList);
+        //多选
+        List<QuestForm> mulChoicList = buildExam(userMulChoicList)==null?new ArrayList<>():buildExam(userMulChoicList);
+        //判断
+        List<QuestForm> judgeList = buildExam(userJudgeList)==null?new ArrayList<>():buildExam(userJudgeList);;
+        //主观
+        List<QuestForm> subjectList = buildExam(userSubjectList)==null?new ArrayList<>():buildExam(userSubjectList);
+
+        ExamConfig examConfig = examConfigService.selectById(userExam.getExamConfigId());
+
+
+        return Result.ok().put("sinChoicList", sinChoicList).put("mulChoicList", mulChoicList)
+                .put("judgeList", judgeList).put("subjectList", subjectList).put("examConfig", examConfig).put("userExam", userExam).put("user", user);
+    }
+
+    @Override
+    public List<QuestForm> buildExam(List<UserExamAnswer> list) {
+
+        if (UtilValidate.isNotEmpty(list)) {
+            List<QuestForm> questFormList = new ArrayList<>(list.size());
+            for (UserExamAnswer userExamAnswer : list) {
+                QuestForm questForm = testQuestionsDao.findTestQuestionById(userExamAnswer.getTestQueId());
+                //将答案排序字符串转为list
+                if (!"10007".equals(questForm.getQuestionType())) {
+                    List<String> ansIdList = new ArrayList<>();
+                    if(StringUtils.isNotEmpty(userExamAnswer.getAnswerIdOrder())) {
+                        ansIdList = Arrays.asList(userExamAnswer.getAnswerIdOrder().split(","));
+                    }//根据答案ID查询answer详情
+                    List<AnswerForm> answerFormList = answerService.findAnsById(ansIdList);
+                    questForm.setAnswer(answerFormList);
+                }
+                questForm.setUserAnswer(userExamAnswer.getUserAnsId());
+                questForm.setQuestionId(userExamAnswer.getId());
+                questFormList.add(questForm);
+            }
+            return questFormList;
+        } else {
+            return null;
+        }
+
+    }
+
+    @Override
+    public List<UserExamForm> getListByIds(List<String> ids) {
+        return dao.getListByIds(ids);
     }
 }

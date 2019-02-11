@@ -49,4 +49,9 @@ public class AnswerServiceImpl extends AbstractServiceImpl<AnswerDao, Answer> im
     public List<AnswerForm> findByQuesId(String qId) {
         return dao.findByQuesId(qId);
     }
+
+    @Override
+    public List<AnswerForm> findAnsById(List<String> list) {
+        return dao.findAnsById(list);
+    }
 }

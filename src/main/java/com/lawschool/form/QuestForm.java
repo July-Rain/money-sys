@@ -28,6 +28,8 @@ public class QuestForm {
     private Integer right;// 用户回答是否正确
     private String themeName;// 主題类型
 
+    private Integer score;  //题目分值
+
     private List<String> checkList = new ArrayList<>();
 
     public String getId() {
@@ -136,5 +138,21 @@ public class QuestForm {
 
     public void setThemeName(String themeName) {
         this.themeName = themeName;
+    }
+
+    public Integer getScore() {
+        return this.score;
+    }
+
+    public void setScore(final Integer score) {
+        this.score = score;
+    }
+
+    public String getQuestionId() {
+        return this.questionId;
+    }
+
+    public void setQuestionId(final String questionId) {
+        this.questionId = questionId;
     }
 }

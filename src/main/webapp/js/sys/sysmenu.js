@@ -191,6 +191,7 @@ var vm = new Vue({
                                 {required: true, message: '请输入路由信息', trigger: 'blur'}
                             ];
                         }
+                        vm.nodeName = result.parentName;
                         vm.dialogConfig = true;
                     } else {
                         alert(result.msg);

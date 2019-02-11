@@ -8,18 +8,18 @@
 <body>
 <div id="app" v-cloak>
     <div class="container">
-        <button class="return_back">
+        <button class="return_back" @click="goBack">
             <img src="${rc.contextPath}/statics/img/competeCenter/btn_return.png" alt="">
         </button>
         <div class="integral">
             <p>积分 <span>{{coinNum}}</span></p>
         </div>
-        <button class="rule_info">
+        <button class="rule_info" @click="ruleAreaShow = true">
             <img src="${rc.contextPath}/statics/img/competeCenter/btn_gonglue.png" alt="">
         </button>
 
         <ul class="typeLayout">
-            <li class="bounceInLeft">
+            <li class="bounceInLeft" @click="teamAreaShow = true">
                 <img src="${rc.contextPath}/statics/img/competeCenter/figure_team.png" alt="">
                 <img src="${rc.contextPath}/statics/img/competeCenter/shi_team.png" alt="">
             </li>
@@ -44,16 +44,78 @@
         <button onclick="tiaole('5','add')">多人组队（建房）（5v5）</button>
         <button onclick="tiaole('5','join2')">多人组队（进房）（5v5）</button>
     </div>
+    <!--滚动匹配弹框-->
+    <div class="model_area roll_area" v-if="rollAreaShow">
+        <div class="inner">
+            <div class="translate">
+                <ul :class="rollStop?'stop_roll':''">
+                    <li v-for="name in nameList">{{name}}</li>
+                </ul>
+            </div>
+
+            <img src="${rc.contextPath}/statics/img/competeCenter/peidui_frame.png" alt="">
+        </div>
+    </div>
+    <!--规则-->
+    <div class="model_area rule_area" v-if="ruleAreaShow">
+        <div class="inner">
+            <button class="close" @click="ruleAreaShow = false"></button>
+            <div class="title"></div>
+            <p>
+                规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则</p>
+        </div>
+    </div>
+
+    <div class="model_area team_area" v-if="teamAreaShow">
+        <div class="inner">
+            <div class="title">组队对战模式</div>
+            <ul class="clearfix">
+                <li :class="teamPerNum == 3?'active':''" @click="teamPerNum = 3">3v3</li>
+                <li :class="teamPerNum == 5?'active':''" @click="teamPerNum = 5">5v5</li>
+            </ul>
+            <button @click="formationTeam">建立我的队伍</button>
+            <button @click="joinTeam">加入他人队伍</button>
+        </div>
+    </div>
+    <!--建立我的队伍-->
+    <div class="model_area formation_area" v-if="formationTeamShow">
+        <div class="inner">
+            <div class="title"></div>
+            <div class="btns">
+                <button>刷新</button>
+                <button @click="formationTeamExit">退出</button>
+            </div>
+            <ul class="users">
+                <li>
+                    <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                    <p>我</p>
+                </li>
+                <li>
+                    <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                    <p>发范德萨</p>
+                </li>
+                <li>
+                    <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                    <p>发范德萨</p>
+                </li>
+
+            </ul>
+            <p class="team_num"><span>组队编号：</span>123456</p>
+            <p>恭喜您！队伍完成，冲啊~</p>
+        </div>
+    </div>
+    <!--加入队伍-->
+    <div class="model_area join_area" v-if="joinTeamShow">
+        <div class="inner">
+            <div class="title">加入他人队伍</div>
+            <input type="text" placeholder="输入队伍编号" @submit="alert(1)">
+        </div>
+    </div>
 </div>
 
 
-
-
-
-
-
 <div id="yqmdiv">
-  请输入邀请码：<input type="text" value="" id="yqm">
+    请输入邀请码：<input type="text" value="" id="yqm">
     <button id="mybutton" onclick="join()">进入</button>
 
 </div>
@@ -77,57 +139,46 @@
         $("#team2").hide();
     });
 
-function tiao(a)
-{
-    if(a=="2")
-    {
-        parent.location.href =baseURL+"modules/competition/alonePkGameByCode.html?type=add&code=0";
-    }
-    if(a=="3")
-    {
+    function tiao(a) {
+        if (a == "2") {
+            parent.location.href = baseURL + "modules/competition/alonePkGameByCode.html?type=add&code=0";
+        }
+        if (a == "3") {
 
-        $("#yqmdiv").show();
+            $("#yqmdiv").show();
 //        parent.location.href =baseURL+"modules/competition/alonePkGameByCode.html?type=join";
+        }
+        if (a == "4") {
+            parent.location.href = baseURL + "modules/competition/teamGame.html";
+        }
     }
-    if(a=="4")
-    {
-        parent.location.href =baseURL+"modules/competition/teamGame.html";
-    }
-}
 
-function tiaole(num,type)
-{
-    if(type=="add")
-    {
-        parent.location.href =baseURL+"modules/competition/teamGame.html?peopleNum="+num+"&type=add&code=0";
+    function tiaole(num, type) {
+        if (type == "add") {
+            parent.location.href = baseURL + "modules/competition/teamGame.html?peopleNum=" + num + "&type=add&code=0";
+        } else if (type == "join") {
+            $("#team1").show();
+            $("#team2").hide();
+        } else if (type == "join2") {
+            $("#team1").hide();
+            $("#team2").show();
+        }
     }
-    else if(type=="join")
-    {
-        $("#team1").show();
-        $("#team2").hide();
-    }
-    else if(type=="join2")
-    {
-        $("#team1").hide();
-        $("#team2").show();
-    }
-}
 
-function join()
-{
-     var code=$("#yqm").val();
-    parent.location.href =baseURL+"modules/competition/alonePkGameByCode.html?type=join&code="+code;
-}
-function join2()
-{
-    var code=$("#yqm2").val();
-    parent.location.href =baseURL+"modules/competition/teamGame.html?peopleNum=2&type=join&code="+code;
-}
-function join3()
-{
-    var code=$("#yqm3").val();
-    parent.location.href =baseURL+"modules/competition/teamGame.html?peopleNum=5&type=join&code="+code;
-}
+    function join() {
+        var code = $("#yqm").val();
+        parent.location.href = baseURL + "modules/competition/alonePkGameByCode.html?type=join&code=" + code;
+    }
+
+    function join2() {
+        var code = $("#yqm2").val();
+        parent.location.href = baseURL + "modules/competition/teamGame.html?peopleNum=2&type=join&code=" + code;
+    }
+
+    function join3() {
+        var code = $("#yqm3").val();
+        parent.location.href = baseURL + "modules/competition/teamGame.html?peopleNum=5&type=join&code=" + code;
+    }
 </script>
 <script src="${rc.contextPath}/js/competition/pkMain.js"></script>
 </html>

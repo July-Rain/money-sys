@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.exam.UserExamAnswerDao">
+
+    <select id="findByuEIdAndQueId" resultType="com.lawschool.beans.exam.UserExamAnswer">
+          select * from LAW_USER_EXAM_ANSWER
+            where
+          USER_EXAM_ID = #{userExamId}
+          AND TEST_QUE_ID = #{qId}
+    </select>
+
+    <update id="updateById" >
+        update LAW_USER_EXAM_ANSWER set user_ans_id = #{userAnsId},user_score=#{userScore}
+        <where>
+            id=#{id}
+        </where>
+    </update>
+
+    <select id="getQueType" resultType="String">
+        SELECT DISTINCT TEST_QUE_TYPE
+            FROM LAW_USER_EXAM_ANSWER where user_exam_id =#{userExamId}
+    </select>
+
+    <select id="findByuEIdAndQueType" resultType="com.lawschool.beans.exam.UserExamAnswer">
+        SELECT * FROM LAW_USER_EXAM_ANSWER
+         where USER_EXAM_ID=#{userExamId} and TEST_QUE_TYPE= #{queType} order by ORDER_NUM
+    </select>
+
+    <select id="getListByDiffScore" resultType="string">
+        select user_exam_id
+        from LAW_USER_EXAM_ANSWER
+        WHERE 1=1 and FIR_CHECK_SCORE is not null and Sec_CHECK_SCORE is not null
+        and abs(FIR_CHECK_SCORE - Sec_CHECK_SCORE) >#{score}
+    </select>
+</mapper>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
 <style>
@@ -108,13 +108,18 @@
             </div>
         </div>
         <div>
-            <el-button size="mini" type="primary" @click="addConfig" >新增</el-button>
+            <div class="info_btn">
+                <el-button size="mini" type="primary" @click="addConfig"><i class="iconfont icon-htmal5icon18"></i>新增</el-button>
+            </div>
             <el-table
                     :data="tableData"
                     border
                     style="width: 100%">
                 <el-table-column
+                        label="序号"
                         type="index"
+                        header-align="center"
+                        align="center"
                         width="50">
                 </el-table-column>
                 <el-table-column

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
 <body>
@@ -13,12 +13,10 @@
             <el-breadcrumb-item>系统管理</el-breadcrumb-item>
             <el-breadcrumb-item>角色管理</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-form :inline="true" class="demo-form-inline">
 
-            <el-form-item>
-                <el-button type="primary" @click="addRole()" size="mini">新增角色</el-button>
-            </el-form-item>
-        </el-form>
+        <div class="info_btn">
+            <el-button size="mini" type="primary" @click="addRole"><i class="iconfont icon-htmal5icon18"></i>新增角色</el-button>
+        </div>
         <div>
             <el-table
                     :data="tableData"

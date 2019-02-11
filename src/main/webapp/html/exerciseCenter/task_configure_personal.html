@@ -11,16 +11,13 @@
     <div class="container">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
             <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
-            <el-breadcrumb-item>练习管理</el-breadcrumb-item>
-            <el-breadcrumb-item>个人任务设置</el-breadcrumb-item>
-        </el-breadcrumb>
-        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
-            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
             <el-breadcrumb-item>个人中心</el-breadcrumb-item>
             <el-breadcrumb-item>我的练习</el-breadcrumb-item>
             <el-breadcrumb-item>自定义任务</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-button size="mini" type="primary" @click="addConfigure">新增配置</el-button>
+        <div class="info_btn">
+            <el-button size="mini" type="primary" @click="addConfigure"><i class="iconfont icon-htmal5icon18"></i>新增配置</el-button>
+        </div>
         <el-table
                 :data="tableData"
                 style="width: 100%"
@@ -30,42 +27,53 @@
                     type="index"
                     width="50"
                     label="序号"
+                    align="center"
+                    :index="indexMethod">
+            </el-table-column>
+            <el-table-column
+                    prop="numbers"
+                    label="任务编号"
+                    width="140"
+                    header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
                     prop="name"
                     label="任务名称"
-                    width="320"
+                    width="220"
                     header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
                     prop="themeName"
                     label="主题类型"
-                    width="160"
+                    width="130"
                     header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
                     prop="type"
                     label="题目类型"
-                    width="160"
+                    width="140"
                     header-align="center"
-                    align="center">
+                    align="center"
+                    :formatter="getType">
             </el-table-column>
             <el-table-column
                     prop="difficulty"
                     label="题目难度"
                     width="140"
                     header-align="center"
-                    align="center">
+                    align="center"
+                    :formatter="getDiff">
             </el-table-column>
             <el-table-column
                     prop="classify"
                     label="题目分类"
                     width="140"
                     header-align="center"
-                    align="center">
+                    align="center"
+                    :formatter="getClass">
             </el-table-column>
             <el-table-column
                     prop="total"
@@ -79,6 +87,17 @@
                     header-align="center"
                     align="center">
                 <template slot-scope="scope">
+                    <el-popover
+                            placement="top-start"
+                            trigger="hover"
+                            content="编辑">
+                        <i class="el-icon-edit"
+                           slot="reference"
+                           @click="edit(scope.row.id)"
+                           style="color: #e31313;cursor: pointer;padding: 0 20px;font-size: 18px"
+                        >
+                        </i>
+                    </el-popover>
                     <el-popover
                             placement="top-start"
                             trigger="hover"
@@ -116,36 +135,36 @@
                 :total="formInline.count">
         </el-pagination>
 
-        <el-dialog title="新增配置" :visible.sync="dialogConfig" :before-close="closeDia">
+        <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia" :close-on-click-modal="false">
             <el-row>
-                <el-col :span="12">
-                    <el-form :model="configureEntity" label-width="100px" size="small">
-                        <el-form-item label="练习卷名称：" size="medium">
-                            <el-input v-model="configureEntity.name"></el-input>
+                <el-col :span="24">
+                    <el-form :model="configureEntity" :rules="rules" ref="configureEntity" label-width="110px" size="mini">
+                        <el-form-item label="练习卷名称：" prop="name">
+                            <el-input v-model="configureEntity.name" :disabled="isEdit"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="试题难度：" size="medium">
+                        <el-form-item label="试题难度：">
                             <el-checkbox-group v-model="configureEntity.difficultys">
-                                <el-checkbox v-for="item in diffList" :label="item.key">{{item.value}}</el-checkbox>
+                                <el-checkbox :disabled="isEdit" v-for="item in diffList" :label="item.key">{{item.value}}</el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
 
-                        <el-form-item label="试题分类：" size="medium">
+                        <el-form-item label="试题分类：">
                             <el-checkbox-group v-model="configureEntity.classifys">
-                                <el-checkbox v-for="item in typeList" :label="item.key">{{item.value}}</el-checkbox>
+                                <el-checkbox :disabled="isEdit" v-for="item in typeList" :label="item.key">{{item.value}}</el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
 
-                        <el-form-item label="试题类型：" size="medium">
+                        <el-form-item label="试题类型：">
                             <el-checkbox-group v-model="configureEntity.types">
-                                <el-checkbox v-for="item in qtList" :label="item.key" v-if="item.value != '主观题'">
+                                <el-checkbox :disabled="isEdit" v-for="item in qtList" :label="item.key" v-if="item.value != '主观题'">
                                     {{item.value}}
                                 </el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
 
-                        <el-form-item label="主题类型：" size="small">
-                            <el-select multiple collapse-tags
+                        <el-form-item label="主题类型：">
+                            <el-select :disabled="isEdit" multiple collapse-tags
                                        v-model="configureEntity.topics"
                                        placeholder="请选择">
                                 <el-option
@@ -157,8 +176,9 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item>
-                            <el-button type="primary" @click="save">保存设置</el-button>
+                        <el-form-item >
+                            <el-button v-if="!isEdit" type="primary" @click="save('configureEntity')">保存设置</el-button>
+                            <el-button type="primary" @click="cancle">取消</el-button>
                         </el-form-item>
 
                     </el-form>

@@ -209,13 +209,87 @@
   <select id="findList" resultType="com.lawschool.beans.exam.ExamConfig" parameterType="com.lawschool.beans.exam.ExamConfig">
         SELECT
         ID,
-            EXAM_NAME,
+        EXAM_NAME,
+        EXAM_TIME,
         EXAM_TYPE,
         DICTCODE2VALE(EXAM_TYPE) EXAM_TYPE_NAME,
         ORGANIZED_ORG_CODE,
         START_TIME,
-        END_TIME
+        END_TIME,
+        CHECK_NUM,
+        CHECK_PASSWORD,
+        CHECK_SCORE_DIFFERENCE,
+        IS_AIBITRATION,
+        PAPER_PER_SET_NUM,
+        AUDIT_CHECK_PASS
         FROM
             LAW_EXAM_CONFIG
 	</select>
+
+  <!--查询所需要的问题字段-->
+  <select id="findByQueAndEdId" resultType="com.lawschool.form.QuestForm">
+    SELECT
+    t.id,
+    t.com_content,
+    t.question_difficulty,
+    t.question_type,
+    t.answer_id,
+    t.legal_basis,
+    t.answer_describle,
+    t.answer_choice_number,
+    q.score as "score"
+    FROM law_testquestions t
+    inner JOIN LAW_EXAM_QUESTIONS q ON t.id = q.exam_library_id
+    and q.exam_detail_id=#{examDetailId}
+    <where>
+      t.id IN
+      <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </where>
+    ORDER BY t.question_type
+  </select>
+
+  <update id="checkset" parameterType="com.lawschool.form.CheckSetForm">
+    update LAW_EXAM_CONFIG
+    <trim prefix="set" suffixOverrides=",">
+      <if test="checkNum!=null">CHECK_NUM=#{checkNum},</if>
+      <if test="checkPassword!=null">CHECK_PASSWORD=#{checkPassword},</if>
+      <if test="checkScoreDifference!=null">CHECK_SCORE_DIFFERENCE=#{checkScoreDifference},</if>
+      <if test="isAibitration!=null">IS_AIBITRATION=#{isAibitration},</if>
+      <if test="paperPerSetNum!=null">PAPER_PER_SET_NUM=#{paperPerSetNum},</if>
+      <if test="auditCheckPass!=null">AUDIT_CHECK_PASS=#{auditCheckPass},</if>
+    </trim>
+    WHERE id=#{id}
+  </update>
+
+  <select id="findByCheckPassword" resultType="com.lawschool.beans.exam.ExamConfig">
+    SELECT
+        ID,
+        EXAM_NAME,
+        EXAM_TIME,
+        EXAM_TYPE,
+        DICTCODE2VALE(EXAM_TYPE) EXAM_TYPE_NAME,
+        ORGANIZED_ORG_CODE,
+        START_TIME,
+        END_TIME,
+        CHECK_NUM,
+        CHECK_PASSWORD,
+        CHECK_SCORE_DIFFERENCE,
+        IS_AIBITRATION,
+        PAPER_PER_SET_NUM,
+        AUDIT_CHECK_PASS
+        FROM
+            LAW_EXAM_CONFIG
+        where
+         1=1
+    <if test="checkUserType != null and checkUserType != ''">
+        <if test="checkUserType eq 0">
+            and check_Password=#{checkPassword}
+        </if>
+        <if test="checkUserType eq 1">
+            and audit_Check_Pass=#{checkPassword}
+        </if>
+    </if>
+  </select>
 </mapper>

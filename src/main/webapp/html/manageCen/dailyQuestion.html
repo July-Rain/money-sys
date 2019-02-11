@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
 <style>
@@ -16,7 +16,10 @@
             <el-breadcrumb-item>每日一题</el-breadcrumb-item>
         </el-breadcrumb>
         <div>
-            <el-button type="primary" @click="addConfig">新增</el-button>
+
+            <div class="info_btn">
+                <el-button size="mini" type="primary" @click="addConfig"><i class="iconfont icon-htmal5icon18"></i>新增</el-button>
+            </div>
             <el-table
                     :data="tableData"
                     border
@@ -83,12 +86,12 @@
         </div>
 
 
-        <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
-            <el-form :model="dailyConfig" :rules="rules" ref="dailyConfig" label-width="100px" class="demo-dailyConfig"
+        <el-dialog :title="title+' 每日一题'" :visible.sync="dialogConfig" :before-close="closeDia">
+            <el-form :model="dailyConfig" :rules="rules" ref="dailyConfig" label-width="125px                                                " class="demo-dailyConfig"
                      size="mini">
                 <el-row>
                     <el-col>
-                        <el-form-item label="每日一题规则名称">
+                        <el-form-item label="规则名称">
                             <el-input v-model="dailyConfig.ruleName" placeholder="请输入考试名称" clearable></el-input>
                         </el-form-item>
                     </el-col>

@@ -147,6 +147,9 @@ var vm = new Vue({
             this.random = false;
             //vm.reload();
         },
+        toHome: function () {
+            parent.location.reload()
+        },
         reload: function () {
             $.ajax({
                 type: "POST",

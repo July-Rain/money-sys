@@ -5,13 +5,16 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.base.AbstractServiceImpl;
+import com.lawschool.beans.Collection;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
 import com.lawschool.beans.auth.AuthRelationBean;
 import com.lawschool.beans.law.ClassifyDesicEntity;
 import com.lawschool.beans.law.TaskDesicEntity;
+import com.lawschool.dao.CollectionDao;
 import com.lawschool.dao.StuMediaDao;
 import com.lawschool.dao.UserMapper;
+import com.lawschool.service.CollectionService;
 import com.lawschool.service.StuMediaService;
 import com.lawschool.service.auth.AuthRelationService;
 import com.lawschool.util.GetUUID;
@@ -27,8 +30,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.lawschool.util.Constant.ERROR;
-import static com.lawschool.util.Constant.SUCCESS;
+import static com.lawschool.util.Constant.*;
 import static java.lang.Integer.parseInt;
 
 @Service
@@ -41,7 +43,7 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
     private AuthRelationService authService;
 
     @Autowired
-    private UserMapper userMapper;
+    private CollectionService collectionService;
 
     /**
      * @Author zjw
@@ -263,6 +265,11 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         page.setTotal(mapper.selectCount(new EntityWrapper<>()));*/
         Page<StuMedia> page = this.selectPage(
                 new Query<StuMedia>(params).getPage(),ew);
+        //是否被收藏过
+        List<StuMedia> stuMediaList = page.getRecords();
+        stuMediaList.stream().forEach(e->{
+            e.setIsColl(isColl(e.getId(),user.getId()));
+        });
         return new PageUtils(page);
     }
 
@@ -316,5 +323,16 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
     public boolean updateStatus(String id, String status){
 
         return dao.updateStatus(id, status);
+    }
+
+    public boolean isColl(String id,String userId){
+        boolean isColl = false;
+        EntityWrapper<Collection> ew=new EntityWrapper();
+        ew.eq("COM_USERID",userId).eq("COM_STUCODE",id);
+        Collection collection = collectionService.selectOne(ew);
+        if(UtilValidate.isNotEmpty(collection) && collection.getDelStatus()==0){
+            isColl=true;
+        }
+        return  isColl;
     }
 }

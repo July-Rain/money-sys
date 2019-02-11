@@ -13,4 +13,129 @@
            EXAM_CONFIG_ID=#{examConfigId}
            ORDER BY dbms_random.random  ) where ROWNUM=1
     </select>
+
+    <update id="updateFinMarkAndScoreById">
+        update
+        law_user_exam set IS_FIN_MARK = #{isFinMark},score=#{totalScore},
+        exam_status = #{examStatus},REMAINING_EXAM_TIME = #{remainingExamTime}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <update id="updateRemainTimeById">
+        update
+        law_user_exam set REMAINING_EXAM_TIME = #{remainingExamTime}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <select id="getList" resultType="com.lawschool.form.UserExamForm" parameterType="Map">
+
+    SELECT
+        A . ID ID,
+        b. ID user_Exam_Id,
+        A .EXAM_NAME,
+        A .EXAM_TYPE,
+        DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
+        A .EXAM_TIME,
+        A .ORGANIZED_ORG_CODE,
+        A .START_TIME,
+        A .END_TIME,
+        '1' EXAM_STATUS
+    FROM
+        LAW_EXAM_CONFIG A
+    INNER JOIN LAW_USER_EXAM b ON A . ID = b.EXAM_CONFIG_ID
+    UNION ALL
+        SELECT
+            A . ID ID,
+            '' user_Exam_Id,
+            A .EXAM_NAME,
+            A .EXAM_TYPE,
+            DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
+            A .EXAM_TIME,
+            A .ORGANIZED_ORG_CODE,
+            A .START_TIME,
+            A .END_TIME,
+            '0' EXAM_STATUS
+        FROM
+            LAW_EXAM_CONFIG A
+        WHERE
+            A ."ID" NOT IN (
+                SELECT
+                    exam_config_id
+                FROM
+                    LAW_USER_EXAM
+            )
+    </select>
+
+    <select id="getListCount" resultType="java.lang.Integer" parameterType="Map">
+    select count(1) from
+    (
+            SELECT
+            A . ID ID,
+            b. ID user_Exam_Id,
+            A .EXAM_NAME,
+            A .EXAM_TYPE,
+            DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
+            A .EXAM_TIME,
+            A .ORGANIZED_ORG_CODE,
+            A .START_TIME,
+            A .END_TIME,
+            '1' EXAM_STATUS
+        FROM
+            LAW_EXAM_CONFIG A
+        INNER JOIN LAW_USER_EXAM b ON A . ID = b.EXAM_CONFIG_ID
+        UNION ALL
+            SELECT
+                A . ID ID,
+                '' user_Exam_Id,
+                A .EXAM_NAME,
+                A .EXAM_TYPE,
+                DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
+                A .EXAM_TIME,
+                A .ORGANIZED_ORG_CODE,
+                A .START_TIME,
+                A .END_TIME,
+                '0' EXAM_STATUS
+            FROM
+                LAW_EXAM_CONFIG A
+            WHERE
+                A ."ID" NOT IN (
+                    SELECT
+                        exam_config_id
+                    FROM
+                        LAW_USER_EXAM
+                )
+                )
+    </select>
+
+
+    <select id="getListByExamConId" resultType="string">
+      select id from LAW_USER_EXAM WHERE
+      EXAM_CONFIG_ID=#{examConfigId} and exam_status='0'
+    </select>
+
+    <select id="getListByIds" resultType="com.lawschool.form.UserExamForm">
+        SELECT
+            A . ID ID,
+            b. ID user_Exam_Id,
+            A .EXAM_NAME,
+            A .EXAM_TYPE,
+            DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
+            A .EXAM_TIME,
+            A .ORGANIZED_ORG_CODE,
+            A .START_TIME,
+            A .END_TIME
+
+        FROM
+            LAW_EXAM_CONFIG A
+        INNER JOIN LAW_USER_EXAM b ON A . ID = b.EXAM_CONFIG_ID
+        where 1=1 and b.exam_status='0' and
+        b.id IN
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
 <body>
@@ -12,50 +12,65 @@
             <el-breadcrumb-item>管理中心</el-breadcrumb-item>
             <el-breadcrumb-item>题库管理</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-form :inline="true" class="demo-form-inline">
-
-            <el-form-item>
-                <el-button type="primary" @click="addExam()" size="mini">新增试题</el-button>
-                <el-button type="primary" @click="batchImport()" size="mini">批量导入</el-button>
-                <el-button type="primary" @click="downloadTemp()" size="mini">下载导入模板</el-button>
-            </el-form-item>
-        </el-form>
+        <div class="info_btn">
+            <el-button size="mini" type="primary" @click="addExam"><i class="iconfont icon-suiji1"></i>新增试题</el-button>
+            <el-button size="mini" type="primary" @click="batchImport"><i class="iconfont icon-shangchuan"></i>批量导入</el-button>
+            <el-button size="mini" type="primary" @click="downloadTemp"><i class="iconfont icon-xiazai"></i>下载导入模板</el-button>
+        </div>
         <div>
             <el-table
                     :data="tableData"
                     border
                     style="width: 100%">
                 <el-table-column
+                        type="index"
+                        width="50"
+                        label="序号"
+                        align="center"
+                        :index="indexMethod">
+                </el-table-column>
+                <el-table-column
                         prop="comContent"
-                        label="试题内容">
+                        label="试题内容"
+                        width="650">
                 </el-table-column>
                 <el-table-column
-                        prop="questionType"
-                        label="类型">
+                        label="类型"
+                        width="90"
+                        header-align="center"
+                        align="center">
+                    <template slot-scope="scope">
+                        {{scope.row.questionType == '10004' ?
+                            '单选' : scope.row.questionType == '10005' ?
+                            '多选' : '判断'}}
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="specialKnowledgeId"
-                        label="题库分类">
+                        label="难度"
+                        width="90"
+                        header-align="center"
+                        align="center">
+                    <template slot-scope="scope">
+                        {{scope.row.questionDifficulty == '10001' ?
+                            '初级' : scope.row.questionDifficulty == '10002' ?
+                            '中级' : '高级'}}
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="answer"
-                        label="答案">
+                        label="分类"
+                        width="90"
+                        header-align="center"
+                        align="center">
+                    <template slot-scope="scope">
+                        {{scope.row.typeId == '0' ? '文字' : '视频'}}
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="project"
-                        label="答案项">
-                </el-table-column>
-                <el-table-column
-                        prop="questionDifficulty"
-                        label="难度">
-                </el-table-column>
-                <el-table-column
-                        prop="typeId"
-                        label="分类">
-                </el-table-column>
-                <el-table-column
-                        prop="partof"
-                        label="所属专项">
+                        prop="answerChoiceNumber"
+                        label="选项数"
+                        width="90"
+                        header-align="center"
+                        align="center">
                 </el-table-column>
                 <el-table-column
                         prop="active"
@@ -63,11 +78,11 @@
                     <template slot-scope="scope">
                         <el-button
                                 size="mini"
-                                @click="handleWatch(scope.$index, scope.row)">查看
+                                @click="handleWatch(scope.row.id)">查看
                         </el-button>
                         <el-button
                                 size="mini"
-                                @click="handleEdit(scope.$index, scope.row)">编辑
+                                @click="handleEdit(scope.row.id)">编辑
                         </el-button>
                         <el-button
                                 size="mini"
@@ -79,95 +94,19 @@
             <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :current-page="form.pageNo"
+                    :current-page="formInline.pageNo"
                     :page-sizes="[10, 20, 30, 40]"
-                    :page-size="form.limit"
+                    :page-size="formInline.pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="form.count">
+                    :total="formInline.count">
             </el-pagination>
         </div>
-                            <el-form-item>
-                                <el-button type="primary" @click="addExam()" size="mini">新增试题</el-button>
-                                <el-button type="primary" @click="batchImport()" size="mini">批量导入</el-button>
-                                <el-button type="primary" @click="downloadTemp()" size="mini">下载导入模板</el-button>
-                            </el-form-item>
-                        </el-form>
-                        <div>
-                            <el-table
-                                    :data="tableData"
-                                    border
-                                    style="width: 100%">
-                                <el-table-column
-                                        prop="comContent"
-                                        label="试题内容"
-                                        width="480">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="questionType"
-                                        label="类型"
-                                        width="80">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="specialKnowledgeId"
-                                        label="题库分类"
-                                        width="80">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="answer"
-                                        label="答案"
-                                        width="80">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="questionDifficulty"
-                                        label="难度"
-                                        width="80">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="typeId"
-                                        label="分类"
-                                        width="80">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="partof"
-                                        label="所属专项"
-                                        width="180">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="active"
-                                        label="操作">
-                                    <template slot-scope="scope">
-                                        <el-button
-                                                size="mini"
-                                                @click="handleWatch(scope.$index, scope.row)">查看
-                                        </el-button>
-                                        <el-button
-                                                size="mini"
-                                                @click="handleEdit(scope.$index, scope.row)">编辑
-                                        </el-button>
-                                        <el-button
-                                                size="mini"
-                                                @click="handleDel(scope.$index, scope.row)">删除
-                                        </el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.pageNo"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.count">
-                            </el-pagination>
-                        </div>
                     </el-tab-pane>
                 </el-tabs>
             </el-col>
         </el-row>
 
         <el-dialog title="试题编辑" :visible.sync="dialogFormVisible">
-
             <el-form :model="form" label-width="100px" size="small">
                 <el-col :span="24">
                     <el-form-item label="试题描述：">

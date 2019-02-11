@@ -209,11 +209,33 @@ var vm = new Vue({
                 success: function(result){
                     if(result.code === 0){
                         alert("收藏成功！");
+                        vm.reload();
                     }else{
                         alert(result.msg);
                     }
                 }
             });
-        }
+        },
+        cancelCollect:function (id) {
+            var coll={
+                comStucode:id,
+                type:'10'
+            };
+            //取消收藏课程
+            $.ajax({
+                type: "POST",
+                url: baseURL + "coll/delColl?comStucode="+id+"&type=10",
+                contentType: "application/json",
+                data: JSON.stringify(coll),
+                success: function(result){
+                    if(result.code === 0){
+                        alert("取消收藏成功！");
+                        vm.reload();
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
     }
 });

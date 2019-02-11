@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<style>
+    #app{
+        background-color:#efefef;
+        width: 100vw;
+        height: 100vh;
+    }
+    #paper{
+        width: 1180px;
+        background: #fff;
+        margin: 54px auto 47px;
+        padding: 165px 0 90px;
+    }
+    #paper h2{
+        height: 48px;
+        line-height: 48px;
+        font-family: MicrosoftYaHei;
+        font-size: 48px;
+        font-weight: normal;
+        font-stretch: normal;
+        letter-spacing: 0px;
+        color: #2a2a2a;
+        text-align: center;
+        margin-bottom: 70px;
+    }
+    #paper .smg{
+        height: 30px;
+        line-height: 30px;
+        margin-bottom: 19px;
+
+    }
+    p,span{
+        font-size: 24px;
+        color: #2a2a2a;
+    }
+    #paper .smg .name{
+        float: left;
+        padding-left: 149px;
+    }
+    #paper .smg .set{
+        float: right;
+        padding-right: 164px;
+    }
+    .text_s{
+        cursor:pointer;
+        font-size: 16px;
+    }
+    .text_m{
+        cursor:pointer;
+        font-size: 18px;
+    }
+    .text_l{
+        cursor:pointer;
+        font-size: 24px;
+        font-weight: bolder;
+    }
+    .subTitle{
+        padding: 20px 90px 0;
+    }
+    .question_area{
+        padding-top: 47px;
+        width: 935px;
+        margin: 0 auto;
+    }
+    .ques_name{
+
+    }
+    .el-form-item__content{
+        line-height: 25px;
+
+    }
+    .el-radio,.el-radio__label,.el-checkbox,.el-checkbox__label{
+        font-size: 24px;
+        margin: 0!important;
+    }
+    .el-radio,.el-checkbox{
+        margin-top: 29px!important;
+    }
+    .el-radio-group label,.el-checkbox-group label{
+        display: block;
+    }
+    .timing{
+        position: fixed;
+        left: 10px;
+        top: 10px;
+    }
+</style>
+<body>
+<div id="app" v-cloak>
+    <div id="paper">
+       <!-- <h2>{{examConfig.examName}}</h2>-->
+        <el-form :model="testForm" >
+            <div class="subTitle" v-if="subjectList[0]">
+                <p>主观题</p>
+            </div>
+            <div v-for="(item,index) in subjectList" class="question_area">
+                <p class="ques_name">{{index+1}}. {{item.comContent}} 。</p>
+                答 ：<el-input type="text" v-model="subject[index]" placeholder="請輸入答案" readonly="readonly"></el-input>
+                分值：<el-input type="number" v-model = "subScore[index]" placeholder="請輸入分值"></el-input>
+            </div>
+        </el-form>
+        <el-button @click="save" type="success" style="float: right;">保存</el-button>
+        <el-button @click="submit" type="success" style="float: right;">提交</el-button>
+    </div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/checkExamCen/checkSubjectExam.js"></script>
+</html>

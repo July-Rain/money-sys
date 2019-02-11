@@ -81,6 +81,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfig> i
         if(UtilValidate.isNotEmpty(status)){
             ew.like("status",status);
         }
+        ew.orderBy("create_time",false);
         Page<SysConfig> page = this.selectPage(
                 new Query<SysConfig>(params).getPage(),ew);
 

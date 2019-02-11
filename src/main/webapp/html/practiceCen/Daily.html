@@ -9,47 +9,85 @@
 <div id="app" v-cloak>
 
     <div class="container">
-        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
             <el-breadcrumb-item>练习中心</el-breadcrumb-item>
             <el-breadcrumb-item>每日一题</el-breadcrumb-item>
         </el-breadcrumb>
+        <div class="clearfix">
+            <div class="date">
+                <el-date-picker
+                        v-model="daliyDate"
+                        type="date"
+                        placeholder="选择日期">
+                </el-date-picker>
+                <ul>
+                    <li :class="info.active?'active':''" @click="dateChange(index)" v-for="(info,index) in dateList" :key="index">
+                        <span>{{info.day}}</span>
+                        <span>{{info.date}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="daliy">
+                <p class="daliy_title"><span>{{questionForm.questionType==10004?'单选题':questionForm.questionType==10005?'多选题':'判断题'}}</span>{{questionForm.comContent}}
+                </p>
+                <!--单选 与判断-->
+                <el-radio-group v-model="answers"
+                                v-if="questionForm.questionType==10004 || questionForm.questionType==10006"
+                                :disabled="radio_disabled">
+                    <el-radio :label="answer.id" v-for="answer in questionForm.answer"
+                              @change="radioCheck(answer.id, questionForm.answerId, questionForm.questionType)">
+                        {{answer.questionContent}}
+                    </el-radio>
+                    <br/>
+                </el-radio-group>
 
 
-        <el-row>
-            <span>题目类型：[{{questionForm.questionType==10004?'单选题':questionForm.questionType==10005?'多选题':'判断题'}}]</span><br/>
-            <p> 题目：{{questionForm.comContent}}</p>
-           <!--单选 与判断-->
-            <el-radio-group v-model="answers" v-if="questionForm.questionType==10004 || questionForm.questionType==10006"
-                            :disabled="radio_disabled">
-                <el-radio :label="answer.id" v-for="answer in questionForm.answer"
-                          @change="radioCheck(answer.id, questionForm.answerId, questionForm.questionType)">
-                    {{answer.questionContent}}
-                </el-radio>
-                <br/>
-            </el-radio-group>
+                <!--多选题-->
+
+                <el-checkbox-group v-model="answers" v-if="questionForm.questionType==10005">
+                    <el-checkbox :label="answer.id" v-for="answer in questionForm.answer" :disabled="checkboxdisabled">
+                        {{answer.questionContent}}
+                    </el-checkbox>
+                    <br/>
+                </el-checkbox-group>
+
+                <el-button type="primary" :disabled="checkboxdisabled" v-if="questionForm.questionType==10005"
+                           @click="onSubmit(questionForm.answerId)">提交
+                </el-button>
 
 
-            <!--多选题-->
-
-            <el-checkbox-group v-model="answers" v-if="questionForm.questionType==10005">
-                <el-checkbox :label="answer.id" v-for="answer in questionForm.answer" :disabled="checkboxdisabled">
-                    {{answer.questionContent}}
-                </el-checkbox>
-                <br/>
-            </el-checkbox-group>
-
-            <el-button type="primary" :disabled="checkboxdisabled" v-if="questionForm.questionType==10005" @click="onSubmit(questionForm.answerId)">提交</el-button>
 
 
-            <!--<el-button type="primary" v-if="questionForm.questionType==10005" @click="onSubmit(questionForm.answerId)">提交</el-button><br/>-->
-            <br/>
-            <span v-show="showDetail">
+                <!--<el-button type="primary" v-if="questionForm.questionType==10005" @click="onSubmit(questionForm.answerId)">提交</el-button><br/>-->
+                <span v-show="showDetail">
                 <span v-show="answerShow">答案描述：{{questionForm.answerDescrible}}</span><br/>
                 <span v-show="legalBasisShow">法律依据：{{questionForm.legalBasis}}</span><br/>
-                <!--<span>题目难度：{{questionForm.questionDifficulty}}</span>-->
-            </span>
-        </el-row>
+                    <!--<span>题目难度：{{questionForm.questionDifficulty}}</span>-->
+                </span>
+
+                <div class="answer_area">
+                    <p>你的答案:<span>BD</span>，正确答案:<span>BD</span></p>
+                    <!--diff1~diff5表示五角星亮几个-->
+                    <div class="clearfix diff diff5">
+                        <span>试题难度：</span>
+                        <span>
+                            <i class="iconfont icon-shoucang1"></i>
+                            <i class="iconfont icon-shoucang1"></i>
+                            <i class="iconfont icon-shoucang1"></i>
+                            <i class="iconfont icon-shoucang1"></i>
+                            <i class="iconfont icon-shoucang1"></i>
+                        </span>
+                        <span>中等</span>
+                    </div>
+                    <div class="basis clearfix">
+                        <p>法律依据：</p>
+                        <p>{{questionForm.legalBasis}}法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 

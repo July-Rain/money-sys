@@ -92,6 +92,25 @@
                                 </p>
                             </div>
                         </el-tab-pane>
+                        <el-tab-pane label="阅卷口令登陆" name="checkPass">
+                            <div>
+                                <div class="form-group has-feedback">
+                                    <el-input prefix-icon="el-icon-search" v-model="checkUser.examUserCode" placeholder="证件号码" clearable></el-input>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <el-input prefix-icon="el-icon-search" v-model="checkUser.checkPassword" type="password" placeholder="阅卷口令" clearable></el-input>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <el-radio-group  v-model="checkUser.checkUserType">
+                                         <el-radio label="0" >阅卷人员</el-radio>
+                                         <el-radio label="1">阅卷审核人员</el-radio>
+                                    </el-radio-group>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <el-button class="login-btn" @click="checkExamLogin">登录</el-button>
+                            </div>
+                        </el-tab-pane>
                     </el-tabs>
                 </div>
             </el-col>
@@ -118,7 +137,7 @@
 
 <!-- 引入element-ui组件库 -->
 <script src="${rc.contextPath}/statics/plugins/element/element.js"></script>
-<script src="${rc.contextPath}/statics/plugins/layer/layer.js"></script>
+<!--<script src="${rc.contextPath}/statics/plugins/layer/layer.js"></script>-->
 <script type="text/javascript">
     $(function () {
         if(top!=self){
@@ -184,7 +203,12 @@
 //		errorMsg: '',
             checked: false,
             src: 'captcha.jpg',
-            activeName: 'password'
+            activeName: 'password',
+            checkUser:{
+                examUserCode:'',
+                checkPassword:'',
+                checkUserType:'0'
+            }
         },
         beforeCreate: function(){
             if(self != top){
@@ -218,14 +242,36 @@
                         }else{
 //						vm.error = true;
 //						vm.errorMsg = result.msg;
-                            alert(result.msg);
-                            this.$message('提示');
+//                             alert(result.msg);
+                            vm.$message('提示',result.msg);
 //                             layer.alert(result.msg, {
 //                                 icon: 0,
 //                                 skin: 'layer-ext-moon',
 //                                 title: "提示"
 //                             });
                             vm.refreshCode();
+                        }
+                    }
+                });
+            },
+
+            checkExamLogin:function () {
+                console.info(vm.checkUser);
+                $.ajax({
+                    type: "POST",
+                    url: "check/exam/login",
+                    data: JSON.stringify(vm.checkUser),
+                    contentType: "application/json; charset=utf-8",
+                    success: function(result){
+                        if(result.code == 0){//登录成功
+                            var storage=window.sessionStorage;
+                            storage.setItem("userStatus",result.userStatus);
+                            storage.setItem("checkExamUser",JSON.stringify(result.checkExamUser));
+                            storage.setItem("examConfig",JSON.stringify(result.examConfig));
+                            parent.location.href
+                                ='checkExamCen/checkExamMain.html';
+                        }else{
+                            alert(result.msg);
                         }
                     }
                 });

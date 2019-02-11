@@ -61,13 +61,17 @@
 .header-right ul li i{
     font-size: 29px;
 }
-.el-submenu{
-    margin-top: -51px!important;
-}
 .container{
-    padding: 20px;
+    padding: 24px;
     background: #fff;
     /*min-width: 1200px;*/
+}
+.container .info_btn button{
+    margin-bottom: 8px;
+    padding: 7px 12px;
+}
+.container .info_btn button i{
+    margin-right: 10px;
 }
 /*.m {*/
     /*width: 960px;*/
@@ -76,12 +80,6 @@
     /*margin-right: auto;*/
     /*margin-top: 100px;*/
 /*}*/
-.el-row {
-    margin-bottom: 20px;
-}
-.el-pagination{
-    text-align: right;
-}
 /*首页05 第一块*/
 .content5-1 .small-box{
     color: #ffffff;
@@ -566,7 +564,7 @@
 }
 /*检索*/
 .info_card{
-    margin-bottom: 20px;
+    margin-bottom: 8px;
 }
 .info_card .card_title{
     height: 6px;
@@ -590,12 +588,32 @@
     border-right: 1px solid #dcdcdc;
     padding: 10px 20px 0;
 }
+.info_card .el-form-item__label,.info_card .el-form-item__content{
+    line-height: 30px;
+    height: 30px;
+}
+.info_card .el-form-item__label{
+    min-width: 68px;
+}
 .info_card .reset_btn{
     background: #cae6fe;
     color: #0079d7;
 }
 .info_card button{
     padding: 6px 8px;
+}
+.info_card input,.info_card .el-date-editor.el-input{
+    width: 196px;
+}
+.info_card .card_contain .el-form-item .el-form-item__content>.el-col{
+    padding: 0 !important;
+    margin-right: 0;
+    width: 196px;
+}
+.info_card .el-form-item__content .line{
+    min-width: 68px;
+    width: 82px !important;
+    text-align: center;
 }
 .el-button--primary{
     background-image: none;
@@ -629,6 +647,7 @@ thead.has-gutter th > .cell{
     background: #e9f3ff!important;
     border-top: 1px solid #b7d8ff;
     border-bottom: 1px solid #b7d8ff;
+    padding: 11px 0 12px 0;
 }
 .el-table--border{
     border-color: #dddddd;
@@ -680,5 +699,16 @@ el-tabs__item is-top.is-active{
     border-radius: 2px;
 }
 .el-breadcrumb{
-    padding-left: 10px!important;
+    padding-left: 0px!important;
+    margin-bottom: 18px;
+}
+/*小标题样式*/
+.little-title{
+    height: 20px;
+    line-height: 20px;
+    margin-left:24px;
+    border-left: 5px solid #1381e3;
+    padding-left: 12px;
+    font-size: 14px;
+    color: #333;
 }

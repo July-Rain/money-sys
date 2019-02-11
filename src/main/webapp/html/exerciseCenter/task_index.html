@@ -21,6 +21,14 @@
                     type="index"
                     width="50"
                     label="序号"
+                    align="center"
+                    :index="indexMethod">
+            </el-table-column>
+            <el-table-column
+                    prop="numbers"
+                    label="任务编号"
+                    width="140"
+                    header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
@@ -47,7 +55,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                    prop="userName"
+                    prop="createName"
                     label="创建人"
                     width="200"
                     header-align="center"

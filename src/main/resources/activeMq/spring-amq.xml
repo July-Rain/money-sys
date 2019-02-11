@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jms="http://www.springframework.org/schema/jms" xmlns:amq="http://activemq.apache.org/schema/core"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-4.0.xsd
+      http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+      http://www.springframework.org/schema/tx
+      http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+      http://www.springframework.org/schema/aop
+      http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+      http://www.springframework.org/schema/jms
+      http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+      http://activemq.apache.org/schema/core
+      http://activemq.apache.org/schema/core/activemq-core-5.9.0.xsd">
+
+    <!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供 -->
+<!--
+    <amq:connectionFactory id="activemqConnectionFactory" brokerURL="tcp://192.168.0.188:61616" userName="admin" password="admin"></amq:connectionFactory>
+-->
+
+    <!--<bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://192.168.0.188:61616" />
+
+    </bean>
+    &lt;!&ndash; Spring用于管理真正的ConnectionFactory的ConnectionFactory &ndash;&gt;
+    <bean id="jmsconnectionFactory"
+          class="org.springframework.jms.connection.SingleConnectionFactory">
+        &lt;!&ndash; 目标ConnectionFactory对应真实的可以产生JMS Connection的ConnectionFactory &ndash;&gt;
+        <property name="targetConnectionFactory" ref="targetConnectionFactory" />
+        <property name="reconnectOnException" value="true" />
+    </bean>-->
+
+    <!--activemq连接工厂 -->
+    <amq:connectionFactory id="activemqConnectionFactory" brokerURL="tcp://192.168.0.188:61616" userName="admin" password="admin"></amq:connectionFactory>
+<!--
+    <amq:connectionFactory id="activemqConnectionFactory" brokerURL="tcp://110a5dd9.all123.net:61616" userName="admin" password="admin"></amq:connectionFactory>
+-->
+
+    <!--spring连接工厂，管理activemq连接工厂 -->
+    <bean id="jmsconnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+        <!--管理对象，对应activemq连接工厂  -->
+        <property name="targetConnectionFactory" ref="activemqConnectionFactory"></property>
+        <!--session缓存数量  -->
+        <property name="sessionCacheSize" value="100"/>
+    </bean>
+
+
+
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="jmsconnectionFactory"/>
+        <property name="messageConverter">
+            <bean class="org.springframework.jms.support.converter.SimpleMessageConverter"/>
+        </property>
+        <property name="defaultDestination" ref="queueDestination" />
+        <!-- 非pub/sub模型（发布/订阅），即队列模式 -->
+        <property name="pubSubDomain" value="false" />
+    </bean>
+    <!--这个是队列目的地，点对点的 -->
+    <!-- 提交考试队列 -->
+    <bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>commit-exam</value>
+        </constructor-arg>
+    </bean>
+    <!-- 生成阅卷信息队列 阅卷人员登陆时使用  防止重复 -->
+    <bean id="genCheckExamDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>generate-checkexam</value>
+        </constructor-arg>
+    </bean>
+    <!-- 阅卷人员第一次登陆时获取试卷信息 取的时候需从redis取 取完之后删除 防止重复 -->
+    <bean id="getCheckExamDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>get-checkexam</value>
+        </constructor-arg>
+    </bean>
+
+    <!--这个是主题目的地，一对多的 -->
+    <bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="topic" />
+    </bean>
+    <!-- 接收消息 -->
+    <!-- 配置监听器 -->
+
+    <bean id="commitExamListener" class="com.lawschool.listener.CommitExamListener" />
+    <bean id="genCheckExamListener" class="com.lawschool.listener.GenerateCheckExamListener" />
+    <bean id="getCheckExamListener" class="com.lawschool.listener.GetCheckExamListener" />
+    <!-- 消息监听容器 -->
+    <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="jmsconnectionFactory" />
+        <property name="destination" ref="queueDestination" />
+        <property name="messageListener" ref="commitExamListener" />
+    </bean>
+
+    <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="jmsconnectionFactory" />
+        <property name="destination" ref="genCheckExamDestination" />
+        <property name="messageListener" ref="genCheckExamListener" />
+    </bean>
+
+    <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="jmsconnectionFactory" />
+        <property name="destination" ref="getCheckExamDestination" />
+        <property name="messageListener" ref="getCheckExamListener" />
+    </bean>
+</beans>

@@ -1,16 +1,19 @@
 @import "animate.css";
-html,body,.container,ul,li,i,p,span{
+
+html, body, .container, ul, li, i, p, span {
     /*width: 100%;*/
     /*height: 100%;*/
     padding: 0;
     margin: 0;
-    list-style:none
+    list-style: none
 }
-img{
+
+img {
     width: 100%;
     height: 100%;
 }
-button{
+
+button {
     margin: 0;
     padding: 0;
     border: 1px solid transparent;
@@ -18,7 +21,8 @@ button{
     background-color: transparent;
     cursor: pointer;
 }
-.container{
+
+.container {
     background: url("../img/competeCenter/onlinePkBg.jpg");
     background-size: 100% 100%;
     height: 100vh;
@@ -36,76 +40,373 @@ button{
     filter: grayscale(100%);
     filter: gray;
 }
-.return_back,.rule_info{
+
+.return_back, .rule_info {
     width: 68px;
     height: auto;
     position: fixed;
     top: 50px;
 }
-.return_back{
+
+.return_back {
     left: 98px;
 }
-.integral{
+
+.integral {
     line-height: 62px;
     height: 62px;
     border-radius: 31px;
     padding: 0 34px 0 103px;
     display: inline-block;
-    background:
-            rgba(255,255,255,0.5)
-            url("../img/competeCenter/coin.png")
-            no-repeat
-            scroll
-            28px 7px;
+    background: rgba(255, 255, 255, 0.5) url("../img/competeCenter/coin.png") no-repeat scroll 28px 7px;
     position: fixed;
     left: 200px;
     top: 58px;
 }
-.integral > i{
+
+.integral > i {
     width: 66px;
     height: 55px;
 }
-.integral p,.integral p span{
+
+.integral p, .integral p span {
     color: #fef73b;
     font-size: 24px;
 }
-.rule_info{
+
+.rule_info {
     right: 96px;
 }
-.typeLayout{
+
+.typeLayout {
     margin: 0 auto;
     position: relative;
     width: 937px;
     height: 458px;
 }
-.typeLayout li{
+
+.typeLayout li {
     position: absolute;
     width: 170px;
     height: auto;
     top: 119px;
 }
-.typeLayout li img{
+
+.typeLayout li img {
     width: 100%;
     height: auto;
 }
-.typeLayout li img:first-child{
+
+.typeLayout li img:first-child {
     margin-bottom: 11px;
 }
-.typeLayout li:nth-child(1){
+
+.typeLayout li:nth-child(1) {
     left: 21px;
 }
-.typeLayout li:nth-child(2){
+
+.typeLayout li:nth-child(2) {
     width: 290px;
     left: 327px;
     top: 0;
 }
-.typeLayout li:nth-child(3){
+
+.typeLayout li:nth-child(3) {
     left: 728px;
 }
-.typeLayout > li{
+
+.typeLayout > li {
     animation-duration: 2s;
 }
-.typeLayout > li:hover img{
+
+.typeLayout > li:hover img {
     -webkit-animation: pulse 2s;
     animation: pulse 2s;
+}
+
+/*滚动匹配效果*/
+
+.roll_area .inner {
+    width: 508px;
+    height: 370px;
+    margin: 250px auto 0;
+    position: relative;
+    padding-top: 55px;
+}
+
+.roll_area .inner img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.roll_area .inner .translate {
+    width: 400px;
+    height: 258px;
+    /*height: 313px;*/
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.roll_area .inner .translate ul {
+    transform: translateY(-306px);
+    -webkit-transform: translateY(-306px);
+    animation: roll 1s infinite linear;
+}
+
+.roll_area .inner .translate ul li {
+    width: 100%;
+    height: 47px;
+    background: #f3f6ff;
+    text-align: center;
+    color: #333;
+    font-style: italic;
+    margin: 0 2px 4px;
+    line-height: 47px;
+    font-weight: bolder;
+    border-radius: 4px;
+}
+
+@keyframes roll {
+    from {
+        transform: translateY(-306px);
+    }
+    to {
+        transform: translateY(0px);
+    }
+}
+
+@-webkit-keyframes roll {
+    from {
+        transform: translateY(-306px);
+    }
+    to {
+        transform: translateY(0px);
+    }
+}
+.roll_area .inner .translate ul.stop_roll{
+    animation-iteration-count:3;
+    -webkit-animation-iteration-count:3;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-timing-function: ease;
+    -webkit-animation-timing-function: ease;
+}
+
+.model_area {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    background-color: rgba(0,0,0,0.3);
+}
+/*规则*/
+
+.rule_area .inner{
+    width: 866px;
+    height: 505px;
+    margin: 200px auto 0;
+    position: relative;
+    background-image: url("../img/competeCenter/bu_gonglue.png");
+    background-size: 100% 100%;
+    padding-top: 1px;
+}
+.rule_area .inner .close{
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 91px;
+    top: 0px;
+}
+.rule_area .inner .title{
+    width: 123px;
+    height: 36px;
+    margin: 86px auto 0;
+    background-image: url("../img/competeCenter/chuangguan_gonglue.png");
+    background-size: 100% 100%;
+}
+.rule_area .inner p{
+    width: 650px;
+    font-size: 18px;
+    color: #75431f;
+    margin: 50px auto 0;
+    line-height: 23px;
+}
+
+.team_area .inner{
+    width: 347px;
+    height: 407px;
+    background: url("../img/competeCenter/shiban_zuduiduizhan.png");
+    background-size: 100% 100%;
+    margin: 200px auto 0;
+    padding-top: 1px;
+}
+.team_area .inner .title{
+    width: 207px;
+    height: 54px;
+    line-height: 48px;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    background: url("../img/competeCenter/biaoti_jinshu.png") 100% 100%;
+    margin: 50px auto 0;
+    font-weight: bolder;
+    text-shadow: rgba(0,0,0,1) 0px 0px 10px;
+}
+.team_area .inner ul{
+    margin: 0 auto;
+    width: 244px;
+}
+.team_area .inner ul li{
+    float: left;
+    line-height: 43px;
+    height: 43px;
+    width: 50%;
+    position: relative;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+.team_area .inner ul li:first-child:after{
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 14px;
+    background-color: #08132e;
+    right: 0;
+    top: 15px;
+
+}
+.team_area .inner ul li.active:before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 26px;
+    width: 70px;
+    height: 1px;
+    background: rgba(255,255,255,0.5);
+    box-shadow: 0 0 5px 5px rgba(255,255,255,.2);
+}
+.team_area .inner > button{
+    width: 227px;
+    height: 119px;
+    line-height: 119px;
+    color: #fff;
+    font-size: 18px;
+    display: block;
+    margin: 0 auto;
+    font-weight: bolder;
+    text-shadow: rgba(0,0,0,1) 0px 0px 10px;
+}
+.team_area .inner > button:nth-last-child(2){
+    background: url("../img/competeCenter/btn_blue.png");
+}
+.team_area .inner > button:last-child{
+    background: url("../img/competeCenter/btn_org.png");
+    margin-top: -24px;
+}
+.formation_area .inner{
+    width: 902px;
+    height: 462px;
+    background: url("../img/competeCenter/bang_duiwu.png");
+    margin: 200px auto 0;
+    padding-top: 1px;
+    position: relative;
+    color: #75431f;
+}
+.formation_area .inner .title{
+    background: url("../img/competeCenter/build_my_team.png");
+    width: 184px;
+    height: 36px;
+    margin: 40px auto 0;
+}
+.formation_area .inner .btns{
+    width: 112px;
+    height: 16px;
+    position: absolute;
+    right: 63px;
+    top: 52px;
+}
+.formation_area .inner .btns button{
+    color: #75431f;
+    font-size: 14px;
+    width: 48%;
+    text-align: center;
+}
+.formation_area .inner .btns button:first-child:after{
+    content: '';
+    width: 1px;
+    height: 16px;
+    position: absolute;
+    right: 54px;
+    top: 1px;
+    background: #75431f;
+}
+.formation_area .inner .users{
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 39px;
+}
+.formation_area .inner .users li{
+    display: inline-block;
+    /*width: 82px;*/
+    width: 146px;
+    padding: 0 32px;
+}
+.formation_area .inner .users li img{
+    width: 80px;
+    border: 1px solid #f5daa9;
+    border-radius: 50%;
+}
+.formation_area .inner .users li p{
+    line-height: 42px;
+}
+.formation_area .inner .team_num{
+    line-height: 33px;
+    font-weight: bolder;
+    font-size: 36px;
+}
+.formation_area .inner .team_num span{
+    line-height: 18px;
+    padding-top: 16px;
+    font-weight: bolder;
+    padding-left: 230px;
+    font-size: 18px;
+}
+.formation_area .inner > p:last-child{
+    padding: 30px 0 0 230px;
+    font-size: 14px;
+}
+.join_area .inner{
+    width: 507px;
+    height: 401px;
+    background: url("../img/competeCenter/shiban_daijinshu.png");
+    margin: 155px auto 0;
+    text-align: center;
+}
+.join_area .inner .title{
+    font-style: italic;
+    color: #fff;
+    font-size: 18px;
+    text-shadow: rgba(0,0,0,1) 0px 0px 10px;
+    line-height: 44px;
+    font-weight: bolder;
+    padding-top: 13px;
+}
+.join_area .inner input{
+    width: 337px;
+    height: 60px;
+    background: #dbdddf;
+    border-radius: 10px;
+    border: solid 2px rgba(29, 41, 57, 0.6);
+    padding: 0 22px;
+    margin-top: 100px;
+    font-size: 18px;
+    color: #999;
 }

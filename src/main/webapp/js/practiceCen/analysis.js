@@ -14,6 +14,12 @@ var vm = new Vue({
         themeRightData:[],
         userName: '',
         sum: 0,
+        options: [{
+            value: '0',
+            label: '本学年'
+        }],
+        selected: '',
+        colorList: ['#52c9e7','#3e98e8','#81bdd8','#5ebd5c','#feae24','#f97a1f','#f26443','#b97deb','#7e72f2','#4f7ee9']
     },
     methods: {
         initBar1: function () {
@@ -34,20 +40,45 @@ var vm = new Vue({
                 },
                 xAxis : [
                     {
-                        type : 'category',
-                        data : vm.showNames,
+                        type: 'category',
+                        data: vm.showNames,
                         axisTick: {
+                            show: false,
                             alignWithLabel: true
                         },
-                        nameTextStyle:{
-                            color:'#333',
+                        nameTextStyle: {
+                            color: '#333',
                             fontSize: '14'
+                        },
+                        axisLabel: {
+                            color: '#333333',
+                            fontSize: 14
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#c5c5c5'
+                            }
                         }
                     }
                 ],
                 yAxis : [
                     {
-                        type : 'value'
+                        type : 'value',
+                        axisLabel: {
+                          color: '#333333',
+                            fontSize: 14
+                        },
+                        axisLine: {
+                          lineStyle: {
+                              color: '#c5c5c5'
+                          }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        splitLine: {
+                            show: false
+                        }
                     }
                 ],
                 series : [
@@ -59,7 +90,7 @@ var vm = new Vue({
                         itemStyle: {
                             normal: {
                                 color: function(params) {
-                                    var colorList = ["#32c5e9","#9fe6b8","#ffdb5c","#ff9f7f","#81bdd8","#f97a1f","#5ebd5c"];
+                                    var colorList = vm.colorList;
                                     return colorList[params.dataIndex]
                                 }
                             },
@@ -92,14 +123,21 @@ var vm = new Vue({
                     orient: 'horizontal',
                     x: 'center',
                     y:'bottom',
-                    width: '100%',
+                    left: '10%',
+                    right: '10%',
+                    itemWidth: 24,
+                    itemHeight: 14,
+                    textStyle: {
+                        fontSize: 14
+                    },
                     data:vm.themeAnswerNames
                 },
                 series: [
                     {
-                        name:'访问来源',
+                        // name:'访问来源',
                         type:'pie',
-                        radius: ['50%', '70%'],
+                        center: ['50%', '40%'],
+                        radius: ['35%', '55%'],
                         avoidLabelOverlap: false,
                         label: {
                             normal: {
@@ -109,7 +147,7 @@ var vm = new Vue({
                             emphasis: {
                                 show: true,
                                 textStyle: {
-                                    fontSize: '30',
+                                    fontSize: '20',
                                     fontWeight: 'bold',
                                     color: '#333'
                                 },
@@ -126,7 +164,7 @@ var vm = new Vue({
                         itemStyle: {
                             normal: {
                                 color: function(params) {
-                                    var colorList = ["#37a2da","#32c5e9","#67e0e3","#9fe6b8","#ffdb5c","#ff9f7f","#37a2da","#32c5e9","#67e0e3","#9fe6b8","#ffdb5c","#ff9f7f"];
+                                    var colorList = vm.colorList;
                                     return colorList[params.dataIndex]
                                 }
                             },
@@ -153,14 +191,21 @@ var vm = new Vue({
                     orient: 'horizontal',
                     x: 'center',
                     y:'bottom',
-                    width: '100%',
+                    left: '10%',
+                    right: '10%',
+                    itemWidth: 24,
+                    itemHeight: 14,
+                    textStyle: {
+                        fontSize: 14
+                    },
                     data:vm.themeRightNames
                 },
                 series: [
                     {
-                        name:'访问来源',
+                        // name:'访问来源',
                         type:'pie',
-                        radius: ['50%', '70%'],
+                        center: ['50%', '40%'],
+                        radius: ['35%', '55%'],
                         avoidLabelOverlap: false,
                         label: {
                             normal: {
@@ -170,7 +215,7 @@ var vm = new Vue({
                             emphasis: {
                                 show: true,
                                 textStyle: {
-                                    fontSize: '30',
+                                    fontSize: '20',
                                     fontWeight: 'bold',
                                     color: '#333'
                                 },
@@ -187,7 +232,7 @@ var vm = new Vue({
                         itemStyle: {
                             normal: {
                                 color: function(params) {
-                                    var colorList = ["#37a2da","#32c5e9","#67e0e3","#9fe6b8","#ffdb5c","#ff9f7f","#37a2da","#32c5e9","#67e0e3","#9fe6b8","#ffdb5c","#ff9f7f"];
+                                    var colorList = vm.colorList;
                                     return colorList[params.dataIndex]
                                 }
                             },

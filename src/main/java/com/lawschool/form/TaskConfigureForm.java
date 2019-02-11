@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class TaskConfigureForm {
 
+    private String id;
     private String name;
     private List<String> difficultys;
     private List<String> classifys;
@@ -18,6 +19,8 @@ public class TaskConfigureForm {
     private List<String> users;
     private List<String> depts;
     private String themeName;
+    private List<String> deptNames;
+    private List<String> userNames;
 
     public String getName() {
         return name;
@@ -81,5 +84,29 @@ public class TaskConfigureForm {
 
     public void setThemeName(String themeName) {
         this.themeName = themeName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public List<String> getDeptNames() {
+        return deptNames;
+    }
+
+    public void setDeptNames(List<String> deptNames) {
+        this.deptNames = deptNames;
+    }
+
+    public List<String> getUserNames() {
+        return userNames;
+    }
+
+    public void setUserNames(List<String> userNames) {
+        this.userNames = userNames;
     }
 }

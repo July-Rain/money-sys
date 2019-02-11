@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
 <style>
@@ -98,52 +98,53 @@ p,span{
         <p class="name">姓名:<span>王小明</span></p>
         <p class="set">字体设置( <span class="text_s" @click="fontS">小</span> <span class="text_m" @click="fontM">中</span> <span class="text_l" @click="fontL">大</span>)</p>
     </div>
-    <el-form :model="form">
+    <el-form :model="testForm" v-if="sinChoicList.length">
         <div class="subTitle">
             <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题1分，共50分。</p>
         </div>
         <div v-for="(item,index) in sinChoicList" class="question_area">
             <p class="ques_name">{{index+1}}. {{item.comContent}}。</p>
-            <el-radio-group v-model="item.userAnswer">
+            <el-radio-group v-model="sinChoicCheck[index]">
                 <el-radio :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
                     {{item2.questionContent}}
                 </el-radio>
             </el-radio-group>
         </div>
-        <div class="subTitle">
+        <div class="subTitle" v-if="mulChoicList.length">
             <p>二、多选题。</p>
-            <div v-for="(item,index) in mulChoicList" class="question_area">
-                <p class="ques_name">{{index+1}}. {{item.comContent}}。</p>
-                <el-checkbox-group  v-model="item.checkList">
-                    <el-checkbox :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
-                        {{item2.questionContent}}
-                    </el-checkbox>
-                    <el-checkbox disabled :label="item2.id" v-for="item2 in item.answer" v-if="item.right != null">
-                        {{item2.questionContent}}
-                    </el-checkbox>
-                    <br/>
-                </el-checkbox-group>
-            </div>
         </div>
-        <div class="subTitle">
+        <div v-for="(item,index) in mulChoicList" class="question_area">
+            <p class="ques_name">{{index+1}}. {{item.comContent}}。</p>
+            <el-checkbox-group  v-model="mulChoicCheck[index]">
+                <el-checkbox :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
+                    {{item2.questionContent}}
+                </el-checkbox>
+                <el-checkbox disabled :label="item2.id" v-for="item2 in item.answer" v-if="item.right != null">
+                    {{item2.questionContent}}
+                </el-checkbox>
+                <br/>
+            </el-checkbox-group>
+        </div>
+
+        <div class="subTitle" v-if="judgeList.length">
             <p>三、判断题。判断题判断题判断题</p>
         </div>
         <div class="question_area">
             <div v-for="(item,index) in judgeList" class="question_area">
                 <p class="ques_name">{{index+1}}. {{item.comContent}} 。</p>
-                <el-radio-group v-model="item.userAnswer">
-                    <el-radio :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
+                <el-radio-group v-model="judge[index]">
+                    <el-adio :label="item2.id" v-for="item2 in item.answer">
                         {{item2.questionContent}}
-                    </el-radio>
+                    </el-adio>
                 </el-radio-group>
             </div>
         </div>
-        <div class="subTitle">
+        <div class="subTitle" v-if="subjectList[0]">
             <p>四、主观题</p>
         </div>
         <div v-for="(item,index) in subjectList" class="question_area">
             <p class="ques_name">{{index+1}}. {{item.comContent}} 。</p>
-            答 ：<input type="text">
+            答 ：<el-input type="text" v-model="subject[index]" placeholder="請輸入答案">
         </div>
     </el-form>
         <el-button @click="save" type="success" style="float: right;">保存</el-button>

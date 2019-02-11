@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
-<style>
-
-</style>
 <body>
 <div id="app" v-cloak>
     <div class="container">
@@ -55,8 +52,7 @@
                         <i class="iconfont icon-lianxi" v-if="scope.row.status == 0 || scope.row.status == null"
                            @click="start(scope.$index)"
                            slot="reference"
-                           style="color: #1381e3;cursor: pointer;padding: 0 20px;font-size: 20px"
-                        >
+                           style="color: #1381e3;cursor: pointer;padding: 0 20px;font-size: 20px" >
                         </i>
                     </el-popover>
                     <el-popover
@@ -67,8 +63,7 @@
                            v-if="scope.row.status == 1"
                            @click="start(scope.$index)"
                            slot="reference"
-                           style="color: #119e0b;cursor: pointer;padding: 0 20px;font-size: 20px"
-                        >
+                           style="color: #119e0b;cursor: pointer;padding: 0 20px;font-size: 20px" >
                         </i>
                     </el-popover>
                     <el-popover
@@ -78,8 +73,7 @@
                         <i class="iconfont icon-cuotiku"
                            v-if="scope.row.status == 1 || scope.row.status == 2"
                            slot="reference"
-                           style="color: #ff1f14;cursor: pointer;padding: 0 20px;font-size: 20px"
-                        >
+                           style="color: #ff1f14;cursor: pointer;padding: 0 20px;font-size: 20px" >
                         </i>
                     </el-popover>
                     <el-popover
@@ -90,8 +84,7 @@
                            v-if="scope.row.status == 2"
                            @click="reStart(scope.row.id)"
                            slot="reference"
-                           style="color: #ff7814;cursor: pointer;padding: 0 20px;font-size: 20px"
-                        >
+                           style="color: #ff7814;cursor: pointer;padding: 0 20px;font-size: 20px" >
                         </i>
                     </el-popover>
                 </template>

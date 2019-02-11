@@ -132,34 +132,44 @@ public class ExamConfig extends DataEntity<ExamConfig> {
 	private String checkType;
 
 	/**
-	 * 阅卷人数
-	 */
-	private BigDecimal checkNum;
-
-	/**
-	 * 阅卷口令
-	 */
-	private String checkPassword;
-
-	/**
-	 * 阅卷分差值
-	 */
-	private Short checkScoreDifference;
-
-	/**
-	 * 是否仲裁
-	 */
-	private String isAibitration;
-
-	/**
-	 * 仲裁人code
-	 */
-	private String aibitrationUserCode;
-
-	/**
 	 * 配置状态
 	 */
 	private String configState;
+
+    /**
+     * 阅卷人数
+     */
+    private BigDecimal checkNum;
+
+    /**
+     * 阅卷口令
+     */
+    private String checkPassword;
+
+    /**
+     * 阅卷分差值
+     */
+    private Short checkScoreDifference;
+
+    /**
+     * 是否仲裁
+     */
+    private String isAibitration;
+
+    /**
+     * 仲裁人code
+     */
+    private String aibitrationUserCode;
+
+    /**
+     * 每套试卷阅卷人数（1,或者2）
+     */
+    private Integer paperPerSetNum;
+
+	/**
+	 * 审核人员口令
+	 */
+	private String auditCheckPass;
 
 	@TableField(exist = false)
 	private String[] deptArr;//适用部门
@@ -209,6 +219,7 @@ public class ExamConfig extends DataEntity<ExamConfig> {
 	public void setQfList(final List<QuestForm> qfList) {
 		this.qfList = qfList;
 	}
+
 	@TableField(exist = false)
 	private List<String> list;
 
@@ -732,5 +743,21 @@ public class ExamConfig extends DataEntity<ExamConfig> {
 
 	public void setList(final List<String> list) {
 		this.list = list;
+	}
+
+    public Integer getPaperPerSetNum() {
+        return this.paperPerSetNum;
+    }
+
+    public void setPaperPerSetNum(final Integer paperPerSetNum) {
+        this.paperPerSetNum = paperPerSetNum;
+    }
+
+	public String getAuditCheckPass() {
+		return this.auditCheckPass;
+	}
+
+	public void setAuditCheckPass(final String auditCheckPass) {
+		this.auditCheckPass = auditCheckPass;
 	}
 }

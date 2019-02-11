@@ -34,4 +34,11 @@ public interface AnswerService extends AbstractService<Answer> {
      * @return
      */
     List<AnswerForm> findByQuesId(String qId);
+
+    /**
+     * 根据答案的多个id查询题目 并按 查询in条件ID排序
+     * @param list
+     * @return
+     */
+    List<AnswerForm> findAnsById(List<String> list);
 }

@@ -6,11 +6,14 @@ import com.lawschool.beans.User;
 import com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity;
 import com.lawschool.form.TaskConfigureForm;
 import com.lawschool.service.practicecenter.TaskExerciseConfigureService;
+import com.lawschool.util.RedisUtil;
 import com.lawschool.util.Result;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -24,6 +27,9 @@ public class TaskExerciseConfigureController extends AbstractController {
 
     @Autowired
     private TaskExerciseConfigureService service;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 分页列表
@@ -75,13 +81,23 @@ public class TaskExerciseConfigureController extends AbstractController {
         entity.setThemeId(StringUtils.join(form.getTopics(), ","));
         entity.setThemeName(form.getThemeName());
         entity.setCreateName(user.getUserName());
+        entity.setId(form.getId());
+        entity.setDeptNames(StringUtils.join(form.getDeptNames(), ","));
+        entity.setUserNames(StringUtils.join(form.getUserNames(), ","));
 
         if(source == 0){
             // 个人设置
             entity.setUsers(user.getId());
+            if(StringUtils.isBlank(form.getId())){
+                entity.setNumbers(createNum("PS"));
+            }
+
         } else {
             entity.setUsers(StringUtils.join(form.getUsers(), ","));
             entity.setDepts(StringUtils.join(form.getDepts(), ","));
+            if(StringUtils.isBlank(form.getId())){
+                entity.setNumbers(createNum("DT"));
+            }
         }
 
         service.mySave(entity);
@@ -120,4 +136,17 @@ public class TaskExerciseConfigureController extends AbstractController {
         return Result.ok().put("info", info);
     }
 
+    /**
+     * 生成任务编号
+     * @param prefix
+     * @return
+     */
+    private String createNum(String prefix){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Date date = new Date();
+        String key = prefix + sdf.format(date);
+        String value = redisUtil.getNumber(key, 60*60*24, 4);
+
+        return key + value;
+    }
 }

@@ -12,7 +12,10 @@
             <el-breadcrumb-item>练习管理</el-breadcrumb-item>
             <el-breadcrumb-item>部门任务设置</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-button size="mini" type="primary" @click="addConfigure" >新增配置</el-button>
+
+        <div class="info_btn">
+            <el-button size="mini" type="primary" @click="addConfigure"><i class="iconfont icon-htmal5icon18"></i>新增配置</el-button>
+        </div>
         <el-table
                 :data="tableData"
                 style="width: 100%"
@@ -22,47 +25,58 @@
                     type="index"
                     width="50"
                     label="序号"
+                    align="center"
+                    :index="indexMethod">
+            </el-table-column>
+            <el-table-column
+                    prop="numbers"
+                    label="任务编号"
+                    width="140"
+                    header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
                     prop="name"
                     label="任务名称"
-                    width="320"
+                    width="220"
                     header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
                     prop="themeName"
                     label="主题类型"
-                    width="160"
+                    width="130"
                     header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
                     prop="type"
                     label="题目类型"
-                    width="160"
+                    width="140"
                     header-align="center"
-                    align="center">
+                    align="center"
+                    :formatter="getType">
             </el-table-column>
             <el-table-column
                     prop="difficulty"
                     label="题目难度"
                     width="140"
                     header-align="center"
-                    align="center">
+                    align="center"
+                    :formatter="getDiff">
             </el-table-column>
             <el-table-column
                     prop="classify"
                     label="题目分类"
                     width="140"
                     header-align="center"
-                    align="center">
+                    align="center"
+                    :formatter="getClass">
             </el-table-column>
             <el-table-column
                     prop="total"
                     label="题目总数"
-                    width="120"
+                    width="80"
                     header-align="center"
                     align="center">
             </el-table-column>
@@ -71,6 +85,13 @@
                     header-align="center"
                     align="center">
                 <template slot-scope="scope">
+                    <el-button
+                            plain
+                            type="primary"
+                            size="mini"
+                            @click="edit(scope.row.id)"
+                    >编辑
+                    </el-button>
                     <el-button
                             plain
                             type="danger"
@@ -99,36 +120,36 @@
                 :total="formInline.count">
         </el-pagination>
 
-        <el-dialog title="新增配置" :visible.sync="dialogConfig" :before-close="closeDia">
+        <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia" :close-on-click-modal="false">
             <el-row>
-                <el-col :span="12">
-                    <el-form :model="configureEntity" label-width="100px" size="small">
-                        <el-form-item label="练习卷名称：" size="medium">
-                            <el-input v-model="configureEntity.name"></el-input>
+                <el-col :span="24">
+                    <el-form :model="configureEntity" :rules="rules" ref="configureEntity" label-width="110px" size="mini">
+                        <el-form-item label="练习卷名称：" prop="name">
+                            <el-input v-model="configureEntity.name" :disabled="isEdit"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="试题难度：" size="medium">
+                        <el-form-item label="试题难度：">
                             <el-checkbox-group v-model="configureEntity.difficultys">
-                                <el-checkbox v-for="item in diffList" :label="item.key">{{item.value}}</el-checkbox>
+                                <el-checkbox :disabled="isEdit" v-for="item in diffList" :label="item.key">{{item.value}}</el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
 
-                        <el-form-item label="试题分类：" size="medium">
+                        <el-form-item label="试题分类：">
                             <el-checkbox-group v-model="configureEntity.classifys">
-                                <el-checkbox v-for="item in typeList" :label="item.key">{{item.value}}</el-checkbox>
+                                <el-checkbox :disabled="isEdit" v-for="item in typeList" :label="item.key">{{item.value}}</el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
 
-                        <el-form-item label="试题类型：" size="medium">
+                        <el-form-item label="试题类型：">
                             <el-checkbox-group v-model="configureEntity.types">
-                                <el-checkbox v-for="item in qtList" :label="item.key" v-if="item.value != '主观题'">
+                                <el-checkbox :disabled="isEdit" v-for="item in qtList" :label="item.key" v-if="item.value != '主观题'">
                                     {{item.value}}
                                 </el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
 
-                        <el-form-item label="主题类型：" size="small">
-                            <el-select multiple collapse-tags
+                        <el-form-item label="主题类型：">
+                            <el-select :disabled="isEdit" multiple collapse-tags
                                        v-model="configureEntity.topics"
                                        placeholder="请选择">
                                 <el-option
@@ -140,13 +161,110 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item>
-                            <el-button type="primary" @click="save">保存设置</el-button>
+                        <el-form-item label="使用部门" prop="depts">
+                            <el-input :disabled="isEdit" v-model="configureEntity.deptNames" readonly @focus="chooseDept" placeholder="请选择使用部门" clearable></el-input>
+                        </el-form-item>
+                        <el-form-item label="使用人员" prop="users">
+                            <el-input :disabled="isEdit" v-model="configureEntity.userNames" readonly @focus="chooseUser" placeholder="请选择使用人员" clearable></el-input>
+                        </el-form-item>
+
+                        <el-form-item >
+                            <el-button v-if="!isEdit" type="primary" @click="save('configureEntity')">保存设置</el-button>
+                            <el-button type="primary" @click="cancle">取消</el-button>
                         </el-form-item>
 
                     </el-form>
                 </el-col>
             </el-row>
+        </el-dialog>
+
+        <el-dialog title="选择部门" :visible.sync="dialogDept" >
+            <!--对于同一级的节点，每次只能展开一个-->
+            <el-tree
+                    ref="deptTree"
+                    :data="deptData"
+                    :props="defaultDeptProps"
+                    accordion
+                    show-checkbox
+                    @check-change="handleCheckChange"
+                    node-key="id"
+                    :default-expanded-keys="[2079]"
+            >
+            </el-tree>
+            <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+            <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
+        </el-dialog>
+
+        <el-dialog title="选择人员" :visible.sync="dialogUser" >
+            <!--对于同一级的节点，每次只能展开一个-->
+            <el-row>
+                <el-col :span="4">
+                    <el-tree
+                            :data="userData"
+                            :props="defaultUserProps"
+                            accordion
+                            @node-click="handleDeptNodeClick">
+                    </el-tree>
+                </el-col>
+
+                <el-col :span="20">
+                    <el-tabs type="border-card">
+                        <el-tab-pane label="检索">
+                            <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
+
+                                <el-form-item prop="code">
+                                    <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
+                                </el-form-item>
+                                <el-form-item prop="value">
+                                    <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
+                                </el-form-item>
+
+                                <el-form-item>
+                                    <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
+                                    <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
+
+                                </el-form-item>
+                            </el-form>
+                            <div>
+                                <el-table
+                                        :data="userTableData"
+                                        border
+                                        @selection-change="handleSelectionChange"
+                                        style="width: 100%">
+                                    <el-table-column
+                                            type="selection"
+                                            width="55">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="userCode"
+                                            label="身份证号"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="userName"
+                                            label="姓名"
+                                            width="280"
+                                    >
+                                    </el-table-column>
+
+                                </el-table>
+                                <el-pagination
+                                        @size-change="userHandleSizeChange"
+                                        @current-change="userHandleCurrentChange"
+                                        :current-page="userForm.currPage"
+                                        :page-sizes="[10, 20, 30, 40]"
+                                        :page-size="userForm.pageSize"
+                                        layout="total, sizes, prev, pager, next, jumper"
+                                        :total="userForm.totalCount">
+                                </el-pagination>
+                            </div>
+                        </el-tab-pane>
+                    </el-tabs>
+                    <el-button type="primary" size="mini" @click="confimUser" >保存</el-button>
+                    <el-button type="primary" size="mini" @click="cancelUser">取消</el-button>
+                </el-col>
+            </el-row>
+
         </el-dialog>
     </div>
 </div>

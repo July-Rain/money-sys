@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>江苏省公安厅法律学校 | Sinorock</title>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
 <style>
@@ -141,29 +141,35 @@
                                 border
                                 style="width: 100%">
                             <el-table-column
+                                    label="序号"
+                                    type="index"
+                                    header-align="center"
+                                    align="center"
+                                    width="50">
+                            </el-table-column>
+                            <el-table-column
                                     prop="taskName"
                                     label="任务名称"
-                                    header-align="center"
-                                    align="center">
+                                    >
                             </el-table-column>
                             <el-table-column
                                     prop="taskClassName"
                                     label="任务类型"
-                                    width="180"
+                                    width="100"
                                     header-align="center"
                                     align="center">
                             </el-table-column>
                             <el-table-column
                                     prop="policeclassName"
                                     label="所属警种"
-                                    width="180"
+                                    width="150"
                                     header-align="center"
                                     align="center">
                             </el-table-column>
                             <el-table-column
                                     prop="startTime"
                                     label="任务开始时间"
-                                    width="180"
+                                    width="150"
                                     header-align="center"
                                     align="center"
                             >
@@ -171,7 +177,7 @@
                             <el-table-column
                                     prop="endTime"
                                     label="任务结束时间"
-                                    width="180"
+                                    width="150"
                                     header-align="center"
                                     align="center"
                             >
@@ -179,7 +185,7 @@
                             <el-table-column
                                     prop="completionDegree"
                                     label="任务完成度"
-                                    width="180"
+                                    width="100"
                                     header-align="center"
                                     align="center"
                             >
@@ -187,34 +193,34 @@
                             <el-table-column
                                     prop="overDegree"
                                     label="超时完成率"
-                                    width="180"
+                                    width="100"
                                     header-align="center"
                                     align="center"
                             >
                             </el-table-column>
-                            <el-table-column
-                                    prop="isUse"
-                                    label="是否启用"
-                                    width="180"
-                                    align="center"
-                                    width="100">
-                                <template slot-scope="scope">
-                                    <el-tag v-if="scope.row.isUse === '0'" size="small" type="danger">未启用</el-tag>
-                                    <el-tag v-else size="small">已启用</el-tag>
-                                </template>
-                            </el-table-column>
-                            <el-table-column
-                                    label="操作"
-                                    header-align="center"
-                                    align="center"
-                                    width="180">
-                                <template slot-scope="scope">
-                                    <el-button v-if="scope.row.isUse=='0'"
-                                            size="mini"
-                                            @click="handleEdit(scope.$index, scope.row)">查看
-                                    </el-button>
-                                </template>
-                            </el-table-column>
+                            <!--<el-table-column-->
+                                    <!--prop="isUse"-->
+                                    <!--label="是否启用"-->
+                                    <!--header-align="center"-->
+                                    <!--align="center"-->
+                                    <!--width="100">-->
+                                <!--<template slot-scope="scope">-->
+                                    <!--<el-tag v-if="scope.row.isUse === '0'" size="small" type="danger">未启用</el-tag>-->
+                                    <!--<el-tag v-else size="small">已启用</el-tag>-->
+                                <!--</template>-->
+                            <!--</el-table-column>-->
+                            <!--<el-table-column-->
+                                    <!--label="操作"-->
+                                    <!--header-align="center"-->
+                                    <!--align="center"-->
+                                    <!--width="180">-->
+                                <!--<template slot-scope="scope">-->
+                                    <!--<el-button v-if="scope.row.isUse=='0'"-->
+                                            <!--size="mini"-->
+                                            <!--@click="handleEdit(scope.$index, scope.row)">查看-->
+                                    <!--</el-button>-->
+                                <!--</template>-->
+                            <!--</el-table-column>-->
                         </el-table>
                         <el-pagination
                                 @size-change="handleSizeChange"
