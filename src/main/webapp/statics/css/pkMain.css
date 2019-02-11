@@ -410,3 +410,70 @@ button {
     font-size: 18px;
     color: #999;
 }
+
+.war_area .inner{
+    width: 347px;
+    height: 374px;
+    background: url("../img/competeCenter/shiban_zhanquduizhan.png");
+    background-size: 100% 100%;
+    margin: 200px auto 0;
+    padding-top: 1px;
+}
+.war_area .inner .title{
+    width: 207px;
+    height: 54px;
+    line-height: 48px;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    background: url("../img/competeCenter/biaoti_jinshu.png") 100% 100%;
+    margin: 50px auto 0;
+    font-weight: bolder;
+    text-shadow: rgba(0,0,0,1) 0px 0px 10px;
+}
+.war_area .inner > button{
+    width: 227px;
+    height: 119px;
+    line-height: 119px;
+    color: #fff;
+    font-size: 18px;
+    display: block;
+    margin: 0 auto;
+    font-weight: bolder;
+    text-shadow: rgba(0,0,0,1) 0px 0px 10px;
+}
+.war_area .inner > button:nth-last-child(2){
+    background: url("../img/competeCenter/btn_blue.png");
+}
+.war_area .inner > button:last-child{
+    background: url("../img/competeCenter/btn_org.png");
+    margin-top: -24px;
+}
+
+.join_war .inner{
+    position: relative;
+}
+.join_war .inner > button{
+    width: 240px;
+    height: 119px;
+    background: url("../img/competeCenter/btn_blue.png");
+    background-size: 100% 100%;
+    color: #fff;
+    font-weight: bolder;
+    text-shadow: rgba(0,0,0,1) 0px 0px 10px;
+    font-size: 18px;
+    position: absolute;
+    left: 50%;
+    bottom: -90px;
+    transform: translateX(-50%);
+}
+.join_war .inner > button:after{
+    content: '';
+    position: absolute;
+    width: 148px;
+    height: 51px;
+    background: url("../img/competeCenter/lianzi.png");
+    left: 50%;
+    top: -16px;
+    transform: translateX(-50%);
+}
