@@ -21,4 +21,6 @@ public interface SysRoleOrgService extends IService<SysRoleOrg> {
      * @return
      */
     List<String> queryOrgIdList(String roleId);
+
+    void deleteByRoleId(String roleId);
 }
