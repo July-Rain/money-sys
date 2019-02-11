@@ -557,7 +557,8 @@
 }   /*==for FF/chrome/opera/IE8==*/
 .el-tabs__header.is-top{
     width: 350px;
-    padding-left: 38px;
+    /*padding-left: 38px;*/
+    margin-bottom: 8px;
 }
 .pieArea .el-icon-arrow-left,.pieArea .el-icon-arrow-right{
     display: none

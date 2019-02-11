@@ -3,89 +3,96 @@
 <head>
     <title>个人竞赛详情</title>
     <#include "/header.html">
-        </head>
-        <style>
-            .header-right ul{
-                background: transparent;
-            }
-            .header-right ul li:after{
-                content: '';
-            }
-            .el-menu--horizontal .el-menu-item,
-            .el-menu--horizontal .el-submenu{
-                float: left;
-                height: 70px;
-                /*line-height: 70px;*/
-                margin: 0;
-                border-bottom: 2px solid transparent;
-                color: #fff;
-            }
-            .el-menu--horizontal>.el-submenu .el-submenu__title {
-                height: 70px;
-                /* line-height: 70px; */
-                border-bottom: 2px solid transparent;
-                color: #909399;
-            }
-            .header-right ul li a{
-                text-align: center;
-                padding: 0;
-                /*margin: 10px 0;*/
-                box-sizing: border-box;
-                height: auto;
-                display: inline-block;
-            }
-            .header-right .el-menu-item [class^=el-icon-],
-            .header-right .el-submenu [class^=el-icon-],
-            .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
-                font-size: 30px;
-                color: #fff;
-            }
-            /*.header-right .el-submenu [class^=el-icon-]*/
-            .header-right ul li a span{
-                display: block;
-                margin-top: -10px;
-                line-height: 10px;
-            }
-            .header-right .el-menu-item:hover a,
-            .header-right .el-submenu:hover a,
-            .header-right .el-menu-item:hover [class^=el-icon-],
-            .header-right .el-submenu:hover [class^=el-icon-],
-            .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
-                color: #909399;
-            }
-            .el-submenu__icon-arrow{
-                margin-top: 16px;
-            }
-            .el-menu--horizontal .el-menu .el-menu-item a{
-                color: #909399;
-            }
-            .el-menu--horizontal .el-menu .el-menu-item a:hover{
-                color: #000;
-            }
-            .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
-                background-color: #fff;
-                float: none;
-                height: 36px;
-                line-height: 36px;
-                padding: 0 10px;
-                color: #909399;
-                display: inline-block;//悬浮块横向显示
-            }
-            /*\iframe定制样式*/
-            html,body,#app,.container,.container>.el-row{
-                width: 100%;
-                background: #fff;
-            }
-        </style>
+    <style>
+        .header-right ul{
+            background: transparent;
+        }
+        .header-right ul li:after{
+            content: '';
+        }
+        .el-menu--horizontal .el-menu-item,
+        .el-menu--horizontal .el-submenu{
+            float: left;
+            height: 70px;
+            /*line-height: 70px;*/
+            margin: 0;
+            border-bottom: 2px solid transparent;
+            color: #fff;
+        }
+        .el-menu--horizontal>.el-submenu .el-submenu__title {
+            height: 70px;
+            /* line-height: 70px; */
+            border-bottom: 2px solid transparent;
+            color: #909399;
+        }
+        .header-right ul li a{
+            text-align: center;
+            padding: 0;
+            /*margin: 10px 0;*/
+            box-sizing: border-box;
+            height: auto;
+            display: inline-block;
+        }
+        .header-right .el-menu-item [class^=el-icon-],
+        .header-right .el-submenu [class^=el-icon-],
+        .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
+            font-size: 30px;
+            color: #fff;
+        }
+        /*.header-right .el-submenu [class^=el-icon-]*/
+        .header-right ul li a span{
+            display: block;
+            margin-top: -10px;
+            line-height: 10px;
+        }
+        .header-right .el-menu-item:hover a,
+        .header-right .el-submenu:hover a,
+        .header-right .el-menu-item:hover [class^=el-icon-],
+        .header-right .el-submenu:hover [class^=el-icon-],
+        .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
+            color: #909399;
+        }
+        .el-submenu__icon-arrow{
+            margin-top: 16px;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item a{
+            color: #909399;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item a:hover{
+            color: #000;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+            background-color: #fff;
+            float: none;
+            height: 36px;
+            line-height: 36px;
+            padding: 0 10px;
+            color: #909399;
+            display: inline-block;//悬浮块横向显示
+        }
+        /*\iframe定制样式*/
+        html,body,#app,.container,.container>.el-row{
+            width: 100%;
+            background: #fff;
+        }
+    </style>
+</head>
+
 <body>
 <div id="app" v-cloak>
+
     <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>个人中心</el-breadcrumb-item>
+            <el-breadcrumb-item>竞赛统计</el-breadcrumb-item>
+            <el-breadcrumb-item>个人统计详情</el-breadcrumb-item>
+        </el-breadcrumb>
         <el-row :gutter="24">
             <el-col :span="24">
                 <el-tabs type="border-card">
                     <el-tab-pane label="闯关">
                         <div>
-
                             <el-table
                                     :data="tableData"
                                     border
@@ -94,14 +101,12 @@
                                 <el-table-column
                                         prop="createTime"
                                         label="时间"
-                                        width="500"
                                         header-align="center"
                                         align="center">
                                 </el-table-column>
                                 <el-table-column
                                         prop="score"
                                         label="获得积分"
-                                        width="400"
                                         header-align="center"
                                         align="center"
                                 >
@@ -109,7 +114,6 @@
                                 <el-table-column
                                         prop="howBig"
                                         label="第几大关"
-                                        width="400"
                                         header-align="center"
                                         align="center"
                                 >
@@ -117,7 +121,6 @@
                                 <el-table-column
                                         prop="howLit"
                                         label="第几小关"
-                                        width="400"
                                         header-align="center"
                                         align="center"
                                 >
@@ -159,7 +162,6 @@
                                 <el-table-column
                                         prop="type"
                                         label="类型"
-                                        width="350"
                                         header-align="center"
                                         align="center">
                                     <template slot-scope="scope">
@@ -169,14 +171,12 @@
                                 <el-table-column
                                         prop="createTime"
                                         label="时间"
-                                        width="350"
                                         header-align="center"
                                         align="center">
                                 </el-table-column>
                                 <el-table-column
                                         prop="score"
                                         label="获得积分"
-                                        width="350"
                                         header-align="center"
                                         align="center"
                                 >
@@ -184,7 +184,6 @@
                                 <el-table-column
                                         prop="enemyName"
                                         label="对手"
-                                        width="350"
                                         header-align="center"
                                         align="center"
                                 >
@@ -195,7 +194,6 @@
                                 <el-table-column
                                         prop="whetherWin"
                                         label="是否获胜"
-                                        width="400"
                                         header-align="center"
                                         align="center"
                                 >
@@ -228,14 +226,12 @@
                                 <el-table-column
                                         prop="createTime"
                                         label="时间"
-                                        width="500"
                                         header-align="center"
                                         align="center">
                                 </el-table-column>
                                 <el-table-column
                                         prop="score"
                                         label="获得积分"
-                                        width="400"
                                         header-align="center"
                                         align="center"
                                 >
@@ -243,7 +239,6 @@
                                 <el-table-column
                                         prop="enemyName"
                                         label="对手"
-                                        width="400"
                                         header-align="center"
                                         align="center"
                                 >
@@ -251,7 +246,6 @@
                                 <el-table-column
                                         prop="whetherWin"
                                         label="是否获胜"
-                                        width="400"
                                         header-align="center"
                                         align="center"
                                 >

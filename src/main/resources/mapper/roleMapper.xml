@@ -8,19 +8,23 @@
     </resultMap>
 
     <insert id="insert" parameterType="com.lawschool.beans.system.SysRoleEntity">
-        insert
-        into
+        INSERT INTO
             LAW_SYS_ROLE
-            (id, ROLE_NAME, REMARK, CREATE_TIME)
-        values
-            (#{id}, #{roleName}, #{remark}, #{createTime})
+            (
+                id, ROLE_NAME, REMARK, CREATE_TIME
+            )
+        VALUES
+            (
+                #{id}, #{roleName}, #{remark}, #{createTime}
+            )
     </insert>
 
     <update id="update" parameterType="com.lawschool.beans.system.SysRoleEntity">
         update
             LAW_SYS_ROLE
         set
-            ROLE_NAME = #{roleName}
+            ROLE_NAME = #{roleName},
+            remark = #{remark}
         where
             id = #{id}
     </update>
@@ -47,7 +51,9 @@
 
     <!-- 查询列表 -->
     <select id="findList" resultType="com.lawschool.beans.system.SysRoleEntity">
-        SELECT id, role_name, remark FROM law_sys_role
+        SELECT
+            id, role_name, remark, create_time
+        FROM law_sys_role
     </select>
 
     <delete id="delete">

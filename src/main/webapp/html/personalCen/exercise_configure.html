@@ -4,9 +4,6 @@
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
-<style>
-
-</style>
 <body>
 <div id="app" v-cloak>
     <div class="container">
@@ -14,10 +11,10 @@
             <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
             <el-breadcrumb-item>个人中心</el-breadcrumb-item>
             <el-breadcrumb-item>我的练习</el-breadcrumb-item>
+            <el-breadcrumb-item>任务配置</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="info_btn">
             <el-button size="mini" type="primary" @click="addConfig"><i class="iconfont icon-htmal5icon18"></i>新增练习配置</el-button>
-
         </div>
 
         <el-table
@@ -110,99 +107,97 @@
         </el-pagination>
 
         <el-dialog :title="title" :visible.sync="dialogConfig">
-            <el-row>
-                <el-col :span="24">
-                    <el-form :model="exerciseConfigure" ref="exerciseConfigure" label-width="100px" class="demo-sysMenu"
-                             size="medium">
-                        <el-form-item label="练习卷名称：" prop="name">
-                            <el-input v-model="exerciseConfigure.name" disabled></el-input>
-                        </el-form-item>
+            <el-col :span="24">
+                <el-form :model="exerciseConfigure" ref="exerciseConfigure" label-width="100px"  size="mini">
+                    <el-form-item label="练习卷名称：" prop="name">
+                        <el-input v-model="exerciseConfigure.name" disabled></el-input>
+                    </el-form-item>
 
-                        <el-form-item label="名称前缀：" prop="prefix">
-                            <el-input v-model="exerciseConfigure.prefix" placeholder="请输入名称前缀" clearable></el-input>
-                            <el-button size="mini" type="primary" @click="createName">生成试卷名称</el-button>
-                        </el-form-item>
+                    <el-form-item label="名称前缀：" prop="prefix">
+                        <el-input v-model="exerciseConfigure.prefix" placeholder="请输入名称前缀" clearable></el-input>
+                        <!--<el-button size="mini" type="primary" @click="createName">生成试卷名称</el-button>-->
+                    </el-form-item>
+                    <el-form-item label="" prop="prefix">
+                        <el-button size="mini" type="primary" @click="createName">生成试卷名称</el-button>
+                    </el-form-item>
+                    <el-form-item label="练习卷配置：">
+                        <el-button size="mini" type="primary" @click="add">添加配置</el-button>
+                    </el-form-item>
+                    <el-table
+                            :data="exerciseConfigure.list"
+                            style="width: 100%"
+                            stripe>
+                        <el-table-column
+                                type="index"
+                                label="序号">
+                        </el-table-column>
+                        <el-table-column
+                                label="题目类型"
+                                header-align="center"
+                                align="center"
+                                prop="topicName">
+                        </el-table-column>
 
-                        <el-form-item label="练习卷配置：">
-                            <el-button size="mini" type="primary" @click="add">添加配置</el-button>
-                        </el-form-item>
-                        <el-table
-                                :data="exerciseConfigure.list"
-                                style="width: 100%"
-                                stripe>
-                            <el-table-column
-                                    type="index"
-                                    label="序号">
-                            </el-table-column>
-                            <el-table-column
-                                    label="题目类型"
-                                    header-align="center"
-                                    align="center"
-                                    prop="topicName">
-                            </el-table-column>
+                        <el-table-column
+                                label="初级题量"
+                                header-align="center"
+                                align="center"
+                                prop="primaryNum">
+                        </el-table-column>
 
-                            <el-table-column
-                                    label="初级题量"
-                                    header-align="center"
-                                    align="center"
-                                    prop="primaryNum">
-                            </el-table-column>
+                        <el-table-column
+                                label="中级题量"
+                                header-align="center"
+                                align="center"
+                                prop="middleNum">
+                        </el-table-column>
 
-                            <el-table-column
-                                    label="中级题量"
-                                    header-align="center"
-                                    align="center"
-                                    prop="middleNum">
-                            </el-table-column>
+                        <el-table-column
+                                label="高级题量"
+                                header-align="center"
+                                align="center"
+                                prop="seniorNum">
+                        </el-table-column>
 
-                            <el-table-column
-                                    label="高级题量"
-                                    header-align="center"
-                                    align="center"
-                                    prop="seniorNum">
-                            </el-table-column>
+                        <el-table-column
+                                label="操作"
+                                header-align="center"
+                                align="center"
+                                prop="status">
+                            <template slot-scope="scope">
+                                <el-button
+                                        type="primary"
+                                        size="mini"
+                                        @click="deleteOne(scope.$index)"
+                                >删除
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
 
-                            <el-table-column
-                                    label="操作"
-                                    header-align="center"
-                                    align="center"
-                                    prop="status">
-                                <template slot-scope="scope">
-                                    <el-button
-                                            type="primary"
-                                            size="mini"
-                                            @click="deleteOne(scope.$index)"
-                                    >删除
-                                    </el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
+                    <el-form-item label="使用分类：">
+                        <el-radio v-for="item in rangeType" v-model="exerciseConfigure.rangeType" :label="item.key">
+                            {{item.value}}
+                        </el-radio>
+                    </el-form-item>
 
-                        <el-form-item label="使用分类：">
-                            <el-radio v-for="item in rangeType" v-model="exerciseConfigure.rangeType" :label="item.key">
-                                {{item.value}}
-                            </el-radio>
-                        </el-form-item>
+                    <el-form-item label="部门：" v-show="exerciseConfigure.rangeType == 2">
+                        <el-input type="text" class="form-control" style="cursor:pointer;"
+                                  v-model="exerciseConfigure.depts"
+                                  @focus="deptShow" readonly="readonly" placeholder="所属部门"></el-input>
+                    </el-form-item>
 
-                        <el-form-item label="部门：" v-show="exerciseConfigure.rangeType == 2">
-                            <el-input type="text" class="form-control" style="cursor:pointer;"
-                                      v-model="exerciseConfigure.depts"
-                                      @focus="deptShow" readonly="readonly" placeholder="所属部门"></el-input>
-                        </el-form-item>
-
-                        <el-form-item label="人员(此处先不请求后台)：" v-show="exerciseConfigure.rangeType == 2">
-                            <el-input type="text" class="form-control" style="cursor:pointer;"
-                                      v-model="exerciseConfigure.users" disabled
-                            ></el-input>
-                        </el-form-item>
-
-                        <el-form-item>
-                            <el-button type="primary" @click="save">生成试卷</el-button>
-                        </el-form-item>
-
-                    </el-form>
-                </el-col>
-            </el-row>
+                    <el-form-item label="人员(此处先不请求后台)：" v-show="exerciseConfigure.rangeType == 2">
+                        <el-input type="text" class="form-control" style="cursor:pointer;"
+                                  v-model="exerciseConfigure.users" disabled
+                        ></el-input>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogConfig = false">取 消</el-button>
+                <el-button type="primary" @click="save">生成试卷</el-button>
+            </div>
         </el-dialog>
 
         <el-dialog title="添加练习配置" :visible.sync="addConfigFlag">
@@ -282,7 +277,6 @@
                     <br/>
                 </el-checkbox-group>
 
-                <br/>
                 <br/>
             </div>
         </el-dialog>

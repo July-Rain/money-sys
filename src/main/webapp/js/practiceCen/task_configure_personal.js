@@ -56,8 +56,8 @@ var vm = new Vue({
             });
         },
         addConfigure: function () {
-            vm.dialogConfig = true;
             vm.title = "配置任务信息";
+            vm.dialogConfig = true;
         },
         save: function (formName) {
             this.$refs[formName].validate(function (valid) {

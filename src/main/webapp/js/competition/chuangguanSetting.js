@@ -11,7 +11,7 @@ var vm = new Vue({
         bigcheckNum:[],//大关数量数据
         tableData: [],//表格数据
         daguanArray: [],
-        daguannum:0,
+        daguannum:'',
         formInline: { // 搜索表单
             currPage: 1,
             pageSize: 10,

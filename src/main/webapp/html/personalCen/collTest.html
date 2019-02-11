@@ -3,81 +3,80 @@
 <head>
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .header-right ul{
+            background: transparent;
+        }
+        .header-right ul li:after{
+            content: '';
+        }
+        .el-menu--horizontal .el-menu-item,
+        .el-menu--horizontal .el-submenu{
+            float: left;
+            height: 70px;
+            /*line-height: 70px;*/
+            margin: 0;
+            border-bottom: 2px solid transparent;
+            color: #fff;
+        }
+        .el-menu--horizontal>.el-submenu .el-submenu__title {
+            height: 70px;
+            /* line-height: 70px; */
+            border-bottom: 2px solid transparent;
+            color: #909399;
+        }
+        .header-right ul li a{
+            text-align: center;
+            padding: 0;
+            /*margin: 10px 0;*/
+            box-sizing: border-box;
+            height: auto;
+            display: inline-block;
+        }
+        .header-right .el-menu-item [class^=el-icon-],
+        .header-right .el-submenu [class^=el-icon-],
+        .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
+            font-size: 30px;
+            color: #fff;
+        }
+        /*.header-right .el-submenu [class^=el-icon-]*/
+        .header-right ul li a span{
+            display: block;
+            margin-top: -10px;
+            line-height: 10px;
+        }
+        .header-right .el-menu-item:hover a,
+        .header-right .el-submenu:hover a,
+        .header-right .el-menu-item:hover [class^=el-icon-],
+        .header-right .el-submenu:hover [class^=el-icon-],
+        .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
+            color: #909399;
+        }
+        .el-submenu__icon-arrow{
+            margin-top: 16px;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item a{
+            color: #909399;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item a:hover{
+            color: #000;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+            background-color: #fff;
+            float: none;
+            height: 36px;
+            line-height: 36px;
+            padding: 0 10px;
+            color: #909399;
+            display: inline-block;//悬浮块横向显示
+        }
+        .green{
+            color:green;
+        }
+    </style>
 </head>
-<style>
-    .header-right ul{
-        background: transparent;
-    }
-    .header-right ul li:after{
-        content: '';
-    }
-    .el-menu--horizontal .el-menu-item,
-    .el-menu--horizontal .el-submenu{
-        float: left;
-        height: 70px;
-        /*line-height: 70px;*/
-        margin: 0;
-        border-bottom: 2px solid transparent;
-        color: #fff;
-    }
-    .el-menu--horizontal>.el-submenu .el-submenu__title {
-        height: 70px;
-        /* line-height: 70px; */
-        border-bottom: 2px solid transparent;
-        color: #909399;
-    }
-    .header-right ul li a{
-        text-align: center;
-        padding: 0;
-        /*margin: 10px 0;*/
-        box-sizing: border-box;
-        height: auto;
-        display: inline-block;
-    }
-    .header-right .el-menu-item [class^=el-icon-],
-    .header-right .el-submenu [class^=el-icon-],
-    .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
-        font-size: 30px;
-        color: #fff;
-    }
-    /*.header-right .el-submenu [class^=el-icon-]*/
-    .header-right ul li a span{
-        display: block;
-        margin-top: -10px;
-        line-height: 10px;
-    }
-    .header-right .el-menu-item:hover a,
-    .header-right .el-submenu:hover a,
-    .header-right .el-menu-item:hover [class^=el-icon-],
-    .header-right .el-submenu:hover [class^=el-icon-],
-    .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
-        color: #909399;
-    }
-    .el-submenu__icon-arrow{
-        margin-top: 16px;
-    }
-    .el-menu--horizontal .el-menu .el-menu-item a{
-        color: #909399;
-    }
-    .el-menu--horizontal .el-menu .el-menu-item a:hover{
-        color: #000;
-    }
-    .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
-        background-color: #fff;
-        float: none;
-        height: 36px;
-        line-height: 36px;
-        padding: 0 10px;
-        color: #909399;
-        display: inline-block;//悬浮块横向显示
-    }
-    .green{
-        color:green;
-    }
-</style>
 <body>
 <div id="app" v-cloak>
-
     <div class="container">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
             <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
@@ -108,21 +107,18 @@
                         <div class="card_contain">
                             <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                                <el-form-item prop="specialKnowledgeId">
-                                    <el-button size="mini" type="primary">所属专项</el-button>
+                                <el-form-item prop="specialKnowledgeId" label="所属专项">
                                     <el-select v-model="formInline.specialKnowledgeId" size="mini">
                                         <el-option v-for="(item,index) in sks" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
                                     </el-select>
                                 </el-form-item>
 
-                                <el-form-item prop="questionDifficulty">
-                                    <el-button size="mini" type="primary">难度</el-button>
+                                <el-form-item prop="questionDifficulty" label="难度">
                                     <el-select v-model="formInline.questionDifficulty"  size="mini">
                                         <el-option v-for="(item,index) in qds" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
                                     </el-select>
                                 </el-form-item>
-                                <el-form-item prop="questionType">
-                                    <el-button size="mini" type="primary">试题类型</el-button>
+                                <el-form-item prop="questionType" label="试题类型">
                                     <el-select v-model="formInline.questionType"  size="mini">
                                         <el-option v-for="(item,index) in qts" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
                                     </el-select>

@@ -29,7 +29,15 @@ var vm = new Vue({
             limit: 10,
             page: 1,
             count: 0
-        }
+        },
+        title: '新增',
+        isEdit: false,
+        rules: {//表单验证规则
+            roleName: [
+                {required: true, message: '请输入角色名称', trigger: 'blur'},
+                {max: 50, message: '最大长度50', trigger: 'blur'}
+            ]
+        },
     },
     mounted: function () {
     },
@@ -54,11 +62,25 @@ var vm = new Vue({
             vm.dialogFormVisible = true;
         },
         handleWatch: function (index, row) {
-            console.table({
-                "row": row
-            })
+            vm.isEdit = true;
+            vm.title = '详情';
+            var that = this;
+            $.ajax({
+                type: "GET",
+                url: baseURL + "role/info/" + row.id,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        that.form = result.data;
+                        that.dialogFormVisible = true;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         },
         handleEdit: function (index, row) {
+            vm.title = '编辑';
             var that = this;
             $.ajax({
                 type: "GET",
@@ -105,42 +127,42 @@ var vm = new Vue({
             });
         },
 
-        save: function () {
-            let that = this;
-            this.$confirm('是否确定提交？', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(function () {
-                that.dialogFormVisible = false;
-                //ajax
-                let _data = {}
-                _data.menuList = [];
-                _data.orgList = [];
-                that.$refs.tree1.getCheckedNodes().map((info)=>{
-                    console.info("11",info)
-                    _data.menuList.push(info.id)
-                })
-                that.$refs.tree2.getCheckedNodes().map((info)=>{
-                    console.info("22",info)
-                    _data.orgList.push(info.id)
-                })
-                _data.id = vm.form.id;
-                _data.roleName = that.form.roleName;
-                _data.remarks = that.form.remarks;
-                $.ajax({
-                    type: "POST",
-                    url: baseURL + "role/save",
-                    contentType: "application/json",
-                    data: JSON.stringify(_data),
-                    success: function (result) {
-                        if (result.code === 0) {
-                            vm.reload();
-                        } else {
-                            alert(result.msg);
+        save: function (formName) {
+            this.$refs[formName].validate(function (valid) {
+                if (valid) {
+
+                    let that = vm;
+
+                    that.dialogFormVisible = false;
+                    //ajax
+                    let _data = {}
+                    _data.menuList = [];
+                    _data.orgList = [];
+                    that.$refs.tree1.getCheckedNodes().map((info) => {
+                        _data.menuList.push(info.id)
+                    })
+                    that.$refs.tree2.getCheckedNodes().map((info) => {
+                        _data.orgList.push(info.id)
+                    })
+                    _data.id = vm.form.id;
+                    _data.roleName = that.form.roleName;
+                    _data.remark = that.form.remark;
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + "role/save",
+                        contentType: "application/json",
+                        data: JSON.stringify(_data),
+                        success: function (result) {
+                            if (result.code === 0) {
+                                vm.reload();
+                            } else {
+                                alert(result.msg);
+                            }
                         }
-                    }
-                });
+                    });
+                }else {
+                    return false;
+                }
             });
         },
         reload: function () {
@@ -163,30 +185,22 @@ var vm = new Vue({
         },
         toHome:function () {
             parent.location.reload()
+        },
+        indexMethod: function (index) {
+            return index + 1 + (vm.inline.page-1) * vm.inline.limit;
+        },
+        closeDia: function () {
+            vm.title = '新增';
+            vm.dialogFormVisible = false;
+            vm.isEdit = false;
+            vm.$refs.tree1.setCheckedKeys([]);
+            vm.$refs.tree2.setCheckedKeys([]);
         }
     }
     ,
     created: function () {
         this.$nextTick(function () {
-            $.ajax({
-                type: "GET",
-                url: baseURL + "role/list",
-                data: vm.inline,
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.tableData = result.page.list;
-                        vm.inline.pageNo = result.page.pageNo;
-                        vm.inline.pageSize = result.page.pageSize;
-                        vm.inline.count = parseInt(result.page.count);
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
-
-        })
-        this.$nextTick(function () {
+            vm.reload();
             var that = this;
             $.ajax({
                 type: "GET",
