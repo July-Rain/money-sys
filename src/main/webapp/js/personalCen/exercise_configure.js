@@ -42,6 +42,7 @@ var vm = new Vue({
     },
     methods: {
         addConfig: function () {
+            vm.title =  '新增练习配置';
             vm.dialogConfig = true;
         },
         createName: function () {

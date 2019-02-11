@@ -27,7 +27,7 @@
                 <img src="${rc.contextPath}/statics/img/competeCenter/figure_suiji.png" alt="">
                 <img src="${rc.contextPath}/statics/img/competeCenter/shi_suiji.png" alt="">
             </li>
-            <li class="bounceInRight">
+            <li class="bounceInRight" @click="warAreaShow = true">
                 <img src="${rc.contextPath}/statics/img/competeCenter/figure_zhanqu.png" alt="">
                 <img src="${rc.contextPath}/statics/img/competeCenter/shi_zhanqu.png" alt="">
             </li>
@@ -108,7 +108,51 @@
     <div class="model_area join_area" v-if="joinTeamShow">
         <div class="inner">
             <div class="title">加入他人队伍</div>
-            <input type="text" placeholder="输入队伍编号" @submit="alert(1)">
+            <input type="text" placeholder="输入队伍编号">
+        </div>
+    </div>
+    <!--战区对战-->
+    <div class="war_area model_area" v-if="warAreaShow">
+        <div class="inner">
+            <div class="title">战区对战模式</div>
+            <button @click="formationWar">建立新站区</button>
+            <button @click="joinWar">加入他人战区</button>
+        </div>
+    </div>
+    <!--建立战区-->
+    <div class="model_area formation_war" v-if="formationWarShow">
+        <div class="inner">
+            <div class="left">
+                <ul>
+                    <li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>
+                    <li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>
+                    <li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>
+                </ul>
+                <p class="teamName">我的昵称战队</p>
+            </div>
+            <div class="mid">
+                <div class="title">建立新战区</div>
+                <h3>战区编号</h3>
+                <p>312312</p>
+                <p class="msg">正在等待其他队伍加入你的战区...</p>
+            </div>
+            <div class="right">
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                <p class="teamName">我的昵称战队</p>
+            </div>
+        </div>
+
+    </div>
+    <!--加入战区-->
+    <div class="model_area join_area join_war" v-if="joinWarShow">
+        <div class="inner">
+            <div class="title">加入他人战区</div>
+            <input type="text" placeholder="输入战区号">
+            <button @click="joinFormationWar">建立新战区</button>
         </div>
     </div>
 </div>

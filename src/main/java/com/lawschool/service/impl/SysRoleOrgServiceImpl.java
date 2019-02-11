@@ -26,4 +26,12 @@ public class SysRoleOrgServiceImpl extends ServiceImpl<SysRoleOrgDao,SysRoleOrg>
     public List<String> queryOrgIdList(String roleId){
         return dao.queryOrgIdList(roleId);
     }
+
+    /**
+     * 根据角色删除数据
+     * @param roleId
+     */
+    public void deleteByRoleId(String roleId){
+        dao.deleteByRoleId(roleId);
+    }
 }

@@ -21,7 +21,7 @@ var vm = new Vue({
                 ratio:"0%",//超过百分比
                 type:"",//类型
                 name:"",//文字描述
-                per: ''
+                per: 0
             }],//学情统计数据
             options: [{
                 value: '0',
@@ -61,11 +61,11 @@ var vm = new Vue({
                             value: value.value,
                             name: value.name
                         });
-                    })
+                    });
 
                     vm.stuInfo.map(function (value) {
-                        value.per = value.ratio.slice(0,value.ratio.length-1)
-                    })
+                        value.per =Number(value.ratio.slice(0,value.ratio.length-1))
+                    });
                     vm.$nextTick(function () {
                         // this.getStuDia();
                         vm.initPie1();
@@ -76,7 +76,6 @@ var vm = new Vue({
                 }
             }
         });
-
     },
     methods: {
         // ECharts - 绘制图表

@@ -9,7 +9,10 @@ var vm = new Vue({
         teamAreaShow: false,
         teamPerNum: 3,
         formationTeamShow: false,
-        joinTeamShow:false
+        joinTeamShow:false,
+        warAreaShow:false,
+        formationWarShow:true,//建立战区
+        joinWarShow:false//加入战区
     },
     created: function () {
         document.onkeydown = function (event) {
@@ -62,6 +65,21 @@ var vm = new Vue({
         formationTeamExit: function () {
             this.formationTeamShow = false;
             // 退出组队
+        },
+        formationWar: function () {
+            // 建立战区
+            this.warAreaShow = false;
+            this.formationWarShow = true;
+        },
+        joinWar: function () {
+            // 加入战区
+            this.warAreaShow = false;
+            this.joinWarShow = true
+        },
+        joinFormationWar: function () {
+            // 加入战区到建立
+            this.formationWarShow = true;
+            this.joinWarShow = false
         }
     }
 });

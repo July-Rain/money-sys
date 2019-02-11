@@ -82,6 +82,12 @@
             display: inline-block;
         / / 悬浮块横向显示
         }
+        .el-dialog{
+            overflow: hidden;
+        }
+        .list {
+            max-height: 390px;
+        }
     </style>
 </head>
 <body>
@@ -98,7 +104,6 @@
                         <div class="card_title"></div>
                         <div class="card_contain">
                             <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-
                                 <el-form-item label="任务名称" prop="taskName">
                                     <el-input v-model="formInline.taskName" placeholder="任务名称" size="mini"
                                               clearable></el-input>
@@ -278,84 +283,90 @@
 
 
         <el-dialog :title="title" :visible.sync="dialogLearnTask" :before-close="closeDia">
-            <el-row>
-                <el-col :span="12">
-                    <el-form :model="learnTasks" :rules="rules" ref="learnTasks" label-width="100px"
-                             class="demo-learnTasks" size="mini">
-                        <el-form-item label="任务名称" prop="taskName">
-                            <el-input v-model="learnTasks.taskName" placeholder="请输入任务名称" clearable></el-input>
-                        </el-form-item>
-                        <el-form-item label="任务内容" prop="taskContent">
-                            <!--<el-input type="textarea" maxlength="200" v-model="learnTasks.taskContent" placeholder="请输入任务内容" clearable></el-input>-->
-                            <!--<el-tree
-                                    ref="classTree"
-                                    :data="classData"
-                                    :props="defaultClassProps"
-                                    accordion
-                                    show-checkbox
-                                    @check-change="handleClassCheckChange"
-                                    node-key="infoId"
-                                    :default-expanded-keys="[2079]"
-                            >
-                            </el-tree>-->
-                            <!-- 选择任务 -->
+            <!--<el-row>-->
+                <!--<el-col :span="12">-->
+
+                <!--</el-col>-->
+            <!--</el-row>-->
+            <el-form :model="learnTasks" :rules="rules" ref="learnTasks" label-width="100px"
+                     class="demo-learnTasks" size="mini">
+                <el-col :span="24">
+                    <el-form-item label="任务名称" prop="taskName">
+                        <el-input v-model="learnTasks.taskName" placeholder="请输入任务名称" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="任务内容" prop="taskContent">
+                        <!--<el-input type="textarea" maxlength="200" v-model="learnTasks.taskContent" placeholder="请输入任务内容" clearable></el-input>-->
+                        <!--<el-tree
+                                ref="classTree"
+                                :data="classData"
+                                :props="defaultClassProps"
+                                accordion
+                                show-checkbox
+                                @check-change="handleClassCheckChange"
+                                node-key="infoId"
+                                :default-expanded-keys="[2079]"
+                        >
+                        </el-tree>-->
+                        <!-- 选择任务 -->
+                        <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
                             <ul id="classTree" class="ztree"></ul>
-                        </el-form-item>
-                        <el-form-item label="所属警种" prop="policeclass">
-                            <el-select v-model="learnTasks.policeclass" placeholder="所属警种">
-                                <el-option
-                                        v-for="item in policeclassOption"
-                                        :key="item.code"
-                                        :label="item.value"
-                                        :value="item.code"
-                                >
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="所属分类" prop="taskClass">
-                            <el-select v-model="learnTasks.taskClass" placeholder="所属分类">
-                                <el-option
-                                        v-for="item in taskClassOption"
-                                        :key="item.code"
-                                        :label="item.value"
-                                        :value="item.code"
-                                >
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="开始日期" prop="startTime">
-                            <el-date-picker
-                                    v-model="learnTasks.startTime"
-                                    type="date"
-                                    size="mini"
-                                    placeholder="开始日期">
-                            </el-date-picker>
-                        </el-form-item>
-                        <el-form-item label="结束日期" prop="endTime">
-                            <el-date-picker
-                                    v-model="learnTasks.endTime"
-                                    type="date"
-                                    size="mini"
-                                    placeholder="结束日期">
-                            </el-date-picker>
-                        </el-form-item>
-                        <el-form-item label="任务执行者" prop="taskExecute">
-                            <el-input v-model="learnTasks.taskExecute" placeholder="请输入任务执行者" clearable></el-input>
-                        </el-form-item>
-                        <el-form-item label="使用部门" prop="deptName" v-if="menuForm!='person'">
-                            <el-input v-model="learnTasks.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门"
-                                      clearable></el-input>
-                        </el-form-item>
-                        <el-form-item label="使用人员" prop="userName" v-if="menuForm!='person'">
-                            <el-input v-model="learnTasks.userName" readonly @focus="chooseUser" placeholder="请选择使用人员"
-                                      clearable></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="saveOrUpdate('learnTasks')">保存</el-button>
-                        </el-form-item>
-                    </el-form>
+                        </el-scrollbar>
+                    </el-form-item>
+                    <el-form-item label="所属警种" prop="policeclass">
+                        <el-select v-model="learnTasks.policeclass" placeholder="所属警种">
+                            <el-option
+                                    v-for="item in policeclassOption"
+                                    :key="item.code"
+                                    :label="item.value"
+                                    :value="item.code"
+                            >
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="所属分类" prop="taskClass">
+                        <el-select v-model="learnTasks.taskClass" placeholder="所属分类">
+                            <el-option
+                                    v-for="item in taskClassOption"
+                                    :key="item.code"
+                                    :label="item.value"
+                                    :value="item.code"
+                            >
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="开始日期" prop="startTime">
+                        <el-date-picker
+                                v-model="learnTasks.startTime"
+                                type="date"
+                                size="mini"
+                                placeholder="开始日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="结束日期" prop="endTime">
+                        <el-date-picker
+                                v-model="learnTasks.endTime"
+                                type="date"
+                                size="mini"
+                                placeholder="结束日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="任务执行者" prop="taskExecute">
+                        <el-input v-model="learnTasks.taskExecute" placeholder="请输入任务执行者" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="使用部门" prop="deptName" v-if="menuForm!='person'">
+                        <el-input v-model="learnTasks.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门"
+                                  clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="使用人员" prop="userName" v-if="menuForm!='person'">
+                        <el-input v-model="learnTasks.userName" readonly @focus="chooseUser" placeholder="请选择使用人员"
+                                  clearable></el-input>
+                    </el-form-item>
                 </el-col>
-            </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogLearnTask = false">取消</el-button>
+                <el-button type="primary" @click="saveOrUpdate('learnTasks')">保存</el-button>
+            </div>
         </el-dialog>
 
         <el-dialog title="选择部门" :visible.sync="dialogDept">
