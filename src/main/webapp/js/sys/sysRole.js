@@ -54,9 +54,20 @@ var vm = new Vue({
             vm.dialogFormVisible = true;
         },
         handleWatch: function (index, row) {
-            console.table({
-                "row": row
-            })
+            var that = this;
+            $.ajax({
+                type: "GET",
+                url: baseURL + "role/info/" + row.id,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        that.form = result.data;
+                        that.dialogFormVisible = true;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         },
         handleEdit: function (index, row) {
             var that = this;
@@ -127,7 +138,7 @@ var vm = new Vue({
                 })
                 _data.id = vm.form.id;
                 _data.roleName = that.form.roleName;
-                _data.remarks = that.form.remarks;
+                _data.remark = that.form.remark;
                 $.ajax({
                     type: "POST",
                     url: baseURL + "role/save",
@@ -163,30 +174,15 @@ var vm = new Vue({
         },
         toHome:function () {
             parent.location.reload()
+        },
+        indexMethod: function (index) {
+            return index + 1 + (vm.inline.page-1) * vm.inline.limit;
         }
     }
     ,
     created: function () {
         this.$nextTick(function () {
-            $.ajax({
-                type: "GET",
-                url: baseURL + "role/list",
-                data: vm.inline,
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.tableData = result.page.list;
-                        vm.inline.pageNo = result.page.pageNo;
-                        vm.inline.pageSize = result.page.pageSize;
-                        vm.inline.count = parseInt(result.page.count);
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
-
-        })
-        this.$nextTick(function () {
+            vm.reload();
             var that = this;
             $.ajax({
                 type: "GET",
