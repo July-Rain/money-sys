@@ -152,9 +152,9 @@ var vm = new Vue({
         //         myChart.resize()
         //     })
         // },
-        // toHome: function () {
-        //     parent.location.reload()
-        // },
+        toHome: function () {
+            parent.location.reload()
+        },
         initPie1: function () {
             // 基于准备好的dom，初始化echarts实例
             var myChart = echarts.init(document.getElementById('pie1'));
@@ -210,7 +210,7 @@ var vm = new Vue({
                 },
                 series : [
                     {
-                        name: '参与次数',
+                        name: '获得积分',
                         type: 'pie',
                         radius : ['25%','45%'],
                         center: ['50%', '50%'],

@@ -37,6 +37,9 @@ var vm = new Vue({
         })
     },
     methods: {
+        toHome: function () {
+            parent.location.reload()
+        },
         handleSizeChange: function (val) {
             this.formInline.pageSize = val;
             this.reload();

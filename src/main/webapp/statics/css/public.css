@@ -94,10 +94,17 @@ ul li{
 }
 /*el-tree  end */
 
-.el-select>.el-input{
+/*el-dialog start*/
+.el-dialog__footer .el-button{
+    height: 30px;
+    padding: 0px 18px;
+}
+.el-dialog .el-select>.el-input{
     width: 220px;
 }
-.el-date-editor.el-input--mini.el-date-editor--datetime{
+.el-dialog  .el-date-editor.el-input--mini.el-date-editor--datetime{
     width: 220px !important;
 }
+/*el-dialog end*/
+
 /*element 公共样式修改  end */

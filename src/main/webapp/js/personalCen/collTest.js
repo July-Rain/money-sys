@@ -109,6 +109,7 @@ var vm = new Vue({
                 data: vm.params,
                 success: function (result) {
                     if (result.code === 0) {
+                        vm.title1 = '一键组卷';
                         vm.random = true;
                         vm.exercise=result.data;
                     } else {

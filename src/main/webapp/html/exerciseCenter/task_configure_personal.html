@@ -136,54 +136,50 @@
         </el-pagination>
 
         <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia" :close-on-click-modal="false">
-            <el-row>
-                <el-col :span="24">
-                    <el-form :model="configureEntity" :rules="rules" ref="configureEntity" label-width="110px" size="mini">
-                        <el-form-item label="练习卷名称：" prop="name">
-                            <el-input v-model="configureEntity.name" :disabled="isEdit"></el-input>
-                        </el-form-item>
+            <el-col :span="24">
+                <el-form :model="configureEntity" :rules="rules" ref="configureEntity" label-width="110px" size="mini">
+                    <el-form-item label="练习卷名称：" prop="name">
+                        <el-input v-model="configureEntity.name" :disabled="isEdit"></el-input>
+                    </el-form-item>
 
-                        <el-form-item label="试题难度：">
-                            <el-checkbox-group v-model="configureEntity.difficultys">
-                                <el-checkbox :disabled="isEdit" v-for="item in diffList" :label="item.key">{{item.value}}</el-checkbox>
-                            </el-checkbox-group>
-                        </el-form-item>
+                    <el-form-item label="试题难度：">
+                        <el-checkbox-group v-model="configureEntity.difficultys">
+                            <el-checkbox :disabled="isEdit" v-for="item in diffList" :label="item.key">{{item.value}}</el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
 
-                        <el-form-item label="试题分类：">
-                            <el-checkbox-group v-model="configureEntity.classifys">
-                                <el-checkbox :disabled="isEdit" v-for="item in typeList" :label="item.key">{{item.value}}</el-checkbox>
-                            </el-checkbox-group>
-                        </el-form-item>
+                    <el-form-item label="试题分类：">
+                        <el-checkbox-group v-model="configureEntity.classifys">
+                            <el-checkbox :disabled="isEdit" v-for="item in typeList" :label="item.key">{{item.value}}</el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
 
-                        <el-form-item label="试题类型：">
-                            <el-checkbox-group v-model="configureEntity.types">
-                                <el-checkbox :disabled="isEdit" v-for="item in qtList" :label="item.key" v-if="item.value != '主观题'">
-                                    {{item.value}}
-                                </el-checkbox>
-                            </el-checkbox-group>
-                        </el-form-item>
+                    <el-form-item label="试题类型：">
+                        <el-checkbox-group v-model="configureEntity.types">
+                            <el-checkbox :disabled="isEdit" v-for="item in qtList" :label="item.key" v-if="item.value != '主观题'">
+                                {{item.value}}
+                            </el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
 
-                        <el-form-item label="主题类型：">
-                            <el-select :disabled="isEdit" multiple collapse-tags
-                                       v-model="configureEntity.topics"
-                                       placeholder="请选择">
-                                <el-option
-                                        v-for="item in topicList"
-                                        :key="item.key"
-                                        :label="item.value"
-                                        :value="item.key">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-
-                        <el-form-item >
-                            <el-button v-if="!isEdit" type="primary" @click="save('configureEntity')">保存设置</el-button>
-                            <el-button type="primary" @click="cancle">取消</el-button>
-                        </el-form-item>
-
-                    </el-form>
-                </el-col>
-            </el-row>
+                    <el-form-item label="主题类型：">
+                        <el-select :disabled="isEdit" multiple collapse-tags
+                                   v-model="configureEntity.topics"
+                                   placeholder="请选择">
+                            <el-option
+                                    v-for="item in topicList"
+                                    :key="item.key"
+                                    :label="item.value"
+                                    :value="item.key">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="cancle">取消</el-button>
+                <el-button v-if="!isEdit" type="primary" @click="save('configureEntity')">保存设置</el-button>
+            </div>
         </el-dialog>
     </div>
 </div>

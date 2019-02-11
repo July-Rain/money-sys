@@ -5,7 +5,7 @@
  */
 var menu=getUrlParam("menu");//获取页面标识
 var menuId = getUrlParam('id');
-var ztree;
+var ztree = null;
 var setting = {
     data: {
         simpleData: {
@@ -29,6 +29,7 @@ var setting = {
 var vm = new Vue({
     el: '#app',
     data: {
+        menuForm:[],
         navData: [],//导航
         formInline: { // 搜索表单
             taskContent: '',
