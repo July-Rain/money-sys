@@ -31,7 +31,8 @@ public class MedalController extends AbstractController {
 
         MedalEntity medalEntity = new MedalEntity();
         medalEntity.setTitleName(titleName);
-
+        medalEntity.setIntegral((String) params.get("jifen"));//积分
+        medalEntity.setCredit((String) params.get("xuefen"));//学分
         Page<MedalEntity> page = medalService.findPage(new Page<MedalEntity>(params), medalEntity);
         return Result.ok().put("page", page);
     }

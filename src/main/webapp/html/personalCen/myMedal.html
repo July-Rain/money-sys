@@ -24,29 +24,46 @@
                                 border
                                 style="width: 100%">
                             <el-table-column
+                                    label="序号"
+                                    type="index"
+                                    header-align="center"
+                                    align="center"
+                                    width="150">
+                            </el-table-column>
+                            <el-table-column
                                     prop="titleName"
+                                    width="250"
                                     label="勋章名称">
                             </el-table-column>
                             <el-table-column
-                                    prop="badge"
-                                    label="勋章图标">
+                                    label="勋章图标"
+                                    width="250"
+                                    header-align="center"
+                                    align="center">
+                                <template slot-scope="scope">
+                                    <i class="iconfont" :class="scope.row.badge ? scope.row.badge:'icon-085shucezhongxin'" style="color: #000000"></i>
+                                </template>
                             </el-table-column>
-                            <el-table-column
-                                    prop="isReceive"
-                                    label="是否可领取">
-                            </el-table-column>
+                            <!--<el-table-column-->
+                                    <!--prop="isReceive"-->
+                                    <!--label="是否可领取">-->
+                            <!--</el-table-column>-->
                             <el-table-column
                                     prop="active"
                                     label="操作">
                                 <template slot-scope="scope">
-                                    <el-button :disabled="isReceive.indexOf(tableData[scope.$index].id) > -1"
-                                            size="mini"
-                                            @click="receive(scope.$index, scope.row)">{{isReceive.indexOf(tableData[scope.$index].id) > -1?"已":""}}领取
-                                    </el-button>
+
+
                                     <el-button
+                                            :disabled="user.myMedal===scope.row.badge"
                                             size="mini"
-                                            @click="wear(scope.$index, scope.row)">佩戴
+                                            @click="wear(scope.$index, scope.row)">{{user.myMedal===scope.row.badge?"已佩戴":"佩戴"}}
                                     </el-button>
+                                    <!--<el-button :disabled="isReceive.indexOf(tableData[scope.$index].id) > -1"-->
+                                            <!--size="mini"-->
+                                            <!--@click="receive(scope.$index, scope.row)">{{isReceive.indexOf(tableData[scope.$index].id) > -1?"已":""}}领取-->
+                                    <!--</el-button>-->
+
                                 </template>
                             </el-table-column>
                         </el-table>

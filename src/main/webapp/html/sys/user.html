@@ -130,7 +130,7 @@
                         <el-form-item label="用户名" prop="userName">
                             <el-input v-model="teacher.userName" placeholder="请输入用户名" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="登陆账号" prop="userCode">
+                        <el-form-item label="身份证号" prop="userCode">
                             <el-input v-model="teacher.userCode" placeholder="请输入登陆账号" clearable></el-input>
                         </el-form-item>
 
@@ -153,7 +153,7 @@
                             </el-upload>
                         </el-form-item>
 
-                        <el-form-item label="部门" prop="orgName">
+                        <el-form-item label="部门名称" prop="orgName">
                             <el-input type="text" class="form-control" style="cursor:pointer;" v-model="teacher.orgName"
                                       @focus="deptShow" readonly="readonly" placeholder="所属部门"></el-input>
                         </el-form-item>

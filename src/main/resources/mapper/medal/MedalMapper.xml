@@ -58,10 +58,19 @@
         </where>
     </select>
 
-    <select id="findList" resultType="com.lawschool.beans.medal.MedalEntity">
+    <select id="findList"  resultType="com.lawschool.beans.medal.MedalEntity">
         SELECT
         <include refid="medalColumn"/>
         FROM law_medal
+        <where>
+           1=1
+            <if test="integral!=null and integral!=''">
+                AND law_medal.integral &lt;=  #{integral}
+            </if>
+            <if test="credit!=null and credit!=''">
+                AND law_medal.credit &lt;= #{credit}
+            </if>
+        </where>
     </select>
 
     <delete id="delete">

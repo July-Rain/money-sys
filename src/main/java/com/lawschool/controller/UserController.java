@@ -42,7 +42,21 @@ public class UserController extends AbstractController {
         result.put("info",user);
         return result;
     }
-
+    /**
+     * @Author zjw
+     * @Description 获取当前用户
+     * @Date 9:19 2018/12/19
+     * @Param [userId]
+     * @return com.lawschool.util.Result
+     **/
+    @RequestMapping("/getUser2")
+    public Result selectUserByUserId2(){
+        Result result=Result.ok();
+       String userId=getUser().getId();
+        User user = userService.selectUserByUserId(userId);
+        result.put("info",user);
+        return result;
+    }
     //列表
     @RequestMapping("/getAllUsers")
     public Result selectAllUsers(@RequestParam Map<String,Object> params){
@@ -89,6 +103,52 @@ public class UserController extends AbstractController {
         return result;
     }
 
+    @RequestMapping("/userPoliceId")
+    public Result userPoliceId(String userPoliceId ,String mytype,String id){
+        String type="";
+        User user=null;
+        if(mytype.equals("1"))
+        {
+             user= userService.selectOne(new EntityWrapper<User>().eq("USER_POLICE_ID",userPoliceId));
+
+        }
+        else if(mytype.equals("2"))
+        {
+            user= userService.selectOne(new EntityWrapper<User>().eq("USER_POLICE_ID",userPoliceId).ne("ID",id));
+        }
+        if(user==null)
+        {
+            type="0";
+        }
+        else
+        {
+            type="1";
+        }
+        return Result.ok().put("type",type);
+    }
+    @RequestMapping("/userCode")
+    public Result userCode(String userCode ,String mytype,String id){
+        String type="";
+        User user=null;
+        if(mytype.equals("1"))
+        {
+            user= userService.selectOne(new EntityWrapper<User>().eq("USER_CODE",userCode));
+
+        }
+        else if(mytype.equals("2"))
+        {
+            user= userService.selectOne(new EntityWrapper<User>().eq("USER_CODE",userCode).ne("ID",id));
+        }
+        if(user==null)
+        {
+            type="0";
+        }
+        else
+        {
+            type="1";
+        }
+        return Result.ok().put("type",type);
+    }
 
 
    /**
@@ -162,6 +222,21 @@ public class UserController extends AbstractController {
     public Result update(@RequestBody User user){
         int rst = userService.updateUser(user);
         return rst==SUCCESS?Result.ok():Result.error("修改用户失败");
+    }
+    /**
+     * @Author zjw
+     * @Description 修改用户信息----勋章
+     * @Date 15:46 2018/12/24
+     * @Param [user]
+     * @return com.lawschool.util.Result
+     **/
+    @RequestMapping("/updateBymyMedal")
+    public Result updateBymyMedal(String myMedal){
+        String userId=getUser().getId();
+        User user = userService.selectUserByUserId(userId);
+        user.setMyMedal(myMedal);
+        userService.updateById(user);
+        return Result.ok();
     }
 
     @RequestMapping("/jsGetUser")

@@ -292,7 +292,8 @@ var vm = new Vue({
 
         //保存
         saveOrUpdate:function () {
-
+            var myuserPoliceId="";
+            var myuserCode="";
             var rs="";
             vm.tmroles.map(function (item,index) {
                 if(!(index==vm.roles.length-1  || index==0)){
@@ -302,15 +303,73 @@ var vm = new Vue({
             });
             vm.teacher.roles=rs;
             var url=baseURL + "sys/add";
+            var mytype="1"
             console.log(vm.teacher.id);
             if (vm.teacher.id != null && vm.teacher.id != '') {
                 url=baseURL+"sys/updata";
+                 mytype="2"
             }
+
+
+            //保存前先判断 身份证号 与  警号 有没有重复 冲突  在js做  就不再java里判了
+            //先判断警员号
+            $.ajax({
+                type : "POST",
+                url: baseURL + "sys/userPoliceId?userPoliceId="+vm.teacher.userPoliceId+"&mytype="+mytype+"&id="+vm.teacher.id,
+                dataType: "json",
+                async:false,
+                success:function (result) {
+                    if(result.code==0){
+
+                        if(result.type=="1")//说明找到了
+                        {
+                            // alert("存在重复的警员号，添加失败");
+                            myuserPoliceId="1";
+                            return;
+                        }
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+
+            //在判断身份证号
+            $.ajax({
+                type : "POST",
+                url: baseURL + "sys/userCode?userCode="+vm.teacher.userCode+"&mytype="+mytype+"&id="+vm.teacher.id,
+                dataType: "json",
+                async:false,
+                success:function (result) {
+                    if(result.code==0){
+
+                        if(result.type=="1")//说明找到了
+                        {
+                            // alert("存在重复的登陆账号，添加失败");
+                            myuserCode="1";
+                            return;
+                        }
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+            if(myuserPoliceId=="1")
+            {
+                alert("存在重复的警员号，操作失败");
+                return;
+            }
+            if(myuserCode=="1")
+            {
+                alert("存在重复的登陆账号，操作失败");
+                return;
+            }
+
             $.ajax({
                 type : "POST",
                 url: url,
                 contentType: "application/json",
                 data:JSON.stringify(vm.teacher),
+                async:false,
                 success:function (result) {
                     if(result.code==0){
                         alert("成功");

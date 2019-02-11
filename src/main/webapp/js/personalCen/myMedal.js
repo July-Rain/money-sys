@@ -14,7 +14,9 @@ var vm = new Vue({
             count: 0
         },
         formLabelWidth: '120px',
-        isReceive : []
+        isReceive : [],
+        user:{},
+
     },
     mounted: function () {
 
@@ -83,37 +85,91 @@ var vm = new Vue({
             });
         },
         wear: function (index,row) {
-            console.log(index,row)
-            $.ajax({
-                type: "POST",
-                url: baseURL + "medal/wear/" + row.id,
-                contentType: "application/json",
+            console.info(index);
+            console.info(row.badge);
+            vm.user.myMedal=row.badge;
+
+            //修改这个人身上背的勋章
+              $.ajax({
+                type: "GET",
+                url: baseURL + "sys/updateBymyMedal?myMedal="+row.badge,
+                  dataType: "json",
+                async:false,
                 success: function (result) {
-                    if (result.code === 0) {
-                        vm.$alert('操作成功', '提示', {
-                            confirmButtonText: '确定',
-                            callback: function () {
-                                vm.dialogFormVisible = false;
-                                vm.reload();
-                            }
-                        });
+                    if (result.code == 0) {
+                        alert("佩戴成功");
+                         vm.reload();
                     } else {
                         alert(result.msg);
                     }
                 }
             });
+
+            // $.ajax({
+            //     type: "POST",
+            //     url: baseURL + "medal/wear/" + row.id,
+            //     contentType: "application/json",
+            //     success: function (result) {
+            //         if (result.code === 0) {
+            //             vm.$alert('操作成功', '提示', {
+            //                 confirmButtonText: '确定',
+            //                 callback: function () {
+            //                     vm.dialogFormVisible = false;
+            //                     vm.reload();
+            //                 }
+            //             });
+            //         } else {
+            //             alert(result.msg);
+            //         }
+            //     }
+            // });
         },
         reload: function () {
+
+
+            //得到当前人的信息   主要是要勋章
+            $.ajax({
+                type: "GET",
+                url: baseURL + "sys/getUser2",
+                dataType: "json",
+                async:false,
+                success: function (result) {
+                    if (result.code == 0) {
+
+                        vm.user=result.info;
+
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+
+
+
+            //得到当前人的积分 与学分
+            $.ajax({
+                type: "GET",
+                url: baseURL + "userIntegral/info",
+                dataType: "json",
+                async:false,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.form.jifen=result.info.integralPoint;
+                        vm.form.xuefen=result.info.creditPoint;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+
             $.ajax({
                 type: "GET",
                 url: baseURL + "medal/list",
-                dataType: "json",
-                data: {
-                    page: 1,
-                    limit: 10
-                },
+                contentType: "application/json",
+                data: vm.form,
+                async:false,
                 success: function (result) {
-                    if (result.code == 0) {
+                    if (result.code === 0) {
                         vm.tableData = result.page.list;
                         vm.form.page = result.page.page;
                         vm.form.pageSize = result.page.pageSize;
@@ -124,18 +180,6 @@ var vm = new Vue({
                 }
             });
 
-            $.ajax({
-                type: "GET",
-                url: baseURL + "medal/myMedal",
-                dataType: "json",
-                success: function (result) {
-                    if (result.code == 0) {
-                        vm.isReceive = result.list;
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
         },
         toHome: function () {
             parent.location.reload()
@@ -143,35 +187,20 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
-            $.ajax({
-                type: "GET",
-                url: baseURL + "medal/list",
-                contentType: "application/json",
-                data: vm.form,
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.tableData = result.page.list;
-                        vm.form.page = result.page.page;
-                        vm.form.pageSize = result.page.pageSize;
-                        vm.form.count = parseInt(result.page.count);
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
 
-            $.ajax({
-                type: "GET",
-                url: baseURL + "medal/myMedal",
-                dataType: "json",
-                success: function (result) {
-                    if (result.code == 0) {
-                        vm.isReceive = result.list;
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
+            vm.reload();
+            // $.ajax({
+            //     type: "GET",
+            //     url: baseURL + "medal/myMedal",
+            //     dataType: "json",
+            //     success: function (result) {
+            //         if (result.code == 0) {
+            //             vm.isReceive = result.list;
+            //         } else {
+            //             alert(result.msg);
+            //         }
+            //     }
+            // });
 
         })
     }

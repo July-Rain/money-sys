@@ -134,7 +134,16 @@ public class User extends DataEntity<User> {
 
     private String orgId;//部门id
 
+    private String myMedal;//我的勋章
 
+
+    public String getMyMedal() {
+        return myMedal;
+    }
+
+    public void setMyMedal(String myMedal) {
+        this.myMedal = myMedal;
+    }
 
     public String getOrgName() {
         return orgName;
