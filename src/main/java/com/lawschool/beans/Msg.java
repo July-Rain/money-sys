@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lawschool.base.Page;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -62,6 +63,11 @@ public class Msg implements Serializable{
      */
     private String releasePeople;
     /**
+     * 发布人中文
+     */
+    @TableField(exist = false)
+    private String releasePeopleName;
+    /**
      * 发布时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
@@ -74,8 +80,10 @@ public class Msg implements Serializable{
      * 接收人
      */
     private String recievePeople;
+    @TableField(exist = false)
+    private String recievePeopleNmae;
     /**
-     * 接收日期
+     * 创建日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date recieveDate;
@@ -109,6 +117,13 @@ public class Msg implements Serializable{
     @TableField(exist = false)
     private String backup5;
 
+    public String getRecievePeopleNmae() {
+        return recievePeopleNmae;
+    }
+
+    public void setRecievePeopleNmae(String recievePeopleNmae) {
+        this.recievePeopleNmae = recievePeopleNmae;
+    }
 
     public String getId() {
         return id;
@@ -268,6 +283,14 @@ public class Msg implements Serializable{
 
     public void setUserArr(String[] userArr) {
         this.userArr = userArr;
+    }
+
+    public String getReleasePeopleName() {
+        return releasePeopleName;
+    }
+
+    public void setReleasePeopleName(String releasePeopleName) {
+        this.releasePeopleName = releasePeopleName;
     }
 
     @Override

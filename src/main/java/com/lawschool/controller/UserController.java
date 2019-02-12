@@ -57,6 +57,8 @@ public class UserController extends AbstractController {
         result.put("info",user);
         return result;
     }
+
+
     //列表
     @RequestMapping("/getAllUsers")
     public Result selectAllUsers(@RequestParam Map<String,Object> params){

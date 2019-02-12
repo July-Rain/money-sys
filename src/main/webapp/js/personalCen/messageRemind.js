@@ -20,10 +20,12 @@ var vm = new Vue({
         msgList:[],//接收推送的消息
         tableData:[],//表格数据
         formInline:{
-            currPage:0,
-            pageSize:0,
-            totalCount:0
-        }
+            currPage:1,
+            pageSize:10,
+            totalCount:0,
+        },
+        dialogConfig: false,//table弹出框可见性
+        title02: "",//弹窗的名称
     },
     created: function () {
         this.$nextTick(function (){
@@ -34,14 +36,14 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "GET",
-                url: baseURL + "msg/findMsgList?isMap=true",
+                url: baseURL + "msg/findMsgList?isMp=true",
                 dataType: "json",
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
-                        vm.formInline.currPage = result.page.pageNo;
-                        vm.formInline.pageSize = result.page.pageSize;
-                        vm.formInline.totalCount = parseInt(result.page.count)+1;
+                        vm.formInline.currPage = Number(result.page.currPage);
+                        vm.formInline.pageSize = Number(result.page.pageSize);
+                        vm.formInline.totalCount = Number(result.page.totalCount);
                     } else {
                         alert(result.msg);
                     }
@@ -49,10 +51,12 @@ var vm = new Vue({
             });
         },
         handleSizeChange: function (val) {
-            console.log('每页' + val + '条');
+            this.formInline.pageSize = val;
+            this.reload();
         },
         handleCurrentChange: function (val) {
-            console.log('当前页:' + val);
+            this.formInline.currPage = val;
+            this.reload();
         },
         toUrl: function(url) {
             alert(1)
@@ -60,6 +64,23 @@ var vm = new Vue({
         },
         toHome: function () {
             parent.location.reload()
+        },
+        lookMsg:function(index, row)
+        {
+            this.title02 = "查看";
+            this.dialogConfig = true;
+            $.ajax({
+                type: "GET",
+                url: baseURL + 'msg/info?id=' + row.id,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.msg = result.msg;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         }
     }
 });

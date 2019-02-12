@@ -2,6 +2,8 @@ var menuId =getUrlParam('id');
 var vm = new Vue({
     el: '#app',
     data: {
+        user:{},
+        teamtype2:true,
         sysMsg:{
             id:"",
             title:"",//标题
@@ -30,9 +32,9 @@ var vm = new Vue({
 
         },//人员查询
         formInline:{
-            currPage:"",
-            pageSize:"",
-            totalCount:"",
+            currPage:1,
+            pageSize:10,
+            totalCount:0,
             orgCode:'',
         },
         defaultUserProps:{
@@ -65,6 +67,7 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
+            vm.user=jsgetUser();//获得人
             //加载部门数据
             $.ajax({
                 type: "POST",
@@ -79,6 +82,7 @@ var vm = new Vue({
                     }
                 }
             });
+
             this.reload();
         })
     },
@@ -114,18 +118,36 @@ var vm = new Vue({
             this.reloadUser();
         },
         handleSelectionChange(val) {
+
             //选择人员信息
             this.multipleSelection = val;
-            //遍历最终的人员信息
-            for (var i=0;i<val.length;i++){
-                if (this.sysMsg.recievePeople == "") {
-                    this.sysMsg.recievePeople=val[i].id;
-                    this.sysMsg.userName=val[i].userName;
-                }else{
-                    this.sysMsg.recievePeople+=","+val[i].id;
-                    this.sysMsg.userName+=","+val[i].userName;
+            this.sysMsg.recievePeople="";
+            // 取到msg 的id 看有没
+                if(this.sysMsg.id!="")
+                {
+
+                    if(val.length>1)
+                    {
+                        alert("请选择一位接收人");
+                        return;
+                    }
                 }
-            }
+
+                    //遍历最终的人员信息
+
+                    for (var i=0;i<val.length;i++){
+                        if(i==0)
+                        {
+                            this.sysMsg.recievePeople=val[i].id;
+                            this.sysMsg.userName=val[i].fullName;
+                        }
+                        else
+                        {
+                            this.sysMsg.recievePeople=this.sysMsg.recievePeople+','+val[i].id;
+                            this.sysMsg.userName=this.sysMsg.fullName+','+val[i].fullName;
+                        }
+                    }
+
 
         },
         //部门人员控件中点击事件
@@ -136,7 +158,7 @@ var vm = new Vue({
         chooseUser: function () {
             //选择人员
             this.dialogUser=true;
-
+            // vm.sysMsg.recievePeople="";
         },
         confimUser: function () {
             this.dialogUser=false;
@@ -232,13 +254,10 @@ var vm = new Vue({
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
                     var url = vm.sysMsg.id ? "msg/update" : "msg/insert";
-                    //var url = vm.sysMsg.id ? "msg/update" : "msg/insert";
                     var deptArr = vm.sysMsg.recieveDept?vm.sysMsg.recieveDept.split(","):[];
                     var userArr = vm.sysMsg.recievePeople?vm.sysMsg.recievePeople.split(","):[];
                     vm.sysMsg.deptArr=deptArr;
                     vm.sysMsg.userArr=userArr;
-                    /*var nodes = ztree.getCheckedNodes(true);
-                    vm.learnTasks.taskContentList=nodes;*/
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
@@ -301,19 +320,8 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         addConfig: function () {
-            vm.sysMsg={
-                id:"",
-                title:"",
-                noticeType:"",//消息类型
-                content:"",//内容
-                releaseDept:"",//发布单位
-                releasePeople:"",//发布人
-                recieveDept:"",//接收单位
-                recievePeople:"",
-                recieveDate:"",
-                releaseState:"",//发布状态
-                releaseDate:""
-            };
+            vm.sysMsg.releasePeople=vm.user.id;
+            vm.sysMsg.releasePeopleName=vm.user.fullName;
             this.title02 = "新增";
             this.dialogConfig = true;
             //parent.location.href =baseURL+"modules/examCen/examConfig.html";
@@ -323,8 +331,28 @@ var vm = new Vue({
             this.reload();
         },
         handleEdit: function (index, row) {
-            this.title02 = "修改规则";
+            this.title02 = "修改";
             this.dialogConfig = true;
+            this.teamtype2=true;
+            $.ajax({
+                type: "GET",
+                url: baseURL + 'msg/info?id=' + row.id,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.sysMsg = result.msg;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+
+        lookMsg:function(index, row)
+        {
+            this.title02 = "查看";
+            this.dialogConfig = true;
+            this.teamtype2=false;
             $.ajax({
                 type: "GET",
                 url: baseURL + 'msg/info?id=' + row.id,
@@ -339,7 +367,7 @@ var vm = new Vue({
             });
         },
         handleDel: function (index, row) {
-            alert(11112222)
+
             //vm.delIdArr.push(row.id);
             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -374,21 +402,23 @@ var vm = new Vue({
             vm.reload();
         },
         reload: function () {
+
             $.ajax({
                 type: "GET",
-                url: baseURL + "msg/listAll?isMap=true",
+                url: baseURL + "msg/listAll?isMp=true",
                 dataType: "json",
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
-                        vm.formInline.currPage = result.page.pageNo;
-                        vm.formInline.pageSize = result.page.pageSize;
-                        vm.formInline.totalCount = parseInt(result.page.count)+1;
+                        vm.formInline.currPage = Number(result.page.currPage);
+                        vm.formInline.pageSize = Number(result.page.pageSize);
+                        vm.formInline.totalCount = Number(result.page.totalCount);
                     } else {
                         alert(result.msg);
                     }
                 }
             });
+
         },
 
 

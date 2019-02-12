@@ -29,7 +29,20 @@
 
     <!--查询单条消息-->
     <select id="selectByMsgId" parameterType="java.lang.String" resultType="com.lawschool.beans.Msg">
-        select * from LAW_SYS_MSG_WITHIN_STATION where ID = #{id}
+        select
+            ID AS "id",
+            TITLE AS "title",
+            CONTENT AS "content",
+            RELEASE_PEOPLE AS "releasePeople",
+            USERID2NAME(RELEASE_PEOPLE) AS "releasePeopleName",
+            RECIEVE_PEOPLE AS "recievePeople",
+            USERID2NAME(RECIEVE_PEOPLE) AS "recievePeopleNmae",
+            NOTICE_TYPE AS "noticeType",
+            RELEASE_DATE AS "releaseDate",
+            RECIEVE_DATE AS "recieveDate",
+            RELEASE_STATE AS "releaseState"
+        from
+            LAW_SYS_MSG_WITHIN_STATION where ID = #{id}
     </select>
 
     <!--修改一条数据-->
@@ -72,5 +85,68 @@
         <if test="null!=recievePeople||''!=recievePeople">
             and RECIEVE_PEOPLE = #{recievePeople}
         </if>
+    </select>
+
+
+
+    <select id="selectAllMsgByUserid"  parameterType="map" resultType="com.lawschool.beans.Msg">
+        SELECT
+            ID AS "id",
+            TITLE AS "title",
+            CONTENT AS "content",
+            RELEASE_PEOPLE AS "releasePeople",
+            USERID2NAME(RELEASE_PEOPLE) AS "releasePeopleName",
+            RECIEVE_PEOPLE AS "recievePeople",
+             USERID2NAME(RECIEVE_PEOPLE) AS "recievePeopleNmae",
+            NOTICE_TYPE AS "noticeType",
+            RELEASE_DATE AS "releaseDate",
+            RECIEVE_DATE AS "recieveDate",
+             RELEASE_STATE AS "releaseState"
+        FROM
+            LAW_SYS_MSG_WITHIN_STATION
+        WHERE
+            RELEASE_PEOPLE=#{userId}
+    </select>
+
+
+    <select id="selectAllMsgCont"  parameterType="map" resultType="java.lang.Integer">
+         SELECT
+            COUNT(*)
+        FROM
+            LAW_SYS_MSG_WITHIN_STATION
+        WHERE
+            RELEASE_PEOPLE=#{userId}
+    </select>
+
+
+    <select id="findMsgList"  parameterType="map" resultType="com.lawschool.beans.Msg">
+        SELECT
+        ID AS "id",
+        TITLE AS "title",
+        CONTENT AS "content",
+        RELEASE_PEOPLE AS "releasePeople",
+        USERID2NAME(RELEASE_PEOPLE) AS "releasePeopleName",
+        RECIEVE_PEOPLE AS "recievePeople",
+        USERID2NAME(RECIEVE_PEOPLE) AS "recievePeopleNmae",
+        NOTICE_TYPE AS "noticeType",
+        RELEASE_DATE AS "releaseDate",
+        RECIEVE_DATE AS "recieveDate",
+        RELEASE_STATE AS "releaseState"
+        FROM
+        LAW_SYS_MSG_WITHIN_STATION
+        WHERE
+        RECIEVE_PEOPLE=#{userId}
+        AND 	RELEASE_STATE='1'
+    </select>
+
+
+    <select id="findMsgListCont"  parameterType="map" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        LAW_SYS_MSG_WITHIN_STATION
+        WHERE
+        RECIEVE_PEOPLE=#{userId}
+         AND 	RELEASE_STATE='1'
     </select>
 </mapper>

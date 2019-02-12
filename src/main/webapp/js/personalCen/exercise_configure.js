@@ -2,7 +2,7 @@ var vm = new Vue({
     el: '#app',
     data: {
         tableData: [],
-        title: '',
+        title: '新增配置',
         dialogConfig: false,
         exerciseConfigure: {
             name: '',
@@ -21,7 +21,7 @@ var vm = new Vue({
             primaryNum: 0,
             middleNum: 0,
             seniorNum: 0,
-            topic: {},
+            topic: null,
             total: 0
         },
         addConfigFlag: false,
@@ -38,7 +38,28 @@ var vm = new Vue({
             label: 'localOrgName'
         },
         paperDialog: false,
-        questionList: []
+        questionList: [],
+        configRules: {
+            topic: [{required: true, message: '请选择主题类型', trigger: 'change'}],
+            primaryNum: [
+                {required: true, message: '请设置初级题量', trigger: 'blur'}
+            ],
+            middleNum: [
+                {required: true, message: '请设置中级题量', trigger: 'blur'}
+            ],
+            seniorNum: [
+                {required: true, message: '请设置高级题量', trigger: 'blur'}
+            ]
+        },
+        rules: {
+            prefix: [
+                {required: true, message: '请输入试卷名称前缀并生成试卷名称', trigger: 'blur'},
+                {max: 25, message: '最大长度25', trigger: 'blur'}
+            ],
+            name: [
+                {required: true, message: '请生成试卷名称', trigger: 'blur'}
+            ]
+        }
     },
     methods: {
         addConfig: function () {
@@ -46,63 +67,112 @@ var vm = new Vue({
             vm.dialogConfig = true;
         },
         createName: function () {
-            $.ajax({
-                type: "GET",
-                url: baseURL + "exercise/configure/createName",
-                contentType: "application/json",
-                data:{
-                    prefix: vm.exerciseConfigure.prefix
-                },
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.exerciseConfigure.name = result.name;
-                    } else {
-                        alert(result.msg);
+            if(vm.exerciseConfigure.prefix == null || vm.exerciseConfigure.prefix == ''){
+                vm.$alert('请输入试卷名称前缀', '提示', {
+                    confirmButtonText: '确定',
+                    callback: function () {
                     }
-                }
-            });
+                });
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: baseURL + "exercise/configure/createName",
+                    contentType: "application/json",
+                    data:{
+                        prefix: vm.exerciseConfigure.prefix
+                    },
+                    success: function (result) {
+                        if (result.code === 0) {
+                            vm.exerciseConfigure.name = result.name;
+                        } else {
+                            alert(result.msg);
+                        }
+                    }
+                });
+            }
+
         },
         add: function () {
             vm.addConfigFlag = true;
         },
-        sure: function(){
-            var obj = vm.config.topic;
-            if(obj != null && obj != ''){
-                vm.config.topicId = obj.key;
-                vm.config.topicName = obj.value;
-            }
-            vm.exerciseConfigure.list.push(vm.config);
-            if(vm.exerciseConfigure.list.length > 1){
-                vm.exerciseConfigure.type = '综合类型';
-            } else if(vm.exerciseConfigure.list.length == 1){
-                vm.exerciseConfigure.type = obj.value;
-            } else {
-                vm.exerciseConfigure.type = '';
-            }
-            vm.config = {};
-            vm.addConfigFlag = false;
-        },
-        save: function () {
-            $.ajax({
-                type: "POST",
-                url: baseURL + "exercise/configure/save",
-                data: JSON.stringify(vm.exerciseConfigure),
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.dialogConfig = false;
-                        vm.exerciseConfigure = {
-                            name: '',
-                            prefix: '',
-                            list: [],
-                            rangeType: 0
-                        };
-                        vm.refresh();
-                    } else {
-                        alert(result.msg);
+        sure: function(formName){
+            this.$refs[formName].validate(function (valid) {
+                if(valid){
+                    var tot = vm.config.primaryNum
+                        + vm.config.middleNum
+                        + vm.config.seniorNum;
+                    if(tot < 1){
+                        vm.$alert('请至少设置一种类型题目数量', '提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                            }
+                        });
+                        valid = false;
                     }
                 }
+                if (valid) {
+                    var obj = vm.config.topic;
+                    if(obj != null && obj != ''){
+                        vm.config.topicId = obj.key;
+                        vm.config.topicName = obj.value;
+                    }
+                    vm.exerciseConfigure.list.push(vm.config);
+                    if(vm.exerciseConfigure.list.length > 1){
+                        vm.exerciseConfigure.type = '综合类型';
+                    } else if(vm.exerciseConfigure.list.length == 1){
+                        vm.exerciseConfigure.type = obj.value;
+                    } else {
+                        vm.exerciseConfigure.type = '';
+                    }
+                    vm.config = {
+                        topicId: '',
+                        topicName: '',
+                        primaryNum: 0,
+                        middleNum: 0,
+                        seniorNum: 0,
+                        topic: null,
+                        total: 0
+                    };
+                    vm.addConfigFlag = false;
+                }
             });
+        },
+        save: function (formName) {
+            this.$refs[formName].validate(function (valid) {
+                if (valid) {
+                    if(vm.exerciseConfigure.list.length == 0){
+                        vm.$alert('请添加配置', '提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                            }
+                        });
+                    } else {
+
+                        $.ajax({
+                            type: "POST",
+                            url: baseURL + "exercise/configure/save",
+                            data: JSON.stringify(vm.exerciseConfigure),
+                            contentType: "application/json",
+                            success: function (result) {
+                                if (result.code === 0) {
+                                    vm.dialogConfig = false;
+                                    vm.exerciseConfigure = {
+                                        name: '',
+                                        prefix: '',
+                                        list: [],
+                                        rangeType: 0
+                                    };
+                                    vm.refresh();
+                                } else {
+                                    alert(result.msg);
+                                }
+                            }
+                        });
+                    }
+
+                }
+            });
+
         },
         refresh: function () {
             $.ajax({
@@ -194,6 +264,18 @@ var vm = new Vue({
         },
         toHome:function () {
             parent.location.reload()
+        },
+        closeConfig: function () {
+            vm.config = {
+                topicId: '',
+                topicName: '',
+                primaryNum: 0,
+                middleNum: 0,
+                seniorNum: 0,
+                topic: null,
+                total: 0
+            };
+            vm.addConfigFlag = false;
         }
     },
     created: function () {

@@ -20,7 +20,11 @@ public interface MsgService extends IService<Msg> {
      * 展示所有消息
      * @return
      */
-    public PageUtils selectAllMsg();
+    public PageUtils selectAllMsg(Map<String,Object> param);
+
+
+
+    public PageUtils findMsgList(Map<String,Object> param);
 
     /**
      * 根据id查询单条消息
