@@ -161,16 +161,26 @@
                                      align="center"
                                      width="200">
                         <template slot-scope="scope">
-                            <el-button
-                                    size="mini"
-                                    @click="handleEdit(scope.$index, scope.row)">编辑
-                            </el-button>
-                            <el-button
-                                    plain
-                                    type="danger"
-                                    size="mini"
-                                    @click="handleDel(scope.$index, scope.row)">删除
-                            </el-button>
+                            <el-popover
+                                    placement="top-start"
+                                    trigger="hover"
+                                    content="编辑">
+                                <i class="el-icon-edit tabIcon"
+                                   slot="reference"
+                                   @click="handleEdit(scope.$index, scope.row)"
+                                   style="color: #119e0a;" >
+                                </i>
+                            </el-popover>
+                            <el-popover
+                                    placement="top-start"
+                                    trigger="hover"
+                                    content="删除">
+                                <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                                   slot="reference"
+                                   @click="handleDel(scope.$index, scope.row)"
+                                   style="color: #e31313;" >
+                                </i>
+                            </el-popover>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -187,21 +197,21 @@
         </el-row>
 
         <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogCaseAna" :before-close="closeDia"  ref="caseAnaDialog">
-            <el-row>
+            <div>
                 <el-col :span="24">
                     <el-form :model="caseAna" :rules="rules" ref="caseAna" label-width="115px" class="demo-caseAna" size="mini">
-                        <el-form-item label="案例资料类型" prop="contentType">
+                        <el-form-item label="案例资料类型：" prop="contentType">
                             <el-radio-group v-model="caseAna.contentType" >
                                 <el-radio  label="1">文字</el-radio>
                                 <el-radio  label="2">音频</el-radio>
                                 <el-radio  label="3">视频</el-radio>
                             </el-radio-group>
                         </el-form-item>
-                        <el-form-item label="案例标题" prop="caseTitle">
+                        <el-form-item label="案例标题：" prop="caseTitle">
                             <el-input v-model="caseAna.caseTitle" placeholder="请输入标题" clearable></el-input>
                         </el-form-item>
                         <template v-if="caseAna.contentType=='1'">
-                            <el-form-item label="内容" prop="caseContent">
+                            <el-form-item label="内容：" prop="caseContent">
                                 <!--<el-input type="textarea" maxlength="200" v-model="caseAna.caseContent"></el-input>-->
                                 <div id="editor" style="width: 100%;">
                                 </div>
@@ -209,7 +219,7 @@
                         </template>
                         <template v-if="caseAna.contentType=='2'">
 
-                            <el-form-item label="音频上传" prop="caseContent">
+                            <el-form-item label="音频上传：" prop="caseContent">
                                 <!-- action必选参数, 上传的地址 -->
                                 <el-upload name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess" :before-upload="beforeAudioUpload" :on-progress="uploadVideoProcess">
                                     <audio v-if="caseAna.caseContent !='' && videoFlag == false" :src="caseAna.caseContentUrl" class="avatar" controls="controls" >您的浏览器不支持音频播放</audio>
@@ -220,7 +230,7 @@
                             </el-form-item>
                         </template>
                         <template v-if="caseAna.contentType=='3'">
-                            <el-form-item label="视频封面上传" prop="videoPicAcc">
+                            <el-form-item label="视频封面上传：" prop="videoPicAcc">
                                 <el-upload
                                         class="avatar-uploader"
                                         name="importfile"
@@ -232,7 +242,7 @@
                                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                 </el-upload>
                             </el-form-item>
-                            <el-form-item label="视频上传" prop="caseContent">
+                            <el-form-item label="视频上传：" prop="caseContent">
                                 <!-- action必选参数, 上传的地址 -->
                                 <el-upload name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess" :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
                                     <video v-if="caseAna.caseContent !='' && videoFlag == false" :src="caseAna.caseContentUrl" class="avatar" controls="controls" >您的浏览器不支持视频播放</video>
@@ -242,7 +252,7 @@
                                 <P class="text">请保证视频格式正确，且不超过100M</P>
                             </el-form-item>
                         </template>
-                        <el-form-item label="案件类型" prop="caseType">
+                        <el-form-item label="案件类型：" prop="caseType">
                             <el-select v-model="caseAna.caseType" placeholder="案件类型" >
                                 <el-option
                                         v-for="item in caseTypeOption"
@@ -253,7 +263,7 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="法院层级" prop="lawLevel">
+                        <el-form-item label="法院层级：" prop="lawLevel">
                             <el-select v-model="caseAna.lawLevel" placeholder="法院层级" >
                                 <el-option
                                         v-for="item in lawLevelOption"
@@ -264,7 +274,7 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="裁判日期" prop="caseTime">
+                        <el-form-item label="裁判日期：" prop="caseTime">
                             <el-date-picker
                                     v-model="caseAna.caseTime"
                                     type="date"
@@ -275,7 +285,7 @@
                             >
                             </el-date-picker>
                         </el-form-item>
-                        <el-form-item label="审判程序" prop="caseProcess">
+                        <el-form-item label="审判程序：" prop="caseProcess">
                             <el-select v-model="caseAna.caseProcess" placeholder="审判程序" >
                                 <el-option
                                         v-for="item in caseProcessOption"
@@ -286,22 +296,22 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="使用部门" prop="deptName">
+                        <el-form-item label="使用部门：" prop="deptName">
                             <el-input v-model="caseAna.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="使用人员" prop="userName">
+                        <el-form-item label="使用人员：" prop="userName">
                             <el-input v-model="caseAna.userName" readonly @focus="chooseUser" placeholder="请选择使用人员" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="案例描述" prop="caseDescribe">
+                        <el-form-item label="案例描述：" prop="caseDescribe">
                             <el-input type="textarea" maxlength="200" v-model="caseAna.caseDescribe"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="saveOrUpdate('caseAna')">保存</el-button>
-                            <el-button @click="closeDia">取消</el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
-            </el-row>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="closeDia">取消</el-button>
+                <el-button type="primary" @click="saveOrUpdate('caseAna')">保存</el-button>
+            </div>
         </el-dialog>
 
         <el-dialog title="选择部门" :visible.sync="dialogDept" >

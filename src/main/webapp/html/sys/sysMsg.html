@@ -7,9 +7,6 @@
         .el-col{
             min-height: 45px;
         }
-        .paddingLeft20{
-            padding-left: 20px;
-        }
         .list{
             max-height: 390px;
         }
@@ -79,7 +76,7 @@
                         width="100">
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.releaseState === '0'" size="small" type="danger">未发布</el-tag>
-                        <el-tag v-else size="small">已发布</el-tag>
+                        <el-tag v-else size="small" type="success">已发布</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="300" align="center">

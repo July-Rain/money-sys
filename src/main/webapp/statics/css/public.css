@@ -28,6 +28,12 @@ ul li{
 .dialog_minW750>.el-dialog{
     min-width: 750px;
 }
+.paddingLeft20{
+    padding-left: 20px;
+}
+.depList{
+    max-height: 642px;
+}
 /*table 操作区 icon*/
 .tabIcon{
     cursor: pointer;

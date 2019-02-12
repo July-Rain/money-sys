@@ -4,9 +4,6 @@
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
-<style>
-
-</style>
 <body>
 <div id="app" v-cloak>
     <div class="container">
@@ -18,7 +15,8 @@
         <div>
 
             <div class="info_btn">
-                <el-button size="mini" type="primary" @click="addConfig"><i class="iconfont icon-htmal5icon18"></i>新增</el-button>
+                <el-button size="mini" type="primary" @click="addConfig"><i class="iconfont icon-htmal5icon18"></i>新增
+                </el-button>
             </div>
             <el-table
                     :data="tableData"
@@ -28,12 +26,14 @@
                         prop="id"
                         label="序号"
                         width="200"
+                        align="center"
                 >
                 </el-table-column>
                 <el-table-column
                         prop="ruleName"
                         label="规则名称"
                         width="240"
+                        align="center"
                 >
                 </el-table-column>
 
@@ -41,34 +41,55 @@
                         prop="creatUserName"
                         label="配置人"
                         width="240"
+                        align="center"
                 >
                 </el-table-column>
                 <el-table-column
                         :formatter="dateFormat"
                         prop="beginTime"
                         label="规则开始时间"
+                        align="center"
                 >
                 </el-table-column>
                 <el-table-column
                         :formatter="dateFormat"
                         prop="endTime"
                         label="规则结束时间"
+                        align="center"
                 >
                 </el-table-column>
-                <el-table-column label="操作" width="300">
+                <el-table-column label="操作" width="300" align="center">
                     <template slot-scope="scope">
-                        <el-button
-                                size="mini"
-                                @click="handlelook(scope.$index, scope.row)">查看
-                        </el-button>
-                        <el-button
-                                size="mini"
-                                @click="handleEdit(scope.$index, scope.row)">编辑
-                        </el-button>
-                        <el-button
-                                size="mini"
-                                @click="handleDel(scope.$index, scope.row)">删除
-                        </el-button>
+                        <el-popover
+                                placement="top-start"
+                                trigger="hover"
+                                content="查看">
+                            <i class="iconfont icon-chakan tabIcon"
+                               slot="reference"
+                               @click="handlelook(scope.$index, scope.row)"
+                               style="color: #1381e3;font-size: 12px">
+                            </i>
+                        </el-popover>
+                        <el-popover
+                                placement="top-start"
+                                trigger="hover"
+                                content="编辑">
+                            <i class="el-icon-edit tabIcon"
+                               slot="reference"
+                               @click="handleEdit(scope.$index, scope.row)"
+                               style="color: #119e0a;">
+                            </i>
+                        </el-popover>
+                        <el-popover
+                                placement="top-start"
+                                trigger="hover"
+                                content="删除">
+                            <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                               slot="reference"
+                               @click="handleDel(scope.$index, scope.row)"
+                               style="color: #e31313;">
+                            </i>
+                        </el-popover>
                     </template>
                 </el-table-column>
             </el-table>
@@ -84,115 +105,116 @@
                     :total="formInline.count">
             </el-pagination>
         </div>
-
-
-        <el-dialog :title="title+' 每日一题'" :visible.sync="dialogConfig" :before-close="closeDia">
-            <el-form :model="dailyConfig" :rules="rules" ref="dailyConfig" label-width="125px                                                " class="demo-dailyConfig"
+        <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
+            <el-form :model="dailyConfig" :rules="rules" ref="dailyConfig"
+                     label-width="140px                                                " class="demo-dailyConfig"
                      size="mini">
-                <el-row>
-                    <el-col>
-                        <el-form-item label="规则名称">
-                            <el-input v-model="dailyConfig.ruleName" placeholder="请输入考试名称" clearable></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col>
-                        <el-form-item label="出题规则">
-                            <el-radio-group v-model="dailyConfig.createRule">
-                                <el-radio label="1">统一试题</el-radio>
-                                <el-radio label="2">随机不同</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                    </el-col>
-                    <el-col>
-                        <el-form-item label="奖励积分">
-                            <template>
-                                <el-input-number v-model="dailyConfig.obtainPoint" @change="handleChange" :min="0"
-                                                 :max="1000" label="请输入">
-                                </el-input-number>
-                                分
-                            </template>
-                        </el-form-item>
-                    </el-col>
-                    <el-col>
-                        <el-form-item label="是否显示法律依据">
-                            <el-radio-group v-model="dailyConfig.isShowLegal">
-                                <el-radio label="1">是</el-radio>
-                                <el-radio label="0">否</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                    </el-col>
+                <el-col>
+                    <el-form-item label="规则名称：">
+                        <el-input :disabled="!xxx" v-model="dailyConfig.ruleName" placeholder="请输入考试名称"
+                                  clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col>
+                    <el-form-item label="出题规则：">
+                        <el-radio-group v-model="dailyConfig.createRule" :disabled="!xxx">
+                            <el-radio label="1">统一试题</el-radio>
+                            <el-radio label="2">随机不同</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                </el-col>
+                <el-col>
+                    <el-form-item label="奖励积分：">
+                        <template>
+                            <el-input-number :disabled="!xxx" v-model="dailyConfig.obtainPoint" @change="handleChange"
+                                             :min="0"
+                                             :max="1000" label="请输入">
+                            </el-input-number>
+                            分
+                        </template>
+                    </el-form-item>
+                </el-col>
+                <el-col>
+                    <el-form-item label="是否显示法律依据：">
+                        <el-radio-group v-model="dailyConfig.isShowLegal" :disabled="!xxx">
+                            <el-radio label="1">是</el-radio>
+                            <el-radio label="0">否</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                </el-col>
 
-                    <el-col>
-                        <el-form-item label="专项知识">
-                            <el-select
-                                    v-model="dailyConfig.specialKnowledgeId"
-                                    size="mini"
-                                    collapse-tags
-                                    style="width: auto"
-                                    placeholder="专项知识点">
-                                <el-option
-                                        v-for="item in specialKnowledgeIds"
-                                        :key="item.key"
-                                        :label="item.value"
-                                        :value="item.key">
-                                </el-option>
-                            </el-select>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
+                <el-col>
+                    <el-form-item label="专项知识：">
+                        <el-select
+                                :disabled="!xxx"
+                                v-model="dailyConfig.specialKnowledgeId"
+                                size="mini"
+                                collapse-tags
+                                style="width: auto"
+                                placeholder="专项知识点">
+                            <el-option
+                                    v-for="item in specialKnowledgeIds"
+                                    :key="item.key"
+                                    :label="item.value"
+                                    :value="item.key">
+                            </el-option>
+                        </el-select>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
 
-                    <el-col>
-                        <el-form-item label="开始时间">
-                            <el-date-picker
-                                    v-model="dailyConfig.beginTime"
-                                    type="datetime"
-                                    value-format="yyyy-MM-dd"
-                                    format="yyyy-MM-dd"
-                                    placeholder="选择开始时间"
-                                    style="width: auto">
-                            </el-date-picker>
-                        </el-form-item>
-                    </el-col>
-                    <el-col>
-                        <el-form-item label="结束时间">
-                            <el-date-picker
-                                    v-model="dailyConfig.endTime"
-                                    type="datetime"
-                                    value-format="yyyy-MM-dd"
-                                    format="yyyy-MM-dd"
-                                    placeholder="选择结束时间"
-                                    style="width: auto">
-                            </el-date-picker>
-                        </el-form-item>
-                    </el-col>
-                    <el-col>
-                        <el-form-item label="显示答案提示" style="width: auto">
-                            <el-select v-model="dailyConfig.isShowAnswer"
-                                       collapse-tags
-                                       style="width: auto"
-                                       placeholder="请选择是否显示答案提示" size="mini">
-                                <el-option label="不显示" value="0"></el-option>
-                                <el-option label="显示" value="1"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col>
-                        <el-form-item label="试题难度">
-                            <el-radio-group v-model="dailyConfig.questionDifficulty">
-                                <el-radio :label="item.code" v-for="item in itemjibie">
-                                    {{item.value}}
-                                </el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                    </el-col>
-                    <el-col v-if="xxx">
-                        <el-form-item>
-                            <el-button type="primary" @click="saveOrUpdate('dailyConfig')">保存</el-button>
-                            <el-button @click="closeDia">取消</el-button>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
+                <el-col>
+                    <el-form-item label="开始时间：">
+                        <el-date-picker
+                                :disabled="!xxx"
+                                v-model="dailyConfig.beginTime"
+                                type="datetime"
+                                value-format="yyyy-MM-dd"
+                                format="yyyy-MM-dd"
+                                placeholder="选择开始时间"
+                                style="width: auto">
+                        </el-date-picker>
+                    </el-form-item>
+                </el-col>
+                <el-col>
+                    <el-form-item label="结束时间：">
+                        <el-date-picker
+                                :disabled="!xxx"
+                                v-model="dailyConfig.endTime"
+                                type="datetime"
+                                value-format="yyyy-MM-dd"
+                                format="yyyy-MM-dd"
+                                placeholder="选择结束时间"
+                                style="width: auto">
+                        </el-date-picker>
+                    </el-form-item>
+                </el-col>
+                <el-col>
+                    <el-form-item label="显示答案提示：" style="width: auto">
+                        <el-select v-model="dailyConfig.isShowAnswer"
+                                   :disabled="!xxx"
+                                   collapse-tags
+                                   style="width: auto"
+                                   placeholder="请选择是否显示答案提示" size="mini">
+                            <el-option label="不显示" value="0"></el-option>
+                            <el-option label="显示" value="1"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col>
+                    <el-form-item label="试题难度：">
+                        <el-radio-group v-model="dailyConfig.questionDifficulty" :disabled="!xxx">
+                            <el-radio :label="item.code" v-for="item in itemjibie">
+                                {{item.value}}
+                            </el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                </el-col>
             </el-form>
+            <div v-if="xxx" slot="footer" class="dialog-footer">
+                <el-button @click="closeDia">取消</el-button>
+                <el-button type="primary" @click="saveOrUpdate('dailyConfig')">保存</el-button>
+            </div>
         </el-dialog>
     </div>
 </div>

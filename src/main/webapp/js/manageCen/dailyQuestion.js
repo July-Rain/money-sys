@@ -42,14 +42,14 @@ var vm = new Vue({
         dateFormat : function(row, column, cellValue, index){
             var daterc = row[column.property]+"";
             if(daterc!=null){
-                const dateMat= new Date(parseInt(daterc.replace("/Date(", "").replace(")/", ""), 10));
-                const year = dateMat.getFullYear();
-                const month = dateMat.getMonth() + 1;
-                const day = dateMat.getDate();
-                const hh = dateMat.getHours();
-                const mm = dateMat.getMinutes();
-                const ss = dateMat.getSeconds();
-                const timeFormat= year + "-" + month + "-" + day;
+                var dateMat= new Date(parseInt(daterc.replace("/Date(", "").replace(")/", ""), 10));
+                var year = dateMat.getFullYear();
+                var month = dateMat.getMonth() + 1;
+                var day = dateMat.getDate();
+                var hh = dateMat.getHours();
+                var mm = dateMat.getMinutes();
+                var ss = dateMat.getSeconds();
+                var timeFormat= year + "-" + month + "-" + day;
                 return timeFormat;
             }
 
@@ -82,7 +82,6 @@ var vm = new Vue({
                 async:false,
                 data: {type:"QUESTION_DIFF",Parentcode:"0"},
                 success: function (result) {
-                    console.info(result);
                     vm.itemjibie=result.dictlist;
                 }
             });
