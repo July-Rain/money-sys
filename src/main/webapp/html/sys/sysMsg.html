@@ -107,7 +107,7 @@
                         </el-button>
 
                         <el-button
-                                :disabled="scope.row.releaseState===1"
+                                :disabled="'1'===scope.row.releaseState"
                                 size="mini"
                                 @click="handleEdit(scope.$index, scope.row)">编辑
                         </el-button>
