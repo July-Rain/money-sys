@@ -25,8 +25,14 @@
 
 
         <div class="userInfo clearfix">
-            <div class="img"></div>
-            .txt
+            <div class="img">
+                <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+            </div>
+            <div class="txt">
+                <h3>飞翔的企鹅<sub>擂台</sub></h3>
+                <p>积分：2.56万</p>
+                <p>擂台次：5</p>
+            </div>
         </div>
         <!--规则-->
         <div class="model_area rule_area" v-if="ruleAreaShow">
@@ -39,57 +45,53 @@
         </div>
 
 
-        <div style="height: 700px;" >
-            <p>当前登录用户：{{u.fullName}}</p>
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            <p>擂主：{{leizhu}}</p>
-            <br/>
-            <p>我的得分：{{myscore}}</p>
-            <br/>
-            <p>对手的得分：{{youscore}}</p>
-            <br/>
-            <p>对手是否已答题：{{yesOrNoAnswer}}</p>
-            <div class="inChatArea">
-                <div id="chatSidebar" class="chatSidebar">
-                    <h2 id="chatOnline">在线用户(0人)</h2>
-                    <ul id="chatUserList">
+    </div>
 
+    <div style="height: 700px;" >
+        <p>当前登录用户：{{u.fullName}}</p>
+        <p>擂主：{{leizhu}}</p>
+        <br/>
+        <p>我的得分：{{myscore}}</p>
+        <br/>
+        <p>对手的得分：{{youscore}}</p>
+        <br/>
+        <p>对手是否已答题：{{yesOrNoAnswer}}</p>
+        <div class="inChatArea">
+            <div id="chatSidebar" class="chatSidebar">
+                <h2 id="chatOnline">在线用户(0人)</h2>
+                <ul id="chatUserList">
+
+                </ul>
+            </div>
+            <div class="chatCon">
+                <div class="up" id="up" style="height: 180px;">
+                    <ul id="contentUl">
+                        <!-- <li><b>14:08</b><em>江山如此多娇</em><span>今天天气不大家出来嗨！！！！！</span></li>
+                        -->
                     </ul>
                 </div>
-                <div class="chatCon">
-                    <div class="up" id="up" style="height: 180px;">
-                        <ul id="contentUl">
-                            <!-- <li><b>14:08</b><em>江山如此多娇</em><span>今天天气不大家出来嗨！！！！！</span></li>
-                            -->
-                        </ul>
-                    </div>
 
+                <br/>
+
+                <div v-show="dialogQuestion">
+                    一共{{allnum}}题，当前{{nownum}}题，当前题目分值{{nowQscore}}
+                    <br/><br/>
+                    [{{Question.questionType==10004?'单选题':Question.questionType==10005?'多选题':'判断题'}}] {{Question.comContent}}
                     <br/>
-
-                    <div v-show="dialogQuestion">
-                        一共{{allnum}}题，当前{{nownum}}题，当前题目分值{{nowQscore}}
-                        <br/><br/>
-                        [{{Question.questionType==10004?'单选题':Question.questionType==10005?'多选题':'判断题'}}] {{Question.comContent}}
+                    <br/>
+                    <el-radio-group v-model="answers" v-if="Question.questionType==10004 || Question.questionType==10006"
+                    >
+                        <el-radio :label="answer.id" v-for="answer in Question.answerList" :disabled="radio_disabled"
+                                  @change="radioCheck(answer.id, Question.answerId, Question.questionType)" >
+                            {{answer.questionContent}}
+                        </el-radio>
                         <br/>
-                        <br/>
-                        <el-radio-group v-model="answers" v-if="Question.questionType==10004 || Question.questionType==10006"
-                        >
-                            <el-radio :label="answer.id" v-for="answer in Question.answerList" :disabled="radio_disabled"
-                                      @change="radioCheck(answer.id, Question.answerId, Question.questionType)" >
-                                {{answer.questionContent}}
-                            </el-radio>
-                            <br/>
-                        </el-radio-group>
-                    </div>
-
+                    </el-radio-group>
                 </div>
 
             </div>
+
         </div>
-
-
-
-
     </div>
 </div>
 </body>

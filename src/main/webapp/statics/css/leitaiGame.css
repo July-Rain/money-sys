@@ -117,3 +117,7 @@ button {
     margin: 50px auto 0;
     line-height: 23px;
 }
+
+.userInfo{
+    width: 450px;
+}
