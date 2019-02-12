@@ -142,6 +142,7 @@ var vm = new Vue({
             this.insertRecord(row.id);
         },
         insertRecord: function (id) {
+            debugger
             //插入学习记录
             //请求后台修改播放量 记录学习记录
             $.ajax({

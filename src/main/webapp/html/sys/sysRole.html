@@ -3,6 +3,17 @@
 <head>
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .paddingLeft20{
+            padding-left: 20px;
+        }
+        .list{
+            max-height: 390px;
+        }
+        .el-col>h3{
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
 <div id="app" v-cloak>
@@ -56,10 +67,10 @@
                                 placement="top-start"
                                 trigger="hover"
                                 content="编辑">
-                            <i class="el-icon-edit"
+                            <i class="el-icon-edit tabIcon"
                                slot="reference"
                                @click="handleEdit(scope.$index, scope.row)"
-                               style="color: #e31313;cursor: pointer;padding: 0 20px;font-size: 18px"
+                               style="color: #119e0a;"
                             >
                             </i>
                         </el-popover>
@@ -100,42 +111,46 @@
         </div>
 
         <el-dialog :title="title" :visible.sync="dialogFormVisible" :before-close="closeDia">
-            <el-form :model="form" :rules="rules" ref="form">
+            <el-form  label-width="100px" :model="form" :rules="rules" ref="form" size="mini">
                 <el-row>
                     <el-col :span="11">
-                        <el-form-item label="角色名称" :label-width="formLabelWidth" prop="roleName">
+                        <el-form-item label="角色名称：" :label-width="formLabelWidth" prop="roleName">
                             <el-input :disabled="isEdit" v-model="form.roleName" autocomplete="off"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="11">
-                        <el-form-item label="备注" :label-width="formLabelWidth">
+                        <el-form-item label="备注：" :label-width="formLabelWidth">
                             <el-input :disabled="isEdit" v-model="form.remark" autocomplete="off"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
                         <h3>功能权限</h3>
-                        <el-tree
-                                ref="tree1"
-                                :data="treeData1"
-                                show-checkbox
-                                node-key="id"
-                                :default-expanded-keys="[]"
-                                :default-checked-keys="form.menuList"
-                                :props="defaultProps"
-                                >
-                        </el-tree>
+                        <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                            <el-tree
+                                    ref="tree1"
+                                    :data="treeData1"
+                                    show-checkbox
+                                    node-key="id"
+                                    :default-expanded-keys="[]"
+                                    :default-checked-keys="form.menuList"
+                                    :props="defaultProps"
+                            >
+                            </el-tree>
+                        </el-scrollbar>
                     </el-col>
-                    <el-col :span="18">
+                    <el-col :span="18" class="paddingLeft20">
                         <h3>数据权限</h3>
-                        <el-tree
-                                ref="tree2"
-                                :data="treeData2"
-                                show-checkbox
-                                node-key="id"
-                                :default-expanded-keys="[2079]"
-                                :default-checked-keys="form.orgList"
-                                :props="defaultProps2">
-                        </el-tree>
+                        <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                            <el-tree
+                                    ref="tree2"
+                                    :data="treeData2"
+                                    show-checkbox
+                                    node-key="id"
+                                    :default-expanded-keys="[2079]"
+                                    :default-checked-keys="form.orgList"
+                                    :props="defaultProps2">
+                            </el-tree>
+                        </el-scrollbar>
                     </el-col>
                 </el-row>
 

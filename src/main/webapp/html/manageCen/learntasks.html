@@ -241,7 +241,7 @@
                                     width="100">
                                 <template slot-scope="scope">
                                     <el-tag v-if="scope.row.isUse === '0'" size="small" type="danger">未启用</el-tag>
-                                    <el-tag v-else size="small">已启用</el-tag>
+                                    <el-tag v-else size="small" type="success">已启用</el-tag>
                                 </template>
                             </el-table-column>
                             <el-table-column
@@ -254,16 +254,28 @@
                                                size="mini"
                                                @click="handleStart(scope.$index, scope.row)">启用
                                     </el-button>
-                                    <el-button
-                                            size="mini"
-                                            @click="handleEdit(scope.$index, scope.row)">编辑
-                                    </el-button>
-                                    <el-button
-                                            plain
-                                            type="danger"
-                                            size="mini"
-                                            @click="handleDel(scope.$index, scope.row)">删除
-                                    </el-button>
+                                    <el-popover
+                                            placement="top-start"
+                                            trigger="hover"
+                                            content="编辑">
+                                        <i class="el-icon-edit tabIcon"
+                                           slot="reference"
+                                           @click="handleEdit(scope.$index, scope.row)"
+                                           style="color: #119e0a;"
+                                        >
+                                        </i>
+                                    </el-popover>
+                                    <el-popover
+                                            placement="top-start"
+                                            trigger="hover"
+                                            content="删除">
+                                        <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                                           slot="reference"
+                                           @click="handleDel(scope.$index, scope.row)"
+                                           style="color: #e31313;"
+                                        >
+                                        </i>
+                                    </el-popover>
                                 </template>
                             </el-table-column>
                         </el-table>

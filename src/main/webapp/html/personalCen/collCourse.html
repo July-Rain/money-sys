@@ -57,9 +57,11 @@
                                 </el-form-item>
 
                                 <el-form-item  label="类型" prop="stuType">
-                                    <el-radio label="1" v-model="formInline.stuType" @change="changeType"> 文字</el-radio>
-                                    <el-radio label="2" v-model="formInline.stuType" @change="changeType"> 音频</el-radio>
-                                    <el-radio label="3" v-model="formInline.stuType" @change="changeType"> 视频</el-radio>
+                                    <el-select v-model="formInline.stuType" placeholder="类型" size="mini">
+                                        <el-option label="文字" value="1"></el-option>
+                                        <el-option label="音频" value="2"></el-option>
+                                        <el-option label="视频" value="3"></el-option>
+                                    </el-select>
                                 </el-form-item>
                                 <!-- <el-form-item prop="status">
                                      <el-select v-model="formInline.status" placeholder="状态" size="mini">
