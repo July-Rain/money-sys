@@ -108,17 +108,14 @@
 
         <el-dialog :title="title" :visible.sync="dialogConfig">
             <el-col :span="24">
-                <el-form :model="exerciseConfigure" ref="exerciseConfigure" label-width="100px"  size="mini">
-                    <el-form-item label="练习卷名称：" prop="name">
-                        <el-input v-model="exerciseConfigure.name" disabled></el-input>
-                    </el-form-item>
-
+                <el-form :model="exerciseConfigure" :rules="rules" ref="exerciseConfigure" label-width="100px"  size="mini">
                     <el-form-item label="名称前缀：" prop="prefix">
-                        <el-input v-model="exerciseConfigure.prefix" placeholder="请输入名称前缀" clearable></el-input>
-                        <!--<el-button size="mini" type="primary" @click="createName">生成试卷名称</el-button>-->
+                        <el-input v-model="exerciseConfigure.prefix" placeholder="请输入名称前缀" clearable>
+                            <el-button slot="append" icon="el-icon-document" @click="createName">生成试卷名称</el-button>
+                        </el-input>
                     </el-form-item>
-                    <el-form-item label="" prop="prefix">
-                        <el-button size="mini" type="primary" @click="createName">生成试卷名称</el-button>
+                    <el-form-item label="试卷名称：" prop="name">
+                        <el-input v-model="exerciseConfigure.name" disabled></el-input>
                     </el-form-item>
                     <el-form-item label="练习卷配置：">
                         <el-button size="mini" type="primary" @click="add">添加配置</el-button>
@@ -196,15 +193,15 @@
             </el-col>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogConfig = false">取 消</el-button>
-                <el-button type="primary" @click="save">生成试卷</el-button>
+                <el-button type="primary" @click="save('exerciseConfigure')">生成试卷</el-button>
             </div>
         </el-dialog>
 
-        <el-dialog title="添加练习配置" :visible.sync="addConfigFlag">
+        <el-dialog title="添加练习配置" :visible.sync="addConfigFlag" :before-close="closeConfig" >
             <el-row>
-                <el-col :span="24">
-                    <el-form :model="config" label-width="100px" class="demo-sysMenu" size="mini">
-                        <el-form-item label="主题类型：">
+                <el-col :span="12">
+                    <el-form :model="config" :rules="configRules" ref="config" label-width="100px" class="demo-sysMenu" size="mini">
+                        <el-form-item label="主题类型：" prop="topic">
                             <el-select v-model="config.topic" placeholder="请选择">
                                 <el-option
                                         v-for="item in topicList"
@@ -215,20 +212,20 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="初级题量：">
-                            <el-input v-model="config.primaryNum" placeholder="初级题量" type="number"></el-input>
+                        <el-form-item label="初级题量：" prop="primaryNum">
+                            <el-input-number v-model="config.primaryNum" controls-position="right" :min="0"></el-input-number>
                         </el-form-item>
 
-                        <el-form-item label="中级题量：">
-                            <el-input v-model="config.middleNum" placeholder="中级题量" type="number"></el-input>
+                        <el-form-item label="中级题量：" prop="middleNum">
+                            <el-input-number v-model="config.middleNum" controls-position="right" :min="0"></el-input-number>
                         </el-form-item>
 
-                        <el-form-item label="高级题量：">
-                            <el-input v-model="config.seniorNum" placeholder="高级题量" type="number"></el-input>
+                        <el-form-item label="高级题量：" prop="seniorNum">
+                            <el-input-number v-model="config.seniorNum" controls-position="right" :min="0"></el-input-number>
                         </el-form-item>
 
                         <el-form-item>
-                            <el-button type="primary" @click="sure">确定</el-button>
+                            <el-button type="primary" @click="sure('config')">确定</el-button>
                         </el-form-item>
 
                     </el-form>
@@ -251,7 +248,7 @@
             <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
         </el-dialog>
 
-        <el-dialog title="练习试卷" :visible.sync="paperDialog" width="800px" height="800px">
+        <el-dialog title="试卷详情" :visible.sync="paperDialog" width="800px" height="800px">
             <div v-for="(item,index) in questionList" class="swiper-slide">
                 {{index+1}}. [{{item.questionType=='10004'?'单选题':item.questionType=='10005'?'多选题':'判断题'}}]
                 {{item.comContent}}
