@@ -26,10 +26,11 @@
                                 border
                                 style="width: 100%">
                             <el-table-column
-                                    prop="id"
                                     label="序号"
-                                    width="150"
-                            >
+                                    type="index"
+                                    header-align="center"
+                                    align="center"
+                                    width="150">
                             </el-table-column>
                             <el-table-column
                                     prop="title"
@@ -39,53 +40,31 @@
                             </el-table-column>
 
                             <el-table-column
-                                    prop="content"
-                                    label="消息内容"
+                                    prop="releasePeopleName"
+                                    label="发件人"
                             >
                             </el-table-column>
                             <el-table-column
                                     prop="releaseDate"
-                                    label="发送时间"
-                            >
-                            </el-table-column>
-                            <el-table-column
-                                    prop="recieveDate"
                                     label="接收时间"
                             >
                             </el-table-column>
+
+
                             <el-table-column
                                     prop="noticeType"
                                     label="消息类型"
                             >
                             </el-table-column>
-                            <el-table-column
-                                    prop="releaseState"
-                                    label="状态"
-                                    width="180"
-                                    header-align="center"
-                                    align="center"
-                                    width="100">
+
+                           <el-table-column label="操作" width="300">
                                 <template slot-scope="scope">
-                                    <el-tag v-if="scope.row.releaseState === '0'" size="small" type="danger">未发布</el-tag>
-                                    <el-tag v-else size="small">已发布</el-tag>
+                                    <el-button
+                                            size="mini"
+                                            @click="lookMsg(scope.$index, scope.row)">查看
+                                    </el-button>
                                 </template>
                             </el-table-column>
-                            <!--<el-table-column label="操作" width="300">
-                                <template slot-scope="scope">
-                                    <el-button
-                                            size="mini"
-                                            @click="send(scope.$index, scope.row)">发送
-                                    </el-button>
-                                    <el-button
-                                            size="mini"
-                                            @click="handleEdit(scope.$index, scope.row)">编辑
-                                    </el-button>
-                                    <el-button
-                                            size="mini"
-                                            @click="handleDel(scope.$index, scope.row)">删除
-                                    </el-button>
-                                </template>
-                            </el-table-column>-->
                         </el-table>
 
                         <el-pagination
@@ -101,10 +80,47 @@
                 </el-tabs>
             </el-col>
         </el-row>
+        <el-dialog :title="title02" :visible.sync="dialogConfig" :before-close="closeDia">
+            <el-form :model="msg" :rules="rules" ref="msg" label-width="100px" class="demo-msg"
+                     size="mini">
+                <el-row>
+                    <el-col :span="11">
+                        <el-form-item label="消息名称：" prop="title">
+                            <el-input v-model="msg.title" placeholder="请输入消息名称" clearable></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="消息类型：" prop="noticeType">
+                            <el-radio-group v-model="msg.noticeType">
+                                <el-radio label="系统消息" value="10008">系统消息</el-radio>
+                                <el-radio label="管理员消息" value="10009">管理员消息</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+
+                    <el-col span="11">
+                        <el-form-item label="消息内容：" prop="content">
+                            <template>
+                                <el-input v-model="msg.content" @change="handleChange" :min="0" :max="10000"
+                                          placeholder="请输入消息内容"></el-input>
+                            </template>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="11">
+                        <el-form-item label="发件人：" >
+                            <el-input v-model="msg.releasePeopleName" disabled></el-input>
+                        </el-form-item>
+                    </el-col>
+
+
+
+                </el-row>
+            </el-form>
+        </el-dialog>
     </div>
 </div>
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/personalCen/messageRemind.js"></script>
+<script src="${rc.contextPath}/js/personalCen/messageRemind.js?_${.now?long}"></script>
 </html>
