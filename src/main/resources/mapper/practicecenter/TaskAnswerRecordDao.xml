@@ -8,7 +8,7 @@
             id,
             CONFIGURE_ID,
             QUESTION_ID,
-            ANSWER_ID,
+            ANSWER,
             RIGHT,
             CREATE_TIME,
             CREATE_USER,
