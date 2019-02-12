@@ -198,7 +198,8 @@
                                         align="center"
                                 >
                                     <template slot-scope="scope">
-                                        {{scope.row.whetherWin==1?"获胜":"失败"}}
+                                        <el-tag v-if="scope.row.whetherWin==1" size="small" type="success">获胜</el-tag>
+                                        <el-tag v-else size="small" type="danger">失败</el-tag>
                                     </template>
                                 </el-table-column>
 
@@ -250,7 +251,8 @@
                                         align="center"
                                 >
                                     <template slot-scope="scope">
-                                        {{scope.row.whetherWin==1?"获胜":"失败"}}
+                                        <el-tag v-if="scope.row.whetherWin==1" size="small" type="success">获胜</el-tag>
+                                        <el-tag v-else size="small" type="danger">失败</el-tag>
                                     </template>
                                 </el-table-column>
 

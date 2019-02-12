@@ -76,7 +76,7 @@ var vm = new Vue({
             }
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/paper_index.html';
+                = 'modules/exerciseCenter/task_index.html';
         },
         commit: function(){
             if(vm.preserved.length > 0){

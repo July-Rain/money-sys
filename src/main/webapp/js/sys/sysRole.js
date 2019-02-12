@@ -59,6 +59,7 @@ var vm = new Vue({
                 menuList : [],
                 orgList : []
             };
+            vm.title =  '新增角色';
             vm.dialogFormVisible = true;
         },
         handleWatch: function (index, row) {

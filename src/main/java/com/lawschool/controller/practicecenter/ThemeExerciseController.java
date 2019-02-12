@@ -1,26 +1,16 @@
 package com.lawschool.controller.practicecenter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractController;
-import com.lawschool.beans.TestQuestions;
-import com.lawschool.beans.practicecenter.TaskExerciseEntity;
-import com.lawschool.beans.practicecenter.ThemeExerciseEntity;
 import com.lawschool.form.*;
-import com.lawschool.service.TestQuestionService;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.lawschool.beans.User;
 import com.lawschool.service.practicecenter.ThemeExerciseService;
-import com.lawschool.util.RedisUtil;
 import com.lawschool.util.Result;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 主题练习
@@ -33,9 +23,6 @@ public class ThemeExerciseController extends AbstractController {
 
     @Autowired
     private ThemeExerciseService themeExerciseService;
-
-    @Autowired
-    private TestQuestionService testQuestionService;
 
     /**
      * 主题练习首页列表

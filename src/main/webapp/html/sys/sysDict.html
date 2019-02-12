@@ -42,22 +42,22 @@
             <el-row>
                 <el-col :span="12">
                     <el-form :model="sysDict" :rules="rules" ref="sysDict" label-width="100px" class="demo-sysDict" size="mini">
-                        <el-form-item label="字典名称" prop="name">
+                        <el-form-item label="字典名称：" prop="name">
                             <el-input v-model="sysDict.name" placeholder="请输入字典名称" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="字典类型" prop="type">
+                        <el-form-item label="字典类型：" prop="type">
                             <el-input v-model="sysDict.type" placeholder="请输入字典类型" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="字典编码" prop="code">
+                        <el-form-item label="字典编码：" prop="code">
                             <el-input v-model="sysDict.code" placeholder="请输入字典编码" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="排序" prop="orderNum">
+                        <el-form-item label="排序：" prop="orderNum">
                             <el-input v-model="sysDict.orderNum" placeholder="请输入排序" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="备注" prop="remark">
+                        <el-form-item label="备注：" prop="remark">
                             <el-input v-model="sysDict.remark" placeholder="请输入字典备注" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="父节点" prop="parentCode">
+                        <el-form-item label="父节点：" prop="parentCode">
                             <el-input v-model="sysDict.parentCode" placeholder="请输入上级编码" clearable></el-input>
                         </el-form-item>
 
@@ -80,7 +80,7 @@
                                 <el-input v-model="sysMenu.parentName" v-popover:menuListPopover slot="reference" :readonly="true"  placeholder="点击选择上级菜单"></el-input>
                             </el-popover>
                         </el-form-item>-->
-                        <el-form-item label="状态" prop="isShow">
+                        <el-form-item label="状态：" prop="isShow">
                             <el-switch v-model="sysDict.isShow" active-text="有效"  inactive-text="无效" active-value="1"  inactive-value="0" ></el-switch>
                         </el-form-item>
                         <el-form-item>
