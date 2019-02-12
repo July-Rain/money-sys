@@ -49,6 +49,7 @@ var vm = new Vue({
             window.location.href = baseURL + "modules/competition/competeCenter.html"
         },
         radioCheck: function (id, answerId, typeName) {
+
             vm.radio_disabled = true;
             // var answer = vm.answers[0];
             // alert(vm.answers);
