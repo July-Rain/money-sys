@@ -3,10 +3,18 @@
 <head>
     <title>消息设置 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .el-col{
+            min-height: 45px;
+        }
+        .paddingLeft20{
+            padding-left: 20px;
+        }
+        .list{
+            max-height: 390px;
+        }
+    </style>
 </head>
-<style>
-
-</style>
 <body>
 <div id="app" v-cloak>
     <div class="container">
@@ -26,6 +34,7 @@
                 <el-table-column
                         prop="id"
                         label="序号"
+                        align="center"
                         width="150"
                 >
                 </el-table-column>
@@ -33,27 +42,32 @@
                         prop="title"
                         label="消息标题"
                         width="200"
+                        align="center"
                 >
                 </el-table-column>
 
                 <el-table-column
                         prop="content"
                         label="消息内容"
+                        align="center"
                 >
                 </el-table-column>
                 <el-table-column
                         prop="releaseDate"
                         label="发送时间"
+                        align="center"
                 >
                 </el-table-column>
                 <el-table-column
                         prop="recieveDate"
                         label="接收时间"
+                        align="center"
                 >
                 </el-table-column>
                 <el-table-column
                         prop="noticeType"
                         label="消息类型"
+                        align="center"
                 >
                 </el-table-column>
                 <el-table-column
@@ -68,20 +82,34 @@
                         <el-tag v-else size="small">已发布</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="300">
+                <el-table-column label="操作" width="300" align="center">
                     <template slot-scope="scope">
                         <el-button
                                 size="mini"
                                 @click="send(scope.$index, scope.row)">发送
                         </el-button>
-                        <el-button
-                                size="mini"
-                                @click="handleEdit(scope.$index, scope.row)">编辑
-                        </el-button>
-                        <el-button
-                                size="mini"
-                                @click="handleDel(scope.$index, scope.row)">删除
-                        </el-button>
+                        <el-popover
+                                placement="top-start"
+                                trigger="hover"
+                                content="编辑">
+                            <i class="el-icon-edit tabIcon"
+                               slot="reference"
+                               @click="handleEdit(scope.$index, scope.row)"
+                               style="color: #119e0a;"
+                            >
+                            </i>
+                        </el-popover>
+                        <el-popover
+                                placement="top-start"
+                                trigger="hover"
+                                content="删除">
+                            <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                               slot="reference"
+                               @click="handleDel(scope.$index, scope.row)"
+                               style="color: #e31313;"
+                            >
+                            </i>
+                        </el-popover>
                     </template>
                 </el-table-column>
             </el-table>
@@ -101,159 +129,156 @@
         <el-dialog :title="title02" :visible.sync="dialogConfig" :before-close="closeDia">
             <el-form :model="sysMsg" :rules="rules" ref="sysMsg" label-width="100px" class="demo-sysMsg"
                      size="mini">
-                <el-row>
-                    <el-col :span="11">
-                        <el-form-item label="消息名称：" prop="title">
-                            <el-input v-model="sysMsg.title" placeholder="请输入消息名称" clearable></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11">
-                        <el-form-item label="消息类型：" prop="noticeType">
-                            <el-radio-group v-model="sysMsg.noticeType">
-                                <el-radio label="系统消息" value="10008">系统消息</el-radio>
-                                <el-radio label="管理员消息" value="10009">管理员消息</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                    </el-col>
+                <el-col :span="12">
+                    <el-form-item label="消息名称：" prop="title">
+                        <el-input v-model="sysMsg.title" placeholder="请输入消息名称" clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="消息类型：" prop="noticeType">
+                        <el-radio-group v-model="sysMsg.noticeType">
+                            <el-radio label="系统消息" value="10008">系统消息</el-radio>
+                            <el-radio label="管理员消息" value="10009">管理员消息</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                </el-col>
 
-                    <!--<el-col :span="11">
-                        <el-form-item label="发布单位：" prop="releaseDept">
-                            <el-input v-model="sysMsg.releaseDept" placeholder="请输入发布单位" clearable></el-input>
-                        </el-form-item>
-                    </el-col>-->
-                    <el-col span="11">
-                        <el-form-item label="消息内容：" prop="content">
-                            <template>
-                                <el-input v-model="sysMsg.content" @change="handleChange" :min="0" :max="10000"
-                                          placeholder="请输入消息内容"></el-input>
-                            </template>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11">
-                        <el-form-item label="发布人：" prop="releasePeople">
-                            <el-input v-model="sysMsg.releasePeople" placeholder="请输入发布人姓名" clearable></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11">
-                        <!--<el-form-item label="接收单位：" prop="recieveDept">
-                            &lt;!&ndash;对于同一级的节点，每次只能展开一个&ndash;&gt;
-                            <el-tree
-                                    :data="treeData"
-                                    :props="defaultProps"
-                                    accordion
-                                    @node-click="handleNodeClick">
-                            </el-tree>
-                            <el-input v-model="sysMsg.recieveDept" placeholder="请选择接收单位" clearable>
-                            </el-input>
-                        </el-form-item>-->
-                        <el-form-item label="接收部门" prop="deptName">
-                            <el-input v-model="sysMsg.recieveDept" @focus="chooseDept" placeholder="请选择接收部门"
-                                      clearable></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11">
-                        <el-form-item label="接收人：" prop="recievePeople">
-                            <el-input v-model="sysMsg.recievePeople" @focus="chooseUser" placeholder="请输接收人"
-                                      clearable></el-input>
-                        </el-form-item>
-                    </el-col>
+                <!--<el-col :span="11">
+                    <el-form-item label="发布单位：" prop="releaseDept">
+                        <el-input v-model="sysMsg.releaseDept" placeholder="请输入发布单位" clearable></el-input>
+                    </el-form-item>
+                </el-col>-->
+                <el-col :span="12">
+                    <el-form-item label="消息内容：" prop="content">
+                        <template>
+                            <el-input v-model="sysMsg.content" @change="handleChange" :min="0" :max="10000"
+                                      placeholder="请输入消息内容"></el-input>
+                        </template>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="发布人：" prop="releasePeople">
+                        <el-input v-model="sysMsg.releasePeople" placeholder="请输入发布人姓名" clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <!--<el-form-item label="接收单位：" prop="recieveDept">
+                        &lt;!&ndash;对于同一级的节点，每次只能展开一个&ndash;&gt;
+                        <el-tree
+                                :data="treeData"
+                                :props="defaultProps"
+                                accordion
+                                @node-click="handleNodeClick">
+                        </el-tree>
+                        <el-input v-model="sysMsg.recieveDept" placeholder="请选择接收单位" clearable>
+                        </el-input>
+                    </el-form-item>-->
+                    <el-form-item label="接收部门：" prop="deptName">
+                        <el-input v-model="sysMsg.recieveDept" @focus="chooseDept" placeholder="请选择接收部门"
+                                  clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="接收人：" prop="recievePeople">
+                        <el-input v-model="sysMsg.recievePeople" @focus="chooseUser" placeholder="请输接收人"
+                                  clearable></el-input>
+                    </el-form-item>
+                </el-col>
 
-                    <el-col :span="24">
-                        <el-form-item>
-                            <el-button type="primary" @click="saveOrUpdate('sysMsg')">保存</el-button>
-                            <el-button @click="closeDia">取消</el-button>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
             </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="closeDia">取消</el-button>
+                <el-button type="primary" @click="saveOrUpdate('sysMsg')">保存</el-button>
+            </div>
         </el-dialog>
 
 
         <el-dialog title="选择法律分类" :visible.sync="dialogDept">
             <!--对于同一级的节点，每次只能展开一个-->
-            <el-tree
-                    ref="deptTree"
-                    :data="deptData"
-                    :props="defaultProps"
-                    accordion
-                    node-key="id"
-                    show-checkbox
-                    @check-change="handleCheckChange">
-            </el-tree>
-            <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
-            <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
+            <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                <el-tree
+                        ref="deptTree"
+                        :data="deptData"
+                        :props="defaultProps"
+                        accordion
+                        node-key="id"
+                        show-checkbox
+                        @check-change="handleCheckChange">
+                </el-tree>
+            </el-scrollbar>
+
+            <div slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="cancelDept">取消</el-button>
+                <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+            </div>
         </el-dialog>
 
-        <el-dialog title="选择人员" :visible.sync="dialogUser">
+        <el-dialog title="选择人员" :visible.sync="dialogUser" class="dialog_minW750">
             <!--对于同一级的节点，每次只能展开一个-->
-            <el-row>
-                <el-col :span="4">
-                    <el-tree
-                            :data="userData"
-                            :props="defaultUserProps"
-                            accordion
-                            @node-click="handleDeptNodeClick">
-                    </el-tree>
+            <div>
+                <el-col :span="6">
+                    <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                        <el-tree
+                                :data="userData"
+                                :props="defaultUserProps"
+                                accordion
+                                @node-click="handleDeptNodeClick">
+                        </el-tree>
+                    </el-scrollbar>
                 </el-col>
 
-                <el-col :span="20">
-                    <el-tabs type="border-card">
-                        <el-tab-pane label="检索">
-                            <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
+                <el-col :span="18" class="paddingLeft20">
+                    <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
+                        <el-form-item prop="userCode">
+                            <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
+                        </el-form-item>
+                        <el-form-item prop="userName">
+                            <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
+                        </el-form-item>
 
-                                <el-form-item prop="userCode">
-                                    <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
-                                </el-form-item>
-                                <el-form-item prop="userName">
-                                    <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
-                                </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
+                            <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
 
-                                <el-form-item>
-                                    <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
-                                    <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
+                        </el-form-item>
+                    </el-form>
+                    <el-table
+                            :data="userTableData"
+                            border
+                            @selection-change="handleSelectionChange"
+                            style="width: 100%">
+                        <el-table-column
+                                type="selection"
+                                width="55">
+                        </el-table-column>
+                        <el-table-column
+                                prop="userCode"
+                                label="身份证号"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="userName"
+                                label="姓名"
+                                width="280"
+                        >
+                        </el-table-column>
 
-                                </el-form-item>
-                            </el-form>
-                            <div>
-                                <el-table
-                                        :data="userTableData"
-                                        border
-                                        @selection-change="handleSelectionChange"
-                                        style="width: 100%">
-                                    <el-table-column
-                                            type="selection"
-                                            width="55">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="userCode"
-                                            label="身份证号"
-                                    >
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="userName"
-                                            label="姓名"
-                                            width="280"
-                                    >
-                                    </el-table-column>
-
-                                </el-table>
-                                <el-pagination
-                                        @size-change="userHandleSizeChange"
-                                        @current-change="userHandleCurrentChange"
-                                        :current-page="userForm.currPage"
-                                        :page-sizes="[10, 20, 30, 40]"
-                                        :page-size="userForm.pageSize"
-                                        layout="total, sizes, prev, pager, next, jumper"
-                                        :total="userForm.totalCount">
-                                </el-pagination>
-                            </div>
-                        </el-tab-pane>
-                    </el-tabs>
-                    <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
-                    <el-button type="primary" size="mini" @click="cancelUser">取消</el-button>
+                    </el-table>
+                    <el-pagination
+                            @size-change="userHandleSizeChange"
+                            @current-change="userHandleCurrentChange"
+                            :current-page="userForm.currPage"
+                            :page-sizes="[10, 20, 30, 40]"
+                            :page-size="userForm.pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="userForm.totalCount">
+                    </el-pagination>
                 </el-col>
-            </el-row>
-
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="cancelUser">取消</el-button>
+                <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
+            </div>
         </el-dialog>
     </div>
 </div>

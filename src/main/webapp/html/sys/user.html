@@ -3,10 +3,15 @@
 <head>
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .manList{
+            max-height: 742px;
+        }
+        .list{
+            max-height: 390px;
+        }
+    </style>
 </head>
-<style>
-
-</style>
 <body>
 <div id="app" v-cloak>
     <div class="container">
@@ -18,27 +23,33 @@
         <el-row :gutter="24">
             <el-col :span="4">
                 <!--对于同一级的节点，每次只能展开一个-->
-                <el-tree
-                        :data="treeData"
-                        :props="defaultProps"
-                        accordion
-                        @node-click="handleNodeClick">
-                </el-tree>
+                <el-scrollbar wrap-class="manList" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                    <el-tree
+                            :data="treeData"
+                            :props="defaultProps"
+                            accordion
+                            @node-click="handleNodeClick">
+                    </el-tree>
+                </el-scrollbar>
             </el-col>
             <el-col :span="20">
                 <div class="info_card">
                     <div class="card_title"></div>
                     <div class="card_contain">
                         <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-                            <el-form-item prop="userName" label="姓名">
+                            <el-form-item prop="userName" label="姓名：">
                                 <el-input v-model="formInline.userName" placeholder="姓名" size="mini"></el-input>
                             </el-form-item>
-                            <el-form-item prop="userCode" label="身份证号">
+                            <el-form-item prop="userCode" label="身份证号：">
                                 <el-input v-model="formInline.userCode" placeholder="身份证号" size="mini"></el-input>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                                <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
+                                <el-button type="primary" @click="onSubmit" size="mini">
+                                    <i class="iconfont icon-sousuo1"></i>
+                                    查询</el-button>
+                                <el-button @click="resetForm('formInline')" size="mini">
+                                    <i class="iconfont icon-tableresetpassword"></i>
+                                    重置</el-button>
                             </el-form-item>
                         </el-form>
                     </div>
@@ -46,8 +57,6 @@
                 <div class="info_btn">
                     <el-button size="mini" type="primary" @click="handleAdd"><i class="iconfont icon-htmal5icon18"></i>增加</el-button>
                 </div>
-
-
                 <div>
                     <el-table
                             :data="tableData"
@@ -63,30 +72,31 @@
                         <el-table-column
                                 prop="userName"
                                 label="姓名"
-                                width="280"
+                                width="130"
+                                align="center"
                         >
                         </el-table-column>
                         <el-table-column
                                 prop="userPoliceId"
                                 label="警号"
-                                width="280"
+                                width="160"
+                                align="center"
                         >
                         </el-table-column>
                         <el-table-column
                                 prop="userCode"
                                 label="身份证号"
-                                width="180"
+                                width="200"
+                                align="center"
                         >
                         </el-table-column>
                         <el-table-column
                                 prop="orgName"
                                 label="部门名称"
+                                align="center"
                         >
                         </el-table-column>
-
-                        </el-table-column>
-
-                        <el-table-column label="操作"  prop="userStatus">
+                        <el-table-column label="操作"  prop="userStatus" align="center">
                             <template slot-scope="scope">
                                 <el-button
                                         size="mini"
@@ -106,7 +116,17 @@
                                         @click="handleRecovery(scope.$index, scope.row)">恢复
                                 </el-button>
 
-                                <el-button @click="handleUpt(scope.$index, scope.row)">修改</el-button>
+                                <el-popover
+                                        placement="top-start"
+                                        trigger="hover"
+                                        content="编辑">
+                                    <i class="el-icon-edit tabIcon"
+                                       slot="reference"
+                                       @click="handleUpt(scope.$index, scope.row)"
+                                       style="color: #119e0a;"
+                                    >
+                                    </i>
+                                </el-popover>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -124,84 +144,77 @@
         </el-row>
 
         <el-dialog :title="title" :visible.sync="dialogtch" :before-close="closeTchDia">
-            <el-row>
-                <el-col :span="12">
-                    <el-form :model="teacher" :rules="rules" ref="teacher" label-width="100px" class="demo-sysConfig" size="mini">
-                        <el-form-item label="用户名" prop="userName">
-                            <el-input v-model="teacher.userName" placeholder="请输入用户名" clearable></el-input>
-                        </el-form-item>
-                        <el-form-item label="身份证号" prop="userCode">
-                            <el-input v-model="teacher.userCode" placeholder="请输入登陆账号" clearable></el-input>
-                        </el-form-item>
+            <el-col :span="24">
+                <el-form :model="teacher" :rules="rules" ref="teacher" label-width="100px" class="demo-sysConfig" size="mini">
+                    <el-form-item label="用户名：" prop="userName">
+                        <el-input v-model="teacher.userName" placeholder="请输入用户名" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="身份证号：" prop="userCode">
+                        <el-input v-model="teacher.userCode" placeholder="请输入登陆账号" clearable></el-input>
+                    </el-form-item>
 
-                        <el-form-item label="警号" prop="userPoliceId">
-                            <el-input v-model="teacher.userPoliceId" placeholder="请输入警号" clearable></el-input>
-                        </el-form-item>
+                    <el-form-item label="警号：" prop="userPoliceId">
+                        <el-input v-model="teacher.userPoliceId" placeholder="请输入警号" clearable></el-input>
+                    </el-form-item>
 
-                        <!--<el-form-item label="密码" prop="password">
-                            <el-input type="password" v-model="teacher.password" placeholder="请输入密码" clearable></el-input>
-                        </el-form-item>-->
+                    <!--<el-form-item label="密码" prop="password">
+                        <el-input type="password" v-model="teacher.password" placeholder="请输入密码" clearable></el-input>
+                    </el-form-item>-->
 
-                        <el-form-item label="照片" prop="photo">
-                            <el-upload name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false"
-                                       :on-success="uploadSuccess" :before-upload="beforeUpload" :on-progress="uploadProcess">
-                                <el-button v-if="teacher.photo ==''">点击上传</el-button>
-                                <img v-if="teacher.photo !=''"
-                                     :src="'${rc.contextPath}/sys/download?accessoryId='+teacher.photo"
-                                     width="50px" height="50px"
-                                />
-                            </el-upload>
-                        </el-form-item>
+                    <el-form-item label="照片：" prop="photo">
+                        <el-upload name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false"
+                                   :on-success="uploadSuccess" :before-upload="beforeUpload" :on-progress="uploadProcess">
+                            <el-button v-if="teacher.photo ==''" type="primary">点击上传</el-button>
+                            <img v-if="teacher.photo !=''"
+                                 :src="'${rc.contextPath}/sys/download?accessoryId='+teacher.photo"
+                                 width="50px" height="50px"
+                            />
+                        </el-upload>
+                    </el-form-item>
 
-                        <el-form-item label="部门名称" prop="orgName">
-                            <el-input type="text" class="form-control" style="cursor:pointer;" v-model="teacher.orgName"
-                                      @focus="deptShow" readonly="readonly" placeholder="所属部门"></el-input>
-                        </el-form-item>
-
-
-                        <el-form-item label="角色" prop="role">
-                            <el-select v-model="tmroles" placeholder="角色" multiple
-                                       collapse-tags>
-                                <el-option
-                                        multiple
-                                        v-for="item in roles"
-                                        :key="item.id"
-                                        :label="item.roleName"
-                                        :value="item.id"
-                                >
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-
-
-
-
-
-
-
-                        <el-form-item>
-                            <el-button type="primary" @click="saveOrUpdate()">保存</el-button>
-                            <el-button @click="closeTchDia">取消</el-button>
-                        </el-form-item>
-                    </el-form>
-                </el-col>
-            </el-row>
+                    <el-form-item label="部门名称：" prop="orgName">
+                        <el-input type="text" class="form-control" style="cursor:pointer;" v-model="teacher.orgName"
+                                  @focus="deptShow" readonly="readonly" placeholder="所属部门"></el-input>
+                    </el-form-item>
+                    <el-form-item label="角色：" prop="role">
+                        <el-select v-model="tmroles" placeholder="角色" multiple
+                                   collapse-tags>
+                            <el-option
+                                    multiple
+                                    v-for="item in roles"
+                                    :key="item.id"
+                                    :label="item.roleName"
+                                    :value="item.id"
+                            >
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="closeTchDia">取消</el-button>
+                <el-button type="primary" @click="save('configureEntity')">保存设置</el-button>
+            </div>
         </el-dialog>
     </div>
 
     <el-dialog title="选择部门" :visible.sync="dialogDept"  width="500px" height="500px">
         <!--对于同一级的节点，每次只能展开一个-->
-        <el-tree
-                ref="treeForm"
-                :data="treeData"
-                :props="defaultProps"
-                @node-click="handleNodeClick"
-                node-key="id"
-                :default-expanded-keys="[2079]"
-        >
-        </el-tree>
-        <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
-        <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
+        <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+            <el-tree
+                    ref="treeForm"
+                    :data="treeData"
+                    :props="defaultProps"
+                    @node-click="handleNodeClick"
+                    node-key="id"
+                    :default-expanded-keys="[2079]" >
+            </el-tree>
+        </el-scrollbar>
+
+        <div slot="footer" class="dialog-footer">
+            <el-button size="mini" @click="cancelDept">取消</el-button>
+            <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+        </div>
     </el-dialog>
 
 

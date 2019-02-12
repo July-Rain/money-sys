@@ -28,6 +28,12 @@ ul li{
 .dialog_minW750>.el-dialog{
     min-width: 750px;
 }
+/*table 操作区 icon*/
+.tabIcon{
+    cursor: pointer;
+    padding: 0 20px;
+    font-size: 18px;
+}
 /*element 公共样式修改 start*/
 .container>.el-row>.el-col,.container>.el-row>.el-col>.el-tabs--border-card>.el-tabs__content {
     padding: 0;
@@ -102,8 +108,14 @@ ul li{
 .el-dialog .el-select>.el-input{
     width: 220px;
 }
+.el-pagination__sizes .el-select>.el-input{
+    width: 100px;
+}
 .el-dialog  .el-date-editor.el-input--mini.el-date-editor--datetime{
     width: 220px !important;
+}
+.el-dialog .el-form-item{
+    margin-bottom: 15px;
 }
 /*el-dialog end*/
 

@@ -5,7 +5,9 @@
     <#include "/header.html">
 </head>
 <style>
-
+    .manList{
+        max-height: 702px;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -18,27 +20,33 @@
         <el-row :gutter="24">
             <el-col :span="4">
                 <!--对于同一级的节点，每次只能展开一个-->
-                <el-tree
-                        :data="treeData"
-                        :props="defaultProps"
-                        accordion
-                        @node-click="handleNodeClick">
-                </el-tree>
+                <el-scrollbar wrap-class="manList" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                    <el-tree
+                            :data="treeData"
+                            :props="defaultProps"
+                            accordion
+                            @node-click="handleNodeClick">
+                    </el-tree>
+                </el-scrollbar>
             </el-col>
             <el-col :span="20">
                 <div class="info_card">
                     <div class="card_title"></div>
                     <div class="card_contain">
                         <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-                            <el-form-item prop="userName" label="姓名">
+                            <el-form-item prop="userName" label="姓名：">
                                 <el-input v-model="formInline.userName" placeholder="姓名" size="mini"></el-input>
                             </el-form-item>
-                            <el-form-item prop="userCode" label="身份证号">
+                            <el-form-item prop="userCode" label="身份证号：">
                                 <el-input v-model="formInline.userCode" placeholder="身份证号" size="mini"></el-input>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                                <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
+                                <el-button type="primary" @click="onSubmit" size="mini">
+                                    <i class="iconfont icon-sousuo1"></i>
+                                    查询</el-button>
+                                <el-button @click="resetForm('formInline')" size="mini">
+                                    <i class="iconfont icon-tableresetpassword"></i>
+                                    重置</el-button>
                             </el-form-item>
                         </el-form>
 
@@ -50,36 +58,40 @@
                             border
                             style="width: 100%">
                         <el-table-column
+                                label="序号"
                                 type="index"
+                                align="center"
                                 width="50">
                         </el-table-column>
                         <el-table-column
                                 prop="userName"
                                 label="姓名"
                                 width="280"
+                                align="center"
                         >
                         </el-table-column>
                         <el-table-column
                                 prop="userPoliceId"
                                 label="警号"
+                                align="center"
                                 width="280"
                         >
                         </el-table-column>
                         <el-table-column
                                 prop="userCode"
                                 label="身份证号"
+                                align="center"
                                 width="180"
                         >
                         </el-table-column>
                         <el-table-column
                                 prop="orgName"
+                                align="center"
                                 label="部门名称"
                         >
                         </el-table-column>
 
-                        </el-table-column>
-
-                        <el-table-column label="操作">
+                        <el-table-column label="操作" align="center">
                             <template slot-scope="scope">
                                 <el-button
                                         size="mini"

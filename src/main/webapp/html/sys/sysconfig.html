@@ -3,75 +3,75 @@
 <head>
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .header-right ul{
+            background: transparent;
+        }
+        .header-right ul li:after{
+            content: '';
+        }
+        .el-menu--horizontal .el-menu-item,
+        .el-menu--horizontal .el-submenu{
+            float: left;
+            height: 70px;
+            /*line-height: 70px;*/
+            margin: 0;
+            border-bottom: 2px solid transparent;
+            color: #fff;
+        }
+        .el-menu--horizontal>.el-submenu .el-submenu__title {
+            height: 70px;
+            /* line-height: 70px; */
+            border-bottom: 2px solid transparent;
+            color: #909399;
+        }
+        .header-right ul li a{
+            text-align: center;
+            padding: 0;
+            /*margin: 10px 0;*/
+            box-sizing: border-box;
+            height: auto;
+            display: inline-block;
+        }
+        .header-right .el-menu-item [class^=el-icon-],
+        .header-right .el-submenu [class^=el-icon-],
+        .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
+            font-size: 30px;
+            color: #fff;
+        }
+        /*.header-right .el-submenu [class^=el-icon-]*/
+        .header-right ul li a span{
+            display: block;
+            margin-top: -10px;
+            line-height: 10px;
+        }
+        .header-right .el-menu-item:hover a,
+        .header-right .el-submenu:hover a,
+        .header-right .el-menu-item:hover [class^=el-icon-],
+        .header-right .el-submenu:hover [class^=el-icon-],
+        .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
+            color: #909399;
+        }
+        .el-submenu__icon-arrow{
+            margin-top: 16px;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item a{
+            color: #909399;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item a:hover{
+            color: #000;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+            background-color: #fff;
+            float: none;
+            height: 36px;
+            line-height: 36px;
+            padding: 0 10px;
+            color: #909399;
+            display: inline-block;//悬浮块横向显示
+        }
+    </style>
 </head>
-<style>
-    .header-right ul{
-        background: transparent;
-    }
-    .header-right ul li:after{
-        content: '';
-    }
-    .el-menu--horizontal .el-menu-item,
-    .el-menu--horizontal .el-submenu{
-        float: left;
-        height: 70px;
-        /*line-height: 70px;*/
-        margin: 0;
-        border-bottom: 2px solid transparent;
-        color: #fff;
-    }
-    .el-menu--horizontal>.el-submenu .el-submenu__title {
-        height: 70px;
-        /* line-height: 70px; */
-        border-bottom: 2px solid transparent;
-        color: #909399;
-    }
-    .header-right ul li a{
-        text-align: center;
-        padding: 0;
-        /*margin: 10px 0;*/
-        box-sizing: border-box;
-        height: auto;
-        display: inline-block;
-    }
-    .header-right .el-menu-item [class^=el-icon-],
-    .header-right .el-submenu [class^=el-icon-],
-    .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
-        font-size: 30px;
-        color: #fff;
-    }
-    /*.header-right .el-submenu [class^=el-icon-]*/
-    .header-right ul li a span{
-        display: block;
-        margin-top: -10px;
-        line-height: 10px;
-    }
-    .header-right .el-menu-item:hover a,
-    .header-right .el-submenu:hover a,
-    .header-right .el-menu-item:hover [class^=el-icon-],
-    .header-right .el-submenu:hover [class^=el-icon-],
-    .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
-        color: #909399;
-    }
-    .el-submenu__icon-arrow{
-        margin-top: 16px;
-    }
-    .el-menu--horizontal .el-menu .el-menu-item a{
-        color: #909399;
-    }
-    .el-menu--horizontal .el-menu .el-menu-item a:hover{
-        color: #000;
-    }
-    .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
-        background-color: #fff;
-        float: none;
-        height: 36px;
-        line-height: 36px;
-        padding: 0 10px;
-        color: #909399;
-        display: inline-block;//悬浮块横向显示
-    }
-</style>
 <body>
 <div id="app" v-cloak>
     <div class="container">
@@ -85,23 +85,26 @@
             <div class="card_contain">
                 <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                    <el-form-item prop="code" label="参数编码">
+                    <el-form-item prop="code" label="参数编码：">
                         <el-input v-model="formInline.code" placeholder="参数编码" size="mini" clearable></el-input>
                     </el-form-item>
-                    <el-form-item prop="value" label="参数值">
+                    <el-form-item prop="value" label="参数值：">
                         <el-input v-model="formInline.value" placeholder="参数值" size="mini" clearable></el-input>
                     </el-form-item>
 
-                    <el-form-item prop="status" label="状态">
+                    <el-form-item prop="status" label="状态：">
                         <el-select v-model="formInline.status" placeholder="状态" size="mini" clearable>
                             <el-option label="有效" value="1"></el-option>
                             <el-option label="无效" value="0"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                        <el-button size="mini" @click="resetForm('formInline')">重置</el-button>
-
+                        <el-button type="primary" @click="onSubmit" size="mini">
+                            <i class="iconfont icon-sousuo1"></i>
+                            查询</el-button>
+                        <el-button size="mini" @click="resetForm('formInline')">
+                            <i class="iconfont icon-tableresetpassword"></i>
+                            重置</el-button>
                     </el-form-item>
                 </el-form>
 
@@ -147,7 +150,7 @@
                         width="100">
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.status === '0'" size="small" type="danger">无效</el-tag>
-                        <el-tag v-else size="small">有效</el-tag>
+                        <el-tag v-else size="small" type="success">有效</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -164,16 +167,27 @@
                         align="center"
                         width="180">
                     <template slot-scope="scope">
-                        <el-button
-                                size="mini"
-                                @click="handleEdit(scope.$index, scope.row)">编辑
-                        </el-button>
-                        <el-button
-                                plain
-                                type="danger"
-                                size="mini"
-                                @click="handleDel(scope.$index, scope.row)">删除
-                        </el-button>
+                        <el-popover
+                                placement="top-start"
+                                trigger="hover"
+                                content="编辑">
+                            <i class="el-icon-edit tabIcon"
+                               slot="reference"
+                               @click="handleEdit(scope.$index, scope.row)"
+                               style="color: #119e0a;"
+                            >
+                            </i>
+                        </el-popover>
+                        <el-popover
+                                placement="top-start"
+                                trigger="hover"
+                                content="删除">
+                            <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                               slot="reference"
+                               @click="handleDel(scope.$index, scope.row)"
+                               style="color: #e31313;">
+                            </i>
+                        </el-popover>
                     </template>
                 </el-table-column>
             </el-table>
@@ -191,30 +205,28 @@
 
 
         <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
-            <el-row>
-                <el-col :span="12">
-                    <el-form :model="sysConfig" :rules="rules" ref="sysConfig" label-width="100px" class="demo-sysConfig" size="mini">
-                        <el-form-item label="参数编码" prop="code">
-                            <el-input v-model="sysConfig.code" placeholder="请输入参数编码" clearable></el-input>
-                        </el-form-item>
-                        <el-form-item label="参数值" prop="value">
+            <el-col :span="24">
+                <el-form :model="sysConfig" :rules="rules" ref="sysConfig" label-width="100px" class="demo-sysConfig" size="mini">
+                    <el-form-item label="参数编码：" prop="code">
+                        <el-input v-model="sysConfig.code" placeholder="请输入参数编码" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="参数值：" prop="value">
 
-                            <el-input v-model="sysConfig.value" placeholder="请输入参数值" clearable></el-input>
-                        </el-form-item>
+                        <el-input v-model="sysConfig.value" placeholder="请输入参数值" clearable></el-input>
+                    </el-form-item>
 
-                        <el-form-item label="状态" prop="status">
-                            <el-switch v-model="sysConfig.status" active-text="有效"  inactive-text="无效" active-value="1"  inactive-value="0" ></el-switch>
-                        </el-form-item>
-                        <el-form-item label="备注" prop="remark">
-                            <el-input type="textarea" maxlength="200" v-model="sysConfig.remark"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="saveOrUpdate('sysConfig')">保存</el-button>
-                            <el-button @click="closeDia">取消</el-button>
-                        </el-form-item>
-                    </el-form>
-                </el-col>
-            </el-row>
+                    <el-form-item label="状态：" prop="status">
+                        <el-switch v-model="sysConfig.status" active-text="有效"  inactive-text="无效" active-value="1"  inactive-value="0" ></el-switch>
+                    </el-form-item>
+                    <el-form-item label="备注：" prop="remark">
+                        <el-input type="textarea" maxlength="200" v-model="sysConfig.remark"></el-input>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="closeDia">取消</el-button>
+                <el-button type="primary" @click="saveOrUpdate('sysConfig')">保存</el-button>
+            </div>
         </el-dialog>
 
     </div>
