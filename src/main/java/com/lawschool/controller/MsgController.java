@@ -38,9 +38,11 @@ public class MsgController extends AbstractController{
      * 展示全部站内消息
      */
     @RequestMapping(value = "/listAll",method = RequestMethod.GET)
-    public Result showAllMsgList(){
-        PageUtils page = msgService.selectAllMsg();
-        return Result.ok().put("page",page);
+    public Result showAllMsgList(@RequestParam Map<String,Object> params){
+
+        params.put("userId",getUser().getId());
+        PageUtils pageUtils = msgService.selectAllMsg(params);
+        return Result.ok().put("page",pageUtils);
     }
 
     /**
@@ -72,6 +74,7 @@ public class MsgController extends AbstractController{
             msg.setId(IdWorker.getIdStr());
             msg.setRecievePeople(idArr[i]);
             msg.setReleaseState("0");//未发送
+            msg.setRecieveDate(new Date());
             msgService.insert(msg);
         }
         return Result.ok().put("id",msg.getId());
@@ -80,36 +83,44 @@ public class MsgController extends AbstractController{
     @SysLog("修改消息")
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public Result update(@RequestBody Msg msg){
-        String recievePeopleIds = msg.getRecievePeople();
-        String[] idArr = recievePeopleIds.split(",");
-        for(int i=0;i<idArr.length;i++){
-            msg.setId(IdWorker.getIdStr());
-            msg.setRecievePeople(idArr[i]);
-            msg.setReleaseState("0");//未发送
-            msgService.updateById(msg);
-        }
+//        String recievePeopleIds = msg.getRecievePeople();
+//        String[] idArr = recievePeopleIds.split(",");
+//        for(int i=0;i<idArr.length;i++){
+//            msg.setId(IdWorker.getIdStr());
+//            msg.setRecievePeople(idArr[i]);
+//            msg.setReleaseState("0");//未发送
+//            msgService.updateById(msg);
+//        }
+        msg.setRecieveDate(new Date());
+        msgService.updateById(msg);
         return Result.ok().put("id",msg.getId());
     }
 
     @SysLog("发送消息")
     @RequestMapping(value = "/send",method = RequestMethod.POST)
     public Result sendMsg(@RequestParam String id){
-        User currentUser = getUser();
+//        User currentUser = getUser();
         Msg msg = msgService.selectById(id);
-        msg.setReleasePeople(currentUser.getUserName());
-        msg.setReleaseDept(orgService.findOrgByCode(currentUser.getOrgCode()).getFullName());//发布部门(数据暂时有冲突)
+//        msg.setReleasePeople(currentUser.getUserName());
+//        msg.setReleaseDept(orgService.findOrgByCode(currentUser.getOrgCode()).getFullName());//发布部门(数据暂时有冲突)
         msg.setReleaseState("1");//1已发送
         msg.setReleaseDate(new Date());
         msgService.updateById(msg);
         return Result.ok().put("msg",msg);
     }
 
-    @SysLog("前台获取已发送消息")
+    @SysLog("前台获取已收到消息")
     @RequestMapping(value = "/findMsgList",method = RequestMethod.GET)
-    public Result gain(Map<String,Object> param){
-        String recievePeople = getUser().getUserId();
-        PageUtils page = msgService.showSent(recievePeople,param);
-        return Result.ok().put("page",page);
+    public Result findMsgList(Map<String,Object> param){
+
+        param.put("userId",getUser().getId());
+        PageUtils pageUtils = msgService.findMsgList(param);
+        return Result.ok().put("page",pageUtils);
+
+
+//        String recievePeople = getUser().getUserId();
+//        PageUtils page = msgService.showSent(recievePeople,param);
+//        return Result.ok().put("page",page);
     }
 
 }

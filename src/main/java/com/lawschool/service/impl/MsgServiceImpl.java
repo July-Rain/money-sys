@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.beans.Msg;
+import com.lawschool.beans.StuMedia;
 import com.lawschool.dao.MsgDao;
 import com.lawschool.service.MsgService;
 import com.lawschool.util.PageUtils;
@@ -36,15 +37,43 @@ public class MsgServiceImpl extends ServiceImpl<MsgDao,Msg> implements MsgServic
      * @return
      */
     @Override
-    public PageUtils selectAllMsg() {
-        int pageNo = 1;
-        long pageSize = 10l;
-        int count = msgDao.selectCount(new EntityWrapper<Msg>());
-        List<Msg> msgList = msgDao.selectAllMsg();
-        PageUtils page = new PageUtils(msgList,count,pageSize,pageNo);
+    public PageUtils selectAllMsg(Map<String, Object> param) {
+        int pageNo= parseInt(Optional.ofNullable(param.get("currPage")).orElse("1").toString());
+        long pageSize= parseInt(Optional.ofNullable(param.get("pageSize")).orElse("10").toString());
+
+        int count=msgDao.selectAllMsgCont(param);
+
+        param.put("startPage",(pageNo-1)*pageSize);
+        param.put("endPage",pageNo*pageSize);
+
+        List<Msg> msgs = msgDao.selectAllMsgByUserid(param);
+
+        PageUtils page=new PageUtils(msgs,count,pageSize,pageNo);
+
         return page;
     }
 
+
+    /**
+     * 显示所有收到站内信息
+     * @return
+     */
+    @Override
+    public PageUtils findMsgList(Map<String, Object> param) {
+        int pageNo= parseInt(Optional.ofNullable(param.get("currPage")).orElse("1").toString());
+        long pageSize= parseInt(Optional.ofNullable(param.get("pageSize")).orElse("10").toString());
+
+        int count=msgDao.findMsgListCont(param);
+
+        param.put("startPage",(pageNo-1)*pageSize);
+        param.put("endPage",pageNo*pageSize);
+
+        List<Msg> msgs = msgDao.findMsgList(param);
+
+        PageUtils page=new PageUtils(msgs,count,pageSize,pageNo);
+
+        return page;
+    }
     /**
      * 根据选中ID显示数据
      * @param id

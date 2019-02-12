@@ -23,58 +23,83 @@
                     :data="tableData"
                     border
                     style="width: 100%">
+                <!--<el-table-column-->
+                        <!--prop="id"-->
+                        <!--label="序号"-->
+                        <!--width="150"-->
+                <!--&gt;-->
+                <!--</el-table-column>-->
                 <el-table-column
-                        prop="id"
                         label="序号"
-                        width="150"
-                >
+                        type="index"
+                        header-align="center"
+                        align="center"
+                        width="150">
                 </el-table-column>
                 <el-table-column
                         prop="title"
                         label="消息标题"
-                        width="200"
+                        width="220"
                 >
                 </el-table-column>
 
+                <!--<el-table-column-->
+                        <!--prop="content"-->
+                        <!--label="消息内容"-->
+                <!--&gt;-->
+                <!--</el-table-column>-->
                 <el-table-column
-                        prop="content"
-                        label="消息内容"
+                        prop="recievePeopleNmae"
+                        width="220"
+                        label="接收人"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="recieveDate"
+                        label="创建时间"
+                        width="220"
                 >
                 </el-table-column>
                 <el-table-column
                         prop="releaseDate"
                         label="发送时间"
+                        width="220"
                 >
                 </el-table-column>
-                <el-table-column
-                        prop="recieveDate"
-                        label="接收时间"
-                >
-                </el-table-column>
+
                 <el-table-column
                         prop="noticeType"
                         label="消息类型"
+                        width="220"
                 >
                 </el-table-column>
+
                 <el-table-column
                         prop="releaseState"
                         label="状态"
-                        width="180"
+                        width="220"
                         header-align="center"
                         align="center"
-                        width="100">
+                        >
                     <template slot-scope="scope">
-                        <el-tag v-if="scope.row.releaseState === '0'" size="small" type="danger">未发布</el-tag>
-                        <el-tag v-else size="small">已发布</el-tag>
+                        <el-tag v-if="scope.row.releaseState === '0'" size="small" type="danger">未发送</el-tag>
+                        <el-tag v-else size="small">已发送</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="300">
+                <el-table-column label="操作" width="400">
                     <template slot-scope="scope">
                         <el-button
+                                :disabled="'1'===scope.row.releaseState"
                                 size="mini"
                                 @click="send(scope.$index, scope.row)">发送
                         </el-button>
                         <el-button
+                                size="mini"
+                                @click="lookMsg(scope.$index, scope.row)">查看
+                        </el-button>
+
+                        <el-button
+                                :disabled="scope.row.releaseState===1"
                                 size="mini"
                                 @click="handleEdit(scope.$index, scope.row)">编辑
                         </el-button>
@@ -130,35 +155,35 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="11">
-                        <el-form-item label="发布人：" prop="releasePeople">
-                            <el-input v-model="sysMsg.releasePeople" placeholder="请输入发布人姓名" clearable></el-input>
+                        <el-form-item label="发布人：" >
+                            <el-input v-model="sysMsg.releasePeopleName" disabled></el-input>
                         </el-form-item>
                     </el-col>
+                    <!--<el-col :span="11">-->
+                        <!--&lt;!&ndash;<el-form-item label="接收单位：" prop="recieveDept">-->
+                            <!--&lt;!&ndash;对于同一级的节点，每次只能展开一个&ndash;&gt;-->
+                            <!--<el-tree-->
+                                    <!--:data="treeData"-->
+                                    <!--:props="defaultProps"-->
+                                    <!--accordion-->
+                                    <!--@node-click="handleNodeClick">-->
+                            <!--</el-tree>-->
+                            <!--<el-input v-model="sysMsg.recieveDept" placeholder="请选择接收单位" clearable>-->
+                            <!--</el-input>-->
+                        <!--</el-form-item>&ndash;&gt;-->
+                        <!--<el-form-item label="接收部门" prop="deptName">-->
+                            <!--<el-input v-model="sysMsg.recieveDept" @focus="chooseDept" placeholder="请选择接收部门"-->
+                                      <!--clearable></el-input>-->
+                        <!--</el-form-item>-->
+                    <!--</el-col>-->
                     <el-col :span="11">
-                        <!--<el-form-item label="接收单位：" prop="recieveDept">
-                            &lt;!&ndash;对于同一级的节点，每次只能展开一个&ndash;&gt;
-                            <el-tree
-                                    :data="treeData"
-                                    :props="defaultProps"
-                                    accordion
-                                    @node-click="handleNodeClick">
-                            </el-tree>
-                            <el-input v-model="sysMsg.recieveDept" placeholder="请选择接收单位" clearable>
-                            </el-input>
-                        </el-form-item>-->
-                        <el-form-item label="接收部门" prop="deptName">
-                            <el-input v-model="sysMsg.recieveDept" @focus="chooseDept" placeholder="请选择接收部门"
-                                      clearable></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11">
-                        <el-form-item label="接收人：" prop="recievePeople">
-                            <el-input v-model="sysMsg.recievePeople" @focus="chooseUser" placeholder="请输接收人"
+                        <el-form-item label="接收人：" >
+                            <el-input v-model="sysMsg.userName" @focus="chooseUser" placeholder="请输接收人"
                                       clearable></el-input>
                         </el-form-item>
                     </el-col>
 
-                    <el-col :span="24">
+                    <el-col :span="24" v-show="teamtype2">
                         <el-form-item>
                             <el-button type="primary" @click="saveOrUpdate('sysMsg')">保存</el-button>
                             <el-button @click="closeDia">取消</el-button>
@@ -230,7 +255,7 @@
                                     >
                                     </el-table-column>
                                     <el-table-column
-                                            prop="userName"
+                                            prop="fullName"
                                             label="姓名"
                                             width="280"
                                     >
@@ -260,5 +285,5 @@
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/sys/sysMsg.js"></script>
+<script src="${rc.contextPath}/js/sys/sysMsg.js?_${.now?long}"></script>
 </html>
