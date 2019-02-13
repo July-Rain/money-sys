@@ -2,6 +2,7 @@ var editor = null;
 var vm = new Vue({
     el: "#app",
     data: {
+        idArr:[],// 部门Tree默认展开数据
         tableData: [],
         formInline: {
             limit: 10,
@@ -42,48 +43,48 @@ var vm = new Vue({
             releaseStatus: 1,
             answerList: []
         },
-        importFileUrl: baseURL+"sys/upload",//文件上传url
-        addConfigFlag:  false,
-        videoFlag:false,
+        importFileUrl: baseURL + "sys/upload",//文件上传url
+        addConfigFlag: false,
+        videoFlag: false,
         dialogStuMedia: false,
         stuMedia: {
-            id:"",
+            id: "",
             stuType: "1",
             stuTitle: "",
             comContent: "",
             deptIds: "",
             userIds: "",
-            stuDescribe:"",
-            userName:"",//适用人员姓名
-            deptName:"",//适用部门姓名
-            stuLawid:"",//专项知识id
-            stuKnowledge:"",//专项知识
-            stuPoliceclass:"",//所属警种
-            videoPicAcc:"",//视频首页
+            stuDescribe: "",
+            userName: "",//适用人员姓名
+            deptName: "",//适用部门姓名
+            stuLawid: "",//专项知识id
+            stuKnowledge: "",//专项知识
+            stuPoliceclass: "",//所属警种
+            videoPicAcc: "",//视频首页
         },
         stuPoliceclassOption: [],
         dialogDept: false,
         dialogUser: false,
-        defaultDeptProps:{
+        defaultDeptProps: {
             children: 'child',
             label: 'orgName'
         },//部门树的默认格式
-        deptData:[],//部门树数据
-        userData:[],//人员树数据
-        userTableData:[],//人员表格信息
-        deptCheckData:[],//部门默认选中节点
-        defaultUserProps:{
+        deptData: [],//部门树数据
+        userData: [],//人员树数据
+        userTableData: [],//人员表格信息
+        deptCheckData: [],//部门默认选中节点
+        defaultUserProps: {
             children: 'child',
             label: 'orgName'
         },//部门人员的默认格式
-        userForm:{
-            userCode:"",
-            userName:"",
-            orgCode:"",
+        userForm: {
+            userCode: "",
+            userName: "",
+            orgCode: "",
             currPage: 1,
             pageSize: 10,
-            totalCount:0,
-            identify:'0'//表明是用户
+            totalCount: 0,
+            identify: '0'//表明是用户
 
         },//人员查询
     },
@@ -111,24 +112,24 @@ var vm = new Vue({
             });
         },
         userHandleSizeChange: function (val) {
-            this.userForm.pageSize=val;
+            this.userForm.pageSize = val;
             this.reloadUser();
         },
         userHandleCurrentChange: function (val) {
-            this.userForm.currPage=val;
+            this.userForm.currPage = val;
             this.reloadUser();
         },
         handleSelectionChange(val) {
             //选择人员信息
             this.multipleSelection = val;
             //遍历最终的人员信息
-            for (var i=0;i<val.length;i++){
+            for (var i = 0; i < val.length; i++) {
                 if (!this.stuMedia.userIds) {
-                    this.stuMedia.userIds=val[i].id;
-                    this.stuMedia.userName=val[i].userName;
-                }else{
-                    this.stuMedia.userIds+=","+val[i].id;
-                    this.stuMedia.userName+=","+val[i].userName;
+                    this.stuMedia.userIds = val[i].id;
+                    this.stuMedia.userName = val[i].userName;
+                } else {
+                    this.stuMedia.userIds += "," + val[i].id;
+                    this.stuMedia.userName += "," + val[i].userName;
                 }
             }
 
@@ -137,34 +138,33 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         handleDeptNodeClick: function (data) {
-            this.userForm.orgCode=data.orgCode;
+            this.userForm.orgCode = data.orgCode;
             this.reloadUser();
         },
         handleCheckChange: function (data, checked, indeterminate) {
             console.log(data);
-
         },
         confimDept: function () {
-            this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
-            for(var i=0;i<this.multipleDeptSelection.length;i++){
+            this.multipleDeptSelection = this.$refs.deptTree.getCheckedNodes();
+            for (var i = 0; i < this.multipleDeptSelection.length; i++) {
                 if (!this.stuMedia.deptIds) {
-                    this.stuMedia.deptIds=this.multipleDeptSelection[i].id;
-                    this.stuMedia.deptName=this.multipleDeptSelection[i].orgName;
-                }else{
-                    this.stuMedia.deptIds+=","+this.multipleDeptSelection[i].id;
-                    this.stuMedia.deptName+=","+this.multipleDeptSelection[i].orgName;
+                    this.stuMedia.deptIds = this.multipleDeptSelection[i].id;
+                    this.stuMedia.deptName = this.multipleDeptSelection[i].orgName;
+                } else {
+                    this.stuMedia.deptIds += "," + this.multipleDeptSelection[i].id;
+                    this.stuMedia.deptName += "," + this.multipleDeptSelection[i].orgName;
                 }
             }
-            this.dialogDept=false;
+            this.dialogDept = false;
         },
         cancelDept: function () {
-            this.dialogDept=false;
+            this.dialogDept = false;
         },
         confimUser: function () {
-            this.dialogUser=false;
+            this.dialogUser = false;
         },
         cancelUser: function () {
-            this.dialogUser=false;
+            this.dialogUser = false;
         },
         handleSizeChange: function (val) {
             vm.formInline.limit = val;
@@ -190,7 +190,7 @@ var vm = new Vue({
                 }
             });
         },
-        edit: function(id){
+        edit: function (id) {
             $.ajax({
                 type: "GET",
                 url: baseURL + "manuscript/info",
@@ -202,7 +202,7 @@ var vm = new Vue({
                     if (result.code == 0) {
                         vm.manu = result.data;
                         var type = vm.manu.type;
-                        if(type == 0){
+                        if (type == 0) {
                             vm.form = vm.manu.test;
                             vm.manu.stu = {};
                             vm.dialogFormVisible = true;
@@ -223,19 +223,19 @@ var vm = new Vue({
         },
         addStu: function () {
             vm.dialogStuMedia = true;
-            this.stuMedia= {
-                id:"",
+            this.stuMedia = {
+                id: "",
                 stuType: "1",
                 stuTitle: "",
                 comContent: "",
                 deptIds: "",
                 userIds: "",
-                stuDescribe:"",
-                userName:"",//适用人员姓名
-                deptName:"",//适用部门姓名
+                stuDescribe: "",
+                userName: "",//适用人员姓名
+                deptName: "",//适用部门姓名
                 stuLawid: '',//专项知识id
                 stuKnowledge: '',//专项知识
-                videoPicAcc:"",//视频首页
+                videoPicAcc: "",//视频首页
             };
             //清空editor
             editor.txt.html("");
@@ -260,27 +260,27 @@ var vm = new Vue({
             });
         },
         toHome: function () {
-            
+
         },
         handlePreview: function () {
-            
+
         },
         handleRemove: function () {
-            
+
         },
         beforeRemove: function () {
-            
+
         },
         handleExceed: function () {
-            
+
         },
-        uploadVideoProcess(event, file, fileList){
+        uploadVideoProcess(event, file, fileList) {
             this.videoFlag = true;
             this.videoUploadPercent = file.percentage.toFixed(2);
         },
         beforeAvatarUpload: function (file) {
-            var  isLt10M = file.size / 1024 / 1024  < 100;
-            if (['video/mp4', 'video/ogg', 'video/flv','video/avi','video/wmv','video/rmvb'].indexOf(file.type) == -1) {
+            var isLt10M = file.size / 1024 / 1024 < 100;
+            if (['video/mp4', 'video/ogg', 'video/flv', 'video/avi', 'video/wmv', 'video/rmvb'].indexOf(file.type) == -1) {
                 this.$message.error('请上传正确的视频格式');
                 return false;
             }
@@ -293,20 +293,20 @@ var vm = new Vue({
         uploadSuccess: function (response, file, fileList) {
             this.videoFlag = false;
             this.videoUploadPercent = 0;
-            if(response.code == 0){
+            if (response.code == 0) {
                 vm.form.video = response.accessoryId;
                 vm.form.videoUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
-            }else{
+            } else {
                 this.$message.error('视频上传失败，请重新上传！');
             }
         },
         uploadStuSuccess: function (response, file, fileList) {
             this.videoFlag = false;
             this.videoUploadPercent = 0;
-            if(response.code == 0){
+            if (response.code == 0) {
                 vm.stuMedia.comContent = response.accessoryId;
                 vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
-            }else{
+            } else {
                 this.$message.error('视频上传失败，请重新上传！');
             }
         },
@@ -323,27 +323,27 @@ var vm = new Vue({
             };
             vm.addConfigFlag = false;
         },
-        changeStuType:function () {
-            vm.stuMedia.comContent="";
-            vm.stuMedia.contentUrl="";
-            vm.stuMedia.videoPicAcc="";
-            vm.stuMedia.videoPicAccUrl="";
-            if(vm.stuMedia.stuType=='1'){
+        changeStuType: function () {
+            vm.stuMedia.comContent = "";
+            vm.stuMedia.contentUrl = "";
+            vm.stuMedia.videoPicAcc = "";
+            vm.stuMedia.videoPicAccUrl = "";
+            if (vm.stuMedia.stuType == '1') {
                 loadEditor();
             }
         },
         handlePicSuccess: function (response, file, fileList) {
-            if(response.code == 0){
-                vm.stuMedia.videoPicAcc=response.accessoryId;
-                vm.stuMedia.videoPicAccUrl=baseURL+"sys/download?accessoryId="+response.accessoryId;
-            }else{
+            if (response.code == 0) {
+                vm.stuMedia.videoPicAcc = response.accessoryId;
+                vm.stuMedia.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
+            } else {
                 this.$message.error('图片上传失败，请重新上传！');
             }
         },
         beforePicUpload: function (file) {
             //图片上传之前的判断
-            var  isLt10M = file.size / 1024 / 1024  < 100;
-            if (['image/jpeg', 'image/jpg', 'image/png','image/gif','image/bpm'].indexOf(file.type) == -1) {
+            var isLt10M = file.size / 1024 / 1024 < 100;
+            if (['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bpm'].indexOf(file.type) == -1) {
                 this.$message.error('请上传正确的图片格式');
                 return false;
             }
@@ -372,20 +372,20 @@ var vm = new Vue({
                 }
             });
         },
-        closeDia : function(){
-            this.dialogStuMedia=false;
+        closeDia: function () {
+            this.dialogStuMedia = false;
             vm.refresh();
         },
         chooseDept: function () {
             //选择部门
-            this.dialogDept=true;
+            this.dialogDept = true;
         },
         chooseUser: function () {
             //选择人员
-            this.dialogUser=true;
+            this.dialogUser = true;
         },
         beforeAudioUpload: function (file) {
-            var  isLt10M = file.size / 1024 / 1024  < 100;
+            var isLt10M = file.size / 1024 / 1024 < 100;
             if (['audio/ogg', 'audio/mpeg', 'audio/mp3', 'audio/wav'].indexOf(file.type) == -1) {
                 this.$message.error('请上传正确的音频格式');
                 return false;
@@ -435,11 +435,15 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "org/tree",
                 contentType: "application/json",
-                success: function(result){
-                    if(result.code === 0){
+                success: function (result) {
+                    if (result.code === 0) {
                         vm.deptData = result.orgList;
                         vm.userData = result.orgList;
-                    }else{
+                        // 默认展开第一级
+                        vm.deptData.map(function (m) {
+                            vm.idArr.push(m.id)
+                        });
+                    } else {
                         alert(result.msg);
                     }
                 }
@@ -449,10 +453,10 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
-                async:false,
-                data: {type:"POLICACLASS",Parentcode:"0"},
+                async: false,
+                data: {type: "POLICACLASS", Parentcode: "0"},
                 success: function (result) {
-                    vm.stuPoliceclassOption=result.dictlist;
+                    vm.stuPoliceclassOption = result.dictlist;
                 }
             });
         })
@@ -471,12 +475,12 @@ var vm = new Vue({
  * wangEditor 富文本框初始
  *
  */
-function loadEditor(){
+function loadEditor() {
     var E = window.wangEditor;
     editor = new E('#editor');
     // 或者 var editor = new E( document.getElementById('editor') )
     //显示“上传图片”的tab
-    editor.customConfig.uploadImgServer = baseURL+"sys/upload";// 上传图片到服务器
+    editor.customConfig.uploadImgServer = baseURL + "sys/upload";// 上传图片到服务器
     // 自定义菜单配置
     editor.customConfig.menus = [
         'head',  // 标题
@@ -509,13 +513,13 @@ function loadEditor(){
             // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
 
             // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
-            var url = baseURL+"sys/download?accessoryId="+result.accessoryId;
+            var url = baseURL + "sys/download?accessoryId=" + result.accessoryId;
             insertImg(url)
         }
     }
     editor.customConfig.onchange = function (html) {
         // 监控变化，同步更新到 textarea
-        vm.stuMedia.comContent=html;
+        vm.stuMedia.comContent = html;
     };
     editor.create();
 

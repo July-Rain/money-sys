@@ -32,7 +32,10 @@ ul li{
     padding-left: 20px;
 }
 .depList{
-    max-height: 642px;
+    max-height: 639px;
+}
+.list{
+    height: 390px;
 }
 /*table 操作区 icon*/
 .tabIcon{
@@ -81,6 +84,7 @@ ul li{
     background-color: #fff;
     border-right: none;
 }
+.el-tree>.el-tree-node{display:inline-block;min-width: 100%;}
 @keyframes myfirst
 {
     from {border-left: 1px solid #1381e3;}

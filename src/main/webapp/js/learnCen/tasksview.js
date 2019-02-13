@@ -3,7 +3,7 @@
  * Date: 2018/12/18
  * Description:学习任务管理
  */
-var ztree;
+var ztree = null;
 var setting = {
     data: {
         simpleData: {
@@ -28,6 +28,7 @@ var menuId = getUrlParam('id');
 var vm = new Vue({
     el: '#app',
     data: {
+        idArr:[],// 部门Tree默认展开数据
         navData: [],//导航
         formInline: { // 搜索表单
             taskContent: '',
@@ -112,6 +113,10 @@ var vm = new Vue({
                     if(result.code === 0){
                         vm.deptData = result.orgList;
                         vm.userData = result.orgList;
+                        // 默认展开第一级
+                        vm.deptData.map(function (m) {
+                            vm.idArr.push(m.id)
+                        });
                     }else{
                         alert(result.msg);
                     }
@@ -295,9 +300,7 @@ var vm = new Vue({
         },
         chooseDept: function () {
             //选择部门
-            console.log(vm.deptData);
             this.dialogDept=true;
-
         },
         chooseUser: function () {
             //选择人员

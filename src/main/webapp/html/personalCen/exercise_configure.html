@@ -233,19 +233,24 @@
             </el-row>
         </el-dialog>
 
-        <el-dialog title="选择部门" :visible.sync="dialogDept" width="500px" height="500px">
-            <el-tree
-                    ref="treeForm"
-                    :data="treeData"
-                    :props="defaultProps"
-                    show-checkbox
-                    @check-change="handleCheckChange"
-                    node-key="id"
-                    :default-expanded-keys="[2079]"
-            >
-            </el-tree>
-            <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
-            <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
+        <el-dialog title="选择部门" :visible.sync="dialogDept">
+            <!--对于同一级的节点，每次只能展开一个-->
+            <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                <el-tree
+                        ref="treeForm"
+                        :data="treeData"
+                        :props="defaultProps"
+                        show-checkbox
+                        @check-change="handleCheckChange"
+                        node-key="id"
+                        :default-expanded-keys="idArr" >
+                </el-tree>
+            </el-scrollbar>
+
+            <div slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="cancelDept">取消</el-button>
+                <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+            </div>
         </el-dialog>
 
         <el-dialog title="试卷详情" :visible.sync="paperDialog" width="800px" height="800px">

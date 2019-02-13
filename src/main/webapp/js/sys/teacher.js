@@ -2,6 +2,7 @@ var menuId =getUrlParam('id');
 var vm = new Vue({
     el: '#app',
     data: {
+        idArr:[],// 部门Tree默认展开数据
         //menuId:"",//菜单id
         navData: [],//导航
 
@@ -54,6 +55,10 @@ var vm = new Vue({
 
                     if(result.code === 0){
                         vm.treeData = result.orgList;
+                        // 默认展开第一级
+                        vm.treeData.map(function (m) {
+                            vm.idArr.push(m.id)
+                        });
                     }else{
                         alert(result.msg);
                     }

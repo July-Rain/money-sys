@@ -13,12 +13,6 @@
             font-size: 30px;
             color: #57A8DC;
         }
-        .list{
-            max-height: 390px;
-        }
-        .depList{
-            max-height: 642px;
-        }
     </style>
 </head>
 <body>
@@ -87,6 +81,7 @@
                     <el-table
                             :data="tableData"
                             border
+                            height="539"
                             style="width: 100%">
                         <el-table-column
                                 label="序号"
@@ -146,7 +141,7 @@
                                         placement="top-start"
                                         trigger="hover"
                                         content="编辑">
-                                    <i class="el-icon-edit tabIcon"
+                                    <i class="iconfont icon-xiugaimima tabIcon"
                                        slot="reference"
                                        @click="handleEdit(scope.$index, scope.row)"
                                        style="color: #119e0a;" >
@@ -291,7 +286,7 @@
                         show-checkbox
                         @check-change="handleCheckChange"
                         node-key="id"
-                        :default-expanded-keys="[2079]"
+                        :default-expanded-keys="idArr"
                         :default-checked-keys="deptCheckData" >
                 </el-tree>
             </el-scrollbar>
@@ -310,6 +305,8 @@
                                 :data="userData"
                                 :props="defaultUserProps"
                                 accordion
+                                node-key="id"
+                                :default-expanded-keys="idArr"
                                 @node-click="handleDeptNodeClick">
                         </el-tree>
                     </el-scrollbar>
@@ -335,6 +332,7 @@
                         <el-table
                                 :data="userTableData"
                                 border
+                                height="529"
                                 @selection-change="handleSelectionChange"
                                 style="width: 100%">
                             <el-table-column
