@@ -218,3 +218,52 @@ button {
     height: 36px;
     margin-top: 16px;
 }
+.fighting{
+    width: 600px;
+    margin: 196px auto 0;
+}
+.fighting .img{
+    width: 568px;
+    height: 478px;
+}
+.fighting h3{
+    height: 40px;
+    font-size: 40px;
+    color: #ffffff;
+    text-align: center;
+    font-weight: bolder;
+    /*-webkit-text-stroke: 3px #2c0716;*/
+    margin-top: -10px;
+}
+.fighting p{
+    height: 20px;
+    font-size: 19px;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 20px;
+}
+.join_pk{
+    width: 600px;
+    margin: 196px auto 0;
+}
+.join_pk .img{
+    width: 298px;
+    height: 455px;
+    margin-left: 142px;
+}
+.join_pk h3{
+    height: 40px;
+    font-size: 40px;
+    color: #ffffff;
+    text-align: center;
+    font-weight: bolder;
+    /*-webkit-text-stroke: 3px #2c0716;*/
+    margin-top: -10px;
+}
+.join_pk p{
+    height: 20px;
+    font-size: 19px;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 20px;
+}

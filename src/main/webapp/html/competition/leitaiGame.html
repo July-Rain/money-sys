@@ -29,7 +29,7 @@
                 <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
             </div>
             <div class="txt">
-                <h3>飞翔的企鹅<sub>擂台</sub></h3>
+                <h3>飞翔的企鹅<sub>擂主</sub></h3>
                 <p>积分：2.56万</p>
                 <p>擂台次：5</p>
             </div>
@@ -90,11 +90,18 @@
         </div>
         <!--场上正在pk-->
         <div class="fighting" v-if="isFighting">
-
+            <div class="img">
+                <img src="${rc.contextPath}/statics/img/competeCenter/lei_double.png" alt="">
+            </div>
+            <h3>加入功擂</h3>
+            <p>场上正在进行pk···</p>
         </div>
         <!--加入pk-->
         <div class="join_pk" v-if="!isFighting">
-
+            <div class="img">
+                <img src="${rc.contextPath}/statics/img/competeCenter/lei_one.png" alt="">
+            </div>
+            <h3>加入功擂</h3>
         </div>
         <!--规则-->
         <div class="model_area rule_area" v-if="ruleAreaShow">
