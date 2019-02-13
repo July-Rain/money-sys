@@ -130,7 +130,9 @@
                     border
                     style="width: 100%">
                 <el-table-column
+                        label="序号"
                         type="index"
+                        align="center"
                         width="50">
                 </el-table-column>
                 <el-table-column
@@ -143,7 +145,7 @@
                 <el-table-column
                         prop="operation"
                         label="用户操作"
-                        width="280"
+                        width="200"
                         header-align="center"
                         align="center"
                         >
@@ -151,15 +153,15 @@
                 <el-table-column
                         prop="method"
                         label="请求方法"
-                        width="280"
                         header-align="center"
                         align="center"
+                        :show-overflow-tooltip="true"
                         >
                 </el-table-column>
                 <el-table-column
                         prop="time"
                         label="执行时长"
-                        width="280"
+                        width="100"
                         header-align="center"
                         align="center"
                         >
@@ -167,15 +169,7 @@
                 <el-table-column
                         prop="ip"
                         label="ip"
-                        width="280"
-                        header-align="center"
-                        align="center"
-                        >
-                </el-table-column>
-                <el-table-column
-                        prop="time"
-                        label="执行时长"
-                        width="280"
+                        width="150"
                         header-align="center"
                         align="center"
                         >
@@ -186,6 +180,7 @@
                         label="创建时间"
                         header-align="center"
                         align="center"
+                        width="180"
                         :show-overflow-tooltip="true"
                         >
                 </el-table-column>

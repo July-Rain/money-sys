@@ -37,6 +37,9 @@ ul li{
 .list{
     height: 390px;
 }
+.manList{
+    max-height: 702px;
+}
 /*table 操作区 icon*/
 .tabIcon{
     cursor: pointer;

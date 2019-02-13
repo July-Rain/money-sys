@@ -274,14 +274,14 @@ var vm = new Vue({
         })
     },
     mounted: function() {
-        var that = this;
-        this.$refs.stuDialog.open();
-        this.$nextTick(function () {
-            setTimeout(function () {
-                that.$refs.stuDialog.close();
-                loadEditor();
-            },200);
-        });
+        // var that = this;
+        // this.$refs.stuDialog.open();
+        // this.$nextTick(function () {
+        //     setTimeout(function () {
+        //         that.$refs.stuDialog.close();
+        //         loadEditor();
+        //     },200);
+        // });
     }
 });
 

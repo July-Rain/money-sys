@@ -12,13 +12,10 @@
             <el-breadcrumb-item>管理中心</el-breadcrumb-item>
             <el-breadcrumb-item>勋章管理</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-form :inline="true" class="demo-form-inline">
-
-            <el-form-item>
-                <el-button type="primary" @click="addMedal()" size="mini">新增头衔</el-button>
-            </el-form-item>
-        </el-form>
         <div>
+            <div class="info_btn">
+                <el-button type="primary" @click="addMedal()" size="mini">新增头衔</el-button>
+            </div>
             <el-table
                     :data="tableData"
                     border
@@ -57,17 +54,30 @@
                 </el-table-column>
                 </el-table-column>
                 <el-table-column
+                        align="center"
                         prop="active"
                         label="操作">
                     <template slot-scope="scope">
-                        <el-button
-                                size="mini"
-                                @click="handleEdit(scope.$index, scope.row)">编辑
-                        </el-button>
-                        <el-button
-                                size="mini"
-                                @click="handleDel(scope.$index, scope.row)">删除
-                        </el-button>
+                        <el-popover
+                                placement="top-start"
+                                trigger="hover"
+                                content="编辑">
+                            <i class="iconfont icon-xiugaimima tabIcon"
+                               slot="reference"
+                               @click="handleEdit(scope.$index, scope.row)"
+                               style="color: #119e0a;" >
+                            </i>
+                        </el-popover>
+                        <el-popover
+                                placement="top-start"
+                                trigger="hover"
+                                content="删除">
+                            <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                               slot="reference"
+                               @click="handleDel(scope.$index, scope.row)"
+                               style="color: #e31313;" >
+                            </i>
+                        </el-popover>
                     </template>
                 </el-table-column>
             </el-table>
@@ -82,29 +92,28 @@
             </el-pagination>
         </div>
  
-        <el-dialog title="勋章编辑" :visible.sync="dialogFormVisible">
-
-            <el-form :model="form">
-                <el-row>
+        <el-dialog :title="title" :visible.sync="dialogFormVisible">
+            <el-form :model="form" size="mini">
+                <div>
 
                     <el-col :span="24">
                         <el-form-item label="勋章名称" :label-width="formLabelWidthS">
-                            <el-input v-model="form.titleName" autocomplete="off"></el-input>
+                            <el-input v-model="form.titleName" autocomplete="off" placeholder="勋章名称"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">
                         <el-form-item label="勋章图标（后期会做成选择图片库图片，现在请手动写图标 例如：icon-ai-book）" :label-width="formLabelWidthS">
-                            <el-input v-model="form.badge" autocomplete="off"></el-input>
+                            <el-input v-model="form.badge" autocomplete="off" placeholder="勋章图标"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="获取条件（积分）" :label-width="formLabelWidth">
-                            <el-input v-model="form.integral" autocomplete="off"></el-input>
+                            <el-input v-model="form.integral" autocomplete="off" placeholder="获取条件（积分）"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="获取条件（学分）" :label-width="formLabelWidth">
-                            <el-input v-model="form.credit" autocomplete="off"></el-input>
+                            <el-input v-model="form.credit" autocomplete="off" placeholder="获取条件（学分）"></el-input>
                         </el-form-item>
                     </el-col>
                     <!--<el-col :span="24">-->
@@ -117,7 +126,7 @@
                             <!--<el-input v-model="form.participantDept" autocomplete="off"></el-input>-->
                         <!--</el-form-item>-->
                     <!--</el-col>-->
-                </el-row>
+                </div>
             </el-form>
             <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -130,5 +139,5 @@
 </div>
 </body>
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/manageCen/medalConfig.js"></script>
+<script src="${rc.contextPath}/js/manageCen/medalConfig.js?_${.now?long}"></script>
 </html>

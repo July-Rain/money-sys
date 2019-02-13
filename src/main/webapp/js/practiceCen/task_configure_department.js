@@ -2,6 +2,7 @@ var ztree = null;
 var vm = new Vue({
     el: '#app',
     data: {
+        idArr:[],// 部门Tree默认展开数据
         tableData: [],
         formInline: {
             limit: 10,
@@ -19,8 +20,8 @@ var vm = new Vue({
             themeName: '',
             users: [],
             depts: [],
-            deptNames: [],
-            userNames: []
+            deptNames: '',
+            userNames: ''
         },
         topicList: [],
         diffList: [],
@@ -68,14 +69,15 @@ var vm = new Vue({
         },
         handleSelectionChange(val) {
             this.configureEntity.users = [];
-            this.configureEntity.userNames = [];
+            var userNames = [];
             //选择人员信息
             this.multipleSelection = val;
             //遍历最终的人员信息
             for (var i = 0; i < val.length; i++) {
                 this.configureEntity.users.push(val[i].id);
-                this.configureEntity.userNames.push(val[i].userName)
+                userNames.push(val[i].userName)
             }
+            this.configureEntity.userNames = userNames.join();
 
         },
         userHandleSizeChange: function (val) {
@@ -123,11 +125,12 @@ var vm = new Vue({
         confimDept: function () {
             this.multipleDeptSelection = this.$refs.deptTree.getCheckedNodes();
             this.configureEntity.depts = [];
-            this.configureEntity.deptNames = [];
+            var deptNames = [];
             for (var i = 0; i < this.multipleDeptSelection.length; i++) {
                 this.configureEntity.depts.push(this.multipleDeptSelection[i].id);
-                this.configureEntity.deptNames.push(this.multipleDeptSelection[i].orgName);
+                deptNames.push(this.multipleDeptSelection[i].orgName);
             }
+            this.configureEntity.deptNames = deptNames.join();
             this.dialogDept = false;
         },
         handleCheckChange: function (data, checked, indeterminate) {
@@ -313,10 +316,10 @@ var vm = new Vue({
                             vm.configureEntity.users = result.info.users.split(',');
                         }
                         if (result.info.deptNames != null) {
-                            vm.configureEntity.deptNames = result.info.deptNames.split(',');
+                            vm.configureEntity.deptNames = result.info.deptNames;
                         }
                         if (result.info.userNames != null) {
-                            vm.configureEntity.userNames = result.info.userNames.split(',');
+                            vm.configureEntity.userNames = result.info.userNames;
                         }
                         vm.dialogConfig = true;
                     } else {
@@ -430,6 +433,10 @@ var vm = new Vue({
                     if (result.code === 0) {
                         vm.deptData = result.orgList;
                         vm.userData = result.orgList;
+                        // 默认展开第一级
+                        vm.userData.map(function (m) {
+                            vm.idArr.push(m.id)
+                        });
                     } else {
                         alert(result.msg);
                     }

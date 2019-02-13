@@ -138,7 +138,7 @@
                     <el-form :model="configureEntity" :rules="rules" ref="configureEntity" label-width="110px"
                              size="mini">
                         <el-form-item label="练习卷名称：" prop="name">
-                            <el-input v-model="configureEntity.name" :disabled="isEdit"></el-input>
+                            <el-input v-model="configureEntity.name" :disabled="isEdit" placeholder="练习卷名称"></el-input>
                         </el-form-item>
 
                         <el-form-item label="试题难度：">
@@ -179,11 +179,10 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="使用部门：" prop="depts">
-                            <el-input :disabled="isEdit" v-model="configureEntity.deptNames" readonly
-                                      @focus="chooseDept" placeholder="请选择使用部门" clearable></el-input>
+                        <el-form-item label="使用部门：">
+                            <el-input v-model="configureEntity.deptNames" :disabled="isEdit" readonly @focus="chooseDept" placeholder="请选择使用部门" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="使用人员：" prop="users">
+                        <el-form-item label="使用人员：">
                             <el-input :disabled="isEdit" v-model="configureEntity.userNames" readonly
                                       @focus="chooseUser" placeholder="请选择使用人员" clearable></el-input>
                         </el-form-item>
@@ -207,7 +206,7 @@
                         show-checkbox
                         @check-change="handleCheckChange"
                         node-key="id"
-                        :default-expanded-keys="[2079]"
+                        :default-expanded-keys="idArr"
                 >
                 </el-tree>
             </el-scrollbar>
@@ -221,11 +220,14 @@
             <!--对于同一级的节点，每次只能展开一个-->
             <div>
                 <el-col :span="6">
-                    <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                    <el-scrollbar wrap-class="depList" wrap-style="color: red;" view-style="font-weight: bold;"
+                                  view-class="view-box" :native="false">
                         <el-tree
                                 :data="userData"
                                 :props="defaultUserProps"
                                 accordion
+                                node-key="id"
+                                :default-expanded-keys="idArr"
                                 @node-click="handleDeptNodeClick">
                         </el-tree>
                     </el-scrollbar>
@@ -233,24 +235,22 @@
 
                 <el-col :span="18" class="paddingLeft20">
                     <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
-
-                        <el-form-item prop="code">
+                        <el-form-item prop="userCode">
                             <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
                         </el-form-item>
-                        <el-form-item prop="value">
+                        <el-form-item prop="userName">
                             <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
                         </el-form-item>
-
                         <el-form-item>
                             <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
                             <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
-
                         </el-form-item>
                     </el-form>
                     <div>
                         <el-table
                                 :data="userTableData"
                                 border
+                                height="529"
                                 @selection-change="handleSelectionChange"
                                 style="width: 100%">
                             <el-table-column

@@ -7,6 +7,9 @@
         .info_card .el-form-item__label {
             min-width: 96px;
         }
+        .manList{
+            max-height: 822px;
+        }
     </style>
 </head>
 <body>
@@ -18,20 +21,21 @@
         <!--</el-breadcrumb>-->
         <el-row :gutter="24">
             <el-col :span="4">
-                <!--对于同一级的节点，每次只能展开一个-->
-                <el-tree
-                        :data="treeData"
-                        :props="defaultProps"
-                        accordion
-                        @node-click="handleNodeClick">
-                </el-tree>
+                <el-scrollbar wrap-class="manList" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                    <!--对于同一级的节点，每次只能展开一个-->
+                    <el-tree
+                            :data="treeData"
+                            :props="defaultProps"
+                            accordion
+                            @node-click="handleNodeClick">
+                    </el-tree>
+                </el-scrollbar>
             </el-col>
             <el-col :span="20">
                 <div class="info_card">
                     <div class="card_title"></div>
                     <div class="card_contain">
                         <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-
                             <el-form-item label="案例标题" prop="caseTitle">
                                 <el-input v-model="formInline.caseTitle" placeholder="案例标题" size="mini"></el-input>
                             </el-form-item>
@@ -41,8 +45,7 @@
                                             v-for="item in caseTypeOption"
                                             :key="item.code"
                                             :label="item.value"
-                                            :value="item.code"
-                                    >
+                                            :value="item.code" >
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -52,8 +55,7 @@
                                             v-for="item in lawLevelOption"
                                             :key="item.code"
                                             :label="item.value"
-                                            :value="item.code"
-                                    >
+                                            :value="item.code" >
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -105,6 +107,7 @@
                 <el-table
                         :data="tableData"
                         border
+                        height="599"
                         style="width: 100%">
                     <el-table-column
                             label="序号"
@@ -159,7 +162,7 @@
                     <el-table-column label="操作"
                                      header-align="center"
                                      align="center"
-                                     width="200">
+                                     width="180">
                         <template slot-scope="scope">
                             <el-popover
                                     placement="top-start"
