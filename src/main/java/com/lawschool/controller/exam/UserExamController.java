@@ -54,8 +54,8 @@ public class UserExamController extends AbstractController {
 
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params) {
-        PageUtils page = userExamService.getList(params,getUser());
-        return Result.ok().put("page", page);
+        Result result = userExamService.getList(params,getUser());
+        return result;
     }
     /**
      * 开始考试获取试卷
@@ -70,7 +70,7 @@ public class UserExamController extends AbstractController {
 
     /**
      * 继续考试
-     * @param examConfigId
+     * @param userExamId
      * @return
      */
     @RequestMapping(value = "/continueExam", method = RequestMethod.POST)
@@ -103,6 +103,14 @@ public class UserExamController extends AbstractController {
         userExamService.saveExam(userAnswerForm);
 
         return Result.ok();
+    }
+
+    @RequestMapping(value = "/viewExam",method = RequestMethod.POST)
+    public Result viewExam( String userExamId ){
+
+        Result res = userExamService.viewExam(userExamId,getUser());
+
+        return res;
     }
 
 }

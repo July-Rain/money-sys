@@ -29,7 +29,7 @@ public interface UserExamService  extends AbstractService<UserExam> {
 
     void commitExam(UserAnswerForm userAnswerForm);
 
-    PageUtils getList(Map<String, Object> params,User user);
+    Result getList(Map<String, Object> params,User user);
 
     void saveExam(UserAnswerForm userAnswerForm);
 
@@ -38,4 +38,6 @@ public interface UserExamService  extends AbstractService<UserExam> {
     List<UserExamForm> getListByIds(List<String> ids);
 
     List<QuestForm> buildExam(List<UserExamAnswer> list);
+
+    Result viewExam(String userExamId,User user);
 }

@@ -7,13 +7,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * ClassName: UserExamForm
- * Description: 获取考试列表Form
- * date: 2019/1/1810:06
+ * ClassName: CheckUserExamForm
+ * Description: TODO
+ * date: 2019/2/1113:52
  *
  * @author 王帅奇
  */
-public class UserExamForm extends DataEntity<UserExamForm> {
+public class CheckUserExamForm extends DataEntity<CheckUserExamForm> {
     private String id; //考试配置ID
     private String userExamId; //用户考试试卷ID
     private String examName;    //试卷名称
@@ -24,30 +24,12 @@ public class UserExamForm extends DataEntity<UserExamForm> {
     private Date startTime;   //考试开始时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;   //考试结束时间
-    private String examStatus;  //考试状态  0未考  1 已考
+    private String examStatus;  //考试状态  0已考  1 未考
     private String examTypeName;    //考试类型中文名
     private String isFinMark; // 是否完成阅卷  0:完成 1：未完成
     private String checkStatus; //阅卷状态  0 未开始  1 未完成  2 已完成
     private List<String> list ; //ids
     private String checkExamId; //阅卷ID
-    private String[] authArr;   //数据权限
-    private String userId;
-
-    public String getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(final String userId) {
-        this.userId = userId;
-    }
-
-    public String[] getAuthArr() {
-        return this.authArr;
-    }
-
-    public void setAuthArr(final String[] authArr) {
-        this.authArr = authArr;
-    }
 
     public String getCheckExamId() {
         return this.checkExamId;
@@ -159,4 +141,5 @@ public class UserExamForm extends DataEntity<UserExamForm> {
     public void setExamTypeName(final String examTypeName) {
         this.examTypeName = examTypeName;
     }
+
 }

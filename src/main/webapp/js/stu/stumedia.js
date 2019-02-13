@@ -8,6 +8,7 @@ var menuId=$("#menuId").val();
 var vm = new Vue({
     el: '#app',
     data: {
+        idArr:[],
         formInline: { // 搜索表单
             stuTitle: '',
             stuPoliceclass: '',
@@ -112,6 +113,10 @@ var vm = new Vue({
                     if(result.code === 0){
                         vm.deptData = result.orgList;
                         vm.userData = result.orgList;
+                        // 默认展开第一级
+                        vm.userData.map(function (m) {
+                            vm.idArr.push(m.id)
+                        });
                     }else{
                         alert(result.msg);
                     }

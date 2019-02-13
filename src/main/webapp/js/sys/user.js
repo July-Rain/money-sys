@@ -4,7 +4,7 @@ var vm = new Vue({
     data: {
         //menuId:"",//菜单id
         navData: [],//导航
-
+        idArr:[],// 部门Tree默认展开数据
         formInline: { // 搜索表单
             id:'',
             userName: '',
@@ -68,18 +68,20 @@ var vm = new Vue({
                 url: baseURL + "org/tree",
                 contentType: "application/json",
                 success: function(result){
-
                     if(result.code === 0){
                         vm.treeData = result.orgList;
+                        // 默认展开第一级
+                        vm.treeData.map(function (m) {
+                            vm.idArr.push(m.id)
+                        });
                     }else{
                         alert(result.msg);
                     }
                 }
             });
-        })
-        this.$nextTick(function () {
+
             this.reload();
-        })
+        });
     },
 
 

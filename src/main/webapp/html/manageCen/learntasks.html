@@ -104,11 +104,11 @@
                         <div class="card_title"></div>
                         <div class="card_contain">
                             <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-                                <el-form-item label="任务名称" prop="taskName">
+                                <el-form-item label="任务名称：" prop="taskName">
                                     <el-input v-model="formInline.taskName" placeholder="任务名称" size="mini"
                                               clearable></el-input>
                                 </el-form-item>
-                                <el-form-item label="所属警种" prop="policeclass">
+                                <el-form-item label="所属警种：" prop="policeclass">
                                     <el-select size="mini" v-model="formInline.policeclass" placeholder="所属警种">
                                         <el-option
                                                 v-for="item in policeclassOption"
@@ -119,7 +119,7 @@
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
-                                <el-form-item label="所属分类" prop="taskClass">
+                                <el-form-item label="所属分类：" prop="taskClass">
                                     <el-select size="mini" v-model="formInline.taskClass" placeholder="所属分类">
                                         <el-option
                                                 v-for="item in taskClassOption"
@@ -131,7 +131,7 @@
                                     </el-select>
                                 </el-form-item>
 
-                                <el-form-item label="开始日期" prop="startTime">
+                                <el-form-item label="开始日期：" prop="startTime">
                                     <el-date-picker
                                             v-model="formInline.startTime"
                                             type="date"
@@ -142,7 +142,7 @@
                                     >
                                     </el-date-picker>
                                 </el-form-item>
-                                <el-form-item label="结束日期" prop="endTime">
+                                <el-form-item label="结束日期：" prop="endTime">
                                     <el-date-picker
                                             v-model="formInline.endTime"
                                             type="date"
@@ -258,7 +258,7 @@
                                             placement="top-start"
                                             trigger="hover"
                                             content="编辑">
-                                        <i class="el-icon-edit tabIcon"
+                                        <i class="iconfont icon-xiugaimima tabIcon"
                                            slot="reference"
                                            @click="handleEdit(scope.$index, scope.row)"
                                            style="color: #119e0a;"
@@ -303,10 +303,10 @@
             <el-form :model="learnTasks" :rules="rules" ref="learnTasks" label-width="100px"
                      class="demo-learnTasks" size="mini">
                 <el-col :span="24">
-                    <el-form-item label="任务名称" prop="taskName">
+                    <el-form-item label="任务名称：" prop="taskName">
                         <el-input v-model="learnTasks.taskName" placeholder="请输入任务名称" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="任务内容" prop="taskContent">
+                    <el-form-item label="任务内容：" prop="taskContent">
                         <!--<el-input type="textarea" maxlength="200" v-model="learnTasks.taskContent" placeholder="请输入任务内容" clearable></el-input>-->
                         <!--<el-tree
                                 ref="classTree"
@@ -324,7 +324,7 @@
                             <ul id="classTree" class="ztree"></ul>
                         </el-scrollbar>
                     </el-form-item>
-                    <el-form-item label="所属警种" prop="policeclass">
+                    <el-form-item label="所属警种：" prop="policeclass">
                         <el-select v-model="learnTasks.policeclass" placeholder="所属警种">
                             <el-option
                                     v-for="item in policeclassOption"
@@ -335,7 +335,7 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="所属分类" prop="taskClass">
+                    <el-form-item label="所属分类：" prop="taskClass">
                         <el-select v-model="learnTasks.taskClass" placeholder="所属分类">
                             <el-option
                                     v-for="item in taskClassOption"
@@ -346,7 +346,7 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="开始日期" prop="startTime">
+                    <el-form-item label="开始日期：" prop="startTime">
                         <el-date-picker
                                 v-model="learnTasks.startTime"
                                 type="date"
@@ -354,7 +354,7 @@
                                 placeholder="开始日期">
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="结束日期" prop="endTime">
+                    <el-form-item label="结束日期：" prop="endTime">
                         <el-date-picker
                                 v-model="learnTasks.endTime"
                                 type="date"
@@ -362,14 +362,14 @@
                                 placeholder="结束日期">
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="任务执行者" prop="taskExecute">
+                    <el-form-item label="任务执行者：" prop="taskExecute">
                         <el-input v-model="learnTasks.taskExecute" placeholder="请输入任务执行者" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="使用部门" prop="deptName" v-if="menuForm!='person'">
+                    <el-form-item label="使用部门：" prop="deptName" v-if="menuForm!='person'">
                         <el-input v-model="learnTasks.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门"
                                   clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="使用人员" prop="userName" v-if="menuForm!='person'">
+                    <el-form-item label="使用人员：" prop="userName" v-if="menuForm!='person'">
                         <el-input v-model="learnTasks.userName" readonly @focus="chooseUser" placeholder="请选择使用人员"
                                   clearable></el-input>
                     </el-form-item>
@@ -383,92 +383,94 @@
 
         <el-dialog title="选择部门" :visible.sync="dialogDept">
             <!--对于同一级的节点，每次只能展开一个-->
-            <el-tree
-                    ref="deptTree"
-                    :data="deptData"
-                    :props="defaultDeptProps"
-                    accordion
-                    show-checkbox
-                    @check-change="handleCheckChange"
-                    node-key="id"
-                    :default-expanded-keys="[2079]"
-                    :default-checked-keys="deptCheckData"
-            >
-            </el-tree>
-            <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
-            <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
+            <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                <el-tree
+                        ref="deptTree"
+                        :data="deptData"
+                        :props="defaultDeptProps"
+                        accordion
+                        show-checkbox
+                        @check-change="handleCheckChange"
+                        node-key="id"
+                        :default-expanded-keys="[2079]"
+                        :default-checked-keys="deptCheckData"
+                >
+                </el-tree>
+            </el-scrollbar>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="cancelDept">取消</el-button>
+                <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+            </div>
         </el-dialog>
 
-        <el-dialog title="选择人员" :visible.sync="dialogUser">
+        <el-dialog title="选择人员" :visible.sync="dialogUser" class="dialog_minW750">
             <!--对于同一级的节点，每次只能展开一个-->
-            <el-row>
-                <el-col :span="4">
-                    <el-tree
-                            :data="userData"
-                            :props="defaultUserProps"
-                            accordion
-                            @node-click="handleDeptNodeClick">
-                    </el-tree>
+            <div>
+                <el-col :span="6">
+                    <el-scrollbar wrap-class="depList" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                        <el-tree
+                                :data="userData"
+                                :props="defaultUserProps"
+                                accordion
+                                @node-click="handleDeptNodeClick">
+                        </el-tree>
+                    </el-scrollbar>
                 </el-col>
+                <el-col :span="18" class="paddingLeft20">
+                    <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
 
-                <el-col :span="20">
-                    <el-tabs type="border-card">
-                        <el-tab-pane label="检索">
-                            <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
+                        <el-form-item prop="code">
+                            <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
+                        </el-form-item>
+                        <el-form-item prop="value">
+                            <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
+                        </el-form-item>
 
-                                <el-form-item prop="code">
-                                    <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
-                                </el-form-item>
-                                <el-form-item prop="value">
-                                    <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
-                                </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
+                            <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
 
-                                <el-form-item>
-                                    <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
-                                    <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
+                        </el-form-item>
+                    </el-form>
+                    <div>
+                        <el-table
+                                :data="userTableData"
+                                border
+                                @selection-change="handleSelectionChange"
+                                style="width: 100%">
+                            <el-table-column
+                                    type="selection"
+                                    width="55">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="userCode"
+                                    label="身份证号"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="userName"
+                                    label="姓名"
+                                    width="280"
+                            >
+                            </el-table-column>
 
-                                </el-form-item>
-                            </el-form>
-                            <div>
-                                <el-table
-                                        :data="userTableData"
-                                        border
-                                        @selection-change="handleSelectionChange"
-                                        style="width: 100%">
-                                    <el-table-column
-                                            type="selection"
-                                            width="55">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="userCode"
-                                            label="身份证号"
-                                    >
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="userName"
-                                            label="姓名"
-                                            width="280"
-                                    >
-                                    </el-table-column>
-
-                                </el-table>
-                                <el-pagination
-                                        @size-change="userHandleSizeChange"
-                                        @current-change="userHandleCurrentChange"
-                                        :current-page="userForm.currPage"
-                                        :page-sizes="[10, 20, 30, 40]"
-                                        :page-size="userForm.pageSize"
-                                        layout="total, sizes, prev, pager, next, jumper"
-                                        :total="userForm.totalCount">
-                                </el-pagination>
-                            </div>
-                        </el-tab-pane>
-                    </el-tabs>
-                    <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
-                    <el-button type="primary" size="mini" @click="cancelUser">取消</el-button>
+                        </el-table>
+                        <el-pagination
+                                @size-change="userHandleSizeChange"
+                                @current-change="userHandleCurrentChange"
+                                :current-page="userForm.currPage"
+                                :page-sizes="[10, 20, 30, 40]"
+                                :page-size="userForm.pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="userForm.totalCount">
+                        </el-pagination>
+                    </div>
                 </el-col>
-            </el-row>
-
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="cancelUser">取消</el-button>
+                <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
+            </div>
         </el-dialog>
 
         <!--<el-dialog title="选择法律法规" :visible.sync="dialogClass" >

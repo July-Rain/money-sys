@@ -2,9 +2,9 @@ var menuId = $("#menuId").val();
 var vm = new Vue({
     el: '#app',
     data() {
-        const data=[]
-        const generateData = _ => {
-            for (let i = 1; i <= 15; i++) {
+        var data=[]
+        var generateData = function () {
+            for (var i = 1; i <= 15; i++) {
                 data.push({
                     key: i,
                     label: `备选项 ${ i }`,
@@ -16,6 +16,7 @@ var vm = new Vue({
 
         };
         return {
+            idArr:[],// 部门Tree默认展开数据
             data2: generateData(),
             value2: [],
             filterMethod(query, item) {
@@ -115,7 +116,7 @@ var vm = new Vue({
     },
 
     created: function () {
-        this.gettrData()
+        this.gettrData();
         this.$nextTick(function () {
             //加载菜单
             $.ajax({
@@ -164,6 +165,10 @@ var vm = new Vue({
                     if(result.code === 0){
                         vm.deptData = result.orgList;
                         vm.userData = result.orgList;
+                        // 默认展开第一级
+                        vm.deptData.map(function (m) {
+                            vm.idArr.push(m.id)
+                        });
                     }else{
                         alert(result.msg);
                     }
@@ -352,7 +357,7 @@ var vm = new Vue({
         reloadUser: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sys/getAllUsers",
+                url: baseURL + "sys/getUorT?isMp=true",
                 dataType: "json",
                 data: vm.userForm,
                 success: function (result) {
@@ -360,7 +365,7 @@ var vm = new Vue({
                         vm.userTableData = result.page.list;
                         vm.userForm.currPage = result.page.currPage;
                         vm.userForm.pageSize = result.page.pageSize;
-                        vm.userForm.totalCount = parseInt(result.page.count);
+                        vm.userForm.totalCount = parseInt(result.page.totalCount);
                     } else {
                         alert(result.msg);
                     }
@@ -395,13 +400,13 @@ var vm = new Vue({
         //批量删除
         handleDelete: function (dataListSelections) {
             this.dataListSelections=dataListSelections;
-            let arr = [];
+            var arr = [];
 
-            this.dataListSelections.map((index)=>{
+            this.dataListSelections.map(function (index) {
                 arr.push(index)
             })
-            let arr2=[];
-            vm.randomQuesData.map((item,index)=>{
+            var arr2=[];
+            vm.randomQuesData.map(function (item,index) {
                 if(arr.indexOf(index)==-1){
                     arr2.push(item)
                 }
@@ -435,7 +440,7 @@ var vm = new Vue({
                 },
                 success:function(result){
                     that.data2 = [];
-                    result.page.list.map((info,index)=>{
+                    result.page.list.map(function (info,index) {
                         that.data2.push({
                             disabled: false,
                             key: info.id,

@@ -185,7 +185,7 @@ var vm = new Vue({
             radio_disabled: false,
             checkboxdisabled:false,//多选情况下 复选框 禁用 选项
             dialogyes: false,//答对提示
-
+            examList:[],
 
             chuangguan:"",
             onlPkSum:"",
@@ -440,6 +440,19 @@ var vm = new Vue({
                 }
             });
         });
+        //我的考试
+        this.$nextTick(function () {
+            $.ajax({
+                type:"POST",
+                url: baseURL + "user/exam/list",
+                dataType: "json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.examList = result.page.list;
+                    }
+                }
+            })
+        })
     },
     methods: {
         // 导航栏

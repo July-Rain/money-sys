@@ -10,7 +10,8 @@
     <div class="container">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
-            <el-breadcrumb-item>考试中心</el-breadcrumb-item>
+            <el-breadcrumb-item>个人中心</el-breadcrumb-item>
+            <el-breadcrumb-item>我的考试</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row :gutter="24">
             <el-col :span="24">
@@ -110,5 +111,5 @@
     </div>
 </div>
 </body>
-<script src="${rc.contextPath}/js/examCen/userExam.js"></script>
+<script src="${rc.contextPath}/js/personalCen/myExam.js"></script>
 </html>

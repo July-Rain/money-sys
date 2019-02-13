@@ -3,7 +3,7 @@ var vm = new Vue({
     el: '#app',
     data: {
         //menuId:"",//菜单id
-        labelPosition:'left',
+        labelPosition: 'left',
         navData: [],//导航
         formInline: { // 搜索表单
             value: '',
@@ -24,9 +24,7 @@ var vm = new Vue({
             remark: '',
             status: "1"
         },
-        checkSetting:{
-
-        },
+        checkSetting: {},
         rules: {//表单验证规则
             value: [
                 {required: true, message: '请输入参数名', trigger: 'blur'},
@@ -37,9 +35,9 @@ var vm = new Vue({
                 {max: 50, message: '最大长度50', trigger: 'blur'}
             ]
         },
-        checkSettingRules:{},
+        checkSettingRules: {},
         dialogConfig: false,//table弹出框可见性
-        checkSettingDia:false,//阅卷设置弹出框
+        checkSettingDia: false,//阅卷设置弹出框
         title: "",//弹窗的名称
         delIdArr: []//删除数据
     },
@@ -133,10 +131,10 @@ var vm = new Vue({
             this.checkSettingDia = false;
             vm.reload();
         },
-        handleChange:function(){
+        handleChange: function () {
 
         },
-        saveCheckSet:function(){
+        saveCheckSet: function () {
             console.info(vm.checkSetting);
             $.ajax({
                 type: "POST",
@@ -173,12 +171,12 @@ var vm = new Vue({
                 }
             });
         },
-        generateOrViewCheck:function(index,row){
+        generateOrViewCheck: function (index, row) {
             var checkPassword = row.checkPassword;
-            if(checkPassword){
+            if (checkPassword) {
                 //查看
 
-            }else{
+            } else {
                 //生成
                 this.checkSettingDia = true;
                 vm.checkSetting.id = row.id;
