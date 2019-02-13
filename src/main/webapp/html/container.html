@@ -159,72 +159,51 @@
                 </el-row>
             </el-col>
             <el-col :span="6">
-                <div class="box-card">
-                    <div class="header pl12">
-                        <span>我的考试</span>
+                <el-popover
+                        placement="right-end"
+                        title="标题"
+                        width="200"
+                        trigger="hover"
+                        content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+                    <div slot="reference" class="box-card">
+                        <div class="header pl12">
+                            <span>我的考试</span>
+                        </div>
+
+                        <el-carousel height="229px" indicator-position="none">
+                            <el-carousel-item v-for="(list,index) in examList">
+                                <div class="content exam">
+                                    <div class="title">
+                                        <img src="${rc.contextPath}/statics/img/jiantou.png">
+                                        <span>{{index}}</span>
+                                        <span>{{list.examName}}</span>
+                                    </div>
+                                    <div class="minContent">
+                                        <table>
+                                            <tbody>
+                                            <tr>
+                                                <td>考试类型</td>
+                                                <td>{{list.examTypeName}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>开始时间</td>
+                                                <td>[{{list.startTime}}]</td>
+                                            </tr>
+                                            <tr>
+                                                <td>结束时间</td>
+                                                <td>[{{list.endTime}}]</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <el-button type="primary" style="float:right;" @click="startExam(list.id)">开始考试</el-button>
+                                    </div>
+                                </div>
+                            </el-carousel-item>
+                        </el-carousel>
+
                     </div>
+                </el-popover>
 
-
-                    <el-carousel height="229px" indicator-position="none">
-                        <el-carousel-item>
-                            <div class="content exam">
-                                <div class="title">
-                                    <img src="${rc.contextPath}/statics/img/jiantou.png">
-                                    <span>1</span>
-                                    <span>2018年第四季度学分考试</span>
-                                </div>
-                                <div class="minContent">
-                                    <table>
-                                        <tbody>
-                                        <tr>
-                                            <td>考试类型</td>
-                                            <td>必考</td>
-                                        </tr>
-                                        <tr>
-                                            <td>开始时间</td>
-                                            <td>[2018-12-24 10:10:00]</td>
-                                        </tr>
-                                        <tr>
-                                            <td>结束时间</td>
-                                            <td>[2018-12-26 10:40:00]</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <el-button type="primary" style="float:right;">开始考试</el-button>
-                                </div>
-                            </div>
-                        </el-carousel-item>
-                        <el-carousel-item>
-                            <div class="content exam">
-                                <div class="title">
-                                    <img src="${rc.contextPath}/statics/img/jiantou.png">
-                                    <span>1</span>
-                                    <span>2018年第四季度学分考试</span>
-                                </div>
-                                <div class="minContent">
-                                    <table>
-                                        <tbody>
-                                        <tr>
-                                            <td>考试类型</td>
-                                            <td>必考</td>
-                                        </tr>
-                                        <tr>
-                                            <td>开始时间</td>
-                                            <td>[2018-12-24 10:10:00]</td>
-                                        </tr>
-                                        <tr>
-                                            <td>结束时间</td>
-                                            <td>[2018-12-26 10:40:00]</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <el-button type="primary" style="float:right;">开始考试</el-button>
-                                </div>
-                            </div>
-                        </el-carousel-item>
-                    </el-carousel>
-
-                </div>
             </el-col>
             <el-col :span="6">
                 <div class="box-card">

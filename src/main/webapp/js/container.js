@@ -449,6 +449,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.examList = result.page.list;
+
                     }
                 }
             })
@@ -1021,6 +1022,9 @@ var vm = new Vue({
                 }
             });
         },
+        startExam: function (id) {
+            alert("考试id:"+id)
+        }
     },
     computed: {
         integralPer: function(){
