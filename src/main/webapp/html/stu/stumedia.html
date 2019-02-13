@@ -13,12 +13,6 @@
             font-size: 30px;
             color: #57A8DC;
         }
-        .list{
-            max-height: 390px;
-        }
-        .depList{
-            max-height: 642px;
-        }
     </style>
 </head>
 <body>
@@ -70,10 +64,12 @@
                             <el-form-item>
                                 <el-button type="primary" @click="onSubmit" size="mini">
                                     <i class="iconfont icon-sousuo1"></i>
-                                    查询</el-button>
+                                    查询
+                                </el-button>
                                 <el-button @click="resetForm('formInline')" size="mini">
                                     <i class="iconfont icon-tableresetpassword"></i>
-                                    重置</el-button>
+                                    重置
+                                </el-button>
 
                             </el-form-item>
                         </el-form>
@@ -82,11 +78,14 @@
                 </div>
                 <div>
                     <div class="info_btn">
-                        <el-button size="mini" type="primary" @click="addStuMedia"><i class="iconfont icon-htmal5icon18"></i>新增</el-button>
+                        <el-button size="mini" type="primary" @click="addStuMedia"><i
+                                class="iconfont icon-htmal5icon18"></i>新增
+                        </el-button>
                     </div>
                     <el-table
                             :data="tableData"
                             border
+                            height="539"
                             style="width: 100%">
                         <el-table-column
                                 label="序号"
@@ -146,10 +145,10 @@
                                         placement="top-start"
                                         trigger="hover"
                                         content="编辑">
-                                    <i class="el-icon-edit tabIcon"
+                                    <i class="iconfont icon-xiugaimima tabIcon"
                                        slot="reference"
                                        @click="handleEdit(scope.$index, scope.row)"
-                                       style="color: #119e0a;" >
+                                       style="color: #119e0a;">
                                     </i>
                                 </el-popover>
                                 <el-popover
@@ -159,7 +158,7 @@
                                     <i class="iconfont icon-tubiaozhizuo- tabIcon"
                                        slot="reference"
                                        @click="handleDel(scope.$index, scope.row)"
-                                       style="color: #e31313;" >
+                                       style="color: #e31313;">
                                     </i>
                                 </el-popover>
                             </template>
@@ -179,7 +178,8 @@
         </el-row>
 
 
-        <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogStuMedia" :before-close="closeDia" ref="stuDialog">
+        <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogStuMedia" :before-close="closeDia"
+                   ref="stuDialog">
             <el-row>
                 <el-col :span="24">
                     <el-form :model="stuMedia" :rules="rules" ref="stuMedia" label-width="100px" class="demo-stuMedia"
@@ -282,7 +282,8 @@
 
         <el-dialog title="选择部门" :visible.sync="dialogDept">
             <!--对于同一级的节点，每次只能展开一个-->
-            <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+            <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;"
+                          view-class="view-box" :native="false">
                 <el-tree
                         ref="deptTree"
                         :data="deptData"
@@ -291,8 +292,8 @@
                         show-checkbox
                         @check-change="handleCheckChange"
                         node-key="id"
-                        :default-expanded-keys="[2079]"
-                        :default-checked-keys="deptCheckData" >
+                        :default-expanded-keys="idArr"
+                        :default-checked-keys="deptCheckData">
                 </el-tree>
             </el-scrollbar>
             <div slot="footer" class="dialog-footer">
@@ -305,11 +306,14 @@
             <!--对于同一级的节点，每次只能展开一个-->
             <div>
                 <el-col :span="6">
-                    <el-scrollbar wrap-class="depList" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                    <el-scrollbar wrap-class="depList" wrap-style="color: red;" view-style="font-weight: bold;"
+                                  view-class="view-box" :native="false">
                         <el-tree
                                 :data="userData"
                                 :props="defaultUserProps"
                                 accordion
+                                node-key="id"
+                                :default-expanded-keys="idArr"
                                 @node-click="handleDeptNodeClick">
                         </el-tree>
                     </el-scrollbar>
@@ -317,24 +321,22 @@
 
                 <el-col :span="18" class="paddingLeft20">
                     <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
-
                         <el-form-item prop="userCode">
                             <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
                         </el-form-item>
                         <el-form-item prop="userName">
                             <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
                         </el-form-item>
-
                         <el-form-item>
                             <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
                             <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
-
                         </el-form-item>
                     </el-form>
                     <div>
                         <el-table
                                 :data="userTableData"
                                 border
+                                height="529"
                                 @selection-change="handleSelectionChange"
                                 style="width: 100%">
                             <el-table-column

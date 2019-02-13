@@ -7,9 +7,6 @@
         .el-col{
             min-height: 45px;
         }
-        .list{
-            max-height: 390px;
-        }
     </style>
 </head>
 <body>
@@ -214,76 +211,76 @@
             <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
         </el-dialog>
 
-        <el-dialog title="选择人员" :visible.sync="dialogUser">
+        <el-dialog title="选择人员" :visible.sync="dialogUser" class="dialog_minW750">
             <!--对于同一级的节点，每次只能展开一个-->
-            <el-row>
-                <el-col :span="4">
-                    <el-tree
-                            :data="userData"
-                            :props="defaultUserProps"
-                            accordion
-                            @node-click="handleDeptNodeClick">
-                    </el-tree>
+            <div>
+                <el-col :span="6">
+                    <el-scrollbar wrap-class="depList" wrap-style="color: red;" view-style="font-weight: bold;"
+                                  view-class="view-box" :native="false">
+                        <el-tree
+                                :data="userData"
+                                :props="defaultUserProps"
+                                accordion
+                                node-key="id"
+                                :default-expanded-keys="idArr"
+                                @node-click="handleDeptNodeClick">
+                        </el-tree>
+                    </el-scrollbar>
                 </el-col>
 
-                <el-col :span="20">
-                    <el-tabs type="border-card">
-                        <el-tab-pane label="检索">
-                            <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
+                <el-col :span="18" class="paddingLeft20">
+                    <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
+                        <el-form-item prop="userCode">
+                            <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
+                        </el-form-item>
+                        <el-form-item prop="userName">
+                            <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
+                            <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
+                        </el-form-item>
+                    </el-form>
+                    <div>
+                        <el-table
+                                :data="userTableData"
+                                border
+                                height="529"
+                                @selection-change="handleSelectionChange"
+                                style="width: 100%">
+                            <el-table-column
+                                    type="selection"
+                                    width="55">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="userCode"
+                                    label="身份证号"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="userName"
+                                    label="姓名"
+                                    width="280"
+                            >
+                            </el-table-column>
 
-                                <el-form-item prop="userCode">
-                                    <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
-                                </el-form-item>
-                                <el-form-item prop="userName">
-                                    <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
-                                </el-form-item>
-
-                                <el-form-item>
-                                    <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
-                                    <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
-
-                                </el-form-item>
-                            </el-form>
-                            <div>
-                                <el-table
-                                        :data="userTableData"
-                                        border
-                                        @selection-change="handleSelectionChange"
-                                        style="width: 100%">
-                                    <el-table-column
-                                            type="selection"
-                                            width="55">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="userCode"
-                                            label="身份证号"
-                                    >
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="fullName"
-                                            label="姓名"
-                                            width="280"
-                                    >
-                                    </el-table-column>
-
-                                </el-table>
-                                <el-pagination
-                                        @size-change="userHandleSizeChange"
-                                        @current-change="userHandleCurrentChange"
-                                        :current-page="userForm.currPage"
-                                        :page-sizes="[10, 20, 30, 40]"
-                                        :page-size="userForm.pageSize"
-                                        layout="total, sizes, prev, pager, next, jumper"
-                                        :total="userForm.totalCount">
-                                </el-pagination>
-                            </div>
-                        </el-tab-pane>
-                    </el-tabs>
-                    <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
-                    <el-button type="primary" size="mini" @click="cancelUser">取消</el-button>
+                        </el-table>
+                        <el-pagination
+                                @size-change="userHandleSizeChange"
+                                @current-change="userHandleCurrentChange"
+                                :current-page="userForm.currPage"
+                                :page-sizes="[10, 20, 30, 40]"
+                                :page-size="userForm.pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="userForm.totalCount">
+                        </el-pagination>
+                    </div>
                 </el-col>
-            </el-row>
-
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="cancelUser">取消</el-button>
+                <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
+            </div>
         </el-dialog>
     </div>
 </div>
