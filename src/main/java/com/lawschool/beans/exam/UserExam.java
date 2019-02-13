@@ -22,7 +22,7 @@ public class UserExam extends DataEntity<UserExam> {
 
     private Long queNum;    //题目数量
 
-    private String examStatus;  //考试状态  （已完成/未完成） 0：完成 1：未完成
+    private String examStatus;  //考试状态  （已完成/未完成） 0：已考 1：未考 2：已完成
 
     private double score;   //考試分數
 

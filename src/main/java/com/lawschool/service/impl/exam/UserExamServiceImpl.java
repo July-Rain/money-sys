@@ -1,11 +1,8 @@
 package com.lawschool.service.impl.exam;
 
 import com.lawschool.base.AbstractServiceImpl;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.lawschool.beans.Answer;
-import com.lawschool.beans.TestQuestions;
+import com.lawschool.base.Page;
 import com.lawschool.beans.User;
-import com.lawschool.beans.UserQuestRecord;
 import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.beans.exam.UserExam;
 import com.lawschool.beans.exam.UserExamAnswer;
@@ -18,6 +15,7 @@ import com.lawschool.service.UserService;
 import com.lawschool.service.auth.AuthRelationService;
 import com.lawschool.service.exam.ExamConfigService;
 import com.lawschool.service.exam.UserExamAnswerService;
+import com.lawschool.service.exam.UserExamFormService;
 import com.lawschool.service.exam.UserExamService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
@@ -25,13 +23,7 @@ import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import javax.jms.*;
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -67,6 +59,9 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserExamFormService userExamFormService;
 
     @Override
     public Result getExam(String examConfigId, User user) {
@@ -243,28 +238,29 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
             isFinMark = "0";
         }
         //提交试卷设置考试状态为完成
-        String examStatus = "0";
+        String examStatus = "2";
         userExamDao.updateFinMarkAndScoreById(isFinMark, totalScore, examStatus, remainingExamTime, userExamId);
     }
 
     @Override
-    public PageUtils getList(Map<String, Object> params, User user) {
+    public Result getList(Map<String, Object> params, User user) {
 
         String[] authArr = authService.listAllIdByUser(user.getOrgId(), user.getId(), "ExamConfig");
-        Page<UserExamForm> page = new Page<UserExamForm>(Integer.parseInt(params.get("currPage").toString()), Integer.parseInt(params.get("pageSize").toString()));
+        UserExamForm userExamForm = new UserExamForm();
+        if(authArr.length>0){
+            userExamForm.setAuthArr(authArr);
+        }
+        userExamForm.setUserId(user.getId());
+        if(params.get("status")!=null){
+            userExamForm.setExamStatus(params.get("status").toString());
+        }
+        if(params.get("examName")!=null){
+            userExamForm.setExamName(params.get("examName").toString());
+        }
 
-//        if(authArr.length>0){
-//            params.put("id",authArr);
-//            params.put("userId",user.getUserId());
-//        }else{
-//            page.setTotal(0);
-//            return new PageUtils(page);
-//        }
+        Page<UserExamForm> userExamFormPage = userExamFormService.findPage(new Page<UserExamForm>(params),userExamForm);
 
-        page.setRecords(userExamDao.getList(page, params));
-        page.setTotal(userExamDao.getListCount(params));
-
-        return new PageUtils(page);
+        return Result.ok().put("page",userExamFormPage);
     }
 
     @Override
@@ -331,6 +327,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
                     List<AnswerForm> answerFormList = answerService.findAnsById(ansIdList);
                     questForm.setAnswer(answerFormList);
                 }
+                questForm.setRightAnsCon(answerService.findOne(userExamAnswer.getRightAnsId()).getQuestionContent());
                 questForm.setUserAnswer(userExamAnswer.getUserAnsId());
                 questForm.setQuestionId(userExamAnswer.getId());
                 questFormList.add(questForm);
@@ -345,5 +342,36 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
     @Override
     public List<UserExamForm> getListByIds(List<String> ids) {
         return dao.getListByIds(ids);
+    }
+
+    @Override
+    public Result viewExam(String userExamId, User user) {
+        UserExam userExam = userExamDao.selectById(userExamId);
+        //获取本次考试所有题型
+        List<String> queTypeList = userExamAnswerDao.getQueType(userExamId);
+        //单选
+        List<UserExamAnswer> userSinChoicList = userExamAnswerDao.findByuEIdAndQueType(userExamId, "10004");
+        //多选
+        List<UserExamAnswer> userMulChoicList = userExamAnswerDao.findByuEIdAndQueType(userExamId, "10005");
+        //判断
+        List<UserExamAnswer> userJudgeList = userExamAnswerDao.findByuEIdAndQueType(userExamId, "10006");
+        //主观
+        List<UserExamAnswer> userSubjectList = userExamAnswerDao.findByuEIdAndQueType(userExamId, "10007");
+        //组装题目试卷
+        //单选
+        List<QuestForm> sinChoicList = buildExam(userSinChoicList)==null?new ArrayList<>():buildExam(userSinChoicList);
+        //多选
+        List<QuestForm> mulChoicList = buildExam(userMulChoicList)==null?new ArrayList<>():buildExam(userMulChoicList);
+        //判断
+        List<QuestForm> judgeList = buildExam(userJudgeList)==null?new ArrayList<>():buildExam(userJudgeList);;
+        //主观
+        List<QuestForm> subjectList = buildExam(userSubjectList)==null?new ArrayList<>():buildExam(userSubjectList);
+
+        ExamConfig examConfig = examConfigService.selectById(userExam.getExamConfigId());
+
+
+        return Result.ok().put("sinChoicList", sinChoicList).put("mulChoicList", mulChoicList)
+                .put("judgeList", judgeList).put("subjectList", subjectList).put("examConfig", examConfig).put("userExam", userExam).put("user", user);
+
     }
 }

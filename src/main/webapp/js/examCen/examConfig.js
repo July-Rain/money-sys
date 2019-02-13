@@ -352,7 +352,7 @@ var vm = new Vue({
         reloadUser: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sys/getAllUsers",
+                url: baseURL + "sys/getUorT?isMp=true",
                 dataType: "json",
                 data: vm.userForm,
                 success: function (result) {
@@ -360,7 +360,7 @@ var vm = new Vue({
                         vm.userTableData = result.page.list;
                         vm.userForm.currPage = result.page.currPage;
                         vm.userForm.pageSize = result.page.pageSize;
-                        vm.userForm.totalCount = parseInt(result.page.count);
+                        vm.userForm.totalCount = parseInt(result.page.totalCount);
                     } else {
                         alert(result.msg);
                     }

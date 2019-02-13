@@ -3,7 +3,6 @@ var vm = new Vue({
     data:{
         formInline: { // 搜索表单
             examName:"",
-            status: "",
             limit: 10,
             page: 1,
             count: 0
@@ -63,22 +62,14 @@ var vm = new Vue({
                 }
             });
         },
-        startExam : function (index,row) {
+        viewExam : function (index,row) {
             var parentWin = window.parent;
             var id = row.id;
             var examStatus = row.examStatus;
             var userExamId = row.userExamId==null?'':row.userExamId;
             parentWin.document.getElementById("container").src
-                = 'modules/examCen/testPaper.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
+                = 'modules/personalCen/myScoreReport.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
         },
-        // formatterEnd: function (row, column) {
-        //     var _time = new Date(row.endTime);
-        //     return _time.getFullYear() + "/" + (_time.getMonth() + 1) + "/" + _time.getDate() + " " + _time.getHours() + ":" + _time.getMinutes() + ":" + _time.getSeconds();
-        // },
-        // formatterStart: function (row, column) {
-        //     var _time = new Date(row.startTime);
-        //     return _time.getFullYear() + "/" + (_time.getMonth() + 1) + "/" + _time.getDate() + " " + _time.getHours() + ":" + _time.getMinutes() + ":" + _time.getSeconds();
-        // },
         toHome: function () {
             parent.location.reload()
         }

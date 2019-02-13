@@ -13,11 +13,9 @@ import com.lawschool.dao.exam.CheckExamDao;
 import com.lawschool.dao.exam.CheckExamUserDao;
 import com.lawschool.dao.exam.ExamConfigDao;
 import com.lawschool.dao.exam.UserExamDao;
+import com.lawschool.form.CheckUserExamForm;
 import com.lawschool.form.UserExamForm;
-import com.lawschool.service.exam.CheckExamUserService;
-import com.lawschool.service.exam.UserExamAnswerService;
-import com.lawschool.service.exam.UserExamFormService;
-import com.lawschool.service.exam.UserExamService;
+import com.lawschool.service.exam.*;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.RedisUtil;
 import com.lawschool.util.Result;
@@ -51,6 +49,9 @@ public class CheckExamUserServiceImpl extends AbstractServiceImpl<CheckExamUserD
 
     @Autowired
     private UserExamService userExamService;
+
+    @Autowired
+    private CheckUserExamFormService checkUserExamFormService;
 
     @Autowired
     private CheckExamDao checkExamDao;
@@ -213,12 +214,12 @@ public class CheckExamUserServiceImpl extends AbstractServiceImpl<CheckExamUserD
     @Override
     public Result list(Map<String, Object> params) {
 
-        UserExamForm userExamForm = new UserExamForm();
-        userExamForm.setList(checkExamDao.getUserExamIdByCheckUserId(params.get("checkExamUserId").toString()));
+        CheckUserExamForm checkUserExamForm = new CheckUserExamForm();
+        checkUserExamForm.setList(checkExamDao.getUserExamIdByCheckUserId(params.get("checkExamUserId").toString()));
         if(params.get("checkStatus")!=null){
-            userExamForm.setCheckStatus(params.get("checkStatus").toString());
+            checkUserExamForm.setCheckStatus(params.get("checkStatus").toString());
         }
-        Page<UserExamForm> page = userExamFormService.findPage(new Page<UserExamForm>(params),userExamForm);
+        Page<CheckUserExamForm> page = checkUserExamFormService.findPage(new Page<CheckUserExamForm>(params),checkUserExamForm);
         //List<String>
 
         return Result.ok().put("page",page);

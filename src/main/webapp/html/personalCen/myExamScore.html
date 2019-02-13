@@ -10,7 +10,8 @@
     <div class="container">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
-            <el-breadcrumb-item>考试中心</el-breadcrumb-item>
+            <el-breadcrumb-item>个人中心</el-breadcrumb-item>
+            <el-breadcrumb-item>成绩报告</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row :gutter="24">
             <el-col :span="24">
@@ -24,12 +25,6 @@
                                     <el-input v-model="formInline.examName" placeholder="试卷名称" size="mini"></el-input>
                                 </el-form-item>
 
-                                <el-form-item prop="status">
-                                    <el-select v-model="formInline.status" placeholder="已考状态" size="mini">
-                                        <el-option label="已考" value="1"></el-option>
-                                        <el-option label="未考" value="0"></el-option>
-                                    </el-select>
-                                </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" @click="onSubmit" size="mini">
                                         <i class="iconfont icon-sousuo1"></i>
@@ -84,12 +79,29 @@
                                     label="考试结束时间"
                             >
                             </el-table-column>
+                            <el-table-column
+                                prop = "score"
+                                label = "考试分数"
+                            ></el-table-column>
+                            <el-table-column
+                                prop = "passPnt"
+                                label = "达标线"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                prop = "isPass"
+                                label = "是否达标"
+                            ></el-table-column>
+                            <el-table-column
+                                prop = "passReward"
+                                label = "达标奖励"
+                            ></el-table-column>
                             <el-table-column label="操作" width="300">
                                 <template slot-scope="scope">
                                     <el-button
                                             size="mini"
-                                            @click="startExam(scope.$index, scope.row)">
-                                        {{tableData[scope.$index].examStatus==1?"继续考试":"开始考试"}}
+                                            @click="viewExam(scope.$index, scope.row)">
+                                        查看试卷
                                     </el-button>
                                 </template>
                             </el-table-column>
@@ -110,5 +122,5 @@
     </div>
 </div>
 </body>
-<script src="${rc.contextPath}/js/examCen/userExam.js"></script>
+<script src="${rc.contextPath}/js/personalCen/myExamScore.js"></script>
 </html>
