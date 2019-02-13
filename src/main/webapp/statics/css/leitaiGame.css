@@ -121,3 +121,29 @@ button {
 .userInfo{
     width: 450px;
 }
+.userInfo .img{
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    overflow: hidden;
+    float: left;
+}
+.userInfo .img img{
+    width: 100%;
+    height: 100%;
+}
+.userInfo .txt{
+    padding-left: 13px;
+    float: left;
+}
+.userInfo .txt h3{
+    height: 40px;
+    line-height: 40px;
+    font-family: MicrosoftYaHei-Bold;
+    font-size: 40px;
+    color: #ffffff;
+}
+.userInfo .txt h3 sub{
+    color: #ed9c08;
+    padding-left: 16px;
+}
