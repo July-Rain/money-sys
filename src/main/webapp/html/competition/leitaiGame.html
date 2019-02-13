@@ -5,8 +5,8 @@
     <#include "/header.html">
     <script type="text/javascript" src="${rc.contextPath}/sun-jsp/js/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="${rc.contextPath}/sun-jsp/js/sockjs.min.js"></script>
-    <link rel="stylesheet" href="${rc.contextPath}/sun-jsp/css/style.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="${rc.contextPath}/sun-jsp/css/chat.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="${rc.contextPath}/sun-jsp/css/style.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="${rc.contextPath}/sun-jsp/css/chat.css" type="text/css" media="all"/>
     <link rel="stylesheet" href="${rc.contextPath}/statics/css/leitaiGame.css">
 </head>
 
@@ -34,20 +34,80 @@
                 <p>擂台次：5</p>
             </div>
         </div>
+        <!--擂台榜-->
+        <div class="list_area">
+            <div class="title">等待攻擂人数：20</div>
+            <ul>
+                <li class="clearfix">
+                    <div class="index">1</div>
+                    <div class="head">
+                        <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                    </div>
+                    <div class="name">愤怒的企鹅</div>
+                    <div class="num">擂台次数：35</div>
+                </li>
+                <li class="clearfix">
+                    <div class="index">1</div>
+                    <div class="head">
+                        <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                    </div>
+                    <div class="name">愤怒的企鹅</div>
+                    <div class="num">擂台次数：35</div>
+                </li>
+                <li class="clearfix">
+                    <div class="index">1</div>
+                    <div class="head">
+                        <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                    </div>
+                    <div class="name">愤怒的企鹅</div>
+                    <div class="num">擂台次数：35</div>
+                </li>
+                <li class="clearfix">
+                    <div class="index">1</div>
+                    <div class="head">
+                        <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                    </div>
+                    <div class="name">愤怒的企鹅</div>
+                    <div class="num">擂台次数：35</div>
+                </li>
+                <li class="clearfix">
+                    <div class="index">1</div>
+                    <div class="head">
+                        <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                    </div>
+                    <div class="name">愤怒的企鹅</div>
+                    <div class="num">擂台次数：35</div>
+                </li>
+            </ul>
+            <div class="my_list clearfix">
+                <div class="index">1</div>
+                <div class="head">
+                    <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                </div>
+                <div class="name">愤怒的企鹅</div>
+                <div class="num">擂台次数：35</div>
+            </div>
+        </div>
+        <!--场上正在pk-->
+        <div class="fighting" v-if="isFighting">
+
+        </div>
+        <!--加入pk-->
+        <div class="join_pk" v-if="!isFighting">
+
+        </div>
         <!--规则-->
         <div class="model_area rule_area" v-if="ruleAreaShow">
             <div class="inner">
                 <button class="close" @click="ruleAreaShow = false"></button>
                 <div class="title"></div>
-                <p>
-                    规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则</p>
+                <p>规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则</p>
             </div>
         </div>
 
-
     </div>
 
-    <div style="height: 700px;" >
+    <div style="height: 700px;">
         <p>当前登录用户：{{u.fullName}}</p>
         <p>擂主：{{leizhu}}</p>
         <br/>
@@ -76,13 +136,15 @@
                 <div v-show="dialogQuestion">
                     一共{{allnum}}题，当前{{nownum}}题，当前题目分值{{nowQscore}}
                     <br/><br/>
-                    [{{Question.questionType==10004?'单选题':Question.questionType==10005?'多选题':'判断题'}}] {{Question.comContent}}
+                    [{{Question.questionType==10004?'单选题':Question.questionType==10005?'多选题':'判断题'}}]
+                    {{Question.comContent}}
                     <br/>
                     <br/>
-                    <el-radio-group v-model="answers" v-if="Question.questionType==10004 || Question.questionType==10006"
+                    <el-radio-group v-model="answers"
+                                    v-if="Question.questionType==10004 || Question.questionType==10006"
                     >
                         <el-radio :label="answer.id" v-for="answer in Question.answerList" :disabled="radio_disabled"
-                                  @change="radioCheck(answer.id, Question.answerId, Question.questionType)" >
+                                  @change="radioCheck(answer.id, Question.answerId, Question.questionType)">
                             {{answer.questionContent}}
                         </el-radio>
                         <br/>
