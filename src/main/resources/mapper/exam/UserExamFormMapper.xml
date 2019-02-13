@@ -19,10 +19,10 @@
             LAW_EXAM_CONFIG A
             INNER JOIN LAW_USER_EXAM b ON A . ID = b.EXAM_CONFIG_ID
             where 1=1
-            <if test="authArr != null and authArr.size() > 0">
+            <if test="authArr != null and authArr.length > 0">
                 and a.id in
-                <foreach collection="array" index="index" item="item" open="(" separator=" or " close=")">
-                    #{item}
+                <foreach collection="authArr" index="index" item="item" open="(" separator=" or " close=")">
+                    '${item}'
                 </foreach>
             </if>
             UNION ALL
@@ -47,10 +47,10 @@
             FROM
             LAW_USER_EXAM
             )
-            <if test="authArr != null and authArr.size() > 0">
+            <if test="authArr != null and authArr.length > 0">
                 and a.id in
-                <foreach collection="array" index="index" item="item" open="(" separator=" or " close=")">
-                    #{item}
+                <foreach collection="authArr" index="index" item="item" open="(" separator=" or " close=")">
+                    '${item}'
                 </foreach>
             </if>
         )
