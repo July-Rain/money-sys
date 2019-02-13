@@ -153,9 +153,9 @@ var vm = new Vue({
         //     })
         //     // this[chartName].hideLoading() // Chart提示关闭
         // },
-        // toHome: function () {
-        //     parent.location.reload()
-        // },
+        toHome: function () {
+            parent.location.reload()
+        },
         initPie1: function () {
             // 基于准备好的dom，初始化echarts实例
             var myChart = echarts.init(document.getElementById('pie1'));
@@ -323,6 +323,6 @@ var vm = new Vue({
             this.initPie1();
             this.initPie2();
             // this.initPie3();
-        }
+        },
     }
 });

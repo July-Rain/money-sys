@@ -30,14 +30,13 @@
                                 <el-table-column
                                         prop="userName"
                                         label="人员"
-                                        width="400"
+                                        width="200"
                                         header-align="center"
                                         align="center">
                                 </el-table-column>
                                 <el-table-column
                                         prop="checkpoint"
                                         label="闯关竞赛积分"
-                                        width="400"
                                         header-align="center"
                                         align="center"
                                 >
@@ -45,7 +44,6 @@
                                 <el-table-column
                                         prop="pk"
                                         label="在线比武积分"
-                                        width="400"
                                         header-align="center"
                                         align="center"
                                 >
@@ -53,7 +51,6 @@
                                 <el-table-column
                                         prop="leitai"
                                         label="擂台赛积分"
-                                        width="400"
                                         header-align="center"
                                         align="center"
                                 >
@@ -62,14 +59,18 @@
                                 <el-table-column
                                         label="操作"
                                         header-align="center"
-                                        align="center"
-                                        width="180">
+                                        align="center">
                                     <template slot-scope="scope">
-                                        <el-button
-                                                size="mini"
-                                                @click="look(scope.$index, scope.row)">查看详情
-                                        </el-button>
-
+                                        <el-popover
+                                                placement="top-start"
+                                                trigger="hover"
+                                                content="查看">
+                                            <i class="iconfont icon-chakan tabIcon"
+                                               slot="reference"
+                                               @click="look(scope.$index, scope.row)"
+                                               style="color: #1381e3;font-size: 12px;">
+                                            </i>
+                                        </el-popover>
                                     </template>
                                 </el-table-column>
                             </el-table>
