@@ -120,6 +120,9 @@ button {
 
 .userInfo{
     width: 450px;
+    position: absolute;
+    left: 91px;
+    top: 194px;
 }
 .userInfo .img{
     width: 128px;
@@ -146,4 +149,72 @@ button {
 .userInfo .txt h3 sub{
     color: #ed9c08;
     padding-left: 16px;
+}
+.userInfo .txt > p{
+    color: #fff;
+    font-size: 21px;
+    height: 22px;
+    line-height: 22px;
+    margin-top: 16px;
+}
+.userInfo .txt > p:nth-child(2){
+    margin-top: 22px;
+}
+.list_area{
+    width: 350px;
+    height: 400px;
+    background-color: rgba(255,255,255,.2);
+    border-radius: 22px;
+    position: absolute;
+    right: 58px;
+    top: 157px;
+    padding: 0 24px;
+    color: #fff;
+}
+.list_area .title{
+    text-align: center;
+    height: 17px;
+    font-size: 16px;
+    color: #00c6ff;
+    margin: 22px auto 0;
+}
+.list_area ul{
+    border-bottom: 1px solid rgba(255,255,255,.6);
+}
+.list_area ul li{
+    line-height: 36px;
+    height: 36px;
+    margin-top: 16px;
+}
+.list_area ul li:last-child{
+    margin-bottom: 23px;
+}
+.list_area .index{
+    text-align: left;
+    width: 35px;
+    font-size: 16px;
+    color: #00c6ff;
+    float: left;
+}
+.list_area .head{
+    width: 29px;
+    height: 29px;
+    float: left;
+    margin-right: 17px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: 4px;
+}
+.list_area .name{
+    float: left;
+    width: 80px;
+    margin-right: 32px;
+}
+.list_area .num{
+    float: left;
+}
+.list_area .my_list{
+    line-height: 36px;
+    height: 36px;
+    margin-top: 16px;
 }
