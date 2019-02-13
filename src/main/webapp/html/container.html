@@ -161,21 +161,21 @@
             <el-col :span="6">
                 <el-popover
                         placement="right-end"
-                        title="标题"
+                        :title="popoverTitle"
                         width="200"
                         trigger="hover"
-                        content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+                        :content="popoverContent">
                     <div slot="reference" class="box-card">
                         <div class="header pl12">
                             <span>我的考试</span>
                         </div>
 
-                        <el-carousel height="229px" indicator-position="none">
+                        <el-carousel height="229px" indicator-position="none" @change="carouselChange">
                             <el-carousel-item v-for="(list,index) in examList">
                                 <div class="content exam">
                                     <div class="title">
                                         <img src="${rc.contextPath}/statics/img/jiantou.png">
-                                        <span>{{index}}</span>
+                                        <span>{{index+1}}</span>
                                         <span>{{list.examName}}</span>
                                     </div>
                                     <div class="minContent">

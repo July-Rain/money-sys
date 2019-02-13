@@ -164,8 +164,6 @@ var vm = new Vue({
                     label: 'label'
                 }
             },
-
-
             textmag:"",
             myAnswer:"",//我的答案ID
             questionForm: {},
@@ -304,6 +302,8 @@ var vm = new Vue({
                 type:"",//类型
                 name:""//文字描述
             },//学情统计数据
+            popoverTitle: "考试提示标题",
+            popoverContent: "考试提示内容"
         }
     },
     created: function () {
@@ -1024,6 +1024,10 @@ var vm = new Vue({
         },
         startExam: function (id) {
             alert("考试id:"+id)
+        },
+        carouselChange:function (index) {
+            vm.popoverTitle = vm.examList[index].examName;
+            vm.popoverContent = vm.examList[index].id;
         }
     },
     computed: {
