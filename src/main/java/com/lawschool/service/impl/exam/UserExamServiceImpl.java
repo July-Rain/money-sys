@@ -257,7 +257,8 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         if(params.get("examName")!=null){
             userExamForm.setExamName(params.get("examName").toString());
         }
-
+        String orderBy = " exam_status,IS_MUST_TEST, start_time ";
+        params.put("orderBy",orderBy);
         Page<UserExamForm> userExamFormPage = userExamFormService.findPage(new Page<UserExamForm>(params),userExamForm);
 
         return Result.ok().put("page",userExamFormPage);
