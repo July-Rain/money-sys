@@ -179,10 +179,11 @@ var vm = new Vue({
                     vm.caseProcessOption=result.dictlist;
                 }
             });
-        })
+        });
         this.$nextTick(function () {
             this.reload();
             this.reloadUser();
+            this.breadArr=getBreadcrumb(menuId);
         })
 
     },

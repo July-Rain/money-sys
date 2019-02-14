@@ -106,8 +106,7 @@
             </el-pagination>
         </div>
         <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
-            <el-form :model="dailyConfig" :rules="rules" ref="dailyConfig"
-                     label-width="140px                                                " class="demo-dailyConfig"
+            <el-form :model="dailyConfig" :rules="rules" ref="dailyConfig" label-width="140px" class="demo-dailyConfig"
                      size="mini">
                 <el-col>
                     <el-form-item label="规则名称：">

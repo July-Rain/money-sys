@@ -36,12 +36,11 @@
                         type="index"
                         header-align="center"
                         align="center"
-                        width="150">
+                        width="50">
                 </el-table-column>
                 <el-table-column
                         prop="title"
                         label="消息标题"
-                        width="220"
                 >
                 </el-table-column>
 
@@ -52,34 +51,38 @@
                 <!--</el-table-column>-->
                 <el-table-column
                         prop="recievePeopleNmae"
-                        width="220"
+                        width="100"
                         label="接收人"
+                        align="center"
                 >
                 </el-table-column>
                 <el-table-column
                         prop="recieveDate"
                         label="创建时间"
-                        width="220"
+                        width="180"
+                        align="center"
                 >
                 </el-table-column>
                 <el-table-column
                         prop="releaseDate"
                         label="发送时间"
-                        width="220"
+                        width="180"
+                        align="center"
                 >
                 </el-table-column>
 
                 <el-table-column
                         prop="noticeType"
                         label="消息类型"
-                        width="220"
+                        width="100"
+                        align="center"
                 >
                 </el-table-column>
 
                 <el-table-column
                         prop="releaseState"
                         label="状态"
-                        width="220"
+                        width="100"
                         header-align="center"
                         align="center"
                         >
@@ -88,27 +91,44 @@
                         <el-tag v-else size="success">已发送</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="400">
+                <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
                         <el-button
                                 :disabled="'1'===scope.row.releaseState"
                                 size="mini"
                                 @click="send(scope.$index, scope.row)">发送
                         </el-button>
-                        <el-button
-                                size="mini"
-                                @click="lookMsg(scope.$index, scope.row)">查看
-                        </el-button>
-
-                        <el-button
-                                :disabled="'1'===scope.row.releaseState"
-                                size="mini"
-                                @click="handleEdit(scope.$index, scope.row)">编辑
-                        </el-button>
-                        <el-button
-                                size="mini"
-                                @click="handleDel(scope.$index, scope.row)">删除
-                        </el-button>
+                        <el-popover
+                                placement="top-start"
+                                trigger="hover"
+                                content="查看">
+                            <i class="iconfont icon-chakan tabIcon"
+                               slot="reference"
+                               @click="lookMsg(scope.$index, scope.row)"
+                               style="color: #1381e3;font-size: 12px;">
+                            </i>
+                        </el-popover>
+                        <el-popover
+                                v-if="'1'===scope.row.releaseState"
+                                placement="top-start"
+                                trigger="hover"
+                                content="编辑">
+                            <i class="iconfont icon-xiugaimima tabIcon"
+                               slot="reference"
+                               @click="handleEdit(scope.$index, scope.row)"
+                               style="color: #119e0a;" >
+                            </i>
+                        </el-popover>
+                        <el-popover
+                                placement="top-start"
+                                trigger="hover"
+                                content="删除">
+                            <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                               slot="reference"
+                               @click="handleDel(scope.$index, scope.row)"
+                               style="color: #e31313;" >
+                            </i>
+                        </el-popover>
                     </template>
                 </el-table-column>
             </el-table>
@@ -130,7 +150,7 @@
                      size="mini">
                 <el-row>
                     <el-col :span="11">
-                        <el-form-item label="消息名称：" prop="title">
+                        <el-form-item label="消息名称:" prop="title">
                             <el-input v-model="sysMsg.title" placeholder="请输入消息名称" clearable></el-input>
                         </el-form-item>
                     </el-col>
@@ -148,7 +168,7 @@
                             <el-input v-model="sysMsg.releaseDept" placeholder="请输入发布单位" clearable></el-input>
                         </el-form-item>
                     </el-col>-->
-                    <el-col span="11">
+                    <el-col :span="11">
                         <el-form-item label="消息内容：" prop="content">
                             <template>
                                 <el-input v-model="sysMsg.content" @change="handleChange" :min="0" :max="10000"
@@ -184,15 +204,12 @@
                                       clearable></el-input>
                         </el-form-item>
                     </el-col>
-
-                    <el-col :span="24" v-show="teamtype2">
-                        <el-form-item>
-                            <el-button type="primary" @click="saveOrUpdate('sysMsg')">保存</el-button>
-                            <el-button @click="closeDia">取消</el-button>
-                        </el-form-item>
-                    </el-col>
                 </el-row>
             </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="closeDia">取消</el-button>
+                <el-button type="primary" @click="saveOrUpdate('sysMsg')">保存</el-button>
+            </div>
         </el-dialog>
 
 

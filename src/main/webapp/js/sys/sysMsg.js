@@ -2,6 +2,7 @@ var menuId =getUrlParam('id');
 var vm = new Vue({
     el: '#app',
     data: {
+        idArr:[],// 部门Tree默认展开数据
         user:{},
         teamtype2:true,
         sysMsg:{
@@ -77,6 +78,10 @@ var vm = new Vue({
                     if(result.code === 0){
                         vm.deptData = result.orgList;
                         vm.userData = result.orgList;
+                        // 默认展开第一级
+                        vm.deptData.map(function (m) {
+                            vm.idArr.push(m.id)
+                        });
                     }else{
                         alert(result.msg);
                     }
