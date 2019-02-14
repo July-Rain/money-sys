@@ -164,8 +164,6 @@ var vm = new Vue({
                     label: 'label'
                 }
             },
-
-
             textmag:"",
             myAnswer:"",//我的答案ID
             questionForm: {},
@@ -185,7 +183,7 @@ var vm = new Vue({
             radio_disabled: false,
             checkboxdisabled:false,//多选情况下 复选框 禁用 选项
             dialogyes: false,//答对提示
-
+            examList:[],
 
             chuangguan:"",
             onlPkSum:"",
@@ -304,6 +302,8 @@ var vm = new Vue({
                 type:"",//类型
                 name:""//文字描述
             },//学情统计数据
+            popoverTitle: "考试提示标题",
+            popoverContent: "考试提示内容"
         }
     },
     created: function () {
@@ -440,6 +440,20 @@ var vm = new Vue({
                 }
             });
         });
+        //我的考试
+        this.$nextTick(function () {
+            $.ajax({
+                type:"POST",
+                url: baseURL + "user/exam/list",
+                dataType: "json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.examList = result.page.list;
+
+                    }
+                }
+            })
+        })
     },
     methods: {
         // 导航栏
@@ -1008,6 +1022,13 @@ var vm = new Vue({
                 }
             });
         },
+        startExam: function (id) {
+            alert("考试id:"+id)
+        },
+        carouselChange:function (index) {
+            vm.popoverTitle = vm.examList[index].examName;
+            vm.popoverContent = vm.examList[index].id;
+        }
     },
     computed: {
         integralPer: function(){

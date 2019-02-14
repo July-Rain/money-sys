@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.exam.CheckUserExamFormDao">
+    <select id="findList" resultType="com.lawschool.form.CheckUserExamForm">
+         SELECT
+            A . ID ID,
+            b. ID user_Exam_Id,
+            A .EXAM_NAME,
+            A .EXAM_TYPE,
+            DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
+            A .EXAM_TIME,
+            A .ORGANIZED_ORG_CODE,
+            A .START_TIME,
+            A .END_TIME,
+            c.check_status,
+            c.id as check_exam_id
+        FROM
+            LAW_EXAM_CONFIG A
+        INNER JOIN LAW_USER_EXAM b ON A . ID = b.EXAM_CONFIG_ID
+        inner join law_check_exam c on b.id = c.user_Exam_Id
+        where 1=1
+        <if test="list != null and list.size > 0">
+            and b.id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{list[${index}]}
+        </foreach>
+        </if>
+
+    </select>
+
+</mapper>

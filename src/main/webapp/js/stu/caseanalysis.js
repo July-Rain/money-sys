@@ -8,6 +8,7 @@ var menuId=$("#menuId").val();
 var vm = new Vue({
     el: '#app',
     data: {
+        idArr:[],// 部门Tree默认展开数据
         navData: [],//导航
         formInline: { // 搜索表单
             caseTitle: '',
@@ -136,6 +137,10 @@ var vm = new Vue({
                     if(result.code === 0){
                         vm.deptData = result.orgList;
                         vm.userData = result.orgList;
+                        // 默认展开第一级
+                        vm.deptData.map(function (m) {
+                            vm.idArr.push(m.id)
+                        });
                     }else{
                         alert(result.msg);
                     }
@@ -174,10 +179,11 @@ var vm = new Vue({
                     vm.caseProcessOption=result.dictlist;
                 }
             });
-        })
+        });
         this.$nextTick(function () {
             this.reload();
             this.reloadUser();
+            this.breadArr=getBreadcrumb(menuId);
         })
 
     },

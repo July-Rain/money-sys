@@ -59,7 +59,6 @@ var vm = new Vue({
         },
         //echarts
         getStuDia: function () {
-            debugger
             $.ajax({
                 async:false,
                 type: "POST",

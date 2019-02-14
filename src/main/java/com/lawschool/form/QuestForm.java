@@ -30,7 +30,17 @@ public class QuestForm {
 
     private Integer score;  //题目分值
 
+    private String rightAnsCon; //正确答案内容
+
     private List<String> checkList = new ArrayList<>();
+
+    public String getRightAnsCon() {
+        return this.rightAnsCon;
+    }
+
+    public void setRightAnsCon(final String rightAnsCon) {
+        this.rightAnsCon = rightAnsCon;
+    }
 
     public String getId() {
         return id;

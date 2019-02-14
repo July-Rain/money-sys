@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<style>
+#app{
+    background-color:#efefef;
+    width: 100vw;
+    height: 100vh;
+}
+#paper{
+    width: 1180px;
+    background: #fff;
+    margin: 54px auto 47px;
+    padding: 165px 0 90px;
+}
+#paper h2{
+    height: 48px;
+    line-height: 48px;
+    font-family: MicrosoftYaHei;
+    font-size: 48px;
+    font-weight: normal;
+    font-stretch: normal;
+    letter-spacing: 0px;
+    color: #2a2a2a;
+    text-align: center;
+    margin-bottom: 70px;
+}
+#paper .smg{
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 19px;
+
+}
+p,span{
+    font-size: 24px;
+    color: #2a2a2a;
+}
+#paper .smg .name{
+    float: left;
+    padding-left: 149px;
+}
+#paper .smg .set{
+    float: right;
+    padding-right: 164px;
+}
+.text_s{
+    cursor:pointer;
+    font-size: 16px;
+}
+.text_m{
+    cursor:pointer;
+    font-size: 18px;
+}
+.text_l{
+    cursor:pointer;
+    font-size: 24px;
+    font-weight: bolder;
+}
+.subTitle{
+    padding: 20px 90px 0;
+}
+.question_area{
+    padding-top: 47px;
+    width: 935px;
+    margin: 0 auto;
+}
+.ques_name{
+
+}
+.el-form-item__content{
+    line-height: 25px;
+
+}
+.el-radio,.el-radio__label,.el-checkbox,.el-checkbox__label{
+    font-size: 24px;
+    margin: 0!important;
+}
+.el-radio,.el-checkbox{
+    margin-top: 29px!important;
+}
+.el-radio-group label,.el-checkbox-group label{
+    display: block;
+}
+.timing{
+    position: fixed;
+    left: 10px;
+    top: 10px;
+}
+</style>
+<body>
+<div id="app" v-cloak>
+    <div id="paper">
+    <h2>{{examConfig.examName}}</h2>
+    <el-form :model="testForm" v-if="sinChoicList.length">
+        <div class="subTitle">
+            <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题1分，共50分。</p>
+        </div>
+        <div v-for="(item,index) in sinChoicList" class="question_area">
+            <p class="ques_name">{{index+1}}. {{item.comContent}}。</p>
+            <el-radio-group v-model="sinChoicCheck[index]">
+                <el-radio :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
+                    {{item2.questionContent}}
+                </el-radio>
+            </el-radio-group>
+        </div>
+        <div class="subTitle" v-if="mulChoicList.length">
+            <p>二、多选题。</p>
+        </div>
+        <div v-for="(item,index) in mulChoicList" class="question_area">
+            <p class="ques_name">{{index+1}}. {{item.comContent}}。</p>
+            <el-checkbox-group  v-model="mulChoicCheck[index]">
+                <el-checkbox :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
+                    {{item2.questionContent}}
+                </el-checkbox>
+                <el-checkbox disabled :label="item2.id" v-for="item2 in item.answer" v-if="item.right != null">
+                    {{item2.questionContent}}
+                </el-checkbox>
+                <br/>
+            </el-checkbox-group>
+        </div>
+
+        <div class="subTitle" v-if="judgeList.length">
+            <p>三、判断题。判断题判断题判断题</p>
+        </div>
+        <div class="question_area">
+            <div v-for="(item,index) in judgeList" class="question_area">
+                <p class="ques_name">{{index+1}}. {{item.comContent}} 。</p>
+                <el-radio-group v-model="judge[index]">
+                    <el-adio :label="item2.id" v-for="item2 in item.answer">
+                        {{item2.questionContent}}
+                    </el-adio>
+                </el-radio-group>
+            </div>
+        </div>
+        <div class="subTitle" v-if="subjectList[0]">
+            <p>四、主观题</p>
+        </div>
+        <div v-for="(item,index) in subjectList" class="question_area">
+            <p class="ques_name">{{index+1}}. {{item.comContent}} 。</p>
+            答 ：<el-input type="text" v-model="subject[index]" placeholder="請輸入答案">
+        </el-input>
+        </div>
+    </el-form>
+    </div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/personalCen/myScoreReport.js"></script>
+</html>

@@ -12,12 +12,9 @@
             <el-breadcrumb-item>管理中心</el-breadcrumb-item>
             <el-breadcrumb-item>学年目标管理</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-form :inline="true" class="demo-form-inline">
-
-            <el-form-item>
-                <el-button type="primary" @click="addPlan()" size="mini">新增学年计划</el-button>
-            </el-form-item>
-        </el-form>
+        <div class="info_btn">
+            <el-button type="primary" @click="addPlan()" size="mini">新增学年计划</el-button>
+        </div>
         <div>
             <el-table
                     :data="tableData"
@@ -47,18 +44,36 @@
                         prop="active"
                         label="操作">
                     <template slot-scope="scope">
-                        <el-button
-                                size="mini"
-                                @click="handleWatch(scope.$index, scope.row)">查看
-                        </el-button>
-                        <el-button
-                                size="mini"
-                                @click="handleEdit(scope.$index, scope.row)">编辑
-                        </el-button>
-                        <el-button
-                                size="mini"
-                                @click="handleDel(scope.$index, scope.row)">删除
-                        </el-button>
+                        <el-popover
+                                placement="top-start"
+                                trigger="hover"
+                                content="查看">
+                            <i class="iconfont icon-chakan tabIcon"
+                               slot="reference"
+                               @click="handleWatch(scope.$index, scope.row)"
+                               style="color: #1381e3;font-size: 12px;">
+                            </i>
+                        </el-popover>
+                        <el-popover
+                                placement="top-start"
+                                trigger="hover"
+                                content="编辑">
+                            <i class="iconfont icon-xiugaimima tabIcon"
+                               slot="reference"
+                               @click="handleEdit(scope.$index, scope.row)"
+                               style="color: #119e0a;" >
+                            </i>
+                        </el-popover>
+                        <el-popover
+                                placement="top-start"
+                                trigger="hover"
+                                content="删除">
+                            <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                               slot="reference"
+                               @click="handleDel(scope.$index, scope.row)"
+                               style="color: #e31313;" >
+                            </i>
+                        </el-popover>
                     </template>
                 </el-table-column>
             </el-table>
@@ -76,55 +91,33 @@
 
         <el-dialog title="新增计划" :visible.sync="dialogFormVisible">
 
-            <el-form :model="form">
-                <el-row>
-
-
-                    <el-col :span="22">
-                        <el-form-item label="计划名称" :label-width="formLabelWidth">
-                            <el-input v-model="form.planName" autocomplete="off"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col>
-                        <el-form-item label="开始时间" :label-width="formLabelWidth">
-                            <el-date-picker v-model="form.startDate" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"
-                                            type="date" placeholder="选择日期"></el-date-picker>
-                        </el-form-item>
-                    </el-col>
-                    <el-col>
-                        <el-form-item label="结束时间" :label-width="formLabelWidth">
-                            <el-date-picker v-model="form.endDate" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"
-                                            type="date" placeholder="选择日期"></el-date-picker>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="22">
-                        <el-form-item label="计划积分" :label-width="formLabelWidth">
-                            <el-input v-model="form.integral" autocomplete="off"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="22">
-                        <el-form-item label="计划学分" :label-width="formLabelWidth">
-                            <el-input v-model="form.credit" autocomplete="off"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="22">
-                        <el-form-item label="参与人员" :label-width="formLabelWidth">
-                            <el-input v-model="form.participantUser" autocomplete="off"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="22">
-                        <el-form-item label="参与部门" :label-width="formLabelWidth">
-                            <el-input v-model="form.participantDept" autocomplete="off"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="22">
-                        <el-form-item label="备注" :label-width="formLabelWidth">
-                            <el-input v-model="form.remarks" autocomplete="off"></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-
-
+            <el-form :model="form" size="mini">
+                    <el-form-item label="计划名称：" :label-width="formLabelWidth">
+                        <el-input v-model="form.planName" autocomplete="off" placeholder="计划名称"></el-input>
+                    </el-form-item>
+                    <el-form-item label="开始日期：" :label-width="formLabelWidth">
+                        <el-date-picker v-model="form.startDate" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"
+                                        type="date" placeholder="选择日期"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="结束日期：" :label-width="formLabelWidth">
+                    <el-date-picker v-model="form.endDate" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"
+                                    type="date" placeholder="选择日期"></el-date-picker>
+                </el-form-item>
+                    <el-form-item label="计划积分：" :label-width="formLabelWidth">
+                        <el-input v-model="form.integral" autocomplete="off" placeholder="计划积分"></el-input>
+                    </el-form-item>
+                    <el-form-item label="计划学分：" :label-width="formLabelWidth">
+                        <el-input v-model="form.credit" autocomplete="off" placeholder="计划学分"></el-input>
+                    </el-form-item>
+                    <el-form-item label="参与人员：" :label-width="formLabelWidth">
+                        <el-input v-model="form.participantUser" autocomplete="off" placeholder="参与人员"></el-input>
+                    </el-form-item>
+                    <el-form-item label="参与部门：" :label-width="formLabelWidth">
+                        <el-input v-model="form.participantDept" autocomplete="off" placeholder="参与部门"></el-input>
+                    </el-form-item>
+                    <el-form-item label="备注：" :label-width="formLabelWidth">
+                        <el-input v-model="form.remarks" autocomplete="off" placeholder="备注"></el-input>
+                    </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>

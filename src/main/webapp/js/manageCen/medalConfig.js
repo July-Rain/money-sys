@@ -1,6 +1,7 @@
 var vm = new Vue({
     el: '#app',
     data: {
+        title:'新增头衔',
         tableData: [],//表格数据
         page: 1,//分页：当前页
         dialogFormVisible: false,
@@ -15,7 +16,6 @@ var vm = new Vue({
         },
         formLabelWidth: '200px',
         formLabelWidthS: '143px',
-
         fileList: []
     },
     mounted: function () {
@@ -53,6 +53,7 @@ var vm = new Vue({
                 credit: '',
                 badge:''
             };
+            this.title = '新增头衔';
             vm.dialogFormVisible = true
         },
 
@@ -65,6 +66,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         that.form = result.data;
+                        that.title = '编辑头衔';
                         that.dialogFormVisible = true;
                     } else {
                         alert(result.msg);

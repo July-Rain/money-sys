@@ -11,10 +11,10 @@ var answerpeople=[];
 var vm = new Vue({
     el: '#app',
     data: {
+        coinNum: 123,
+        ruleAreaShow: false,
         allnum:"",
         nownum:"",
-
-
         u:"",
         answers:"",
         //题目集合
@@ -36,6 +36,7 @@ var vm = new Vue({
         yesOrNoAnswer:"未答题",
         leizhu:"",//擂主
         jifen:"0",//最终录入的成绩积分
+        isFighting: true
     },
     created: function () {
         this.$nextTick(function () {
@@ -45,7 +46,11 @@ var vm = new Vue({
 
 
     methods: {
+        goBack: function () {
+            window.location.href = baseURL + "modules/competition/competeCenter.html"
+        },
         radioCheck: function (id, answerId, typeName) {
+
             vm.radio_disabled = true;
             // var answer = vm.answers[0];
             // alert(vm.answers);
