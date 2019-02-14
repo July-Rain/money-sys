@@ -36,7 +36,8 @@ var vm = new Vue({
         yesOrNoAnswer:"未答题",
         leizhu:"",//擂主
         jifen:"0",//最终录入的成绩积分
-        isFighting: true
+        isFighting: true,
+        leitaiReady: false//显示主页或擂台页面
     },
     created: function () {
         this.$nextTick(function () {

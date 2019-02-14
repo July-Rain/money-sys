@@ -12,7 +12,7 @@
 
 <body>
 <div id="app" v-cloak>
-    <div class="container">
+    <div class="container" v-if="leitaiReady">
         <button class="return_back" @click="goBack">
             <img src="${rc.contextPath}/statics/img/competeCenter/btn_return.png" alt="">
         </button>
@@ -113,7 +113,45 @@
         </div>
 
     </div>
+    <div class="container container2" v-if="!leitaiReady">
+        <button class="return_back" @click="goBack">
+            <img src="${rc.contextPath}/statics/img/competeCenter/btn_return.png" alt="">
+        </button>
+        <div class="timing">
+            本题倒计时：<span>30</span>秒
+        </div>
+        <div class="questionArea">
+            <div class="questionType">
+                单选题
+            </div>
+            <p class="questionTitle">
+                士大夫艰苦觉得萨科放撒的肌肤上的
+            </p>
 
+            <el-form :class="Question.questionType==10004?'radioStyle':''" :model="Question" v-show="dialogQuestion" ref="Question" label-width="100px" class="demo-Question" size="mini">
+                <el-checkbox-group v-model="answers" v-if="Question.questionType==10005">
+                    <el-checkbox :label="answer.id" v-for="answer in Question.answerList">
+                        {{answer.questionContent}}
+                    </el-checkbox>
+                    <br/>
+                </el-checkbox-group>
+
+                <el-button type="primary" v-if="Question.questionType==10005"
+                           @click="thisSubmit(Question.answerId)">提交
+                </el-button>
+
+
+                <el-radio-group v-model="answers"
+                                :disabled="radio_disabled">
+                    <el-radio :label="answer.id" v-for="answer in Question.answerList"
+                              @change="radioCheck(answer.id, Question.answerId, Question.questionType)">
+                        1111111
+                    </el-radio>
+                </el-radio-group>
+
+            </el-form>
+        </div>
+    </div>
     <div style="height: 700px;">
         <p>当前登录用户：{{u.fullName}}</p>
         <p>擂主：{{leizhu}}</p>
