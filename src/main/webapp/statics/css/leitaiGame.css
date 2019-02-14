@@ -339,3 +339,41 @@ button {
 .el-radio__label{
     padding: 0;
 }
+.left_progress{
+    width: 300px;
+    position: absolute;
+    left: -300px;
+    top: 0;
+}
+.left_progress .progress{
+    width: 22px;
+    padding-right: 38px;
+    float: right;
+}
+.left_progress .progress .num{
+    height: 46px;
+    line-height: 46px;
+    color: #fefefe;
+    font-size: 14px;
+    width: 20px;
+    text-align: center;
+}
+.left_progress .progress .line{
+    width: 22px;
+    height: 427px;
+    padding: 2px;
+    border-radius: 10px;
+    border: solid 1px rgba(255,255,255,0.3);
+}
+.left_progress .progress .line .line_inner{
+    width: 16px;
+    border-radius: 7px;
+    background-image: url("../img/competeCenter/jindutiao_blue.png");
+    height: 100%;
+}
+.right_progress{
+    width: 300px;
+    position: absolute;
+    right: 852px;
+    top: 0;
+}

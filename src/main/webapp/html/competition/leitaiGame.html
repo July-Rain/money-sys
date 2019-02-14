@@ -127,7 +127,20 @@
             <p class="questionTitle">
                 士大夫艰苦觉得萨科放撒的肌肤上的
             </p>
+            <div class="left_progress">
+                <div class="progress">
+                    <div class="num">3</div>
+                    <div class="line">
+                        <div class="line_inner"></div>
+                    </div>
+                </div>
+                <div class="head">
+                    <img src="" alt="">
+                </div>
+            </div>
+            <div class="right_progress">
 
+            </div>
             <el-form :class="Question.questionType==10004?'radioStyle':''" :model="Question" v-show="dialogQuestion" ref="Question" label-width="100px" class="demo-Question" size="mini">
                 <el-checkbox-group v-model="answers" v-if="Question.questionType==10005">
                     <el-checkbox :label="answer.id" v-for="answer in Question.answerList">
