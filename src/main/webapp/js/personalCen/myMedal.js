@@ -40,13 +40,15 @@ var vm = new Vue({
         },
 
         handleSizeChange: function (val) {
-            console.log('每页' + val + '条');
+            vm.form.limit = event;
+            vm.refresh();
         },
         handleCurrentChange: function (val) {
-            console.log('当前页:' + val);
+            vm.form.page = event;
+            vm.refresh();
         },
         addExam: function () {
-            console.log(22)
+
             vm.dialogFormVisible = true
         },
         batchImport: function () {

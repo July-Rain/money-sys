@@ -42,7 +42,28 @@ var vm = new Vue({
             orgName:"",
             userPoliceId:"",
 
-        }
+        },
+        rules: {//表单验证规则
+
+            userName:[
+                {required: true, message: '请输入用户名', trigger: 'blur'},
+            ],
+            userCode:[
+                {required: true, message: '请输入登陆账号', trigger: 'blur'},
+            ],
+            userPoliceId:[
+                {required: true, message: '请输入警号', trigger: 'blur'},
+            ],
+            password:[
+                {required: true, message: '请输入密码', trigger: 'blur'},
+            ],
+            userStatus:[
+                {required: true, message: '请选择', trigger: 'blur'},
+            ],
+            orgName:[
+                {required: true, message: '请输入部门', trigger: 'blur'},
+            ],
+        },
     },
     created: function () {
         this.$nextTick(function () {
@@ -95,6 +116,7 @@ var vm = new Vue({
         //用户修改vm.
         handleUpt:function(index,row){
             vm.dialogtch=true;
+            row.userStatus= row.userStatus.toString()
             vm.teacher=row;
         },
 
@@ -256,25 +278,36 @@ var vm = new Vue({
         },
 
         //保存
-        saveOrUpdate:function () {
-            var url=baseURL + "sys/add";
-            console.log(vm.teacher.id);
-            if (vm.teacher.id != null && vm.teacher.id != '') {
-                url=baseURL+"sys/updata";
-            }
-            $.ajax({
-                type : "POST",
-                url: url,
-                contentType: "application/json",
-                data:JSON.stringify(vm.teacher),
-                success:function (result) {
-                    if(result.code==0){
-                        alert("成功");
-                    }else{
-                        alert(result.msg);
+        saveOrUpdate:function (formName) {
+
+            this.$refs[formName].validate(function (valid) {
+                    if (valid) {
+                        var url=baseURL + "sys/add";
+                        console.log(vm.teacher.id);
+                        if (vm.teacher.id != null && vm.teacher.id != '') {
+                            url=baseURL+"sys/updata";
+                        }
+                        $.ajax({
+                            type : "POST",
+                            url: url,
+                            contentType: "application/json",
+                            data:JSON.stringify(vm.teacher),
+                            success:function (result) {
+                                if(result.code==0){
+                                    alert("成功");
+                                    vm.dialogtch = false;
+                                }else{
+                                    alert(result.msg);
+                                }
+                            }
+                        })
                     }
-                }
-            })
+
+                    else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+            });
         },
         toHome:function () {
             parent.location.reload()

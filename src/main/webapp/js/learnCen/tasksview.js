@@ -99,11 +99,28 @@ var vm = new Vue({
             children: 'child',
             label: 'infoName'
         },//法律法规树默认数据
-        breadArr:[]//面包屑数据
+        breadArr:[],//面包屑数据
         // multipleClassSelection:[]//法律法规数据选择框
+
+    },
+    filters: {
+        timeout: function (time) {
+
+            if(time === null){
+                return true
+            }else {
+                return new Date(Date.parse(time.replace(/-/g,  "/"))).getTime() < new Date().getTime()
+            }
+
+
+
+
+        }
     },
     created: function () {
+
         this.$nextTick(function () {
+
             //加载部门数据
             $.ajax({
                 type: "POST",

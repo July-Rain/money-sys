@@ -109,7 +109,7 @@
                             </i>
                         </el-popover>
                         <el-popover
-                                v-if="'1'===scope.row.releaseState"
+                                v-if="'1'!=scope.row.releaseState"
                                 placement="top-start"
                                 trigger="hover"
                                 content="编辑">
@@ -120,6 +120,7 @@
                             </i>
                         </el-popover>
                         <el-popover
+                                v-if="'1'!=scope.row.releaseState"
                                 placement="top-start"
                                 trigger="hover"
                                 content="删除">
@@ -148,63 +149,67 @@
         <el-dialog :title="title02" :visible.sync="dialogConfig" :before-close="closeDia">
             <el-form :model="sysMsg" :rules="rules" ref="sysMsg" label-width="100px" class="demo-sysMsg"
                      size="mini">
-                <el-row>
-                    <el-col :span="11">
-                        <el-form-item label="消息名称：" prop="title">
-                            <el-input v-model="sysMsg.title" placeholder="请输入消息名称" clearable></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11">
-                        <el-form-item label="消息类型：" prop="noticeType">
-                            <el-radio-group v-model="sysMsg.noticeType">
-                                <el-radio label="系统消息" value="10008">系统消息</el-radio>
-                                <el-radio label="管理员消息" value="10009">管理员消息</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                    </el-col>
+                <el-col :span="24">
+                    <el-form-item label="消息标题：" prop="title">
+                        <el-input v-model="sysMsg.title" placeholder="请输入消息标题" clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="消息类型：" prop="noticeType">
+                        <el-select v-model="sysMsg.noticeType"
+                                   placeholder="消息类型"
+                                   clearable>
+                            <el-option label="系统消息" value="10008">系统消息</el-option>
+                            <el-option label="管理员消息" value="10009">管理员消息</el-option>
+                        </el-select>
+                    </el-form-item>
 
-                    <!--<el-col :span="11">
-                        <el-form-item label="发布单位：" prop="releaseDept">
-                            <el-input v-model="sysMsg.releaseDept" placeholder="请输入发布单位" clearable></el-input>
-                        </el-form-item>
-                    </el-col>-->
-                    <el-col :span="11">
-                        <el-form-item label="消息内容：" prop="content">
-                            <template>
-                                <el-input v-model="sysMsg.content" @change="handleChange" :min="0" :max="10000"
-                                          placeholder="请输入消息内容"></el-input>
-                            </template>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11">
-                        <el-form-item label="发布人：" >
-                            <el-input v-model="sysMsg.releasePeopleName" disabled></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <!--<el-col :span="11">-->
-                        <!--&lt;!&ndash;<el-form-item label="接收单位：" prop="recieveDept">-->
-                            <!--&lt;!&ndash;对于同一级的节点，每次只能展开一个&ndash;&gt;-->
-                            <!--<el-tree-->
-                                    <!--:data="treeData"-->
-                                    <!--:props="defaultProps"-->
-                                    <!--accordion-->
-                                    <!--@node-click="handleNodeClick">-->
-                            <!--</el-tree>-->
-                            <!--<el-input v-model="sysMsg.recieveDept" placeholder="请选择接收单位" clearable>-->
-                            <!--</el-input>-->
-                        <!--</el-form-item>&ndash;&gt;-->
-                        <!--<el-form-item label="接收部门" prop="deptName">-->
-                            <!--<el-input v-model="sysMsg.recieveDept" @focus="chooseDept" placeholder="请选择接收部门"-->
-                                      <!--clearable></el-input>-->
-                        <!--</el-form-item>-->
-                    <!--</el-col>-->
-                    <el-col :span="11">
-                        <el-form-item label="接收人：" >
-                            <el-input v-model="sysMsg.userName" @focus="chooseUser" placeholder="请输接收人"
-                                      clearable></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
+
+                </el-col>
+
+                <!--<el-col :span="11">
+                    <el-form-item label="发布单位：" prop="releaseDept">
+                        <el-input v-model="sysMsg.releaseDept" placeholder="请输入发布单位" clearable></el-input>
+                    </el-form-item>
+                </el-col>-->
+                <el-col :span="24">
+                    <el-form-item label="消息内容：" prop="content">
+                        <template>
+                            <el-input   type="textarea"  v-model="sysMsg.content" @change="handleChange" :min="0" :max="10000"
+                                      placeholder="请输入消息内容"></el-input>
+                        </template>
+                    </el-form-item>
+                </el-col>
+
+
+                <el-col :span="24">
+                    <el-form-item label="发布人：" >
+                        <el-input v-model="sysMsg.releasePeopleName" disabled></el-input>
+                    </el-form-item>
+                </el-col>
+                <!--<el-col :span="11">-->
+                <!--&lt;!&ndash;<el-form-item label="接收单位：" prop="recieveDept">-->
+                <!--&lt;!&ndash;对于同一级的节点，每次只能展开一个&ndash;&gt;-->
+                <!--<el-tree-->
+                <!--:data="treeData"-->
+                <!--:props="defaultProps"-->
+                <!--accordion-->
+                <!--@node-click="handleNodeClick">-->
+                <!--</el-tree>-->
+                <!--<el-input v-model="sysMsg.recieveDept" placeholder="请选择接收单位" clearable>-->
+                <!--</el-input>-->
+                <!--</el-form-item>&ndash;&gt;-->
+                <!--<el-form-item label="接收部门" prop="deptName">-->
+                <!--<el-input v-model="sysMsg.recieveDept" @focus="chooseDept" placeholder="请选择接收部门"-->
+                <!--clearable></el-input>-->
+                <!--</el-form-item>-->
+                <!--</el-col>-->
+                <el-col :span="24">
+                    <el-form-item label="接收人：" prop="userName">
+                        <el-input v-model="sysMsg.userName" @focus="chooseUser" placeholder="请输接收人"
+                                  clearable></el-input>
+                    </el-form-item>
+                </el-col>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="closeDia">取消</el-button>

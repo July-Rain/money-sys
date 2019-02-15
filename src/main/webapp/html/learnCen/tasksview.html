@@ -185,6 +185,7 @@
                                             @click="handleEdit(scope.$index, scope.row)">查看
                                     </el-button>
                                     <el-button
+                                            :disabled="scope.row.endTime | timeout"
                                             plain
                                             type="danger"
                                             size="mini"
