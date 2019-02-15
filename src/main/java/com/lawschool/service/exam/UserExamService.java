@@ -12,6 +12,7 @@ import com.lawschool.form.UserExamForm;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public interface UserExamService  extends AbstractService<UserExam> {
 
     void commitExam(UserAnswerForm userAnswerForm);
 
-    Result getList(Map<String, Object> params,User user);
+    Result getList(Map<String, Object> params,User user) throws ParseException;
 
     void saveExam(UserAnswerForm userAnswerForm);
 

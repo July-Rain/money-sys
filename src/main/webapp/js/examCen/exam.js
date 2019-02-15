@@ -6,9 +6,9 @@ var vm = new Vue({
         labelPosition: 'left',
         navData: [],//导航
         formInline: { // 搜索表单
-            value: '',
-            name: '',
-            status: "",
+            examName :'',
+            startTime:'',
+            endTime:'',
             pageNo: 1,
             pageSize: 1,
             limit: 10,
@@ -74,6 +74,10 @@ var vm = new Vue({
         },
         addConfig: function () {
             parent.location.href = baseURL + "modules/examCen/examConfig.html";
+        },
+        resetForm: function (formName) {
+            alert(formName);
+            this.$refs[formName].resetFields();
         },
         handleEdit: function (index, row) {
             this.title = "修改参数";
