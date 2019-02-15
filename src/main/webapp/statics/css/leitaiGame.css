@@ -297,9 +297,23 @@ button {
     width: 852px;
     height: 483px;
     background: url("../img/competeCenter/dati_frame.png");
-    margin: 0 auto;
+    margin: 86px auto 0;
     position: relative;
     padding: 35px 89px 0;
+}
+.questionArea .title{
+    width: 326px;
+    height: 54px;
+    line-height: 44px;
+    color: #fff;
+    font-size: 24px;
+    background-image: url("../img/competeCenter/timu_xiaoshiban.png");
+    background-size: 100% 100%;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: -20px;
+    transform: translateX(-50%);
 }
 .questionType{
     position: absolute;
@@ -347,7 +361,7 @@ button {
 }
 .left_progress .progress{
     width: 22px;
-    padding-right: 38px;
+    padding-right: 56px;
     float: right;
 }
 .left_progress .progress .num{
@@ -371,9 +385,72 @@ button {
     background-image: url("../img/competeCenter/jindutiao_blue.png");
     height: 100%;
 }
+.left_progress .head{
+    float: right;
+    padding: 48px 19px 0;
+}
+.left_progress .head .img{
+    width: 61px;
+    height: 61px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    overflow: hidden;
+}
+.left_progress .head .name{
+    text-align: center;
+    height: 14px;
+    font-size: 14px;
+    color: #fefefe;
+    padding-top: 19px;
+}
 .right_progress{
     width: 300px;
     position: absolute;
-    right: 852px;
+    right: -300px;
     top: 0;
+}
+.right_progress .progress{
+    width: 22px;
+    padding-left: 32px;
+    float: left;
+}
+.right_progress .progress .num{
+    height: 46px;
+    line-height: 46px;
+    color: #fefefe;
+    font-size: 14px;
+    width: 20px;
+    text-align: center;
+}
+.right_progress .progress .line{
+    width: 22px;
+    height: 427px;
+    padding: 2px;
+    border-radius: 10px;
+    border: solid 1px rgba(255,255,255,0.3);
+}
+.right_progress .progress .line .line_inner{
+    width: 16px;
+    border-radius: 7px;
+    background-image: url("../img/competeCenter/jindutiao_blue.png");
+    height: 100%;
+}
+.right_progress .head{
+    float: left;
+    padding: 48px 19px 0;
+    padding-left: 42px;
+}
+.right_progress .head .img{
+    width: 61px;
+    height: 61px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    overflow: hidden;
+}
+.right_progress .head .name{
+    text-align: center;
+    height: 14px;
+    font-size: 14px;
+    color: #fefefe;
+    padding-top: 19px;
 }
