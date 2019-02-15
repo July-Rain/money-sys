@@ -40,17 +40,12 @@ public class ExamQueConfig extends DataEntity<ExamQueConfig> {
     /**
      * 题目数量
      */
-    private BigDecimal questionNumber;
+    private int questionNumber;
 
     /**
      * 题目分值
      */
-    private BigDecimal questionScore;
-
-    /**
-     * null
-     */
-    private String addUser;
+    private float questionScore;
 
     /**
      * 考试配置ID
@@ -86,38 +81,6 @@ public class ExamQueConfig extends DataEntity<ExamQueConfig> {
         this.questionType = questionType == null ? null : questionType.trim();
     }
 
-    /**
-     * 题目数量
-     * @return QUESTION_NUMBER 题目数量
-     */
-    public BigDecimal getQuestionNumber() {
-        return questionNumber;
-    }
-
-    /**
-     * 题目数量
-     * @param questionNumber 题目数量
-     */
-    public void setQuestionNumber(BigDecimal questionNumber) {
-        this.questionNumber = questionNumber;
-    }
-
-    /**
-     * 题目分值
-     * @return QUESTION_SCORE 题目分值
-     */
-    public BigDecimal getQuestionScore() {
-        return questionScore;
-    }
-
-    /**
-     * 题目分值
-     * @param questionScore 题目分值
-     */
-    public void setQuestionScore(BigDecimal questionScore) {
-        this.questionScore = questionScore;
-    }
-
 	public String getSpecialKnowledgeId() {
 		return specialKnowledgeId;
 	}
@@ -125,4 +88,21 @@ public class ExamQueConfig extends DataEntity<ExamQueConfig> {
 	public void setSpecialKnowledgeId(String specialKnowledgeId) {
 		this.specialKnowledgeId = specialKnowledgeId;
 	}
+
+    public int getQuestionNumber() {
+        return this.questionNumber;
+    }
+
+    public void setQuestionNumber(final int questionNumber) {
+        this.questionNumber = questionNumber;
+    }
+
+    public float getQuestionScore() {
+        return this.questionScore;
+    }
+
+    public void setQuestionScore(final float questionScore) {
+        this.questionScore = questionScore;
+    }
+
 }
