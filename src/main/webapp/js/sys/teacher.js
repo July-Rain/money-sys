@@ -44,20 +44,7 @@ var vm = new Vue({
 
         },
         rules: {//表单验证规则
-            // smallNum: [
-            //     // {required: true, message: '请输入参数名11', trigger: 'blur'},
-            //     { required: true,pattern: regularExp("number"), message: '正则不匹配55', trigger: 'blur'}
-            // ],
-            // markReward: [
-            //     {required: true, message: '不能为空', trigger: 'blur'},
-            //     { pattern: regularExp("number"), message: '正则不匹配' }
-            // ],
-            // xiala: [
-            //     {required: true, message: '不能为空', trigger: 'blur'}
-            // ],
-            // itemDifficulty: [
-            //     {required: true, message: '不能为空', trigger: 'blur'}
-            // ]
+
             userName:[
                 {required: true, message: '请输入用户名', trigger: 'blur'},
             ],

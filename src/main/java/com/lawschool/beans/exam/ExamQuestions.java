@@ -41,11 +41,11 @@ public class ExamQuestions extends DataEntity<ExamQuestions> {
      * 是否必考
      */
     private String isMustTest;
-    
+
     /**
      * 题目分值
      */
-    private int score;
+    private float score;
 
     /**
      * 考试配置主键
@@ -111,11 +111,11 @@ public class ExamQuestions extends DataEntity<ExamQuestions> {
         this.isMustTest = isMustTest == null ? null : isMustTest.trim();
     }
 
-	public int getScore() {
-		return score;
-	}
+    public float getScore() {
+        return this.score;
+    }
 
-	public void setScore(int score) {
-		this.score = score;
-	}  
+    public void setScore(final float score) {
+        this.score = score;
+    }
 }

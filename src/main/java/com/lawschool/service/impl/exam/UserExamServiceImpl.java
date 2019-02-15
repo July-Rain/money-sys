@@ -24,6 +24,9 @@ import com.lawschool.util.UtilValidate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -243,19 +246,25 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
     }
 
     @Override
-    public Result getList(Map<String, Object> params, User user) {
-
+    public Result getList(Map<String, Object> params, User user) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String[] authArr = authService.listAllIdByUser(user.getOrgId(), user.getId(), "ExamConfig");
         UserExamForm userExamForm = new UserExamForm();
         if(authArr.length>0){
             userExamForm.setAuthArr(authArr);
         }
         userExamForm.setUserId(user.getId());
-        if(params.get("status")!=null){
+        if(UtilValidate.isNotEmpty(params.get("status"))){
             userExamForm.setExamStatus(params.get("status").toString());
         }
-        if(params.get("examName")!=null){
+        if(UtilValidate.isNotEmpty(params.get("examName"))){
             userExamForm.setExamName(params.get("examName").toString());
+        }
+        if(UtilValidate.isNotEmpty(params.get("startTime"))){
+            userExamForm.setStartTime( sdf.parse(params.get("startTime").toString()));
+        }
+        if(UtilValidate.isNotEmpty(params.get("endTime"))){
+            userExamForm.setEndTime(sdf.parse(params.get("endTime").toString()));
         }
         String orderBy = " exam_status,IS_MUST_TEST, start_time ";
         params.put("orderBy",orderBy);

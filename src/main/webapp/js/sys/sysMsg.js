@@ -53,14 +53,20 @@ var vm = new Vue({
         },
         visible: false,
         rules: {//表单验证规则
-            value: [
-                {required: true, message: '请输入参数名', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
+
+            title:[
+                {required: true, message: '请输入消息标题', trigger: 'blur'},
             ],
-            code: [
-                {required: true, message: '请输入参数值', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ]
+            noticeType:[
+                {required: true, message: '请选择消息类型', trigger: 'blur'},
+            ],
+            content:[
+                {required: true, message: '请输入消息内容', trigger: 'blur'},
+            ],
+            userName:[
+                {required: true, message: '请输入接收人', trigger: 'blur'},
+            ],
+
         },
         dialogConfig: false,//table弹出框可见性
         title02: "",//弹窗的名称

@@ -4,6 +4,7 @@ import com.lawschool.base.AbstractController;
 import com.lawschool.beans.User;
 import com.lawschool.service.UserService;
 import com.lawschool.util.UtilValidate;
+import org.apache.shiro.session.UnknownSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -57,9 +58,14 @@ public class RequestInterceptor  extends AbstractController implements HandlerIn
                 if("0".equals(realUser.getIsOnline())){
                     //强制下线，重新登陆
                     //request.getSession().removeAttribute("user");
-                    ShiroUtils.logout();
-                    response.sendRedirect(basePath+"index.html");
-                    return false;
+                    try {
+                        ShiroUtils.logout();
+                    }catch (Exception e){
+                        response.sendRedirect(basePath+"index.html");
+                        return false;
+                    }
+
+
                 }
             }else{
                 response.sendRedirect(basePath+"index.html");
