@@ -36,9 +36,6 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
     private TestQuestionService testQuestionService;
 
     @Autowired
-    private RedisUtil redisUtil;
-
-    @Autowired
     private ExerciseAnswerRecordService exerciseAnswerRecordService;
 
     @Autowired
@@ -52,17 +49,6 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
         form.setId(id);
 
         dao.saveForm(form);
-
-        // 根据筛选条件，获取符合的试题的idList，放到缓存中去
-        Map<String, Object> paramsMap = new HashMap<String, Object>();
-        paramsMap.put("specialKnowledgeId", form.getTopic());
-        paramsMap.put("questionDifficulty", form.getDifficulty());
-        paramsMap.put("questionType", form.getType());
-        paramsMap.put("typeId", form.getClassify());
-        List<String> idList = testQuestionService.findIdBySpecialKnowledgeId(paramsMap);
-
-        String key = "random" + id;
-        redisUtil.set(key, idList, -1);
 
         return id;
     }
@@ -80,7 +66,7 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
             removeList = this.preserve(form);
         }
 
-        List<QuestForm> questions = this.getQuestions(form.getId(), form.getUserId(), removeList);
+        List<QuestForm> questions = this.getQuestions(form.getId(), form.getUserId(), 0, 0);
 
         return questions;
     }
@@ -142,39 +128,16 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
     }
 
     /**
-     * 主题练习获取题目
+     * 随机练习获取题目
      * @param id 主题ID
      * @param userId 用户ID
      * @return
      */
-    public List<QuestForm> getQuestions(String id, String userId, List<String> removeList){
+    public List<QuestForm> getQuestions(String id, String userId, Integer limit, Integer page){
 
-        // 先从redis中取剩余的题目ID，然后去取题目具体信息
-        String key = "random" + id;
-        List<String> ids = redisUtil.get(key, List.class, -1);
+        List<String> list = testQuestionService.selectIdsForPage(null);
 
-        if(CollectionUtils.isNotEmpty(ids) && CollectionUtils.isNotEmpty(removeList)){
-            ids.removeAll(removeList);
-        }
-
-        List<String> questList = new ArrayList<>();
-
-        // 根据系统配置题目数量取题目，如果没有配置，默认取50
-        if(CollectionUtils.isNotEmpty(ids)){
-            String qid = ids.get(0);
-            questList.add(qid);
-        }
-
-        List<QuestForm> result = new ArrayList<>();
-        if(CollectionUtils.isNotEmpty(removeList)){
-            redisUtil.set(key, ids, -1);
-        }
-
-        if(CollectionUtils.isNotEmpty(questList)){
-            result	= testQuestionService.getQuestions(questList);
-        }
-
-        return result;
+        return null;
     }
 
     /**
@@ -262,4 +225,44 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
         return resultMap;
     }
 
+    /**
+     * 获取题目信息，每次只取一条
+     * @param id
+     * @param index
+     * @return
+     */
+    public QuestForm getQuestion(String id, Integer index, String userId){
+        // 查询配置信息
+        ExerciseEntity config = this.findOne(id);
+
+        // 封装查询参数
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("start", index);
+        params.put("end", index);
+        params.put("themeId", config.getTopicType());
+        params.put("difficulty", config.getDifficulty());
+        params.put("classify", config.getClassify());
+        params.put("type", config.getType());
+
+        List<String> ids = testQuestionService.selectIdsForPage(params);
+
+        if(CollectionUtils.isEmpty(ids)){
+            return null;
+        }
+
+        List<QuestForm> resultList = dao.getQuestions(ids, id, userId);
+        if(CollectionUtils.isEmpty(resultList)){
+            return null;
+        }
+        List<AnswerForm> answerForms = answerService.findByQuestionIds(ids);
+
+        resultList = testQuestionService.handleAnswers(resultList, answerForms);
+
+        return resultList.get(0);
+    }
+
+    public boolean updateNum(Integer answerNum, Integer rightNum, String id){
+
+        return dao.updateNum(answerNum, rightNum, id);
+    }
 }
