@@ -27,7 +27,6 @@ public class ExerciseAnswerRecordServiceImpl extends AbstractServiceImpl<Exercis
         implements ExerciseAnswerRecordService {
 
     public boolean saveForm(ThemeAnswerForm form){
-
         return dao.saveForm(form);
     }
 

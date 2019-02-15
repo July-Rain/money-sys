@@ -36,4 +36,7 @@ public interface ExerciseService extends AbstractService<ExerciseEntity> {
 
     Map<String, Object> analysis(String month, String userId);
 
+    QuestForm getQuestion(String id, Integer index, String userId);
+
+    boolean updateNum(Integer answerNum, Integer rightNum, String id);
 }

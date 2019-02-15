@@ -1,11 +1,14 @@
 package com.lawschool.controller.practicecenter;
 
+import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.User;
 import com.lawschool.beans.practicecenter.ExerciseEntity;
 import com.lawschool.form.*;
 import com.lawschool.service.DictService;
+import com.lawschool.service.TestQuestionService;
+import com.lawschool.service.practicecenter.ExerciseAnswerRecordService;
 import com.lawschool.service.practicecenter.ExerciseService;
 import com.lawschool.service.system.TopicTypeService;
 import com.lawschool.util.Result;
@@ -16,10 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @version V1.0
@@ -40,6 +40,12 @@ public class RandomExerciseController extends AbstractController {
     @Autowired
     private TopicTypeService topicTypeService;
 
+    @Autowired
+    private TestQuestionService testQuestionService;
+
+    @Autowired
+    private ExerciseAnswerRecordService exerciseAnswerRecordService;
+
     /**
      * 随机练习主页列表信息
      * @param params 分页信息
@@ -47,8 +53,10 @@ public class RandomExerciseController extends AbstractController {
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result list(@RequestParam Map<String, Object> params){
+        ExerciseEntity entity = new ExerciseEntity();
+        entity.setCreateUser(getUser().getId());
 
-        Page<ExerciseEntity> page = exerciseService.findPage(new Page<ExerciseEntity>(params), new ExerciseEntity());
+        Page<ExerciseEntity> page = exerciseService.findPage(new Page<ExerciseEntity>(params), entity);
 
         return Result.ok().put("page", page);
     }
@@ -94,6 +102,17 @@ public class RandomExerciseController extends AbstractController {
         form.setUserId(userId);
         form.setDate(new Date());
 
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("classify", form.getClassify());
+        params.put("type", form.getType());
+        params.put("themeId", form.getTopic());
+        params.put("difficulty", form.getDifficulty());
+
+        int result = testQuestionService.getNumByConditions(params);
+        if(result == 0){
+            return Result.error("该设置暂无题目信息，请重新设置...");
+        }
+
         String id = exerciseService.startExercise(form);
 
         return Result.ok().put("id", id);
@@ -109,18 +128,20 @@ public class RandomExerciseController extends AbstractController {
         return Result.ok();
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/questions", method = RequestMethod.POST)
-    public Result getQuestions(@RequestBody ThemeForm form){
+    /**
+     * 获取题目信息
+     * @param id 任务配置ID
+     * @param index 获取题目index
+     * @return
+     */
+    @RequestMapping(value = "/getQuestion", method = RequestMethod.GET)
+    public Result getQuestion(@RequestParam("id") String id, @RequestParam("index") Integer index){
         User user = getUser();
         if(user == null){
-            throw new RuntimeException("用户信息获取失败，请重新登陆");
+            throw new RuntimeException("用户信息获取失败，请重新登录...");
         }
-        form.setUserId(user.getId());
-
-        List<QuestForm> list = exerciseService.saveAndGetQuestions(form);
-        // 返回题目list
-        return Result.ok().put("list", list);
+        QuestForm quest = exerciseService.getQuestion(id, index, user.getId());
+        return Result.ok().put("question", quest);
     }
 
     /**
@@ -139,6 +160,38 @@ public class RandomExerciseController extends AbstractController {
         AnalysisForm resultForm = exerciseService.commit(form);
 
         return Result.ok().put("form", resultForm);
+    }
+
+    /**
+     * 保存答题记录
+     * @param form
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @RequestMapping(value = "/saveAnswer", method = RequestMethod.POST)
+    public Result saveAnswerRecord(@RequestBody ThemeAnswerForm form){
+        User user = getUser();
+        if(user == null){
+            return Result.error("用户信息获取失败，请重新登录...");
+        }
+        form.setCreateTime(new Date());
+        form.setCreateUser(user.getId());
+        form.setId(IdWorker.getIdStr());
+
+        boolean result = exerciseAnswerRecordService.saveForm(form);
+        if(result){
+            // 更新随机练习配置信息
+            result = exerciseService.updateNum(1, form.getRight(), form.getTaskId());
+            if(result){
+                return Result.ok();
+            } else {
+                return Result.error("答题信息保存失败...");
+            }
+
+        } else {
+
+            return Result.error("答题信息保存失败...");
+        }
     }
 
 }

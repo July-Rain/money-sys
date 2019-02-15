@@ -5,10 +5,10 @@
         id AS "id",
         answer_num AS "answerNum",
         right_num AS "rightNum",
-        difficulty AS "difficulty",
-        classify AS "classify",
-        type AS "type",
-        topic_type AS "topicType",
+        diff_name AS "diffName",
+        class_name AS "className",
+        type_name AS "typeName",
+        topic_name AS "topicName",
         create_time AS "createTime"
     </sql>
 
@@ -17,6 +17,7 @@
         SELECT
         <include refid="randomColumns"/>
         FROM law_exercise_random
+        WHERE create_user = #{createUser}
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">
                 ORDER BY ${page.orderBy}
@@ -38,7 +39,11 @@
               create_user,
               create_time,
               opt_user,
-              opt_time
+              opt_time,
+              diff_name,
+              class_name,
+              type_name,
+              topic_name
 
             ) VALUES (
                       #{id},
@@ -49,7 +54,11 @@
                       #{userId},
                       #{date},
                       #{userId},
-                      #{date}
+                      #{date},
+                      #{diffName},
+                      #{className},
+                      #{typeName},
+                      #{topicName}
             )
     </insert>
 
@@ -80,4 +89,52 @@
         ORDER BY
             TASK_ID
     </select>
+
+    <select id="findOne" resultType="com.lawschool.beans.practicecenter.ExerciseEntity">
+        SELECT
+            DIFFICULTY AS "difficulty",
+            CLASSIFY AS "classify",
+            TYPE AS "type",
+            TOPIC_TYPE AS "topicType"
+        FROM law_exercise_random
+        WHERE
+            id = #{id}
+    </select>
+
+    <select id="getQuestions" resultType="com.lawschool.form.QuestForm">
+        SELECT
+            t.id,
+            t.com_content,
+            t.question_difficulty,
+            t.question_type,
+            t.answer_id,
+            t.legal_basis,
+            t.answer_describle,
+            t.answer_choice_number,
+            c.name AS "themeName",
+            r.ANSWER AS "userAnswer",
+            r.right AS "right"
+        FROM law_testquestions t
+        LEFT JOIN law_exercise_record r ON t.id = r.question_id
+        AND r.task_id = #{id}
+        AND r.create_user = #{userId}
+        LEFT JOIN law_sys_topic c ON c.id = t.SPECIAL_KNOWLEDGE_ID
+        <where>
+            t.id IN
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+        ORDER BY t.create_time
+    </select>
+
+    <!-- 更新答题数量信息 -->
+    <update id="updateNum">
+        UPDATE law_exercise_random
+        SET
+            ANSWER_NUM = ANSWER_NUM + #{answerNum},
+            RIGHT_NUM = RIGHT_NUM + #{rightNum}
+        WHERE
+            ID = #{id}
+    </update>
 </mapper>
