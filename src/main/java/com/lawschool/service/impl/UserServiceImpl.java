@@ -89,7 +89,9 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         if(UtilValidate.isNotEmpty(params.get("isOnline"))){
             ew.eq("IS_ONLINE",1);//1  在线
         }
-
+        if(UtilValidate.isNotEmpty(params.get("userStatus"))){
+            ew.eq("USER_STATUS","2000");//1  在线
+        }
         ew.orderBy("create_time",false);
         Page<User> page = this.selectPage( new Query<User>(params).getPage(),ew);
 

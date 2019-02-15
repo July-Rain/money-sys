@@ -15,7 +15,8 @@ var vm = new Vue({
             identify:'1',//表明是教官
             currPage: 1,
             pageSize:10,
-            totalCount: 0
+            totalCount: 0,
+            userStatus:'2000'
         },
         tchData:[],//教官数据
         newsData:[],//最新课程数据

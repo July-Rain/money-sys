@@ -191,6 +191,7 @@ var vm = new Vue({
         // 表单重置
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
+            vm.reload();
         },
         addStuMedia: function () {
             if(!vm.stuMedia.stuLawid){
@@ -271,10 +272,10 @@ var vm = new Vue({
                     }
                 });
             }).catch(function () {
-                that.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
+                // that.$message({
+                //     type: 'info',
+                //     message: '已取消删除'
+                // });
             });
 
         },
