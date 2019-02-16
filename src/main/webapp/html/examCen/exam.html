@@ -150,6 +150,8 @@
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="formInline.totalCount">
             </el-pagination>
+
+
         </div>
     </div>
     </el-tab-pane>
@@ -207,6 +209,9 @@
                 </el-col>
             </el-row>
         </el-form>
+    </el-dialog>
+    <el-dialog title="新增考试" :visible.sync="dialogAdd">
+        <iframe src="examConfig.html" frameborder="0"></iframe>
     </el-dialog>
 </div>
 </div>
