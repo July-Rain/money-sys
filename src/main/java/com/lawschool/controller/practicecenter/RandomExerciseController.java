@@ -6,18 +6,15 @@ import com.lawschool.base.Page;
 import com.lawschool.beans.User;
 import com.lawschool.beans.practicecenter.ExerciseEntity;
 import com.lawschool.form.*;
-import com.lawschool.service.DictService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.practicecenter.ExerciseAnswerRecordService;
 import com.lawschool.service.practicecenter.ExerciseService;
+import com.lawschool.service.system.DictionService;
 import com.lawschool.service.system.TopicTypeService;
 import com.lawschool.util.Result;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
 
@@ -35,7 +32,7 @@ public class RandomExerciseController extends AbstractController {
     private ExerciseService exerciseService;
 
     @Autowired
-    private DictService dictService;
+    private DictionService dictService;
 
     @Autowired
     private TopicTypeService topicTypeService;
