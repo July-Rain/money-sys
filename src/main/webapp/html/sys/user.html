@@ -125,6 +125,18 @@
                                     >
                                     </i>
                                 </el-popover>
+
+                                <el-popover
+
+                                        placement="top-start"
+                                        trigger="hover"
+                                        content="删除">
+                                    <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                                       slot="reference"
+                                       @click="handleDel2(scope.$index, scope.row)"
+                                       style="color: #e31313;" >
+                                    </i>
+                                </el-popover>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -174,8 +186,8 @@
                         <el-input type="text" class="form-control" style="cursor:pointer;" v-model="teacher.orgName"
                                   @focus="deptShow" readonly="readonly" placeholder="所属部门"></el-input>
                     </el-form-item>
-                    <el-form-item label="角色：" prop="role">
-                        <el-select v-model="tmroles" placeholder="角色" multiple
+                    <el-form-item label="角色：" prop="tmroles">
+                        <el-select v-model="teacher.tmroles" placeholder="角色" multiple
                                    collapse-tags>
                             <el-option
                                     multiple
@@ -191,7 +203,7 @@
             </el-col>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="closeTchDia">取消</el-button>
-                <el-button type="primary" @click="save('configureEntity')">保存设置</el-button>
+                <el-button type="primary" @click="saveOrUpdate('teacher')">保存设置</el-button>
             </div>
         </el-dialog>
     </div>
@@ -220,5 +232,5 @@
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/sys/user.js"></script>
+<script src="${rc.contextPath}/js/sys/user.js?_${.now?long}"></script>
 </html>

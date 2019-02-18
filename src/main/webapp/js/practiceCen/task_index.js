@@ -3,9 +3,13 @@ var vm = new Vue({
     data: {
         tableData: [],
         formInline: {
+            taskContent: '',
+            taskName: '',
             limit: 10,
             page: 1,
-            count: 0
+            count: 0,
+            endTime:"",
+            startTime:""
         },
     },
     methods: {
@@ -18,6 +22,7 @@ var vm = new Vue({
             vm.refresh();
         },
         refresh: function () {
+            console.info(vm.formInline)
             $.ajax({
                 type: "GET",
                 url: baseURL + "exercise/task/list",
@@ -47,7 +52,12 @@ var vm = new Vue({
         review: function (id, taskId) {
             // 错题回顾
 
-        }
+        },
+        // 查询
+        onSubmit: function () {
+            alert(1)
+            this.refresh();
+        },
     },
     created: function () {
         this.$nextTick(function () {

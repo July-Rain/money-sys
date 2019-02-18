@@ -246,4 +246,10 @@ public class UserController extends AbstractController {
         User u = (User) SecurityUtils.getSubject().getPrincipal();
         return Result.ok().put("u",u);
     }
+
+    @RequestMapping("/deleteuser")
+    public Result deleteuser(String id){
+        userService.deleteById(id);
+        return Result.ok();
+    }
 }

@@ -29,7 +29,7 @@
         </button>
         <ul class="level_list">
             <li @click="rushAnimation(index)" :class="moveClass?'move_class':''" v-for="(list,index) in levelList" :key="index" v-show="list.indexName!=0">
-                <p :class="index?'':'opacity0'"><i></i> 200</p>
+                <p :class="index?'':'opacity0'"><i></i> 100</p>
                 <p>第{{list.indexName | capitalize}}关</p>
             </li>
             <li class="car"></li>
@@ -37,5 +37,5 @@
     </div>
 </div>
 </body>
-<script src="${rc.contextPath}/js/competition/rushLevel.js"></script>
+<script src="${rc.contextPath}/js/competition/rushLevel.js?_${.now?long}"></script>
 </html>

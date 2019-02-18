@@ -40,7 +40,7 @@ var vm = new Vue({
         checkSettingDia: false,//阅卷设置弹出框
         title: "",//弹窗的名称
         delIdArr: [],//删除数据
-        dialogAdd: true
+        dialogAdd: false
     },
     created: function () {
         this.$nextTick(function () {
@@ -74,7 +74,8 @@ var vm = new Vue({
             this.reload();
         },
         addConfig: function () {
-            parent.location.href = baseURL + "modules/examCen/examConfig.html";
+            // parent.location.href = baseURL + "modules/examCen/examConfig.html";
+            this.dialogAdd = true
         },
         resetForm: function (formName) {
             alert(formName);

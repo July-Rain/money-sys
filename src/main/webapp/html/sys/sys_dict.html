@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
+    <#include "/header.html">
+    <style>
+        .header-right ul{
+            background: transparent;
+        }
+        .header-right ul li:after{
+            content: '';
+        }
+        .el-menu--horizontal .el-menu-item,
+        .el-menu--horizontal .el-submenu{
+            float: left;
+            height: 70px;
+            /*line-height: 70px;*/
+            margin: 0;
+            border-bottom: 2px solid transparent;
+            color: #fff;
+        }
+        .el-menu--horizontal>.el-submenu .el-submenu__title {
+            height: 70px;
+            /* line-height: 70px; */
+            border-bottom: 2px solid transparent;
+            color: #909399;
+        }
+        .header-right ul li a{
+            text-align: center;
+            padding: 0;
+            /*margin: 10px 0;*/
+            box-sizing: border-box;
+            height: auto;
+            display: inline-block;
+        }
+        .header-right .el-menu-item [class^=el-icon-],
+        .header-right .el-submenu [class^=el-icon-],
+        .el-menu--horizontal>.el-submenu .el-submenu__icon-arrow{
+            font-size: 30px;
+            color: #fff;
+        }
+        /*.header-right .el-submenu [class^=el-icon-]*/
+        .header-right ul li a span{
+            display: block;
+            margin-top: -10px;
+            line-height: 10px;
+        }
+        .header-right .el-menu-item:hover a,
+        .header-right .el-submenu:hover a,
+        .header-right .el-menu-item:hover [class^=el-icon-],
+        .header-right .el-submenu:hover [class^=el-icon-],
+        .header-right .el-submenu:hover .el-submenu__title [class^=el-icon-]{
+            color: #909399;
+        }
+        .el-submenu__icon-arrow{
+            margin-top: 16px;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item a{
+            color: #909399;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item a:hover{
+            color: #000;
+        }
+        .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+            background-color: #fff;
+            float: none;
+            height: 36px;
+            line-height: 36px;
+            padding: 0 10px;
+            color: #909399;
+            display: inline-block;//悬浮块横向显示
+        }
+        .row-expand-cover td:first-child div{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>系统管理</el-breadcrumb-item>
+            <el-breadcrumb-item>字典管理</el-breadcrumb-item>
+        </el-breadcrumb>
+
+        <el-row :gutter="24">
+            <el-col :span="24">
+                <el-tabs type="border-card">
+                    <div>
+                        <div class="info_btn">
+                            <el-button size="mini" type="primary" @click="add"><i class="iconfont icon-htmal5icon18"></i>新增字典类型</el-button>
+                        </div>
+                        <el-table @expand-change="change"
+                                  :data="tableData"
+                                  border
+                                  style="width: 100%">
+                            <el-table-column type="expand">
+                                <el-table
+                                        :data="childData"
+                                        border
+                                        style="width: 100%">
+                                    <el-table-column
+                                            prop="name"
+                                            label="名称"
+                                            width="250"
+                                            header-align="center"
+                                            align="center">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="code"
+                                            label="值"
+                                            width="100"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="remark"
+                                            label="备注"
+                                            header-align="center"
+                                            align="center"
+                                            width="300">
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="排序"
+                                            prop="sort"
+                                            width="50"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="操作"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                        <template slot-scope="scope">
+                                            <el-popover
+                                                    placement="top-start"
+                                                    trigger="hover"
+                                                    content="编辑">
+                                                <i class="iconfont icon-xiugaimima tabIcon"
+                                                   slot="reference"
+                                                   @click="edit(scope.row.id)"
+                                                   style="color: #119e0a;"
+                                                >
+                                                </i>
+                                            </el-popover>
+
+                                            <el-popover
+                                                    placement="top-start"
+                                                    trigger="hover"
+                                                    content="删除">
+                                                <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                                                   slot="reference"
+                                                   @click="remove(scope.row.id, 0)"
+                                                   style="color: #e31313;"
+                                                >
+                                                </i>
+                                            </el-popover>
+                                        </template>
+
+                                    </el-table-column>
+                                </el-table>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="name"
+                                    label="名称"
+                                    width="250"
+                                    header-align="center"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="code"
+                                    label="值"
+                                    width="250"
+                                    header-align="center"
+                                    align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="remark"
+                                    label="备注"
+                                    header-align="center"
+                                    align="center"
+                                    width="420">
+                            </el-table-column>
+                            <el-table-column
+                                    label="排序"
+                                    prop="sort"
+                                    width="50"
+                                    header-align="center"
+                                    align="center"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    label="操作"
+                                    header-align="center"
+                                    align="center"
+                            >
+                                <template slot-scope="scope">
+                                    <el-popover
+                                            placement="top-start"
+                                            trigger="hover"
+                                            content="添加字典信息">
+                                        <i class="iconfont icon-htmal5icon18 tabIcon"
+                                           slot="reference"
+                                           @click="manage(scope.row.id)"
+                                           style="color: #1ee36b;"
+                                        >
+                                        </i>
+                                    </el-popover>
+
+                                    <el-popover
+                                            placement="top-start"
+                                            trigger="hover"
+                                            content="编辑">
+                                        <i class="iconfont icon-xiugaimima tabIcon"
+                                           slot="reference"
+                                           @click="edit(scope.row.id)"
+                                           style="color: #119e0a;"
+                                        >
+                                        </i>
+                                    </el-popover>
+
+                                    <el-popover
+                                            placement="top-start"
+                                            trigger="hover"
+                                            content="删除">
+                                        <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                                           slot="reference"
+                                           @click="remove(scope.row.id, 1)"
+                                           style="color: #e31313;"
+                                        >
+                                        </i>
+                                    </el-popover>
+
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
+                </el-tabs>
+
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurChange"
+                        :current-page="formInline.page"
+                        :page-sizes="[10, 20, 30, 40]"
+                        :page-size="formInline.limit"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="formInline.count">
+                </el-pagination>
+
+                <el-dialog title="字典信息维护" :visible.sync="dictConfig" :before-close="closeDia">
+                    <el-col :span="24">
+                        <el-form :model="diction" :rules="rules" ref="diction" label-width="100px" class="demo-sysDict" size="mini">
+
+                            <el-form-item label="名称：" prop="name">
+                                <el-input v-model="diction.name" placeholder="请输入名称" clearable></el-input>
+                            </el-form-item>
+                            <el-form-item label="编码：" prop="code">
+                                <el-input v-model="diction.code" placeholder="请输入编码" clearable></el-input>
+                            </el-form-item>
+                            <el-form-item label="排序：" prop="sort">
+                                <el-input-number v-model="diction.sort" controls-position="right" :min="1" :max="9999"></el-input-number>
+                            </el-form-item>
+                            <el-form-item label="备注：" prop="remark">
+                                <el-input v-model="diction.remark" placeholder="请输入备注信息" clearable></el-input>
+                            </el-form-item>
+                        </el-form>
+                    </el-col>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="cancel">取消</el-button>
+                        <el-button type="primary" @click="save('diction')">保存</el-button>
+                    </div>
+
+                </el-dialog>
+            </el-col>
+        </el-row>
+    </div>
+</div>
+</body>
+
+<script src="${rc.contextPath}/js/sys/sys_dict.js?_${.now?long}"></script>
+</html>
