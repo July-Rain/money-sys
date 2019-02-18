@@ -124,8 +124,8 @@
 
                     <div class="info">
                         <p>姓名：{{item.userName}}</p>
-                        <p>性别：{{item.userSex}}</p>
-                        <p>工作时间：{{item.workTime}}</p>
+                        <!--<p>性别：{{item.userSex}}</p>-->
+                        <!--<p>工作时间：{{item.workTime}}</p>-->
                     </div>
                 </div>
 
@@ -147,14 +147,14 @@
                 <div class="card_contain">
                     <p>最新课程</p>
                     <ul>
-                        <li>
-                            <a href="'${rc.contextPath}/sys/download?accessoryId='+item.comContent" class="title">小城大事的撒发生发射点</a>
-                            <span class="date">2019-04-16</span>
-                        </li>
-                        <!--<li v-for="item in newsData">-->
-                            <!--<a :href="'${rc.contextPath}/sys/download?accessoryId='+item.comContent" class="title">{{item.stuTitle}}</a>-->
-                            <!--<span class="date">{{item.stuIsstime}}</span>-->
+                        <!--<li>-->
+                            <!--<a href="'${rc.contextPath}/sys/download?accessoryId='+item.comContent" class="title">小城大事的撒发生发射点</a>-->
+                            <!--<span class="date">2019-04-16</span>-->
                         <!--</li>-->
+                        <li v-for="item in newsData">
+                            <a :href="'${rc.contextPath}/sys/download?accessoryId='+item.comContent" class="title">{{item.stuTitle}}</a>
+                            <span class="date">{{item.stuIsstime}}</span>
+                        </li>
                     </ul>
                 </div>
             </div>
