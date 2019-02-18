@@ -39,7 +39,8 @@ var vm = new Vue({
         dialogConfig: false,//table弹出框可见性
         checkSettingDia: false,//阅卷设置弹出框
         title: "",//弹窗的名称
-        delIdArr: []//删除数据
+        delIdArr: [],//删除数据
+        dialogAdd: true
     },
     created: function () {
         this.$nextTick(function () {
