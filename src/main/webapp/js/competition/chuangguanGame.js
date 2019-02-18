@@ -68,58 +68,137 @@ var vm = new Vue({
             //题目
             vm.Question = {};
 
-            $.ajax({
-                type: "POST",
-                url: baseURL + 'recruitConfiguration/findAll2',
-                dataType: "json",
-                async: false,
-                // data:{"id": row.id},
-                success: function (result) {
-                    if (result.code === 0) {
-                        console.info(result);
-                        vm.BigGuanList = result.data;
-                        //接下来我要给4个属性赋值
-                        //获得一共几大关
-                        // alert("一共"+result.data.length+"关");
-                        //一共几大关
-                        vm.allBignum = result.data.length;
-                        // alert("当前一进来肯定第一关，不用想");
-                        //现在第几大关
-                        vm.nowBignum = "1";
-                        // alert("当前第一关有"+result.data[0].recruitCheckpointConfigurationList.length+"小关");
-                        // 当前大关多少小关
-                        vm.allLitnum = result.data[0].recruitCheckpointConfigurationList.length;
-                        //当前第几小关
-                        // alert("当前一进来肯定第一关的第一小关，不用想");
-                        vm.nowLitnum = "1";
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
 
-            $.ajax({
-                type: "POST",
-                url: baseURL + 'recruitConfiguration/getQuest',
-                contentType: "application/json",
-                async: false,
-                data: JSON.stringify(vm.BigGuanList[0]),
-                success: function (result) {
+            var storage=window.sessionStorage;
+            var obj = storage.getItem("BigList");
+            var BigList = eval('(' + obj + ')');
 
-                    if (result.code === 0) {
-                        //将查到的所有题目交给了题目数组
-                        vm.QuestionList = result.data;
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
+
+            vm.BigGuanList = BigList;
+            //接下来我要给4个属性赋值
+            //获得一共几大关
+            // alert("一共"+result.data.length+"关");
+            //一共几大关
+            vm.allBignum = BigList.length;
+            // alert("当前一进来肯定第一关，不用想");
+            //现在第几大关
+            vm.nowBignum = "1";
+            // alert("当前第一关有"+result.data[0].recruitCheckpointConfigurationList.length+"小关");
+            // 当前大关多少小关
+            vm.allLitnum = BigList[0].recruitCheckpointConfigurationList.length;
+            //当前第几小关
+            // alert("当前一进来肯定第一关的第一小关，不用想");
+            vm.nowLitnum = "1";
+
+            var obj2 = storage.getItem("questionList");
+            var questionList = eval('(' + obj2 + ')');
+            vm.QuestionList = questionList;
+
+
+
+
+            // $.ajax({
+            //     type: "POST",
+            //     url: baseURL + 'recruitConfiguration/findAll2',
+            //     dataType: "json",
+            //     async: false,
+            //     // data:{"id": row.id},
+            //     success: function (result) {
+            //         if (result.code === 0) {
+            //             console.info(result);
+            //             vm.BigGuanList = result.data;
+            //             //接下来我要给4个属性赋值
+            //             //获得一共几大关
+            //             // alert("一共"+result.data.length+"关");
+            //             //一共几大关
+            //             vm.allBignum = result.data.length;
+            //             // alert("当前一进来肯定第一关，不用想");
+            //             //现在第几大关
+            //             vm.nowBignum = "1";
+            //             // alert("当前第一关有"+result.data[0].recruitCheckpointConfigurationList.length+"小关");
+            //             // 当前大关多少小关
+            //             vm.allLitnum = result.data[0].recruitCheckpointConfigurationList.length;
+            //             //当前第几小关
+            //             // alert("当前一进来肯定第一关的第一小关，不用想");
+            //             vm.nowLitnum = "1";
+            //         } else {
+            //             alert(result.msg);
+            //         }
+            //     }
+            // });
+
+            // $.ajax({
+            //     type: "POST",
+            //     url: baseURL + 'recruitConfiguration/getQuest',
+            //     contentType: "application/json",
+            //     async: false,
+            //     data: JSON.stringify(vm.BigGuanList[0]),
+            //     success: function (result) {
+            //
+            //         if (result.code === 0) {
+            //             //将查到的所有题目交给了题目数组
+            //             vm.QuestionList = result.data;
+            //         } else {
+            //             alert(result.msg);
+            //         }
+            //     }
+            // });
 
             vm.Question = vm.QuestionList[Number(vm.nowLitnum) - 1];//重题目集合中把题目取出来
 
 
         },
 
+        //跳大关 继续答题
+        toBiglevel: function () {
+
+
+
+
+            //先随便写写  去获取题目
+            vm.dialogerror = false;//关闭错误提示框
+            vm.dialogBegin = false;//关闭消息框
+            vm.dialogQuestion = true;//打开答题框
+            vm.radio_disabled = false;//让答题框可选
+            vm.dialogyes = false;//关闭回答正确提示框
+            vm.Score = getUrlParam('coinNum');
+            vm.answers = [];//答案集合制空
+            //题目集合
+            vm.QuestionList = [];
+            //题目
+            vm.Question = {};
+
+
+            var storage=window.sessionStorage;
+            var obj = storage.getItem("BigList");
+            var BigList = eval('(' + obj + ')');
+            vm.BigGuanList = BigList;
+            //接下来我要给4个属性赋值
+            //一共几大关
+            vm.allBignum = BigList.length;
+
+            // 当前大关多少小关
+            vm.allLitnum = BigList[0].recruitCheckpointConfigurationList.length;
+
+
+
+
+            var obj2 = storage.getItem("questionList2");
+            var questionList = eval('(' + obj2 + ')');
+            vm.QuestionList = questionList;
+
+            //一共几大关   不变
+            // vm.allBignum="1";
+            // //现在第几大关  进入下一大关了  要加一
+            vm.nowBignum = Number(getUrlParam('index'));
+            // // 当前大关多少小关  下表在上一行已经加了1了
+            vm.allLitnum = vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList.length;
+            // //当前第几小关
+            vm.nowLitnum = "1";
+
+
+            vm.Question = vm.QuestionList[Number(vm.nowLitnum) - 1];//重题目集合中把题目取出来
+        },
         thisSubmit: function (answerId) {
             var answer = answerId.split(',');
             console.info(answer);
@@ -169,13 +248,13 @@ var vm = new Vue({
 
                 //分数记录下去//答错了 也说明他进来过了  要有记录  分数只是 都是0   所得的关卡要减1才是 他实际答对的 关卡
                 vm.recordScore(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowLitnum) - 1].id, vm.nowBignum, vm.nowLitnum, '0');
-                vm.textmag = "很遗憾！答错了,闯关结束！是否继续";
+                vm.textmag = "很遗憾！答错了,闯关结束！";
             } else if (type == "over") {
                 console.info(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowLitnum) - 1].id);
                 //分数记录下去
                 vm.recordScore(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowLitnum) - 1].id, vm.nowBignum, vm.nowLitnum, vm.Score);
 
-                vm.textmag = "您已主动放弃！闯关结束，成绩为第" + vm.nowBignum + "大关的第" + vm.nowLitnum + "小关，获得积分为" + vm.Score + "是否,开启新一轮闯关";
+                vm.textmag = "您已主动放弃！闯关结束，成绩为第" + vm.nowBignum + "大关的第" + vm.nowLitnum + "小关，获得积分为" + vm.Score ;
             }
 
             vm.dialogQuestion = false;
@@ -218,8 +297,6 @@ var vm = new Vue({
             // alert("获得的积分"+vm.Score);
             vm.dialogyes = false;//继续答题
             vm.radio_disabled = false;//让答题框可选
-
-
             vm.answers = [];//答案集合制空
             // alert(vm.allBignum);
             // alert(vm.nowBignum);
@@ -260,38 +337,16 @@ var vm = new Vue({
                         vm.$alert("恭喜你，通过第" + vm.nowBignum + "大关，并获得大关通关奖励" + vm.BigGuanList[Number(vm.nowBignum) - 1].rewardScore + ",当前奖励积分" + vm.Score);
                     }
 
-                    // 开启新的一轮去查题目，并从新给4个属性赋值
-                    //还要提示积分什么的。
-                    $.ajax({
-                        type: "POST",
-                        url: baseURL + 'recruitConfiguration/getQuest',
-                        contentType: "application/json",
-                        async: false,
-                        data: JSON.stringify(vm.BigGuanList[Number(vm.nowBignum)]),
-                        success: function (result) {
-
-                            if (result.code === 0) {
-
-                                console.info(result);
-                                //将查到的所有题目交给了题目数组
-                                vm.QuestionList = result.data;
-                                console.info(vm.QuestionList);
-                            } else {
-                                alert(result.msg);
-                            }
-                        }
-                    });
-                    //一共几大关   不变
-                    // vm.allBignum="1";
-                    // //现在第几大关  进入下一大关了  要加一
-                    vm.nowBignum = Number(vm.nowBignum) + 1;
-                    // // 当前大关多少小关  下表在上一行已经加了1了
-                    vm.allLitnum = vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList.length;
-                    // //当前第几小关
-                    vm.nowLitnum = "1";
+                    setTimeout(function () {
+                        // 跳转闯关页面
+                        window.location.href =baseURL+"modules/competition/rushLevel.html?coinNum="+vm.Score+"&index="+(Number(vm.nowBignum)+Number(1));
+                    },3000)
+                    //把分数和第几关传过去
 
 
-                    vm.Question = vm.QuestionList[Number(vm.nowLitnum) - 1];//重题目集合中把题目取出来
+
+
+
 
                 } else if ((Number(vm.nowBignum) + 1) > Number(vm.allBignum)) {
                     // alert("闯关结束，你赢了");
@@ -348,7 +403,16 @@ var vm = new Vue({
         },
 
         reload: function () {
-            vm.dialogBegin = true;
+
+           if(getUrlParam('index')=='1')
+           {
+               vm.begin();
+           }
+           else
+           {
+               vm.toBiglevel();
+           }
+
         },
         dateFormat: function (row, column) {
             var daterc = arguments.length === 1 ? row + "" : row[column.property] + "";
