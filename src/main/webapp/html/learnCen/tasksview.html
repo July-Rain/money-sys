@@ -79,6 +79,7 @@
             <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
             <el-breadcrumb-item v-for="item in breadArr">{{item.name}}</el-breadcrumb-item>
         </el-breadcrumb>
+
         <el-row :gutter="24">
             <el-col :span="24">
                 <el-tabs type="border-card">
