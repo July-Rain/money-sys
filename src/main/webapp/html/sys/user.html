@@ -186,8 +186,8 @@
                         <el-input type="text" class="form-control" style="cursor:pointer;" v-model="teacher.orgName"
                                   @focus="deptShow" readonly="readonly" placeholder="所属部门"></el-input>
                     </el-form-item>
-                    <el-form-item label="角色：" prop="role">
-                        <el-select v-model="tmroles" placeholder="角色" multiple
+                    <el-form-item label="角色：" prop="tmroles">
+                        <el-select v-model="teacher.tmroles" placeholder="角色" multiple
                                    collapse-tags>
                             <el-option
                                     multiple
