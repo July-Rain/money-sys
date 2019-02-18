@@ -270,6 +270,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         if(UtilValidate.isEmpty(user.getPassword())){
             return  Result.error("密码不能为空");
         }
+        user.setCreateTime(new Date());
 
         String roles=user.getRoles();
         if(UtilValidate.isNotEmpty(roles)){

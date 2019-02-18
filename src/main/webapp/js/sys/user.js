@@ -42,6 +42,7 @@ var vm = new Vue({
             orgName:"",
             userPoliceId:"",
             roles:"",//角色
+            tmroles:[]
         },
         rules: {//表单验证规则
             userName: [
@@ -53,12 +54,11 @@ var vm = new Vue({
             userPoliceId: [
                 {required: true, message: '请输入警号', trigger: 'blur'},
             ],
-            role: [
-                {required: true, message: '请选择角色', trigger: 'blur'},
+            tmroles: [
+                { required: true, message: '请选择角色', trigger: 'change'}
             ],
         },
         roles:[],
-        tmroles:[],
     },
     created: function () {
         this.$nextTick(function () {
@@ -103,8 +103,9 @@ var vm = new Vue({
                     orgName:"",
                     userPoliceId:"",
                     roles:"",//角色
+                    tmroles:[]
             },
-                vm.tmroles=[];
+                vm.teacher.tmroles=[];
             vm.dialogtch=true;
             vm.handleRoles();
         },
@@ -114,9 +115,9 @@ var vm = new Vue({
             vm.teacher=row;
             vm.handleRoles();
             if(vm.teacher.roles){
-                vm.tmroles=vm.teacher.roles.split(",");
+                vm.teacher.tmroles=vm.teacher.roles.split(",");
             }else{
-                vm.tmroles=[];
+                vm.teacher.tmroles=[];
             }
 
         },
@@ -325,6 +326,7 @@ var vm = new Vue({
 
         //保存
         saveOrUpdate:function (formName) {
+            debugger
             this.$refs[formName].validate(function (valid) {
 
                     if (valid) {
@@ -332,7 +334,7 @@ var vm = new Vue({
                         var myuserPoliceId="";
                         var myuserCode="";
                         var rs="";
-                        vm.tmroles.map(function (item,index) {
+                        vm.teacher.tmroles.map(function (item,index) {
                             if(!(index==vm.roles.length-1  || index==0)){
                                 rs=rs+",";
                             }
@@ -410,6 +412,7 @@ var vm = new Vue({
                             success:function (result) {
                                 if(result.code==0){
                                     alert("成功");
+                                    vm.closeTchDia();
                                 }else{
                                     alert(result.msg);
                                 }
