@@ -1,31 +1,20 @@
 package com.lawschool.controller.exam;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.lawschool.form.CheckSetForm;
 import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
-import com.lawschool.service.DictService;
+import com.lawschool.service.system.DictionService;
 import com.lawschool.service.system.TopicTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.lawschool.base.Page;
-import com.lawschool.beans.SysConfig;
-import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.exam.ExamConfig;
-import com.lawschool.beans.exam.ExamQueConfig;
-import com.lawschool.beans.exam.ExamQuestions;
 import com.lawschool.service.exam.ExamConfigService;
-import com.lawschool.service.impl.exam.ExamConfigServiceImpl;
 import com.lawschool.util.Result;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @Title:ExamConfigController.java
@@ -41,7 +30,7 @@ public class ExamConfigController {
     private ExamConfigService examConfigService;
 
     @Autowired
-    private DictService dictService;
+    private DictionService dictionService;
 
     @Autowired
     private TopicTypeService topicTypeService;
@@ -91,25 +80,25 @@ public class ExamConfigController {
     @RequestMapping(value = "/dict", method = RequestMethod.GET)
     private Result dict() {
         //examType考试类型字典
-        List<CommonForm> etOption = dictService.findCodeByType("EXAM_TYPE");
+        List<CommonForm> etOption = dictionService.findCodeByType("EXAM_TYPE");
         //groupForm组卷方式字典
-        List<CommonForm> gfOption = dictService.findCodeByType("GROUP_FORM");
+        List<CommonForm> gfOption = dictionService.findCodeByType("GROUP_FORM");
         //isMustTest是否必考字典
-        List<CommonForm> imtOption = dictService.findCodeByType("IS_MUST_TEST");
+        List<CommonForm> imtOption = dictionService.findCodeByType("IS_MUST_TEST");
         //questionWay出题方式字典
-        List<CommonForm> qwOption = dictService.findCodeByType("QUESTION_WAY");
+        List<CommonForm> qwOption = dictionService.findCodeByType("QUESTION_WAY");
         //topicOrderType题目/选项顺序字典
-        List<CommonForm> otOption = dictService.findCodeByType("ORDER_TYPE");
+        List<CommonForm> otOption = dictionService.findCodeByType("ORDER_TYPE");
         //answerShowRule答案显示规则
-        List<CommonForm> asuOption = dictService.findCodeByType("ANSWER_SHOW_RULE");
+        List<CommonForm> asuOption = dictionService.findCodeByType("ANSWER_SHOW_RULE");
         //reachRewardType达标奖励类型
-        List<CommonForm> rrtOption = dictService.findCodeByType("REACH_REWARD_TYPE");
+        List<CommonForm> rrtOption = dictionService.findCodeByType("REACH_REWARD_TYPE");
         //checkType阅卷方式
-        List<CommonForm> ctOption = dictService.findCodeByType("CHECK_TYPE");
+        List<CommonForm> ctOption = dictionService.findCodeByType("CHECK_TYPE");
         //specilKnowledge专项知识
         List<CommonForm> skOption = topicTypeService.findAll(null);
         //题目类型
-        List<CommonForm> qtOption = dictService.findCodeByType("QUESTION_TYPE");
+        List<CommonForm> qtOption = dictionService.findCodeByType("QUESTION_TYPE");
         return Result.ok().put("etOption", etOption)
                 .put("gfOption", gfOption)
                 .put("imtOption", imtOption)

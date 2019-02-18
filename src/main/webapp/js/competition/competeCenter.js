@@ -82,7 +82,17 @@ var vm = new Vue({
             // }
         },
         toUrl: function (_url) {
-            window.location.href =baseURL+"modules/competition/"+ _url +".html";
+
+            if(_url=='rushLevel')
+            {
+                window.location.href =baseURL+"modules/competition/"+ _url +".html?coinNum=0&index=1";
+            }
+            else
+            {
+                    window.location.href =baseURL+"modules/competition/"+ _url +".html";
+
+            }
+
         }
     }
 });
