@@ -89,3 +89,28 @@ button{
 .el-radio__label{
     padding: 0;
 }
+
+.model_area {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    background-color: rgba(0,0,0,0.5);
+}
+.model_area .inner{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.model_area .inner img{
+    display: block;
+    width: 611px;
+    height: auto;
+}

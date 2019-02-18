@@ -13,6 +13,8 @@
             font-size: 30px;
             color: #57A8DC;
         }
+        video::-webkit-media-controls-enclosure{ overflow: hidden; }
+        video::-webkit-media-controls-panel{ width: calc(100% + 30px); }
     </style>
 </head>
 <body>
@@ -238,8 +240,8 @@
                                 <el-upload name="importfile" class="avatar-uploader el-upload--text"
                                            :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess"
                                            :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
-                                    <video v-if="stuMedia.comContent !='' && videoFlag == false"
-                                           :src="stuMedia.contentUrl" class="avatar" controls="controls">您的浏览器不支持视频播放
+                                    <video autoplay v-if="stuMedia.comContent !='' && videoFlag == false"
+                                           :src="stuMedia.contentUrl" class="avatar">您的浏览器不支持视频播放
                                     </video>
                                     <i v-else-if="stuMedia.comContent =='' && videoFlag == false"
                                        class="iconfont icon-shipin"></i>

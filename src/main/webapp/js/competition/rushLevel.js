@@ -101,13 +101,10 @@ var vm = new Vue({
             // if(index!=1){
             //     return
             // }
-            // this.moveClass = true;
-            // setTimeout(function () {
-            //     // 跳转闯关页面
-            // },1000)
-
-
-            window.location.href =baseURL+"modules/competition/chuangguanGame.html?index="+getUrlParam('index')+"&coinNum="+vm.coinNum;
+            this.moveClass = true;
+            setTimeout(function () {
+                window.location.href =baseURL+"modules/competition/chuangguanGame.html?index="+getUrlParam('index')+"&coinNum="+vm.coinNum;
+            },1000)
 
         }
     },
