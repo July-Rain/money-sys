@@ -100,6 +100,8 @@ var vm = new Vue({
             label: 'infoName'
         },//法律法规树默认数据
         breadArr:[],//面包屑数据
+        taskClassOption:[],//所属分类
+        policeclassOption:[],//所属警种
         // multipleClassSelection:[]//法律法规数据选择框
 
     },
@@ -150,6 +152,28 @@ var vm = new Vue({
                     }else{
                         alert(result.msg);
                     }
+                }
+            });
+            // 所属警种
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async:false,
+                data: {type:"POLICACLASS",Parentcode:"0"},
+                success: function (result) {
+                    vm.policeclassOption=result.dictlist;
+                }
+            });
+            // 所属分类
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async:false,
+                data: {type:"TASKCLASS",Parentcode:"0"},
+                success: function (result) {
+                    vm.taskClassOption=result.dictlist;
                 }
             });
             this.reload();
@@ -231,7 +255,7 @@ var vm = new Vue({
             this.getDept();
         },
         handleEdit: function (index, row) {
-            this.title = "修改学习任务";
+            this.title = "查看学习任务";
             this.dialogLearnTask = true;
             $.ajax({
                 type: "POST",

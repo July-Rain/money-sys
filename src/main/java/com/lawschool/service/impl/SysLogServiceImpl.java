@@ -60,6 +60,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogDao, SysLogEntity> impl
                 throw new RuntimeException();
             }
         }
+        ew.orderBy("create_date",false);
         Page<SysLogEntity> page = this.selectPage(
             new Query<SysLogEntity>(params).getPage(),ew);
 

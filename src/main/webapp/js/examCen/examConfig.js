@@ -349,7 +349,7 @@ var vm = new Vue({
                         success: function (result) {
                             if (result.code === 0) {
                                 alert('生成成功');
-                             //   window.location.reload = baseURL + "examCen/exam.html";
+                               window.location.reload = baseURL + "examCen/exam.html";
                             } else {
                                 alert(result.msg);
                             }

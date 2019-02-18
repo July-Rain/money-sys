@@ -79,24 +79,35 @@ var vm = new Vue({
         handleDel: function (index, row) {
             var arr = new Array();
             arr.push(row.id);
-            $.ajax({
-                type: "POST",
-                url: baseURL + "schoolYearPlan/delete",
-                contentType: "application/json",
-                data: JSON.stringify(arr),
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.$alert('操作成功', '提示', {
-                            confirmButtonText: '确定',
-                            callback: function () {
-                                vm.dialogFormVisible = false;
-                                vm.reload();
-                            }
-                        });
-                    } else {
-                        alert(result.msg);
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(function () {
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "schoolYearPlan/delete",
+                    contentType: "application/json",
+                    data: JSON.stringify(arr),
+                    success: function (result) {
+                        if (result.code === 0) {
+                            vm.$alert('操作成功', '提示', {
+                                confirmButtonText: '确定',
+                                callback: function () {
+                                    vm.dialogFormVisible = false;
+                                    vm.reload();
+                                }
+                            });
+                        } else {
+                            alert(result.msg);
+                        }
                     }
-                }
+                });
+            }).catch(function () {
+                vm.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
             });
         },
 
