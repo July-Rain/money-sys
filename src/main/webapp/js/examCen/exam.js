@@ -6,9 +6,9 @@ var vm = new Vue({
         labelPosition: 'left',
         navData: [],//导航
         formInline: { // 搜索表单
-            value: '',
-            name: '',
-            status: "",
+            examName :'',
+            startTime:'',
+            endTime:'',
             pageNo: 1,
             pageSize: 1,
             limit: 10,
@@ -39,7 +39,8 @@ var vm = new Vue({
         dialogConfig: false,//table弹出框可见性
         checkSettingDia: false,//阅卷设置弹出框
         title: "",//弹窗的名称
-        delIdArr: []//删除数据
+        delIdArr: [],//删除数据
+        dialogAdd: true
     },
     created: function () {
         this.$nextTick(function () {
@@ -74,6 +75,10 @@ var vm = new Vue({
         },
         addConfig: function () {
             parent.location.href = baseURL + "modules/examCen/examConfig.html";
+        },
+        resetForm: function (formName) {
+            alert(formName);
+            this.$refs[formName].resetFields();
         },
         handleEdit: function (index, row) {
             this.title = "修改参数";

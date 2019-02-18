@@ -15,6 +15,11 @@
         <!-- 登陆成功后的一面 -->
         <property name="successUrl" value="/main.html"/>
         <property name="unauthorizedUrl" value="/index.html"/>
+        <property name="filters">
+            <map>
+                <entry key="logout" value-ref="logoutFilter"/>
+            </map>
+        </property>
         <!-- 具体配置需要拦截哪些 URL, 以及访问对应的 URL 时使用 Shiro 的什么 Filter 进行拦截.  -->
         <property name="filterChainDefinitions">
             <value>
@@ -23,6 +28,8 @@
                 /statics/**=anon
                 /sys/login=anon
                 /main.html=anon
+                <!-- 请求logout.action地址，shiro去清除session -->
+                /logout=logout
                 /**=authc
             </value>
         </property>
@@ -79,6 +86,11 @@
 
     <bean id="authorizationAttributeSourceAdvisor" class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
         <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <!--自定义LogoutFilter,退出-->
+    <bean id="logoutFilter" class="com.lawschool.filter.SystemLogoutFilter">
+        <property name="redirectUrl" value="/index.html"/>
     </bean>
 
 </beans>

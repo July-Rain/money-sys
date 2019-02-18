@@ -39,10 +39,14 @@ var vm = new Vue({
                 = 'modules/exerciseCenter/task_paper.html?id='+id+'&taskId='+taskId;
         },
         toHome: function () {
-            parent.location.reload()
+            parent.location.reload();
         },
         indexMethod: function (index) {
             return index + 1 + (vm.formInline.page-1) * vm.formInline.limit;
+        },
+        review: function (id, taskId) {
+            // 错题回顾
+
         }
     },
     created: function () {

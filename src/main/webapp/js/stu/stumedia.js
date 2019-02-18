@@ -385,7 +385,7 @@ var vm = new Vue({
         },
         uploadVideoProcess(event, file, fileList){
             this.videoFlag = true;
-            this.videoUploadPercent = file.percentage.toFixed(2);
+            this.videoUploadPercent = parseInt(file.percentage.toFixed(2));
         },
 
         changeStuType: function () {

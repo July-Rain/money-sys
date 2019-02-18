@@ -3,6 +3,7 @@ package com.lawschool.dao.practicecenter;
 import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.practicecenter.ExerciseEntity;
 import com.lawschool.form.AnalysisForm;
+import com.lawschool.form.QuestForm;
 import com.lawschool.form.RandomExerciseForm;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,4 +27,13 @@ public interface ExerciseDao extends AbstractDao<ExerciseEntity> {
     void updateAnswerRecord(ExerciseEntity entity);
 
     List<Map<String, String>> analysis(@Param("month") String month, @Param("userId") String userId);
+
+    List<QuestForm> getQuestions(@Param("list") List<String> ids,
+                                 @Param("id") String id,
+                                 @Param("userId") String userId);
+
+    boolean updateNum(@Param("answerNum") Integer answerNum,
+                      @Param("rightNum") Integer rightNum,
+                      @Param("id") String id);
+
 }

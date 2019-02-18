@@ -224,6 +224,17 @@
         AUDIT_CHECK_PASS
         FROM
             LAW_EXAM_CONFIG
+            where 1=1
+              <if test="examName != null and examName != '' ">
+               and EXAM_NAME like  concat(concat('%',#{examName}),'%')
+              </if>
+              <if test="startTime != null  ">
+                <![CDATA[   and start_Time >=  #{startTime}  ]]>
+              </if>
+              <if test="endTime != null  ">
+                <![CDATA[   and end_Time >= #{endTime}  ]]>
+              </if>
+
 	</select>
 
   <!--查询所需要的问题字段-->

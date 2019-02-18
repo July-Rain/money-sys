@@ -1,5 +1,6 @@
 package com.lawschool.service.exam;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -22,8 +23,6 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface ExamConfigService extends AbstractService<ExamConfig> {
 
-    PageUtils queryPage(Map<String, Object> params);
-
     List<QuestForm> preview(ExamConfig examConfig) throws Exception;
 
     void generate(ExamConfig examConfig) throws Exception;
@@ -36,4 +35,6 @@ public interface ExamConfigService extends AbstractService<ExamConfig> {
 
     ExamConfig findByCheckPassword( String checkPassword,
                                     String checkUserType);
+
+    Result getExamList(Map<String, Object> params)  throws ParseException;
 }

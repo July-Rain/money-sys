@@ -174,9 +174,10 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 		if(CollectionUtils.isEmpty(answerForms)){
 			return resultMap;
 		}
+
 		resultList = testQuestionService.handleAnswers(resultList, answerForms);
-		resultMap.put("list", resultList);
 		resultMap.put("count", total);
+		resultMap.put("list", resultList);
 		resultMap.put("pageCount", pageResult[3]);
 		resultMap.put("typeName", entity.getTypeName());
 

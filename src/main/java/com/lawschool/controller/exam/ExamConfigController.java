@@ -1,5 +1,6 @@
 package com.lawschool.controller.exam;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,9 +48,13 @@ public class ExamConfigController {
 
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params) {
-        ExamConfig entity = new ExamConfig();
-        Page<ExamConfig> page = examConfigService.findPage(new Page<ExamConfig>(params), entity);
-        return Result.ok().put("page", page);
+        Result result;
+        try {
+            result = examConfigService.getExamList(params);
+        } catch (ParseException e) {
+            return Result.error(e.getMessage());
+        }
+        return result;
     }
 
     @RequestMapping(value = "/examConfig/preview", method = RequestMethod.POST)
@@ -68,14 +73,12 @@ public class ExamConfigController {
     private Result examConfigGen(
             @RequestBody ExamConfig examConfig) {
 
-        Result res = new Result();
         try {
             examConfigService.generate(examConfig);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            return Result.error(e.getMessage());
         }
-        return res;
+        return Result.ok();
     }
 
     @RequestMapping(value = "/checkset", method = RequestMethod.POST)

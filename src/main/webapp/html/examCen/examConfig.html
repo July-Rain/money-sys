@@ -28,6 +28,9 @@
             width: 20%;
             padding: 50px 0 0 30px;
         }
+        .hide{
+            visibility: hidden;
+        }
     </style>
 </head>
 <body>
@@ -130,6 +133,7 @@
                                     v-model="examConfig.startTime"
                                     type="datetime"
                                     placeholder="选择考试开始时间"
+                                    value-format = "yyyy-MM-dd HH:mm:ss"
                                     style="width: auto">
                             </el-date-picker>
                         </el-form-item>
@@ -139,6 +143,7 @@
                             <el-date-picker
                                     v-model="examConfig.endTime"
                                     type="datetime"
+                                    value-format = "yyyy-MM-dd HH:mm:ss"
                                     placeholder="选择考试结束时间"
                                     style="width: auto">
                             </el-date-picker>
@@ -169,7 +174,8 @@
                     <el-col :span="11">
                         <el-form-item label="考试总分：" prop="examScore">
                             <template>
-                                <el-input-number v-model="examConfig.examScore" :min="1" :max="1000" label="请输入考试时长">
+                                <el-input-number v-model="examConfig.examScore"
+                                                 :min="1" :max="1000" label="请输入考试总分" @change="getPassPnt()">
                                 </el-input-number>分
                             </template>
                         </el-form-item>
@@ -177,7 +183,8 @@
                     <el-col :span="11">
                         <el-form-item label="达标线：" prop="passPnt">
                             <template>
-                                <el-input-number v-model="examConfig.passPnt" :min="1" :max="1000" label="请输入考试时长">
+                                <el-input-number v-model="examConfig.passPnt" :min="1"
+                                                 :max="1000" label="请输入达标线">
                                 </el-input-number>分
                             </template>
                         </el-form-item>
@@ -196,37 +203,18 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
-                        <el-form-item label="奖励分数：" prop="reachReward">
+                    <el-col :span="11" >
+                        <el-form-item label="奖励分数：" prop="reachReward"
+                                      :class="examConfig.reachRewardType!='10038'&&examConfig.reachRewardType!=''?'':'hide'">
                             <template>
                                 <el-input-number v-model="examConfig.reachReward"  :min="0" :max="1000" label="请输入">
                                 </el-input-number>分
                             </template>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="24">
                         <el-form-item label="组考单位：" prop="organizedOrgCode">
                             <el-input v-model="examConfig.organizedOrgCode" readonly @focus="chooseOrgDept" placeholder="请选择使用部门" clearable></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11">
-                        <el-form-item label="阅卷方式：" prop="checkType">
-                            <el-select v-model="examConfig.checkType"
-                                       collapse-tags
-                                       style="width: auto"
-                                       placeholder="请选择阅卷方式" size="mini">
-                                <el-option v-for="item in ctOption"
-                                           :key="item.key"
-                                           :label="item.value"
-                                           :value="item.key">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="24">
-                        <el-form-item label="状态" prop="status">
-                            <el-switch v-model="examConfig.status" active-text="有效" inactive-text="无效" active-value="1"
-                                       inactive-value="0"></el-switch>
                         </el-form-item>
                     </el-col>
                     <el-col :span="11">
@@ -240,13 +228,19 @@
                     </el-form-item>
                     </el-col>
                     <el-col :span="24">
+                        <el-form-item label="状态" prop="status">
+                            <el-switch v-model="examConfig.status" active-text="无效" inactive-text="有效" active-value="1"
+                                       inactive-value="0"></el-switch>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="24">
                         <el-form-item label="备注" prop="remark">
                             <el-input type="textarea" maxlength="200" v-model="examConfig.remark"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">
                         <el-form-item>
-                            <el-button type="primary" @click="preview('testPaper')">预览</el-button>
+                            <el-button type="primary" @click="preview('examConfig')">预览</el-button>
                             <el-button type="primary" @click="generate('examConfig')">生成</el-button>
                         </el-form-item>
 
@@ -255,8 +249,6 @@
             </el-form>
         <el-dialog :title="title" width="80%" :visible.sync="randomQuesModal" :before-close="closeDia">
             <template>
-                <!--<div class="main">-->
-
                     <el-button type="primary" @click="handleAdd" size="mini">新增</el-button>
                     <el-button type="danger" @click="handleDelete(dataListSelections)"
                                :disabled="dataListSelections.length <= 0" size="mini">批量删除
@@ -338,15 +330,6 @@
         </el-dialog>
 
         <el-dialog title="自主出题" :visible.sync="autonomyQuesModal" :before-close="closeDia">
-            <!--<el-transfer-->
-                    <!--filterable-->
-                    <!--:filter-method="filterMethod"-->
-                    <!--filter-placeholder="请输入拼音"-->
-                    <!--v-model="value2"-->
-                    <!--:data="data2"-->
-                    <!--:titles="titleArr"-->
-                    <!--target-order="push">-->
-            <!--</el-transfer>-->
             <el-transfer v-model="value2" :data="data2" @change="getTestQue"></el-transfer>
             <el-button type="primary" size="mini" @click="mineQueSave">保存</el-button>
             <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
@@ -366,7 +349,7 @@
             >
             </el-tree>
             <el-button type="primary" size="mini" @click="saveCompany">保存</el-button>
-            <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
+            <el-button type="primary" size="mini" @click="cancelCompany">取消</el-button>
         </el-dialog>
         <el-dialog title="选择部门" :visible.sync="dialogDept" >
             <!--对于同一级的节点，每次只能展开一个-->
@@ -482,8 +465,7 @@
                 <el-radio-group v-model="answers"
                                 v-if="item.questionType==10004 || item.questionType==6"
                                 :disabled="radio_disabled">
-                    <el-radio :label="item2.id" v-for="item2 in item.answer"
-                              @change="radioCheck(item.id, item.answerId, item.questionType)">
+                    <el-radio :label="item2.id" v-for="item2 in item.answer">
                         {{item2.questionContent}}
                     </el-radio>
                     <br/>

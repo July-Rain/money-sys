@@ -14,6 +14,11 @@ public class RandomExerciseForm {
     private String type;// 试题类型
     private String topic;// 专项知识库ID
 
+    private String diffName;
+    private String className;
+    private String typeName;
+    private String topicName;
+
     private String userId;// 用户
 
     private String id;
@@ -73,5 +78,37 @@ public class RandomExerciseForm {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getDiffName() {
+        return diffName;
+    }
+
+    public void setDiffName(String diffName) {
+        this.diffName = diffName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getTopicName() {
+        return topicName;
+    }
+
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
     }
 }

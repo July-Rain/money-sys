@@ -1,10 +1,8 @@
 package com.lawschool.service.impl.exam;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
-import com.lawschool.beans.TestQuestions;
+import com.lawschool.base.Page;
 import com.lawschool.beans.auth.AuthRelationBean;
 import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.beans.exam.ExamDetail;
@@ -14,9 +12,7 @@ import com.lawschool.dao.exam.ExamConfigDao;
 import com.lawschool.dao.exam.ExamDetailDao;
 import com.lawschool.dao.exam.ExamQueConfigDao;
 import com.lawschool.dao.exam.ExamQuestionsDao;
-import com.lawschool.form.AnswerForm;
-import com.lawschool.form.CheckSetForm;
-import com.lawschool.form.QuestForm;
+import com.lawschool.form.*;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.auth.AuthRelationService;
@@ -26,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -52,37 +50,6 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 
 	@Autowired
 	private  AnswerService answerService;
-	/**
-	 * 查询试卷列表
-	 */
-	@Override
-	public PageUtils queryPage(Map<String, Object> params) {
-		String key = (String) params.get("key");
-		EntityWrapper<ExamConfig> ew = new EntityWrapper<>();
-
-		if (UtilValidate.isNotEmpty(key)) {
-			key = "%" + key + "%";
-			ew.addFilter("add_user like {0}", key);
-		}
-		Page<ExamConfig> page = this.selectPage(new Query<ExamConfig>(params).getPage(), ew);
-
-		return new PageUtils(page);
-	}
-
-	/**
-	 * 查询此用户所有考试信息
-	 * @param userCode
-	 * @param orgCode
-	 * @return
-	 */
-	public List<ExamConfig> findByUser(String userCode, String orgCode) {
-		// 先查
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("userCode", userCode);
-		param.put("orgCode", orgCode);
-		List<ExamConfig> list = examConfigDao.findByUser(param);
-		return list;
-	}
 
 	/**
 	 * 删除考试配置
@@ -167,12 +134,12 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 						saveExamQueConfig(examConfig.getId(),examQueConfig);
 						//根据考试配置获取题目ID
 						List<String> idLists = getIdList(examQueConfig);
-						saveExamQueByIdList(idLists,examConfig.getId(),examDetail.getId());
+						saveExamQueByIdList(idLists,examConfig.getId(),examDetail.getId(),examQueConfig.getQuestionScore()/examQueList.size());
 					}
 				}else{
 					//自主出题，直接获取试题ID存
-					List<String> idList = examConfig.getIdList();
-					saveExamQueByIdList(idList,examConfig.getId(),examDetail.getId());
+					List<CommonForm> commonForms = examConfig.getCommonForms();
+					saveExamQueByComm(commonForms,examConfig.getId(),examDetail.getId());
 				}
 			}
 		}else{
@@ -245,15 +212,6 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 		//删除权限关联表
 		authService.delete(new EntityWrapper<AuthRelationBean>().eq("FUNCTION_ID", id));
 
-	}
-
-	/**
-	 * 生成阅卷指令
-	 * @return
-	 */
-	public String generatePassword() {
-		String readPassword = GetUUID.getUUIDs("YJ");
-		return readPassword;
 	}
 
 	/**
@@ -335,18 +293,37 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	}
 
 	/**
-	 * 根据试题编号保存试题信息
+	 * 根据试题编号保存试题信息,随机出题
 	 * @param idLists
 	 * @param examConfigId
 	 * @param examDetailId
 	 */
-	private void saveExamQueByIdList(List<String> idLists,String examConfigId,String examDetailId){
+	private void saveExamQueByIdList(List<String> idLists,String examConfigId,String examDetailId,float score){
 		for (String tqId : idLists){
 			ExamQuestions examQuestions = new ExamQuestions();
 			examQuestions.setExamConfigId(examConfigId);
 			examQuestions.setId(GetUUID.getUUIDs("EQ"));
 			examQuestions.setExamDetailId(examDetailId);
 			examQuestions.setExamLibraryId(tqId);
+			examQuestions.setScore(score);
+			examQuestionsDao.insert(examQuestions);
+		}
+	}
+
+	/**
+	 * 根据试题编号保存试题信息,自主出题
+	 * @param commonForms
+	 * @param examConfigId
+	 * @param examDetailId
+	 */
+	private void saveExamQueByComm(List<CommonForm> commonForms,String examConfigId,String examDetailId){
+		for (CommonForm commonForm : commonForms){
+			ExamQuestions examQuestions = new ExamQuestions();
+			examQuestions.setExamConfigId(examConfigId);
+			examQuestions.setId(GetUUID.getUUIDs("EQ"));
+			examQuestions.setExamDetailId(examDetailId);
+			examQuestions.setExamLibraryId(commonForm.getKey());
+			examQuestions.setScore(Float.parseFloat(commonForm.getValue()));
 			examQuestionsDao.insert(examQuestions);
 		}
 	}
@@ -367,7 +344,7 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 				// 根据配置从题库中获取
 				//根据考试配置获取题目ID
 				List<String> idLists = getIdList(examQueConfig);
-				saveExamQueByIdList(idLists,examConfigId,ed.getId());
+				saveExamQueByIdList(idLists,examConfigId,ed.getId(),examQueConfig.getQuestionScore()/examQueList.size());
 			}
 		}
 	}
@@ -408,5 +385,33 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	@Override
 	public ExamConfig findByCheckPassword(String checkPassword, String checkUserType) {
 		return dao.findByCheckPassword(checkPassword,checkUserType);
+	}
+
+	/**
+	 * 获取考试列表
+	 * @param params
+	 * @return
+	 */
+	@Override
+	public Result getExamList(Map<String, Object> params) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		ExamConfig examConfig = new ExamConfig();
+		if(UtilValidate.isNotEmpty(params.get("status"))){
+	//		examConfig.s
+		}
+		if(UtilValidate.isNotEmpty(params.get("examName"))){
+			examConfig.setExamName(params.get("examName").toString());
+		}
+		if(UtilValidate.isNotEmpty(params.get("startTime"))){
+			examConfig.setStartTime( sdf.parse(params.get("startTime").toString()));
+		}
+		if(UtilValidate.isNotEmpty(params.get("endTime"))){
+			examConfig.setEndTime(sdf.parse(params.get("endTime").toString()));
+		}
+		String orderBy = " IS_MUST_TEST, start_time ";
+		params.put("orderBy",orderBy);
+		Page<ExamConfig> examConfigPage = findPage(new Page<ExamConfig>(params),examConfig);
+
+		return Result.ok().put("page",examConfigPage);
 	}
 }

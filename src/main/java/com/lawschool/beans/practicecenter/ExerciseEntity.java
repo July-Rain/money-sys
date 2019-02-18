@@ -5,7 +5,7 @@ import com.lawschool.base.DataEntity;
 
 /**
  * @version V1.0
- * @Description: 练习任务Entity
+ * @Description: 随机练习任务Entity
  * @author: 中石电子科技 徐祥
  * @date: 2018-12-07 15:24
  */
@@ -20,6 +20,11 @@ public class ExerciseEntity extends DataEntity<ExerciseEntity>{
     private String classify;// 试题分类
     private String type;// 试题类型
     private String topicType;// 主题类型
+
+    private String diffName;// 难度名称
+    private String className;// 分类名称
+    private String typeName;// 类型名称
+    private String topicName;// 主题名称
 
     public Integer getAnswerNum() {
         return answerNum;
@@ -67,5 +72,37 @@ public class ExerciseEntity extends DataEntity<ExerciseEntity>{
 
     public void setTopicType(String topicType) {
         this.topicType = topicType;
+    }
+
+    public String getDiffName() {
+        return diffName;
+    }
+
+    public void setDiffName(String diffName) {
+        this.diffName = diffName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getTopicName() {
+        return topicName;
+    }
+
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
     }
 }

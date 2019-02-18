@@ -74,7 +74,7 @@ var vm = new Vue({
                 vm.navData.splice(-1,1);
             }
             if(item.name == "退出"){
-                window.location.href = baseURL + '/index.html'
+                window.location.href = baseURL + 'logout'
             }
             if (item.url) {
                 if(item.url.indexOf("?") == -1){

@@ -17,18 +17,30 @@
             <div class="card_contain">
                 <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                    <el-form-item prop="code" label="参数编码：">
-                        <el-input v-model="formInline.code" placeholder="参数编码" size="mini"></el-input>
+                    <el-form-item prop="examName" label="考试名称：">
+                        <el-input v-model="formInline.examName" placeholder="考试名称" size="mini"></el-input>
                     </el-form-item>
-                    <el-form-item prop="value" label="参数值：">
-                        <el-input v-model="formInline.value" placeholder="参数值" size="mini"></el-input>
+                    <el-form-item label="开始日期" prop="startTime">
+                        <el-date-picker
+                                v-model="formInline.startTime"
+                                type="date"
+                                format="yyyy年MM月dd日"
+                                value-format="yyyy-MM-dd"
+                                placeholder="开始时间"
+                                size="mini"
+                        >
+                        </el-date-picker>
                     </el-form-item>
-
-                    <el-form-item prop="status" label="状态：">
-                        <el-select v-model="formInline.status" placeholder="状态" size="mini">
-                            <el-option label="有效" value="1"></el-option>
-                            <el-option label="无效" value="0"></el-option>
-                        </el-select>
+                    <el-form-item label="结束日期" prop="endTime">
+                        <el-date-picker
+                                v-model="formInline.endTime"
+                                type="date"
+                                format="yyyy年MM月dd日"
+                                value-format="yyyy-MM-dd"
+                                placeholder="结束时间"
+                                size="mini"
+                        >
+                        </el-date-picker>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit" size="mini">
@@ -138,6 +150,8 @@
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="formInline.totalCount">
             </el-pagination>
+
+
         </div>
     </div>
     </el-tab-pane>
@@ -195,6 +209,9 @@
                 </el-col>
             </el-row>
         </el-form>
+    </el-dialog>
+    <el-dialog title="新增考试" :visible.sync="dialogAdd">
+        <iframe src="examConfig.html" frameborder="0"></iframe>
     </el-dialog>
 </div>
 </div>

@@ -290,8 +290,8 @@ var vm = new Vue({
             yearPlan:{
                 credit : 0,//目标学分
                 integral : 0,//目标积分
-                credited : 0,//学分
-                integraled : 0//积分
+                credited: 0,
+                integraled: 0
             },
             playTime:0,//播放时间
             oldTime:0,//原来播放时间
@@ -1032,10 +1032,18 @@ var vm = new Vue({
     },
     computed: {
         integralPer: function(){
-            return this.yearPlan.integraled/this.yearPlan.integral*100||0
+            // alert(this.yearPlan.integraled/this.yearPlan.integral*100||0)
+            if(this.yearPlan.integral){
+                return this.yearPlan.integraled/this.yearPlan.integral*100||0
+            }
+
         },
         creditPer: function () {
-            return this.yearPlan.credited/this.yearPlan.credit*100||0
+            // alert(this.yearPlan.credited/this.yearPlan.credit*100||0)
+            if(this.yearPlan.credit){
+                return this.yearPlan.credited/this.yearPlan.credit*100||0
+            }
+
         }
     }
 });
