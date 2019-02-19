@@ -35,5 +35,5 @@ public interface ExamConfigDao extends AbstractDao<ExamConfig>{
 
 	    void checkset(CheckSetForm checkSetForm);
 
-
+		CheckSetForm getCheckSetting(String id);
 }

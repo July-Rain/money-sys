@@ -2,6 +2,7 @@ package com.lawschool.service.impl.exam;
 
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.base.Page;
+import com.lawschool.beans.Answer;
 import com.lawschool.beans.User;
 import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.beans.exam.UserExam;
@@ -337,7 +338,13 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
                     List<AnswerForm> answerFormList = answerService.findAnsById(ansIdList);
                     questForm.setAnswer(answerFormList);
                 }
-                questForm.setRightAnsCon(answerService.findOne(userExamAnswer.getRightAnsId()).getQuestionContent());
+                Answer answer = new Answer();
+                if(userExamAnswer.getRightAnsId()!=null&&!"".equals(userExamAnswer.getRightAnsId())){
+                    answer = answerService.selectById(userExamAnswer.getRightAnsId());
+                }
+                if (UtilValidate.isNotEmpty(answer)){
+                    questForm.setRightAnsCon(answer.getQuestionContent());
+                }
                 questForm.setUserAnswer(userExamAnswer.getUserAnsId());
                 questForm.setQuestionId(userExamAnswer.getId());
                 questFormList.add(questForm);

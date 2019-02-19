@@ -62,6 +62,9 @@ public class CheckExamUserServiceImpl extends AbstractServiceImpl<CheckExamUserD
     @Autowired
     private UserExamFormService userExamFormService;
 
+    @Autowired
+    private ExamConfigService examConfigService;
+
     @Override
     public Result login(CheckExamUser checkUser) {
 
@@ -215,7 +218,21 @@ public class CheckExamUserServiceImpl extends AbstractServiceImpl<CheckExamUserD
     public Result list(Map<String, Object> params) {
 
         CheckUserExamForm checkUserExamForm = new CheckUserExamForm();
-        checkUserExamForm.setList(checkExamDao.getUserExamIdByCheckUserId(params.get("checkExamUserId").toString()));
+        //获取
+        CheckExamUser checkExamUser = dao.selectById(params.get("checkExamUserId").toString());
+
+        ExamConfig examConfig = examConfigService.selectById(checkExamUser.getExamConfigId());
+
+        if("1".equals(checkExamUser.getCheckUserType())){
+            //审核人员
+            //List<String> list =
+            checkUserExamForm.setList(new ArrayList<>());
+        }else {
+            //普通阅卷人员
+            checkUserExamForm.setList(checkExamDao.getUserExamIdByCheckUserId(params.get("checkExamUserId").toString()));
+        }
+
+
         if(params.get("checkStatus")!=null){
             checkUserExamForm.setCheckStatus(params.get("checkStatus").toString());
         }

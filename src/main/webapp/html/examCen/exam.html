@@ -67,6 +67,13 @@
                     border
                     style="width: 100%">
                 <el-table-column
+                        type="index"
+                        label="序号"
+                        width="100"
+                        header-align="center"
+                        align="center">
+                </el-table-column>
+                <el-table-column
                         prop="examName"
                         label="试卷名称"
                         align="center"
@@ -109,7 +116,7 @@
                                 content="查看">
                             <i class="iconfont icon-chakan tabIcon"
                                slot="reference"
-                               @click="handleEdit(scope.$index, scope.row)"
+                               @click="handleInfo(scope.$index, scope.row)"
                                style="color: #1381e3;font-size: 12px;">
                             </i>
                         </el-popover>
@@ -210,7 +217,67 @@
             </el-row>
         </el-form>
     </el-dialog>
-    <el-dialog title="新增考试" :visible.sync="dialogAdd" width="1200px">
+    <el-dialog title="查看阅卷信息" :visible.sync="viewCheckSettingDia" :before-close="closeViewCheckSettingDia">
+        <el-form :model="checkSetting" :rules="checkSettingRules" ref="checkSetting" label-width="150px"
+                 class="demo-examConfig"
+                 size="mini" :label-position="labelPosition">
+            <el-row>
+                <el-col :span="24">
+                    <el-form-item label="阅卷人数：" prop="checkNum">
+                        <el-input-number size="medium" v-model="checkSetting.checkNum" placeholder="请输入阅卷人数" :min="0"
+                                         :max="1000" :disabled="true"
+                        ></el-input-number>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="每套试卷阅卷人数：" prop="paperPerSetNum">
+                        <el-select v-model="checkSetting.paperPerSetNum"
+                                   collapse-tags
+                                   style="width: auto"
+                                   placeholder="请选择每套试卷阅卷人数" size="medium" :disabled="true">
+                            <el-option label="1人" value="1"></el-option>
+                            <el-option label="2人" value="2"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24" v-if="checkSetting.paperPerSetNum == 2">
+                    <el-form-item label="是否需要审核人员：" prop="isAibitration">
+                        <el-select v-model="checkSetting.isAibitration"
+                                   collapse-tags
+                                   style="width: auto"
+                                   placeholder="请选择是否需要审核人员" size="medium" :disabled="true">
+                            <el-option label="是" value="0"></el-option>
+                            <el-option label="否" value="1"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24" v-if="checkSetting.isAibitration == 0">
+                    <el-form-item label="审核分差值：" prop="checkScoreDifference">
+                        <el-input-number size="medium" v-model="checkSetting.checkScoreDifference"
+                                         placeholder="请输入审核分差值" :min="0" :max="1000" :disabled="true"
+                        ></el-input-number>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="阅卷口令：" prop="checkScoreDifference">
+                        <el-input  v-model="checkSetting.checkPassword" :disabled="true"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="审核人员阅卷口令：" prop="checkScoreDifference">
+                        <el-input  v-model="checkSetting.auditCheckPass" :disabled="true"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </el-form>
+    </el-dialog>
+    <el-dialog title="新增考试配置" :visible.sync="dialogAdd" width="1200px">
+        <iframe src="examConfig.html" frameborder="0" width="100%" height="600px"></iframe>
+    </el-dialog>
+    <el-dialog title="查看考试配置" :visible.sync="dialogView" width="1200px">
+        <iframe src="examConfig.html" frameborder="0" width="100%" height="600px"></iframe>
+    </el-dialog>
+    <el-dialog title="修改考试配置" :visible.sync="dialogEdit" width="1200px">
         <iframe src="examConfig.html" frameborder="0" width="100%" height="600px"></iframe>
     </el-dialog>
 </div>
