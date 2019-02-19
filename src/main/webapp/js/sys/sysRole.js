@@ -123,10 +123,7 @@ var vm = new Vue({
                 });
 
             }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
+
             });
         },
 
