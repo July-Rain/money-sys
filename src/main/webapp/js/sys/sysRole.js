@@ -63,6 +63,7 @@ var vm = new Vue({
             };
             vm.title =  '新增角色';
             vm.dialogFormVisible = true;
+            vm.isEdit = false;
         },
         handleWatch: function (index, row) {
             vm.isEdit = true;
@@ -84,6 +85,7 @@ var vm = new Vue({
         },
         handleEdit: function (index, row) {
             vm.title = '编辑';
+            vm.isEdit = false;
             var that = this;
             $.ajax({
                 type: "GET",
@@ -190,9 +192,8 @@ var vm = new Vue({
             return index + 1 + (vm.inline.page-1) * vm.inline.limit;
         },
         closeDia: function () {
-            vm.title = '新增';
             vm.dialogFormVisible = false;
-            vm.isEdit = false;
+            vm.title = '新增';
             vm.$refs.tree1.setCheckedKeys([]);
             vm.$refs.tree2.setCheckedKeys([]);
         }
