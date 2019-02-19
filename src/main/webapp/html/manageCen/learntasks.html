@@ -120,7 +120,7 @@
                                     <!--</el-select>-->
                                 <!--</el-form-item>-->
                                 <el-form-item label="所属分类：" prop="taskClass">
-                                    <el-select size="mini" v-model="formInline.taskClass" placeholder="所属分类">
+                                    <el-select size="mini" v-model="formInline.taskClass" placeholder="所属分类" clearable>
                                         <el-option
                                                 v-for="item in taskClassOption"
                                                 :key="item.key"
@@ -336,7 +336,7 @@
                         <!--</el-select>-->
                     <!--</el-form-item>-->
                     <el-form-item label="所属分类：" prop="taskClass">
-                        <el-select v-model="learnTasks.taskClass" placeholder="所属分类">
+                        <el-select v-model="learnTasks.taskClass" placeholder="所属分类" clearable>
                             <el-option
                                     v-for="item in taskClassOption"
                                     :key="item.key"
