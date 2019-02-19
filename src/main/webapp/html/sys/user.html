@@ -196,7 +196,7 @@
                         <el-input v-model="teacher.userPoliceId" placeholder="请输入警号" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="所属警种：" prop="policeclass">
-                        <el-select v-model="teacher.policeclass" placeholder="所属警种">
+                        <el-select v-model="teacher.policeclass" placeholder="所属警种" clearable>
                             <el-option
                                     v-for="item in policeclassOption"
                                     :key="item.key"

@@ -14,6 +14,7 @@ import com.lawschool.beans.learn.TasksUserEntity;
 import com.lawschool.dao.StuMediaDao;
 import com.lawschool.dao.learn.LearnTasksDao;
 import com.lawschool.service.StuMediaService;
+import com.lawschool.service.UserService;
 import com.lawschool.service.auth.AuthRelationService;
 import com.lawschool.service.law.CaseAnalysisService;
 import com.lawschool.service.law.ClassifyDesicService;
@@ -70,6 +71,9 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
 
     @Autowired
     private TasksUserService tasksUserService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -175,14 +179,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         if(UtilValidate.isNotEmpty(endTime)){
             Date endParse = null;
             try {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                Format f = new SimpleDateFormat("yyyy-MM-dd");
-                Calendar c = Calendar.getInstance();
-                c.setTime(format.parse(endTime));
-                c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
-                Date tomorrow = c.getTime();
-                endParse = tomorrow;
-                //以开始时间搞
+                endParse = sdf.parse(endTime);
                 ew.le("END_TIME", endParse);
             } catch (ParseException e) {
                 throw new RuntimeException();
@@ -250,15 +247,8 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         if(UtilValidate.isNotEmpty(endTime)){
             Date endParse = null;
             try {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                Format f = new SimpleDateFormat("yyyy-MM-dd");
-                Calendar c = Calendar.getInstance();
-                c.setTime(format.parse(endTime));
-                c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
-                Date tomorrow = c.getTime();
-                endParse = tomorrow;
-                //以开始时间搞
-                ew.le("to_date(substr(END_TIME,1,10), 'yyyy-MM-dd')", endParse);
+                endParse = sdf.parse(endTime);
+                ew.le("END_TIME", endParse);
             } catch (ParseException e) {
                 throw new RuntimeException();
             }
@@ -394,7 +384,17 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
     public int countTask(Map<String, Object> params) {
         //数据权限使用
         String userId=(String)params.get("userId");
+        User user = userService.selectUserByUserId(userId);
         EntityWrapper<LearnTasksEntity> ew = new EntityWrapper<>();
+        //需要权限过滤
+        String[] authArr= authService.listAllIdByUser(user.getOrgId(),user.getId(),"LEARNTASK");
+        if(authArr.length>0){
+            ew.in("id",authArr);
+        }else{
+            String[] arr={"0"};
+            ew.in("id",arr);
+        }
+
         ew.eq("is_use","1");
         int count = mapper.selectCount(ew);
         return count;

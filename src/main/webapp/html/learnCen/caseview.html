@@ -36,10 +36,10 @@
                                     <el-input v-model="formInline.caseTitle" placeholder="资料标题" size="mini"></el-input>
                                 </el-form-item>
                                 <el-form-item  label="法律分类" prop="caseLawName">
-                                    <el-input v-model="formInline.caseLawName" placeholder="法律分类" @focus="chooseLaw" size="mini"></el-input>
+                                    <el-input v-model="formInline.caseLawName" placeholder="法律分类" @focus="chooseLaw" size="mini" clearable></el-input>
                                 </el-form-item>
                                 <el-form-item label="案件类型" prop="caseType">
-                                    <el-select v-model="formInline.caseType"  size="mini" placeholder="案件类型" >
+                                    <el-select v-model="formInline.caseType"  size="mini" placeholder="案件类型" clearable >
                                         <el-option
                                                 v-for="item in caseTypeOption"
                                                 :key="item.key"
@@ -50,7 +50,7 @@
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item label="法院层级" prop="lawLevel">
-                                    <el-select v-model="formInline.lawLevel" size="mini" placeholder="法院层级" >
+                                    <el-select v-model="formInline.lawLevel" size="mini" placeholder="法院层级" clearable>
                                         <el-option
                                                 v-for="item in lawLevelOption"
                                                 :key="item.key"
@@ -61,7 +61,7 @@
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item label="审判程序" prop="caseProcess">
-                                    <el-select size="mini" v-model="formInline.caseProcess" placeholder="审判程序" >
+                                    <el-select size="mini" v-model="formInline.caseProcess" placeholder="审判程序" clearable>
                                         <el-option
                                                 v-for="item in caseProcessOption"
                                                 :key="item.key"
@@ -127,9 +127,9 @@
                                     <el-select v-model="formInline.contentType"  size="mini" placeholder="案件类型" @change="changeType" >
                                         <el-option
                                                 v-for="item in contentTypeOption"
-                                                :key="item.key"
+                                                :key="item.code"
                                                 :label="item.value"
-                                                :value="item.key"
+                                                :value="item.code"
                                         >
                                         </el-option>
                                     </el-select>
@@ -211,13 +211,7 @@
                                 <template slot-scope="scope">
                                     <el-button
                                             size="mini"
-                                            @click="handleEdit(scope.$index, scope.row)">编辑
-                                    </el-button>
-                                    <el-button
-                                            plain
-                                            type="danger"
-                                            size="mini"
-                                            @click="handleDel(scope.$index, scope.row)">删除
+                                            @click="handleDetail(scope.$index, scope.row)">查看
                                     </el-button>
                                 </template>
                             </el-table-column>
@@ -300,6 +294,14 @@
         </el-tree>
         <el-button type="primary" size="mini" @click="confimLaw">保存</el-button>
         <el-button type="primary" size="mini" @click="cancelLaw">取消</el-button>
+    </el-dialog>
+
+    <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogCaseAna" :before-close="closeDia"  ref="caseAnaDialog">
+        <div>
+            <el-col :span="24">
+                <el-input type="textarea" v-html="caseContent"></el-input>
+            </el-col>
+        </div>
     </el-dialog>
 
 </div>
