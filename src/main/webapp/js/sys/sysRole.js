@@ -45,11 +45,13 @@ var vm = new Vue({
         layFn() {
             $(".el-dialog").css("height", "auto")
         },
-        handleSizeChange: function (val) {
-            console.log('每页' + val + '条');
+        handleSizeChange: function (event) {
+            vm.inline.limit = event;
+            vm.reload();
         },
-        handleCurrentChange: function (val) {
-            console.log('当前页:' + val);
+        handleCurChange: function (event) {
+            vm.inline.page = event;
+            vm.reload();
         },
         addRole: function () {
             this.form = {
