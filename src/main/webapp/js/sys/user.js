@@ -1,4 +1,5 @@
-var menuId =getUrlParam('id');
+var menuId = getUrlParam('id');
+var identify = getUrlParam('identify');
 var vm = new Vue({
     el: '#app',
     data: {
@@ -10,7 +11,7 @@ var vm = new Vue({
             userName: '',
             userCode: '',
             orgCode:'',
-            identify:'0',//表明是用户
+            identify:identify,//表明是用户
             currPage: 1,
             pageSize:10,
             totalCount: 0
@@ -38,11 +39,12 @@ var vm = new Vue({
             password:"",
             photo:"",
             orgCode:"",
-            identify:0,//添加为用户
+            identify:identify,//添加为用户
             orgName:"",
             userPoliceId:"",
             roles:"",//角色
-            tmroles:[]
+            tmroles:[],
+            policeclass:""
         },
         rules: {//表单验证规则
             userName: [
@@ -59,6 +61,8 @@ var vm = new Vue({
             ],
         },
         roles:[],
+        policeclassOption:[],//所属警种
+        breadArr:[]//面包屑数据
     },
     created: function () {
         this.$nextTick(function () {
@@ -79,7 +83,19 @@ var vm = new Vue({
                     }
                 }
             });
-
+            // 所属警种
+            $.ajax({
+                type: "GET",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async:false,
+                data: {type:"POLICACLASS",Parentcode:"0"},
+                success: function (result) {
+                    debugger
+                    vm.policeclassOption=result.dictlist;
+                }
+            });
+            this.breadArr=getBreadcrumb(menuId);
             this.reload();
         });
     },
@@ -99,11 +115,12 @@ var vm = new Vue({
                     password:"",
                     photo:"",
                     orgCode:"",
-                    identify:0,//添加为用户
+                    identify:identify,//添加为用户
                     orgName:"",
                     userPoliceId:"",
                     roles:"",//角色
-                    tmroles:[]
+                    tmroles:[],
+                    policeclass:""
             },
                 vm.teacher.tmroles=[];
             vm.dialogtch=true;

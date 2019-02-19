@@ -43,9 +43,9 @@
                                 <el-select v-model="formInline.caseType"  size="mini" placeholder="案件类型" >
                                     <el-option
                                             v-for="item in caseTypeOption"
-                                            :key="item.code"
+                                            :key="item.key"
                                             :label="item.value"
-                                            :value="item.code" >
+                                            :value="item.key" >
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -53,9 +53,9 @@
                                 <el-select v-model="formInline.lawLevel" size="mini" placeholder="法院层级" >
                                     <el-option
                                             v-for="item in lawLevelOption"
-                                            :key="item.code"
+                                            :key="item.key"
                                             :label="item.value"
-                                            :value="item.code" >
+                                            :value="item.key" >
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -259,9 +259,9 @@
                             <el-select v-model="caseAna.caseType" placeholder="案件类型" >
                                 <el-option
                                         v-for="item in caseTypeOption"
-                                        :key="item.code"
+                                        :key="item.key"
                                         :label="item.value"
-                                        :value="item.code"
+                                        :value="item.key"
                                         >
                                 </el-option>
                             </el-select>
@@ -270,9 +270,9 @@
                             <el-select v-model="caseAna.lawLevel" placeholder="法院层级" >
                                 <el-option
                                         v-for="item in lawLevelOption"
-                                        :key="item.code"
+                                        :key="item.key"
                                         :label="item.value"
-                                        :value="item.code"
+                                        :value="item.key"
                                 >
                                 </el-option>
                             </el-select>
@@ -292,9 +292,9 @@
                             <el-select v-model="caseAna.caseProcess" placeholder="审判程序" >
                                 <el-option
                                         v-for="item in caseProcessOption"
-                                        :key="item.code"
+                                        :key="item.key"
                                         :label="item.value"
-                                        :value="item.code"
+                                        :value="item.key"
                                 >
                                 </el-option>
                             </el-select>

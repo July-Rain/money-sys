@@ -55,7 +55,6 @@ var vm = new Vue({
         },
         // 查询
         onSubmit: function () {
-            alert(1)
             this.refresh();
         },
     },

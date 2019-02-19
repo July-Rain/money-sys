@@ -19,8 +19,8 @@ public class TaskConfigureForm {
     private List<String> users;
     private List<String> depts;
     private String themeName;
-    private List<String> deptNames;
-    private List<String> userNames;
+    private String deptNames;
+    private String userNames;
 
     public String getName() {
         return name;
@@ -94,19 +94,19 @@ public class TaskConfigureForm {
         this.id = id;
     }
 
-    public List<String> getDeptNames() {
+    public String getDeptNames() {
         return deptNames;
     }
 
-    public void setDeptNames(List<String> deptNames) {
+    public void setDeptNames(String deptNames) {
         this.deptNames = deptNames;
     }
 
-    public List<String> getUserNames() {
+    public String getUserNames() {
         return userNames;
     }
 
-    public void setUserNames(List<String> userNames) {
+    public void setUserNames(String userNames) {
         this.userNames = userNames;
     }
 }

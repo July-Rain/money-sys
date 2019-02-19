@@ -13,7 +13,8 @@
             font-size: 30px;
             color: #57A8DC;
         }
-
+        video::-webkit-media-controls-enclosure{ overflow: hidden; }
+        video::-webkit-media-controls-panel{ width: calc(100% + 30px); }
     </style>
 </head>
 <body>
@@ -47,9 +48,9 @@
                                 <el-select size="mini" v-model="formInline.stuPoliceclass" placeholder="所属警种">
                                     <el-option
                                             v-for="item in stuPoliceclassOption"
-                                            :key="item.code"
+                                            :key="item.key"
                                             :label="item.value"
-                                            :value="item.code"
+                                            :value="item.key"
                                     >
                                     </el-option>
                                 </el-select>
@@ -254,9 +255,9 @@
                             <el-select v-model="stuMedia.stuPoliceclass" placeholder="所属警种">
                                 <el-option
                                         v-for="item in stuPoliceclassOption"
-                                        :key="item.code"
+                                        :key="item.key"
                                         :label="item.value"
-                                        :value="item.code"
+                                        :value="item.key"
                                 >
                                 </el-option>
                             </el-select>
