@@ -109,7 +109,7 @@ button{
     bottom: 0;
     left: 0;
 }
-.model_area .inner img{
+.model_area .inner > img{
     display: block;
     width: 611px;
     height: auto;

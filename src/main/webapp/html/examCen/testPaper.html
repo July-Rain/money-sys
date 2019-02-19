@@ -67,9 +67,6 @@ p,span{
     width: 935px;
     margin: 0 auto;
 }
-.ques_name{
-
-}
 .el-form-item__content{
     line-height: 25px;
 
@@ -144,7 +141,7 @@ p,span{
         </div>
         <div v-for="(item,index) in subjectList" class="question_area">
             <p class="ques_name">{{index+1}}. {{item.comContent}} 。</p>
-            答 ：<el-input type="text" v-model="subject[index]" placeholder="請輸入答案">
+            答 ：<el-input type="text" v-model="subject[index]" placeholder="請輸入答案"></el-input>
         </div>
     </el-form>
         <el-button @click="save" type="success" style="float: right;">保存</el-button>

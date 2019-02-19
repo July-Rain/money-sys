@@ -51,7 +51,6 @@
                     <el-table
                             :data="tableData"
                             border
-                            height="599"
                             style="width: 100%">
                         <el-table-column
                                 label="序号"
@@ -89,11 +88,21 @@
 
                         <el-table-column label="操作" align="center">
                             <template slot-scope="scope">
-                                <el-button
+                                <!--<el-button
                                         size="mini"
                                         type="danger"
                                         @click="handleOff(scope.$index, scope.row)">下线
-                                </el-button>
+                                </el-button>-->
+                                <el-popover
+                                        placement="top-start"
+                                        trigger="hover"
+                                        content="下线">
+                                    <i class="iconfont tabIcon"
+                                       slot="reference"
+                                       @click="handleOff(scope.$index, scope.row)"
+                                       style="color: #1381e3;" >&#xe60b;
+                                    </i>
+                                </el-popover>
                             </template>
                         </el-table-column>
                     </el-table>

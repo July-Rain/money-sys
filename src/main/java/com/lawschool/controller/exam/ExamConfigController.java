@@ -77,6 +77,14 @@ public class ExamConfigController {
         examConfigService.checkset(checkSetForm);
         return Result.ok();
     }
+
+    @RequestMapping(value = "/getCheckSetting", method = RequestMethod.GET)
+    private Result getCheckSetting(String id ){
+
+        CheckSetForm checkSetForm = examConfigService.getCheckSetting(id);
+         return Result.ok().put("checkSetForm",checkSetForm);
+    }
+
     @RequestMapping(value = "/dict", method = RequestMethod.GET)
     private Result dict() {
         //examType考试类型字典

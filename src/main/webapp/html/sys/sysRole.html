@@ -98,7 +98,7 @@
             </el-table>
             <el-pagination
                     @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
+                    @current-change="handleCurChange"
                     :current-page="inline.pageNo"
                     :page-sizes="[10, 20, 30, 40]"
                     :page-size="inline.pageSize"
@@ -110,12 +110,12 @@
         <el-dialog :title="title" :visible.sync="dialogFormVisible" :before-close="closeDia">
             <el-form  label-width="100px" :model="form" :rules="rules" ref="form" size="mini">
                 <el-row>
-                    <el-col :span="11">
+                    <el-col :span="24">
                         <el-form-item label="角色名称：" :label-width="formLabelWidth" prop="roleName">
                             <el-input :disabled="isEdit" v-model="form.roleName" autocomplete="off"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="24">
                         <el-form-item label="备注：" :label-width="formLabelWidth">
                             <el-input :disabled="isEdit" v-model="form.remark" autocomplete="off"></el-input>
                         </el-form-item>

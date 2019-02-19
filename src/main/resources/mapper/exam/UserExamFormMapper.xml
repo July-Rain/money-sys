@@ -3,60 +3,70 @@
 <mapper namespace="com.lawschool.dao.exam.UserExamFormDao">
     <select id="findList" resultType="com.lawschool.form.UserExamForm">
         select * from (
-            SELECT
-            A . ID ID,
-            b. ID user_Exam_Id,
-            A .EXAM_NAME,
-            A .EXAM_TYPE,
-            DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
-            A .EXAM_TIME,
-            A .ORGANIZED_ORG_CODE,
-            A .START_TIME,
-            A .END_TIME,
-            '1' EXAM_STATUS,
-            a.IS_MUST_TEST
-            FROM
-            LAW_EXAM_CONFIG A
-            INNER JOIN LAW_USER_EXAM b ON A . ID = b.EXAM_CONFIG_ID
-            where 1=1
-            <if test="authArr != null and authArr.length > 0">
-                and a.id in
-                <foreach collection="authArr" index="index" item="item" open="(" separator="," close=")">
-                    '${item}'
-                </foreach>
-            </if>
-            UNION ALL
-            SELECT
-            A . ID ID,
-            '' user_Exam_Id,
-            A .EXAM_NAME,
-            A .EXAM_TYPE,
-            DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
-            A .EXAM_TIME,
-            A .ORGANIZED_ORG_CODE,
-            A .START_TIME,
-            A .END_TIME,
-            '0' EXAM_STATUS,
-            a.IS_MUST_TEST
-            FROM
-            LAW_EXAM_CONFIG A
-            WHERE
-            A ."ID" NOT IN (
-            SELECT
-            exam_config_id
-            FROM
-            LAW_USER_EXAM
-            )
-            <if test="authArr != null and authArr.length > 0">
-                and a.id in
-                <foreach collection="authArr" index="index" item="item" open="(" separator=" , " close=")">
-                    '${item}'
-                </foreach>
-            </if>
+        SELECT
+        A . ID ID,
+        b. ID user_Exam_Id,
+        A .EXAM_NAME,
+        A .EXAM_TYPE,
+        a.exam_score,
+        a.pass_pnt,
+        a.reach_Reward_Type,
+        a.reach_Reward,
+        DICTCODE2VALE (A .reach_Reward_Type) reach_Reward_Type_NAME,
+        DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
+        A .EXAM_TIME,
+        A .ORGANIZED_ORG_CODE,
+        A .START_TIME,
+        A .END_TIME,
+        '1' EXAM_STATUS,
+        a.IS_MUST_TEST
+        FROM
+        LAW_EXAM_CONFIG A
+        INNER JOIN LAW_USER_EXAM b ON A . ID = b.EXAM_CONFIG_ID
+        where 1=1
+        <if test="authArr != null and authArr.length > 0">
+            and a.id in
+            <foreach collection="authArr" index="index" item="item" open="(" separator="," close=")">
+                '${item}'
+            </foreach>
+        </if>
+        UNION ALL
+        SELECT
+        A . ID ID,
+        '' user_Exam_Id,
+        A .EXAM_NAME,
+        A .EXAM_TYPE,
+        a.exam_score,
+        a.pass_pnt,
+        a.reach_Reward_Type,
+        a.reach_Reward,
+        DICTCODE2VALE (A .reach_Reward_Type) reach_Reward_Type_NAME,
+        DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
+        A .EXAM_TIME,
+        A .ORGANIZED_ORG_CODE,
+        A .START_TIME,
+        A .END_TIME,
+        '0' EXAM_STATUS,
+        a.IS_MUST_TEST
+        FROM
+        LAW_EXAM_CONFIG A
+        WHERE
+        A ."ID" NOT IN (
+        SELECT
+        exam_config_id
+        FROM
+        LAW_USER_EXAM
+        )
+        <if test="authArr != null and authArr.length > 0">
+            and a.id in
+            <foreach collection="authArr" index="index" item="item" open="(" separator=" , " close=")">
+                '${item}'
+            </foreach>
+        </if>
         )
         where 1=1
         <if test="examName != null and examName != '' ">
-            and EXAM_NAME like  concat(concat('%',#{examName}),'%')
+            and EXAM_NAME like concat(concat('%',#{examName}),'%')
         </if>
         <if test="examStatus != null and examStatus!='' ">
             and EXAM_STATUS =#{examStatus}

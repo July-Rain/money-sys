@@ -5,7 +5,8 @@ var vm = new Vue({
             examName:"",
             limit: 10,
             page: 1,
-            count: 0
+            count: 0,
+           // status:"2" //考试状态已完成
         },
         tableData: [],//表格数据
         visible: false,
@@ -16,16 +17,6 @@ var vm = new Vue({
             value: '',
             remark: '',
             status: "1"
-        },
-        rules: {//表单验证规则
-            value: [
-                {required: true, message: '请输入参数名', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ],
-            code: [
-                {required: true, message: '请输入参数值', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ]
         }
     },
     created: function () {
@@ -46,7 +37,6 @@ var vm = new Vue({
             this.reload();
         },
         reload: function () {
-            console.info(vm.formInline);
             $.ajax({
                 type: "POST",
                 url: baseURL + "user/exam/list",
