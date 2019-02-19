@@ -3,6 +3,102 @@
 <head>
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .set_exam h3 {
+            text-align: center;
+        }
+
+        #app {
+            background-color: #efefef;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #paper {
+            width: 1180px;
+            background: #fff;
+            margin: 54px auto 47px;
+            padding-bottom: 20px;
+        }
+
+        #paper h2 {
+            height: 24px;
+            line-height: 24px;
+            font-family: MicrosoftYaHei;
+            font-size: 24px;
+            font-weight: normal;
+            font-stretch: normal;
+            letter-spacing: 0px;
+            color: #2a2a2a;
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        #paper .smg {
+            height: 30px;
+            line-height: 30px;
+            margin-bottom: 19px;
+
+        }
+
+        #paper p, #paper span {
+            font-size: 16px;
+            color: #2a2a2a;
+            line-height: 36px;
+        }
+
+        #paper .smg .name {
+            float: left;
+            padding-left: 149px;
+        }
+
+        #paper .smg .set {
+            float: right;
+            padding-right: 164px;
+        }
+
+        .subTitle {
+            padding: 20px 50px 0;
+        }
+
+        .subTitle p {
+            float: left;
+        }
+
+        .subTitle button {
+            float: right;
+            margin-right: 20px;
+            padding: 0 10px;
+            color: #fff;
+        }
+
+        .subTitle button span {
+            color: #fff !important;
+        }
+
+        .subTitle button i {
+            color: #fff !important;
+        }
+
+        .question_area {
+            padding: 10px 0 0 60px;
+        }
+        .question_area ul{
+            padding: 0 20px;
+        }
+        .question_area ul li {
+            line-height: 34px;
+            color: #2a2a2a;
+        }
+        .subTitle > p > .el-input,.ques_name .el-input{
+            padding: 0 10px;
+            width: 80px;
+            display: inline-block;
+        }
+        .subTitle > p > .el-input input,.ques_name .el-input input{
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 <div id="app" v-cloak>
@@ -127,7 +223,7 @@
                             <i class="iconfont icon-xiugaimima tabIcon"
                                slot="reference"
                                @click="handleEdit(scope.$index, scope.row)"
-                               style="color: #119e0a;" >
+                               style="color: #119e0a;">
                             </i>
                         </el-popover>
                         <el-popover
@@ -137,9 +233,13 @@
                             <i class="iconfont icon-tubiaozhizuo- tabIcon"
                                slot="reference"
                                @click="handleDel(scope.$index, scope.row)"
-                               style="color: #e31313;" >
+                               style="color: #e31313;">
                             </i>
                         </el-popover>
+                        <el-button
+                                size="mini" @click="setExamFn">
+                            设置考试信息
+                        </el-button>
                         <el-button
                                 size="mini"
                                 @click="generateOrViewCheck(scope.$index, scope.row)">
@@ -260,12 +360,12 @@
                 </el-col>
                 <el-col :span="24">
                     <el-form-item label="阅卷口令：" prop="checkScoreDifference">
-                        <el-input  v-model="checkSetting.checkPassword" :disabled="true"></el-input>
+                        <el-input v-model="checkSetting.checkPassword" :disabled="true"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
                     <el-form-item label="审核人员阅卷口令：" prop="checkScoreDifference">
-                        <el-input  v-model="checkSetting.auditCheckPass" :disabled="true"></el-input>
+                        <el-input v-model="checkSetting.auditCheckPass" :disabled="true"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -279,6 +379,175 @@
     </el-dialog>
     <el-dialog title="修改考试配置" :visible.sync="dialogEdit" width="1200px">
         <iframe src="examConfig.html" frameborder="0" width="100%" height="600px"></iframe>
+    </el-dialog>
+    <el-dialog class="set_exam" title="设置考试信息" :visible.sync="setExam" width="1200px">
+
+        <div id="paper">
+            <h2>考试名称</h2>
+            <div class="subTitle clearfix">
+                <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题<el-input type="number" value="1" placeholder="请输入分值"></el-input>分，共50分。</p>
+                <el-button type="primary" size="mini">
+                    <i class="iconfont icon-htmal5icon18"></i>
+                    设置题目
+                </el-button>
+            </div>
+            <div class="question_area">
+                <p class="ques_name">1.单选题。</p>
+                <ul>
+                    <li>A.选项选项选项选项选项</li>
+                    <li>B.选项选项选项选项选项</li>
+                    <li>C.选项选项选项选项选项</li>
+                    <li>D.选项选项选项选项选项</li>
+                </ul>
+            </div>
+            <div class="subTitle clearfix">
+                <p>二、多选题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题<el-input type="number" value="1" placeholder="请输入分值"></el-input>分，共50分。</p>
+                <el-button type="primary" size="mini">
+                    <i class="iconfont icon-htmal5icon18"></i>
+                    设置题目
+                </el-button>
+            </div>
+            <div class="question_area">
+                <p class="ques_name">1.一个多选题。</p>
+                <ul>
+                    <li>A.选项选项选项选项选项选项</li>
+                    <li>B.选项选项选项选项选项选项</li>
+                    <li>C.选项选项选项选项选项选项</li>
+                    <li>D.选项选项选项选项选项选项</li>
+                </ul>
+            </div>
+
+            <div class="subTitle clearfix">
+                <p>三、判断题。判断题判断题判断题,判断题怎么怎么样，每题<el-input type="number" value="1" placeholder="请输入分值"></el-input>分</p>
+                <el-button type="primary" size="mini">
+                    <i class="iconfont icon-htmal5icon18"></i>
+                    设置题目
+                </el-button>
+            </div>
+            <div class="question_area">
+                <p class="ques_name">1.判断题一个 。</p>
+                <ul>
+                    <li>正确与否</li>
+                </ul>
+            </div>
+            <div class="subTitle clearfix">
+                <p>四、主观题</p>
+                <el-button type="primary" size="mini">
+                    <i class="iconfont icon-htmal5icon18"></i>
+                    设置题目
+                </el-button>
+            </div>
+            <div class="question_area">
+                <p class="ques_name">1.主观题题目 。分值：<el-input type="number" value="1" placeholder="请输入分值"></el-input></p>
+            </div>
+        </div>
+    </el-dialog>
+    <el-dialog class="set_question" title="设置题目" :visible.sync="setQuestion" width="1200px">
+        <div class="info_card">
+            <div class="card_title"></div>
+            <div class="card_contain">
+                <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+
+                    <el-form-item label="aaaaa：">
+                        <el-input placeholder="aaa" size="mini"></el-input>
+                    </el-form-item>
+                    <el-form-item label="bbbbbb">
+                        <el-select placeholder="bbbbbbb" size="mini">
+                            <el-option label="111" value="0"></el-option>
+                            <el-option label="222" value="1"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" size="mini">
+                            <i class="iconfont icon-sousuo1"></i>
+                            查询
+                        </el-button>
+                        <el-button>
+                            <i class="iconfont icon-tableresetpassword"></i>
+                            重置
+                        </el-button>
+
+                    </el-form-item>
+                </el-form>
+
+            </div>
+        </div>
+        <div style="border: 1px solid #dddddd">
+            <el-table
+                    ref="multipleTable"
+                    :data="tableData3"
+                    tooltip-effect="dark"
+                    style="width: 100%"
+                    @selection-change="handleSelectionChange">
+                <el-table-column
+                        type="selection"
+                        width="60">
+                </el-table-column>
+
+                <el-table-column
+                        type="index"
+                        width="55">
+                </el-table-column>
+                <el-table-column type="expand" width="60">
+                    <template slot-scope="props">
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="内容：">
+                                <span>{{props.row.content}}</span>
+                            </el-form-item>
+                            <el-form-item label="难度：">
+                                <span>{{props.row.difficulty}}</span>
+                            </el-form-item>
+                            <el-form-item label="类型：">
+                                <span>{{props.row.type}}</span>
+                            </el-form-item>
+                            <el-form-item label="其他信息：">
+                                <span>{{props.row.content}}</span>
+                            </el-form-item>
+                            <el-form-item label="其他信息：">
+                                <span>{{props.row.content}}</span>
+                            </el-form-item>
+                            <el-form-item label="其他信息：">
+                                <span>{{props.row.content}}</span>
+                            </el-form-item>
+                            <el-form-item label="其他信息：">
+                                <span>{{props.row.content}}</span>
+                            </el-form-item>
+                        </el-form>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="content"
+                        label="试题内容"
+                        show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column
+                        prop="type"
+                        label="类型"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        prop="difficulty"
+                        label="难度"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        prop="answerNum"
+                        label="选项数"
+                        width="120">
+                </el-table-column>
+            </el-table>
+
+        </div>
+        <el-pagination
+                :current-page="1"
+                :page-sizes="[10, 20, 30, 40]"
+                :page-size="10"
+                layout="total, sizes, prev, pager, next, jumper">
+        </el-pagination>
+        <span slot="footer" class="dialog-footer">
+                <el-button>取 消</el-button>
+                <el-button type="primary">确 定</el-button>
+        </span>
     </el-dialog>
 </div>
 </div>
