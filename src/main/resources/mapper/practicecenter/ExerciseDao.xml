@@ -92,6 +92,7 @@
 
     <select id="findOne" resultType="com.lawschool.beans.practicecenter.ExerciseEntity">
         SELECT
+            ID AS "id",
             DIFFICULTY AS "difficulty",
             CLASSIFY AS "classify",
             TYPE AS "type",
