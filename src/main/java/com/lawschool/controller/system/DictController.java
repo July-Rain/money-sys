@@ -95,7 +95,7 @@ public class DictController extends AbstractController{
      * @param params
      * @return
      */
-    @RequestMapping(value = "/getByTypeAndParentcode", method = RequestMethod.GET)
+    @RequestMapping(value = "/getByTypeAndParentcode")
     public Result getByTypeAndParentcode(@RequestParam Map<String, Object> params){
         String code = (String)params.get("type");
         List<CommonForm> result = dictService.findCodeByType(code);

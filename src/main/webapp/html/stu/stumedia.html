@@ -48,9 +48,9 @@
                                 <el-select size="mini" v-model="formInline.stuPoliceclass" placeholder="所属警种">
                                     <el-option
                                             v-for="item in stuPoliceclassOption"
-                                            :key="item.code"
+                                            :key="item.key"
                                             :label="item.value"
-                                            :value="item.code"
+                                            :value="item.key"
                                     >
                                     </el-option>
                                 </el-select>
@@ -255,9 +255,9 @@
                             <el-select v-model="stuMedia.stuPoliceclass" placeholder="所属警种">
                                 <el-option
                                         v-for="item in stuPoliceclassOption"
-                                        :key="item.code"
+                                        :key="item.key"
                                         :label="item.value"
-                                        :value="item.code"
+                                        :value="item.key"
                                 >
                                 </el-option>
                             </el-select>
