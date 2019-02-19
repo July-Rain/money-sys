@@ -98,6 +98,11 @@
         .subTitle > p > .el-input input,.ques_name .el-input input{
             text-align: center;
         }
+
+        .ques_name button{
+            float: right;
+            margin-right: 120px;
+        }
     </style>
 </head>
 <body>
@@ -386,13 +391,13 @@
             <h2>考试名称</h2>
             <div class="subTitle clearfix">
                 <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题<el-input type="number" value="1" placeholder="请输入分值"></el-input>分，共50分。</p>
-                <el-button type="primary" size="mini">
+                <el-button type="primary" size="mini" @click="addQuestion('单选')">
                     <i class="iconfont icon-htmal5icon18"></i>
                     设置题目
                 </el-button>
             </div>
             <div class="question_area">
-                <p class="ques_name">1.单选题。</p>
+                <p class="ques_name">1.单选题。<el-button type="danger" icon="el-icon-delete" circle></el-button></p>
                 <ul>
                     <li>A.选项选项选项选项选项</li>
                     <li>B.选项选项选项选项选项</li>
@@ -402,7 +407,7 @@
             </div>
             <div class="subTitle clearfix">
                 <p>二、多选题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题<el-input type="number" value="1" placeholder="请输入分值"></el-input>分，共50分。</p>
-                <el-button type="primary" size="mini">
+                <el-button type="primary" size="mini" @click="addQuestion('多选')">
                     <i class="iconfont icon-htmal5icon18"></i>
                     设置题目
                 </el-button>
@@ -419,7 +424,7 @@
 
             <div class="subTitle clearfix">
                 <p>三、判断题。判断题判断题判断题,判断题怎么怎么样，每题<el-input type="number" value="1" placeholder="请输入分值"></el-input>分</p>
-                <el-button type="primary" size="mini">
+                <el-button type="primary" size="mini" @click="addQuestion('判断')">
                     <i class="iconfont icon-htmal5icon18"></i>
                     设置题目
                 </el-button>
@@ -432,7 +437,7 @@
             </div>
             <div class="subTitle clearfix">
                 <p>四、主观题</p>
-                <el-button type="primary" size="mini">
+                <el-button type="primary" size="mini" @click="addQuestion('主观')">
                     <i class="iconfont icon-htmal5icon18"></i>
                     设置题目
                 </el-button>
