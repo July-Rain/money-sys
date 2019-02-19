@@ -54,11 +54,32 @@
                                 <template slot-scope="scope">
 
 
-                                    <el-button
+                                    <!--<el-button
                                             :disabled="user.myMedal===scope.row.badge"
                                             size="mini"
                                             @click="wear(scope.$index, scope.row)">{{user.myMedal===scope.row.badge?"已佩戴":"佩戴"}}
-                                    </el-button>
+                                    </el-button>-->
+                                    <el-popover
+                                            v-if="user.myMedal===scope.row.badge"
+                                            placement="right"
+                                            trigger="hover"
+                                            content="已佩戴">
+                                        <i class="iconfont tabIcon"
+                                           slot="reference"
+                                           style="color: #119e0a;font-size: 16px;">&#xe666;
+                                        </i>
+                                    </el-popover>
+                                    <el-popover
+                                            v-if="user.myMedal!==scope.row.badge"
+                                            placement="right"
+                                            trigger="hover"
+                                            content="佩戴">
+                                        <i class="iconfont tabIcon"
+                                           slot="reference"
+                                           @click="wear(scope.$index, scope.row)"
+                                           style="color: #1381e3;font-size: 16px;">&#xe666;
+                                        </i>
+                                    </el-popover>
                                     <!--<el-button :disabled="isReceive.indexOf(tableData[scope.$index].id) > -1"-->
                                             <!--size="mini"-->
                                             <!--@click="receive(scope.$index, scope.row)">{{isReceive.indexOf(tableData[scope.$index].id) > -1?"已":""}}领取-->

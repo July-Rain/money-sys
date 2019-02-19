@@ -96,23 +96,53 @@
                         </el-table-column>
                         <el-table-column label="操作"  prop="userStatus" align="center">
                             <template slot-scope="scope">
-                                <el-button
+                                <!--<el-button
                                         size="mini"
                                         @click="handleEdit(scope.$index, scope.row)">重置密码
-                                </el-button>
-
-
-                                <el-button
+                                </el-button>-->
+                                <el-popover
+                                        placement="top-start"
+                                        trigger="hover"
+                                        content="重置密码">
+                                    <i class="iconfont tabIcon"
+                                       slot="reference"
+                                       @click="handleEdit(scope.$index, scope.row)"
+                                       style="color: #119e0a;" >&#xe657;
+                                    </i>
+                                </el-popover>
+                                <el-popover
+                                        v-if="scope.row.userStatus == '2000'"
+                                        placement="top-start"
+                                        trigger="hover"
+                                        content="禁用">
+                                    <i class="iconfont tabIcon"
+                                       slot="reference"
+                                       @click="handleEdit(scope.$index, scope.row)"
+                                       style="color: #ff0000;" >&#xe656;
+                                    </i>
+                                </el-popover>
+                                <!--<el-button
                                         size="mini" v-if="scope.row.userStatus == '2000'"
                                         type="danger"
                                         @click="handleDel(scope.$index, scope.row)">禁用
-                                </el-button>
+                                </el-button>-->
 
-                                <el-button
+                                <!--<el-button
                                         size="mini" v-if="scope.row.userStatus == '800'"
                                         type="primary"
                                         @click="handleRecovery(scope.$index, scope.row)">恢复
-                                </el-button>
+                                </el-button>-->
+                                <el-popover
+                                        v-if="scope.row.userStatus == '800'"
+                                        placement="top-start"
+                                        trigger="hover"
+                                        content="恢复">
+                                    <i class="iconfont tabIcon"
+                                       slot="reference"
+                                       @click="handleRecovery(scope.$index, scope.row)"
+                                       style="color: #119e0a;" >&#xe621;
+                                    </i>
+                                </el-popover>
 
                                 <el-popover
                                         placement="top-start"
