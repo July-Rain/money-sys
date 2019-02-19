@@ -133,7 +133,7 @@
                             <div class="inner">
                                 <h3>我要出题</h3>
                                 <div>
-                                    <p>---- ->出题</p>
+                                    <p>----->出题</p>
                                 </div>
                             </div>
                             <div class="icon">
@@ -195,7 +195,11 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <el-button type="primary" style="float:right;" @click="startExam(list.id)">开始考试</el-button>
+                                        <el-button type="primary" style="float:right;" @click="startExam(list.id)">
+                                        <i class="iconfont"
+                                           style="color: white;padding-right: 5px"
+                                        >&#xe68c;
+                                        </i>开始考试</el-button>
                                     </div>
                                 </div>
                             </el-carousel-item>
@@ -560,7 +564,9 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-                        <el-button @click="resetForm('ruleForm')">重置</el-button>
+                        <el-button size="mini" @click="resetForm('ruleForm')">
+                            <i class="iconfont icon-tableresetpassword"></i>
+                            重置</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
