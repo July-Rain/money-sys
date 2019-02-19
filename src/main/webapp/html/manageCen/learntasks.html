@@ -123,9 +123,9 @@
                                     <el-select size="mini" v-model="formInline.taskClass" placeholder="所属分类">
                                         <el-option
                                                 v-for="item in taskClassOption"
-                                                :key="item.code"
+                                                :key="item.key"
                                                 :label="item.value"
-                                                :value="item.code"
+                                                :value="item.key"
                                         >
                                         </el-option>
                                     </el-select>
@@ -351,9 +351,9 @@
                         <el-select v-model="learnTasks.taskClass" placeholder="所属分类">
                             <el-option
                                     v-for="item in taskClassOption"
-                                    :key="item.code"
+                                    :key="item.key"
                                     :label="item.value"
-                                    :value="item.code"
+                                    :value="item.key"
                             >
                             </el-option>
                         </el-select>

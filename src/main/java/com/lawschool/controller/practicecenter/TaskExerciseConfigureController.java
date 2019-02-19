@@ -82,8 +82,8 @@ public class TaskExerciseConfigureController extends AbstractController {
         entity.setThemeName(form.getThemeName());
         entity.setCreateName(user.getUserName());
         entity.setId(form.getId());
-        entity.setDeptNames(StringUtils.join(form.getDeptNames(), ","));
-        entity.setUserNames(StringUtils.join(form.getUserNames(), ","));
+        entity.setDeptNames(form.getDeptNames());
+        entity.setUserNames(form.getUserNames());
 
         if(source == 0){
             // 个人设置

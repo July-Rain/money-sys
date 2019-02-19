@@ -1,4 +1,7 @@
 var menuId = $("#menuId").val();
+var storage=window.sessionStorage;
+var operate = storage.getItem("operate");
+
 var vm = new Vue({
     el: '#app',
     data:function() {
@@ -8,8 +11,20 @@ var vm = new Vue({
             if (vm.examConfig.endTime === '') {
                 callback(new Error('请输入结束时间'))
             } else {
-                if (!(vm.examConfig.startTime < vm.examConfig.endTime)) {
+                if (!(new Date(Date.parse(vm.examConfig.startTime.replace(/-/g, "/"))).getTime() <
+                    new Date(Date.parse( vm.examConfig.endTime.replace(/-/g, "/"))).getTime())) {
                     callback(new Error('结束日期必须大于开始日期'))
+                } else {
+                    callback()
+                }
+            }
+        };
+        var validateStartTime = function (rule, value, callback) {
+            if (vm.examConfig.startTime === '') {
+                callback(new Error('请输入开始时间'))
+            } else {
+                if (new Date(Date.parse(vm.examConfig.startTime.replace(/-/g, "/"))).getTime()  < new Date().getTime() ){
+                    callback(new Error('开始时间应大于当前时间'))
                 } else {
                     callback()
                 }
@@ -176,8 +191,8 @@ var vm = new Vue({
                 info: 'A：123；B：123；C：123；D：123'
             }],
             //选中题目
-            currentRow: null
-
+            currentRow: null,
+            view:false
         };
     },
 
@@ -243,7 +258,9 @@ var vm = new Vue({
             this.randomQuesModal = true;
         },
         selfQuse : function(){
+            this.title = "自主出题设置";
             this.autonomyQuesModal = true;
+            vm.examConfig.examQueConfigList.length=0;
 
         },
         handleSave:function(randomQuesData){

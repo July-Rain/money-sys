@@ -32,6 +32,66 @@ public class UserExamForm extends DataEntity<UserExamForm> {
     private String checkExamId; //阅卷ID
     private String[] authArr;   //数据权限
     private String userId;
+    /**
+     * 考试分数
+     */
+    private Short examScore;
+
+    /**
+     * 及格线
+     */
+    private Short passPnt;
+
+    /**
+     * 达标奖励方式
+     */
+    private String reachRewardType;
+    private String reachRewardTypeName;
+
+    /**
+     * 达标奖励
+     */
+    private String reachReward;
+
+    public Short getExamScore() {
+        return this.examScore;
+    }
+
+    public void setExamScore(final Short examScore) {
+        this.examScore = examScore;
+    }
+
+    public Short getPassPnt() {
+        return this.passPnt;
+    }
+
+    public void setPassPnt(final Short passPnt) {
+        this.passPnt = passPnt;
+    }
+
+    public String getReachRewardTypeName() {
+        return this.reachRewardTypeName;
+    }
+
+    public void setReachRewardTypeName(final String reachRewardTypeName) {
+        this.reachRewardTypeName = reachRewardTypeName;
+    }
+
+    public String getReachRewardType() {
+        return this.reachRewardType;
+    }
+
+    public void setReachRewardType(final String reachRewardType) {
+        this.reachRewardType = reachRewardType;
+    }
+
+    public String getReachReward() {
+        return this.reachReward;
+    }
+
+    public void setReachReward(final String reachReward) {
+        this.reachReward = reachReward;
+    }
 
     public String getUserId() {
         return this.userId;

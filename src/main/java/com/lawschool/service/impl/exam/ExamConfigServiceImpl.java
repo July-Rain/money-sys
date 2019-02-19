@@ -414,4 +414,9 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 
 		return Result.ok().put("page",examConfigPage);
 	}
+
+	@Override
+	public CheckSetForm getCheckSetting(String id) {
+		return dao.getCheckSetting(id);
+	}
 }

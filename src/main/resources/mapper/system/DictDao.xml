@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.system.DictionDao">
+
+    <sql id="dictColumns">
+        ID AS "id",
+        NAME AS "name",
+        CODE AS "code",
+        PARENT_CODE AS "parentCode",
+        SORT AS "sort",
+        REMARK AS "remark",
+        CAN_DELETE AS "canDelete",
+        IS_USE AS "isUse"
+    </sql>
+
+    <select id="findList" resultType="com.lawschool.beans.system.DictEntity">
+        SELECT
+        <include refid="dictColumns"/>
+        FROM LAW_SYS_DICTION
+        WHERE
+            DEL_FLAG = 0
+            <if test="parentCode != null and parentCode != ''">
+                AND PARENT_CODE = #{parentCode}
+            </if>
+            <if test="parentCode == null or parentCode == ''">
+                AND PARENT_CODE IS NULL
+            </if>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY SORT
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO LAW_SYS_DICTION
+        (
+            ID,
+            NAME,
+            CODE,
+            SORT,
+            REMARK,
+            PARENT_CODE,
+            IS_PARENT
+        )
+        VALUES (
+            #{id},
+            #{name},
+            #{code},
+            #{sort},
+            #{remark},
+            #{parentCode},
+            #{isParent}
+        )
+    </insert>
+
+    <select id="findOne" resultType="com.lawschool.beans.system.DictEntity">
+        SELECT
+            <include refid="dictColumns"/>
+        FROM LAW_SYS_DICTION
+        WHERE
+            ID = #{id}
+    </select>
+
+    <update id="update">
+        UPDATE LAW_SYS_DICTION
+        SET
+            NAME = #{name},
+            CODE = #{code},
+            SORT = #{sort},
+            REMARK = #{remark},
+            IS_PARENT = #{isParent},
+            PARENT_CODE = #{parentCode}
+        WHERE
+            ID = #{id}
+    </update>
+
+    <update id="remove">
+        UPDATE LAW_SYS_DICTION
+        SET
+            DEL_FLAG = 1
+        WHERE
+            ID = #{id}
+    </update>
+
+    <update id="updateDelByParentCode">
+        UPDATE LAW_SYS_DICTION
+        SET
+            DEL_FLAG = 1
+        WHERE
+            PARENT_CODE = #{parentCode}
+    </update>
+
+    <select id="findCodeByType" resultType="com.lawschool.form.CommonForm">
+        SELECT
+            d.code AS "key",
+            d.name AS "value"
+        FROM LAW_SYS_DICTION d
+        LEFT JOIN LAW_SYS_DICTION p ON d.PARENT_CODE = p.ID
+        <where>
+            p.CODE = #{code}
+            AND d.DEL_FLAG = 0
+            AND d.IS_USE = 1
+        </where>
+        ORDER BY d.SORT
+    </select>
+
+    <select id="selectAllDict" resultType="com.lawschool.beans.system.DictEntity">
+        SELECT
+        <include refid="dictColumns"/>
+        FROM LAW_SYS_DICTION
+        <where>
+             DEL_FLAG = 0
+             AND IS_USE = 1
+        </where>
+    </select>
+</mapper>

@@ -303,4 +303,11 @@
         </if>
     </if>
   </select>
+
+  <select id="getCheckSetting" resultType="com.lawschool.form.CheckSetForm">
+    select CHECK_NUM,CHECK_PASSWORD,
+    CHECK_SCORE_DIFFERENCE,IS_AIBITRATION,PAPER_PER_SET_NUM,AUDIT_CHECK_PASS
+    from LAW_EXAM_CONFIG where id=#{id}
+  </select>
+
 </mapper>
