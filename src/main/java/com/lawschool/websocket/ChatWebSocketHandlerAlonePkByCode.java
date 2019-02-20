@@ -351,6 +351,18 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 				{
 					//先根据这个人 新建一个 对战平台出来   这个人是play1
 					BattlePlatform battlePlatform=battlePlatformService.save(loginUser.getId(),"PKOnlineBycode");
+
+					if(battlePlatform==null)
+					{
+						msg.setText("占无题目配置，请联系管理员");
+						msg.setDate(new Date());
+						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+
+						sendMessageToUser(loginUser.getId(),message);
+						webSocketSession.close();
+					}
+
+
 					battlePlatformMap.put(battlePlatform.getBattleCode(),battlePlatform);//把当前新建的平台加到map中
 					//下面这步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
 					webSocketSession.getAttributes().put("playids",loginUser.getId());
@@ -360,32 +372,47 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 					//得到题目的list(对象里面有答案)
 					List<TestQuestions> qList=competitionOnlineService.getQuest();
 
-					CompetitionOnline competitionOnline=competitionOnlineService.findAll2();
+					if(qList==null)
+					{
+						msg.setText("存在未找到的题目，请联系管理员");
+						msg.setDate(new Date());
+						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+
+						sendMessageToUser(loginUser.getId(),message);
+						webSocketSession.close();
+					}
+					else
+				    {
+						CompetitionOnline competitionOnline=competitionOnlineService.findAll2();
 //						现在我要把它放onlinePk+id的形式存入   第一个user的id为准
 //						redisUtil.set("onlinePk"+loginUser.getId(),qList);
-					timuMap.put("onlinePk"+loginUser.getId(),qList);
-					timussettingMap.put("onlinePksetting"+loginUser.getId(),competitionOnline);
+						timuMap.put("onlinePk"+loginUser.getId(),qList);
+						timussettingMap.put("onlinePksetting"+loginUser.getId(),competitionOnline);
 
-					webSocketSession.getAttributes().put("battlePlatformId",battlePlatform.getId());//纯大家的平台id
-					count.put(battlePlatform.getId(),0);//将这个平台id计数为0
-					answerCount.put(loginUser.getId(),0);//一进来设置0
+						webSocketSession.getAttributes().put("battlePlatformId",battlePlatform.getId());//纯大家的平台id
+						count.put(battlePlatform.getId(),0);//将这个平台id计数为0
+						answerCount.put(loginUser.getId(),0);//一进来设置0
 
 
-					msg.setText("请等待 玩家加入");
-					msg.setDate(new Date());
-					msg.setBattlePlatform(battlePlatform);
-					msg.setTo(loginUser.getId());
-					msg.setNowtimu("0");
-					msg.setBattleCode(battlePlatform.getBattleCode());
-					msg.setCompetitionOnline(competitionOnline);
-					//把题目塞到信息里面去往页面打
-					msg.setTqList(qList);
+						msg.setText("请等待 玩家加入");
+						msg.setDate(new Date());
+						msg.setBattlePlatform(battlePlatform);
+						msg.setTo(loginUser.getId());
+						msg.setNowtimu("0");
+						msg.setBattleCode(battlePlatform.getBattleCode());
+						msg.setCompetitionOnline(competitionOnline);
+						//把题目塞到信息里面去往页面打
+						msg.setTqList(qList);
 
-					msg.getUserList().add(loginUser);
-					TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-					//群发消息
+						msg.getUserList().add(loginUser);
+						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+						//群发消息
 //						sendMessageToAll(message);
-					sendMessageToUser(loginUser.getId(),message);
+						sendMessageToUser(loginUser.getId(),message);
+					}
+
+
+
 				}
 
 				//凭借邀请码加入房间的

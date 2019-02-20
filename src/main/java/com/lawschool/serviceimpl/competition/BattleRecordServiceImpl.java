@@ -104,4 +104,11 @@ public class BattleRecordServiceImpl extends ServiceImpl<BattleRecordDao, Battle
 		int i=battleRecordDao.pkSum(u.getId());
 		return i;
 	}
+
+	@Override
+	public int winLeiTaiCountByUserId(String userid) {
+
+		int i=	this.selectCount(new EntityWrapper<BattleRecord>().eq("USER_ID",userid).eq("WHETHER_WIN","1"));
+		return i;
+	}
 }

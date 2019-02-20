@@ -40,7 +40,7 @@
                         header-align="center"
                         align="center">
                     <template slot-scope="scope">
-                        {{scope.row.questionType == '10004' ?
+                        {{scope.row.questionType == '10007'? '主观题' : scope.row.questionType == '10004' ?
                             '单选' : scope.row.questionType == '10005' ?
                             '多选' : '判断'}}
                     </template>
@@ -93,7 +93,7 @@
                                 content="编辑">
                             <i class="iconfont icon-xiugaimima tabIcon"
                                slot="reference"
-                               @click="handleEdit(scope.$index, scope.row)"
+                               @click="handleEdit(scope.row.id)"
                                style="color: #119e0a;" >
                             </i>
                         </el-popover>
@@ -125,19 +125,21 @@
             </el-col>
         </el-row>
 
-        <el-dialog title="试题编辑" :visible.sync="dialogFormVisible">
-            <el-form :model="form" label-width="100px" size="small">
+        <el-dialog title="试题编辑" :visible.sync="dialogFormVisible" :before-close="closeDia">
+            <el-form :model="form" :rules="rules" ref="form" label-width="100px" size="small">
                 <el-col :span="24">
-                    <el-form-item label="试题描述：">
-                        <el-input v-model="form.comContent" autocomplete="off"></el-input>
+                    <el-form-item label="试题描述：" prop="comContent">
+                        <el-input :disabled="isEdit" v-model="form.comContent" autocomplete="off"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="试题分类：">
-                        <el-radio v-for="item in typeList" v-model="form.typeId" :label="item.key">{{item.value}}</el-radio>
+                    <el-form-item label="试题分类：" prop="typeId">
+                        <el-radio :disabled="isEdit" @change="typeChange" v-for="item in typeList" v-model="form.typeId" :label="item.key">
+                            {{item.value}}
+                        </el-radio>
                     </el-form-item>
 
-                    <el-form-item label="视频上传：" v-if="form.typeId == 1">
-                        <el-upload name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess" :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
+                    <el-form-item label="视频上传：" v-if="form.typeId == 1" prop="video">
+                        <el-upload :disabled="isEdit" name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess" :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
                             <video width="320" height="180" v-if="form.video !='' && videoFlag == false" :src="form.videoUrl" class="avatar" controls="controls" >您的浏览器不支持视频播放</video>
                             <i v-else-if="form.video =='' && videoFlag == false" class="iconfont icon-shipin"></i>
                             <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
@@ -145,22 +147,23 @@
                         <P class="text">请保证视频格式正确，且不超过100M</P>
                     </el-form-item>
 
-                    <el-form-item label="试题类型：">
-                        <el-radio-group v-model="form.questionType">
-                            <el-radio v-if="item.value != '主观题'" v-for="item in qtList" v-model="form.questionType" :label="item.key">
+                    <el-form-item label="试题类型：" prop="questionType">
+                        <el-radio-group :disabled="isEdit" v-model="form.questionType" @change="qtChange">
+                            <el-radio v-for="item in qtList" v-model="form.questionType" :label="item.key">
                                 {{item.value}}
                             </el-radio>
                         </el-radio-group>
                     </el-form-item>
 
-                    <el-form-item label="配置选项：">
+                    <el-form-item label="配置选项：" prop="answerList" v-if="form.questionType != '10007' && !isEdit">
                         <el-button size="mini" type="primary" @click="addAnswer">添加选项</el-button>
                     </el-form-item>
                     <el-table
                             :data="form.answerList"
                             style="width: 100%"
                             stripe
-                            v-if="form.answerList.length > 0">
+                            :disabled="isEdit"
+                            v-if="form.answerList.length > 0 && form.questionType != '10007'">
                         <el-table-column
                                 type="index"
                                 label="序号">
@@ -191,6 +194,9 @@
                                 header-align="center"
                                 align="center"
                                 prop="isAnswer">
+                            <template slot-scope="scope">
+                                {{scope.row.isAnswer == 1 ? '是' : '否'}}
+                            </template>
                         </el-table-column>
 
                         <el-table-column
@@ -199,21 +205,21 @@
                                 align="center"
                                 prop="status">
                             <template slot-scope="scope">
-                                <el-button type="primary" size="mini">
+                                <el-button type="primary" size="mini" :disabled="isEdit">
                                     删除
                                 </el-button>
                             </template>
                         </el-table-column>
                     </el-table>
 
-                    <el-form-item label="试题难度：">
-                        <el-radio v-for="item in diffList" v-model="form.questionDifficulty" :label="item.key">
+                    <el-form-item label="试题难度：" prop="questionDifficulty">
+                        <el-radio :disabled="isEdit" v-for="item in diffList" v-model="form.questionDifficulty" :label="item.key">
                             {{item.value}}
                         </el-radio>
                     </el-form-item>
 
-                    <el-form-item label="主题类型：">
-                        <el-select v-model="form.specialKnowledgeId" placeholder="请选择">
+                    <el-form-item label="主题类型：" prop="specialKnowledgeId">
+                        <el-select :disabled="isEdit" v-model="form.specialKnowledgeId" placeholder="请选择">
                             <el-option
                                     v-for="item in topicList"
                                     :key="item.key"
@@ -223,33 +229,43 @@
                         </el-select>
                     </el-form-item>
 
-                    <el-form-item label="法律依据：">
-                        <el-input v-model="form.legalBasis" autocomplete="off"></el-input>
-                    </el-form-item>
+                    <!--<el-form-item label="法律依据：">-->
+                        <!--<el-input :disabled="isEdit" v-model="form.legalBasis" autocomplete="off"></el-input>-->
+                    <!--</el-form-item>-->
 
                     <el-form-item label="答案描述：">
-                        <el-input v-model="form.answerDescrible" autocomplete="off"></el-input>
+                        <el-input :disabled="isEdit" v-model="form.answerDescrible" autocomplete="off"></el-input>
                     </el-form-item>
 
                 </el-col>
 
                 <el-col :span="12">
-                    <el-form-item label="是否发布">
-                        <el-switch v-model="form.releaseStatus"></el-switch>
+                    <el-form-item label="是否发布：">
+                        <el-switch v-model="form.releaseStatus"
+                                   active-text="发布"
+                                   inactive-text="不发布"
+                                   active-value="0"
+                                   inactive-value="1"
+                                   :disabled="isEdit"></el-switch>
                     </el-form-item>
                 </el-col>
 
                 <el-col :span="12">
-                    <el-form-item label="是否启用">
-                        <el-switch v-model="form.isEnble"></el-switch>
+                    <el-form-item label="是否启用：">
+                        <el-switch v-model="form.isEnble"
+                                   active-text="启用"
+                                   inactive-text="禁用"
+                                   active-value="0"
+                                   inactive-value="1"
+                                   :disabled="isEdit"></el-switch>
                     </el-form-item>
                 </el-col>
 
             </el-form>
 
             <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="save">提交入库</el-button>
+                <el-button @click="closeDia">取 消</el-button>
+                <el-button v-if="!isEdit" type="primary" @click="save('form')">提交入库</el-button>
             </div>
         </el-dialog>
 
