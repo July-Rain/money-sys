@@ -94,6 +94,10 @@ var vm = new Vue({
             vm.isAnswer = true;
 
             vm.getTsxx(userAnswer, rightAnswer);
+
+            if(vm.isNew && vm.answers.length > 0){
+                vm.saveAnswer();
+            }
         },
         getTsxx: function(userAnswer, rightAnswer){
             // userAnswer、rightAnswer可能多选
@@ -114,9 +118,6 @@ var vm = new Vue({
             }
         },
         last: function () {
-            if(vm.isNew && vm.answers.length > 0){
-                vm.saveAnswer();
-            }
             // 上一页
             if(vm.index == 1){
                 vm.isLast = true;
@@ -127,10 +128,6 @@ var vm = new Vue({
             }
         },
         next: function () {
-            if(vm.isNew && vm.answers.length > 0){
-                vm.saveAnswer();
-            }
-
             // 下一页
             vm.index++;
             vm.getQuestion();
@@ -138,9 +135,6 @@ var vm = new Vue({
         },
         commit: function () {
             // 结束本次练习
-            if(vm.isNew && vm.answers.length > 0){
-                vm.saveAnswer();
-            }
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
                 = 'modules/exerciseCenter/random_index.html';
@@ -155,6 +149,10 @@ var vm = new Vue({
             }
 
             vm.isAnswer = true;
+
+            if(vm.isNew && vm.answers.length > 0){
+                vm.saveAnswer();
+            }
         },
         saveAnswer: function () {
             var lx = typeof vm.answers;
