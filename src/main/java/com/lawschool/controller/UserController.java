@@ -94,7 +94,7 @@ public class UserController extends AbstractController {
      * @return com.lawschool.util.Result
     **/
     @RequestMapping("/getUorT")
-    public Result getUorT(@RequestParam Map<String,Object> params){
+    public Result getUorT(@RequestParam Map<String,String> params){
         PageUtils pageUtils = userService.selectAllUsers(params);
         return Result.ok().put("page",pageUtils);
     }
