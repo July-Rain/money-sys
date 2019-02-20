@@ -6,6 +6,7 @@ import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.SysUserRole;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserExample;
+import com.lawschool.beans.diagnosis.StuDiagnosisEntity;
 import com.lawschool.config.ShiroUtils;
 import com.lawschool.dao.SysUserRoleDao;
 import com.lawschool.dao.UserMapper;
@@ -60,43 +61,44 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
      * @return com.lawschool.util.PageUtils
     **/
     @Override
-    public PageUtils selectAllUsers(Map<String,Object> params) {
+    public PageUtils selectAllUsers(Map<String,String> params) {
 
-        //int pageNo= Integer.parseInt( Optional.ofNullable(params.get("currPage")).orElse("1").toString());
-        //int pageSize=Integer.parseInt((String) Optional.ofNullable(params.get("pageSize")).orElse("10").toString());
 
-        //Page<User> page=new Page<>(pageNo,pageSize);
-
-        EntityWrapper<User> ew = new EntityWrapper<>();//默认所有的用户
-
-        if(UtilValidate.isNotEmpty(params.get("identify"))){
-            ew.eq("IDENTIFY",params.get("identify"));// 0-普通用户  1-教官
-        }
-
-        if(UtilValidate.isNotEmpty(params.get("orgCode"))){
-            ew.eq("ORG_CODE",params.get("orgCode"));//部门
-        }
-        if(UtilValidate.isNotEmpty(params.get("userName"))){
-            ew.like("USER_NAME", (String) params.get("userName"));//姓名
-
-        }
-
-        if(UtilValidate.isNotEmpty(params.get("userCode"))){
-            ew.like("USER_CODE", (String) params.get("userCode"));//身份证号
-
-        }
-
-        if(UtilValidate.isNotEmpty(params.get("isOnline"))){
-            ew.eq("IS_ONLINE",1);//1  在线
-        }
-        if(UtilValidate.isNotEmpty(params.get("userStatus"))){
-            ew.eq("USER_STATUS","2000");//1  在线
-        }
-        ew.orderBy("create_time",false);
-        Page<User> page = this.selectPage( new Query<User>(params).getPage(),ew);
-
-        PageUtils pageUtils=new PageUtils(page);
-        return pageUtils;
+//        EntityWrapper<User> ew = new EntityWrapper<>();//默认所有的用户
+//
+//        if(UtilValidate.isNotEmpty(params.get("identify"))){
+//            ew.eq("IDENTIFY",params.get("identify"));// 0-普通用户  1-教官
+//        }
+//
+//        if(UtilValidate.isNotEmpty(params.get("orgCode"))){
+//            ew.like("ORG_CODE",UtilString.reverseAndReplaceStr(params.get("orgCode").toString()));//部门
+//        }
+//        if(UtilValidate.isNotEmpty(params.get("userName"))){
+//            ew.like("USER_NAME", (String) params.get("userName"));//姓名
+//
+//        }
+//
+//        if(UtilValidate.isNotEmpty(params.get("userCode"))){
+//            ew.like("USER_CODE", (String) params.get("userCode"));//身份证号
+//
+//        }
+//
+//        if(UtilValidate.isNotEmpty(params.get("isOnline"))){
+//            ew.eq("IS_ONLINE",1);//1  在线
+//        }
+//        if(UtilValidate.isNotEmpty(params.get("userStatus"))){
+//            ew.eq("USER_STATUS","2000");//1  在线
+//        }
+//        ew.orderBy("create_time",false);
+//        Page<User> page = this.selectPage( new Query<User>(params).getPage(),ew);
+//
+//        PageUtils pageUtils=new PageUtils(page);
+//        return pageUtils;
+        Page<User> page = new Page<User>(Integer.parseInt(params.get("currPage")),Integer.parseInt(params.get("pageSize")));
+        page.setRecords(userMapper.selectAllUsers(page,params));
+        int userNum =userMapper.countUser(params);
+        page.setTotal(userNum);
+        return new PageUtils(page);
     }
     
     

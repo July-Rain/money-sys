@@ -7,8 +7,8 @@ var vm = new Vue({
     el: '#app',
     data: function () {
         return {
-            userName: '111',
-            sum: '222',
+            user: {},
+            sum: 0,
             dateRange: { //学情看板日期区间
                 startTime: '',
                 endTime: '',
@@ -58,18 +58,20 @@ var vm = new Vue({
                     vm.seriesNumData.map(function (value) {
                         vm.studyCountNames.push(value.name);
                         vm.studyCountData.push({
-                            value: value.value,
+                            value: value.value?value.value:0,
                             name: value.name
                         });
                     });
-
+                    vm.sum=0;
                     vm.stuInfo.map(function (value) {
                         value.per =Number(value.ratio.slice(0,value.ratio.length-1))
+                        vm.sum+=value.countTime;
                     });
                     vm.$nextTick(function () {
                         // this.getStuDia();
                         vm.initPie1();
                         vm.initPieNum();
+                        vm.user=getUser();
                     })
                 } else {
                     alert(result.msg);

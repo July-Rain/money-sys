@@ -56,8 +56,12 @@ var vm = new Vue({
             userPoliceId: [
                 {required: true, message: '请输入警号', trigger: 'blur'},
             ],
+
             tmroles: [
                 { required: true, message: '请选择角色', trigger: 'change'}
+            ],
+            orgName: [
+                {required: true, message: '请选择部门', trigger: 'blur'},
             ],
         },
         roles:[],
@@ -237,10 +241,11 @@ var vm = new Vue({
         },
 
         // 部门点击事件
-        handleNodeClick:function(data){
-            vm.formInline.orgCode=data.localOrgCode;
-            this.reload();
-        },
+        // handleNodeClick:function(data){
+        //     debugger
+        //     vm.formInline.orgCode=data.localOrgCode;
+        //     this.reload();
+        // },
 
         //展示部门
         deptShow:function(){
@@ -310,11 +315,11 @@ var vm = new Vue({
 
         // 部门选择事件
         handleNodeClick: function (data) {
-                this.checkedId = data.id;
-                console.log(data);
-                vm.teacher.orgCode= data.localOrgCode;
-                vm.teacher.orgName= data.localOrgName;
-                vm.teacher.orgId= data.id;
+            debugger
+            vm.formInline.orgCode= data.localOrgCode;
+            vm.formInline.orgName= data.localOrgName;
+            vm.formInline.orgId= data.orgId;
+            this.reload();
         },
 
         //确定部门
