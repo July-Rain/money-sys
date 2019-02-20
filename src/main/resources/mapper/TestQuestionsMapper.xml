@@ -376,6 +376,9 @@
             <if test="isEnble != null and isEnble != ''">
                 AND a.is_enble = #{isEnble}
             </if>
+            <if test="comContent != null and comContent != ''">
+                AND a.com_content like concat(concat('%',#{comcontent}),'%')
+            </if>
         </where>
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">
