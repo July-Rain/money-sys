@@ -315,6 +315,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 
 		List<TestQuestions> qList= new ArrayList<TestQuestions>();
 		CompetitionOnline competitionOnline=findAll2();//获取这个大关里面的所有小关的信息
+
 		//循环咯
 		for(BattleTopicSetting battleTopicSetting:competitionOnline.getBattleTopicSettingList())
 		{
@@ -324,8 +325,16 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 			tq.setSpecialKnowledgeId(battleTopicSetting.getKnowledgeId());
 
 			TestQuestions testquestions=testQuestionService.findByEntity(tq);
-			testquestions.setAnswerList(answerService.getAnswerByQid(testquestions.getId()));
-			qList.add(testquestions);
+			if(testquestions==null)
+			{
+				qList=null;
+				break;
+			}
+			else{
+				testquestions.setAnswerList(answerService.getAnswerByQid(testquestions.getId()));
+				qList.add(testquestions);
+			}
+
 		}
 
 		return qList;
@@ -377,7 +386,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 
 		//加完后在添加 另外的积分表
 		Integral integral=new Integral();
-		integral.setType("1");
+		integral.setType("0");
 		integral.setPoint(Integer.parseInt(score));
 		integral.setSrc(type);
 

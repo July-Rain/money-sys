@@ -10,6 +10,18 @@
         .manList{
             max-height: 822px;
         }
+        .icon-yinpin{
+            font-size: 30px;
+            color: #57A8DC;
+        }
+        .icon-tupian{
+            font-size: 30px;
+            color: #57A8DC;
+        }
+        .icon-shipin{
+            font-size: 30px;
+            color: #57A8DC;
+        }
     </style>
 </head>
 <body>
@@ -223,17 +235,24 @@
                         <template v-if="caseAna.contentType=='2'">
 
                             <el-form-item label="音频上传：" prop="caseContent">
+                                <audio v-if="caseAna.caseContent !='' && videoFlag == false" :src="caseAna.caseContentUrl" class="avatar" controls="controls" >您的浏览器不支持音频播放</audio>
+                                <i v-else-if="caseAna.caseContent =='' && videoFlag == false" class="iconfont icon-yinpin"></i>
+                                <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
+
                                 <!-- action必选参数, 上传的地址 -->
+
                                 <el-upload name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess" :before-upload="beforeAudioUpload" :on-progress="uploadVideoProcess">
-                                    <audio v-if="caseAna.caseContent !='' && videoFlag == false" :src="caseAna.caseContentUrl" class="avatar" controls="controls" >您的浏览器不支持音频播放</audio>
-                                    <i v-else-if="caseAna.caseContent =='' && videoFlag == false" class="el-icon-plus avatar-uploader-icon"></i>
-                                    <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
+                                    <el-button type="primary">点击上传</el-button>
+
                                 </el-upload>
                                 <P class="text">请保证音频格式正确，且不超过100M</P>
                             </el-form-item>
                         </template>
                         <template v-if="caseAna.contentType=='3'">
                             <el-form-item label="视频封面上传：" prop="videoPicAcc">
+                                <img v-if="caseAna.videoPicAcc !=''" :src="caseAna.videoPicAccUrl" class="avatar">
+                                <i v-else class="iconfont icon-tupian"></i>
+
                                 <el-upload
                                         class="avatar-uploader"
                                         name="importfile"
@@ -241,16 +260,20 @@
                                         :show-file-list="false"
                                         :on-success="handlePicSuccess"
                                         :before-upload="beforePicUpload">
-                                    <img v-if="caseAna.videoPicAcc !=''" :src="caseAna.videoPicAccUrl" class="avatar">
-                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                    <el-button type="primary">点击上传</el-button>
+
                                 </el-upload>
                             </el-form-item>
                             <el-form-item label="视频上传：" prop="caseContent">
+                                <video v-if="caseAna.caseContent !='' && videoFlag == false" :src="caseAna.caseContentUrl" class="avatar" controls="controls" >您的浏览器不支持视频播放</video>
+                                <i v-else-if="caseAna.caseContent =='' && videoFlag == false" class="iconfont icon-shipin"></i>
+                                <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
+
                                 <!-- action必选参数, 上传的地址 -->
                                 <el-upload name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess" :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
-                                    <video v-if="caseAna.caseContent !='' && videoFlag == false" :src="caseAna.caseContentUrl" class="avatar" controls="controls" >您的浏览器不支持视频播放</video>
-                                    <i v-else-if="caseAna.caseContent =='' && videoFlag == false" class="el-icon-plus avatar-uploader-icon"></i>
-                                    <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
+                                    <el-button type="primary">点击上传</el-button>
+
+
                                 </el-upload>
                                 <P class="text">请保证视频格式正确，且不超过100M</P>
                             </el-form-item>

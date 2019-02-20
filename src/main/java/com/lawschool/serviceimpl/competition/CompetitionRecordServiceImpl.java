@@ -83,7 +83,7 @@ public class CompetitionRecordServiceImpl extends ServiceImpl<CompetitionRecordD
 
 		//加完后在添加 另外的积分表
 		Integral integral=new Integral();
-		integral.setType("1");
+		integral.setType("0");
 		integral.setPoint(Integer.parseInt(sorce));
 		integral.setSrc("Checkpoint");
 		integralService.addIntegralRecord(integral,u);
