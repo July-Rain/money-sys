@@ -120,7 +120,6 @@ function getUser() {
         dataType: "json",
         async: false,
         success: function (result) {
-            debugger
             user = result.user;
         }
     });
@@ -274,3 +273,4 @@ function echartsOption(myChart, option) {
 function toHome() {
     parent.location.reload()
 }
+

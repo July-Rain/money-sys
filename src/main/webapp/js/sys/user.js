@@ -95,7 +95,6 @@ var vm = new Vue({
                 async:false,
                 data: {type:"POLICACLASS",Parentcode:"0"},
                 success: function (result) {
-                    debugger
                     vm.policeclassOption=result.dictlist;
                 }
             });
@@ -106,6 +105,10 @@ var vm = new Vue({
 
 
     methods: {
+        //序列号计算
+        indexMethod:function (index) {
+            return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
+        },
         // 查询
         onSubmit: function () {
             this.reload();
@@ -242,7 +245,6 @@ var vm = new Vue({
 
         // 部门点击事件
         // handleNodeClick:function(data){
-        //     debugger
         //     vm.formInline.orgCode=data.localOrgCode;
         //     this.reload();
         // },
@@ -315,7 +317,6 @@ var vm = new Vue({
 
         // 部门选择事件
         handleNodeClick: function (data) {
-            debugger
             vm.formInline.orgCode= data.localOrgCode;
             vm.formInline.orgName= data.localOrgName;
             vm.formInline.orgId= data.orgId;
@@ -348,7 +349,6 @@ var vm = new Vue({
 
         //保存
         saveOrUpdate:function (formName) {
-            debugger
             this.$refs[formName].validate(function (valid) {
 
                     if (valid) {
