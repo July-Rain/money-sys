@@ -163,10 +163,11 @@ var vm = new Vue({
             vm.reload();
         },
         getRate: function (row, column) {
-            var msg = '100%';
+            var msg = '';
 
             var answerNum = row.answerNum;
             if(answerNum == 0){
+
                 return msg;
 
             }else {
