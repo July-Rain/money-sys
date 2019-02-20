@@ -111,7 +111,20 @@ function getBreadcrumb(menuId) {
     });
     return breadArr;
 }
-
+function getUser() {
+    //获取当前登陆人信息
+    var user ={userName:"",userId:""};
+    $.ajax({
+        type: "POST",
+        url: baseURL + "sys/getuser",
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            user = result.user;
+        }
+    });
+    return user;
+}
 
 //- 小写数字转换成大写
 function ArabiSimplified(Num) {
@@ -260,3 +273,4 @@ function echartsOption(myChart, option) {
 function toHome() {
     parent.location.reload()
 }
+

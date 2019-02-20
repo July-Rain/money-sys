@@ -132,12 +132,14 @@ public class RandomExerciseController extends AbstractController {
      * @return
      */
     @RequestMapping(value = "/getQuestion", method = RequestMethod.GET)
-    public Result getQuestion(@RequestParam("id") String id, @RequestParam("index") Integer index){
+    public Result getQuestion(@RequestParam("id") String id,
+                              @RequestParam("index") Integer index,
+                              @RequestParam("isReview") String isReview){
         User user = getUser();
         if(user == null){
             throw new RuntimeException("用户信息获取失败，请重新登录...");
         }
-        QuestForm quest = exerciseService.getQuestion(id, index, user.getId());
+        QuestForm quest = exerciseService.getQuestion(id, index, user.getId(), isReview);
         return Result.ok().put("question", quest);
     }
 
@@ -191,4 +193,18 @@ public class RandomExerciseController extends AbstractController {
         }
     }
 
+    /**
+     * 收藏题目
+     * @return
+     */
+    @RequestMapping(value = "/doCollect", method = RequestMethod.POST)
+    public Result doCollect(@RequestBody CommonForm params){
+
+        String id = params.getKey();// 题目ID
+        String recordId = params.getValue();// 记录ID
+
+        exerciseService.doCollect(id, recordId);
+
+        return Result.ok();
+    }
 }

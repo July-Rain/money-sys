@@ -64,12 +64,13 @@
                                 type="index"
                                 header-align="center"
                                 align="center"
+                                :index="indexMethod"
                                 width="50">
                         </el-table-column>
                         <el-table-column
                                 prop="userName"
                                 label="姓名"
-                                width="130"
+                                width="140"
                                 align="center"
                         >
                         </el-table-column>
@@ -95,56 +96,8 @@
                         </el-table-column>
                         <el-table-column label="操作"  prop="userStatus" align="center">
                             <template slot-scope="scope">
-                                <!--<el-button
-                                        size="mini"
-                                        @click="handleEdit(scope.$index, scope.row)">重置密码
-                                </el-button>-->
                                 <el-popover
-                                        placement="top-start"
-                                        trigger="hover"
-                                        content="重置密码">
-                                    <i class="iconfont tabIcon"
-                                       slot="reference"
-                                       @click="handleEdit(scope.$index, scope.row)"
-                                       style="color: #119e0a;" >&#xe657;
-                                    </i>
-                                </el-popover>
-                                <el-popover
-                                        v-if="scope.row.userStatus == '2000'"
-                                        placement="top-start"
-                                        trigger="hover"
-                                        content="禁用">
-                                    <i class="iconfont tabIcon"
-                                       slot="reference"
-                                       @click="handleEdit(scope.$index, scope.row)"
-                                       style="color: #ff0000;" >&#xe656;
-                                    </i>
-                                </el-popover>
-                                <!--<el-button
-                                        size="mini" v-if="scope.row.userStatus == '2000'"
-                                        type="danger"
-                                        @click="handleDel(scope.$index, scope.row)">禁用
-                                </el-button>-->
-
-                                <!--<el-button
-                                        size="mini" v-if="scope.row.userStatus == '800'"
-                                        type="primary"
-                                        @click="handleRecovery(scope.$index, scope.row)">恢复
-                                </el-button>-->
-                                <el-popover
-                                        v-if="scope.row.userStatus == '800'"
-                                        placement="top-start"
-                                        trigger="hover"
-                                        content="启用">
-                                    <i class="iconfont tabIcon"
-                                       slot="reference"
-                                       @click="handleRecovery(scope.$index, scope.row)"
-                                       style="color: #119e0a;" >&#xe660;
-                                    </i>
-                                </el-popover>
-
-                                <el-popover
-                                        placement="top-start"
+                                        placement="right"
                                         trigger="hover"
                                         content="编辑">
                                     <i class="iconfont icon-xiugaimima tabIcon"
@@ -157,13 +110,45 @@
 
                                 <el-popover
 
-                                        placement="top-start"
+                                        placement="right"
                                         trigger="hover"
                                         content="删除">
                                     <i class="iconfont icon-tubiaozhizuo- tabIcon"
                                        slot="reference"
                                        @click="handleDel2(scope.$index, scope.row)"
                                        style="color: #e31313;" >
+                                    </i>
+                                </el-popover>
+                                <el-popover
+                                        placement="right"
+                                        trigger="hover"
+                                        content="重置密码">
+                                    <i class="iconfont tabIcon"
+                                       slot="reference"
+                                       @click="handleEdit(scope.$index, scope.row)"
+                                       style="color: #119e0a;" >&#xe657;
+                                    </i>
+                                </el-popover>
+                                <el-popover
+                                        v-if="scope.row.userStatus == '2000'"
+                                        placement="right"
+                                        trigger="hover"
+                                        content="禁用">
+                                    <i class="iconfont tabIcon"
+                                       slot="reference"
+                                       @click="handleDel(scope.$index, scope.row)"
+                                       style="color: #ff0000;" >&#xe656;
+                                    </i>
+                                </el-popover>
+                                <el-popover
+                                        v-if="scope.row.userStatus == '800'"
+                                        placement="right"
+                                        trigger="hover"
+                                        content="启用">
+                                    <i class="iconfont tabIcon"
+                                       slot="reference"
+                                       @click="handleRecovery(scope.$index, scope.row)"
+                                       style="color: #119e0a;" >&#xe660;
                                     </i>
                                 </el-popover>
                             </template>

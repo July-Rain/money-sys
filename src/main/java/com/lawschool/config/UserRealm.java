@@ -102,7 +102,7 @@ public class UserRealm extends AuthorizingRealm {
 
         //查询用户信息
         List<User> userList = sysUserDao.selectList((new EntityWrapper<User>())
-                .where("USER_CODE={0}", token.getUsername()));
+                .where("USER_CODE={0}", token.getUsername()).eq("user_status","2000"));
         User user = null;
         if (UtilValidate.isNotEmpty(userList)) {
             user = userList.get(0);

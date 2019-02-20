@@ -2,17 +2,16 @@ package com.lawschool.controller.system;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.base.AbstractController;
+import com.lawschool.beans.User;
 import com.lawschool.beans.accessory.AccessoryEntity;
+import com.lawschool.beans.system.SysMenuEntity;
 import com.lawschool.service.accessory.AccessoryService;
 import com.lawschool.util.FileUtil;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -121,4 +120,14 @@ public class SysCommonController extends AbstractController {
         outputStream.close();
     }
 
+    /**
+     * 获取当前登陆人
+     * @return
+     */
+    @RequestMapping("/getuser")
+    @ResponseBody
+    public Result getuser(){
+        User user = getUser();
+        return Result.ok().put("user", user);
+    }
 }

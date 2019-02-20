@@ -2,6 +2,7 @@ package com.lawschool.service.impl.practicecenter;
 
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
+import com.lawschool.beans.Collection;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
 import com.lawschool.beans.practicecenter.ExerciseAnswerRecordEntity;
@@ -10,6 +11,7 @@ import com.lawschool.beans.practicecenter.ThemeExerciseEntity;
 import com.lawschool.dao.practicecenter.ExerciseDao;
 import com.lawschool.form.*;
 import com.lawschool.service.AnswerService;
+import com.lawschool.service.CollectionService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.practicecenter.ExerciseAnswerRecordService;
 import com.lawschool.service.practicecenter.ExerciseService;
@@ -40,6 +42,9 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
 
     @Autowired
     private AnswerService answerService;
+
+    @Autowired
+    private CollectionService collectionService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -229,9 +234,10 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
      * 获取题目信息，每次只取一条
      * @param id
      * @param index
+     * @param isReview
      * @return
      */
-    public QuestForm getQuestion(String id, Integer index, String userId){
+    public QuestForm getQuestion(String id, Integer index, String userId, String isReview){
         // 查询配置信息
         ExerciseEntity config = this.findOne(id);
 
@@ -241,8 +247,8 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
         params.put("end", index);
         params.put("themeId", config.getTopicType());
         params.put("difficulty", config.getDifficulty());
-        params.put("classify", config.getClassify());
         params.put("type", config.getType());
+        params.put("classify", config.getClassify());
 
         List<String> ids = testQuestionService.selectIdsForPage(params);
 
@@ -250,7 +256,7 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
             return null;
         }
 
-        List<QuestForm> resultList = dao.getQuestions(ids, id, userId);
+        List<QuestForm> resultList = dao.getQuestions(ids, id, userId, isReview);
         if(CollectionUtils.isEmpty(resultList)){
             return null;
         }
@@ -264,5 +270,25 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
     public boolean updateNum(Integer answerNum, Integer rightNum, String id){
 
         return dao.updateNum(answerNum, rightNum, id);
+    }
+
+    /**
+     * 随机练习收藏题目功能
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public boolean doCollect(String id, String recordId){
+        Collection collect = new Collection();
+        collect.setId(IdWorker.getIdStr());
+        collect.setType(20);
+        collect.setComStucode(id);
+
+        User user = (User)SecurityUtils.getSubject().getPrincipal();
+        // 0成功，1失败
+        int result = collectionService.addCollection(collect, user);
+
+        dao.updateCollect(recordId);
+
+        return true;
     }
 }
