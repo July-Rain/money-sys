@@ -114,7 +114,7 @@ public class ChatWebSocketHandlerLeitai implements WebSocketHandler {
 		}
 
 
-
+		answerCount.put(msg.getFrom(),answerCount.get(msg.getFrom())+1);
 		msg.setDate(new Date());
 		//处理html的字符，转义：
 		String text = msg.getText();
@@ -234,7 +234,7 @@ public class ChatWebSocketHandlerLeitai implements WebSocketHandler {
 
 						//把擂主给play2
 						matchSettingService.updateWin(timussettingMap.get("leitaisetting"+battlePlatform.getPlay1()),battlePlatform.getPlay2());
-
+						competitionOnlineService.recordScore(battlePlatformId,"1",timussettingMap.get("leitaisetting"+battlePlatform.getPlay1()).getWinReward(),"leitai",battlePlatform.getPlay2());
 
 					}
 					else if(loginUser.getId().equals(battlePlatform.getPlay2()))
@@ -249,6 +249,7 @@ public class ChatWebSocketHandlerLeitai implements WebSocketHandler {
 						USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).close();
 						//把擂主给play1
 						matchSettingService.updateWin(timussettingMap.get("leitaisetting"+battlePlatform.getPlay1()),battlePlatform.getPlay1());
+						competitionOnlineService.recordScore(battlePlatformId,"1",timussettingMap.get("leitaisetting"+battlePlatform.getPlay1()).getWinReward(),"leitai",battlePlatform.getPlay1());
 					}
 
 
@@ -371,7 +372,15 @@ public class ChatWebSocketHandlerLeitai implements WebSocketHandler {
 			SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss" );
 		    Message msg = new Message();
 			MatchSetting matchSetting=matchSettingService.findAll2();
+			if(matchSetting==null)
+			{
+				msg.setText("占无题目配置，请联系管理员");
+				msg.setDate(new Date());
+				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 
+				sendMessageToUser(loginUser.getId(),message);
+				webSocketSession.close();
+			}
 			//假如现在是有擂主的
 		    	if(matchSetting.getWinId()!=null)
 		    	{
@@ -381,6 +390,18 @@ public class ChatWebSocketHandlerLeitai implements WebSocketHandler {
 						//开房，等人来
 						//先根据这个人 新建一个 对战平台出来   这个人是play1
 						BattlePlatform battlePlatform=battlePlatformService.save(loginUser.getId(),"leitai");
+
+						if(battlePlatform==null)
+						{
+							msg.setText("占无题目配置，请联系管理员");
+							msg.setDate(new Date());
+							TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+
+							sendMessageToUser(loginUser.getId(),message);
+							webSocketSession.close();
+						}
+
+
 						battlePlatformMap.put(battlePlatform.getId(),battlePlatform);//把当前新建的平台加到map中   id为主键
 						//下面这步是为了 一个用户断开   给另一个用户发消息  而不是给 所有人
 						webSocketSession.getAttributes().put("playids",loginUser.getId());
@@ -390,28 +411,43 @@ public class ChatWebSocketHandlerLeitai implements WebSocketHandler {
 						//第一个玩家进来 就去找题目   这样第2个玩家进来就可以直接开始。没关系 有锁
 						//得到题目的list(对象里面有答案)
 						List<TestQuestions> qList=matchSettingService.getQuest();
+						if(qList==null)
+						{
+							msg.setText("存在未找到的题目，请联系管理员");
+							msg.setDate(new Date());
+							TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 
+							sendMessageToUser(loginUser.getId(),message);
+							webSocketSession.close();
+						}
+						else
+						{
 //						现在我要把它放onlinePk+id的形式存入   第一个user的id为准
 //						redisUtil.set("onlinePk"+loginUser.getId(),qList);
-						timuMap.put("leitai"+loginUser.getId(),qList);
-						timussettingMap.put("leitaisetting"+loginUser.getId(),matchSetting);
+							timuMap.put("leitai"+loginUser.getId(),qList);
+							timussettingMap.put("leitaisetting"+loginUser.getId(),matchSetting);
 
-						webSocketSession.getAttributes().put("battlePlatformId",battlePlatform.getId());//纯大家的平台id
-						count.put(battlePlatform.getId(),0);//将这个平台id计数为0
-						answerCount.put(loginUser.getId(),0);//一进来设置0
+							webSocketSession.getAttributes().put("battlePlatformId",battlePlatform.getId());//纯大家的平台id
+							count.put(battlePlatform.getId(),0);//将这个平台id计数为0
+							answerCount.put(loginUser.getId(),0);//一进来设置0
 
 
-						msg.setText("请擂主等待挑战者加入");
-						msg.setDate(new Date());
-						msg.setBattlePlatform(battlePlatform);
-						msg.setTo(loginUser.getId());
-						msg.setNowtimu("0");
-						msg.setMatchSetting(matchSetting);
-						//把题目塞到信息里面去往页面打
-						msg.setTqList(qList);
-						msg.getUserList().add(loginUser);
-						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-						sendMessageToUser(loginUser.getId(),message);
+							msg.setText("请擂主等待挑战者加入");
+							msg.setDate(new Date());
+							msg.setBattlePlatform(battlePlatform);
+							msg.setTo(loginUser.getId());
+							msg.setNowtimu("0");
+							msg.setMatchSetting(matchSetting);
+							//把题目塞到信息里面去往页面打
+							msg.setTqList(qList);
+							msg.getUserList().add(loginUser);
+							TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+							sendMessageToUser(loginUser.getId(),message);
+						}
+
+
+
+
 					}
 					//如果登陆人不是擂主  首先 看擂主在不在线咯
 					else

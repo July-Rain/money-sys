@@ -109,11 +109,19 @@ public class webSocketController extends AbstractController {
 
         //去找现在的擂主是谁
         //可能会找个null出来，说明当前没有擂主  去页面判断把
-        MatchSetting matchSetting=matchSettingService.list().get(0);//只会有一条数据的  直接 干 取第一条
-//        if(matchSetting.getWinId()==null ||  matchSetting.getWinId()=="")
-//        {
-//
-//        }
+//        MatchSetting matchSetting=matchSettingService.list().get(0);//只会有一条数据的  直接 干 取第一条
+        MatchSetting matchSetting=new MatchSetting();
+        List<MatchSetting> list=matchSettingService.list();
+        if(list.size()==0)
+        {
+            matchSetting=null;
+        }
+        else
+        {
+            matchSetting=matchSettingService.list().get(0);//只会有一条数据的  直接 干 取第一条
+
+        }
+
         //擂台配置在这里了
         session.setAttribute("matchSetting", matchSetting);
 

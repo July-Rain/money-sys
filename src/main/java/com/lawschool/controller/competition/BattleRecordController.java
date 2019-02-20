@@ -2,6 +2,7 @@ package com.lawschool.controller.competition;
 
 import com.lawschool.beans.User;
 import com.lawschool.beans.competition.CompetitionRecord;
+import com.lawschool.service.UserIntegralService;
 import com.lawschool.service.competition.BattleRecordService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
@@ -29,7 +30,8 @@ public class BattleRecordController {
 
     @Autowired
     private BattleRecordService battleRecordService;
-
+    @Autowired
+    private UserIntegralService userIntegralService;
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String,Object> params,String userid){
 //        User u = (User) SecurityUtils.getSubject().getPrincipal();
@@ -96,5 +98,14 @@ public class BattleRecordController {
     public Result pkSum(){
         int i= battleRecordService.pkSum();
         return Result.ok().put("pkSum",i);
+    }
+
+    //根据id 获取擂台获胜总次数与总积分
+    @RequestMapping("/winLeiTaiCountByUserId")
+    public Result winLeiTaiCountByUserId(String winId){
+        int i= battleRecordService.winLeiTaiCountByUserId(winId);
+
+        int t=   userIntegralService.getJifenByUserId(winId);
+        return Result.ok().put("winLeiTai",i).put("jifen",t);
     }
 }
