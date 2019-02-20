@@ -73,6 +73,30 @@
 .container .info_btn button i{
     margin-right: 10px;
 }
+.container .container-btn{
+    background-color: #fff;
+    height: 50px;
+    line-height: 50px;
+}
+.container .container-btn .el-col{
+    border-top: 1px solid #dddddd;
+    padding: 0 36px;
+}
+.container .container-btn a{
+    color: #333333;
+}
+.container .container-btn i{
+    font-size: 16px;
+    vertical-align: middle;
+}
+.container .align-rig{
+    text-align: right;
+}
+.container .align-cent{
+    text-align: center;
+    border: 1px solid #dddddd;
+    border-bottom: none;
+}
 /*.m {*/
     /*width: 960px;*/
     /*height: 400px;*/
@@ -408,6 +432,10 @@
 .content.lesson p{
     min-height: 14px;
     margin-bottom: 10px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .content.lesson p:last-child{
     color: #a9a9a9;

@@ -4,6 +4,58 @@
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
+<style>
+    .main{
+        display: flex;
+        width: 71%;
+        height: 80%;
+        margin: 0 auto;
+        border: 1px solid #dddddd;
+        border-radius: 2px;
+        font-size: 12px;
+    }
+    .main .left{
+        width: 18%;
+        text-align: center;
+        border-right: 1px solid #dddddd;
+    }
+    .main .right{
+        width: 82%;
+    }
+    .left .avatar{
+        margin-top: 20px;
+    }
+    .left .avatar img{
+        width: 114px;
+        height: 114px;
+        margin-bottom: 18px;
+        border-radius: 3px;
+    }
+    .left .avatar p{
+        color: #1381e3;
+    }
+    .right .info{
+        padding-left: 8px;
+        margin-bottom: 24px;
+        margin-left: -40px;
+        border-left: 3px solid #1381e3;
+    }
+    .right .form{
+        width: 440px;
+        margin-left: 180px;
+        margin-top: 20px;
+    }
+    .right .form .gray el-input{
+        background: #ededf1;
+    }
+    .right el-input{
+        width: 82%;
+    }
+    .right .form .button{
+        margin-left: 220px;
+        margin-bottom: 20px;
+    }
+</style>
 <body>
 <div id="app" v-cloak>
     <div class="container">
@@ -12,7 +64,83 @@
             <el-breadcrumb-item>个人中心</el-breadcrumb-item>
             <el-breadcrumb-item>个人信息</el-breadcrumb-item>
         </el-breadcrumb>
-        个人信息
+        <div class="main">
+            <div class="left">
+                <div class="avatar">
+                    <img :src="src" alt="用户头像">
+                    <p @click="changeAvatar">修改头像</p>
+                </div>
+            </div>
+            <div class="right">
+                <el-form :model="info" :rules="rules" ref="form" label-width="160px" label-position="left">
+                    <div class="form">
+                        <p class="info">个人基本信息</p>
+                        <ul class="gray">
+                            <li>
+                                <el-form-item
+                                        prop="name"
+                                        label="用户名"
+                                        >
+                                    <el-input v-model="info.name" :disabled="true"></el-input>
+                                </el-form-item>
+                            </li>
+                            <li>
+                                <el-form-item
+                                        prop="number"
+                                        label="警号"
+                                        >
+                                    <el-input v-model="info.number" :disabled="true"></el-input>
+                                </el-form-item>
+                            </li>
+                            <li>
+                                <el-form-item
+                                        prop="id"
+                                        label="身份证"
+                                        >
+                                    <el-input v-model.number="info.id" :disabled="true"></el-input>
+                                </el-form-item>
+                            </li>
+                            <li>
+                                <el-form-item
+                                        prop="department"
+                                        label="部门名称"
+                                        >
+                                    <el-input v-model="info.department" :disabled="true"></el-input>
+                                </el-form-item>
+                            </li>
+                        </ul>
+                        <p class="info">修改登录密码</p>
+                        <ul>
+                            <li>
+                                <el-form-item
+                                        label="旧密码"
+                                >
+                                    <el-input v-model="info.oldPassword"></el-input>
+                                </el-form-item>
+                            </li>
+                            <li>
+                                <el-form-item
+                                        label="输入新密码">
+                                    <el-input v-model="info.newPassword"></el-input>
+                                </el-form-item>
+                            </li>
+                            <li>
+                                <el-form-item
+                                        label="输入确认新密码">
+                                    <el-input v-model="info.newPassValidator"></el-input>
+                                </el-form-item>
+                            </li>
+                        </ul>
+                        <el-button class="button" type="primary" @click="submitForm(info)">
+                            <i class="iconfont"
+                               style="color: white;font-size: 14px;">&#xe642;
+                            </i>
+                            保存
+                        </el-button>
+                    </div>
+                </el-form>
+            </div>
+        </div>
     </div>
 </div>
 </body>

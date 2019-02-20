@@ -12,15 +12,13 @@ var vm = new Vue({
             questionDifficulty: '',
             legalBasis: '',
             answerId: '',
-            isEnble: true,
+            isEnble: '0',
             optUser: '',
             stuOptdepartment: '',
-            page: 1,
-            limit: 10,
-            count: 0,
             video: '',
             videoUrl: '',
-            answerList: []
+            answerList: [],
+            releaseStatus: '0'
         },
         formLabelWidth: '120px',
         fileList: [],
@@ -42,12 +40,54 @@ var vm = new Vue({
             page: 1,
             limit: 10,
             count: 0
-        }
-    },
-    mounted: function () {
-
+        },
+        rules: {
+            comContent: [
+                {max: 100, message: '最大长度100', trigger: 'blur'},
+                {required: true, message: '请输入试题描述信息', trigger: 'blur'}
+            ],
+            typeId: [
+                {required: true, message: '请选择试题分类', trigger: 'blur'}
+            ],
+            questionType: [
+                {required: true, message: '请选择试题类型', trigger: 'blur'}
+            ],
+            questionDifficulty: [
+                {required: true, message: '请选择试题难度', trigger: 'blur'}
+            ],
+            answerList: [
+                {required: true, message: '请设置试题选项信息', trigger: 'blur'}
+            ],
+            video: [
+                {required: true, message: '请上传视频信息', trigger: 'blur'}
+            ],
+            specialKnowledgeId: [
+                {required: true, message: '请选择主题类型', trigger: 'blur'}
+            ]
+        },
+        isEdit: false
     },
     methods: {
+        typeChange: function(event){
+            if(event == 1){
+                // 视频，加入视频校验
+                vm.rules.video = [
+                    {required: true, message: '请上传视频信息', trigger: 'blur'}
+                ];
+            } else {
+                vm.rules.video = [];
+            }
+        },
+        qtChange: function(event){
+            // 主观题时，取消选项信息校验
+            if(event == 10007){
+                vm.rules.answerList = [];
+            } else {
+                vm.rules.answerList = [
+                    {required: true, message: '请设置试题选项信息', trigger: 'blur'}
+                ];
+            }
+        },
         indexMethod: function (index) {
             return index + 1 + (vm.formInline.page-1) * vm.formInline.limit;
         },
@@ -82,10 +122,10 @@ var vm = new Vue({
         },
         // 文件上传
         handleRemove(file, fileList) {
-            console.log(file, fileList);
+
         },
         handlePreview(file) {
-            console.log(file);
+
         },
         handleExceed(files, fileList) {
             this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -93,7 +133,6 @@ var vm = new Vue({
         beforeRemove(file, fileList) {
             return this.$confirm(`确定移除 ${file.name}？`);
         },
-
         handleSizeChange: function (val) {
             vm.formInline.limit = val;
             vm.reload();
@@ -103,7 +142,8 @@ var vm = new Vue({
             vm.reload();
         },
         addExam: function () {
-            vm.dialogFormVisible = true
+            vm.dialogFormVisible = true;
+            vm.isEdit = false;
         },
         batchImport: function () {
 
@@ -112,21 +152,11 @@ var vm = new Vue({
 
         },
         handleWatch: function (id) {
-            $.ajax({
-                type: "GET",
-                url: baseURL + "/testQuestion/info/" + id,
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code == 0) {
-                        vm.form = result.data;
-                        vm.dialogFormVisible = true;
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
+            vm.handleEdit(id);
+            vm.isEdit = true;
         },
         handleEdit: function (id) {
+            vm.isEdit = false;
             $.ajax({
                 type: "GET",
                 url: baseURL + "/testQuestion/info/" + id,
@@ -135,6 +165,11 @@ var vm = new Vue({
                     if (result.code == 0) {
                         vm.form = result.data;
                         vm.dialogFormVisible = true;
+                        if(vm.form.typeId == '1'){
+                            vm.form.videoUrl = '/law_school_war_exploded/sys/download?accessoryId=' + vm.form.video;
+                        } else {
+                            vm.form.videoUrl = '';
+                        }
                     } else {
                         alert(result.msg);
                     }
@@ -164,45 +199,48 @@ var vm = new Vue({
 
             });
         },
-
-        save: function () {
-            $.ajax({
-                type: "POST",
-                url: baseURL + "testQuestion/save",
-                contentType: "application/json",
-                data: JSON.stringify(vm.form),
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.$alert('操作成功', '提示', {
-                            confirmButtonText: '确定',
-                            callback: function () {
-                                vm.dialogFormVisible = false;
-                                vm.reload();
-                                vm.form = {
-                                    typeId: '',
-                                    questionType: '',
-                                    comContent: '',
-                                    specialKnowledgeId: '',
-                                    questionDifficulty: '',
-                                    legalBasis: '',
-                                    answerId: '',
-                                    isEnble: true,
-                                    optUser: '',
-                                    stuOptdepartment: '',
-                                    page: 1,
-                                    limit: 10,
-                                    count: 0,
-                                    video: '',
-                                    videoUrl: '',
-                                    answerList: []
-                                };
-                            }
-                        });
-                    } else {
-                        alert(result.msg);
+        save: function (formName) {
+            // this.$refs['form'].resetFields();
+            this.$refs[formName].validate(function (valid) {
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "testQuestion/save",
+                    contentType: "application/json",
+                    data: JSON.stringify(vm.form),
+                    success: function (result) {
+                        if (result.code === 0) {
+                            vm.$alert('操作成功', '提示', {
+                                confirmButtonText: '确定',
+                                callback: function () {
+                                    vm.dialogFormVisible = false;
+                                    vm.reload();
+                                    vm.form = {
+                                        typeId: '',
+                                        questionType: '',
+                                        comContent: '',
+                                        specialKnowledgeId: '',
+                                        questionDifficulty: '',
+                                        legalBasis: '',
+                                        answerId: '',
+                                        isEnble: '0',
+                                        optUser: '',
+                                        stuOptdepartment: '',
+                                        page: 1,
+                                        limit: 10,
+                                        count: 0,
+                                        video: '',
+                                        videoUrl: '',
+                                        answerList: []
+                                    };
+                                }
+                            });
+                        } else {
+                            alert(result.msg);
+                        }
                     }
-                }
+                });
             });
+
         },
         reload: function () {
             $.ajax({
@@ -237,6 +275,25 @@ var vm = new Vue({
         },
         toHome: function () {
             parent.location.reload()
+        },
+        closeDia: function () {
+            vm.dialogFormVisible = false;
+            this.$refs['form'].resetFields();
+            vm.form = {
+                typeId: '',
+                questionType: '',
+                comContent: '',
+                specialKnowledgeId: '',
+                questionDifficulty: '',
+                legalBasis: '',
+                answerId: '',
+                isEnble: '0',
+                optUser: '',
+                stuOptdepartment: '',
+                video: '',
+                videoUrl: '',
+                answerList: []
+            }
         }
     },
     created: function () {
