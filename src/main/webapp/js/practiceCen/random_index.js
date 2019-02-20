@@ -127,6 +127,10 @@ var vm = new Vue({
         addExercise: function(){
             vm.title = '随机练习设置';
             this.dialogConfig = true;
+            vm.diffs = [];
+            vm.classs = [];
+            vm.types = [];
+            vm.topics = [];
         },
         reload: function () {
             $.ajax({
@@ -159,10 +163,11 @@ var vm = new Vue({
             vm.reload();
         },
         getRate: function (row, column) {
-            var msg = '100%';
+            var msg = '';
 
             var answerNum = row.answerNum;
             if(answerNum == 0){
+
                 return msg;
 
             }else {
