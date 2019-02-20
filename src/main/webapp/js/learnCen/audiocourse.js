@@ -148,6 +148,23 @@ var vm = new Vue({
             this.dialogLaw=false;
         },
         onPlay:function (id) {
+            //播放时暂停别的正在播放的音频
+            for(var item in vm.videoData){
+                if(vm.videoData[item].id!=id){
+                    var audio = document.getElementById(vm.videoData[item].id);
+                    if(audio!==null){
+                        //检测播放是否已暂停.audio.paused 在播放器播放时返回false.在播放器暂停时返回true
+
+                        if(!audio.paused)
+                        {
+                            audio.pause();// 这个就是暂停//audio.play();// 这个就是播放
+                        }
+                    }
+                }
+
+            }
+
+
             //请求后台修改播放量 记录学习记录
             $.ajax({
                 type: "POST",

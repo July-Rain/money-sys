@@ -274,8 +274,19 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 			tq.setSpecialKnowledgeId(battleTopicSetting.getKnowledgeId());
 
 			TestQuestions testquestions=testQuestionService.findByEntity(tq);
-			testquestions.setAnswerList(answerService.getAnswerByQid(testquestions.getId()));
-			qList.add(testquestions);
+
+			if(testquestions==null)
+			{
+				qList=null;
+				break;
+			}
+			else{
+
+				testquestions.setAnswerList(answerService.getAnswerByQid(testquestions.getId()));
+				qList.add(testquestions);
+			}
+
+
 		}
 
 		return qList;

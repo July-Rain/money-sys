@@ -37,7 +37,12 @@ var vm = new Vue({
         leizhu:"",//擂主
         jifen:"0",//最终录入的成绩积分
         isFighting: true,
-        leitaiReady: false//显示主页或擂台页面
+        leitaiReady: true,//显示主页或擂台页面
+        msg:"",
+        play1:"",
+        play2:"",
+        winLeiTaiByUser:"",
+        jifenByUser:"",
     },
     created: function () {
         this.$nextTick(function () {
@@ -83,7 +88,7 @@ var vm = new Vue({
         {
 
                 vm.myscore=Number(vm.myscore)+Number(vm.nowQscore);
-            alert("答对了");
+                alert("答对了");
 
         },
 
@@ -124,21 +129,47 @@ $.ajax({
 
 
         matchSetting=  result.matchSetting;//当前擂台配置，里面有擂主信息
-        vm.leizhu=result.matchSetting.winId;
-        if(result.matchSetting.winId==null || result.matchSetting.winId=="")
+
+        if(matchSetting==null)
         {
-            alert("占时无擂主");
-            vm.leizhu="占时无擂主";
+            vm.msg="占无题目配置，请联系管理员";
+            // alert("占无题目配置，请联系管理员");
+            vm.leizhu="";
+
         }
         else
-        {
-            alert("擂主为"+result.matchSetting.winName);
-            if(result.matchSetting.winId==result.user.id)
             {
-                alert("欢迎擂主登陆");
+                vm.leizhu=result.matchSetting.winId;
+                if(result.matchSetting.winId==null || result.matchSetting.winId=="")
+                {
+                    alert("占时无擂主,你已成为擂主");
+                    vm.leizhu="占时无擂主";
+                }
+                else
+                {
+                    alert("擂主为"+result.matchSetting.winName);
+                    if(result.matchSetting.winId==result.user.id)
+                    {
+                        alert("欢迎擂主登陆");
+                    }
+                    vm.leizhu=result.matchSetting.winName;
+
+                    //通过擂主id去获取这个人的积分 与 擂台 次数
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + "battleRecord/winLeiTaiCountByUserId?winId="+result.matchSetting.winId,
+                        dataType: "json",
+                        async: false,
+                        success: function (result) {
+
+                            vm.winLeiTaiByUser=result.winLeiTai;
+                            vm.jifenByUser=result.jifen;
+                        }
+                    });
+
+                }
             }
-            vm.leizhu="擂主为"+result.matchSetting.winName;
-        }
+
 
 
     }
@@ -198,9 +229,22 @@ websocket.onmessage = function(event) {
         // console.info("系统发的消息是"+data);
         //===系统消息
         $("#contentUl").append("<li><b>"+data.date+"</b><em>系统消息：</em><span>"+data.text+"</span></li>");
+        vm.msg=data.text;
+
+
         //刷新在线用户列表
         $("#chatOnline").html("在线用户("+data.userList.length+")人");
 
+        if(data.userList.length>1)
+        {
+
+            setTimeout(function(){
+                vm.leitaiReady=false;
+                vm.play1=data.userList[0].fullName;
+                vm.play2=data.userList[1].fullName;
+            },2000);
+
+        }
         // 当收到系统消息的时候  然且当是在线2人的时候 这时候 默认给第一题
         if(data.userList.length=="2")
         {
@@ -214,20 +258,20 @@ websocket.onmessage = function(event) {
         }
         if(data.mycore!=undefined&&data.mycore!=null&&data.mycore!="")
         {
-            vm.jifen=data.mycore;
-
-            recordScoreFromTow(datamag.battlePlatform.id,vm.jifen,'leitai',data.to);
-
-
+            // vm.jifen=data.mycore;
+            //
+            // // recordScoreFromTow(datamag.battlePlatform.id,vm.jifen,'leitai',data.to);
+            //
+            //
             if(vm.leizhu==uid)
             {
                 //擂主不变
-                alert("对手弃权,你还是擂主，获得积分"+vm.jifen);
+                alert("对手弃权,你还是擂主");
             }
             else
             {
                 // 改变擂主   在Handler里改
-                alert("对手弃权，恭喜成为新擂主，获得积分"+vm.jifen);
+                alert("对手弃权，恭喜成为新擂主");
             }
 
 
@@ -272,13 +316,15 @@ websocket.onmessage = function(event) {
             {
                 if(Number(vm.myscore)==Number(vm.youscore))
                 {
-                    alert("全部题目答完,双方分数一样，擂主不变，平局，占不计入成绩表中");
+                    alert("双方分数一样，擂主不变，平局，占不计入成绩表中");
                 }
                 else if(Number(vm.myscore)<Number(vm.youscore))
                 {
                     vm.jifen=Number(data.matchSetting.loserReward);
                     recordScore(datamag.battlePlatform.id,'0',vm.jifen,'leitai',vm.u.id);
-                    alert("全部题目答完,，你输了，获得失败者奖励"+data.matchSetting.loserReward);
+                    // alert("全部题目答完");
+                    closeWebsocket();
+                    alert("你输了，获得失败者奖励"+data.matchSetting.loserReward);
                 }
                 else if(Number(vm.myscore)>Number(vm.youscore))
                 {
@@ -286,8 +332,10 @@ websocket.onmessage = function(event) {
                     recordScore(datamag.battlePlatform.id,'1',vm.jifen,'leitai',vm.u.id);
                     if(vm.leizhu==uid)
                     {
+                        // alert("全部题目答完");
+                        closeWebsocket();
                         //擂主不变
-                        alert("全部题目答完,你赢了，擂主还是你，获得获胜者奖励"+data.matchSetting.winReward);
+                        alert("你赢了，擂主还是你，获得获胜者奖励"+data.matchSetting.winReward);
                     }
                     else
                     {
@@ -302,14 +350,15 @@ websocket.onmessage = function(event) {
 
                             }
                         });
-                        alert("全部题目答完,你赢了，恭喜成为新擂主，获得获胜者奖励"+data.matchSetting.winReward);
+                        // alert("全部题目答完");
+                        closeWebsocket();
+                        alert("你赢了，恭喜成为新擂主，获得获胜者奖励"+data.matchSetting.winReward);
                     }
 
 
 
                 }
-                // alert("全部题目答完");
-                closeWebsocket();
+
             }else
             {
                vm.dialogQuestion=true,

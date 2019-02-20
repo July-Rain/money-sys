@@ -46,7 +46,7 @@
                                     <el-input v-model="formInline.stuIssuer" placeholder="发布人" size="mini"></el-input>
                                 </el-form-item>
                                 <el-form-item label="法律分类" prop="stuLawName">
-                                    <el-input v-model="formInline.stuLawName" placeholder="法律分类" @focus="chooseLaw"
+                                    <el-input v-model="formInline.stuLawName" placeholder="法律分类" @focus="chooseLaw" clearable
                                               size="mini"></el-input>
                                 </el-form-item>
                                 <el-form-item label="开始时间" prop="startTime">
@@ -97,7 +97,7 @@
                                 <el-col :span="6" v-for="(item, index) in videoData">
                                     <el-card :body-style="{ padding: '0px' }">
                                         <div class="content_audio">
-                                            <audio controls="controls" preload="none" @play="onPlay(item.id)"
+                                            <audio :id="item.id" controls="controls" preload="none" @play="onPlay(item.id)"
                                                    @pause="onPause(item.id,$event)">
                                                 <source :src="item.contentUrl" controls="controls">
                                             </audio>

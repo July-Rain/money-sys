@@ -41,22 +41,36 @@ public class BattlePlatformServiceImpl extends ServiceImpl<BattlePlatformDao, Ba
 			{
 				//从在线pk加载过来的
 				CompetitionOnline competitionOnline=  ompetitionOnlineService.selectOne(new EntityWrapper<CompetitionOnline>());
-				battlePlatform.setForeignKeyId(competitionOnline.getId());
+
+				if(competitionOnline==null)
+				{
+					battlePlatform=null;
+				}
+				else
+				{
+					battlePlatform.setForeignKeyId(competitionOnline.getId());
+					this.insert(battlePlatform);
+				}
+
+
+
 			}
-//			else if(type.equals("teamOnline"))
-//			{
-//				//从组队比武加载过来的
-//				MatchSetting matchSetting=  matchSettingService.selectOne(new EntityWrapper<MatchSetting>());
-//				battlePlatform.setForeignKeyId(matchSetting.getId());
-//			}
+
 			else if(type.equals("leitai"))
 			{
 				//从打擂台加载过来的
 				MatchSetting matchSetting=  matchSettingService.selectOne(new EntityWrapper<MatchSetting>());
-				battlePlatform.setForeignKeyId(matchSetting.getId());
-			}
-			this.insert(battlePlatform);
+				if(matchSetting==null)
+				{
+					battlePlatform=null;
+				}
+				else
+				{
+					battlePlatform.setForeignKeyId(matchSetting.getId());
+					this.insert(battlePlatform);
+				}
 
+			}
 		return battlePlatform;
 	}
 

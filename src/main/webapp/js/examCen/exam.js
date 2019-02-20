@@ -257,6 +257,9 @@ var vm = new Vue({
         },
         handleSelectionChange(val) {
             this.multipleSelection = val;
+        },
+        addQuestion:function (type){
+            this.setQuestion = true
         }
     }
 });
