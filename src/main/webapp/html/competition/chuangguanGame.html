@@ -80,9 +80,26 @@
                 <!--<el-button type="primary" @click="begin">挑战</el-button>-->
             </div>
         </el-dialog>
-        <div class="rushFailed model_area">
+        <div class="rushFailed model_area" v-if="rushFailed">
             <div class="inner">
-                <img src="${rc.contextPath}/statics/img/" alt="">
+                <img src="${rc.contextPath}/statics/img/competeCenter/chuangguan_lose.png" alt="">
+                <h3>扣除</h3>
+                <p>积分-16000</p>
+                <div class="button_area">
+                    <button>结束闯关</button>
+                    <button><i class="iconfont icon-zhongzuo"></i>再闯一次</button>
+                </div>
+            </div>
+        </div>
+        <div class="rushSuccess model_area" v-if="rushSuccess">
+            <div class="inner">
+                <img src="${rc.contextPath}/statics/img/competeCenter/chuangguan_success.png" alt="">
+                <h3>奖励</h3>
+                <p>积分+16000</p>
+                <div class="button_area">
+                    <button>结束闯关</button>
+                    <button><i class="iconfont icon-zhongzuo"></i>再闯一次</button>
+                </div>
             </div>
         </div>
     </div>

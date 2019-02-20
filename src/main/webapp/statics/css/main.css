@@ -744,6 +744,7 @@ el-tabs__item is-top.is-active{
 /*table 操作区 icon*/
 .tabIcon{
     cursor: pointer;
-    padding: 0 20px;
+    margin: 0 20px;
+    padding: 0;
     font-size: 18px;
 }
