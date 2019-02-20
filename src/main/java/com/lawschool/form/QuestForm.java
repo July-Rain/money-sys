@@ -18,20 +18,22 @@ public class QuestForm {
     private String questionDifficulty;// 难度ID
     private String questionType;// 题型
     private String answerId;// 答案
+
     private String legalBasis;// 法律依据
     private String answerDescrible;// 答案描述
-    private List<AnswerForm> answer;//选项
     private Integer answerChoiceNumber;// 选项数量
-
     private String questionId;//题目Id
     private String userAnswer;// 用户答案
+
     private Integer right;// 用户回答是否正确
     private String themeName;// 主題类型
-
     private Integer score;  //题目分值
-
     private String rightAnsCon; //正确答案内容
+    private Integer isCollect;// 是否收藏，0未1已
 
+    private String recordId;// 记录ID
+
+    private List<AnswerForm> answer;//选项
     private List<String> checkList = new ArrayList<>();
 
     public String getRightAnsCon() {
@@ -164,5 +166,21 @@ public class QuestForm {
 
     public void setQuestionId(final String questionId) {
         this.questionId = questionId;
+    }
+
+    public Integer getIsCollect() {
+        return isCollect;
+    }
+
+    public void setIsCollect(Integer isCollect) {
+        this.isCollect = isCollect;
+    }
+
+    public String getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(String recordId) {
+        this.recordId = recordId;
     }
 }

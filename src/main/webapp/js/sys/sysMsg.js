@@ -413,11 +413,11 @@ var vm = new Vue({
             vm.reload();
         },
         reload: function () {
-
             $.ajax({
                 type: "GET",
                 url: baseURL + "msg/listAll?isMp=true",
                 dataType: "json",
+                data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;

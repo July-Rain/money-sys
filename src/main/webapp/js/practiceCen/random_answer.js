@@ -1,4 +1,6 @@
 var id = getUrlParam('id');
+var isReview = getUrlParam('isReview');
+var indexs = getUrlParam('indexs');
 
 var vm = new Vue({
     el: '#app',
@@ -14,7 +16,8 @@ var vm = new Vue({
         isLast: false,
         isNew: true,
         isNext: false,
-        index: 1
+        index: 1,
+        title: ''
     },
     methods: {
         getQuestion: function () {
@@ -24,7 +27,8 @@ var vm = new Vue({
                 contentType: "application/json",
                 data: {
                     id: id,
-                    index: vm.index
+                    index: vm.index,
+                    isReview: isReview
                 },
                 success: function (result) {
                     if (result.code === 0) {
@@ -33,11 +37,22 @@ var vm = new Vue({
                             if(vm.index != 1){
                                 vm.index--;
                             }
-                            vm.$alert('您已完成本次练习，请结束本次练习！', '提示', {
-                                confirmButtonText: '确定',
-                                callback: function () {
-                                }
-                            });
+                            if(isReview != null && isReview != ''){
+                                vm.$alert('当前为最后一题，是否結束本次回顾！', '提示', {
+                                    confirmButtonText: '确定',
+                                    callback: function () {
+                                    }
+                                });
+
+                            } else {
+
+                                vm.$alert('您已完成本次练习，请结束本次练习！', '提示', {
+                                    confirmButtonText: '确定',
+                                    callback: function () {
+                                    }
+                                });
+                            }
+
                         } else {
                             vm.question = result.question;
                             // 判断此题目是否已经回答过
@@ -79,6 +94,10 @@ var vm = new Vue({
             vm.isAnswer = true;
 
             vm.getTsxx(userAnswer, rightAnswer);
+
+            if(vm.isNew && vm.answers.length > 0){
+                vm.saveAnswer();
+            }
         },
         getTsxx: function(userAnswer, rightAnswer){
             // userAnswer、rightAnswer可能多选
@@ -99,9 +118,6 @@ var vm = new Vue({
             }
         },
         last: function () {
-            if(vm.isNew && vm.answers.length > 0){
-                vm.saveAnswer();
-            }
             // 上一页
             if(vm.index == 1){
                 vm.isLast = true;
@@ -112,10 +128,6 @@ var vm = new Vue({
             }
         },
         next: function () {
-            if(vm.isNew && vm.answers.length > 0){
-                vm.saveAnswer();
-            }
-
             // 下一页
             vm.index++;
             vm.getQuestion();
@@ -123,9 +135,6 @@ var vm = new Vue({
         },
         commit: function () {
             // 结束本次练习
-            if(vm.isNew && vm.answers.length > 0){
-                vm.saveAnswer();
-            }
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
                 = 'modules/exerciseCenter/random_index.html';
@@ -140,6 +149,10 @@ var vm = new Vue({
             }
 
             vm.isAnswer = true;
+
+            if(vm.isNew && vm.answers.length > 0){
+                vm.saveAnswer();
+            }
         },
         saveAnswer: function () {
             var lx = typeof vm.answers;
@@ -172,10 +185,39 @@ var vm = new Vue({
                 }
             });
 
+        },
+        doCollect: function () {
+            // 收藏题目
+            vm.question.isCollect = 1;
+            var obj = {
+                key: vm.question.id,
+                value: vm.question.recordId
+            };
+            $.ajax({
+                type: "POST",
+                url: baseURL + "exercise/random/doCollect",
+                data: JSON.stringify(obj),
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         }
     },
     created: function(){
         this.$nextTick(function () {
+            if(isReview != null && isReview != ''){
+                vm.title = '结束回顾';
+            } else {
+                vm.title = '结束本次练习';
+            }
+            if(indexs != null && indexs != ''){
+                vm.index = Number(indexs) + 1;
+            }
             vm.getQuestion();
         })
     }

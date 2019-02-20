@@ -48,23 +48,30 @@
                     <span>{{question.questionDifficulty == '10001' ? '初级' : question.questionDifficulty == '10002' ? '中级' : '高级'}}</span>
                 </div>
                 <div class="basis clearfix">
-                    <span>法律依据：</span>
-                    <span>{{question.legalBasis}}</span>
+                    <span>答案描述：</span>
+                    <span>{{question.answerDescrible}}</span>
                 </div>
+                <div class="collection col-orange">
+                    <i class="el-icon-star-off" v-if="question.isCollect != 1" @click="doCollect"></i>
+                    <i class="el-icon-star-on" v-if="question.isCollect == 1"></i>
+                    {{question.isCollect == 1 ? '已收藏' : '收藏本题'}}
+                </div>
+            </div>
+            <div class="container-btn">
+                <el-col :span="10" class="align-rig">
+                    <a href="javascript:;" @click="last"><i class="el-icon-arrow-left"></i>上一题</a>
+                </el-col>
+                <el-col :span="4" class="align-cent">
+                    <a href="javascript:;" @click="commit" style="color: #666666;">
+                        {{title}}
+                    </a>
+                </el-col>
+                <el-col :span="10">
+                    <a href="javascript:;" @click="next">下一题<i class="el-icon-arrow-right el-icon--right"></i></a>
+                </el-col>
             </div>
         </div>
 
-        <el-button-group>
-            <el-button type="primary" :disabled="isLast" icon="el-icon-arrow-left" @click="last">
-                上一页
-            </el-button>
-            <el-button type="primary" @click="next" :disabled="isNext">
-                下一页<i class="el-icon-arrow-right el-icon--right"></i>
-            </el-button>
-            <el-button type="primary" @click="commit">
-                结束本次练习<i class="el-icon-success"></i>
-            </el-button>
-        </el-button-group>
     </div>
 </div>
 </body>

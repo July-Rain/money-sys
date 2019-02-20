@@ -3,6 +3,7 @@ package com.lawschool.controller;
 
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.Page;
+import com.lawschool.beans.Answer;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
@@ -34,13 +35,19 @@ public class TestQuestionController {
         String typeId = (String) params.get("typeId");
         String questionDifficulty = (String) params.get("questionDifficulty");
         String questionType = (String) params.get("questionType");
+        String queContent = (String) params.get("queContent");
 
         TestQuestions testQuestions = new TestQuestions();
         testQuestions.setTypeId(typeId);
         testQuestions.setQuestionDifficulty(questionDifficulty);
         testQuestions.setQuestionType(questionType);
-
+        testQuestions.setComContent(queContent);
         Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), testQuestions);
+        List<TestQuestions> list = page.getList();
+        for(TestQuestions tes : list){
+            tes.setAnswerList(answerService.getAnswerByQid(tes.getId()));
+        }
+        page.setList(list);
         return Result.ok().put("page", page);
     }
 
@@ -50,7 +57,13 @@ public class TestQuestionController {
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
     public Result info(@PathVariable("id") String id) {
         TestQuestions testQuestions = testQuestionService.findOne(id);
-        testQuestions.setAnswerList(answerService.getAnswerByQid(testQuestions.getId()));
+        List<Answer> answerList = answerService.getAnswerByQid(testQuestions.getId());
+        for(Answer answer : answerList){
+            if(answer.getId().equals(testQuestions.getAnswerId())){
+                answer.setIsAnswer(1);
+            }
+        }
+        testQuestions.setAnswerList(answerList);
         return Result.ok().put("data", testQuestions);
     }
 

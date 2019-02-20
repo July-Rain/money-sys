@@ -91,7 +91,7 @@
                         <el-tag v-else size="success">已发送</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="center">
+                <el-table-column label="操作"  align="center">
                     <template slot-scope="scope">
                         <!--<el-button
                                 :disabled="'1'===scope.row.releaseState"
@@ -99,18 +99,7 @@
                                 @click="send(scope.$index, scope.row)">发送
                         </el-button>-->
                         <el-popover
-                                v-if="'0'===scope.row.releaseState"
-                                placement="top-start"
-                                trigger="hover"
-                                content="发送">
-                            <i class="iconfont tabIcon"
-                               slot="reference"
-                               @click="lookMsg(scope.$index, scope.row)"
-                               style="color: #1381e3;font-size: 12px;">&#xe670;
-                            </i>
-                        </el-popover>
-                        <el-popover
-                                placement="top-start"
+                                placement="right"
                                 trigger="hover"
                                 content="查看">
                             <i class="iconfont icon-chakan tabIcon"
@@ -119,10 +108,9 @@
                                style="color: #1381e3;font-size: 12px;">
                             </i>
                         </el-popover>
-
                         <el-popover
                                 v-if="'1'!=scope.row.releaseState"
-                                placement="top-start"
+                                placement="right"
                                 trigger="hover"
                                 content="编辑">
                             <i class="iconfont icon-xiugaimima tabIcon"
@@ -133,13 +121,24 @@
                         </el-popover>
                         <el-popover
                                 v-if="'1'!=scope.row.releaseState"
-                                placement="top-start"
+                                placement="right"
                                 trigger="hover"
                                 content="删除">
                             <i class="iconfont icon-tubiaozhizuo- tabIcon"
                                slot="reference"
                                @click="handleDel(scope.$index, scope.row)"
                                style="color: #e31313;" >
+                            </i>
+                        </el-popover>
+                        <el-popover
+                                v-if="'0'===scope.row.releaseState"
+                                placement="right"
+                                trigger="hover"
+                                content="发送">
+                            <i class="iconfont tabIcon"
+                               slot="reference"
+                               @click="lookMsg(scope.$index, scope.row)"
+                               style="color: #1381e3;font-size: 12px;">&#xe670;
                             </i>
                         </el-popover>
                     </template>

@@ -6,6 +6,7 @@
 var vm = new Vue({
     el: '#app',
     data: {
+        libIds:[],//lib第一层tree的id
         formInline: { // 搜索表单
             classifyId: '',
             currPage: 1,
@@ -56,6 +57,9 @@ var vm = new Vue({
                 success: function(result){
                     if(result.code === 0){
                         vm.libData = result.data;
+                        vm.libData.map(function (val) {
+                            vm.libIds.push(val.libId)
+                        })
                     }else{
                         alert(result.msg);
                     }
@@ -142,7 +146,6 @@ var vm = new Vue({
             this.insertRecord(row.id);
         },
         insertRecord: function (id) {
-            debugger
             //插入学习记录
             //请求后台修改播放量 记录学习记录
             $.ajax({

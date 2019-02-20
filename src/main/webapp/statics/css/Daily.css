@@ -130,12 +130,33 @@
     border-top: 1px solid #ddd;
     background: #fbfbfb;
     padding: 15px 44px 10px;
+    position: relative;
+}
+.answer_area .collection{
+    position: absolute;
+    right: 44px;
+    top: 15px;
+    color: #333333;
+    height: 20px;
+    line-height: 21px;
+    cursor: pointer;
+}
+.answer_area .collection i{
+    font-size: 20px;
+    vertical-align: middle;
+    bottom: 11px;
+    float: left;
+    margin-right: 5px;
+}
+.answer_area .col-orange,.answer_area .col-orange i{
+    color: #ff6420;
 }
 .answer_area > p,.answer_area > p span{
     line-height: 24px;
     color: #37aa57;
     font-size: 20px;
     padding-bottom: 9px;
+    border-bottom: 1px dashed #dddddd;
 }
 .answer_area .diff{
     line-height: 52px;

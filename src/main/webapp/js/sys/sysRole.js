@@ -133,19 +133,19 @@ var vm = new Vue({
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
 
-                    let that = vm;
+                    var that = vm;
 
                     that.dialogFormVisible = false;
                     //ajax
-                    let _data = {}
+                    var _data = {};
                     _data.menuList = [];
                     _data.orgList = [];
-                    that.$refs.tree1.getCheckedNodes().map((info) => {
+                    that.$refs.tree1.getCheckedNodes().map(function (info) {
                         _data.menuList.push(info.id)
-                    })
-                    that.$refs.tree2.getCheckedNodes().map((info) => {
+                    });
+                    that.$refs.tree2.getCheckedNodes().map(function (info) {
                         _data.orgList.push(info.id)
-                    })
+                    });
                     _data.id = vm.form.id;
                     _data.roleName = that.form.roleName;
                     _data.remark = that.form.remark;
