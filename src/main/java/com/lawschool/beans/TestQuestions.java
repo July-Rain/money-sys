@@ -42,6 +42,9 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     private String video;// 视频
 
     @TableField(exist = false)
+    private String videoUrl;
+
+    @TableField(exist = false)
     private String collectionId;//收藏id
     @TableField(exist = false)
     private String questiontypeValue;
@@ -263,5 +266,13 @@ public class TestQuestions extends DataEntity<TestQuestions> {
 
     public void setVideo(String video) {
         this.video = video;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 }
