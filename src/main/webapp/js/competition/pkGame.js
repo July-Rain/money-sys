@@ -34,10 +34,22 @@ var vm = new Vue({
         //对方是否已答题
         yesOrNoAnswer:"未答题",
         jifen:"0",//最终录入的成绩积分
+        rollAreaShow: true,
+        nameList: ["乔杰","李坤宇","乔杰","李坤宇","乔杰","李坤宇","乔杰","李坤宇","乔杰","李坤宇","乔杰","李坤宇"],
     },
     created: function () {
         this.$nextTick(function () {
             this.reload();
+            var resultName = "卜楠";
+
+
+            setTimeout(function () {
+                vm.nameList = ["乔杰","李坤宇",resultName,"李坤宇","乔杰","李坤宇","乔杰","李坤宇","旗鼓相当的对手","李坤宇","乔杰","李坤宇"];
+                vm.rollStop = true;
+                setTimeout(function () {
+                    vm.rollAreaShow = false
+                },2000)
+            },5000);
         })
     },
 

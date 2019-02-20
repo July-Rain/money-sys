@@ -7,20 +7,11 @@
     <script type="text/javascript" src="${rc.contextPath}/sun-jsp/js/sockjs.min.js"></script>
     <link rel="stylesheet" href="${rc.contextPath}/sun-jsp/css/style.css" type="text/css" media="all" />
     <link rel="stylesheet" href="${rc.contextPath}/sun-jsp/css/chat.css" type="text/css" media="all" />
-    <script type="text/javascript">
-
-    </script>
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/pkGame.css">
 </head>
 
 <body>
 <div id="app" v-cloak>
-    <div class="header">
-        <div class="header-left">
-            <img src="${rc.contextPath}/statics/img/logo.png">
-            <a href="javascript:;">江苏省公安机关网上法律学校</a>
-        </div>
-
-    </div>
     <div class="container">
         <el-row :gutter="24">
             <el-col :span="24">
@@ -76,7 +67,18 @@
             </el-col>
         </el-row>
 
+        <!--滚动匹配弹框-->
+        <div class="model_area roll_area" v-if="rollAreaShow">
+            <div class="inner">
+                <div class="translate">
+                    <ul :class="rollStop?'stop_roll':''">
+                        <li v-for="name in nameList">{{name}}</li>
+                    </ul>
+                </div>
 
+                <img src="${rc.contextPath}/statics/img/competeCenter/peidui_frame.png" alt="">
+            </div>
+        </div>
 
 
     </div>
