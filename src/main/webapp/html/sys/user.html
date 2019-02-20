@@ -5,7 +5,7 @@
     <#include "/header.html">
     <style>
         .manList{
-            max-height: 742px;
+            max-height: 682px;
         }
     </style>
 </head>
@@ -24,6 +24,8 @@
                             :data="treeData"
                             :props="defaultProps"
                             accordion
+                            node-key="id"
+                            :default-expanded-keys="idArr"
                             @node-click="handleNodeClick">
                     </el-tree>
                 </el-scrollbar>
@@ -51,13 +53,13 @@
                     </div>
                 </div>
                 <div class="info_btn">
-                    <el-button size="mini" type="primary" @click="handleAdd"><i class="iconfont icon-htmal5icon18"></i>增加</el-button>
+                    <el-button size="mini" type="primary" @click="handleAdd"><i class="iconfont icon-htmal5icon18"></i>新增教官</el-button>
                 </div>
                 <div>
                     <el-table
                             :data="tableData"
                             border
-                            height="599"
+                            height="539"
                             style="width: 100%">
                         <el-table-column
                                 label="序号"
@@ -135,11 +137,11 @@
                                         v-if="scope.row.userStatus == '800'"
                                         placement="top-start"
                                         trigger="hover"
-                                        content="恢复">
+                                        content="启用">
                                     <i class="iconfont tabIcon"
                                        slot="reference"
                                        @click="handleRecovery(scope.$index, scope.row)"
-                                       style="color: #119e0a;" >&#xe621;
+                                       style="color: #119e0a;" >&#xe660;
                                     </i>
                                 </el-popover>
 

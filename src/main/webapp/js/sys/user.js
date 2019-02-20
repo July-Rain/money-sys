@@ -91,7 +91,6 @@ var vm = new Vue({
                 async:false,
                 data: {type:"POLICACLASS",Parentcode:"0"},
                 success: function (result) {
-                    debugger
                     vm.policeclassOption=result.dictlist;
                 }
             });

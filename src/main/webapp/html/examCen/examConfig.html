@@ -31,15 +31,21 @@
         .hide{
             visibility: hidden;
         }
+        .configure .el-select>.el-input{
+            width: 220px;
+        }
+        .configure .text-right{
+            text-align: right;
+        }
     </style>
 </head>
 <body>
 <div id="app" v-cloak style="width: 100%;min-width: 0">
-    <div class="container">
-            <el-form :model="examConfig" :rules="rules" ref="examConfig" label-width="100px" class="demo-examConfig"
+    <div class="container configure">
+        <el-form :model="examConfig" :rules="rules" ref="examConfig" label-width="100px" class="demo-examConfig"
                      size="mini">
                 <el-row>
-                    <el-col :span="22">
+                    <el-col :span="24">
                         <el-form-item label="考试名称：" prop="examName">
                             <el-input v-model="examConfig.examName" placeholder="请输入考试名称" clearable
                                       :disabled="view"></el-input>
@@ -60,7 +66,7 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                         <el-form-item label="专项知识：" prop="specialKnowledgeId">
                             <el-select v-model="examConfig.list" size="mini"
                                        multiple collapse-tags style="width: auto" placeholder="多选" :disabled="view">
@@ -69,7 +75,7 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                         <el-form-item label="组卷方式：" prop="groupForm">
                             <el-select v-model="examConfig.groupForm"
                                        collapse-tags
@@ -83,12 +89,12 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                         <el-form-item label="是否必考：" prop="isMustTest">
                                 <el-radio v-for="item in imtOption" v-model="examConfig.isMustTest" :label="item.key">{{item.value}}</el-radio>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                         <el-form-item label="出题方式：" prop="questionWay">
                             <el-select v-model="examConfig.questionWay"
                                        placeholder="请选择出題方式" size="mini" @change="openDiffModal($event)" @focus="openDiffModal($event)">
@@ -101,39 +107,39 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                         <el-form-item label="题目顺序：" prop="topicOrderType">
                             <el-radio v-for="item in otOption" v-model="examConfig.topicOrderType" :label="item.key" :disabled="view">{{item.value}}</el-radio>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                         <el-form-item label="选项顺序：" prop="optionOrderType">
                             <el-radio v-for="item in otOption" v-model="examConfig.optionOrderType" :label="item.key" :disabled="view">{{item.value}}</el-radio>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                         <el-form-item label="开始时间：" prop="startTime">
                             <el-date-picker
                                     v-model="examConfig.startTime"
                                     type="datetime"
                                     placeholder="选择考试开始时间"
                                     value-format = "yyyy-MM-dd HH:mm:ss"
-                                    style="width: auto" :disabled="view">
+                                    :disabled="view">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                         <el-form-item label="结束时间：" prop="endTime">
                             <el-date-picker
                                     v-model="examConfig.endTime"
                                     type="datetime"
                                     value-format = "yyyy-MM-dd HH:mm:ss"
                                     placeholder="选择考试结束时间"
-                                    style="width: auto" :disabled="view">
+                                    :disabled="view">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                         <el-form-item label="考试时长：" prop="examTime">
                             <template>
                                 <el-input-number v-model="examConfig.examTime"  :min="1" :max="1000"
@@ -142,7 +148,7 @@
                             </template>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                         <el-form-item label="显示答案：" prop="answerShowRule" style="width: auto">
                             <el-select v-model="examConfig.answerShowRule"
                                        collapse-tags
@@ -156,7 +162,7 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                         <el-form-item label="考试总分：" prop="examScore">
                             <template>
                                 <el-input-number v-model="examConfig.examScore"
@@ -166,7 +172,7 @@
                             </template>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                         <el-form-item label="达标线：" prop="passPnt">
                             <template>
                                 <el-input-number v-model="examConfig.passPnt" :min="1"
@@ -175,7 +181,7 @@
                             </template>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                         <el-form-item label="达标奖励：" prop="reachRewardType">
                             <el-select v-model="examConfig.reachRewardType"
                                        collapse-tags
@@ -189,7 +195,7 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11" >
+                    <el-col :span="12" >
                         <el-form-item label="奖励分数：" prop="reachReward"
                                       :class="examConfig.reachRewardType!='10038'&&examConfig.reachRewardType!=''?'':'hide'">
                             <template>
@@ -205,13 +211,13 @@
                                       placeholder="请选择使用部门" :disabled="view" clearable></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                     <el-form-item label="使用部门" prop="deptName">
                         <el-input v-model="examConfig.deptName" readonly
                                   @focus="chooseDept" placeholder="请选择使用部门" :disabled="view" clearable></el-input>
                     </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="12">
                     <el-form-item label="使用人员" prop="userName">
                         <el-input v-model="examConfig.userName" readonly
                                   @focus="chooseUser" placeholder="请选择使用人员" :disabled="view" clearable></el-input>
@@ -228,15 +234,15 @@
                             <el-input type="textarea" maxlength="200" v-model="examConfig.remark"></el-input>
                         </el-form-item>
                     </el-col>-->
-                    <el-col :span="24">
+                    <el-col :span="24" class="text-right">
                         <el-form-item>
                             <el-button type="primary" @click="preview('examConfig')">预览</el-button>
                             <el-button type="primary" @click="generate('examConfig')">生成</el-button>
                         </el-form-item>
-
                     </el-col>
                 </el-row>
             </el-form>
+
         <el-dialog :title="title" width="80%" :visible.sync="randomQuesModal" :before-close="closeDia">
             <template>
                     <el-button type="primary" @click="handleAdd" size="mini">新增</el-button>
@@ -318,14 +324,11 @@
                     </el-table>
             </template>
         </el-dialog>
-
         <el-dialog title="自主出题" :visible.sync="autonomyQuesModal" :before-close="closeDia">
             <el-transfer v-model="value2" :data="data2" @change="getTestQue"></el-transfer>
             <el-button type="primary" size="mini" @click="mineQueSave">保存</el-button>
             <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
         </el-dialog>
-
-
         <el-dialog title="组考单位" :visible.sync="dialogCompany" >
             <!--对于同一级的节点，每次只能展开一个-->
             <el-tree
@@ -362,7 +365,6 @@
                 <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
             </div>
         </el-dialog>
-
         <el-dialog title="选择人员" :visible.sync="dialogUser" class="dialog_minW750">
             <!--对于同一级的节点，每次只能展开一个-->
             <div>
