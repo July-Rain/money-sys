@@ -167,7 +167,6 @@ var vm = new Vue({
 
             var answerNum = row.answerNum;
             if(answerNum == 0){
-
                 return msg;
 
             }else {
@@ -177,6 +176,18 @@ var vm = new Vue({
                 return msg + "%";
             }
         },
+        review: function (id) {
+            // 错题回顾
+            // 跳转页面
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/exerciseCenter/random_answer.html?id='+id+'&isReview=1';
+        },
+        goon: function (id, indexs) {
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/exerciseCenter/random_answer.html?id='+id+'&indexs='+indexs;
+        }
     },
     created: function(){
         this.$nextTick(function () {

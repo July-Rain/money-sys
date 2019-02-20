@@ -95,10 +95,25 @@
                             placement="right"
                             width="150"
                             trigger="hover"
-                            content="错题回顾">
+                            content="点击继续练习">
+                        <i class="iconfont icon-lianxi"
+                           @click="goon(scope.row.id, scope.row.answerNum)"
+                           slot="reference"
+                           style="color: #119e0b;cursor: pointer;padding: 0 20px;font-size: 20px"
+                        >
+                        </i>
+                    </el-popover>
+
+                    <el-popover
+                            placement="top-start"
+                            width="150"
+                            trigger="hover"
+                            content="错题回顾"
+                            v-if="scope.row.answerNum > scope.row.rightNum">
                         <i  class="iconfont icon-cuotiku"
                             slot="reference"
                             style="color: #ff1f14;cursor: pointer;padding: 0 20px;font-size: 20px"
+                            @click="review(scope.row.id)"
                         >
                         </i>
                     </el-popover>
