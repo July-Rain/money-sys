@@ -3,6 +3,7 @@ package com.lawschool.controller;
 
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.Page;
+import com.lawschool.beans.Answer;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
@@ -50,7 +51,13 @@ public class TestQuestionController {
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
     public Result info(@PathVariable("id") String id) {
         TestQuestions testQuestions = testQuestionService.findOne(id);
-        testQuestions.setAnswerList(answerService.getAnswerByQid(testQuestions.getId()));
+        List<Answer> answerList = answerService.getAnswerByQid(testQuestions.getId());
+        for(Answer answer : answerList){
+            if(answer.getId().equals(testQuestions.getAnswerId())){
+                answer.setIsAnswer(1);
+            }
+        }
+        testQuestions.setAnswerList(answerList);
         return Result.ok().put("data", testQuestions);
     }
 
