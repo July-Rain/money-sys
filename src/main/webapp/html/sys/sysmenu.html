@@ -153,17 +153,28 @@
                                                     align="center"
                                             >
                                                 <template slot-scope="scope">
-                                                    <el-button
-                                                            size="mini"
-                                                            @click="edit(scope.row.id)"
-                                                    >编辑
-                                                    </el-button>
-                                                    <el-button
-                                                            size="mini"
-                                                            @click="remove(scope.row.id, scope.row.type)"
-                                                            type="danger"
-                                                    >删除
-                                                    </el-button>
+                                                    <el-popover
+                                                            placement="right"
+                                                            trigger="hover"
+                                                            content="编辑">
+                                                        <i class="iconfont icon-xiugaimima tabIcon"
+                                                           slot="reference"
+                                                           @click="edit(scope.row.id)"
+                                                           style="color: #119e0a;"
+                                                        >
+                                                        </i>
+                                                    </el-popover>
+                                                    <el-popover
+                                                            placement="right"
+                                                            trigger="hover"
+                                                            content="删除">
+                                                        <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                                                           slot="reference"
+                                                           @click="remove(scope.row.id, scope.row.type)"
+                                                           style="color: #e31313;"
+                                                        >
+                                                        </i>
+                                                    </el-popover>
                                                 </template>
                                             </el-table-column>
                                         </el-table>
@@ -215,17 +226,28 @@
                                             align="center"
                                     >
                                         <template slot-scope="scope">
-                                            <el-button
-                                                    size="mini"
-                                                    @click="edit(scope.row.id)"
-                                            >编辑
-                                            </el-button>
-                                            <el-button
-                                                    size="mini"
-                                                    @click="remove(scope.row.id, scope.row.type)"
-                                                    type="danger"
-                                            >删除
-                                            </el-button>
+                                            <el-popover
+                                                    placement="right"
+                                                    trigger="hover"
+                                                    content="编辑">
+                                                <i class="iconfont icon-xiugaimima tabIcon"
+                                                   slot="reference"
+                                                   @click="edit(scope.row.id)"
+                                                   style="color: #119e0a;"
+                                                >
+                                                </i>
+                                            </el-popover>
+                                            <el-popover
+                                                    placement="right"
+                                                    trigger="hover"
+                                                    content="删除">
+                                                <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                                                   slot="reference"
+                                                   @click="remove(scope.row.id, scope.row.type)"
+                                                   style="color: #e31313;"
+                                                >
+                                                </i>
+                                            </el-popover>
                                         </template>
                                     </el-table-column>
                                 </el-table>

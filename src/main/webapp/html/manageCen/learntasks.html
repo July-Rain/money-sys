@@ -255,18 +255,6 @@
                                                @click="handleStart(scope.$index, scope.row)">启用
                                     </el-button>-->
                                     <el-popover
-                                            v-if="scope.row.isUse=='0'"
-                                            placement="right"
-                                            trigger="hover"
-                                            content="启用">
-                                        <i class="iconfont tabIcon"
-                                           slot="reference"
-                                           @click="handleStart(scope.$index, scope.row)"
-                                           style="color: #1381e3;"
-                                        >&#xe65d;
-                                        </i>
-                                    </el-popover>
-                                    <el-popover
                                             placement="right"
                                             trigger="hover"
                                             content="编辑">
@@ -286,6 +274,18 @@
                                            @click="handleDel(scope.$index, scope.row)"
                                            style="color: #e31313;"
                                         >
+                                        </i>
+                                    </el-popover>
+                                    <el-popover
+                                            v-if="scope.row.isUse=='0'"
+                                            placement="right"
+                                            trigger="hover"
+                                            content="启用">
+                                        <i class="iconfont tabIcon"
+                                           slot="reference"
+                                           @click="handleStart(scope.$index, scope.row)"
+                                           style="color: #1381e3;"
+                                        >&#xe65d;
                                         </i>
                                     </el-popover>
                                 </template>
