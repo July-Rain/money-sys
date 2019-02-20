@@ -34,13 +34,19 @@ public class TestQuestionController {
         String typeId = (String) params.get("typeId");
         String questionDifficulty = (String) params.get("questionDifficulty");
         String questionType = (String) params.get("questionType");
+        String queContent = (String) params.get("queContent");
 
         TestQuestions testQuestions = new TestQuestions();
         testQuestions.setTypeId(typeId);
         testQuestions.setQuestionDifficulty(questionDifficulty);
         testQuestions.setQuestionType(questionType);
-
+        testQuestions.setComContent(queContent);
         Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), testQuestions);
+        List<TestQuestions> list = page.getList();
+        for(TestQuestions tes : list){
+            tes.setAnswerList(answerService.getAnswerByQid(tes.getId()));
+        }
+        page.setList(list);
         return Result.ok().put("page", page);
     }
 
