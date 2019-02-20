@@ -30,10 +30,13 @@ public interface ExerciseDao extends AbstractDao<ExerciseEntity> {
 
     List<QuestForm> getQuestions(@Param("list") List<String> ids,
                                  @Param("id") String id,
-                                 @Param("userId") String userId);
+                                 @Param("userId") String userId,
+                                 @Param("isReview") String isReview);
 
     boolean updateNum(@Param("answerNum") Integer answerNum,
                       @Param("rightNum") Integer rightNum,
                       @Param("id") String id);
+
+    boolean updateCollect(@Param("id") String id);
 
 }
