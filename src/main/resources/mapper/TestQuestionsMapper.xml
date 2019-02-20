@@ -50,7 +50,9 @@
         a.stu_isstim AS "stuIsstim",
         a.stu_optdepartment AS "stuOptdepartment",
         a.use_number AS "useNumber",
-        a.rigth_number AS "rigthNumber"
+        a.rigth_number AS "rigthNumber",
+        a.video AS "video",
+        a.IS_ENBLE AS "isEnble"
     </sql>
 
     <insert id="insert">
@@ -129,7 +131,8 @@
             use_number              = #{useNumber},
             rigth_number            = #{rigthNumber},
             opt_user                = #{optUser},
-            opt_time                = #{optTime}
+            opt_time                = #{optTime},
+            video = #{video}
         <where>
             id = #{id}
         </where>
@@ -379,7 +382,7 @@
                 ORDER BY ${page.orderBy}
             </when>
             <otherwise>
-                ORDER BY a.id
+                ORDER BY a.create_time DESC
             </otherwise>
         </choose>
     </select>
