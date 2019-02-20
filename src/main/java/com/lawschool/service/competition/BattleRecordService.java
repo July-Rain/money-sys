@@ -35,4 +35,9 @@ public interface BattleRecordService extends IService<BattleRecord> {
     List<Map> firstListByleitai();
     int leitaiWinCount();
     int pkSum();
+
+
+    int winLeiTaiCountByUserId(String userid);
+
+
 }

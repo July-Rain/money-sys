@@ -357,6 +357,17 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 			{
 				//先根据这个人 新建一个 对战平台出来   这个人是play1
 				BattlePlatform battlePlatform=battlePlatformService.save(loginUser.getId(),"PKOnline");
+
+				if(battlePlatform==null)
+				{
+					msg.setText("占无题目配置，请联系管理员");
+					msg.setDate(new Date());
+					TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+
+					sendMessageToUser(loginUser.getId(),message);
+					webSocketSession.close();
+				}
+
 				battlePlatformMap.put(battlePlatform.getId(),battlePlatform);//把当前新建的平台加到list中   在扔回redies里面
 
 				redisUtil.set("redisFrombattlePlatformMap",battlePlatformMap);
@@ -373,26 +384,41 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 				//得到题目的list(对象里面有答案)
 				List<TestQuestions> qList=competitionOnlineService.getQuest();
 
-				CompetitionOnline competitionOnline=competitionOnlineService.findAll2();
+				if(qList==null)
+				{
+					msg.setText("存在未找到的题目，请联系管理员");
+					msg.setDate(new Date());
+					TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+
+					sendMessageToUser(loginUser.getId(),message);
+					webSocketSession.close();
+				}
+
+				else
+					{
+						CompetitionOnline competitionOnline=competitionOnlineService.findAll2();
 //						现在我要把它放onlinePk+id的形式存入   第一个user的id为准
 //						redisUtil.set("onlinePk"+loginUser.getId(),qList);
-				timuMap.put("onlinePk"+loginUser.getId(),qList);
-				timussettingMap.put("onlinePksetting"+loginUser.getId(),competitionOnline);
+						timuMap.put("onlinePk"+loginUser.getId(),qList);
+						timussettingMap.put("onlinePksetting"+loginUser.getId(),competitionOnline);
 
-				msg.setText("请等待 玩家加入");
-				msg.setDate(new Date());
-				msg.setTo(loginUser.getId());
-				msg.setNowtimu("0");
-				msg.setBattlePlatform(battlePlatform);
-				msg.setCompetitionOnline(competitionOnline);
-				//把题目塞到信息里面去往页面打
-				msg.setTqList(qList);
+						msg.setText("请等待 玩家加入");
+						msg.setDate(new Date());
+						msg.setTo(loginUser.getId());
+						msg.setNowtimu("0");
+						msg.setBattlePlatform(battlePlatform);
+						msg.setCompetitionOnline(competitionOnline);
+						//把题目塞到信息里面去往页面打
+						msg.setTqList(qList);
 
-				msg.getUserList().add(loginUser);
-				TextMessage message = new TextMessage(GsonUtils.toJson(msg));
-				//群发消息
+						msg.getUserList().add(loginUser);
+						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
+						//群发消息
 //						sendMessageToAll(message);
-				sendMessageToUser(loginUser.getId(),message);
+						sendMessageToUser(loginUser.getId(),message);
+					}
+
+
 			}
 
 			else//队列里面有值，既然是随机匹配的话  那我就直接取第一个呗

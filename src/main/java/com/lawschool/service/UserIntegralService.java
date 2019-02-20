@@ -76,4 +76,6 @@ public interface UserIntegralService {
       * @return
      **/
      PageUtils list(Map<String,Object> map);
+
+     int getJifenByUserId(String userid);
 }
