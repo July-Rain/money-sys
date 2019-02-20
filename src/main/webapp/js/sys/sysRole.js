@@ -45,11 +45,13 @@ var vm = new Vue({
         layFn() {
             $(".el-dialog").css("height", "auto")
         },
-        handleSizeChange: function (val) {
-            console.log('每页' + val + '条');
+        handleSizeChange: function (event) {
+            vm.inline.limit = event;
+            vm.reload();
         },
-        handleCurrentChange: function (val) {
-            console.log('当前页:' + val);
+        handleCurChange: function (event) {
+            vm.inline.page = event;
+            vm.reload();
         },
         addRole: function () {
             this.form = {
@@ -61,6 +63,7 @@ var vm = new Vue({
             };
             vm.title =  '新增角色';
             vm.dialogFormVisible = true;
+            vm.isEdit = false;
         },
         handleWatch: function (index, row) {
             vm.isEdit = true;
@@ -82,6 +85,7 @@ var vm = new Vue({
         },
         handleEdit: function (index, row) {
             vm.title = '编辑';
+            vm.isEdit = false;
             var that = this;
             $.ajax({
                 type: "GET",
@@ -121,10 +125,7 @@ var vm = new Vue({
                 });
 
             }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
+
             });
         },
 
@@ -191,9 +192,8 @@ var vm = new Vue({
             return index + 1 + (vm.inline.page-1) * vm.inline.limit;
         },
         closeDia: function () {
-            vm.title = '新增';
             vm.dialogFormVisible = false;
-            vm.isEdit = false;
+            vm.title = '新增';
             vm.$refs.tree1.setCheckedKeys([]);
             vm.$refs.tree2.setCheckedKeys([]);
         }

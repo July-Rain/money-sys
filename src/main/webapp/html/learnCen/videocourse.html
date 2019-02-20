@@ -77,7 +77,7 @@
                                     <el-input v-model="formInline.stuIssuer" placeholder="发布人" size="mini"></el-input>
                                 </el-form-item>
                                 <el-form-item  label="法律分类" prop="stuLawName">
-                                    <el-input v-model="formInline.stuLawName" placeholder="法律分类" @focus="chooseLaw" size="mini"></el-input>
+                                    <el-input v-model="formInline.stuLawName" placeholder="法律分类" @focus="chooseLaw" size="mini" clearable></el-input>
                                 </el-form-item>
                                 <el-form-item label="开始时间" prop="startTime">
                                     <el-date-picker

@@ -1,19 +1,14 @@
 package com.lawschool.redis;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.lawschool.beans.Dict;
 import com.lawschool.beans.Org;
-import com.lawschool.beans.User;
 import com.lawschool.beans.competition.BattlePlatform;
-import com.lawschool.service.DictService;
+import com.lawschool.beans.system.DictEntity;
 import com.lawschool.service.OrgService;
-import com.lawschool.service.competition.BattlePlatformService;
+import com.lawschool.service.system.DictionService;
 import com.lawschool.util.RedisUtil;
-import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -30,7 +25,6 @@ import java.util.stream.Collectors;
  * @Time        2018/11/29
  *
  */
-
 @Configuration
 public class LoadData {
 
@@ -38,10 +32,10 @@ public class LoadData {
     private RedisUtil redisUtil;
 
     @Autowired
-    DictService dictService;
+    private DictionService dictionService;
 
     @Autowired
-    OrgService orgService;
+    private OrgService orgService;
 
     //数据表在Servlet容器启动时存入Redis
     @PostConstruct
@@ -60,12 +54,10 @@ public class LoadData {
             redisUtil.set("orgList",orgList);
         }
 
-
-        List<Dict> list = dictService.selectAllDict();
-        for(Dict data:list){
+        List<DictEntity> list = dictionService.selectAllDict();
+        for(DictEntity data : list){
             redisUtil.set("dictInfo",data);
         }
-
 
         //权限设置-部门数据(OrgId)
         List<String> sysDeptEntities = orgService.selectList(new EntityWrapper<Org>().in("ORG_TYPE","10,70,-1,0")).stream().map(e->e.getOrgId()).collect(Collectors.toList());

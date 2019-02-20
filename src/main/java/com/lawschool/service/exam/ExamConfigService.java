@@ -37,4 +37,6 @@ public interface ExamConfigService extends AbstractService<ExamConfig> {
                                     String checkUserType);
 
     Result getExamList(Map<String, Object> params)  throws ParseException;
+
+    CheckSetForm getCheckSetting(String id);
 }

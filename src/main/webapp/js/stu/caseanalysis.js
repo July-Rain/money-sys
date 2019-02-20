@@ -324,10 +324,10 @@ var vm = new Vue({
                     }
                 });
             }).catch(function () {
-                that.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
+                // that.$message({
+                //     type: 'info',
+                //     message: '已取消删除'
+                // });
             });
 
         },

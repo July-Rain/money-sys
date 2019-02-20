@@ -16,15 +16,14 @@
             </el-col>
             <el-col :span="20">
                 <el-tabs type="border-card">
-                    <el-tab-pane label="检索">
-                        <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+                        <!--<el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">-->
 
-                            <el-form-item>
-                                <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                                <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
+                            <!--<el-form-item>-->
+                                <!--<el-button type="primary" @click="onSubmit" size="mini">查询</el-button>-->
+                                <!--<el-button @click="resetForm('formInline')" size="mini">重置</el-button>-->
 
-                            </el-form-item>
-                        </el-form>
+                            <!--</el-form-item>-->
+                        <!--</el-form>-->
                         <div >
                             <div v-if="infoFlag=='law'" class="content lesson">
                                 <el-table
@@ -360,14 +359,19 @@
                                     :total="queryCond.totalCount">
                             </el-pagination>
                         </div>
-                    </el-tab-pane>
                 </el-tabs>
             </el-col>
         </el-row>
 
     </div>
 
-
+    <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogPic" :before-close="closeDia"  ref="picDialog">
+        <div>
+            <el-col :span="24">
+                <el-input type="textarea" v-html="caseContent"></el-input>
+            </el-col>
+        </div>
+    </el-dialog>
 </div>
 </body>
 

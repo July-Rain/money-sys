@@ -114,10 +114,10 @@ public class LearnTasksController extends AbstractController {
     
     @SysLog("添加学习任务")
     @RequestMapping("/insert")
-    public Result insert(@RequestBody LearnTasksEntity tasksEntity,String menuForm){
+    public Result insert(@RequestBody LearnTasksEntity tasksEntity,String menuFrom){
         User user =getUser();
         tasksEntity.setId(GetUUID.getUUIDs("SC"));
-        tasksService.insertLearnTask(tasksEntity,user,menuForm);
+        tasksService.insertLearnTask(tasksEntity,user,menuFrom);
         return Result.ok().put("id",tasksEntity.getId());
     }
 
@@ -131,9 +131,9 @@ public class LearnTasksController extends AbstractController {
     
     @SysLog("更新学习任务")
     @RequestMapping("/update")
-    public Result update(@RequestBody LearnTasksEntity tasksEntity,String menuForm){
+    public Result update(@RequestBody LearnTasksEntity tasksEntity,String menuFrom){
         User user =getUser();
-        tasksService.updateLearnTask(tasksEntity,user,menuForm);
+        tasksService.updateLearnTask(tasksEntity,user,menuFrom);
         return Result.ok().put("id",tasksEntity.getId());
     }
 

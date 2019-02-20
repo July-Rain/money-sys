@@ -43,7 +43,10 @@ var vm = new Vue({
         },{
             code:'3',
             value:'视频'
-        }]
+        }],
+        dialogCaseAna:false,
+        caseContent:"",
+        title:"查看"
     },
     created: function () {
 
@@ -225,12 +228,29 @@ var vm = new Vue({
                 }
             });
         },
-        handleEdit:function (id) {
-            //请求后台修改播放量 记录学习记录 --案例分析模块
+        closeDia:function(){
+            vm.dialogCaseAna=false;
+        },
+        handleDetail:function (index, row) {
+
 
             $.ajax({
                 type: "POST",
-                url: baseURL +  "caseana/updateCount?id="+id+"&stuType="+vm.infoFlag+"&stuFrom=caseana",
+                url: baseURL + 'caseana/info?id=' + row.id,
+                contentType: "application/json",
+                success: function (result) {
+                    if(result.code === 0){
+                        vm.caseContent=result.data.caseContent;
+                        vm.dialogCaseAna=true;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+            //请求后台修改播放量 记录学习记录 --案例分析模块
+            $.ajax({
+                type: "POST",
+                url: baseURL +  "caseana/updateCount?id="+row.id+"&stuType="+vm.infoFlag+"&stuFrom=caseana",
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){

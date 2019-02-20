@@ -103,25 +103,25 @@
                                     <el-input v-model="formInline.taskName" placeholder="任务名称" size="mini" clearable></el-input>
                                 </el-form-item>
                                 <el-form-item label="所属警种" prop="policeclass">
-                                    <el-select  size="mini" v-model="formInline.policeclass" placeholder="所属警种" >
+                                    <el-select  size="mini" v-model="formInline.policeclass" placeholder="所属警种" clearable>
                                         <el-option
 
                                                 v-for="item in policeclassOption"
-                                                :key="item.code"
+                                                :key="item.key"
                                                 :label="item.value"
-                                                :value="item.code"
+                                                :value="item.key"
                                         >
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item label="所属分类" prop="taskClass">
-                                    <el-select size="mini" v-model="formInline.taskClass" placeholder="所属分类" >
+                                    <el-select size="mini" v-model="formInline.taskClass" placeholder="所属分类" clearable>
                                         <el-option
 
                                                 v-for="item in taskClassOption"
-                                                :key="item.code"
+                                                :key="item.key"
                                                 :label="item.value"
-                                                :value="item.code"
+                                                :value="item.key"
                                         >
                                         </el-option>
                                     </el-select>

@@ -265,7 +265,7 @@
                                         <th colspan="2">
                                             <el-form-item label="试题难度" prop="questionDifficulty">
                                                 <el-radio-group v-model="item.questionDifficulty">
-                                                    <el-radio :label="item.code" v-for="item in itemjibie">
+                                                    <el-radio :label="item.key" v-for="item in itemjibie">
                                                         {{item.value}}
                                                     </el-radio>
                                                 </el-radio-group>

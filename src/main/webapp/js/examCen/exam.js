@@ -1,4 +1,5 @@
 var menuId = getUrlParam('id');
+var storage = window.sessionStorage;
 var vm = new Vue({
     el: '#app',
     data: {
@@ -6,9 +7,9 @@ var vm = new Vue({
         labelPosition: 'left',
         navData: [],//导航
         formInline: { // 搜索表单
-            examName :'',
-            startTime:'',
-            endTime:'',
+            examName: '',
+            startTime: '',
+            endTime: '',
             pageNo: 1,
             pageSize: 1,
             limit: 10,
@@ -36,11 +37,52 @@ var vm = new Vue({
             ]
         },
         checkSettingRules: {},
-        dialogConfig: false,//table弹出框可见性
         checkSettingDia: false,//阅卷设置弹出框
+        viewCheckSettingDia: false,//查看阅卷信息弹出框
         title: "",//弹窗的名称
         delIdArr: [],//删除数据
-        dialogAdd: false
+        dialogAdd: false,
+        setExam: false,//设置考试弹框
+        dialogView: false,
+        dialogEdit: false,
+        setQuestion: false,// 设置题目弹框
+        tableData3: [{
+            content: '这是题目啊的撒看见封杀尽快恢复凯发',
+            type: 'a类',
+            difficulty: '难的一批',
+            answerNum: '2'
+        }, {
+            content: '这是题目啊的撒看见封杀尽快恢复凯发-05-02',
+            type: 'b类',
+            difficulty: '难的一批',
+            answerNum: '3'
+        }, {
+            content: '这是题目啊的撒看见封杀尽快恢复凯发-05-04',
+            type: 'c类',
+            difficulty: '难的一批',
+            answerNum: '3'
+        }, {
+            content: '2016-这是题目啊的撒看见封杀尽快恢复凯发-01',
+            type: 'd类',
+            difficulty: '难的一批',
+            answerNum: '3'
+        }, {
+            content: '这是题目啊的撒看见封杀尽快恢复凯发-05-08',
+            type: 'e类',
+            difficulty: '难的一批',
+            answerNum: '3'
+        }, {
+            content: '2016-这是题目啊的撒看见封杀尽快恢复凯发-06',
+            type: 'f类',
+            difficulty: '难的一批',
+            answerNum: '3'
+        }, {
+            content: '2016-05-这是题目啊的撒看见封杀尽快恢复凯发',
+            type: 'g类',
+            difficulty: '难的一批',
+            answerNum: '3'
+        }],
+        multipleSelection: []
     },
     created: function () {
         this.$nextTick(function () {
@@ -75,27 +117,16 @@ var vm = new Vue({
         },
         addConfig: function () {
             // parent.location.href = baseURL + "modules/examCen/examConfig.html";
-            this.dialogAdd = true
+            this.dialogAdd = true;
+            storage.setItem("operate", 0); //新增
         },
         resetForm: function (formName) {
-            alert(formName);
             this.$refs[formName].resetFields();
         },
         handleEdit: function (index, row) {
-            this.title = "修改参数";
-            this.dialogConfig = true;
-            $.ajax({
-                type: "POST",
-                url: baseURL + 'sysconfig/info?id=' + row.id,
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.sysConfig = result.data;
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
+            this.dialogEdit = true;
+            storage.setItem("operate", 2); //修改
+            storage.setItem("examConId", row.id);
         },
         handleDel: function (index, row) {
             vm.delIdArr.push(row.id);
@@ -136,6 +167,15 @@ var vm = new Vue({
         closeCheckSettingDia: function () {
             this.checkSettingDia = false;
             vm.reload();
+        },
+        closeViewCheckSettingDia: function () {
+            this.viewCheckSettingDia = false;
+            vm.reload();
+        },
+        handleInfo: function (index, row) {
+            this.dialogView = true;
+            storage.setItem("operate", 1); //查看
+            storage.setItem("examConId", row.id);
         },
         handleChange: function () {
 
@@ -181,12 +221,28 @@ var vm = new Vue({
             var checkPassword = row.checkPassword;
             if (checkPassword) {
                 //查看
-
+                this.getCheckSetting(row.id);
             } else {
                 //生成
                 this.checkSettingDia = true;
                 vm.checkSetting.id = row.id;
             }
+        },
+
+        getCheckSetting: function (id) {
+            this.viewCheckSettingDia = true;
+            $.ajax({
+                type: "GET",
+                url: baseURL + "exam/config/getCheckSetting?id=" + id,
+                dataType: "json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.checkSetting = result.checkSetForm;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            })
         },
         toChild: function (item) {
 
@@ -195,6 +251,15 @@ var vm = new Vue({
         },
         toHome: function () {
             parent.location.reload()
+        },
+        setExamFn: function () {
+            this.setExam = true
+        },
+        handleSelectionChange(val) {
+            this.multipleSelection = val;
+        },
+        addQuestion:function (type){
+            this.setQuestion = true
         }
     }
 });

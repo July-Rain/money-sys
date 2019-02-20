@@ -13,6 +13,8 @@
             font-size: 30px;
             color: #57A8DC;
         }
+        video::-webkit-media-controls-enclosure{ overflow: hidden; }
+        video::-webkit-media-controls-panel{ width: calc(100% + 30px); }
     </style>
 </head>
 <body>
@@ -43,19 +45,19 @@
                                 <el-input v-model="formInline.stuTitle" placeholder="课程标题" size="mini"></el-input>
                             </el-form-item>
                             <el-form-item prop="stuPoliceclass" label="所属警种：">
-                                <el-select size="mini" v-model="formInline.stuPoliceclass" placeholder="所属警种">
+                                <el-select size="mini" v-model="formInline.stuPoliceclass" placeholder="所属警种" clearable>
                                     <el-option
                                             v-for="item in stuPoliceclassOption"
-                                            :key="item.code"
+                                            :key="item.key"
                                             :label="item.value"
-                                            :value="item.code"
+                                            :value="item.key"
                                     >
                                     </el-option>
                                 </el-select>
                             </el-form-item>
 
                             <el-form-item prop="stuType" label="类型：">
-                                <el-select v-model="formInline.stuType" placeholder="类型" size="mini">
+                                <el-select v-model="formInline.stuType" placeholder="类型" size="mini" clearable>
                                     <el-option label="文字" value="1"></el-option>
                                     <el-option label="音频" value="2"></el-option>
                                     <el-option label="视频" value="3"></el-option>
@@ -250,12 +252,12 @@
                             </el-form-item>
                         </template>
                         <el-form-item label="所属警种：" prop="stuPoliceclass">
-                            <el-select v-model="stuMedia.stuPoliceclass" placeholder="所属警种">
+                            <el-select v-model="stuMedia.stuPoliceclass" placeholder="所属警种" clearable>
                                 <el-option
                                         v-for="item in stuPoliceclassOption"
-                                        :key="item.code"
+                                        :key="item.key"
                                         :label="item.value"
-                                        :value="item.code"
+                                        :value="item.key"
                                 >
                                 </el-option>
                             </el-select>

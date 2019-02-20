@@ -69,6 +69,9 @@ var vm = new Vue({
         infoFlag:"law",//页面展示标记
         playTime:0,//播放时间
         oldTime:0,//原播放时间
+        dialogPic:false,
+        caseContent:"",
+        title:"查看"
     },
     created: function () {
 
@@ -192,14 +195,20 @@ var vm = new Vue({
                 ztree = $.fn.zTree.init($("#classTree"), setting, r.data);
             })
         },
+        closeDia:function(){
+            vm.dialogPic=false;
+        },
         handleDetail: function (index , row) {
+            debugger
             //查看详情信息
             //1.记录学习记录
             if(vm.infoFlag=='law'){
                 this.insertStuRecord(row.id);
             }else if(vm.infoFlag=='stu_pic'){
+
                 this.countStu(row.id);
             }else if(vm.infoFlag=='case_pic'){
+
                 this.countCase(row.id);
             }
         },
@@ -219,6 +228,19 @@ var vm = new Vue({
             });
         },
         countStu:function (id) {
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'stumedia/info?id=' + id,
+                contentType: "application/json",
+                success: function (result) {
+                    if(result.code === 0){
+                        vm.caseContent=result.data.comContent;
+                        vm.dialogPic=true;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
             //请求后台修改播放量 记录学习记录
             $.ajax({
                 type: "POST",
@@ -235,7 +257,19 @@ var vm = new Vue({
         },
         countCase:function (id) {
             //请求后台修改播放量 记录学习记录 --案例分析模块
-
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'caseana/info?id=' + id,
+                contentType: "application/json",
+                success: function (result) {
+                    if(result.code === 0){
+                        vm.caseContent=result.data.caseContent;
+                        vm.dialogPic=true;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
             $.ajax({
                 type: "POST",
                 url: baseURL +  "caseana/updateCount?id="+id+"&stuType="+vm.infoFlag+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,

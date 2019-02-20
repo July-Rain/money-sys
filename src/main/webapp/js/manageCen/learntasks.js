@@ -30,7 +30,7 @@ var vm = new Vue({
     el: '#app',
     data: {
         idArr:[],// 部门Tree默认展开数据
-        menuForm:[],
+        menuForm:"",
         navData: [],//导航
         formInline: { // 搜索表单
             taskContent: '',
@@ -194,6 +194,7 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
+                    debugger
                     var url = vm.learnTasks.id ? "learntasks/update?menuFrom="+vm.menuForm : "learntasks/insert?menuFrom="+vm.menuForm;
                     var deptArr = vm.learnTasks.deptIds?vm.learnTasks.deptIds.split(","):[];
                     var userArr = vm.learnTasks.userIds?vm.learnTasks.userIds.split(","):[];
@@ -293,10 +294,10 @@ var vm = new Vue({
                     }
                 });
             }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
+                // vm.$message({
+                //     type: 'info',
+                //     message: '已取消删除'
+                // });
             });
 
         },

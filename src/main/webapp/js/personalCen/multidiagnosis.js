@@ -1033,6 +1033,9 @@ var vm = new Vue({
                         vm.dataByCorrect.push({value:Number(data.leitaiByUser), name:'擂台赛'});
                     }
                 });
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     }
 });

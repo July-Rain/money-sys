@@ -136,6 +136,7 @@ public class User extends DataEntity<User> {
 
     private String myMedal;//我的勋章
 
+    private String policeclass;//所属警种
 
     public String getMyMedal() {
         return myMedal;
@@ -552,5 +553,13 @@ public class User extends DataEntity<User> {
 
     public void setOrgIdList(List<String> orgIdList) {
         this.orgIdList = orgIdList;
+    }
+
+    public String getPoliceclass() {
+        return policeclass;
+    }
+
+    public void setPoliceclass(String policeclass) {
+        this.policeclass = policeclass;
     }
 }
