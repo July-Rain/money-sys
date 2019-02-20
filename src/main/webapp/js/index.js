@@ -67,9 +67,8 @@ var vm = new Vue({
         handleSelect: function (key, keyPath) {
             console.log(key, keyPath);
         },
+        toChild: function (item,event) {
 
-
-        toChild: function (item) {
             if(item.url === 'container.html'){
                 vm.navData.splice(-1,1);
             }
@@ -77,6 +76,8 @@ var vm = new Vue({
                 window.location.href = baseURL + 'logout'
             }
             if (item.url) {
+                $(".header-right ul li").removeClass("this");
+
                 if(item.url.indexOf("?") == -1){
                     vm.childUrl = item.url + "?id=" + item.id;
                 }else{
@@ -84,8 +85,15 @@ var vm = new Vue({
                 }
 
                 if(item.type == '0'){
-
                     this.loadNav(item.id,item.url)
+                }else {
+                    var el = event.target;
+                    $(".header-right ul li").removeClass("this");
+                    if(typeof($(el).attr("data-url"))=="undefined"){
+                        $(el).parents('li').addClass("this");
+                    }else {
+                        $(el).addClass("this");
+                    }
                 }
 
             } else {
