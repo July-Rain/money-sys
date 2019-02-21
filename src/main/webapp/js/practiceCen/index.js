@@ -393,10 +393,10 @@ var vm = new Vue({
                     message: '删除成功!'
                 });
             }).catch(function () {
-                that.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
+                // that.$message({
+                //     type: 'info',
+                //     message: '已取消删除'
+                // });
             });
         },
         toChild: function (item) {

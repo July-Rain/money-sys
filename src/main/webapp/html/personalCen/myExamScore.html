@@ -11,6 +11,7 @@
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
             <el-breadcrumb-item>个人中心</el-breadcrumb-item>
+            <el-breadcrumb-item>我的考试</el-breadcrumb-item>
             <el-breadcrumb-item>成绩报告</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row :gutter="24">
@@ -61,7 +62,7 @@
                                     prop="examTime"
                                     label="考试时长（分钟）"
                                     align="center"
-                                    width="130"
+                                    width="150"
                             >
                             </el-table-column>
 
@@ -88,22 +89,26 @@
                                 prop = "examScore"
                                 label = "考试分数"
                                 align="center"
+                                width="80"
                             ></el-table-column>
                             <el-table-column
                                 prop = "passPnt"
                                 label = "达标线"
                                 align="center"
+                                width="80"
                             >
                             </el-table-column>
                             <el-table-column
                                 prop = "isPass"
                                 label = "是否达标"
                                 align="center"
+                                width="80"
                             ></el-table-column>
                             <el-table-column
                                 prop = "passReward"
                                 label = "达标奖励"
                                 align="center"
+                                width="80"
                             ></el-table-column>
                             <el-table-column label="操作" align="center">
                                 <template slot-scope="scope">

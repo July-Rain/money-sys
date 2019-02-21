@@ -20,20 +20,19 @@
             <el-table-column
                     prop="themeName"
                     label="主题类型"
-                    width="480"
                     header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
                     prop="total"
                     label="总题数"
-                    width="200"
+                    width="100"
                     header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
                     label="已答题"
-                    width="200"
+                    width="100"
                     header-align="center"
                     align="center"
                     prop="answerNum">
@@ -49,42 +48,42 @@
                             placement="right"
                             trigger="hover"
                             content="开始练习">
-                        <i class="iconfont icon-lianxi" v-if="scope.row.status == 0 || scope.row.status == null"
+                        <i class="iconfont icon-lianxi tabIcon" v-if="scope.row.status == 0 || scope.row.status == null"
                            @click="start(scope.$index)"
                            slot="reference"
-                           style="color: #1381e3;cursor: pointer;padding: 0 20px;font-size: 20px" >
+                           style="color: #1381e3;font-size: 20px" >
                         </i>
                     </el-popover>
                     <el-popover
                             placement="right"
                             trigger="hover"
                             content="继续练习">
-                        <i class="iconfont icon-lianxi"
+                        <i class="iconfont icon-lianxi tabIcon"
                            v-if="scope.row.status == 1"
                            @click="start(scope.$index)"
                            slot="reference"
-                           style="color: #119e0b;cursor: pointer;padding: 0 20px;font-size: 20px" >
+                           style="color: #119e0b;font-size: 20px" >
                         </i>
                     </el-popover>
                     <el-popover
                             placement="right"
                             trigger="hover"
                             content="错题回顾">
-                        <i class="iconfont icon-cuotiku"
+                        <i class="iconfont icon-cuotiku tabIcon"
                            v-if="scope.row.status == 1 || scope.row.status == 2"
                            slot="reference"
-                           style="color: #ff1f14;cursor: pointer;padding: 0 20px;font-size: 20px" >
+                           style="color: #ff1f14;font-size: 20px" >
                         </i>
                     </el-popover>
                     <el-popover
                             placement="right"
                             trigger="hover"
                             content="清空重做">
-                        <i class="iconfont icon-zhongzuo"
+                        <i class="iconfont icon-zhongzuo tabIcon"
                            v-if="scope.row.status == 2"
                            @click="reStart(scope.row.id)"
                            slot="reference"
-                           style="color: #ff7814;cursor: pointer;padding: 0 20px;font-size: 20px" >
+                           style="color: #ff7814;font-size: 20px" >
                         </i>
                     </el-popover>
                 </template>

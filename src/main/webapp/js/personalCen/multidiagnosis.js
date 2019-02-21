@@ -13,6 +13,7 @@ var vm = new Vue({
             },
             echartsTab: '',//学情看板分页
             seriesData:[],
+            colorList: ['#52c9e7','#3e98e8','#81bdd8','#5ebd5c','#feae24','#f97a1f','#f26443','#b97deb','#7e72f2','#4f7ee9'],
             stuInfo:{
                 stuCount:0,//学习时长
                 ratio:"0%",//超过百分比
@@ -62,6 +63,10 @@ var vm = new Vue({
 
     },
     methods: {
+        colorPicker: function () {
+            var colorList = this.colorList;
+            return colorList[Math.round(Math.random()*this.colorList.length)];
+        },
         onSubmit: function(){
             this.getStuDia();
             this.getExamDia();
@@ -88,14 +93,6 @@ var vm = new Vue({
             var option = {
                 backgroundColor: '#fff',
 
-                title: {
-                    text: '',
-                    left: 'center',
-                    top: 20,
-                    textStyle: {
-                        color: '#ccc'
-                    }
-                },
 
                 tooltip : {
                     trigger: 'item',
@@ -107,7 +104,6 @@ var vm = new Vue({
                     min: 80,
                     max: 600,
                     inRange: {
-                        colorLightness: [0, 1]
                     }
                 },
                 series : [
@@ -138,10 +134,7 @@ var vm = new Vue({
                         itemStyle: {
                             normal: {
                                 // 定制显示（按顺序）
-                                color: function(params) {
-                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
-                                    return colorList[params.dataIndex]
-                                }
+                                color: this.colorPicker
                             },
                         },
 
@@ -163,14 +156,6 @@ var vm = new Vue({
             var option = {
                 backgroundColor: '#fff',
 
-                title: {
-                    text: '',
-                    left: 'center',
-                    top: 20,
-                    textStyle: {
-                        color: '#ccc'
-                    }
-                },
 
                 tooltip : {
                     trigger: 'item',
@@ -182,9 +167,9 @@ var vm = new Vue({
                     min: 80,
                     max: 600,
                     inRange: {
-                        colorLightness: [0, 1]
                     }
                 },
+                color: ["#ff0000"],
                 series : [
                     {
                         name:'学习情况统计',
@@ -213,10 +198,7 @@ var vm = new Vue({
                         itemStyle: {
                             normal: {
                                 // 定制显示（按顺序）
-                                color: function(params) {
-                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
-                                    return colorList[params.dataIndex]
-                                }
+                                color: this.colorPicker
                             },
                         },
 
@@ -258,7 +240,6 @@ var vm = new Vue({
                     min: 80,
                     max: 600,
                     inRange: {
-                        colorLightness: [0, 1]
                     }
                 },
                 series : [
@@ -289,10 +270,7 @@ var vm = new Vue({
                         itemStyle: {
                             normal: {
                                 // 定制显示（按顺序）
-                                color: function(params) {
-                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
-                                    return colorList[params.dataIndex]
-                                }
+                                color: this.colorPicker
                             },
                         },
 
@@ -333,7 +311,6 @@ var vm = new Vue({
                     min: 80,
                     max: 600,
                     inRange: {
-                        colorLightness: [0, 1]
                     }
                 },
                 series : [
@@ -364,10 +341,7 @@ var vm = new Vue({
                         itemStyle: {
                             normal: {
                                 // 定制显示（按顺序）
-                                color: function(params) {
-                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
-                                    return colorList[params.dataIndex]
-                                }
+                                color: this.colorPicker
                             },
                         },
 
@@ -444,10 +418,7 @@ var vm = new Vue({
                         itemStyle: {
                             normal: {
                                 // 定制显示（按顺序）
-                                color: function(params) {
-                                    var colorList = ["#36aae0","#feae24","#de6870","#1381e3","#81bdd8","#f97a1f","#5ebd5c"];
-                                    return colorList[params.dataIndex]
-                                }
+                                color: this.colorPicker
                             },
                         },
                         data: vm.showValues
@@ -483,7 +454,6 @@ var vm = new Vue({
                     min: 80,
                     max: 600,
                     inRange: {
-                        colorLightness: [0, 1]
                     }
                 },
                 series : [
@@ -514,10 +484,7 @@ var vm = new Vue({
                         itemStyle: {
                             normal: {
                                 // 定制显示（按顺序）
-                                color: function(params) {
-                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
-                                    return colorList[params.dataIndex]
-                                }
+                                color: this.colorPicker
                             },
                         },
 
@@ -558,7 +525,6 @@ var vm = new Vue({
                     min: 80,
                     max: 600,
                     inRange: {
-                        colorLightness: [0, 1]
                     }
                 },
                 series : [
@@ -589,10 +555,7 @@ var vm = new Vue({
                         itemStyle: {
                             normal: {
                                 // 定制显示（按顺序）
-                                color: function(params) {
-                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
-                                    return colorList[params.dataIndex]
-                                }
+                                color: this.colorPicker
                             },
                         },
 
@@ -633,7 +596,6 @@ var vm = new Vue({
                     min: 80,
                     max: 600,
                     inRange: {
-                        colorLightness: [0, 1]
                     }
                 },
                 series : [
@@ -664,10 +626,7 @@ var vm = new Vue({
                         itemStyle: {
                             normal: {
                                 // 定制显示（按顺序）
-                                color: function(params) {
-                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
-                                    return colorList[params.dataIndex]
-                                }
+                                color: this.colorPicker
                             },
                         },
 
@@ -690,16 +649,6 @@ var vm = new Vue({
             var option = {
                 backgroundColor: '#fff',
 
-                //目前没有title
-                // title: {
-                //     text: '',
-                //     left: 'center',
-                //     top: 20,
-                //     textStyle: {
-                //         color: 'red'
-                //     }
-                // },
-
                 tooltip : {
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} 次"
@@ -710,7 +659,6 @@ var vm = new Vue({
                     min: 80,
                     max: 600,
                     inRange: {
-                        colorLightness: [0, 1]
                     }
                 },
                 series : [
@@ -741,10 +689,7 @@ var vm = new Vue({
                         itemStyle: {
                             normal: {
                                 // 定制显示（按顺序）
-                                color: function(params) {
-                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
-                                    return colorList[params.dataIndex]
-                                }
+                                color: this.colorPicker
                             },
                         },
 
@@ -766,15 +711,6 @@ var vm = new Vue({
             var option = {
                 backgroundColor: '#fff',
 
-                title: {
-                    text: '',
-                    left: 'center',
-                    top: 20,
-                    textStyle: {
-                        color: '#ccc'
-                    }
-                },
-
                 tooltip : {
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} 分"
@@ -785,7 +721,6 @@ var vm = new Vue({
                     min: 80,
                     max: 600,
                     inRange: {
-                        colorLightness: [0, 1]
                     }
                 },
                 series : [
@@ -816,10 +751,7 @@ var vm = new Vue({
                         itemStyle: {
                             normal: {
                                 // 定制显示（按顺序）
-                                color: function(params) {
-                                    var colorList = ["#146084","#1978a5","#de676f","#feaf25","#219dd9","#5ebd5c","#55b6e5"];
-                                    return colorList[params.dataIndex]
-                                }
+                                color: this.colorPicker
                             },
                         },
 
@@ -848,6 +780,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.seriesData = result.data;
+                        console.info(result.data)
                         vm.stuInfo=result.stuInfo;
                         vm.seriesNumData = result.stuCount;
                     } else {

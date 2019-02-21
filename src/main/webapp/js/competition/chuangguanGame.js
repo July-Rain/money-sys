@@ -423,6 +423,9 @@ var vm = new Vue({
                 return dateMat.getFullYear() + "/" + (dateMat.getMonth() + 1) + "/" + dateMat.getDate();
             }
 
+        },
+        backRush: function () {
+            window.location.href = baseURL + 'modules/competition/rushLevel.html'
         }
     }
 });

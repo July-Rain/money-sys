@@ -45,7 +45,6 @@ var vm = new Vue({
         oldTime:0,//原来播放时间
     },
     created: function () {
-
         this.$nextTick(function () {
             //法律分类树数据
             $.ajax({
@@ -95,7 +94,7 @@ var vm = new Vue({
                             if(vm.videoData[i].videoPicAcc){
                                 vm.videoData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
                             }else{
-                                vm.videoData[i].videoPicAccUrl="http://temp.im/640x260";
+                                vm.videoData[i].videoPicAccUrl=baseURL+'/statics/img/video_bg.png';
                             }
                             if(vm.videoData[i].stuType=='1'){
                                 vm.videoData[i].stuType="文字";
@@ -105,6 +104,7 @@ var vm = new Vue({
                                 vm.videoData[i].stuType="视频";
                             }
                         }
+                        console.log(vm.videoData)
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
                         vm.formInline.totalCount = parseInt(result.page.totalCount);

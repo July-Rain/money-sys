@@ -21,6 +21,9 @@ a{
     letter-spacing: 0px;
     color: #ffffff;
 }
+.iconfont {
+    outline-width: 0;
+}
 ul li{
     list-style:none;
 }

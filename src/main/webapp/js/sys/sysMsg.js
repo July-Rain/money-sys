@@ -23,20 +23,29 @@ var vm = new Vue({
             releaseDate:""
         },
         userTableData:[],//人员表格信息
+        // userForm:{
+        //     userCode:"",
+        //     userName:"",
+        //     orgCode:"",
+        //     currPage: 1,
+        //     pageSize: 10,
+        //     totalCount:0
+        //
+        // },//人员查询
         userForm:{
             userCode:"",
             userName:"",
             orgCode:"",
             currPage: 1,
             pageSize: 10,
-            totalCount:0
+            totalCount:0,
+            identify:'0'//表明是用户
 
         },//人员查询
         formInline:{
             currPage:1,
             pageSize:10,
             totalCount:0,
-            orgCode:'',
         },
         defaultUserProps:{
             children: 'child',
@@ -63,9 +72,9 @@ var vm = new Vue({
             content:[
                 {required: true, message: '请输入消息内容', trigger: 'blur'},
             ],
-            userName:[
-                {required: true, message: '请输入接收人', trigger: 'blur'},
-            ],
+            // userName:[
+            //     {required: true, message: '请输入接收人', trigger: 'blur'},
+            // ],
 
         },
         dialogConfig: false,//table弹出框可见性
@@ -74,6 +83,7 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
+
             vm.user=jsgetUser();//获得人
             //加载部门数据
             $.ajax({
@@ -95,6 +105,7 @@ var vm = new Vue({
             });
 
             this.reload();
+            this.reloadUser();
         })
     },
     methods: {
@@ -105,7 +116,7 @@ var vm = new Vue({
         reloadUser: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sys/getAllUsers",
+                url: baseURL + "sys/getUorT?isMp=true",
                 dataType: "json",
                 data: vm.userForm,
                 success: function (result) {
@@ -113,7 +124,7 @@ var vm = new Vue({
                         vm.userTableData = result.page.list;
                         vm.userForm.currPage = result.page.currPage;
                         vm.userForm.pageSize = result.page.pageSize;
-                        vm.userForm.totalCount = parseInt(result.page.count);
+                        vm.userForm.totalCount = parseInt(result.page.totalCount);
                     } else {
                         alert(result.msg);
                     }
@@ -131,31 +142,29 @@ var vm = new Vue({
         handleSelectionChange(val) {
 
             //选择人员信息
-            this.multipleSelection = val;
-            this.sysMsg.recievePeople="";
-            // 取到msg 的id 看有没
-                if(this.sysMsg.id!="")
-                {
+            vm.multipleSelection = val;
 
-                    if(val.length>1)
-                    {
-                        alert("请选择一位接收人");
-                        return;
-                    }
-                }
-
+            // // 取到msg 的id 看有没
+            //     if(this.sysMsg.id!="")
+            //     {
+            //
+            //         if(val.length>1)
+            //         {
+            //             alert("请选择一位接收人");
+            //             return;
+            //         }
+            //     }
                     //遍历最终的人员信息
-
                     for (var i=0;i<val.length;i++){
                         if(i==0)
                         {
-                            this.sysMsg.recievePeople=val[i].id;
-                            this.sysMsg.userName=val[i].fullName;
+                            vm.sysMsg.recievePeople=val[i].id;
+                            vm.sysMsg.recievePeopleNmae=val[i].fullName;
                         }
                         else
                         {
-                            this.sysMsg.recievePeople=this.sysMsg.recievePeople+','+val[i].id;
-                            this.sysMsg.userName=this.sysMsg.fullName+','+val[i].fullName;
+                            vm.sysMsg.recievePeople=vm.sysMsg.recievePeople+','+val[i].id;
+                            vm.sysMsg.recievePeopleNmae=vm.sysMsg.recievePeopleNmae+','+val[i].fullName;
                         }
                     }
 
@@ -163,13 +172,14 @@ var vm = new Vue({
         },
         //部门人员控件中点击事件
         handleDeptNodeClick: function (data) {
-            this.userForm.orgCode=data.orgCode;
+
+            vm.userForm.orgCode=data.orgCode;
+            vm.userForm.orgId= data.orgId;
             this.reloadUser();
         },
         chooseUser: function () {
             //选择人员
             this.dialogUser=true;
-            // vm.sysMsg.recievePeople="";
         },
         confimUser: function () {
             this.dialogUser=false;
@@ -331,6 +341,8 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         addConfig: function () {
+
+            vm.sysMsg={};
             vm.sysMsg.releasePeople=vm.user.id;
             vm.sysMsg.releasePeopleName=vm.user.fullName;
             this.title02 = "新增";
@@ -352,6 +364,8 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.sysMsg = result.msg;
+                        console.info("2134124124214124")
+                        console.info(vm.sysMsg)
                     } else {
                         alert(result.msg);
                     }
@@ -388,8 +402,6 @@ var vm = new Vue({
                 $.ajax({
                     type: "POST",
                     url: baseURL + 'msg/delete?id='+row.id,
-                    //async: true,
-                    //data: JSON.stringify(row.id),
                     contentType: "application/json",
                     success: function (result) {
                         vm.reload();
@@ -401,10 +413,41 @@ var vm = new Vue({
                     }
                 });
             }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消删除'
+                // vm.$message({
+                //     type: 'info',
+                //     message: '已取消删除'
+                // });
+            });
+
+        },
+        black: function (index, row) {
+
+            //vm.delIdArr.push(row.id);
+            this.$confirm('撤回消息, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(function () {
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + 'msg/recall?id='+row.id,
+                    //async: true,
+                    //data: JSON.stringify(row.id),
+                    contentType: "application/json",
+                    success: function (result) {
+                        vm.reload();
+                        vm.$message({
+                            type: 'success',
+                            message: '成功!'
+                        });
+
+                    }
                 });
+            }).catch(function () {
+                // vm.$message({
+                //     type: 'info',
+                //     message: '已取消删除'
+                // });
             });
 
         },

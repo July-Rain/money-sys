@@ -17,26 +17,30 @@ var vm = new Vue({
         isNew: true,
         isNext: false,
         index: 1,
-        title: ''
+        title: '',
+        starIcon: 'el-icon-star-off'
     },
     methods: {
-        getQuestion: function () {
+        getQuestion: function (type) {
+            var _index = 1;
+            if(type == 0){
+                _index = vm.index - 1;
+            } else {
+                _index = vm.index + 1;
+            }
             $.ajax({
                 type: "GET",
                 url: baseURL + "exercise/random/getQuestion",
                 contentType: "application/json",
                 data: {
                     id: id,
-                    index: vm.index,
+                    index: _index,
                     isReview: isReview
                 },
                 success: function (result) {
                     if (result.code === 0) {
                         if(result.question == null){
                             vm.isNext = true;
-                            if(vm.index != 1){
-                                vm.index--;
-                            }
                             if(isReview != null && isReview != ''){
                                 vm.$alert('当前为最后一题，是否結束本次回顾！', '提示', {
                                     confirmButtonText: '确定',
@@ -54,10 +58,20 @@ var vm = new Vue({
                             }
 
                         } else {
+                            if(type == 0){
+                                vm.index--;
+                            } else {
+                                vm.index++;
+                            }
                             vm.question = result.question;
                             // 判断此题目是否已经回答过
                             var userAnswer = vm.question.userAnswer;
                             var rightAnswer = vm.question.answerId;
+                            if(vm.question.isCollect == 1){
+                                vm.starIcon = 'el-icon-star-on';
+                            } else {
+                                vm.starIcon = 'el-icon-star-off';
+                            }
                             if(userAnswer == null || userAnswer == ''){
                                 vm.isAnswer = false;
                                 vm.answers = [];
@@ -122,15 +136,13 @@ var vm = new Vue({
             if(vm.index == 1){
                 vm.isLast = true;
             } else {
-                vm.index--;
-                vm.getQuestion();
+                vm.getQuestion(0);
                 vm.isNext = false;
             }
         },
         next: function () {
             // 下一页
-            vm.index++;
-            vm.getQuestion();
+            vm.getQuestion(1);
             vm.isLast = false;
         },
         commit: function () {
@@ -178,7 +190,7 @@ var vm = new Vue({
                 data: JSON.stringify(obj),
                 success: function (result) {
                     if (result.code === 0) {
-
+                        vm.question.recordId = result.recordId;
                     } else {
                         alert(result.msg);
                     }
@@ -188,14 +200,24 @@ var vm = new Vue({
         },
         doCollect: function () {
             // 收藏题目
-            vm.question.isCollect = 1;
             var obj = {
                 key: vm.question.id,
                 value: vm.question.recordId
             };
+            var type;
+            if(vm.question.isCollect == 1){
+                type = 0;
+                vm.question.isCollect = 0;
+                vm.starIcon = 'el-icon-star-off';
+            } else {
+                type = 1;
+                vm.question.isCollect = 1;
+                vm.starIcon = 'el-icon-star-on';
+            }
+
             $.ajax({
                 type: "POST",
-                url: baseURL + "exercise/random/doCollect",
+                url: baseURL + "exercise/random/doCollect/"+type,
                 data: JSON.stringify(obj),
                 contentType: "application/json",
                 success: function (result) {
@@ -216,9 +238,11 @@ var vm = new Vue({
                 vm.title = '结束本次练习';
             }
             if(indexs != null && indexs != ''){
-                vm.index = Number(indexs) + 1;
+                vm.index = Number(indexs);
+            } else {
+                vm.index = 0;
             }
-            vm.getQuestion();
+            vm.getQuestion(1);
         })
     }
 });

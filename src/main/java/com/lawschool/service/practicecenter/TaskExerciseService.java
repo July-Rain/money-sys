@@ -22,11 +22,11 @@ public interface TaskExerciseService extends AbstractService<TaskExerciseEntity>
      * @param id 个人任务ID
      * @param userId 当前用户ID
      * @param isNew 是否需要创建新的个人任务
-     * @param limit 每页显示题目数量
+     * @param index 当前题目序号
      * @return
      */
     Map<String, Object> showPaper(String taskId, String id, String userId, Boolean isNew,
-                                  Integer limit, Integer page);
+                                  Integer index, String isReview);
 
     /**
      * 获取题目信息并关联答题情况
@@ -39,9 +39,9 @@ public interface TaskExerciseService extends AbstractService<TaskExerciseEntity>
 
     /**
      * 练习保存答题情况
-     * @param list
+     * @param form
      */
-    void preserve(List<ThemeAnswerForm> list, String userId);
+    void preserve(ThemeAnswerForm form);
 
     /**
      * 更新任务状态
@@ -52,4 +52,6 @@ public interface TaskExerciseService extends AbstractService<TaskExerciseEntity>
     boolean updateStatus(String id, Integer status);
 
     AnalysisForm analysis(String month, String userId);
+
+    boolean doCollect(String id, String recordId, Integer type);
 }

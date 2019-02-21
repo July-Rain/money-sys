@@ -148,7 +148,7 @@
         <div class="header-right">
 
             <ul>
-                <li v-for="item in navData" @click="toChild(item,$event)" :data-id="item.id" :data-url="item.url">
+                <li v-for="(item,index) in navData" :class="index===0&&showThis&&navData.length>1?'this':''" @click="toChild(item,$event)" :data-id="item.id" :data-url="item.url">
                     <div class="spel" v-if="item.url">
                         <a>
                             <i class="iconfont" :class="item.icon?item.icon:'icon-085shucezhongxin'"></i>

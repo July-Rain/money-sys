@@ -124,7 +124,7 @@ var vm = new Vue({
                         if(result.data.length!="0")
                         {
 
-                            vm.$alert('请先删除原有配置，在添加新的配置');
+                            vm.$alert('请先删除原有配置,在添加新的配置');
                             vm.dialogConfig = false;
                         }
                         else
@@ -307,10 +307,10 @@ var vm = new Vue({
                     }
                 });
             }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
+                // vm.$message({
+                //     type: 'info',
+                //     message: '已取消删除'
+                // });
             });
 
         },

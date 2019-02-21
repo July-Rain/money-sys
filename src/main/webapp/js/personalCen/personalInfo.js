@@ -1,6 +1,6 @@
 var vm = new Vue({
     el: '#app',
-    data:{
+    data: {
         src: "../../statics/img/dog.jpg",
         info: {
             name: "", // 用户名
@@ -24,8 +24,17 @@ var vm = new Vue({
             ],
             department: [
                 { required: true, message: '部门名称不能为空', trigger: 'blur'}
+            ],
+            oldPassword: [
+                { required: true, message: '旧密码不能为空', trigger: 'blur'}
+            ],
+            newPassword: [
+                { required: true, message: '新密码不能为空', trigger: 'blur'}
+            ],
+            newPassValidator: [
+                { required: true, message: '请再输入一次新密码', trigger: 'blur'}
             ]
-        }
+        },
     },
     methods: {
         //获取url路径中参数
@@ -37,14 +46,15 @@ var vm = new Vue({
                 if (valid) {
                     alert('submit!');
                 } else {
-                    console.log('error submit!!');
+                    alert('error submit!!');
                     return false;
                 }
             });
         },
         changeAvatar: function () {
             this.src = "../../statics/img/new.png"
-        }
+        },
+
     },
     created: function(){
         /*this.$nextTick(function () {
@@ -63,5 +73,10 @@ var vm = new Vue({
                 }
             });
         });*/
-    }
+        // 模拟数据
+        this.info.name = 'Sansa';
+        this.info.number = 321;
+        this.info.id = 123;
+        this.info.department = '执勤';
+    },
 });

@@ -74,7 +74,7 @@
                         <i class="iconfont icon-lianxi" v-if="scope.row.status == null"
                            @click="start(scope.row.id, scope.row.taskId)"
                            slot="reference"
-                           style="color: #1381e3;cursor: pointer;padding: 0 20px;font-size: 20px"
+                           style="color: #1381e3;font-size: 20px"
                         >
                         </i>
                     </el-popover>
@@ -88,7 +88,7 @@
                            v-if="scope.row.status == 0"
                            @click="goon(scope.row.id, scope.row.taskId)"
                            slot="reference"
-                           style="color: #119e0b;cursor: pointer;padding: 0 20px;font-size: 20px"
+                           style="color: #119e0b;font-size: 20px"
                         >
                         </i>
                     </el-popover>
@@ -99,7 +99,7 @@
                             trigger="hover"
                             content="点击练习回顾">
                         <i class="iconfont icon-lianxihuigu"
-                                style="color: #1381e3;cursor: pointer;padding: 0 20px;font-size: 20px"
+                                style="color: #1381e3;font-size: 20px"
                            v-if="scope.row.status == 1"
                            slot="reference"
                         >
