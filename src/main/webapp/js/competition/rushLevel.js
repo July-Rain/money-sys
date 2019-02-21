@@ -106,6 +106,9 @@ var vm = new Vue({
                 window.location.href =baseURL+"modules/competition/chuangguanGame.html?index="+getUrlParam('index')+"&coinNum="+vm.coinNum;
             },1000)
 
+        },
+        backMain: function () {
+            window.location.href = baseURL + 'modules/competition/competeCenter.html'
         }
     },
     filters: {

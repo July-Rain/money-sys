@@ -202,43 +202,48 @@ var vm = new Vue({
         save: function (formName) {
             // this.$refs['form'].resetFields();
             this.$refs[formName].validate(function (valid) {
-                $.ajax({
-                    type: "POST",
-                    url: baseURL + "testQuestion/save",
-                    contentType: "application/json",
-                    data: JSON.stringify(vm.form),
-                    success: function (result) {
-                        if (result.code === 0) {
-                            vm.$alert('操作成功', '提示', {
-                                confirmButtonText: '确定',
-                                callback: function () {
-                                    vm.dialogFormVisible = false;
-                                    vm.reload();
-                                    vm.form = {
-                                        typeId: '',
-                                        questionType: '',
-                                        comContent: '',
-                                        specialKnowledgeId: '',
-                                        questionDifficulty: '',
-                                        legalBasis: '',
-                                        answerId: '',
-                                        isEnble: '0',
-                                        optUser: '',
-                                        stuOptdepartment: '',
-                                        page: 1,
-                                        limit: 10,
-                                        count: 0,
-                                        video: '',
-                                        videoUrl: '',
-                                        answerList: []
-                                    };
-                                }
-                            });
-                        } else {
-                            alert(result.msg);
+                if (valid) {
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + "testQuestion/save",
+                        contentType: "application/json",
+                        data: JSON.stringify(vm.form),
+                        success: function (result) {
+                            if (result.code === 0) {
+                                vm.$alert('操作成功', '提示', {
+                                    confirmButtonText: '确定',
+                                    callback: function () {
+                                        vm.dialogFormVisible = false;
+                                        vm.reload();
+                                        vm.form = {
+                                            typeId: '',
+                                            questionType: '',
+                                            comContent: '',
+                                            specialKnowledgeId: '',
+                                            questionDifficulty: '',
+                                            legalBasis: '',
+                                            answerId: '',
+                                            isEnble: '0',
+                                            optUser: '',
+                                            stuOptdepartment: '',
+                                            page: 1,
+                                            limit: 10,
+                                            count: 0,
+                                            video: '',
+                                            videoUrl: '',
+                                            answerList: []
+                                        };
+                                    }
+                                });
+                            } else {
+                                alert(result.msg);
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
             });
 
         },

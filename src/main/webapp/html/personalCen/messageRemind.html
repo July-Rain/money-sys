@@ -52,6 +52,10 @@
                                     prop="noticeType"
                                     label="消息类型"
                             >
+                                <template slot-scope="scope">
+                                    <el-tag v-if="scope.row.noticeType === '10008'" >系统消息</el-tag>
+                                    <el-tag v-else >管理员消息</el-tag>
+                                </template>
                             </el-table-column>
                            <el-table-column
                                     label="操作"
@@ -93,11 +97,19 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="11">
+                        <!--<el-form-item label="消息类型：" prop="noticeType">-->
+                            <!--<el-radio-group v-model="msg.noticeType">-->
+                                <!--<el-radio label="系统消息" value="10008">系统消息</el-radio>-->
+                                <!--<el-radio label="管理员消息" value="10009">管理员消息</el-radio>-->
+                            <!--</el-radio-group>-->
+                        <!--</el-form-item>-->
                         <el-form-item label="消息类型：" prop="noticeType">
-                            <el-radio-group v-model="msg.noticeType">
-                                <el-radio label="系统消息" value="10008">系统消息</el-radio>
-                                <el-radio label="管理员消息" value="10009">管理员消息</el-radio>
-                            </el-radio-group>
+                            <el-select v-model="msg.noticeType"
+                                       placeholder="消息类型"
+                                       clearable>
+                                <el-option label="系统消息" value="10008">系统消息</el-option>
+                                <el-option label="管理员消息" value="10009">管理员消息</el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col span="11">

@@ -38,6 +38,7 @@ var vm = new Vue({
                 type: "GET",
                 url: baseURL + "msg/findMsgList?isMp=true",
                 dataType: "json",
+                data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
@@ -76,6 +77,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.msg = result.msg;
+                        console.info(vm.msg);
                     } else {
                         alert(result.msg);
                     }

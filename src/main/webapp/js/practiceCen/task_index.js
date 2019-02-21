@@ -38,10 +38,21 @@ var vm = new Vue({
                 }
             });
         },
-        start: function (id, taskId) {
+        start: function (obj) {
+            var answerNum = obj.answerNum == null? 0 : obj.answerNum;
+            var total = obj.total;
+            var indexs = 0;
+
+            if(answerNum == total){
+                indexs = answerNum - 1;
+            } else {
+                indexs = answerNum;
+            }
+
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/task_paper.html?id='+id+'&taskId='+taskId;
+                = 'modules/exerciseCenter/task_paper.html?id='+obj.id+'&taskId='
+                +obj.taskId+'&indexs='+indexs+'&total='+total;
         },
         toHome: function () {
             parent.location.reload();
@@ -49,9 +60,12 @@ var vm = new Vue({
         indexMethod: function (index) {
             return index + 1 + (vm.formInline.page-1) * vm.formInline.limit;
         },
-        review: function (id, taskId) {
+        review: function (obj) {
             // 错题回顾
-
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/exerciseCenter/task_paper.html?id='+obj.id+'&taskId='
+                +obj.taskId+'&indexs='+0+'&total='+(Number(obj.answerNum) - Number(obj.rightNum))+'&isReview=1';
         },
         // 查询
         onSubmit: function () {

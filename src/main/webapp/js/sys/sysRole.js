@@ -1,8 +1,11 @@
 var vm = new Vue({
     el: '#app',
     data: {
+        tree1Arrs:[],
+        tree2Arrs:[],
         tableData: [],//表格数据
         pageNo: 1,//分页：当前页
+        loadPower:0,//加载功能权限与数据权限
         dialogFormVisible: false,
         form: {
             id : '',
@@ -16,8 +19,15 @@ var vm = new Vue({
         typeList: [],
         qtList: [],
         treeData1: [],
+        treeData1D: [],
         treeData2: [],
+        treeData2D: [],
+        tree2Disb:true,
         defaultProps: {
+            children: 'children',
+            label: 'name'
+        },
+        defaultProps3: {
             children: 'children',
             label: 'name'
         },
@@ -61,14 +71,18 @@ var vm = new Vue({
                 menuList : [],
                 orgList : []
             };
+            vm.tree2Disb = true;
             vm.title =  '新增角色';
             vm.dialogFormVisible = true;
             vm.isEdit = false;
         },
         handleWatch: function (index, row) {
+            vm.tree2Disb = false;
+
+            var that = this;
             vm.isEdit = true;
             vm.title = '详情';
-            var that = this;
+
             $.ajax({
                 type: "GET",
                 url: baseURL + "role/info/" + row.id,
@@ -76,6 +90,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         that.form = result.data;
+
                         that.dialogFormVisible = true;
                     } else {
                         alert(result.msg);
@@ -83,9 +98,48 @@ var vm = new Vue({
                 }
             });
         },
+        addOrremDisabled: function (ar,child,bool){
+            // 笨方法 - 更改位置层级下的children的disabled 到6层
+            var arr = [];
+            ar.map(function (val) {
+                arr.push(val)
+            });
+            if((arr instanceof Array)){
+                arr.map(function (val,index) {
+                    arr[index]["disabled"] = bool;
+                    if(arr[index][child] instanceof Array){
+                        arr[index][child].map(function (val2,index2) {
+                            arr[index][child][index2]["disabled"] = bool;
+                            if(arr[index][child][index2][child] instanceof Array){
+                                arr[index][child][index2][child].map(function (val3,index3) {
+                                    arr[index][child][index2][child][index3]["disabled"] = bool;
+                                    if(arr[index][child][index2][child][index3][child] instanceof Array){
+                                        arr[index][child][index2][child][index3][child].map(function (val4,index4) {
+                                            arr[index][child][index2][child][index3][child][index4]["disabled"] = bool;
+                                            if(arr[index][child][index2][child][index3][child][index4][child] instanceof Array){
+                                                arr[index][child][index2][child][index3][child][index4][child].map(function (val5,index5) {
+                                                    arr[index][child][index2][child][index3][child][index4][child][index5]["disabled"] = bool;
+                                                    if(arr[index][child][index2][child][index3][child][index4][child][index5][child] instanceof Array){
+                                                        arr[index][child][index2][child][index3][child][index4][child][index5][child].map(function (val6,index6) {
+                                                            arr[index][child][index2][child][index3][child][index4][child][index5][child][index6]["disabled"] = bool;
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            return arr
+        },
         handleEdit: function (index, row) {
             vm.title = '编辑';
             vm.isEdit = false;
+            vm.tree2Disb = true;
             var that = this;
             $.ajax({
                 type: "GET",
@@ -192,13 +246,15 @@ var vm = new Vue({
             return index + 1 + (vm.inline.page-1) * vm.inline.limit;
         },
         closeDia: function () {
-            vm.dialogFormVisible = false;
             vm.title = '新增';
             vm.$refs.tree1.setCheckedKeys([]);
             vm.$refs.tree2.setCheckedKeys([]);
+            vm.dialogFormVisible = false;
+        },
+        beforeClose: function (){
+            vm.dialogFormVisible = false;
         }
-    }
-    ,
+    },
     created: function () {
         this.$nextTick(function () {
             vm.reload();
@@ -209,15 +265,43 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     that.treeData1 = result.list;
-
+                    that.treeData1.map(function (m) {
+                        vm.tree1Arrs.push(m.id)
+                    });
+                    that.loadPower++;
                 }
-            })
+            });
+            $.ajax({
+                type: "GET",
+                url: baseURL + "sysmenu/elTree",
+                contentType: "application/json",
+                success: function (result) {
+                    that.treeData1D = result.list;
+                    vm.treeData1D = vm.addOrremDisabled(vm.treeData1D,"children",true);
+                    that.loadPower++;
+                }
+            });
             $.ajax({
                 type: "GET",
                 url: baseURL + "org/tree",
                 contentType: "application/json",
                 success: function (result) {
                     that.treeData2 = result.orgList;
+                    // 默认展开二级
+                    that.treeData2.map(function (m) {
+                        vm.tree2Arrs.push(m.id)
+                    });
+                    that.loadPower++;
+                }
+            });
+            $.ajax({
+                type: "GET",
+                url: baseURL + "org/tree",
+                contentType: "application/json",
+                success: function (result) {
+                    that.treeData2D = result.orgList;
+                    that.addOrremDisabled(result.orgList,"child",true);
+                    that.loadPower++;
                 }
             })
         })

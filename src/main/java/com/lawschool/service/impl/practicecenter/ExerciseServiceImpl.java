@@ -238,19 +238,27 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
      * @return
      */
     public QuestForm getQuestion(String id, Integer index, String userId, String isReview){
-        // 查询配置信息
-        ExerciseEntity config = this.findOne(id);
 
-        // 封装查询参数
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("start", index);
-        params.put("end", index);
-        params.put("themeId", config.getTopicType());
-        params.put("difficulty", config.getDifficulty());
-        params.put("type", config.getType());
-        params.put("classify", config.getClassify());
+        List<String> ids = new ArrayList<>();
 
-        List<String> ids = testQuestionService.selectIdsForPage(params);
+        if(StringUtils.isBlank(isReview)){
+            // 查询配置信息
+            ExerciseEntity config = this.findOne(id);
+
+            // 封装查询参数
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("start", index);
+            params.put("end", index);
+            params.put("themeId", config.getTopicType());
+            params.put("difficulty", config.getDifficulty());
+            params.put("type", config.getType());
+            params.put("classify", config.getClassify());
+
+            ids = testQuestionService.selectIdsForPage(params);
+        } else {
+
+            ids = dao.selectIdsForPage(userId, id, index);
+        }
 
         if(CollectionUtils.isEmpty(ids)){
             return null;
@@ -273,21 +281,31 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
     }
 
     /**
-     * 随机练习收藏题目功能
+     * 随机练习收藏/取消
+     * @param id
+     * @param recordId
+     * @param type 1收藏，0取消收藏
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public boolean doCollect(String id, String recordId){
-        Collection collect = new Collection();
-        collect.setId(IdWorker.getIdStr());
-        collect.setType(20);
-        collect.setComStucode(id);
+    public boolean doCollect(String id, String recordId, Integer type){
 
         User user = (User)SecurityUtils.getSubject().getPrincipal();
-        // 0成功，1失败
-        int result = collectionService.addCollection(collect, user);
 
-        dao.updateCollect(recordId);
+        if(type == 1){
+            Collection collect = new Collection();
+            collect.setId(IdWorker.getIdStr());
+            collect.setType(20);
+            collect.setComStucode(id);
+
+            // 0成功，1失败
+            int result = collectionService.addCollection(collect, user);
+        } else {
+            // 取消收藏
+            boolean result = collectionService.cancle(id, user.getId());
+        }
+
+        dao.updateCollect(recordId, type);
 
         return true;
     }

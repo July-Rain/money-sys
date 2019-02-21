@@ -2,6 +2,8 @@ package com.lawschool.service.impl.practicecenter;
 
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
+import com.lawschool.beans.Collection;
+import com.lawschool.beans.User;
 import com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity;
 import com.lawschool.beans.practicecenter.TaskExerciseEntity;
 import com.lawschool.dao.practicecenter.TaskExerciseDao;
@@ -10,12 +12,15 @@ import com.lawschool.form.AnswerForm;
 import com.lawschool.form.QuestForm;
 import com.lawschool.form.ThemeAnswerForm;
 import com.lawschool.service.AnswerService;
+import com.lawschool.service.CollectionService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.practicecenter.TaskAnswerRecordService;
 import com.lawschool.service.practicecenter.TaskExerciseConfigureService;
 import com.lawschool.service.practicecenter.TaskExerciseService;
 import com.lawschool.util.Result;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,19 +47,22 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
     @Autowired
     private TaskAnswerRecordService taskAnswerRecordService;
 
+    @Autowired
+    private CollectionService collectionService;
+
     /**
      * 题目展示
      * @param taskId 任务配置ID
      * @param id 个人任务ID
      * @param userId 当前用户ID
      * @param isNew 是否需要创建新的个人任务
-     * @param limit 每页显示题目数量
-     * @param page 当前页（为-1时，根据answerNum去计算，否则直接取当前页）
+     * @param index 当前题目序号
+     * @param isReview 是否是错题回顾
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> showPaper(String taskId, String id, String userId, Boolean isNew,
-                                  Integer limit, Integer page){
+                                  Integer index, String isReview){
         // 定义返回结果的Map
         Map<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -73,77 +81,58 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
             this.createTask(id, taskId, userId, total);
         } else {
             TaskExerciseEntity task = dao.findOne(id);
-            answerNum = task.getAnswerNum();
         }
-
-        // 计算取题范围
-        Integer[] pageResult = CommonUtils.computeDataRange(total, answerNum, limit, page);
-        if(pageResult[0] == -1){
-            resultMap.put("list", null);
-            return resultMap;
-        }
-
-        resultMap.put("page", pageResult[2]);
 
         // 获取需要展示的题目信息
-        // 封装查询参数
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("start", pageResult[0]);
-        params.put("end", pageResult[1]);
-        params.put("themeId", configure.getThemeId());
-        params.put("difficulty", configure.getDifficulty());
-        params.put("classify", configure.getClassify());
-        params.put("type", configure.getType());
+        List<String> ids = new ArrayList<String>();
 
-        List<String> ids = testQuestionService.selectIdsForPage(params);
+        if(StringUtils.isBlank(isReview)){
+            // 封装查询参数
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("start", index);
+            params.put("end", index);
+            params.put("themeId", configure.getThemeId());
+            params.put("difficulty", configure.getDifficulty());
+            params.put("classify", configure.getClassify());
+            params.put("type", configure.getType());
+            params.put("", isReview);
 
+            ids = testQuestionService.selectIdsForPage(params);
+        } else {
+
+            ids = dao.selectIdsForPage(userId, id, index);
+        }
+
+        // 没有题目则返回空值
         if(CollectionUtils.isEmpty(ids)){
-            resultMap.put("list", null);
-            return resultMap;
+            return null;
         }
 
-        // 获取题目详细信息
-        List<QuestForm> resultList = this.getQuestions(ids, id, userId);
-
+        List<QuestForm> resultList = dao.getQuestions(ids, id, userId, isReview);
         if(CollectionUtils.isEmpty(resultList)){
-            resultMap.put("list", null);
-            return resultMap;
+            return null;
         }
-        resultMap.put("list", resultList);
-
         List<AnswerForm> answerForms = answerService.findByQuestionIds(ids);
 
-        if(CollectionUtils.isEmpty(answerForms)){
-            return resultMap;
-        }
         resultList = testQuestionService.handleAnswers(resultList, answerForms);
-        resultMap.put("list", resultList);
-        resultMap.put("count", total);
 
+        // 每次只取一条
+        resultMap.put("question", resultList.get(0));
         return resultMap;
     }
 
     /**
      * 保存答题情况
-     * @param list
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void preserve(List<ThemeAnswerForm> list, String userId){
+    public void preserve(ThemeAnswerForm form){
         Date date = new Date();
 
-        for(ThemeAnswerForm form : list){
-            form.setCreateUser(userId);
-            form.setId(IdWorker.getIdStr());
-            form.setCreateTime(date);
-            taskAnswerRecordService.saveForm(form);
-        }
+        taskAnswerRecordService.saveForm(form);
 
         // 更新整体练习答题情况
-        int num = list.size();
-        if(num > 0){
-            dao.updateAnswerNum(list.get(0).getTaskId(), num);
-        }
+        dao.updateAnswerNum(form.getTaskId(), 1);
     }
 
     @Override
@@ -194,4 +183,34 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
         return  result;
     }
 
+    /**
+     * 随机练习收藏/取消
+     * @param id
+     * @param recordId
+     * @param type 1收藏，0取消收藏
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public boolean doCollect(String id, String recordId, Integer type){
+
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+
+        if(type == 1){
+            com.lawschool.beans.Collection collect = new Collection();
+            collect.setId(IdWorker.getIdStr());
+            collect.setType(20);
+            collect.setComStucode(id);
+
+
+            // 0成功，1失败
+            int result = collectionService.addCollection(collect, user);
+        } else {
+            // 取消收藏
+            boolean result = collectionService.cancle(id, user.getId());
+        }
+
+        dao.updateCollect(recordId, type);
+
+        return true;
+    }
 }

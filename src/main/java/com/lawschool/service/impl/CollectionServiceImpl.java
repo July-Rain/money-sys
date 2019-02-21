@@ -287,4 +287,8 @@ public class CollectionServiceImpl  extends ServiceImpl<CollectionDao,Collection
         return testQuestions1;
     }
 
+    public boolean cancle(String questionId, String userId){
+
+        return collectionDao.cancle(questionId, userId);
+    }
 }
