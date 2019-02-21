@@ -93,6 +93,10 @@ var vm = new Vue({
 
             }
 
+        },
+        backHome: function () {
+
+            parent.location.href = baseURL + 'main.html'
         }
     }
 });

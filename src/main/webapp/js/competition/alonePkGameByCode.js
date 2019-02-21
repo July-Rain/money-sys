@@ -99,6 +99,9 @@ var vm = new Vue({
             // 加入战区到建立
             this.formationWarShow = true;
             this.joinWarShow = false
+        },
+        backPkMain: function () {
+            window.location.href = baseURL + 'modules/competition/pkMain.html';
         }
     }
 });
