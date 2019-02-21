@@ -171,6 +171,10 @@ public class ExamConfig extends DataEntity<ExamConfig> {
      */
     private String auditCheckPass;
 
+    private String userName;//适用人员名称
+
+    private String deptName;//适用部门名称
+
     @TableField(exist = false)
     private String[] deptArr;//适用部门
 
@@ -193,10 +197,44 @@ public class ExamConfig extends DataEntity<ExamConfig> {
     @TableField(exist = false)
     private List<QuestForm> qfList;
 
-    @TableField(exist = false)
-    private List<String> list;
+    private String status; //组卷完成状态  0未完成  1已完成
 
-    private String status;
+    private String enabled; //是否启用 0 未启用  1已启用
+
+    @TableField(exist = false)
+    private String[] specialKnowledgeArr;
+
+    public String getUserName() {
+        return this.userName;
+    }
+
+    public void setUserName(final String userName) {
+        this.userName = userName;
+    }
+
+    public String getDeptName() {
+        return this.deptName;
+    }
+
+    public void setDeptName(final String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String[] getSpecialKnowledgeArr() {
+        return this.specialKnowledgeArr;
+    }
+
+    public String getEnabled() {
+        return this.enabled;
+    }
+
+    public void setEnabled(final String enabled) {
+        this.enabled = enabled;
+    }
+
+    public void setSpecialKnowledgeArr(final String[] specialKnowledgeArr) {
+        this.specialKnowledgeArr = specialKnowledgeArr;
+    }
 
     public List<CommonForm> getCommonForms() {
         return this.commonForms;
@@ -739,15 +777,6 @@ public class ExamConfig extends DataEntity<ExamConfig> {
      */
     public void setConfigState(String configState) {
         this.configState = configState == null ? null : configState.trim();
-    }
-
-
-    public List<String> getList() {
-        return this.list;
-    }
-
-    public void setList(final List<String> list) {
-        this.list = list;
     }
 
     public Integer getPaperPerSetNum() {

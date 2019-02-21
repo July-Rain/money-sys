@@ -77,6 +77,10 @@
                         width="100"
                         align="center"
                 >
+                    <template slot-scope="scope">
+                        <el-tag v-if="scope.row.noticeType === '10008'" >系统消息</el-tag>
+                        <el-tag v-else >管理员消息</el-tag>
+                    </template>
                 </el-table-column>
 
                 <el-table-column
@@ -98,6 +102,22 @@
                                 size="mini"
                                 @click="send(scope.$index, scope.row)">发送
                         </el-button>-->
+                        <!--<el-popover-->
+                                <!--v-if="'1'===scope.row.releaseState"-->
+                                <!--placement="right"-->
+                                <!--trigger="hover"-->
+                                <!--content="撤回">-->
+                            <!--<i class="iconfont  tabIcon"-->
+                               <!--slot="reference"-->
+                               <!--@click="black(scope.$index, scope.row)"-->
+                               <!--style="color: #119e0a;" >-->
+                            <!--</i>-->
+                        <!--</el-popover>-->
+                        <el-button
+                                :disabled="'0'===scope.row.releaseState"
+                                size="mini"
+                                @click="black(scope.$index, scope.row)">撤回
+                        </el-button>
                         <el-popover
                                 placement="right"
                                 trigger="hover"
@@ -137,7 +157,7 @@
                                 content="发送">
                             <i class="iconfont tabIcon"
                                slot="reference"
-                               @click="lookMsg(scope.$index, scope.row)"
+                               @click="send(scope.$index, scope.row)"
                                style="color: #1381e3;font-size: 12px;">&#xe670;
                             </i>
                         </el-popover>
@@ -174,8 +194,6 @@
                             <el-option label="管理员消息" value="10009">管理员消息</el-option>
                         </el-select>
                     </el-form-item>
-
-
                 </el-col>
 
                 <!--<el-col :span="11">
@@ -222,7 +240,7 @@
                     </el-form-item>
                 </el-col>
             </el-form>
-            <div slot="footer" class="dialog-footer">
+            <div slot="footer" class="dialog-footer" v-show="teamtype2">
                 <el-button @click="closeDia">取消</el-button>
                 <el-button type="primary" @click="saveOrUpdate('sysMsg')">保存</el-button>
             </div>

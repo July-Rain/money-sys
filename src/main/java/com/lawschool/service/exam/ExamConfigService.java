@@ -39,4 +39,7 @@ public interface ExamConfigService extends AbstractService<ExamConfig> {
     Result getExamList(Map<String, Object> params)  throws ParseException;
 
     CheckSetForm getCheckSetting(String id);
+
+    ExamConfig getExamDetail( String id );
+    void deleteExamConfig(String id) throws Exception ;
 }

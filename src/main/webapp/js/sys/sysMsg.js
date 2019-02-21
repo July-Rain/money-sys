@@ -406,6 +406,37 @@ var vm = new Vue({
             });
 
         },
+        black: function (index, row) {
+
+            //vm.delIdArr.push(row.id);
+            this.$confirm('撤回消息, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(function () {
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + 'msg/recall?id='+row.id,
+                    //async: true,
+                    //data: JSON.stringify(row.id),
+                    contentType: "application/json",
+                    success: function (result) {
+                        vm.reload();
+                        vm.$message({
+                            type: 'success',
+                            message: '成功!'
+                        });
+
+                    }
+                });
+            }).catch(function () {
+                vm.$message({
+                    type: 'info',
+                    message: '已取消'
+                });
+            });
+
+        },
         closeDia: function () {
             this.dialogConfig = false;
             vm.reload();

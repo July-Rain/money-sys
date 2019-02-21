@@ -1,7 +1,6 @@
 var menuId = $("#menuId").val();
 var storage=window.sessionStorage;
 var operate = storage.getItem("operate");
-
 var vm = new Vue({
     el: '#app',
     data:function() {
@@ -70,9 +69,10 @@ var vm = new Vue({
             tableData: [],//表格数据
             visible: false,
             examConfig: {
-                deptId: "",
-                userId: "",
-                reachRewardType:""
+                deptIds: "",
+                userIds: "",
+                reachRewardType:"",
+                enabled :"1"
             },
             rules: {//表单验证规则
                 examName: [
@@ -128,7 +128,6 @@ var vm = new Vue({
             title: "",//弹窗的名称
             delIdArr: [],//删除数据
             data:[],//题型data
-            dataListSelections: [],//选中行
             deleteIds:[],
             etOption:[],
             gfOption:[],
@@ -173,23 +172,6 @@ var vm = new Vue({
                 totalCount:0
 
             },//人员查询
-            //更换题目数据
-            changeData: [{
-                name: '全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?',
-                info: 'A：123；B：123；C：123；D：123'
-            },{
-                name: '全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?',
-                info: 'A：123；B：123；C：123；D：123'
-            },{
-                name: '全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?',
-                info: 'A：123；B：123；C：123；D：123'
-            },{
-                name: '全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?',
-                info: 'A：123；B：123；C：123；D：123'
-            },{
-                name: '全面依法治国必须坚持从中国实际出发。对此，下列哪一理解是正确的?',
-                info: 'A：123；B：123；C：123；D：123'
-            }],
             //选中题目
             currentRow: null,
             view:false
@@ -239,82 +221,72 @@ var vm = new Vue({
                     }
                 }
             });
+            if(operate==='0'){
+                //新增
+                vm.view = false;
+            }else if (operate==='1') {
+               //查看
+                var examConfigId = storage.getItem("examConId");
+                vm.view = true;
+                this.getExamDetail(examConfigId);
+            }else {
+                //修改
+                var examConfigId = storage.getItem("examConId");
+                vm.view = false;
+                this.getExamDetail(examConfigId);
+            }
+
         });
     },
     methods: {
-        openDiffModal : function(e){
-            if(e === "10033"){
-                this.randomQues();
-            }
-            if(e === "10034"){
-                this.selfQuse();
-            }
-        },
         getPassPnt : function(){
             vm.examConfig.passPnt = vm.examConfig.examScore*0.6;
         },
-        randomQues : function(){
-            this.title = "随机出题配置";
-            this.randomQuesModal = true;
-        },
-        selfQuse : function(){
-            this.title = "自主出题设置";
-            this.autonomyQuesModal = true;
-            vm.examConfig.examQueConfigList.length=0;
-
-        },
-        handleSave:function(randomQuesData){
-            vm.examConfig.examQueConfigList = randomQuesData;
-            vm.randomQuesModal = false;
-        },
-        mineQueSave : function(){
-            vm.autonomyQuesModal = false;
-        },
-        //判断总分是否一致
-        validScore : function(){
-            if(vm.examConfig.questionWay==='10033'){
-                //随机出题
-                if(vm.examConfig.examQueConfigList==''){
-                    //列表为空
-                    vm.$alert('操作失败', '请配置随机出题规则', {
-                        confirmButtonText: '确定',
-                        callback: function () {
-                            return false;
-                        }
-                    });
-                }else {
-                    //不为空  判断分数
-                    var listScore;
-                    for (var i= 0; i < vm.examConfig.examQueConfigList.length; i++) {
-                        listScore += vm.examConfig.examQueConfigList.questionScore;
-                    }
-                    if(listScore!=vm.examConfig.examScore){
-                        vm.$alert('操作失败', '随机出题配置总分数与试卷总分数不相等，请核对！', {
-                            confirmButtonText: '确定',
-                            callback: function () {
-                                return false;
-                            }
-                        });
-                    }else{
-                        callback();
-                    }
-                }
-            }else {
-                //自主出题
-                if(vm.examConfig.idList==''){
-                    //列表为空
-                    vm.$alert('操作失败', '请添加自主出题内容', {
-                        confirmButtonText: '确定',
-                        callback: function () {
-                            return false;
-                        }
-                    });
-                }else{
-                    //TODO 判断分数等待前端修改模态框
-                    callback();
-                }
-            }
-        },
+        // //判断总分是否一致
+        // validScore : function(){
+        //     if(vm.examConfig.questionWay==='10033'){
+        //         //随机出题
+        //         if(vm.examConfig.examQueConfigList==''){
+        //             //列表为空
+        //             vm.$alert('操作失败', '请配置随机出题规则', {
+        //                 confirmButtonText: '确定',
+        //                 callback: function () {
+        //                     return false;
+        //                 }
+        //             });
+        //         }else {
+        //             //不为空  判断分数
+        //             var listScore;
+        //             for (var i= 0; i < vm.examConfig.examQueConfigList.length; i++) {
+        //                 listScore += vm.examConfig.examQueConfigList.questionScore;
+        //             }
+        //             if(listScore!=vm.examConfig.examScore){
+        //                 vm.$alert('操作失败', '随机出题配置总分数与试卷总分数不相等，请核对！', {
+        //                     confirmButtonText: '确定',
+        //                     callback: function () {
+        //                         return false;
+        //                     }
+        //                 });
+        //             }else{
+        //                 callback();
+        //             }
+        //         }
+        //     }else {
+        //         //自主出题
+        //         if(vm.examConfig.idList==''){
+        //             //列表为空
+        //             vm.$alert('操作失败', '请添加自主出题内容', {
+        //                 confirmButtonText: '确定',
+        //                 callback: function () {
+        //                     return false;
+        //                 }
+        //             });
+        //         }else{
+        //             //TODO 判断分数等待前端修改模态框
+        //             callback();
+        //         }
+        //     }
+        // },
         preview:function(formName){
             this.$refs[formName].validate((valid) => {
                 if (valid) {
@@ -347,44 +319,102 @@ var vm = new Vue({
             });
 
         },
-        generate : function(formName){
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    vm.examConfig.qfList = vm.previewList;
-                    var deptArr = vm.examConfig.deptId ? vm.examConfig.deptId.split(",") : [];
-                    var userArr = vm.examConfig.userId ? vm.examConfig.userId.split(",") : [];
-                    vm.examConfig.deptArr = deptArr;
-                    vm.examConfig.userArr = userArr;
-                    //
-                    $.ajax({
-                        type: "POST",
-                        url: baseURL + "exam/config/examConfig/generate",
-                        data: JSON.stringify(
-                            vm.examConfig
-                        ),
-                        contentType: "application/json",
-                        success: function (result) {
-                            if (result.code === 0) {
-                                alert('生成成功');
-                               window.location.reload = baseURL + "examCen/exam.html";
-                            } else {
-                                alert(result.msg);
-                            }
-                        }
-                    });
-                }else {
-                return false;
+        getExamDetail: function(id){
+            $.ajax({
+                type : "GET",
+                url: baseURL + "exam/config/getExamDetail?id="+id,
+                contentType: "application/json",
+                success:function (result) {
+                    if (result.code === 0) {
+                        vm.examConfig = result.examConfig;
+                    } else {
+                        alert(result.msg);
+                    }
                 }
             })
+        },
+        cancel : function(){
+            window.parent.vm.dialogView = false
+        },
+        /*generate : function(formName){
+            if(operate==='1'){
+                alert("我关掉了")
+                window.parent.vm.dialogView = false
+            }else {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        vm.examConfig.qfList = vm.previewList;
+                        var deptArr = vm.examConfig.deptId ? vm.examConfig.deptId.split(",") : [];
+                        var userArr = vm.examConfig.userId ? vm.examConfig.userId.split(",") : [];
+                        vm.examConfig.deptArr = deptArr;
+                        vm.examConfig.userArr = userArr;
+                        //
+                        $.ajax({
+                            type: "POST",
+                            url: baseURL + "exam/config/examConfig/generate",
+                            data: JSON.stringify(
+                                vm.examConfig
+                            ),
+                            contentType: "application/json",
+                            success: function (result) {
+                                if (result.code === 0) {
+                                    alert('生成成功');
+                                    window.location.reload = baseURL + "examCen/exam.html";
+                                } else {
+                                    alert(result.msg);
+                                }
+                            }
+                        });
+                    } else {
+                        return false;
+                    }
+                })
+            }
+        },*/
+        save : function(formName){
+            if(operate==='1'){
+                window.parent.vm.dialogView = false
+            }else {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        vm.examConfig.qfList = vm.previewList;
+                        var deptArr = vm.examConfig.deptIds ? vm.examConfig.deptIds.split(",") : [];
+                        var userArr = vm.examConfig.userIds ? vm.examConfig.userIds.split(",") : [];
+                        vm.examConfig.deptArr = deptArr;
+                        vm.examConfig.userArr = userArr;
+                        //
+                        $.ajax({
+                            type: "POST",
+                            url: baseURL + "exam/config/saveOrUpdate",
+                            data: JSON.stringify(
+                                vm.examConfig
+                            ),
+                            contentType: "application/json",
+                            success: function (result) {
+                                if (result.code === 0) {
+                                    alert('生成成功');
+                                    window.parent.vm.dialogAdd = false;
+                                    window.parent.vm.dialogEdit = false;
+                                    window.parent.vm.reload();
+                                } else {
+                                    alert(result.msg);
+                                }
+                            }
+                        });
+                    } else {
+                        return false;
+                    }
+                })
+            }
         },
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
             for(var i=0;i<this.multipleDeptSelection.length;i++){
-                if (this.examConfig.deptId == "") {
-                    this.examConfig.deptId=this.multipleDeptSelection[i].id;
+                if (!this.examConfig.deptIds) {
+                    this.examConfig.deptIds=this.multipleDeptSelection[i].id;
                     this.examConfig.deptName=this.multipleDeptSelection[i].orgName;
                 }else{
-                    this.examConfig.deptId+=","+this.multipleDeptSelection[i].id;
+                    this.examConfig.deptIds+=","+this.multipleDeptSelection[i].id;
                     this.examConfig.deptName+=","+this.multipleDeptSelection[i].orgName;
                 }
             }
@@ -446,11 +476,11 @@ var vm = new Vue({
             this.multipleSelection = val;
             //遍历最终的人员信息
             for (var i=0;i<val.length;i++){
-                if (this.examConfig.userId == "") {
-                    this.examConfig.userId=val[i].id;
+                if (!this.examConfig.userIds) {
+                    this.examConfig.userIds=val[i].id;
                     this.examConfig.userName=val[i].userName;
                 }else{
-                    this.examConfig.userId+=","+val[i].id;
+                    this.examConfig.userIds+=","+val[i].id;
                     this.examConfig.userName+=","+val[i].userName;
                 }
             }
@@ -490,36 +520,7 @@ var vm = new Vue({
         selectionChangeHandle: function (val) {
             this.dataListSelections = val;
         },
-        //新增行
-        handleAdd: function () {
-            var index = this.randomQuesData.length;
-            this.randomQuesData.push({
-                specialKnowledgeId:null,
-                questionType: null,
-                questionNumber: null,
-                questionScore: null,
-                index: index
-            })
-        },
-        handleDel : function(index,row){
-            row.splice(index,1);
-        },
-        //批量删除
-        handleDelete: function (dataListSelections) {
-            this.dataListSelections=dataListSelections;
-            var arr = [];
 
-            this.dataListSelections.map(function (index) {
-                arr.push(index)
-            })
-            var arr2=[];
-            vm.randomQuesData.map(function (item,index) {
-                if(arr.indexOf(index)==-1){
-                    arr2.push(item)
-                }
-            })
-            vm.randomQuesData = arr2;
-        },
         // 替换题目
         changeQuestion: function (index) {
             this.dialogChange = true
