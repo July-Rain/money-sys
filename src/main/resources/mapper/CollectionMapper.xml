@@ -60,4 +60,15 @@
       </if>
     </trim>
   </insert>
+
+    <!-- 取消题库收藏 -->
+    <update id="cancle">
+        UPDATE LAW_COLLECTION
+        SET
+            DEL_STATUS = 1
+        WHERE
+            COM_USERID = #{userId}
+            AND COM_STUCODE = #{questionId}
+            AND TYPE = 20
+    </update>
 </mapper>

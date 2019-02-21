@@ -37,6 +37,6 @@ public interface ExerciseDao extends AbstractDao<ExerciseEntity> {
                       @Param("rightNum") Integer rightNum,
                       @Param("id") String id);
 
-    boolean updateCollect(@Param("id") String id);
+    boolean updateCollect(@Param("id") String id, @Param("type") Integer type);
 
 }

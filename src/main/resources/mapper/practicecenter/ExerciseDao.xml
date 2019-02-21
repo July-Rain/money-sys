@@ -147,7 +147,7 @@
     <update id="updateCollect">
         UPDATE law_exercise_record
         SET
-            IS_COLLECT = 1
+            IS_COLLECT = #{type}
         WHERE ID = #{id}
     </update>
 </mapper>

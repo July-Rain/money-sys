@@ -52,14 +52,13 @@
                     <span>{{question.answerDescrible}}</span>
                 </div>
                 <div class="collection col-orange">
-                    <i class="el-icon-star-off" v-if="question.isCollect != 1" @click="doCollect"></i>
-                    <i class="el-icon-star-on" v-if="question.isCollect == 1"></i>
+                    <i :class="starIcon" @click="doCollect"></i>
                     {{question.isCollect == 1 ? '已收藏' : '收藏本题'}}
                 </div>
             </div>
             <div class="container-btn">
                 <el-col :span="10" class="align-rig">
-                    <a href="javascript:;" @click="last"><i class="el-icon-arrow-left"></i>上一题</a>
+                    <a href="javascript:;" :disabled="isLast" @click="last"><i class="el-icon-arrow-left"></i>上一题</a>
                 </el-col>
                 <el-col :span="4" class="align-cent">
                     <a href="javascript:;" @click="commit" style="color: #666666;">
@@ -67,7 +66,7 @@
                     </a>
                 </el-col>
                 <el-col :span="10">
-                    <a href="javascript:;" @click="next">下一题<i class="el-icon-arrow-right el-icon--right"></i></a>
+                    <a href="javascript:;" :disabled="isNext" @click="next">下一题<i class="el-icon-arrow-right el-icon--right"></i></a>
                 </el-col>
             </div>
         </div>
