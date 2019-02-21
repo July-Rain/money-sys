@@ -255,7 +255,19 @@
                                                @click="handleStart(scope.$index, scope.row)">启用
                                     </el-button>-->
                                     <el-popover
-                                            placement="right"
+                                            v-if="scope.row.isUse=='0'"
+                                            placement="top-start"
+                                            trigger="hover"
+                                            content="启用">
+                                        <i class="iconfont icon-renyuanqiyong tabIcon"
+                                           slot="reference"
+                                           @click="handleStart(scope.$index, scope.row)"
+                                           style="color: #1381e3;"
+                                        >
+                                        </i>
+                                    </el-popover>
+                                    <el-popover
+                                            placement="top-start"
                                             trigger="hover"
                                             content="编辑">
                                         <i class="iconfont icon-xiugaimima tabIcon"
@@ -266,7 +278,7 @@
                                         </i>
                                     </el-popover>
                                     <el-popover
-                                            placement="right"
+                                            placement="top-start"
                                             trigger="hover"
                                             content="删除">
                                         <i class="iconfont icon-tubiaozhizuo- tabIcon"
@@ -274,18 +286,6 @@
                                            @click="handleDel(scope.$index, scope.row)"
                                            style="color: #e31313;"
                                         >
-                                        </i>
-                                    </el-popover>
-                                    <el-popover
-                                            v-if="scope.row.isUse=='0'"
-                                            placement="right"
-                                            trigger="hover"
-                                            content="启用">
-                                        <i class="iconfont tabIcon"
-                                           slot="reference"
-                                           @click="handleStart(scope.$index, scope.row)"
-                                           style="color: #1381e3;"
-                                        >&#xe65d;
                                         </i>
                                     </el-popover>
                                 </template>

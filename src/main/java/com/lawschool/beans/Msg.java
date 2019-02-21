@@ -3,6 +3,7 @@ package com.lawschool.beans;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.FieldStrategy;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawschool.base.Page;
 
@@ -70,6 +71,7 @@ public class Msg implements Serializable{
     /**
      * 发布时间
      */
+    @TableField(value="RELEASE_DATE",strategy= FieldStrategy.IGNORED)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date releaseDate;
     /**

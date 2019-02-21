@@ -60,6 +60,17 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     @TableField(exist = false)
     private List<Answer> answerList=new ArrayList<Answer>();
 
+    @TableField(exist = false)
+    private float  perScore;
+
+    public float getPerScore() {
+        return this.perScore;
+    }
+
+    public void setPerScore(final float perScore) {
+        this.perScore = perScore;
+    }
+
     public String getTypeId() {
         return typeId;
     }

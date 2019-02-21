@@ -5,6 +5,7 @@ import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.User;
 import com.lawschool.beans.practicecenter.TaskExerciseEntity;
+import com.lawschool.form.QuestForm;
 import com.lawschool.form.ThemeAnswerForm;
 import com.lawschool.service.practicecenter.TaskExerciseService;
 import com.lawschool.util.Result;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -55,15 +58,14 @@ public class TaskExerciseController extends AbstractController {
      * 开始任务
      * @param id 个人任务ID
      * @param taskId 任务配置ID
-     * @param limit 每页显示题目数量
-     * @param page 当前页
+     * @param index 当前题目序号
      * @return
      */
     @RequestMapping(value = "/paper", method = RequestMethod.GET)
     public Result start(@RequestParam(required = false) String id,
                         @RequestParam String taskId,
-                        @RequestParam Integer limit,
-                        @RequestParam Integer page){
+                        @RequestParam Integer index,
+                        @RequestParam(required = false) String isReview){
 
         // 是否需要创建个人任务
         boolean isNew = false;
@@ -75,26 +77,25 @@ public class TaskExerciseController extends AbstractController {
 
         User user = getUser();
         Map<String, Object> resultMap = taskExerciseService.showPaper(taskId, id, user.getId(),
-                isNew, limit, page);
+                isNew, index, isReview);
 
-        return Result.ok().put("result", resultMap);
+        id = String.valueOf(resultMap.get("id"));
+        QuestForm form = (QuestForm)resultMap.get("question");
+
+        return Result.ok().put("id", id).put("question", form);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    @RequestMapping(value = "/preserve/{type}", method = RequestMethod.POST)
-    public Result preserve(@RequestBody List<ThemeAnswerForm> formList,
-                           @PathVariable("type") Integer type){
+    @RequestMapping(value = "/preserve", method = RequestMethod.POST)
+    public Result preserve(@RequestBody ThemeAnswerForm form){
         User user = getUser();
 
-        if(CollectionUtils.isNotEmpty(formList)){
-            taskExerciseService.preserve(formList, user.getId());
-            if(type == 1){
-                // 提交，更新任务状态
-                taskExerciseService.updateStatus(formList.get(0).getTaskId(), TaskExerciseEntity.STATUS_OFF);
-            }
-        }
+        form.setId(IdWorker.getIdStr());
+        form.setCreateUser(user.getId());
+        form.setCreateTime(new Date());
+        taskExerciseService.preserve(form);
 
-        return Result.ok();
+        return Result.ok().put("recordId", form.getId());
     }
 
     /**
