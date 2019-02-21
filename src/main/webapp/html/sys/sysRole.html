@@ -106,8 +106,8 @@
             </el-pagination>
         </div>
 
-        <el-dialog :title="title" :visible.sync="dialogFormVisible" :before-close="closeDia">
-            <el-form  label-width="100px" :model="form" :rules="rules" ref="form" size="mini">
+        <el-dialog :title="title" :visible.sync="dialogFormVisible" :before-close="beforeClose">
+            <el-form v-loading="loadPower!=4" label-width="100px" :model="form" :rules="rules" ref="form" size="mini">
                 <el-row>
                     <el-col :span="24">
                         <el-form-item label="角色名称：" :label-width="formLabelWidth" prop="roleName">
@@ -121,38 +121,69 @@
                     </el-col>
                     <el-col :span="6">
                         <h3>功能权限</h3>
-                        <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
-                            <el-tree
-                                    ref="tree1"
-                                    :data="treeData1"
-                                    show-checkbox
-                                    node-key="id"
-                                    :default-expanded-keys="[]"
-                                    :default-checked-keys="form.menuList"
-                                    :props="defaultProps"
-                            >
-                            </el-tree>
-                        </el-scrollbar>
+                        <div v-if="tree2Disb">
+                            <el-scrollbar  wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                                <el-tree
+                                        ref="tree1"
+                                        :data="treeData1"
+                                        show-checkbox
+                                        node-key="id"
+                                        :default-expanded-keys="tree1Arrs"
+                                        :default-checked-keys="form.menuList"
+                                        :props="defaultProps" >
+                                </el-tree>
+                            </el-scrollbar>
+                        </div>
+                        <div  v-if="!tree2Disb">
+                            <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                                <el-tree
+                                        ref="tree3"
+                                        :data="treeData1D"
+                                        show-checkbox
+                                        node-key="id"
+                                        :default-expanded-keys="tree1Arrs"
+                                        :default-checked-keys="form.menuList"
+                                        :props="defaultProps3" >
+                                </el-tree>
+                            </el-scrollbar>
+                        </div>
                     </el-col>
                     <el-col :span="18" class="paddingLeft20">
                         <h3>数据权限</h3>
-                        <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
-                            <el-tree
-                                    ref="tree2"
-                                    :data="treeData2"
-                                    show-checkbox
-                                    node-key="id"
-                                    :default-expanded-keys="[2079]"
-                                    :default-checked-keys="form.orgList"
-                                    :props="defaultProps2">
-                            </el-tree>
-                        </el-scrollbar>
+                        <div v-if="tree2Disb">
+                            <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                                <el-tree
+
+                                        ref="tree2"
+                                        :data="treeData2"
+                                        show-checkbox
+                                        node-key="id"
+                                        :default-expanded-keys="tree2Arrs"
+                                        :default-checked-keys="form.orgList"
+                                        :props="defaultProps2">
+                                </el-tree>
+                            </el-scrollbar>
+                        </div>
+                        <div  v-if="!tree2Disb">
+                            <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                                <el-tree
+
+                                        ref="tree4"
+                                        :data="treeData2D"
+                                        show-checkbox
+                                        node-key="id"
+                                        :default-expanded-keys="tree2Arrs"
+                                        :default-checked-keys="form.orgList"
+                                        :props="defaultProps2">
+                                </el-tree>
+                            </el-scrollbar>
+                        </div>
                     </el-col>
                 </el-row>
 
             </el-form>
             <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
-                <el-button @click="closeDia">取 消</el-button>
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
                 <el-button v-if="!isEdit" type="primary" @click="save('form')">提交入库</el-button>
             </div>
         </el-dialog>
