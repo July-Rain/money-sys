@@ -45,6 +45,13 @@
 .daliy .el-radio+.el-radio{
     margin: 0;
 }
+.daliy .questionDx{
+    text-align: left;
+    padding: 0 44px;
+    line-height: 54px;
+    height: 54px;
+    margin-bottom: 22px;
+}
 /*checkbox*/
 .daliy .el-checkbox{
     display: block;
@@ -74,6 +81,10 @@
     padding: 8px 22px;
     margin: 0 auto;
     display: block;
+}
+.daliy .questionDx .el-button{
+    margin: 0;
+    display: inline-block;
 }
 .clearfix .date{
     float: left;
