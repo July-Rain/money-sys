@@ -92,23 +92,23 @@
                             width="150"
                             trigger="hover"
                             content="点击继续练习">
-                        <i class="iconfont icon-lianxi"
+                        <i class="iconfont icon-lianxi tabIcon"
                            @click="goon(scope.row.id, scope.row.answerNum)"
                            slot="reference"
-                           style="color: #119e0b;cursor: pointer;padding: 0 20px;font-size: 20px"
+                           style="color: #119e0b;font-size: 20px"
                         >
                         </i>
                     </el-popover>
 
                     <el-popover
-                            placement="top-start"
+                            placement="right"
                             width="150"
                             trigger="hover"
                             content="错题回顾"
                             v-if="scope.row.answerNum > scope.row.rightNum">
-                        <i  class="iconfont icon-cuotiku"
+                        <i  class="iconfont icon-cuotiku tabIcon"
                             slot="reference"
-                            style="color: #ff1f14;cursor: pointer;padding: 0 20px;font-size: 20px"
+                            style="color: #ff1f14;font-size: 20px"
                             @click="review(scope.row.id)"
                         >
                         </i>

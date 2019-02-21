@@ -74,34 +74,33 @@
                             placement="right"
                             trigger="hover"
                             content="点击开始练习">
-                        <i class="iconfont icon-lianxi" v-if="scope.row.status == null"
+                        <i class="iconfont icon-lianxi tabIcon" v-if="scope.row.status == null"
                            @click="start(scope.row)"
                            slot="reference"
-                           style="color: #1381e3;cursor: pointer;padding: 0 20px;font-size: 20px"
+                           style="color: #1381e3;font-size: 20px"
                         >
                         </i>
                     </el-popover>
-
                     <el-popover
                             placement="right"
                             trigger="hover"
                             content="继续练习">
-                        <i class="iconfont icon-lianxi"
+                        <i class="iconfont icon-lianxi tabIcon"
                            v-if="scope.row.status == 0"
                            @click="start(scope.row)"
                            slot="reference"
-                           style="color: #119e0b;cursor: pointer;padding: 0 20px;font-size: 20px"
+                           style="color: #119e0b;font-size: 20px"
                         >
                         </i>
                     </el-popover>
                     <el-popover
-                            placement="top-start"
+                            placement="right"
                             trigger="hover"
                             content="错题回顾"
                             v-if="scope.row.answerNum > scope.row.rightNum">
-                        <i  class="iconfont icon-cuotiku"
+                        <i  class="iconfont icon-cuotiku tabIcon"
                             slot="reference"
-                            style="color: #ff1f14;cursor: pointer;padding: 0 20px;font-size: 20px"
+                            style="color: #ff1f14;font-size: 20px"
                             @click="review(scope.row)"
                         >
                         </i>
