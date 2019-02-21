@@ -59,9 +59,19 @@
                         prop="active"
                         label="操作" align="center">
                     <template slot-scope="scope">
-
                         <el-popover
-                                placement="top-start"
+                                placement="right"
+                                trigger="hover"
+                                content="查看详情">
+                            <i class="iconfont icon-chakan tabIcon"
+                               @click="handleWatch(scope.$index, scope.row)"
+                               slot="reference"
+                               style="color: #1381e3;font-size: 12px"
+                            >
+                            </i>
+                        </el-popover>
+                        <el-popover
+                                placement="right"
                                 trigger="hover"
                                 content="编辑">
                             <i class="iconfont icon-xiugaimima tabIcon"
@@ -72,24 +82,13 @@
                             </i>
                         </el-popover>
                         <el-popover
-                                placement="top-start"
+                                placement="right"
                                 trigger="hover"
                                 content="删除">
-                            <i class="iconfont icon-tubiaozhizuo-"
+                            <i class="iconfont icon-tubiaozhizuo- tabIcon"
                                slot="reference"
                                @click="handleDel(scope.$index, scope.row)"
-                               style="color: #e31313;cursor: pointer;padding: 0 20px;font-size: 18px"
-                            >
-                            </i>
-                        </el-popover>
-                        <el-popover
-                                placement="top-start"
-                                trigger="hover"
-                                content="查看详情">
-                            <i class="iconfont icon-chakan"
-                               @click="handleWatch(scope.$index, scope.row)"
-                               slot="reference"
-                               style="color: #1381e3;cursor: pointer;padding: 0 20px;font-size: 12px"
+                               style="color: #e31313;font-size: 18px"
                             >
                             </i>
                         </el-popover>

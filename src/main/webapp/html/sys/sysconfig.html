@@ -123,6 +123,7 @@
                         type="index"
                         header-align="center"
                         align="center"
+                        :index="indexMethod"
                         width="50">
                 </el-table-column>
                 <el-table-column
@@ -168,7 +169,7 @@
                         width="180">
                     <template slot-scope="scope">
                         <el-popover
-                                placement="top-start"
+                                placement="right"
                                 trigger="hover"
                                 content="编辑">
                             <i class="iconfont icon-xiugaimima tabIcon"
@@ -179,7 +180,7 @@
                             </i>
                         </el-popover>
                         <el-popover
-                                placement="top-start"
+                                placement="right"
                                 trigger="hover"
                                 content="删除">
                             <i class="iconfont icon-tubiaozhizuo- tabIcon"

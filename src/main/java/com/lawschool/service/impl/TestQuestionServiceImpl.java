@@ -9,11 +9,10 @@ import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
-import com.lawschool.util.Result;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -205,10 +204,19 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
 
     public boolean mySave(TestQuestions entity){
         List<Answer> answerList = entity.getAnswerList();
-        if(org.apache.commons.collections.CollectionUtils.isEmpty(answerList)){
-            return false;
+        if(CollectionUtils.isEmpty(answerList)){
+            if(!"10007".equals(entity.getQuestionType())){
+                // 主观题不需要选项信息
+                return false;
+            }
+
         } else {
             entity.setAnswerChoiceNumber(answerList.size()+"");
+        }
+
+        if("0".equals(entity.getTypeId())){
+            // 视频
+            entity.setVideo(null);
         }
 
         this.save(entity);
@@ -216,22 +224,25 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
         // 先删除问题下的答案
         answerService.deleteByQuestionId(entity.getId());
 
-        String answerId = "";// 正确答案ID
-        // 重新保存答案
-        for (Answer answer : answerList){
-            answer.setQuestionId(entity.getId());
-            answer.setId(null);
-            answerService.save(answer);
-            if(answer.getIsAnswer() == 1){
-                answerId += answer.getId() + ",";
+        if(!"10007".equals(entity.getQuestionType())){
+            String answerId = "";// 正确答案ID
+            // 重新保存答案
+            for (Answer answer : answerList){
+                answer.setQuestionId(entity.getId());
+                answer.setId(null);
+                answerService.save(answer);
+                if(answer.getIsAnswer() == 1){
+                    answerId += answer.getId() + ",";
+                }
+            }
+            if(StringUtils.isNotBlank(answerId)){
+                // 更新实体信息
+                this.updateAnswerId(entity.getId(), answerId.substring(0, answerId.length()-1));
+            } else {
+                return false;
             }
         }
-        if(StringUtils.isNotBlank(answerId)){
-            // 更新实体信息
-            this.updateAnswerId(entity.getId(), answerId.substring(0, answerId.length()-1));
-        } else {
-            return false;
-        }
+
         return true;
     }
 }

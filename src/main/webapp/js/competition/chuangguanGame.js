@@ -40,6 +40,8 @@ var vm = new Vue({
         ],
         //题目
         Question: {},
+        rushFailed: false,
+        rushSuccess: false
     },
     created: function () {
         this.$nextTick(function () {

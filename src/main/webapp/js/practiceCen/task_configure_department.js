@@ -218,7 +218,6 @@ var vm = new Vue({
                 depts: []
             };
             vm.dialogConfig = false;
-            vm.isEdit = false;
         },
         cancle: function () {
             vm.closeDia();
@@ -248,10 +247,10 @@ var vm = new Vue({
                 });
 
             }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
+                // vm.$message({
+                //     type: 'info',
+                //     message: '已取消删除'
+                // });
             });
 
         },
@@ -290,6 +289,7 @@ var vm = new Vue({
         },
         edit: function (id) {
             vm.title = "编辑任务配置";
+            vm.isEdit = false;
             $.ajax({
                 type: "GET",
                 url: baseURL + "taskConfigure/info/" + id,

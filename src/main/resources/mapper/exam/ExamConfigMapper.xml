@@ -221,7 +221,12 @@
         CHECK_SCORE_DIFFERENCE,
         IS_AIBITRATION,
         PAPER_PER_SET_NUM,
-        AUDIT_CHECK_PASS
+        AUDIT_CHECK_PASS,
+        question_Way,
+        exam_score,
+        group_form,
+        status,
+        enabled
         FROM
             LAW_EXAM_CONFIG
             where 1=1

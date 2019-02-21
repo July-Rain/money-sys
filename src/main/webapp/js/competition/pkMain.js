@@ -33,15 +33,7 @@ var vm = new Vue({
 
             switch (url) {
                 case 'pkGame':
-                    vm.rollAreaShow = true;
-                    // $ajax
-                    setTimeout(function () {
-                        vm.nameList = ["乔杰","李坤宇",resultName,"李坤宇","乔杰","李坤宇","乔杰","李坤宇","旗鼓相当的对手","李坤宇","乔杰","李坤宇"];
-                        vm.rollStop = true;
-                        setTimeout(function () {
-                            vm.toUrlCallBack(url);
-                        },2000)
-                    },5000);
+                    vm.toUrlCallBack(url);
                     break;
             }
 

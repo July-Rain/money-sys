@@ -38,6 +38,7 @@
             box-sizing: border-box;
             height: auto;
             display: inline-block;
+            cursor: pointer;
         }
         .header-right .el-menu-item [class^=el-icon-],
         .header-right .el-submenu [class^=el-icon-],
@@ -122,6 +123,10 @@
             background-color: #056fcd;
             border: none;
         }
+        .header-right .this{
+            background-color: #056fcd !important;
+            border: none;
+        }
         .el-menu--horizontal>.el-submenu .el-submenu__title:hover{
             background-color: transparent;
         }
@@ -143,7 +148,7 @@
         <div class="header-right">
 
             <ul>
-                <li v-for="item in navData" @click="toChild(item)" :data-id="item.id" :data-url="item.url">
+                <li v-for="item in navData" @click="toChild(item,$event)" :data-id="item.id" :data-url="item.url">
                     <div class="spel" v-if="item.url">
                         <a>
                             <i class="iconfont" :class="item.icon?item.icon:'icon-085shucezhongxin'"></i>

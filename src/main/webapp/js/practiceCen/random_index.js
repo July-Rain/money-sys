@@ -127,6 +127,10 @@ var vm = new Vue({
         addExercise: function(){
             vm.title = '随机练习设置';
             this.dialogConfig = true;
+            vm.diffs = [];
+            vm.classs = [];
+            vm.types = [];
+            vm.topics = [];
         },
         reload: function () {
             $.ajax({
@@ -159,7 +163,7 @@ var vm = new Vue({
             vm.reload();
         },
         getRate: function (row, column) {
-            var msg = '100%';
+            var msg = '';
 
             var answerNum = row.answerNum;
             if(answerNum == 0){
@@ -172,6 +176,18 @@ var vm = new Vue({
                 return msg + "%";
             }
         },
+        review: function (id) {
+            // 错题回顾
+            // 跳转页面
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/exerciseCenter/random_answer.html?id='+id+'&isReview=1';
+        },
+        goon: function (id, indexs) {
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/exerciseCenter/random_answer.html?id='+id+'&indexs='+indexs;
+        }
     },
     created: function(){
         this.$nextTick(function () {

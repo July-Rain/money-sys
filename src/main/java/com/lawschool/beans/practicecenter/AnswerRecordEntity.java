@@ -16,6 +16,8 @@ public class AnswerRecordEntity<T> extends DataEntity<T> {
     protected Integer right;// 是否正确 0错误，1正确
     protected String themeName;// 主题类型
 
+    protected Integer isCollect;// 是否收藏，0未收藏、1收藏
+
     public String getTaskId() {
         return taskId;
     }
@@ -54,5 +56,13 @@ public class AnswerRecordEntity<T> extends DataEntity<T> {
 
     public void setThemeName(String themeName) {
         this.themeName = themeName;
+    }
+
+    public Integer getIsCollect() {
+        return isCollect;
+    }
+
+    public void setIsCollect(Integer isCollect) {
+        this.isCollect = isCollect;
     }
 }

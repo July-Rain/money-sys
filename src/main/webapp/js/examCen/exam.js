@@ -15,15 +15,19 @@ var vm = new Vue({
             limit: 10,
             count: 0
         },
+        queformInline:{
+            pageNo: 1,
+            pageSize: 1,
+            limit: 10,
+            count: 0,
+            queContent:'',
+            typeId:''
+        },
+        skOption:[],
         tableData: [],//表格数据
         visible: false,
         examConfig: {
-            id: '',
-            examName: '',
-            code: '',
-            value: '',
-            remark: '',
-            status: "1"
+
         },
         checkSetting: {},
         rules: {//表单验证规则
@@ -46,43 +50,19 @@ var vm = new Vue({
         dialogView: false,
         dialogEdit: false,
         setQuestion: false,// 设置题目弹框
-        tableData3: [{
-            content: '这是题目啊的撒看见封杀尽快恢复凯发',
-            type: 'a类',
-            difficulty: '难的一批',
-            answerNum: '2'
-        }, {
-            content: '这是题目啊的撒看见封杀尽快恢复凯发-05-02',
-            type: 'b类',
-            difficulty: '难的一批',
-            answerNum: '3'
-        }, {
-            content: '这是题目啊的撒看见封杀尽快恢复凯发-05-04',
-            type: 'c类',
-            difficulty: '难的一批',
-            answerNum: '3'
-        }, {
-            content: '2016-这是题目啊的撒看见封杀尽快恢复凯发-01',
-            type: 'd类',
-            difficulty: '难的一批',
-            answerNum: '3'
-        }, {
-            content: '这是题目啊的撒看见封杀尽快恢复凯发-05-08',
-            type: 'e类',
-            difficulty: '难的一批',
-            answerNum: '3'
-        }, {
-            content: '2016-这是题目啊的撒看见封杀尽快恢复凯发-06',
-            type: 'f类',
-            difficulty: '难的一批',
-            answerNum: '3'
-        }, {
-            content: '2016-05-这是题目啊的撒看见封杀尽快恢复凯发',
-            type: 'g类',
-            difficulty: '难的一批',
-            answerNum: '3'
-        }],
-        multipleSelection: []
+        tableData3: [],
+        sinMultipleSelection: [],//单选题多选框
+        mulMultipleSelection:[],//多选题
+        judgeMultipleSelection:[],//判断题
+        subMultipleSelection:[],  //主观题
+        sinMultScore:1,
+        mulMultScore:1,
+        judgeMultScore:1,
+        subMultScore:1,
+        randomQuesModal : false,
+        randomQuesData:[],
+        dataListSelections: [],//选中行
+        examConfigForm:{}
     },
     created: function () {
         this.$nextTick(function () {
@@ -111,35 +91,46 @@ var vm = new Vue({
             this.formInline.pageSize = val;
             this.reload();
         },
+        quehandleSizeChange: function (val) {
+            this.queformInline.pageSize = val;
+            this.queReload();
+        },
+        quehandleCurrentChange:function(val){
+            this.queformInline.currPage = val;
+            this.queReload();
+        },
         handleCurrentChange: function (val) {
             this.formInline.currPage = val;
             this.reload();
         },
         addConfig: function () {
             // parent.location.href = baseURL + "modules/examCen/examConfig.html";
+            storage.setItem("operate",0); //新增
             this.dialogAdd = true;
-            storage.setItem("operate", 0); //新增
+            document.getElementById("dialogAdd").contentWindow.location.reload(true);
+
         },
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
         },
         handleEdit: function (index, row) {
+            storage.setItem("operate",2); //修改
+            storage.setItem("examConId",row.id);
             this.dialogEdit = true;
-            storage.setItem("operate", 2); //修改
-            storage.setItem("examConId", row.id);
+            document.getElementById("dialogEdit").contentWindow.location.reload(true);
+
         },
-        handleDel: function (index, row) {
-            vm.delIdArr.push(row.id);
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        handleDelExam: function (index, row) {
+            var id = row.id;
+            this.$confirm('此操作将永久删除该考试配置, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: baseURL + 'sysconfig/delete',
+                    url: baseURL + 'exam/config/delete?id='+id,
                     async: true,
-                    data: JSON.stringify(vm.delIdArr),
                     contentType: "application/json",
                     success: function (result) {
                         vm.reload();
@@ -172,10 +163,12 @@ var vm = new Vue({
             this.viewCheckSettingDia = false;
             vm.reload();
         },
-        handleInfo: function (index, row) {
+        handleInfo: function(index, row){
+            storage.setItem("operate",1); //查看
+            storage.setItem("examConId",row.id);
             this.dialogView = true;
-            storage.setItem("operate", 1); //查看
-            storage.setItem("examConId", row.id);
+            document.getElementById("dialogView").contentWindow.location.reload(true);
+
         },
         handleChange: function () {
 
@@ -229,11 +222,11 @@ var vm = new Vue({
             }
         },
 
-        getCheckSetting: function (id) {
+        getCheckSetting : function(id){
             this.viewCheckSettingDia = true;
             $.ajax({
                 type: "GET",
-                url: baseURL + "exam/config/getCheckSetting?id=" + id,
+                url: baseURL + "exam/config/getCheckSetting?id="+id,
                 dataType: "json",
                 success: function (result) {
                     if (result.code == 0) {
@@ -252,14 +245,214 @@ var vm = new Vue({
         toHome: function () {
             parent.location.reload()
         },
-        setExamFn: function () {
-            this.setExam = true
+        setExamFn: function (index,row) {
+            vm.examConfig = row;
+            if(row.questionWay==='10033'){
+                this.randomQuesModal = true
+                this.getDict();
+            }else {
+                this.setExam = true
+            }
         },
         handleSelectionChange(val) {
-            this.multipleSelection = val;
+            if(val[0].questionType === '10004'){
+                this.sinMultipleSelection = val;
+            }else if (val[0].questionType === '10005'){
+                this.mulMultipleSelection = val;
+            }else if(val[0].questionType === '10006'){
+                this.judgeMultipleSelection = val;
+            }else {
+                this.subMultipleSelection = val;
+            }
         },
         addQuestion:function (type){
-            this.setQuestion = true
+            this.setQuestion = true;
+            vm.queformInline.questionType = type;
+            this.queReload();
+            this.getDict();
+        },
+        onQueSubmit : function () {
+            this.queReload();
+        },
+        getDict : function(){
+            $.ajax({
+                type: "GET",
+                url: baseURL + "exam/config/dict",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.skOption = result.skOption;
+                        vm.qtOption = result.qtOption;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        queReload : function () {
+            $.ajax({
+                type: "GET",
+                url: baseURL + "testQuestion/list",
+                dataType: "json",
+                data: vm.queformInline,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.tableData3 = result.page.list;
+                        vm.queformInline.page = result.page.pageNo;
+                        vm.queformInline.limit = result.page.pageSize;
+                        vm.queformInline.count = parseInt(result.page.count);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        getQue : function () {
+            this.setQuestion = false;
+            console.info(vm.multipleSelection);
+        },
+        closeAutoQue:function(){
+            this.setExam = false;
+        },
+        genAutoQue :function(){
+            vm.examConfigForm.id = vm.examConfig.id;
+            vm.examConfigForm.sinMultScore = vm.sinMultScore;
+            vm.examConfigForm.mulMultScore = vm.mulMultScore;
+            vm.examConfigForm.judgeMultScore = vm.judgeMultScore;
+            vm.examConfigForm.sinMultipleSelection = vm.sinMultipleSelection;
+            vm.examConfigForm.mulMultipleSelection = vm.mulMultipleSelection;
+            vm.examConfigForm.judgeMultipleSelection = vm.judgeMultipleSelection;
+            vm.examConfigForm.subMultipleSelection = vm.subMultipleSelection;
+            $.ajax({
+                type:"POST",
+                url :baseURL + "exam/config/examConfig/genAutoQue",
+                data: JSON.stringify(
+                    vm.examConfigForm
+                ),
+                contentType: "application/json",
+                success :function (result) {
+                    if (result.code === 0){
+
+                    }
+                }
+            })
+        },
+        <!-- 随机出题开始-->
+        //新增行
+        handleAdd: function () {
+            var index = this.randomQuesData.length;
+            this.randomQuesData.push({
+                specialKnowledgeId:null,
+                questionType: null,
+                questionNumber: null,
+                questionScore: null,
+                index: index
+            })
+        },
+        handleDel : function(index,row){
+            row.splice(index,1);
+        },
+        //批量删除
+        handleDelete: function (dataListSelections) {
+            this.dataListSelections=dataListSelections;
+            var arr = [];
+
+            this.dataListSelections.map(function (index) {
+                arr.push(index)
+            })
+            var arr2=[];
+            vm.randomQuesData.map(function (item,index) {
+                if(arr.indexOf(index)==-1){
+                    arr2.push(item)
+                }
+            })
+            vm.randomQuesData = arr2;
+        },
+        // 多选
+        selectionChangeHandle: function (val) {
+            this.dataListSelections = val;
+        },
+        handleSave:function(randomQuesData){
+            console.info(randomQuesData)
+            if (randomQuesData.length<=0||randomQuesData==''){
+                vm.$alert('请配置随机出题规则', '操作失败', {
+                    confirmButtonText: '确定',
+                    callback: function () {
+                        return false;
+                    }
+                });
+            }else {
+                var isRight = true;
+                var msg ='';
+
+                for(var i= 0;i<randomQuesData.length;i++){
+                    if(randomQuesData[i].questionNumber==null||randomQuesData[i].questionNumber==''){
+                        isRight = false;
+                        msg = '题目数量不能为空';
+                        break;
+                    }else if(randomQuesData[i].questionScore==null||randomQuesData[i].questionScore==''){
+                        isRight = false;
+                        msg = '题目分值不能为空';
+                        break;
+                    }else if(randomQuesData[i].questionType==null||randomQuesData[i].questionType==''){
+                        isRight = false;
+                        msg = '题目类型不能为空';
+                        break;
+                    }
+                }
+                if(!isRight){
+                    vm.$alert( msg, '操作失败', {
+                        confirmButtonText: '确定',
+                        callback: function () {
+                            return false;
+                        }
+                    });
+                }else {
+                    vm.examConfigForm.id = vm.examConfig.id;
+                    vm.examConfigForm.examQueConfigList = randomQuesData;
+                    $.ajax({
+                        type:"POST",
+                        url :baseURL + "exam/config/examConfig/genRandomQue",
+                        data: JSON.stringify(
+                            vm.examConfigForm
+                        ),
+                        contentType: "application/json",
+                        success :function (result) {
+                            if (result.code === 0){
+                                vm.randomQuesModal = false;
+                            }
+                        }
+                    })
+                }
+            }
+
+
+        },
+        closeRanDia : function () {
+            vm.randomQuesModal = false;
+        },
+
+    },
+    filters: {
+        sinMultScoreFn: function (_length) {
+            if(vm.sinMultScore || vm.sinMultScore ===0){
+                return _length * vm.sinMultScore
+            }
+        },
+        mulMultScoreFn: function (_length) {
+            if(vm.mulMultScore || vm.mulMultScore ===0){
+                return _length * vm.mulMultScore
+            }
+        },
+        judgeMultScoreFn: function (_length) {
+            if(vm.judgeMultScore || vm.judgeMultScore ===0){
+                return _length * vm.judgeMultScore
+            }
+        },
+        subMultScoreFn: function (_length) {
+            if(vm.subMultScore || vm.subMultScore ===0){
+                return _length * vm.subMultScore
+            }
         }
     }
 });

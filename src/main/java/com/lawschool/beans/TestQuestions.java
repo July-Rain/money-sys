@@ -42,6 +42,9 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     private String video;// 视频
 
     @TableField(exist = false)
+    private String videoUrl;
+
+    @TableField(exist = false)
     private String collectionId;//收藏id
     @TableField(exist = false)
     private String questiontypeValue;
@@ -56,6 +59,17 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     private String typeValue;
     @TableField(exist = false)
     private List<Answer> answerList=new ArrayList<Answer>();
+
+    @TableField(exist = false)
+    private float  perScore;
+
+    public float getPerScore() {
+        return this.perScore;
+    }
+
+    public void setPerScore(final float perScore) {
+        this.perScore = perScore;
+    }
 
     public String getTypeId() {
         return typeId;
@@ -263,5 +277,13 @@ public class TestQuestions extends DataEntity<TestQuestions> {
 
     public void setVideo(String video) {
         this.video = video;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 }

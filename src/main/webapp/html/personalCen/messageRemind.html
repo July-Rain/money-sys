@@ -29,7 +29,7 @@
                                     type="index"
                                     header-align="center"
                                     align="center"
-                                    width="250">
+                                    width="60">
                             </el-table-column>
                             <el-table-column
                                     prop="title"
@@ -45,7 +45,7 @@
                             </el-table-column>
                             <el-table-column
                                     prop="releaseDate"
-                                    label="接收时间"
+                                    label="发送时间"
                             >
                             </el-table-column>
                             <el-table-column
@@ -94,7 +94,6 @@
                             </el-radio-group>
                         </el-form-item>
                     </el-col>
-
                     <el-col span="11">
                         <el-form-item label="消息内容：" prop="content">
                             <template>
@@ -108,9 +107,6 @@
                             <el-input v-model="msg.releasePeopleName" disabled></el-input>
                         </el-form-item>
                     </el-col>
-
-
-
                 </el-row>
             </el-form>
         </el-dialog>

@@ -432,7 +432,7 @@ button {
 .right_progress .progress .line .line_inner{
     width: 16px;
     border-radius: 7px;
-    background-image: url("../img/competeCenter/jindutiao_blue.png");
+    background-image: url("../img/competeCenter/jindutiao_red.png");
     height: 100%;
 }
 .right_progress .head{

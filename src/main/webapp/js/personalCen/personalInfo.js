@@ -1,15 +1,67 @@
 var vm = new Vue({
     el: '#app',
     data:{
-
+        src: "../../statics/img/dog.jpg",
+        info: {
+            name: "", // 用户名
+            number: "", // 警号
+            id: "", // 身份证号
+            department: "", // 部门名称
+            oldPassword: "", // 旧密码
+            newPassword: "", // 新密码
+            newPassValidator: "" // 新密码确认
+        },
+        rules: {
+            name: [
+                { required: true, message: '用户名不能为空', trigger: 'blur'}
+            ],
+            number: [
+                { required: true, message: '警号不能为空', trigger: 'blur'}
+            ],
+            id: [
+                { required: true, message: '身份证不能为空', trigger: 'blur'},
+                { type: 'number', message: '身份证必须为数字值' ,trigger: 'change'}
+            ],
+            department: [
+                { required: true, message: '部门名称不能为空', trigger: 'blur'}
+            ]
+        }
     },
     methods: {
         //获取url路径中参数
         toHome: function () {
             parent.location.reload()
+        },
+        submitForm: function(info) {
+            this.$refs.form.validate((valid) => {
+                if (valid) {
+                    alert('submit!');
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        changeAvatar: function () {
+            this.src = "../../statics/img/new.png"
         }
     },
     created: function(){
-    }
+        /*this.$nextTick(function () {
 
+            //学年目标
+            $.ajax({
+                type: "GET",
+                url: baseURL + "schoolYearPlan/yearPlan",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+
+                    } else {
+
+                    }
+                }
+            });
+        });*/
+    }
 });

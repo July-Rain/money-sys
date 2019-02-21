@@ -116,7 +116,7 @@
                                                  align="center">
                                     <template slot-scope="scope">
                                         <el-popover
-                                                placement="top-start"
+                                                placement="right"
                                                 trigger="hover"
                                                 content="查看">
                                             <i class="iconfont icon-chakan tabIcon"
@@ -126,7 +126,7 @@
                                             </i>
                                         </el-popover>
                                     </template>
-                    st            </el-table-column>
+                              </el-table-column>
                             </el-table>
                             <el-pagination
                                     @size-change="handleSizeChange"
@@ -144,13 +144,17 @@
 
         <el-dialog title="选择法律法规库" :visible.sync="dialogLib">
             <!--对于同一级的节点，每次只能展开一个-->
-            <el-tree
-                    ref="libTree"
-                    :data="libData"
-                    :props="defaultLibProps"
-                    accordion
-                    node-key="libId">
-            </el-tree>
+            <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;"
+                          view-class="view-box" :native="false">
+                <el-tree
+                        ref="libTree"
+                        :data="libData"
+                        :props="defaultLibProps"
+                        accordion
+                        :default-expanded-keys="libIds"
+                        node-key="libId">
+                </el-tree>
+            </el-scrollbar>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" size="mini" @click="confimLib">保存</el-button>
                 <el-button size="mini" @click="cancelLib">取消</el-button>
