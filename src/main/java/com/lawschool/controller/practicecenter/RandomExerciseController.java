@@ -197,13 +197,13 @@ public class RandomExerciseController extends AbstractController {
      * 收藏题目
      * @return
      */
-    @RequestMapping(value = "/doCollect", method = RequestMethod.POST)
-    public Result doCollect(@RequestBody CommonForm params){
+    @RequestMapping(value = "/doCollect/{type}", method = RequestMethod.POST)
+    public Result doCollect(@RequestBody CommonForm params, @PathVariable("type") Integer type){
 
         String id = params.getKey();// 题目ID
         String recordId = params.getValue();// 记录ID
 
-        exerciseService.doCollect(id, recordId);
+        exerciseService.doCollect(id, recordId, type);
 
         return Result.ok();
     }

@@ -13,23 +13,23 @@
 <body>
 <div id="app" v-cloak>
     <div class="container">
-        <button class="return_back">
+        <button class="return_back" @click="backPkMain">
             <img src="${rc.contextPath}/statics/img/competeCenter/btn_return.png" alt="">
         </button>
         <div class="timing">
             本题倒计时：<span>30</span>秒
         </div>
         <div class="questionArea">
-            <div class="title">{{nownum}}/{{allnum}}题</div>
+            <div class="title">1/2题</div>
             <div class="questionType">
-                [{{Question.questionType==10004?'单选题':Question.questionType==10005?'多选题':'判断题'}}]
+                题型
             </div>
             <p class="questionTitle">
-                {{Question.comContent}}
+                阿斯蒂芬撒地方撒旦发士大夫撒旦
             </p>
             <div class="left_progress">
                 <div class="progress">
-                    <div class="num">{{youscore}}</div>
+                    <div class="num">12</div>
                     <div class="line">
                         <div class="line_inner"></div>
                     </div>
@@ -40,13 +40,13 @@
                         <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
                     </div>
                     <div class="name">
-                        {{play1}}
+                        名字
                     </div>
                 </div>
             </div>
             <div class="right_progress">
                 <div class="progress">
-                    <div class="num">{{youscore}}</div>
+                    <div class="num">11</div>
                     <div class="line">
                         <div class="line_inner"></div>
                     </div>
@@ -56,7 +56,7 @@
                         <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
                     </div>
                     <div class="name">
-                        {{play2}}
+                        飞洒地方打算
                     </div>
                 </div>
             </div>
@@ -87,6 +87,40 @@
 
 
 
+        <!--建立我的队伍-->
+        <div class="model_area formation_area" v-if="formationTeamShow">
+            <div class="inner">
+                <div class="title"></div>
+                <div class="btns">
+                    <button>刷新</button>
+                    <button @click="formationTeamExit">退出</button>
+                </div>
+                <ul class="users">
+                    <li>
+                        <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                        <p>我</p>
+                    </li>
+                    <li>
+                        <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                        <p>发范德萨</p>
+                    </li>
+                    <li>
+                        <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                        <p>发范德萨</p>
+                    </li>
+
+                </ul>
+                <p class="team_num"><span>组队编号：</span>123456</p>
+                <p>恭喜您！队伍完成，冲啊~</p>
+            </div>
+        </div>
+        <!--加入队伍-->
+        <div class="model_area join_area" v-if="joinTeamShow">
+            <div class="inner">
+                <div class="title">加入他人队伍</div>
+                <input type="text" placeholder="输入队伍编号">
+            </div>
+        </div>
     </div>
 
     <el-row :gutter="24">

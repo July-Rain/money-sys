@@ -46,5 +46,5 @@ public interface ExerciseService extends AbstractService<ExerciseEntity> {
      * @param recordId
      * @return
      */
-    boolean doCollect(String id, String recordId);
+    boolean doCollect(String id, String recordId, Integer type);
 }
