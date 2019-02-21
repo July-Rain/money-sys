@@ -39,7 +39,6 @@ public class MsgController extends AbstractController{
      */
     @RequestMapping(value = "/listAll",method = RequestMethod.GET)
     public Result showAllMsgList(@RequestParam Map<String,Object> params){
-
         params.put("userId",getUser().getId());
         PageUtils pageUtils = msgService.selectAllMsg(params);
         return Result.ok().put("page",pageUtils);
@@ -54,7 +53,19 @@ public class MsgController extends AbstractController{
         msgService.deleteByMsgId(id);
         return Result.ok();
     }
-
+    /**
+     * 撤回选中的消息
+     * @param id
+     */
+    @RequestMapping("/recall")
+    public Result recall(@RequestParam String id){
+        //先查后改  简单点
+        Msg msg = msgService.selectById(id);
+        msg.setReleaseState("0");//0未发送
+        msg.setReleaseDate(null);
+        msgService.updateById(msg);
+        return Result.ok();
+    }
     /**
      * 信息
      */
