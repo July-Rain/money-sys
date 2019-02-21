@@ -133,4 +133,11 @@
 	        TO_CHAR (CREATE_TIME, 'YYYY-MM') = #{month}
 	        AND create_user = #{userId}
     </select>
+
+    <update id="updateCollect">
+        UPDATE law_task_record
+        SET
+            IS_COLLECT = #{type}
+        WHERE ID = #{id}
+    </update>
 </mapper>

@@ -12,7 +12,8 @@ var vm = new Vue({
         iframeSrc: '',
         backShow: true,
         loginType: 0,// 登陆方式
-        headerHide: false
+        headerHide: false,
+        showThis: false
     },
     created: function () {
         this.$nextTick(function () {
@@ -47,6 +48,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.navData = result.menuList;
+                        console.log(vm.navData)
                         if(url&&url!='container.html'){
                             vm.navData.push({
                                 icon: "icon-fanhui",
@@ -55,7 +57,6 @@ var vm = new Vue({
                                 type: '0',
                                 parentId: '0'
                             });
-                            console.info("112211",vm.navData)
                         }
 
                     } else {
@@ -72,6 +73,9 @@ var vm = new Vue({
 
             if(item.url === 'container.html'){
                 vm.navData.splice(-1,1);
+                vm.showThis = false;
+            }else {
+                vm.showThis = true;
             }
             if(item.name == "退出"){
                 window.location.href = baseURL + 'logout'
@@ -80,7 +84,15 @@ var vm = new Vue({
                 $(".header-right ul li").removeClass("this");
 
                 if(item.url.indexOf("?") == -1){
-                    vm.childUrl = item.url + "?id=" + item.id;
+
+                    if(item.url == 'menu'){
+                        vm.childUrl = item.list[0].url + "?id=" + item.id;
+                    }else{
+                        vm.childUrl = item.url + "?id=" + item.id;
+
+                    }
+
+
                 }else{
                     vm.childUrl = item.url + "&id=" + item.id;
                 }

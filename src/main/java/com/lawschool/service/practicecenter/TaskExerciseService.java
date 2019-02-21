@@ -52,4 +52,6 @@ public interface TaskExerciseService extends AbstractService<TaskExerciseEntity>
     boolean updateStatus(String id, Integer status);
 
     AnalysisForm analysis(String month, String userId);
+
+    boolean doCollect(String id, String recordId, Integer type);
 }

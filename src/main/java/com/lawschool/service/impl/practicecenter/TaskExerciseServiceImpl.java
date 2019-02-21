@@ -2,6 +2,8 @@ package com.lawschool.service.impl.practicecenter;
 
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
+import com.lawschool.beans.Collection;
+import com.lawschool.beans.User;
 import com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity;
 import com.lawschool.beans.practicecenter.TaskExerciseEntity;
 import com.lawschool.dao.practicecenter.TaskExerciseDao;
@@ -10,12 +12,14 @@ import com.lawschool.form.AnswerForm;
 import com.lawschool.form.QuestForm;
 import com.lawschool.form.ThemeAnswerForm;
 import com.lawschool.service.AnswerService;
+import com.lawschool.service.CollectionService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.practicecenter.TaskAnswerRecordService;
 import com.lawschool.service.practicecenter.TaskExerciseConfigureService;
 import com.lawschool.service.practicecenter.TaskExerciseService;
 import com.lawschool.util.Result;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +45,9 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
 
     @Autowired
     private TaskAnswerRecordService taskAnswerRecordService;
+
+    @Autowired
+    private CollectionService collectionService;
 
     /**
      * 题目展示
@@ -84,6 +91,7 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
         params.put("difficulty", configure.getDifficulty());
         params.put("classify", configure.getClassify());
         params.put("type", configure.getType());
+        params.put("", isReview);
 
         List<String> ids = testQuestionService.selectIdsForPage(params);
 
@@ -107,7 +115,6 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
 
     /**
      * 保存答题情况
-     * @param list
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -168,4 +175,34 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
         return  result;
     }
 
+    /**
+     * 随机练习收藏/取消
+     * @param id
+     * @param recordId
+     * @param type 1收藏，0取消收藏
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public boolean doCollect(String id, String recordId, Integer type){
+
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+
+        if(type == 1){
+            com.lawschool.beans.Collection collect = new Collection();
+            collect.setId(IdWorker.getIdStr());
+            collect.setType(20);
+            collect.setComStucode(id);
+
+
+            // 0成功，1失败
+            int result = collectionService.addCollection(collect, user);
+        } else {
+            // 取消收藏
+            boolean result = collectionService.cancle(id, user.getId());
+        }
+
+        dao.updateCollect(recordId, type);
+
+        return true;
+    }
 }
