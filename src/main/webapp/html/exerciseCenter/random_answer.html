@@ -33,9 +33,10 @@
                     {{indexs[index1]}}、{{answer.questionContent}}
                 </el-checkbox>
                 <br/>
+
             </el-checkbox-group>
 
-            <el-button type="primary"
+            <el-button type="warning"
                        v-show="!isAnswer"
                        v-if="question.questionType==10005"
                        @click="sure(question.answerId)">确定
