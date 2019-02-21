@@ -48,13 +48,13 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
      * @param id 个人任务ID
      * @param userId 当前用户ID
      * @param isNew 是否需要创建新的个人任务
-     * @param limit 每页显示题目数量
-     * @param page 当前页（为-1时，根据answerNum去计算，否则直接取当前页）
+     * @param index 当前题目序号
+     * @param isReview 是否是错题回顾
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> showPaper(String taskId, String id, String userId, Boolean isNew,
-                                  Integer limit, Integer page){
+                                  Integer index, String isReview){
         // 定义返回结果的Map
         Map<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -73,23 +73,13 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
             this.createTask(id, taskId, userId, total);
         } else {
             TaskExerciseEntity task = dao.findOne(id);
-            answerNum = task.getAnswerNum();
         }
-
-        // 计算取题范围
-        Integer[] pageResult = CommonUtils.computeDataRange(total, answerNum, limit, page);
-        if(pageResult[0] == -1){
-            resultMap.put("list", null);
-            return resultMap;
-        }
-
-        resultMap.put("page", pageResult[2]);
 
         // 获取需要展示的题目信息
         // 封装查询参数
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("start", pageResult[0]);
-        params.put("end", pageResult[1]);
+        params.put("start", index);
+        params.put("end", index);
         params.put("themeId", configure.getThemeId());
         params.put("difficulty", configure.getDifficulty());
         params.put("classify", configure.getClassify());
@@ -97,29 +87,21 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
 
         List<String> ids = testQuestionService.selectIdsForPage(params);
 
+        // 没有题目则返回空值
         if(CollectionUtils.isEmpty(ids)){
-            resultMap.put("list", null);
-            return resultMap;
+            return null;
         }
 
-        // 获取题目详细信息
-        List<QuestForm> resultList = this.getQuestions(ids, id, userId);
-
+        List<QuestForm> resultList = dao.getQuestions(ids, id, userId, isReview);
         if(CollectionUtils.isEmpty(resultList)){
-            resultMap.put("list", null);
-            return resultMap;
+            return null;
         }
-        resultMap.put("list", resultList);
-
         List<AnswerForm> answerForms = answerService.findByQuestionIds(ids);
 
-        if(CollectionUtils.isEmpty(answerForms)){
-            return resultMap;
-        }
         resultList = testQuestionService.handleAnswers(resultList, answerForms);
-        resultMap.put("list", resultList);
-        resultMap.put("count", total);
 
+        // 每次只取一条
+        resultMap.put("question", resultList.get(0));
         return resultMap;
     }
 
@@ -129,21 +111,13 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void preserve(List<ThemeAnswerForm> list, String userId){
+    public void preserve(ThemeAnswerForm form){
         Date date = new Date();
 
-        for(ThemeAnswerForm form : list){
-            form.setCreateUser(userId);
-            form.setId(IdWorker.getIdStr());
-            form.setCreateTime(date);
-            taskAnswerRecordService.saveForm(form);
-        }
+        taskAnswerRecordService.saveForm(form);
 
         // 更新整体练习答题情况
-        int num = list.size();
-        if(num > 0){
-            dao.updateAnswerNum(list.get(0).getTaskId(), num);
-        }
+        dao.updateAnswerNum(form.getTaskId(), 1);
     }
 
     @Override
