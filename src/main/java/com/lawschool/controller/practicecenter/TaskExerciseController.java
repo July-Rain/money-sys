@@ -5,6 +5,7 @@ import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.User;
 import com.lawschool.beans.practicecenter.TaskExerciseEntity;
+import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
 import com.lawschool.form.ThemeAnswerForm;
 import com.lawschool.service.practicecenter.TaskExerciseService;
@@ -109,6 +110,21 @@ public class TaskExerciseController extends AbstractController {
 
         // 提交，更新任务状态
         taskExerciseService.updateStatus(id, TaskExerciseEntity.STATUS_OFF);
+
+        return Result.ok();
+    }
+
+    /**
+     * 收藏题目
+     * @return
+     */
+    @RequestMapping(value = "/doCollect/{type}", method = RequestMethod.POST)
+    public Result doCollect(@RequestBody CommonForm params, @PathVariable("type") Integer type){
+
+        String id = params.getKey();// 题目ID
+        String recordId = params.getValue();// 记录ID
+
+        taskExerciseService.doCollect(id, recordId, type);
 
         return Result.ok();
     }

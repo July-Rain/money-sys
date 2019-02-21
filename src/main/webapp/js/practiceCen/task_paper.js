@@ -19,7 +19,8 @@ var vm = new Vue({
         isLast: false,
         isNew: true,
         isNext: false,
-        title: ''
+        title: '',
+        starIcon: 'el-icon-star-off'
     },
     methods: {
         sure: function (rightAnswer) {// 多选
@@ -136,6 +137,11 @@ var vm = new Vue({
                             // 判断此题目是否已经回答过
                             var userAnswer = vm.question.userAnswer;
                             var rightAnswer = vm.question.answerId;
+                            if(vm.question.isCollect == 1){
+                                vm.starIcon = 'el-icon-star-on';
+                            } else {
+                                vm.starIcon = 'el-icon-star-off';
+                            }
                             if(userAnswer == null || userAnswer == ''){
                                 vm.isAnswer = false;
                                 vm.answers = [];
@@ -192,14 +198,24 @@ var vm = new Vue({
         },
         doCollect: function () {
             // 收藏题目
-            vm.question.isCollect = 1;
             var obj = {
                 key: vm.question.id,
                 value: vm.question.recordId
             };
+            var type;
+            if(vm.question.isCollect == 1){
+                type = 0;
+                vm.question.isCollect = 0;
+                vm.starIcon = 'el-icon-star-off';
+            } else {
+                type = 1;
+                vm.question.isCollect = 1;
+                vm.starIcon = 'el-icon-star-on';
+            }
+
             $.ajax({
                 type: "POST",
-                url: baseURL + "exercise/random/doCollect",
+                url: baseURL + "exercise/task/doCollect/"+type,
                 data: JSON.stringify(obj),
                 contentType: "application/json",
                 success: function (result) {

@@ -238,9 +238,11 @@ var vm = new Vue({
                 vm.title = '结束本次练习';
             }
             if(indexs != null && indexs != ''){
-                vm.index = Number(indexs) + 1;
+                vm.index = Number(indexs);
+            } else {
+                vm.index = 0;
             }
-            vm.getQuestion();
+            vm.getQuestion(1);
         })
     }
 });

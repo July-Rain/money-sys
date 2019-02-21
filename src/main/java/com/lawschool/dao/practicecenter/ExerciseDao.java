@@ -39,4 +39,7 @@ public interface ExerciseDao extends AbstractDao<ExerciseEntity> {
 
     boolean updateCollect(@Param("id") String id, @Param("type") Integer type);
 
+    List<String> selectIdsForPage(@Param("userId") String userId,
+                                  @Param("taskId") String taskId,
+                                  @Param("index") Integer index);
 }
