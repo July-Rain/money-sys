@@ -93,6 +93,9 @@ var vm = new Vue({
         reload: function () {
 
 
+        },
+        backPkMain: function () {
+            window.location.href = baseURL + 'modules/competition/pkMain.html';
         }
     }
 });

@@ -181,17 +181,27 @@
                                     align="center"
                                     >
                                 <template slot-scope="scope">
-                                    <el-button
-                                            size="mini"
-                                            @click="handleEdit(scope.$index, scope.row)">查看
-                                    </el-button>
-                                    <el-button
-                                            :disabled="scope.row.endTime | timeout"
-                                            plain
-                                            type="danger"
-                                            size="mini"
-                                            @click="continueStudy(scope.$index, scope.row)">继续学习
-                                    </el-button>
+                                    <el-popover
+                                            placement="right"
+                                            trigger="hover"
+                                            content="查看">
+                                        <i class="iconfont icon-chakan tabIcon"
+                                           slot="reference"
+                                           @click="handleEdit(scope.$index, scope.row)"
+                                           style="color: #1381e3;font-size: 12px;">
+                                        </i>
+                                    </el-popover>
+                                    <el-popover
+                                            v-if="scope.row.endTime | timeout"
+                                            placement="right"
+                                            trigger="hover"
+                                            content="继续练习">
+                                        <i class="iconfont icon-lianxi"
+                                           @click="continueStudy(scope.$index, scope.row)"
+                                           slot="reference"
+                                           style="color: #119e0b;cursor: pointer;padding: 0 20px;font-size: 20px" >
+                                        </i>
+                                    </el-popover>
                                 </template>
                             </el-table-column>
                         </el-table>

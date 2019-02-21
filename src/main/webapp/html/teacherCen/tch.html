@@ -25,7 +25,8 @@
     }
 
     .tchCard .head_img {
-        width: 13.90922401171303vw;
+        width: 100%;
+        /*width: 13.90922401171303vw;*/
         height: 13.90922401171303vw;
         /*background-image:url(${rc.contextPath}/statics/img/police_head.png);*/
         /*background-size: 100% 100%;*/
@@ -47,6 +48,9 @@
         line-height: 24px;
         color: #333;
         font-size: 14px;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
     }
     .right_layout .card_contain{
         padding: 10px 0 0;

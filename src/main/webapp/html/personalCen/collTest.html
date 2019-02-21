@@ -118,7 +118,7 @@
                                         <el-option v-for="(item,index) in qds" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
                                     </el-select>
                                 </el-form-item>
-                                <el-form-item prop="questionType" label="试题类型">
+                                <el-form-item prop="questionType" label="试题类型" label-width="96px">
                                     <el-select v-model="formInline.questionType"  size="mini">
                                         <el-option v-for="(item,index) in qts" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
                                     </el-select>
@@ -153,7 +153,6 @@
                                 <el-table-column
                                         prop="comContent"
                                         label="试题内容"
-                                        width="280"
                                         >
                                 </el-table-column>
 
@@ -162,15 +161,15 @@
                                         label="类型"
                                         header-align="center"
                                         align="center"
+                                        width="80"
                                         :show-overflow-tooltip="true"
                                 >
                                 </el-table-column>
 
-
                                 <el-table-column
                                         prop="questiondifficultyValue"
                                         label="难度"
-                                        width="280"
+                                        width="80"
                                         header-align="center"
                                         align="center"
                                 >
@@ -179,7 +178,7 @@
                                 <el-table-column
                                         prop="questiontypeValue"
                                         label="类型"
-                                        width="280"
+                                        width="80"
                                         header-align="center"
                                         align="center"
                                         >
@@ -188,7 +187,6 @@
                                 <el-table-column
                                         prop="specialknowledgeValue"
                                         label="专项知识"
-                                        width="180"
                                         header-align="center"
                                         align="center"
                                         width="100">
@@ -200,16 +198,26 @@
                                         align="center"
                                         width="180">
                                     <template slot-scope="scope">
-                                        <el-button
-                                                size="mini"
-                                                @click="handleInfo(scope.$index, scope.row)">查看
-                                        </el-button>
-                                        <el-button
-                                                plain
-                                                type="danger"
-                                                size="mini"
-                                                @click="handleDel(scope.$index, scope.row)">删除
-                                        </el-button>
+                                        <el-popover
+                                                placement="right"
+                                                trigger="hover"
+                                                content="查看">
+                                            <i class="iconfont icon-chakan tabIcon"
+                                               slot="reference"
+                                               @click="handleInfo(scope.$index, scope.row)"
+                                               style="color: #1381e3;font-size: 12px;">
+                                            </i>
+                                        </el-popover>
+                                        <el-popover
+                                                placement="right"
+                                                trigger="hover"
+                                                content="删除">
+                                            <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                                               slot="reference"
+                                               @click="handleDel(scope.$index, scope.row)"
+                                               style="color: #e31313;">
+                                            </i>
+                                        </el-popover>
                                     </template>
                                 </el-table-column>
                             </el-table>

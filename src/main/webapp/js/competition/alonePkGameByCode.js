@@ -40,10 +40,18 @@ var vm = new Vue({
         //对方是否已答题
         yesOrNoAnswer:"未答题",
         jifen:"0",//最终录入的成绩积分
+        formationWarShow:false,//建立战区
+        joinWarShow:false//加入战区
     },
     created: function () {
         this.$nextTick(function () {
             this.reload();
+            if(getUrlParam('warType') === 'formation'){
+                vm.formationWarShow = true
+            }
+            if(getUrlParam('warType') === 'join'){
+                vm.joinWarShow = true
+            }
         })
     },
 
@@ -70,8 +78,7 @@ var vm = new Vue({
             sendMsg();
         },
         //答错事件
-        questionError:function()
-        {
+        questionError:function(){
             alert("答错了")
 
 
@@ -87,6 +94,14 @@ var vm = new Vue({
         reload: function () {
 
 
+        },
+        joinFormationWar: function () {
+            // 加入战区到建立
+            this.formationWarShow = true;
+            this.joinWarShow = false
+        },
+        backPkMain: function () {
+            window.location.href = baseURL + 'modules/competition/pkMain.html';
         }
     }
 });

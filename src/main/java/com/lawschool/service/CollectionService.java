@@ -78,4 +78,11 @@ public interface CollectionService extends IService<Collection> {
      */
     TestQuestions getTestQuestions(TestQuestions testQuestions);
 
+    /**
+     * 取消题目收藏
+     * @param questionId
+     * @param userId
+     * @return
+     */
+    boolean cancle(String questionId, String userId);
 }

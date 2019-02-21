@@ -209,10 +209,16 @@
                             <el-table-column label="操作" width="180" header-align="center"
                                              align="center">
                                 <template slot-scope="scope">
-                                    <el-button
-                                            size="mini"
-                                            @click="handleDetail(scope.$index, scope.row)">查看
-                                    </el-button>
+                                    <el-popover
+                                            placement="right"
+                                            trigger="hover"
+                                            content="查看">
+                                        <i class="iconfont icon-chakan tabIcon"
+                                           slot="reference"
+                                           @click="handleDetail(scope.$index, scope.row)"
+                                           style="color: #1381e3;font-size: 12px;">
+                                        </i>
+                                    </el-popover>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -280,20 +286,24 @@
         </el-row>
 
     </div>
-
     <el-dialog title="选择法律分类" :visible.sync="dialogLaw" >
         <!--对于同一级的节点，每次只能展开一个-->
-        <el-tree
-                ref="lawtree"
-                :data="treeData"
-                :props="defaultProps"
-                accordion
-                node-key="id"
-                show-checkbox
-                @check-change="handleCheckChange">
-        </el-tree>
-        <el-button type="primary" size="mini" @click="confimLaw">保存</el-button>
-        <el-button type="primary" size="mini" @click="cancelLaw">取消</el-button>
+        <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;"
+                      view-class="view-box" :native="false">
+            <el-tree
+                    ref="lawtree"
+                    :data="treeData"
+                    :props="defaultProps"
+                    accordion
+                    node-key="id"
+                    show-checkbox
+                    @check-change="handleCheckChange">
+            </el-tree>
+        </el-scrollbar>
+        <div slot="footer" class="dialog-footer">
+            <el-button size="mini" @click="cancelLaw">取消</el-button>
+            <el-button type="primary" size="mini" @click="confimLaw">保存</el-button>
+        </div>
     </el-dialog>
 
     <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogCaseAna" :before-close="closeDia"  ref="caseAnaDialog">

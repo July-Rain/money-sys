@@ -402,8 +402,6 @@ var vm = new Vue({
                 $.ajax({
                     type: "POST",
                     url: baseURL + 'msg/delete?id='+row.id,
-                    //async: true,
-                    //data: JSON.stringify(row.id),
                     contentType: "application/json",
                     success: function (result) {
                         vm.reload();
@@ -415,10 +413,10 @@ var vm = new Vue({
                     }
                 });
             }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
+                // vm.$message({
+                //     type: 'info',
+                //     message: '已取消删除'
+                // });
             });
 
         },
@@ -446,10 +444,10 @@ var vm = new Vue({
                     }
                 });
             }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消'
-                });
+                // vm.$message({
+                //     type: 'info',
+                //     message: '已取消删除'
+                // });
             });
 
         },
