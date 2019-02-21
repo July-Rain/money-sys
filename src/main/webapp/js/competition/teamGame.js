@@ -38,11 +38,29 @@ var vm = new Vue({
         dialogQuestion:false,//开始答题  弹出
         battlePlatform:{},//对战平台
         jifen:"0",
+        joinTeamShow: false,
+        formationTeamShow: false
     },
     created: function () {
         this.$nextTick(function () {
             this.reload();
-        })
+            if(getUrlParam('teamType') === 'formation'){
+                vm.formationTeamShow = true
+            }
+            if(getUrlParam('teamType') === 'join'){
+                vm.joinTeamShow = true
+            }
+        });
+        document.onkeydown = function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if(e && e.keyCode==13){ // enter 键
+                if(vm.joinTeamShow){
+                    vm.joinTeamShow = false;
+                    vm.formationTeamShow = true;
+                }
+
+            }
+        }
     },
 
 
@@ -85,6 +103,11 @@ var vm = new Vue({
         },
         reload:function () {
 
+        },
+        formationTeamExit: function () {
+            this.formationTeamShow = false;
+            // 退出组队
+            // coding 返回pkMain
         },
 
     }

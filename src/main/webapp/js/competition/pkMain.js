@@ -8,23 +8,12 @@ var vm = new Vue({
         ruleAreaShow: false,
         teamAreaShow: false,
         teamPerNum: 3,
-        formationTeamShow: false,
-        joinTeamShow:false,
         warAreaShow:false,
         formationWarShow:false,//建立战区
         joinWarShow:false//加入战区
     },
     created: function () {
-        document.onkeydown = function (event) {
-            var e = event || window.event || arguments.callee.caller.arguments[0];
-            if(e && e.keyCode==13){ // enter 键
-                if(vm.joinTeamShow){
-                    vm.joinTeamShow = false;
-                    vm.formationTeamShow = true;
-                }
 
-            }
-        }
     },
     methods: {
         toUrl:function (url) {
@@ -47,17 +36,16 @@ var vm = new Vue({
         formationTeam: function () {
             console.log("组建"+ vm.teamPerNum +"人组队");
             this.teamAreaShow = false;
-            this.formationTeamShow = true;
+            //coding 跳转组队页面
+            window.location.href = baseURL + "modules/competition/teamGame.html?teamType=formation";
         },
         joinTeam: function () {
             console.log("加入"+ vm.teamPerNum +"人组队");
             this.teamAreaShow = false;
-            this.joinTeamShow = true
+            //coding 跳转组队页面
+            window.location.href = baseURL + "modules/competition/teamGame.html?teamType=join";
         },
-        formationTeamExit: function () {
-            this.formationTeamShow = false;
-            // 退出组队
-        },
+
         formationWar: function () {
             // 建立战区
             this.warAreaShow = false;

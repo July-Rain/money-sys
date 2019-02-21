@@ -65,40 +65,6 @@
             <button @click="joinTeam">加入他人队伍</button>
         </div>
     </div>
-    <!--建立我的队伍-->
-    <div class="model_area formation_area" v-if="formationTeamShow">
-        <div class="inner">
-            <div class="title"></div>
-            <div class="btns">
-                <button>刷新</button>
-                <button @click="formationTeamExit">退出</button>
-            </div>
-            <ul class="users">
-                <li>
-                    <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
-                    <p>我</p>
-                </li>
-                <li>
-                    <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
-                    <p>发范德萨</p>
-                </li>
-                <li>
-                    <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
-                    <p>发范德萨</p>
-                </li>
-
-            </ul>
-            <p class="team_num"><span>组队编号：</span>123456</p>
-            <p>恭喜您！队伍完成，冲啊~</p>
-        </div>
-    </div>
-    <!--加入队伍-->
-    <div class="model_area join_area" v-if="joinTeamShow">
-        <div class="inner">
-            <div class="title">加入他人队伍</div>
-            <input type="text" placeholder="输入队伍编号">
-        </div>
-    </div>
     <!--战区对战-->
     <div class="war_area model_area" v-if="warAreaShow">
         <div class="inner">
