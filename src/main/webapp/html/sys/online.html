@@ -3,6 +3,11 @@
 <head>
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .manList{
+            max-height: 643px;
+        }
+    </style>
 </head>
 <body>
 <div id="app" v-cloak>
@@ -20,6 +25,8 @@
                             :data="treeData"
                             :props="defaultProps"
                             accordion
+                            node-key="id"
+                            :default-expanded-keys="idArr"
                             @node-click="handleNodeClick">
                     </el-tree>
                 </el-scrollbar>
@@ -51,6 +58,7 @@
                     <el-table
                             :data="tableData"
                             border
+                            height="540"
                             style="width: 100%">
                         <el-table-column
                                 label="序号"
@@ -61,7 +69,6 @@
                         <el-table-column
                                 prop="userName"
                                 label="姓名"
-                                width="280"
                                 align="center"
                         >
                         </el-table-column>
@@ -69,7 +76,6 @@
                                 prop="userPoliceId"
                                 label="警号"
                                 align="center"
-                                width="280"
                         >
                         </el-table-column>
                         <el-table-column
@@ -94,7 +100,7 @@
                                         @click="handleOff(scope.$index, scope.row)">下线
                                 </el-button>-->
                                 <el-popover
-                                        placement="top-start"
+                                        placement="right"
                                         trigger="hover"
                                         content="下线">
                                     <i class="iconfont tabIcon"
@@ -123,5 +129,5 @@
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/sys/online.js"></script>
+<script src="${rc.contextPath}/js/sys/online.js?_${.now?long}"></script>
 </html>

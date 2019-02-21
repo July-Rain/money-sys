@@ -56,8 +56,12 @@ var vm = new Vue({
             userPoliceId: [
                 {required: true, message: '请输入警号', trigger: 'blur'},
             ],
+
             tmroles: [
                 { required: true, message: '请选择角色', trigger: 'change'}
+            ],
+            orgName: [
+                {required: true, message: '请选择部门', trigger: 'blur'},
             ],
         },
         roles:[],
@@ -91,7 +95,6 @@ var vm = new Vue({
                 async:false,
                 data: {type:"POLICACLASS",Parentcode:"0"},
                 success: function (result) {
-                    debugger
                     vm.policeclassOption=result.dictlist;
                 }
             });
@@ -102,6 +105,10 @@ var vm = new Vue({
 
 
     methods: {
+        //序列号计算
+        indexMethod:function (index) {
+            return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
+        },
         // 查询
         onSubmit: function () {
             this.reload();
@@ -237,10 +244,10 @@ var vm = new Vue({
         },
 
         // 部门点击事件
-        handleNodeClick:function(data){
-            vm.formInline.orgCode=data.localOrgCode;
-            this.reload();
-        },
+        // handleNodeClick:function(data){
+        //     vm.formInline.orgCode=data.localOrgCode;
+        //     this.reload();
+        // },
 
         //展示部门
         deptShow:function(){
@@ -310,11 +317,10 @@ var vm = new Vue({
 
         // 部门选择事件
         handleNodeClick: function (data) {
-                this.checkedId = data.id;
-                console.log(data);
-                vm.teacher.orgCode= data.localOrgCode;
-                vm.teacher.orgName= data.localOrgName;
-                vm.teacher.orgId= data.id;
+            vm.formInline.orgCode= data.localOrgCode;
+            vm.formInline.orgName= data.localOrgName;
+            vm.formInline.orgId= data.orgId;
+            this.reload();
         },
 
         //确定部门
@@ -343,7 +349,6 @@ var vm = new Vue({
 
         //保存
         saveOrUpdate:function (formName) {
-            debugger
             this.$refs[formName].validate(function (valid) {
 
                     if (valid) {

@@ -20,7 +20,7 @@ public interface UserService  extends AbstractService<User> {
      * 获取全部用户集合
      * @return
      */
-    public PageUtils selectAllUsers(Map<String,Object> params);
+    public PageUtils selectAllUsers(Map<String,String> params);
 
 
     /**

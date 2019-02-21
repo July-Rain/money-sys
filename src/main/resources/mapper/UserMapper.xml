@@ -9,6 +9,7 @@
         <result column="OPT_TIME" jdbcType="TIMESTAMP" property="optTime"/>
         <result column="FULL_NAME" jdbcType="VARCHAR" property="fullName" />
         <result column="ORG_CODE" jdbcType="VARCHAR" property="orgCode" />
+        <result column="ORG_NAME" jdbcType="VARCHAR" property="orgName" />
         <result column="SYN_FLAG" jdbcType="DECIMAL" property="synFlag" />
         <result column="USER_CODE" jdbcType="VARCHAR" property="userCode" />
         <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
@@ -117,7 +118,7 @@
       USER_TYPE, PASSWORD, SALT, SORT, CORROSION_FILE,
       IS_BASIC_CORROSION, IS_MIDDLE_REQUIRED, IS_PASSED_JUDICIA, QUA_LEVEL, LOCAL_JOB_ACTUAL,
       LOCAL_JOB_LEVEL, LOCAL_JOB_STAND, MIDDLE_REQUIRED_TYPE, PHOTO, WORK_POLICE_TIME,
-      WORK_TIME, ROLES, QUA_START_TIME, QUA_END_TIME, BIRTHDAY, LOCAL_ORG_CODE, IS_ONLINE
+      WORK_TIME, ROLES, QUA_START_TIME, QUA_END_TIME, BIRTHDAY, LOCAL_ORG_CODE, IS_ONLINE,ORG_NAME
   </sql>
 
 
@@ -163,4 +164,60 @@ where 1=1
   </select>
 
 
+    <select id="selectAllUsers" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from LAW_USER
+        where 1=1
+        <if test="isOnline!=null and isOnline != ''">
+            and IS_ONLINE = 1
+        </if>
+        <if test="userStatus!=null and userStatus != ''">
+            and USER_STATUS = '2000'
+        </if>
+        <if test="identify!=null and identify != ''">
+            and IDENTIFY = #{identify,jdbcType=VARCHAR}
+        </if>
+        <if test="orgId!=null and orgId != ''">
+            and ORG_ID  in (select o.id FROM
+            LAW_ORG o
+            WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgId} Connect By  Prior o.ORG_ID = o.parent_id
+            )
+        </if>
+        <if test="userName!=null and userName != ''">
+            and USER_NAME  like concat(concat('%',#{userName}),'%')
+        </if>
+        <if test="userCode!=null and userCode != ''">
+            and USER_CODE  like concat(concat('%',#{userCode}),'%')
+        </if>
+        order by create_time desc
+    </select>
+    <select id="countUser" parameterType="map" resultType="java.lang.Integer">
+        select
+        count(1)
+        from LAW_USER
+        where 1=1
+        <if test="isOnline!=null and isOnline != ''">
+            and IS_ONLINE = 1
+        </if>
+        <if test="userStatus!=null and userStatus != ''">
+            and USER_STATUS = '2000'
+        </if>
+        <if test="identify!=null and identify != ''">
+            and IDENTIFY = #{identify,jdbcType=VARCHAR}
+        </if>
+        <if test="orgId!=null and orgId != ''">
+            and ORG_ID  in (select o.id FROM
+            LAW_ORG o
+            WHERE o.ORG_TYPE IN (10, 70, -1,0) and o.org_status >=2000 Start With o.ORG_ID = #{orgId} Connect By  Prior o.ORG_ID = o.parent_id
+            )
+        </if>
+        <if test="userName!=null and userName != ''">
+            and USER_NAME  like concat(concat('%',#{userName}),'%')
+        </if>
+        <if test="userCode!=null and userCode != ''">
+            and USER_CODE  like concat(concat('%',#{userCode}),'%')
+        </if>
+        order by create_time desc
+    </select>
 </mapper>

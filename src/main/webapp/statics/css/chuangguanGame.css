@@ -113,4 +113,66 @@ button{
     display: block;
     width: 611px;
     height: auto;
+    position: relative;
+}
+.rushFailed .inner h3,.rushSuccess .inner h3{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-45px);
+    font-size: 18px;
+    color: #fff;
+    font-weight: normal;
+}
+.rushFailed .inner h3:before,.rushSuccess .inner h3:before{
+    content: '';
+    width: 118px;
+    height: 1px;
+    background: #fff;
+    position: absolute;
+    left: -147px;
+    top: 9px;
+}
+.rushFailed .inner h3:after,.rushSuccess .inner h3:after{
+    content: '';
+    width: 118px;
+    height: 1px;
+    background: #fff;
+    position: absolute;
+    right: -147px;
+    top: 9px;
+}
+.rushFailed .inner > p,.rushSuccess .inner > p{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 60px;
+    line-height: 60px;
+    transform: translate(-50%,-13px);
+    color: #fef73b;
+    font-size: 24px;
+    padding-left: 73px;
+    background: url("../img/competeCenter/coin.png") no-repeat left 0 top 0;
+}
+.rushFailed .inner .button_area,.rushSuccess .inner .button_area{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,44px);
+}
+.rushFailed .inner .button_area button,.rushSuccess .inner .button_area button{
+    width: 227px;
+    height: 119px;
+    font-size: 18px;
+    color: #fff;
+    font-weight: bolder;
+    text-shadow: rgba(0,0,0,1) 0px 0px 10px;
+}
+.rushFailed .inner .button_area button:first-child,.rushSuccess .inner .button_area button:first-child{
+    background: url("../img/competeCenter/btn_org.png") no-repeat;
+    margin-right: -20px;
+}
+.rushFailed .inner .button_area button:last-child,.rushSuccess .inner .button_area button:last-child{
+    background: url("../img/competeCenter/btn_blue.png") no-repeat;
+    margin-left: -20px;
 }

@@ -88,17 +88,31 @@
             <el-table-column
                     label="操作"
                     header-align="center"
-                    align="center"
                     prop="status">
                 <template slot-scope="scope">
+                    <el-popover
+                            placement="right"
+                            width="150"
+                            trigger="hover"
+                            content="点击继续练习">
+                        <i class="iconfont icon-lianxi"
+                           @click="goon(scope.row.id, scope.row.answerNum)"
+                           slot="reference"
+                           style="color: #119e0b;cursor: pointer;padding: 0 20px;font-size: 20px"
+                        >
+                        </i>
+                    </el-popover>
+
                     <el-popover
                             placement="top-start"
                             width="150"
                             trigger="hover"
-                            content="错题回顾">
+                            content="错题回顾"
+                            v-if="scope.row.answerNum > scope.row.rightNum">
                         <i  class="iconfont icon-cuotiku"
                             slot="reference"
                             style="color: #ff1f14;cursor: pointer;padding: 0 20px;font-size: 20px"
+                            @click="review(scope.row.id)"
                         >
                         </i>
                     </el-popover>
@@ -123,7 +137,7 @@
                     <el-form :model="exercise" ref="exercise" label-width="100px" class="demo-sysMenu" size="mini">
                         <el-form-item label="试题难度：">
                             <el-checkbox-group v-model="diffs">
-                                <el-checkbox v-for="item in diffList" :label="item" border>
+                                <el-checkbox v-for="item in diffList" :label="item">
                                     {{item.value}}
                                 </el-checkbox>
                             </el-checkbox-group>
@@ -131,7 +145,7 @@
 
                         <el-form-item label="试题分类：">
                             <el-checkbox-group v-model="classs">
-                                <el-checkbox v-for="item in typeList" :label="item" border>
+                                <el-checkbox v-for="item in typeList" :label="item">
                                     {{item.value}}
                                 </el-checkbox>
                             </el-checkbox-group>
@@ -140,7 +154,7 @@
                         <el-form-item label="试题类型：">
                             <el-checkbox-group v-model="types">
                                 <el-checkbox v-if="item.value != '主观题'" v-for="item in qtList"
-                                             :label="item" border>
+                                             :label="item">
                                     {{item.value}}
                                 </el-checkbox>
                             </el-checkbox-group>

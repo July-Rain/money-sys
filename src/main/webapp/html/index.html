@@ -243,12 +243,7 @@
 //						vm.error = true;
 //						vm.errorMsg = result.msg;
 //                             alert(result.msg);
-                            vm.$message('提示',result.msg);
-//                             layer.alert(result.msg, {
-//                                 icon: 0,
-//                                 skin: 'layer-ext-moon',
-//                                 title: "提示"
-//                             });
+                            vm.$message(result.msg,result.msg);
                             vm.refreshCode();
                         }
                     }

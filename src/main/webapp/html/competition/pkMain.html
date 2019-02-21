@@ -44,18 +44,6 @@
         <button onclick="tiaole('5','add')">多人组队（建房）（5v5）</button>
         <button onclick="tiaole('5','join2')">多人组队（进房）（5v5）</button>
     </div>
-    <!--滚动匹配弹框-->
-    <div class="model_area roll_area" v-if="rollAreaShow">
-        <div class="inner">
-            <div class="translate">
-                <ul :class="rollStop?'stop_roll':''">
-                    <li v-for="name in nameList">{{name}}</li>
-                </ul>
-            </div>
-
-            <img src="${rc.contextPath}/statics/img/competeCenter/peidui_frame.png" alt="">
-        </div>
-    </div>
     <!--规则-->
     <div class="model_area rule_area" v-if="ruleAreaShow">
         <div class="inner">
