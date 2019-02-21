@@ -247,19 +247,24 @@
         </el-dialog>
 
 
-        <el-dialog title="选择法律分类" :visible.sync="dialogDept">
+        <el-dialog title="选择法律分类" :visible.sync="dialogDept" >
             <!--对于同一级的节点，每次只能展开一个-->
-            <el-tree
-                    ref="deptTree"
-                    :data="deptData"
-                    :props="defaultProps"
-                    accordion
-                    node-key="id"
-                    show-checkbox
-                    @check-change="handleCheckChange">
-            </el-tree>
-            <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
-            <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
+            <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;"
+                          view-class="view-box" :native="false">
+                <el-tree
+                        ref="deptTree"
+                        :data="deptData"
+                        :props="defaultProps"
+                        accordion
+                        node-key="id"
+                        show-checkbox
+                        @check-change="handleCheckChange">
+                </el-tree>
+            </el-scrollbar>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="cancelDept">取消</el-button>
+                <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+            </div>
         </el-dialog>
 
         <el-dialog title="选择人员" :visible.sync="dialogUser" class="dialog_minW750">

@@ -273,21 +273,32 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
     }
 
     /**
-     * 随机练习收藏题目功能
+     * 随机练习收藏/取消
+     * @param id
+     * @param recordId
+     * @param type 1收藏，0取消收藏
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public boolean doCollect(String id, String recordId){
-        Collection collect = new Collection();
-        collect.setId(IdWorker.getIdStr());
-        collect.setType(20);
-        collect.setComStucode(id);
+    public boolean doCollect(String id, String recordId, Integer type){
 
         User user = (User)SecurityUtils.getSubject().getPrincipal();
-        // 0成功，1失败
-        int result = collectionService.addCollection(collect, user);
 
-        dao.updateCollect(recordId);
+        if(type == 1){
+            Collection collect = new Collection();
+            collect.setId(IdWorker.getIdStr());
+            collect.setType(20);
+            collect.setComStucode(id);
+
+
+            // 0成功，1失败
+            int result = collectionService.addCollection(collect, user);
+        } else {
+            // 取消收藏
+            boolean result = collectionService.cancle(id, user.getId());
+        }
+
+        dao.updateCollect(recordId, type);
 
         return true;
     }

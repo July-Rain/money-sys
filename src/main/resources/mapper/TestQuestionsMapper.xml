@@ -577,6 +577,7 @@
                     </foreach>
                 </if>
                 AND IS_ENBLE = 0
+                AND RELEASE_STATUS = 1
                 AND QUESTION_TYPE <![CDATA[ <> ]]> '10007'
                 ORDER BY
                     create_time
