@@ -49,12 +49,13 @@ var vm = new Vue({
                         vm.navData = result.menuList;
                         if(url&&url!='container.html'){
                             vm.navData.push({
-                                icon: "icon-zaixianxuexi",
+                                icon: "icon-fanhui",
                                 name: "返回首页",
                                 url: 'container.html',
                                 type: '0',
                                 parentId: '0'
                             });
+                            console.info("112211",vm.navData)
                         }
 
                     } else {
