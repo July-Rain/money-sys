@@ -46,4 +46,8 @@ public interface TaskExerciseDao extends AbstractDao<TaskExerciseEntity> {
                                  @Param("isReview") String isReview);
 
     boolean updateCollect(@Param("id") String id, @Param("type") Integer type);
+
+    List<String> selectIdsForPage(@Param("userId") String userId,
+                                  @Param("taskId") String taskId,
+                                  @Param("index") Integer index);
 }

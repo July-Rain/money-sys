@@ -19,6 +19,7 @@ import com.lawschool.service.practicecenter.TaskExerciseConfigureService;
 import com.lawschool.service.practicecenter.TaskExerciseService;
 import com.lawschool.util.Result;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,17 +84,24 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
         }
 
         // 获取需要展示的题目信息
-        // 封装查询参数
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("start", index);
-        params.put("end", index);
-        params.put("themeId", configure.getThemeId());
-        params.put("difficulty", configure.getDifficulty());
-        params.put("classify", configure.getClassify());
-        params.put("type", configure.getType());
-        params.put("", isReview);
+        List<String> ids = new ArrayList<String>();
 
-        List<String> ids = testQuestionService.selectIdsForPage(params);
+        if(StringUtils.isBlank(isReview)){
+            // 封装查询参数
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("start", index);
+            params.put("end", index);
+            params.put("themeId", configure.getThemeId());
+            params.put("difficulty", configure.getDifficulty());
+            params.put("classify", configure.getClassify());
+            params.put("type", configure.getType());
+            params.put("", isReview);
+
+            ids = testQuestionService.selectIdsForPage(params);
+        } else {
+
+            ids = dao.selectIdsForPage(userId, id, index);
+        }
 
         // 没有题目则返回空值
         if(CollectionUtils.isEmpty(ids)){

@@ -140,4 +140,23 @@
             IS_COLLECT = #{type}
         WHERE ID = #{id}
     </update>
+
+    <select id="selectIdsForPage" resultType="string">
+        SELECT
+	        o. ID
+        FROM
+	    (
+		    SELECT
+                QUESTION_ID AS ID,
+                ROWNUM AS RN
+		    FROM
+			    LAW_TASK_RECORD
+		    WHERE
+			    CREATE_USER = #{userId}
+		        AND RIGHT = 0
+		        AND CONFIGURE_ID = #{taskId}
+	    ) o
+        WHERE
+	        o.RN = #{index}
+    </select>
 </mapper>
