@@ -103,4 +103,13 @@ public class UtilString {
             return null;
         }
     }
+
+    public static String reverseAndReplaceStr(String str){
+        StringBuilder sb = new StringBuilder(str);
+        String afterreverse = sb.reverse().toString();
+        String newStr = afterreverse.replaceFirst("^0*", "");
+        StringBuilder sb1 = new StringBuilder(newStr);
+        String afterStr = sb1.reverse().toString();
+        return afterStr;
+    }
 }

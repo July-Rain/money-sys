@@ -137,6 +137,7 @@
         WHERE
         RECIEVE_PEOPLE=#{userId}
         AND 	RELEASE_STATE='1'
+        order by release_date desc
     </select>
 
 

@@ -64,6 +64,7 @@
                                 type="index"
                                 header-align="center"
                                 align="center"
+                                :index="indexMethod"
                                 width="50">
                         </el-table-column>
                         <el-table-column
@@ -135,7 +136,7 @@
                                         content="禁用">
                                     <i class="iconfont tabIcon"
                                        slot="reference"
-                                       @click="handleEdit(scope.$index, scope.row)"
+                                       @click="handleDel(scope.$index, scope.row)"
                                        style="color: #ff0000;" >&#xe656;
                                     </i>
                                 </el-popover>
