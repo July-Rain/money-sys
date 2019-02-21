@@ -312,6 +312,7 @@ var vm = new Vue({
         //部门人员控件中点击事件
         handleDeptNodeClick: function (data) {
             this.userForm.orgCode=data.orgCode;
+            vm.userForm.orgId= data.orgId;
             this.reloadUser();
         },
         handleCheckChange: function (data, checked, indeterminate) {
@@ -468,16 +469,31 @@ var vm = new Vue({
         handleSelectionChange(val) {
             //选择人员信息
             this.multipleSelection = val;
+
+
             //遍历最终的人员信息
             for (var i=0;i<val.length;i++){
-                if (!this.stuMedia.userIds) {
-                    this.stuMedia.userIds=val[i].id;
-                    this.stuMedia.userName=val[i].userName;
-                }else{
-                    this.stuMedia.userIds+=","+val[i].id;
-                    this.stuMedia.userName+=","+val[i].userName;
+                if(i==0)
+                {
+                    vm.stuMedia.userIds=val[i].id;
+                    vm.stuMedia.userName=val[i].userName;
+                }
+                else
+                {
+                    vm.stuMedia.userIds=vm.stuMedia.userIds+','+val[i].id;
+                    vm.stuMedia.userName=vm.stuMedia.userName+','+val[i].userName;
                 }
             }
+            // //遍历最终的人员信息
+            // for (var i=0;i<val.length;i++){
+            //     if (!this.stuMedia.userIds) {
+            //         this.stuMedia.userIds=val[i].id;
+            //         this.stuMedia.userName=val[i].userName;
+            //     }else{
+            //         this.stuMedia.userIds+=","+val[i].id;
+            //         this.stuMedia.userName+=","+val[i].userName;
+            //     }
+            // }
 
         },
         changeStuType:function () {

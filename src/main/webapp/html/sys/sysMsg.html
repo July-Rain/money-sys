@@ -102,17 +102,7 @@
                                 size="mini"
                                 @click="send(scope.$index, scope.row)">发送
                         </el-button>-->
-                        <!--<el-popover-->
-                                <!--v-if="'1'===scope.row.releaseState"-->
-                                <!--placement="right"-->
-                                <!--trigger="hover"-->
-                                <!--content="撤回">-->
-                            <!--<i class="iconfont  tabIcon"-->
-                               <!--slot="reference"-->
-                               <!--@click="black(scope.$index, scope.row)"-->
-                               <!--style="color: #119e0a;" >-->
-                            <!--</i>-->
-                        <!--</el-popover>-->
+
                         <el-button
                                 :disabled="'0'===scope.row.releaseState"
                                 size="mini"
@@ -234,8 +224,8 @@
                 <!--</el-form-item>-->
                 <!--</el-col>-->
                 <el-col :span="24">
-                    <el-form-item label="接收人：" prop="userName">
-                        <el-input v-model="sysMsg.userName" @focus="chooseUser" placeholder="请输接收人"
+                    <el-form-item label="接收人：" prop="recievePeopleNmae">
+                        <el-input v-model="sysMsg.recievePeopleNmae" @focus="chooseUser" placeholder="请输接收人"
                                   clearable></el-input>
                     </el-form-item>
                 </el-col>
@@ -309,13 +299,22 @@
                             >
                             </el-table-column>
                             <el-table-column
-                                    prop="userName"
+                                    prop="fullName"
                                     label="姓名"
                                     width="280"
                             >
                             </el-table-column>
 
                         </el-table>
+                        <!--<el-pagination-->
+                                <!--@size-change="userHandleSizeChange"-->
+                                <!--@current-change="userHandleCurrentChange"-->
+                                <!--:current-page="userForm.currPage"-->
+                                <!--:page-sizes="[10, 20, 30, 40]"-->
+                                <!--:page-size="userForm.pageSize"-->
+                                <!--layout="total, sizes, prev, pager, next, jumper"-->
+                                <!--:total="userForm.totalCount">-->
+                        <!--</el-pagination>-->
                         <el-pagination
                                 @size-change="userHandleSizeChange"
                                 @current-change="userHandleCurrentChange"

@@ -106,6 +106,7 @@
             LAW_SYS_MSG_WITHIN_STATION
         WHERE
             RELEASE_PEOPLE=#{userId}
+        ORDER BY  RECIEVE_DATE DESC
     </select>
 
 
@@ -135,9 +136,10 @@
         FROM
         LAW_SYS_MSG_WITHIN_STATION
         WHERE
-        RECIEVE_PEOPLE=#{userId}
+
+        RECIEVE_PEOPLE LIKE   '%' || #{userId} || '%'
         AND 	RELEASE_STATE='1'
-        order by release_date desc
+        order by RECIEVE_DATE desc
     </select>
 
 
@@ -147,7 +149,7 @@
         FROM
         LAW_SYS_MSG_WITHIN_STATION
         WHERE
-        RECIEVE_PEOPLE=#{userId}
+        RECIEVE_PEOPLE LIKE   '%' || #{userId} || '%'
          AND 	RELEASE_STATE='1'
     </select>
 </mapper>
