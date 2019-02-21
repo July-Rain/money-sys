@@ -97,6 +97,10 @@
     border: 1px solid #dddddd;
     border-bottom: none;
 }
+.container .container-btn .disabled{
+    cursor: not-allowed;
+    color: #999999;
+}
 /*.m {*/
     /*width: 960px;*/
     /*height: 400px;*/
