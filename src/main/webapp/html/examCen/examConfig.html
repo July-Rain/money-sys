@@ -62,7 +62,7 @@
                     </el-col>
                     <el-col :span="11">
                         <el-form-item label="专项知识：" prop="specialKnowledgeId">
-                            <el-select v-model="examConfig.list" size="mini"
+                            <el-select v-model="examConfig.specialKnowledgeArr" size="mini"
                                        multiple collapse-tags style="width: auto" placeholder="多选" :disabled="view">
                                 <el-option v-for="item in skOption" :key="item.key"
                                            :label="item.value" :value="item.key"></el-option>
@@ -85,13 +85,13 @@
                     </el-col>
                     <el-col :span="11">
                         <el-form-item label="是否必考：" prop="isMustTest">
-                                <el-radio v-for="item in imtOption" v-model="examConfig.isMustTest" :label="item.key">{{item.value}}</el-radio>
+                                <el-radio v-for="item in imtOption" v-model="examConfig.isMustTest" :label="item.key" :disabled="view">{{item.value}}</el-radio>
                         </el-form-item>
                     </el-col>
                     <el-col :span="11">
                         <el-form-item label="出题方式：" prop="questionWay">
                             <el-select v-model="examConfig.questionWay"
-                                       placeholder="请选择出題方式" size="mini" @change="openDiffModal($event)" @focus="openDiffModal($event)">
+                                       placeholder="请选择出題方式" size="mini"  :disabled="view">
                                 <el-option v-for="item in qwOption"
                                            :key="item.key"
                                            :label="item.value"
@@ -218,8 +218,8 @@
                     </el-form-item>
                     </el-col>
                     <el-col :span="24">
-                        <el-form-item label="状态" prop="status">
-                            <el-switch v-model="examConfig.status" active-text="无效" inactive-text="有效" active-value="1"
+                        <el-form-item label="是否启用" prop="enabled">
+                            <el-switch v-model="examConfig.enabled" active-text="有效" inactive-text="无效" active-value="1"
                                        inactive-value="0" :disabled="view"></el-switch>
                         </el-form-item>
                     </el-col>
@@ -230,102 +230,17 @@
                     </el-col>-->
                     <el-col :span="24">
                         <el-form-item>
+<!--
                             <el-button type="primary" @click="preview('examConfig')">预览</el-button>
-                            <el-button type="primary" @click="generate('examConfig')">生成</el-button>
+-->
+                            <el-button type="primary" @click="cancel('examConfig')">取消</el-button>
+                            <!--<el-button type="primary" @click="generate('examConfig')">确定</el-button>-->
+                            <el-button type="primary" @click="save('examConfig')">确定</el-button>
                         </el-form-item>
 
                     </el-col>
                 </el-row>
             </el-form>
-        <el-dialog :title="title" width="80%" :visible.sync="randomQuesModal" :before-close="closeDia">
-            <template>
-                    <el-button type="primary" @click="handleAdd" size="mini">新增</el-button>
-                    <el-button type="danger" @click="handleDelete(dataListSelections)"
-                               :disabled="dataListSelections.length <= 0" size="mini">批量删除
-                    </el-button>
-                    <el-button type="button" @click="handleSave(randomQuesData)" size="mini">保存</el-button>
-                    <el-table
-                            :data="randomQuesData"
-                            height="250"
-                            border
-                            style="width: 100%"
-                            @selection-change="selectionChangeHandle">
-                        <el-table-column
-                                type="selection"
-                                header-align="center"
-                                align="center"
-                                width="50">
-                        </el-table-column>
-                        <el-table-column
-                                prop="specialKnowledgeId"
-                                label="知识点"
-                                width="180">
-                            <template slot-scope="scope">
-                                <el-select v-model="scope.row.specialKnowledgeId" placeholder="请选择" size="mini" clearable>
-                                    <el-option
-                                            v-for="item in skOption"
-                                            :key="item.key"
-                                            :label="item.value"
-                                            :value="item.key">
-                                    </el-option>
-                                </el-select>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                prop="questionType"
-                                label="题型"
-                                width="180">
-                            <template slot-scope="scope">
-                                <el-select v-model="scope.row.questionType" placeholder="请选择" size="mini" clearable>
-                                    <el-option
-                                            v-for="item in qtOption"
-                                            :key="item.key"
-                                            :label="item.value"
-                                            :value="item.key">
-                                    </el-option>
-                                </el-select>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                prop="questionNumber"
-                                label="数量"
-                                width="180">
-                            <template slot-scope="scope">
-                                <el-input v-model="scope.row.questionNumber" placeholder="请输入内容" size="mini" clearable></el-input>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                prop="questionScore"
-                                label="分值">
-                            <template slot-scope="scope">
-                                <el-input v-model="scope.row.questionScore" placeholder="请输入内容" size="mini" clearable></el-input>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                label="操作"
-                                header-align="center"
-                                align="center"
-                                width="180">
-                            <template slot-scope="scope">
-                                <el-button
-                                        plain
-                                        type="danger"
-                                        size="mini"
-                                        @click="handleDel(scope.$index,randomQuesData)">删除
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-            </template>
-        </el-dialog>
-
-        <el-dialog title="自主出题" :visible.sync="autonomyQuesModal" :before-close="closeDia">
-            <el-transfer v-model="value2" :data="data2" @change="getTestQue"></el-transfer>
-            <el-button type="primary" size="mini" @click="mineQueSave">保存</el-button>
-            <el-button type="primary" size="mini" @click="cancelDept">取消</el-button>
-        </el-dialog>
-
-
         <el-dialog title="组考单位" :visible.sync="dialogCompany" >
             <!--对于同一级的节点，每次只能展开一个-->
             <el-tree
@@ -437,63 +352,7 @@
                 <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
             </div>
         </el-dialog>
-        <el-dialog class="preview" title="预览" :visible.sync="dialogWatch" >
-            <!--对于同一级的节点，每次只能展开一个-->
-            <h2>2018年第四季度执法资格考试</h2>
-            <div class="subTitle">
-                <h3>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题1分，共50分。</h3>
-            </div>
-            <div v-for="item in previewList" class="swiper-slide">
-                [{{item.questionType==4?'单选题':item.questionType==5?'多选题':'判断题'}}] {{item.comContent}}
-                <br/>
-                <br/>
-                <el-checkbox-group v-model="answers" v-if="item.questionType==10005">
-                    <el-checkbox :label="item2.id" v-for="item2 in item.answer">{{item2.questionContent}}</el-checkbox>
-                    <br/>
-                </el-checkbox-group>
 
-                <el-radio-group v-model="answers"
-                                v-if="item.questionType==10004 || item.questionType==6"
-                                :disabled="radio_disabled">
-                    <el-radio :label="item2.id" v-for="item2 in item.answer">
-                        {{item2.questionContent}}
-                    </el-radio>
-                    <br/>
-                </el-radio-group>
-                <br/>
-                难度系数：{{item.questionDifficulty}}
-            </div>
-        </el-dialog>
-        <el-dialog class="preview" title="更换题目" :visible.sync="dialogChange" >
-            <template>
-                <el-table
-                        ref="singleTable"
-                        :data="changeData"
-                        highlight-current-row
-                        @current-change="handleCurrentChange"
-                        style="width: 100%">
-                    <el-table-column
-                            type="index"
-                            width="50">
-                    </el-table-column>
-                    <el-table-column
-                            property="name"
-                            label="题目名称"
-                            width="250">
-                    </el-table-column>
-                    <el-table-column
-                            property="info"
-                            label="选项"
-                            width="400">
-                    </el-table-column>
-                </el-table>
-                <div style="margin-top: 20px">
-                    <el-button @click="setCurrent()">取消选择</el-button>
-                    <el-button v-if="currentRow" type="primary" @click="submitChange()">确认选择</el-button>
-                </div>
-            </template>
-
-        </el-dialog>
     </div>
 </div>
 </body>

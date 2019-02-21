@@ -4,11 +4,15 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
-import com.lawschool.form.CheckSetForm;
-import com.lawschool.form.CommonForm;
-import com.lawschool.form.QuestForm;
+import com.lawschool.base.AbstractController;
+import com.lawschool.beans.Answer;
+import com.lawschool.beans.TestQuestions;
+import com.lawschool.form.*;
+import com.lawschool.service.AnswerService;
+import com.lawschool.service.exam.NewExamConfigService;
 import com.lawschool.service.system.DictionService;
 import com.lawschool.service.system.TopicTypeService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +28,7 @@ import com.lawschool.util.Result;
  */
 @RestController
 @RequestMapping("/exam/config")
-public class ExamConfigController {
+public class ExamConfigController extends AbstractController {
 
     @Autowired
     private ExamConfigService examConfigService;
@@ -34,6 +38,12 @@ public class ExamConfigController {
 
     @Autowired
     private TopicTypeService topicTypeService;
+
+    @Autowired
+    private NewExamConfigService newExamConfigService;
+
+    @Autowired
+    private AnswerService answerService;
 
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params) {
@@ -85,6 +95,49 @@ public class ExamConfigController {
          return Result.ok().put("checkSetForm",checkSetForm);
     }
 
+    @RequestMapping( value = "/getExamDetail", method = RequestMethod.GET)
+    private Result  getExamDetail(String id){
+
+        ExamConfig examConfig = examConfigService.getExamDetail(id);
+
+        return Result.ok().put("examConfig" , examConfig );
+    }
+
+    @RequestMapping(value = "/saveOrUpdate" , method = RequestMethod.POST)
+    private Result saveOrUpdate(
+            @RequestBody ExamConfig examConfig) {
+        try {
+            newExamConfigService.saveOrUpdate(examConfig,getUser());
+        } catch (Exception e) {
+            return Result.error(e.getMessage());
+        }
+        return Result.ok();
+    }
+
+    @RequestMapping(value = "/delete" , method = RequestMethod.POST)
+    private Result delete(
+            @RequestParam("id") String id) {
+        try {
+           examConfigService.deleteExamConfig(id);
+        } catch (Exception e) {
+            return Result.error(e.getMessage());
+        }
+        return Result.ok();
+    }
+
+
+    @RequestMapping( value = "/examConfig/genAutoQue" , method = RequestMethod.POST)
+    private Result genAutoQue(@RequestBody ExamConfigForm examConfigForm){
+        Result result = newExamConfigService.genAutoQue(examConfigForm);
+        return result;
+    }
+
+    @RequestMapping( value = "/examConfig/genRandomQue" , method = RequestMethod.POST)
+    private Result genRandomQue(@RequestBody ExamConfigForm examConfigForm){
+        Result result = newExamConfigService.genRandomQue(examConfigForm);
+        return result;
+    }
+
     @RequestMapping(value = "/dict", method = RequestMethod.GET)
     private Result dict() {
         //examType考试类型字典
@@ -119,4 +172,12 @@ public class ExamConfigController {
                 .put("qtOption", qtOption);
     }
 
+    /**
+     * 查询专项知识试题
+     */
+    @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
+    public Result info(@PathVariable("id") String id) {
+        List<Answer> list = answerService.getAnswerByQid(id);
+        return Result.ok().put("data", list);
+    }
 }
