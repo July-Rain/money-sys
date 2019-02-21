@@ -24,6 +24,7 @@ var vm = new Vue({
         otherList: [],
         questionList: [],
         examConfig: [],
+        user:[],
         page: 1,
         limit: 5,
         count: 0,
@@ -61,13 +62,12 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.examConfig = result.examConfig;
+                        vm.user = result.user;
                         vm.userAnswerForm.userExamId = result.userExam.id;
                         var _mul = result.mulChoicList;
                         for (var i = 0; i < _mul.length; i++) {
                             vm.testForm.mulChoic.push([]);
                         }
-
-                        vm.examConfig = result.examConfig;
 
                         vm.userAnswerForm.userExamId = result.userExam.id;
                         var _mul = result.mulChoicList;
@@ -103,7 +103,7 @@ var vm = new Vue({
                 },
                 success: function (result) {
                     if (result.code === 0) {
-
+                        vm.user = result.user;
                         vm.examConfig = result.examConfig;
 
                         vm.userAnswerForm.userExamId = result.userExam.id;

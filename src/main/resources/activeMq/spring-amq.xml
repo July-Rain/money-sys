@@ -68,18 +68,6 @@
             <value>commit-exam</value>
         </constructor-arg>
     </bean>
-    <!-- 生成阅卷信息队列 阅卷人员登陆时使用  防止重复 -->
-    <bean id="genCheckExamDestination" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg>
-            <value>generate-checkexam</value>
-        </constructor-arg>
-    </bean>
-    <!-- 阅卷人员第一次登陆时获取试卷信息 取的时候需从redis取 取完之后删除 防止重复 -->
-    <bean id="getCheckExamDestination" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg>
-            <value>get-checkexam</value>
-        </constructor-arg>
-    </bean>
 
     <!--这个是主题目的地，一对多的 -->
     <bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">
@@ -88,25 +76,12 @@
     <!-- 接收消息 -->
     <!-- 配置监听器 -->
 
-    <bean id="commitExamListener" class="com.lawschool.listener.CommitExamListener" />
-    <bean id="genCheckExamListener" class="com.lawschool.listener.GenerateCheckExamListener" />
-    <bean id="getCheckExamListener" class="com.lawschool.listener.GetCheckExamListener" />
+    <bean id="myMessageListener" class="com.lawschool.listener.CommitExamListener" />
+
     <!-- 消息监听容器 -->
     <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
         <property name="connectionFactory" ref="jmsconnectionFactory" />
         <property name="destination" ref="queueDestination" />
-        <property name="messageListener" ref="commitExamListener" />
-    </bean>
-
-    <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-        <property name="connectionFactory" ref="jmsconnectionFactory" />
-        <property name="destination" ref="genCheckExamDestination" />
-        <property name="messageListener" ref="genCheckExamListener" />
-    </bean>
-
-    <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-        <property name="connectionFactory" ref="jmsconnectionFactory" />
-        <property name="destination" ref="getCheckExamDestination" />
-        <property name="messageListener" ref="getCheckExamListener" />
+        <property name="messageListener" ref="myMessageListener" />
     </bean>
 </beans>

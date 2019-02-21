@@ -9,8 +9,17 @@ package com.lawschool.form;
  */
 public class CheckExamForm {
 
+    private String userExamAnsId;   //答题编号ID
     private String queId;// 答案 ID
     private double score;// 题目ID
+
+    public String getUserExamAnsId() {
+        return this.userExamAnsId;
+    }
+
+    public void setUserExamAnsId(final String userExamAnsId) {
+        this.userExamAnsId = userExamAnsId;
+    }
 
     public String getQueId() {
         return this.queId;

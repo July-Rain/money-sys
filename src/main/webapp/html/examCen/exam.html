@@ -585,6 +585,10 @@
 
     <!--随机出题开始-->
     <el-dialog title="随机出题" width="80%" :visible.sync="randomQuesModal" :before-close="closeRanDia">
+        <div>
+            <h2>{{examConfig.examName}}</h2>
+            <h3>总分 ： {{examConfig.examScore}}</h3>
+        </div>
         <template>
             <el-button type="primary" @click="handleAdd" size="mini">新增</el-button>
             <el-button type="danger" @click="handleDelete(dataListSelections)"

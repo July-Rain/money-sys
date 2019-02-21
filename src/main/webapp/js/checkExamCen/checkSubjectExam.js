@@ -50,8 +50,8 @@ var vm = new Vue({
                         vm.subjectList = result.subjectList
                         if(vm.subjectList){
                             for(var i=0;i<vm.subjectList.length;i++){
-                                if(vm.subjectList[i].userAnsId){
-                                    vm.subject.push(vm.subjectList[i].userAnsId);
+                                if(vm.subjectList[i].userAnswer){
+                                    vm.subject.push(vm.subjectList[i].userAnswer);
                                 }else{
                                     vm.subject.push('');
                                 }
@@ -117,7 +117,7 @@ var vm = new Vue({
             for (var i = 0; i < vm.subjectList.length; i++) {
                 console.info(vm.subjectList[i]);
                 var obj = {
-                    queId: vm.subjectList[i].id,
+                    queId: vm.subjectList[i].questionId,
                     score: vm.subScore[i] == '' ? '' : vm.subScore[i],
                 };
                 vm.userAnswerForm.checkExamForm.push(obj)
@@ -144,38 +144,38 @@ var vm = new Vue({
                 }
             });
         },
-        save: function () {
-            vm.userAnswerForm.checkExamForm = [];
-            vm.userAnswerForm.checkExamUserId = checkExamUserId;
-            vm.userAnswerForm.userExamId = userExamId;
-            vm.userAnswerForm.checkExamId = checkExamId;
-            for (var i = 0; i < vm.subjectList.length; i++) {
-                var obj = {
-                    queId: vm.subjectList[i].id,
-                    score: vm.subScore[i] == '' ? '' : vm.subScore[i],
-                };
-                vm.userAnswerForm.checkExamForm.push(obj)
-            }
-            console.info(vm.userAnswerForm);
-            $.ajax({
-                type: "POST",
-                async: false,
-                url: baseURL + "check/exam/saveCheckExam",
-                data: JSON.stringify(
-                    vm.userAnswerForm
-                ),
-                datatype: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    if (result.code === 0) {
-                        alert("保存成功");
-                        parent.location.href
-                            =baseURL+'checkExamCen/checkExamMain.html';
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
-        },
+        // save: function () {
+        //     vm.userAnswerForm.checkExamForm = [];
+        //     vm.userAnswerForm.checkExamUserId = checkExamUserId;
+        //     vm.userAnswerForm.userExamId = userExamId;
+        //     vm.userAnswerForm.checkExamId = checkExamId;
+        //     for (var i = 0; i < vm.subjectList.length; i++) {
+        //         var obj = {
+        //             queId: vm.subjectList[i].questionId,
+        //             score: vm.subScore[i] == '' ? '' : vm.subScore[i],
+        //         };
+        //         vm.userAnswerForm.checkExamForm.push(obj)
+        //     }
+        //     console.info(vm.userAnswerForm);
+        //     $.ajax({
+        //         type: "POST",
+        //         async: false,
+        //         url: baseURL + "check/exam/saveCheckExam",
+        //         data: JSON.stringify(
+        //             vm.userAnswerForm
+        //         ),
+        //         datatype: "json",
+        //         contentType: "application/json; charset=utf-8",
+        //         success: function (result) {
+        //             if (result.code === 0) {
+        //                 alert("保存成功");
+        //                 parent.location.href
+        //                     =baseURL+'checkExamCen/checkExamMain.html';
+        //             } else {
+        //                 alert(result.msg);
+        //             }
+        //         }
+        //     });
+        // },
     }
 });

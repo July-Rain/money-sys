@@ -99,12 +99,14 @@
                 <p>主观题</p>
             </div>
             <div v-for="(item,index) in subjectList" class="question_area">
-                <p class="ques_name">{{index+1}}. {{item.comContent}} 。</p>
+                <p class="ques_name">{{index+1}}. {{item.comContent}} 。本题分值{{item.score}}分</p>
                 答 ：<el-input type="text" v-model="subject[index]" placeholder="請輸入答案" readonly="readonly"></el-input>
-                分值：<el-input type="number" v-model = "subScore[index]" placeholder="請輸入分值"></el-input>
+                分值：<el-input type="number" v-model = "subScore[index]" placeholder="請輸入分值" :min="0" :max ="item.score" ></el-input>
             </div>
         </el-form>
+<!--
         <el-button @click="save" type="success" style="float: right;">保存</el-button>
+-->
         <el-button @click="submit" type="success" style="float: right;">提交</el-button>
     </div>
 </div>

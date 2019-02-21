@@ -17,13 +17,13 @@
         FROM
             LAW_EXAM_CONFIG A
         INNER JOIN LAW_USER_EXAM b ON A . ID = b.EXAM_CONFIG_ID
-        inner join law_check_exam c on b.id = c.user_Exam_Id
+        inner join law_check_exam c on b.id = c.user_Exam_Id and c.check_exam_user_id =#{userExamId}
         where 1=1
         <if test="list != null and list.size > 0">
             and b.id in
         <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
             #{list[${index}]}
-        </foreach>
+        </foreach>4
         </if>
 
     </select>

@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSessionListener;
  *
  * @author 王帅奇
  */
-@Component
+@Component(value = "commitExamListener")
 public class CommitExamListener implements MessageListener {
 
     @Autowired

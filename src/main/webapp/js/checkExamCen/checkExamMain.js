@@ -57,6 +57,8 @@ var vm = new Vue({
                     contentType: "application/json; charset=utf-8",
                     success: function(result){
                         if(result.code == 0){//登录成功
+                            vm.checkExamUser = result.checkExamUser;
+                            storage.setItem("checkExamUser",JSON.stringify(vm.checkExamUser));
                             vm.reload();
                         }else{
                             alert(result.msg);
@@ -78,7 +80,7 @@ var vm = new Vue({
                         vm.tableData = result.page.list;
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
-                        vm.formInline.count = parseInt(result.page.totalCount);
+                        vm.formInline.count = parseInt(result.page.count);
                     } else {
                         alert(result.msg);
                     }

@@ -26,7 +26,7 @@ public class UserExam extends DataEntity<UserExam> {
 
     private double score;   //考試分數
 
-    private String isFinMark;   //是否完成阅卷  0:完成 1：未完成
+    private String isFinMark;   //是否完成阅卷  0:完成 1：未完成 2待审核
 
     private String orgId;  //部门ID
 

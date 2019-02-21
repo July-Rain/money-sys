@@ -29,6 +29,18 @@ var vm = new Vue({
                 }
             }
         };
+        var validateQueWay = function (rule, value, callback) {
+            if (vm.examConfig.questionWay === '') {
+                callback(new Error('出题方式不能为空'))
+            } else {
+                if (vm.examConfig.groupForm==='10028'&&!vm.examConfig.questionWay ==='10033'){
+                    callback(new Error('选择随机组卷时出题方式只能为随机出题'))
+                } else {
+                    callback()
+                }
+            }
+        };
+
         var validateReachReward = function (rule, value, callback) {
 
             if (vm.examConfig.reachRewardType!='10038'&&vm.examConfig.reachRewardType!='') {
@@ -89,7 +101,7 @@ var vm = new Vue({
                     {required: true, message: '请选择是否必考', trigger: 'change'}
                 ],
                 questionWay:[
-                    {required: true, message: '请选择出题方式', trigger: 'change'}
+                    {validator: validateQueWay, trigger: 'change'}
                 ],
                 topicOrderType:[
                     {required: true, message: '请选择题目顺序', trigger: 'change'}
@@ -242,83 +254,7 @@ var vm = new Vue({
         getPassPnt : function(){
             vm.examConfig.passPnt = vm.examConfig.examScore*0.6;
         },
-        // //判断总分是否一致
-        // validScore : function(){
-        //     if(vm.examConfig.questionWay==='10033'){
-        //         //随机出题
-        //         if(vm.examConfig.examQueConfigList==''){
-        //             //列表为空
-        //             vm.$alert('操作失败', '请配置随机出题规则', {
-        //                 confirmButtonText: '确定',
-        //                 callback: function () {
-        //                     return false;
-        //                 }
-        //             });
-        //         }else {
-        //             //不为空  判断分数
-        //             var listScore;
-        //             for (var i= 0; i < vm.examConfig.examQueConfigList.length; i++) {
-        //                 listScore += vm.examConfig.examQueConfigList.questionScore;
-        //             }
-        //             if(listScore!=vm.examConfig.examScore){
-        //                 vm.$alert('操作失败', '随机出题配置总分数与试卷总分数不相等，请核对！', {
-        //                     confirmButtonText: '确定',
-        //                     callback: function () {
-        //                         return false;
-        //                     }
-        //                 });
-        //             }else{
-        //                 callback();
-        //             }
-        //         }
-        //     }else {
-        //         //自主出题
-        //         if(vm.examConfig.idList==''){
-        //             //列表为空
-        //             vm.$alert('操作失败', '请添加自主出题内容', {
-        //                 confirmButtonText: '确定',
-        //                 callback: function () {
-        //                     return false;
-        //                 }
-        //             });
-        //         }else{
-        //             //TODO 判断分数等待前端修改模态框
-        //             callback();
-        //         }
-        //     }
-        // },
-        preview:function(formName){
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    this.dialogWatch = true;
-                    var deptArr = vm.examConfig.deptId?vm.examConfig.deptId.split(","):[];
-                    var userArr = vm.examConfig.userId?vm.examConfig.userId.split(","):[];
-                    console.log(vm.examConfig.examQueConfigList);
-                    this.validScore();
-                    vm.examConfig.deptArr=deptArr;
-                    vm.examConfig.userArr=userArr;
-                    $.ajax({
-                        type: "POST",
-                        url: baseURL + "exam/config/examConfig/preview",
-                        data: JSON.stringify(
-                            vm.examConfig
-                        ),
-                        contentType: "application/json",
-                        success: function (result) {
-                            if (result.code === 0) {
-                                vm.previewList = result.list;
-                                console.log(vm.previewList);
-                            } else {
-                                alert(result.msg);
-                            }
-                        }
-                    });
-                } else {
-                    return false;
-                }
-            });
 
-        },
         getExamDetail: function(id){
             $.ajax({
                 type : "GET",
@@ -336,41 +272,7 @@ var vm = new Vue({
         cancel : function(){
             window.parent.vm.dialogView = false
         },
-        /*generate : function(formName){
-            if(operate==='1'){
-                alert("我关掉了")
-                window.parent.vm.dialogView = false
-            }else {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        vm.examConfig.qfList = vm.previewList;
-                        var deptArr = vm.examConfig.deptId ? vm.examConfig.deptId.split(",") : [];
-                        var userArr = vm.examConfig.userId ? vm.examConfig.userId.split(",") : [];
-                        vm.examConfig.deptArr = deptArr;
-                        vm.examConfig.userArr = userArr;
-                        //
-                        $.ajax({
-                            type: "POST",
-                            url: baseURL + "exam/config/examConfig/generate",
-                            data: JSON.stringify(
-                                vm.examConfig
-                            ),
-                            contentType: "application/json",
-                            success: function (result) {
-                                if (result.code === 0) {
-                                    alert('生成成功');
-                                    window.location.reload = baseURL + "examCen/exam.html";
-                                } else {
-                                    alert(result.msg);
-                                }
-                            }
-                        });
-                    } else {
-                        return false;
-                    }
-                })
-            }
-        },*/
+
         save : function(formName){
             if(operate==='1'){
                 window.parent.vm.dialogView = false
@@ -392,7 +294,7 @@ var vm = new Vue({
                             contentType: "application/json",
                             success: function (result) {
                                 if (result.code === 0) {
-                                    alert('生成成功');
+                                    alert('保存成功');
                                     window.parent.vm.dialogAdd = false;
                                     window.parent.vm.dialogEdit = false;
                                     window.parent.vm.reload();

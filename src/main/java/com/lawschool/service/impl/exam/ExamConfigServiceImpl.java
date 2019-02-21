@@ -59,19 +59,20 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void deleteExamConfig(String id) throws Exception {
+	public Result deleteExamConfig(String id) {
 		// 获取考试详细信息
 		ExamConfig examConfig = dao.selectById(id);
 		// 获取当前时间
 		Date date = new Date();
 		if (date.after(examConfig.getStartTime())) {
-			throw new Exception("考试开始后不允许删除");
+			Result.error("考试开始后不允许删除");
 		} else {
 			// 删除主表
 			examConfigDao.deleteById(id);
 			//删除关联关系表
 			deleteRelated(id);
 		}
+		return Result.ok();
 	}
 	
 	public void updateConfig(ExamConfig examConfig) throws Exception {
