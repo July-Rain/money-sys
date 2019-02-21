@@ -45,7 +45,6 @@ var vm = new Vue({
         oldTime:0,//原来播放时间
     },
     created: function () {
-
         this.$nextTick(function () {
             //法律分类树数据
             $.ajax({
