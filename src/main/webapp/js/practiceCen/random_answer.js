@@ -178,7 +178,7 @@ var vm = new Vue({
                 data: JSON.stringify(obj),
                 success: function (result) {
                     if (result.code === 0) {
-
+                        vm.question.recordId = result.recordId;
                     } else {
                         alert(result.msg);
                     }

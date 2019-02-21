@@ -30,7 +30,6 @@
             </el-table-column>
             <el-table-column
                     prop="diffName"
-                    width="180"
                     label="答题难度"
                     header-align="center"
                     align="center">
@@ -45,14 +44,12 @@
             <el-table-column
                     prop="typeName"
                     label="试题类型"
-                    width="180"
                     header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
                     prop="topicName"
                     label="试题主题"
-                    width="180"
                     header-align="center"
                     align="center">
             </el-table-column>
@@ -137,7 +134,7 @@
                     <el-form :model="exercise" ref="exercise" label-width="100px" class="demo-sysMenu" size="mini">
                         <el-form-item label="试题难度：">
                             <el-checkbox-group v-model="diffs">
-                                <el-checkbox v-for="item in diffList" :label="item" border>
+                                <el-checkbox v-for="item in diffList" :label="item">
                                     {{item.value}}
                                 </el-checkbox>
                             </el-checkbox-group>
@@ -145,7 +142,7 @@
 
                         <el-form-item label="试题分类：">
                             <el-checkbox-group v-model="classs">
-                                <el-checkbox v-for="item in typeList" :label="item" border>
+                                <el-checkbox v-for="item in typeList" :label="item">
                                     {{item.value}}
                                 </el-checkbox>
                             </el-checkbox-group>
@@ -154,7 +151,7 @@
                         <el-form-item label="试题类型：">
                             <el-checkbox-group v-model="types">
                                 <el-checkbox v-if="item.value != '主观题'" v-for="item in qtList"
-                                             :label="item" border>
+                                             :label="item">
                                     {{item.value}}
                                 </el-checkbox>
                             </el-checkbox-group>

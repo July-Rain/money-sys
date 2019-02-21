@@ -32,14 +32,14 @@
                 <el-checkbox :label="answer.id" v-for="(answer, index1) in question.answer">
                     {{indexs[index1]}}、{{answer.questionContent}}
                 </el-checkbox>
-                <br/>
             </el-checkbox-group>
 
-            <el-button type="primary"
-                       v-show="!isAnswer"
-                       v-if="question.questionType==10005"
-                       @click="sure(question.answerId)">确定
-            </el-button>
+            <div v-show="!isAnswer" class="questionDx">
+                <el-button type="warning"
+                           v-if="question.questionType==10005"
+                           @click="sure(question.answerId)">确定
+                </el-button>
+            </div>
 
             <div class="answer_area" v-show="isAnswer">
                 <p>你的答案：<span>{{userAnswerStr}}</span>，正确答案：<span>{{rightAnswerStr}}</span></p>

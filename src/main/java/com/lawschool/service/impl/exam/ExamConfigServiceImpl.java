@@ -18,6 +18,7 @@ import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.auth.AuthRelationService;
 import com.lawschool.service.exam.ExamConfigService;
 import com.lawschool.util.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,10 +57,11 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	 * @param id
 	 * @throws Exception
 	 */
+	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void deleteExamConfig(String id) throws Exception {
 		// 获取考试详细信息
-		ExamConfig examConfig = examConfigDao.selectById(id);
+		ExamConfig examConfig = dao.selectById(id);
 		// 获取当前时间
 		Date date = new Date();
 		if (date.after(examConfig.getStartTime())) {
@@ -418,5 +420,22 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	@Override
 	public CheckSetForm getCheckSetting(String id) {
 		return dao.getCheckSetting(id);
+	}
+
+	@Override
+	public ExamConfig getExamDetail(String id) {
+		ExamConfig examConfig = dao.selectById(id);
+		if(UtilValidate.isNotEmpty(examConfig.getSpecialKnowledgeId())){
+			examConfig.setSpecialKnowledgeArr(examConfig.getSpecialKnowledgeId().split(","));
+		}
+		if(UtilValidate.isNotEmpty(examConfig)){
+			//获取适用人的id
+			String [] userIdArr= authService.getUserIdArr(id,"ExamConfig") ;
+			examConfig.setUserArr(userIdArr);
+			//获取适用部门的id
+			String [] deptIdArr= authService.getDeptIdArr(id,"ExamConfig") ;
+			examConfig.setDeptArr(deptIdArr);
+		}
+		return examConfig;
 	}
 }
