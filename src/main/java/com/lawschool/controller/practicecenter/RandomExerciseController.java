@@ -182,7 +182,7 @@ public class RandomExerciseController extends AbstractController {
             // 更新随机练习配置信息
             result = exerciseService.updateNum(1, form.getRight(), form.getTaskId());
             if(result){
-                return Result.ok();
+                return Result.ok().put("recordId", form.getId());
             } else {
                 return Result.error("答题信息保存失败...");
             }
