@@ -114,26 +114,29 @@
                             <li>
                                 <el-form-item
                                         label="旧密码"
+                                        prop="oldPassword"
                                 >
                                     <el-input v-model="info.oldPassword"></el-input>
                                 </el-form-item>
                             </li>
                             <li>
                                 <el-form-item
-                                        label="输入新密码">
+                                        label="输入新密码"
+                                        prop="newPassword">
                                     <el-input v-model="info.newPassword"></el-input>
                                 </el-form-item>
                             </li>
                             <li>
                                 <el-form-item
-                                        label="输入确认新密码">
+                                        label="输入确认新密码"
+                                        prop="newPassValidator">
                                     <el-input v-model="info.newPassValidator"></el-input>
                                 </el-form-item>
                             </li>
                         </ul>
                         <el-button class="button" type="primary" @click="submitForm(info)">
-                            <i class="iconfont"
-                               style="color: white;font-size: 14px;">&#xe642;
+                            <i class="iconfont icon-baocun"
+                               style="color: white;font-size: 16px;">
                             </i>
                             保存
                         </el-button>
