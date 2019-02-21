@@ -80,7 +80,15 @@ var vm = new Vue({
                 $(".header-right ul li").removeClass("this");
 
                 if(item.url.indexOf("?") == -1){
-                    vm.childUrl = item.url + "?id=" + item.id;
+
+                    if(item.url == 'menu'){
+                        vm.childUrl = item.list[0].url + "?id=" + item.id;
+                    }else{
+                        vm.childUrl = item.url + "?id=" + item.id;
+
+                    }
+
+
                 }else{
                     vm.childUrl = item.url + "&id=" + item.id;
                 }
