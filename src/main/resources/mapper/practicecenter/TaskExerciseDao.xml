@@ -73,10 +73,12 @@
             t.answer_choice_number,
             c.name AS "themeName",
             r.ANSWER AS "userAnswer",
-            r.right AS "right"
+            r.right AS "right",
+            r.IS_COLLECT AS "isCollect",
+            r.id AS "recordId"
         FROM law_testquestions t
         LEFT JOIN law_task_record r ON t.id = r.question_id
-        AND r.configure_id = #{taskId}
+        AND r.configure_id = #{id}
         AND r.create_user = #{userId}
         LEFT JOIN law_sys_topic c ON c.id = t.SPECIAL_KNOWLEDGE_ID
         <where>
@@ -84,6 +86,9 @@
             <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
+            <if test="isReview !='' and isReview != null">
+                AND r.RIGHT = 0
+            </if>
         </where>
         ORDER BY t.create_time
     </select>
