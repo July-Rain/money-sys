@@ -9,8 +9,7 @@ var vm = new Vue({
         teamAreaShow: false,
         teamPerNum: 3,
         warAreaShow:false,
-        formationWarShow:false,//建立战区
-        joinWarShow:false//加入战区
+
     },
     created: function () {
 
@@ -49,17 +48,13 @@ var vm = new Vue({
         formationWar: function () {
             // 建立战区
             this.warAreaShow = false;
-            this.formationWarShow = true;
+            window.location.href = baseURL + "modules/competition/alonePkGameByCode.html?warType=formation";
         },
         joinWar: function () {
             // 加入战区
             this.warAreaShow = false;
-            this.joinWarShow = true
+            window.location.href = baseURL + "modules/competition/alonePkGameByCode.html?warType=join";
         },
-        joinFormationWar: function () {
-            // 加入战区到建立
-            this.formationWarShow = true;
-            this.joinWarShow = false
-        }
+
     }
 });
