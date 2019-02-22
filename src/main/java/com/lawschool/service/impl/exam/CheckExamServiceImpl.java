@@ -8,6 +8,7 @@ import com.lawschool.beans.exam.UserExamAnswer;
 import com.lawschool.dao.exam.CheckExamDao;
 import com.lawschool.dao.exam.UserExamAnswerDao;
 import com.lawschool.dao.exam.UserExamDao;
+import com.lawschool.form.CalcScoreForm;
 import com.lawschool.form.CheckExamForm;
 import com.lawschool.form.QuestForm;
 import com.lawschool.form.UserAnswerForm;
@@ -15,12 +16,14 @@ import com.lawschool.service.exam.CheckExamService;
 import com.lawschool.service.exam.ExamConfigService;
 import com.lawschool.service.exam.UserExamService;
 import com.lawschool.util.Result;
+import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Wrapper;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName: CheckExamServiceImpl
@@ -72,14 +75,21 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
         UserExam userExam = userExamDao.selectById(userExamId);
         ExamConfig examConfig =examConfigService.selectById(userExam.getExamConfigId());
         List<CheckExamForm> checkExamForms= userAnswerForm.getCheckExamForm();
-        String isFinsh;
+        CalcScoreForm scoreForm = new CalcScoreForm();
         if(examConfig.getPaperPerSetNum()==2) {
-            isFinsh  = updateScoreByTwo(checkExamForms, userAnswerForm, examConfig.getExamScore());
-            userExam.setIsFinMark(isFinsh);
+            scoreForm = updateScoreByTwo(checkExamForms, userAnswerForm, examConfig.getCheckScoreDifference());
         }else {
-            isFinsh  = updateScoreByOne(checkExamForms, userAnswerForm);
-            userExam.setIsFinMark(isFinsh);
+            scoreForm  = updateScoreByOne(checkExamForms, userAnswerForm);
         }
+        String isFinsh = scoreForm.getIsFinMark();
+        float countScore = 0 ;
+        if("0".equals(isFinsh)){
+            //阅卷完成计算分数
+            float firScore = userExamAnswerDao.getScoreByUserExamId(userExamId);
+            countScore = firScore + scoreForm.getScore();
+        }
+        userExam.setIsFinMark(isFinsh);
+        userExam.setScore(countScore);
         CheckExam checkExam = dao.selectById(userAnswerForm.getCheckExamId());
         checkExam.setCheckStatus("2");  //完成阅卷
         dao.updateById(checkExam);
@@ -101,11 +111,13 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
         return Result.ok();
     }
 
-    private String  updateScoreByTwo(List<CheckExamForm> checkExamForms,UserAnswerForm userAnswerForm,double diffScore){
+    private CalcScoreForm updateScoreByTwo(List<CheckExamForm> checkExamForms, UserAnswerForm userAnswerForm, double diffScore){
+        CalcScoreForm scoreForm = new CalcScoreForm();
         String isFinsh = "1";
+        float score = 0;
         for(CheckExamForm checkExamForm : checkExamForms){
             UserExamAnswer userExamAnswer = userExamAnswerDao.selectById(checkExamForm.getQueId());
-            if("".equals(userExamAnswer.getFirCheckScore())||(userExamAnswer.getFirCheckScore()==0.0&&("".equals(userExamAnswer.getFirCheckUserId())||userExamAnswer.getFirCheckUserId()==null))){
+            if(UtilValidate.isEmpty(userExamAnswer.getFirCheckUserId())){
                 userExamAnswer.setFirCheckScore(checkExamForm.getScore());
                 userExamAnswer.setFirCheckUserId(userAnswerForm.getCheckExamUserId());
             }else {
@@ -114,18 +126,25 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
                 }
                 userExamAnswer.setSecCheckScore(checkExamForm.getScore());
                 userExamAnswer.setSecCheckUserId(userAnswerForm.getCheckExamUserId());
-                if(checkExamForm.getScore()-userExamAnswer.getFirCheckScore()<=diffScore){
+                if(Math.abs(checkExamForm.getScore()-userExamAnswer.getFirCheckScore())<=diffScore){
                     userExamAnswer.setUserScore((checkExamForm.getScore()+userExamAnswer.getFirCheckScore())/2);
+                    userExamAnswer.setCheckStatus("0");
+                    score += userExamAnswer.getUserScore();
                 }else {
                     isFinsh = "2";
+                    userExamAnswer.setCheckStatus("2");
                 }
             }
             userExamAnswerDao.updateById(userExamAnswer);
         }
-        return isFinsh;
+        scoreForm.setIsFinMark(isFinsh);
+        scoreForm.setScore(score);
+        return scoreForm;
     }
 
-    private String  updateScoreByOne(List<CheckExamForm> checkExamForms,UserAnswerForm userAnswerForm){
+    private CalcScoreForm  updateScoreByOne(List<CheckExamForm> checkExamForms,UserAnswerForm userAnswerForm){
+        CalcScoreForm scoreForm = new CalcScoreForm();
+        float score = 0;
         String isFinsh = "1";
         for(CheckExamForm checkExamForm : checkExamForms){
             UserExamAnswer userExamAnswer = userExamAnswerDao.selectById(checkExamForm.getQueId());
@@ -133,11 +152,14 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
                 userExamAnswer.setFirCheckScore(checkExamForm.getScore());
                 userExamAnswer.setFirCheckUserId(userAnswerForm.getCheckExamUserId());
                 userExamAnswer.setUserScore(checkExamForm.getScore());
+                score += userExamAnswer.getUserScore();
                 isFinsh ="0";
             }
             userExamAnswerDao.updateById(userExamAnswer);
         }
-        return isFinsh;
+        scoreForm.setIsFinMark(isFinsh);
+        scoreForm.setScore(score);
+        return scoreForm;
     }
 
     @Override
@@ -145,5 +167,44 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
         UserExam userExam = userExamDao.selectById(userExamId);
         List<UserExamAnswer> userSubjectList = userExamAnswerDao.findByuEIdAndQueType(userExamId, "10007");
         return Result.ok().put("subjectList",userSubjectList);
+    }
+
+    @Override
+    public Result auditCheckExam(String userExamId) {
+        UserExam userExam = userExamDao.selectById(userExamId);
+        //主观
+        List<UserExamAnswer> userSubjectList = userExamAnswerDao.findByuEIdAndQueType(userExamId, "10007");
+        if(userSubjectList==null){
+            userSubjectList = new ArrayList<>();
+        }
+
+        List<QuestForm> subjectList = userExamService.buildExam(userSubjectList)==null?new ArrayList<>():userExamService.buildExam(userSubjectList);
+
+        ExamConfig examConfig = examConfigService.selectById(userExam.getExamConfigId());
+
+
+        return Result.ok().put("subjectList", subjectList).put("examConfig", examConfig).put("userExam", userExam);
+    }
+
+    @Override
+    public Result commitAuditExam(UserAnswerForm userAnswerForm) {
+        String userExamId = userAnswerForm.getUserExamId();
+        UserExam userExam = userExamDao.selectById(userExamId);
+        ExamConfig examConfig =examConfigService.selectById(userExam.getExamConfigId());
+        List<CheckExamForm> checkExamForms= userAnswerForm.getCheckExamForm();
+        float countScore = userExamAnswerDao.getScoreExAudit(userExamId);
+        for(CheckExamForm checkExamForm : checkExamForms){
+            UserExamAnswer userExamAnswer = userExamAnswerDao.selectById(checkExamForm.getQueId());
+            userExamAnswer.setAudCheckScore(checkExamForm.getScore());
+            userExamAnswer.setAudCheckUserId(userAnswerForm.getCheckExamUserId());
+            userExamAnswer.setUserScore(checkExamForm.getScore());
+            countScore +=checkExamForm.getScore();
+            userExamAnswerDao.updateById(userExamAnswer);
+        }
+        userExam.setIsFinMark("0");
+        userExam.setScore(countScore);
+        userExamDao.updateById(userExam);
+
+        return Result.ok();
     }
 }
