@@ -19,4 +19,8 @@ public interface CheckExamService extends AbstractService<CheckExam> {
     Result commitCheckExam(UserAnswerForm userAnswerForm);
 
     Result saveCheckExam(UserAnswerForm userAnswerForm);
+
+    Result auditCheckExam(String userExamId);
+
+    Result commitAuditExam(UserAnswerForm userAnswerForm);
 }

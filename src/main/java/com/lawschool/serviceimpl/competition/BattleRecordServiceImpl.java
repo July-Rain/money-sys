@@ -108,7 +108,7 @@ public class BattleRecordServiceImpl extends ServiceImpl<BattleRecordDao, Battle
 	@Override
 	public int winLeiTaiCountByUserId(String userid) {
 
-		int i=	this.selectCount(new EntityWrapper<BattleRecord>().eq("USER_ID",userid).eq("WHETHER_WIN","1"));
+		int i=	this.selectCount(new EntityWrapper<BattleRecord>().eq("USER_ID",userid).eq("WHETHER_WIN","1").eq("TYPE","leitai"));
 		return i;
 	}
 }

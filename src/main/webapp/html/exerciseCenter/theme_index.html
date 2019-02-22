@@ -26,16 +26,20 @@
             <el-table-column
                     prop="total"
                     label="总题数"
-                    width="100"
                     header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
                     label="已答题"
-                    width="100"
                     header-align="center"
                     align="center"
                     prop="answerNum">
+            </el-table-column>
+            <el-table-column
+                    label="正确数"
+                    header-align="center"
+                    align="center"
+                    prop="rightNum">
             </el-table-column>
             <el-table-column
                     label="操作"
@@ -68,16 +72,6 @@
                     <el-popover
                             placement="right"
                             trigger="hover"
-                            content="错题回顾">
-                        <i class="iconfont icon-cuotiku tabIcon"
-                           v-if="scope.row.status == 1 || scope.row.status == 2"
-                           slot="reference"
-                           style="color: #ff1f14;font-size: 20px" >
-                        </i>
-                    </el-popover>
-                    <el-popover
-                            placement="right"
-                            trigger="hover"
                             content="清空重做">
                         <i class="iconfont icon-zhongzuo tabIcon"
                            v-if="scope.row.status == 2"
@@ -86,6 +80,18 @@
                            style="color: #ff7814;font-size: 20px" >
                         </i>
                     </el-popover>
+                    <el-popover
+                            placement="right"
+                            trigger="hover"
+                            content="错题回顾">
+                        <i class="iconfont icon-cuotiku tabIcon"
+                           v-if="scope.row.answerNum > scope.row.rightNum"
+                           slot="reference"
+                           style="color: #ff1f14;font-size: 20px"
+                           @click="review(scope.row.id)">
+                        </i>
+                    </el-popover>
+
                 </template>
             </el-table-column>
         </el-table>

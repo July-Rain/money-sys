@@ -66,7 +66,8 @@ var vm = new Vue({
         },
         roles:[],
         policeclassOption:[],//所属警种
-        breadArr:[]//面包屑数据
+        breadArr:[],//面包屑数据
+        src: baseURL+"/statics/img/police_head.png",
     },
     created: function () {
         this.$nextTick(function () {

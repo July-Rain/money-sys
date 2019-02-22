@@ -134,7 +134,19 @@ ul li{
     margin-bottom: 15px;
 }
 /*el-dialog end*/
-.el-menu--popup{
-    min-width: auto;
+/*表单disabled样式*/
+.is-disabled .el-input__inner,.el-textarea__inner{
+    border: none!important;
+    color: #999!important;
 }
+.el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after{
+    border-color: #999
+}
+.el-checkbox__input.is-disabled+span.el-checkbox__label{
+    color: #999;
+}
+.el-radio__input.is-disabled+span.el-radio__label{
+    color: #999;
+}
+
 /*element 公共样式修改  end */

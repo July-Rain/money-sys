@@ -77,7 +77,8 @@
 		    E . ID AS "id",
 		    E .total AS "total",
 		    E .status AS "status",
-		    E .ANSWER_NUM AS "answerNum"
+		    E .ANSWER_NUM AS "answerNum",
+		    E.RIGHT_NUM AS "rightNum"
 		FROM
 		    LAW_SYS_TOPIC T
 		    LEFT JOIN LAW_THEME_EXERCISE E ON T . ID = E .TYPE_ID
@@ -100,7 +101,9 @@
 			t.answer_choice_number,
 			c.name AS "themeName",
 			r.ANSWER AS "userAnswer",
-			r.right AS "right"
+			r.right AS "right",
+			r.IS_COLLECT AS "isCollect",
+			r.id AS "recordId"
 		FROM law_testquestions t
 		LEFT JOIN law_theme_record r ON t.id = r.question_id
 		AND r.task_id = #{id}
@@ -135,4 +138,30 @@
 			id = #{id}
 		</where>
 	</update>
+
+	<update id="updateCollect">
+        UPDATE law_theme_record
+        SET
+            IS_COLLECT = #{type}
+        WHERE ID = #{id}
+    </update>
+
+	<select id="selectIdsForPage" resultType="string">
+        SELECT
+	        o. ID
+        FROM
+	    (
+		    SELECT
+                QUESTION_ID AS ID,
+                ROWNUM AS RN
+		    FROM
+			    law_theme_record
+		    WHERE
+			    CREATE_USER = #{userId}
+		        AND RIGHT = 0
+		        AND TASK_ID = #{taskId}
+	    ) o
+        WHERE
+	        o.RN = #{index}
+    </select>
 </mapper>

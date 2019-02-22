@@ -266,6 +266,9 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         if(UtilValidate.isNotEmpty(params.get("endTime"))){
             userExamForm.setEndTime(sdf.parse(params.get("endTime").toString()));
         }
+        if(UtilValidate.isNotEmpty(params.get("source"))){
+            userExamForm.setSource(params.get("source").toString());
+        }
         String orderBy = " exam_status,IS_MUST_TEST, start_time ";
         params.put("orderBy",orderBy);
         Page<UserExamForm> userExamFormPage = userExamFormService.findPage(new Page<UserExamForm>(params),userExamForm);
@@ -337,6 +340,10 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
                     List<AnswerForm> answerFormList = answerService.findAnsById(ansIdList);
                     questForm.setAnswer(answerFormList);
                 }
+                if(UtilValidate.isNotEmpty(questForm.getAnswerId())){
+                    List<AnswerForm> rightAnswer = answerService.findAnsById(Arrays.asList(questForm.getAnswerId().split(",")));
+                    questForm.setRightAnswer(rightAnswer);
+                }
                 Answer answer = new Answer();
                 if(userExamAnswer.getRightAnsId()!=null&&!"".equals(userExamAnswer.getRightAnsId())){
                     answer = answerService.selectById(userExamAnswer.getRightAnsId());
@@ -344,8 +351,12 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
                 if (UtilValidate.isNotEmpty(answer)){
                     questForm.setRightAnsCon(answer.getQuestionContent());
                 }
+
                 questForm.setScore(userExamAnswer.getScore());
+                questForm.setFirScore(userExamAnswer.getFirCheckScore());
+                questForm.setSecScore(userExamAnswer.getSecCheckScore());
                 questForm.setUserAnswer(userExamAnswer.getUserAnsId());
+                questForm.setUserScore(userExamAnswer.getUserScore());
                 questForm.setQuestionId(userExamAnswer.getId());
                 questFormList.add(questForm);
             }

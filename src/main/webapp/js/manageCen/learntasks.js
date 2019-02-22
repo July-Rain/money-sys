@@ -178,6 +178,10 @@ var vm = new Vue({
         })
     },
     methods: {
+        //序列号计算
+        indexMethod:function (index) {
+            return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
+        },
         // 查询
         onSubmit: function () {
             this.reload();
@@ -194,7 +198,6 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    debugger
                     var url = vm.learnTasks.id ? "learntasks/update?menuFrom="+vm.menuForm : "learntasks/insert?menuFrom="+vm.menuForm;
                     var deptArr = vm.learnTasks.deptIds?vm.learnTasks.deptIds.split(","):[];
                     var userArr = vm.learnTasks.userIds?vm.learnTasks.userIds.split(","):[];

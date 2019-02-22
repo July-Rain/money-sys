@@ -48,7 +48,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.navData = result.menuList;
-                        console.log(vm.navData)
+                        console.log("indexjs 51",vm.navData)
                         if(url&&url!='container.html'){
                             vm.navData.push({
                                 icon: "icon-fanhui",
@@ -86,8 +86,13 @@ var vm = new Vue({
                 if(item.url.indexOf("?") == -1){
 
                     if(item.url == 'menu'){
+                        console.info("item1",item);
                         vm.childUrl = item.list[0].url + "?id=" + item.id;
                     }else{
+                        console.info("item2",item);
+                        if(vm.childUrl === item.url + "?id=" + item.id){
+                            document.getElementById('container').contentWindow.location.reload(true);
+                        }
                         vm.childUrl = item.url + "?id=" + item.id;
 
                     }

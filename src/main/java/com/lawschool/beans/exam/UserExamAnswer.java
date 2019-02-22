@@ -45,6 +45,16 @@ public class UserExamAnswer extends DataEntity<UserExamAnswer> {
 
     private String audCheckUserId;  //审核人ID
 
+    private String checkStatus;     //  0:完成 1：未完成 2待审核
+
+    public String getCheckStatus() {
+        return this.checkStatus;
+    }
+
+    public void setCheckStatus(final String checkStatus) {
+        this.checkStatus = checkStatus;
+    }
+
     public String getFirCheckUserId() {
         return this.firCheckUserId;
     }

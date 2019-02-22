@@ -1,3 +1,4 @@
+// import "${rc.contextPath}/statics/plugins/video/video.min.js";
 /**
  * Author: crain
  * Date: 2018/12/3
@@ -303,7 +304,9 @@ var vm = new Vue({
                 name:""//文字描述
             },//学情统计数据
             popoverTitle: "考试提示标题",
-            popoverContent: "考试提示内容"
+            popoverContent: "考试提示内容",
+
+            // 播放器
         }
     },
     created: function () {
@@ -324,6 +327,7 @@ var vm = new Vue({
             this.getStuDia();
             this.initPie1();
             this.initBar1();
+            // this.initPlayer();
         });
         this.$nextTick(function () {
 
@@ -455,7 +459,80 @@ var vm = new Vue({
             })
         })
     },
+    mounted: function () {
+      this.initPlayer();
+    },
     methods: {
+        initPlayer: function () {
+            window.onload = function () {
+                var options = {
+                    controls: true,
+                    bigPlayButton: true,
+                    controlBar:{
+                        //设置是否显示该组件
+                        playToggle: false,
+                        remainingTimeDisplay: true,
+                        fullscreenToggle: false,
+                        volumePanel: false
+                    },
+                };
+                var myPlayer = videojs('my-player', options);
+                var bigButton = document.getElementsByClassName('vjs-big-play-button')[0];
+                bigButton.style.outline = 'none';
+                myPlayer.on('play', function () {
+                    bigButton.style.display = 'none';
+                });
+                myPlayer.on('pause', function () {
+                    bigButton.style.display = 'block';
+                });
+            }
+        },
+        onPlay:function (id,accId) {
+            //请求后台修改播放量 记录学习记录
+            $.ajax({
+                type: "POST",
+                url: baseURL + "stumedia/updateCount?stuId="+id+"&stuType=stu_video&stuFrom=videocen",
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        onPause: function (id,event) {
+            var el = event.currentTarget;
+            var temp =0;
+            //var playTime= $(el).currentTime;
+            vm.oldTime=vm.playTime;
+
+            vm.playTime= el.currentTime;
+
+            temp=vm.playTime-vm.oldTime;
+
+            var finishFlag =false;
+            if(el.currentTime == el.duration ){
+                finishFlag=true;
+            }
+            //获取当前选择对象
+
+            //媒介因素暂停事件
+            //请求后台记录观看时长
+            $.ajax({
+                type: "POST",
+                url: baseURL + "stumedia/countTime?stuId="+id+"&stuFrom=videocen&playTime="+temp+"&finishFlag="+finishFlag,
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
         // 导航栏
         handleSelect: function (key, keyPath) {
             console.log(key, keyPath);
@@ -734,6 +811,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.videoData = result.page.list;
+                        console.log(vm.videoData);
                         for(var i=0;i<vm.videoData.length;i++){
                             vm.videoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
                             if(vm.videoData[i].videoPicAcc){
@@ -769,52 +847,6 @@ var vm = new Vue({
                 }
             });
 
-        },
-        onPlay:function (id,accId) {
-            //请求后台修改播放量 记录学习记录
-            $.ajax({
-                type: "POST",
-                url: baseURL + "stumedia/updateCount?stuId="+id+"&stuType=stu_video&stuFrom=videocen",
-                contentType: "application/json",
-                success: function(result){
-                    if(result.code === 0){
-                        //vm.treeData = result.classifyList;
-                    }else{
-                        alert(result.msg);
-                    }
-                }
-            });
-        },
-        onPause: function (id,event) {
-            var el = event.currentTarget;
-            var temp =0;
-            //var playTime= $(el).currentTime;
-            vm.oldTime=vm.playTime;
-
-            vm.playTime= el.currentTime;
-
-            temp=vm.playTime-vm.oldTime;
-
-            var finishFlag =false;
-            if(el.currentTime == el.duration ){
-                finishFlag=true;
-            }
-            //获取当前选择对象
-
-            //媒介因素暂停事件
-            //请求后台记录观看时长
-            $.ajax({
-                type: "POST",
-                url: baseURL + "stumedia/countTime?stuId="+id+"&stuFrom=videocen&playTime="+temp+"&finishFlag="+finishFlag,
-                contentType: "application/json",
-                success: function(result){
-                    if(result.code === 0){
-                        //vm.treeData = result.classifyList;
-                    }else{
-                        alert(result.msg);
-                    }
-                }
-            });
         },
         goLaw: function (id) {
             //查看详情
@@ -1022,8 +1054,21 @@ var vm = new Vue({
                 }
             });
         },
-        startExam: function (id) {
-            alert("考试id:"+id)
+        startExam : function (list) {
+            var parentWin = window.parent;
+            var id = list.id;
+            var examStatus = list.examStatus;
+            var userExamId = list.userExamId==null?'':list.userExamId;
+            parentWin.document.getElementById("container").src
+                = 'modules/examCen/testPaper.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
+        },
+        viewExam : function (list) {
+            var parentWin = window.parent;
+            var id = list.id;
+            var examStatus = list.examStatus;
+            var userExamId = list.userExamId==null?'':list.userExamId;
+            parentWin.document.getElementById("container").src
+                = 'modules/personalCen/myScoreReport.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
         },
         carouselChange:function (index) {
             vm.popoverTitle = vm.examList[index].examName;

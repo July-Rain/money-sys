@@ -19,4 +19,7 @@ public interface UserExamAnswerDao extends AbstractDao<UserExamAnswer> {
     CopyOnWriteArrayList<String> getListByDiffScore(@Param("score") int score);
 
     void updateCheckScoreById(@Param("userAnsId")String userAnsId,@Param("userScore")double userScore,@Param("id")String id);
+
+    float getScoreByUserExamId(@Param("userExamId") String userExamId);
+    float getScoreExAudit(@Param("userExamId") String userExamId);
 }
