@@ -330,6 +330,7 @@ var vm = new Vue({
         },
         cancelUser: function () {
             this.dialogUser=false;
+            // window.parent.vm.dialogAdd = false;
         },
         searchUser: function () {
             //查询人员信息
