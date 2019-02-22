@@ -54,14 +54,16 @@
 	<!-- 分组统计答题情况 -->
 	<select id="analysisAnswer" resultType="com.lawschool.form.ThemeAnswerForm">
 		SELECT
-		       theme_name AS "typeName",
-		       right AS "right",
-		       count(*) AS "rightNum"
-		FROM law_theme_record
-		<where>
+			theme_name AS "typeName",
+			COUNT (theme_name) AS "totalNum",
+			SUM (RIGHT) AS "rightNum"
+		FROM
+			law_theme_record
+		WHERE
 			task_id = #{themeId}
-		</where>
-		GROUP BY theme_name, right
-		ORDER BY theme_name
+		GROUP BY
+			theme_name
+		ORDER BY
+			theme_name
 	</select>
 </mapper>

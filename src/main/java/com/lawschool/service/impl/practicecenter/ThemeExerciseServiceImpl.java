@@ -4,15 +4,19 @@ import java.util.*;
 
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
+import com.lawschool.beans.Collection;
+import com.lawschool.beans.User;
 import com.lawschool.form.*;
 
 import com.lawschool.service.AnswerService;
+import com.lawschool.service.CollectionService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.practicecenter.ThemeAnswerRecordService;
 import com.lawschool.service.system.TopicTypeService;
 import com.lawschool.util.RedisUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,10 +44,10 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 	private TestQuestionService testQuestionService;
 
 	@Autowired
-	private TopicTypeService topicTypeService;
+	private AnswerService answerService;
 
 	@Autowired
-	private AnswerService answerService;
+	private CollectionService collectionService;
 
 	/**
 	 * 主题练习首页列表数据
@@ -127,33 +131,32 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 	 * 题目展示
 	 * @param id 个人任务ID
 	 * @param userId 当前用户ID
-	 * @param limit 每页显示题目数量
-	 * @param page 当前页（为-1时，根据answerNum去计算，否则直接取当前页）
+	 * @param index 当前题目序号
+	 * @param isReview 是否错题回顾
 	 * @return
 	 */
 	@Transactional(rollbackFor = Exception.class)
-	public Map<String, Object> showPaper(String id, String userId, Integer limit, Integer page){
+	public Map<String, Object> showPaper(String id, String userId,
+										 Integer index, String isReview){
 		// 定义返回结果的Map
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		ThemeExerciseEntity entity = dao.findOne(id);
 		int total = entity.getTotal() == null ? 0 : entity.getTotal();
-		int answerNum = entity.getAnswerNum()==null ? 0 : entity.getAnswerNum();
 
-		// 计算取题范围
-		Integer[] pageResult = CommonUtils.computeDataRange(total, answerNum, limit, page);
-		if(pageResult[0] == -1){
-			resultMap.put("list", null);
-			return resultMap;
+		List<String> ids = new ArrayList<String>();
+
+		if(StringUtils.isBlank(isReview)){
+			// 封装查询参数
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("start", index);
+			params.put("end", index);
+			params.put("themeId", entity.getTypeId());
+			ids = testQuestionService.selectIdsForPage(params);
+		} else {
+
+			ids = dao.selectIdsForPage(userId, id, index);
 		}
-
-		// 封装查询参数
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("start", pageResult[0]);
-		params.put("end", pageResult[1]);
-		params.put("themeId", entity.getTypeId());
-
-		List<String> ids = testQuestionService.selectIdsForPage(params);
 
 		if(CollectionUtils.isEmpty(ids)){
 			resultMap.put("list", null);
@@ -176,9 +179,7 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 		}
 
 		resultList = testQuestionService.handleAnswers(resultList, answerForms);
-		resultMap.put("count", total);
-		resultMap.put("list", resultList);
-		resultMap.put("pageCount", pageResult[3]);
+		resultMap.put("question", resultList.get(0));
 		resultMap.put("typeName", entity.getTypeName());
 
 		return resultMap;
@@ -196,37 +197,26 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 
 	/**
 	 * 保存答题记录
-	 * @param list
 	 * @param userId
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void preserve(List<ThemeAnswerForm> list, String userId, Integer type, String id){
+	public void preserve(ThemeAnswerForm form, String userId, String id){
 		Date date = new Date();
 
 		// 记录正确答题数量
 		int rightNum = 0;
 
-		for(ThemeAnswerForm form : list){
-			form.setCreateUser(userId);
-			form.setId(IdWorker.getIdStr());
-			form.setCreateTime(date);
+		form.setCreateUser(userId);
+		form.setId(IdWorker.getIdStr());
+		form.setCreateTime(date);
 
-			if(form.getRight() == 1){
-				rightNum++;
-			}
-			themeAnswerRecordService.saveForm(form);
+		if(form.getRight() == 1){
+			rightNum++;
 		}
+		themeAnswerRecordService.saveForm(form);
 
-		// 更新整体练习答题情况
-		int num = list.size();
-		if(type == 1){
-			// 提交
-			type = ThemeExerciseEntity.STATUS_OFF;
-		} else {
-			type = -1;
-		}
-		dao.updateAnswerNum(id, num, rightNum, type);
+		dao.updateAnswerNum(id, 1, rightNum, -1);
 	}
 
 	/**
@@ -257,6 +247,7 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 		result.setId(theme.getId());
 		result.setRightNum(theme.getRightNum());
 		result.setTotal(theme.getTotal());
+		result.setTypeName(theme.getTypeName());
 
 		// 获取答题记录的统计信息
 		List<ThemeAnswerForm> answerList = themeAnswerRecordService.analysisAnswer(theme.getId());
@@ -295,4 +286,33 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 		return form;
 	}
 
+	/**
+	 * 随机练习收藏/取消
+	 * @param id
+	 * @param recordId
+	 * @param type 1收藏，0取消收藏
+	 * @return
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public boolean doCollect(String id, String recordId, Integer type){
+
+		User user = (User) SecurityUtils.getSubject().getPrincipal();
+
+		if(type == 1){
+			com.lawschool.beans.Collection collect = new Collection();
+			collect.setId(IdWorker.getIdStr());
+			collect.setType(20);
+			collect.setComStucode(id);
+
+			// 0成功，1失败
+			int result = collectionService.addCollection(collect, user);
+		} else {
+			// 取消收藏
+			boolean result = collectionService.cancle(id, user.getId());
+		}
+
+		dao.updateCollect(recordId, type);
+
+		return true;
+	}
 }
