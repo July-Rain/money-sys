@@ -1,5 +1,6 @@
 package com.lawschool.controller.stu;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.User;
 import com.lawschool.service.learn.StuRecordService;
@@ -23,6 +24,7 @@ public class StuRecordController extends AbstractController {
     @Autowired
     private StuRecordService recordService;
 
+    @SysLog("添加学习记录")
     @RequestMapping("/insertRecord")
     public Result insertRecord(String stuId, String stuType, String stuFrom, String taskId){
         //获取当前登陆人

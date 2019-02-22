@@ -84,7 +84,6 @@ var vm = new Vue({
         // },
         //上传
         uploadSuccess: function(response, file, fileList) {
-            debugger
             vm.info.photo=response.accessoryId;
             $.ajax({
                 type: "POST",

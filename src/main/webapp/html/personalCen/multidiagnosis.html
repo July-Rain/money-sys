@@ -35,28 +35,28 @@
                         <div class="more">
                             <!--<el-form :model="dateRange"  ref="formInline">
                             <el-form-item prop="startTime">-->
-                            <el-date-picker
-                                    v-model="dateRange.startTime"
-                                    type="date"
-                                    size="mini"
-                                    placeholder="开始日期">
-                            </el-date-picker>
+                            <!--<el-date-picker-->
+                                    <!--v-model="dateRange.startTime"-->
+                                    <!--type="date"-->
+                                    <!--size="mini"-->
+                                    <!--placeholder="开始日期">-->
+                            <!--</el-date-picker>-->
                             <!--</el-form-item>-->
-                            至
+                            <!--至-->
                             <!--<el-form-item prop="endTime">-->
-                            <el-date-picker
-                                    v-model="dateRange.endTime"
-                                    type="date"
-                                    size="mini"
-                                    placeholder="结束日期">
-                            </el-date-picker>
+                            <!--<el-date-picker-->
+                                    <!--v-model="dateRange.endTime"-->
+                                    <!--type="date"-->
+                                    <!--size="mini"-->
+                                    <!--placeholder="结束日期">-->
+                            <!--</el-date-picker>-->
                             <!--</el-form-item>
                             <el-form-item>-->
-                            <el-button type="primary" @click="onSubmit" size="mini">
-                                <i class="iconfont"
-                                   style="color: white;" >&#xe664;
-                                </i>
-                                查询</el-button>
+                            <!--<el-button type="primary" @click="onSubmit" size="mini">-->
+                                <!--<i class="iconfont"-->
+                                   <!--style="color: white;" >&#xe664;-->
+                                <!--</i>-->
+                                <!--查询</el-button>-->
                             <!-- <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
                          </el-form-item>
                          </el-form>-->
@@ -66,17 +66,19 @@
                         <el-row :gutter="20">
                             <el-col :span="8" class="pieArea">
                                 <el-tabs type="border-card">
+                                    <div class="little-title">学习时长占比</div>
                                     <div id="pie1" style="width: 300px;height:220px;"></div>
                                 </el-tabs>
                             </el-col>
 
                             <el-col :span="8" class="pieArea">
                                 <el-tabs type="border-card">
+                                    <div class="little-title">学习次数(单位:次)</div>
                                     <div id="pienum" style="width: 300px;height:220px;"></div>
                                 </el-tabs>
                             </el-col>
                             <el-col :span="8" class="infoCount">
-                                <div class="span-title">学情统计</div>
+                                <div class="little-title">学情统计</div>
                                 <div class="infoMsg">
                                     <ul>
 
@@ -103,11 +105,13 @@
                                 <el-row :gutter="20">
                                     <el-col :span="8" class="pieArea">
                                         <el-tabs type="border-card">
+                                            <div class="little-title">考试次数</div>
                                             <div id="pieExam1" style="width: 300px;height:220px;"></div>
                                         </el-tabs>
                                     </el-col>
                                     <el-col :span="8" class="pieArea">
                                         <el-tabs type="border-card">
+                                            <div class="little-title">考试分数分布</div>
                                             <div id="pieExam2" style="width: 300px;height:220px;"></div>
                                         </el-tabs>
                                     </el-col>
@@ -130,16 +134,19 @@
 
                                 <el-col :span="8" class="pieArea">
                                     <el-tabs type="border-card">
+                                        <div class="little-title">主题回答数量（单位：题）</div>
                                         <div id="piePrac1" style="width: 640px;height:220px;"></div>
                                     </el-tabs>
                                 </el-col>
                                 <el-col :span="8" class="pieArea">
                                     <el-tabs type="border-card">
+                                        <div class="little-title">主题回答正确数量（单位：题）</div>
                                         <div id="piePrac2" style="width: 640px;height:220px;"></div>
                                     </el-tabs>
                                 </el-col>
                                 <el-col :span="8" class="pieArea">
                                     <el-tabs type="border-card">
+                                        <div class="little-title">各项练习答题数量（单位：题）</div>
                                         <div id="bar1" style="width: 640px;height:220px;"></div>
                                     </el-tabs>
                                 </el-col>
@@ -158,16 +165,19 @@
                             <el-row :gutter="20">
                                 <el-col :span="8" class="pieArea">
                                     <el-tabs type="border-card">
+                                        <div class="little-title">参与次数</div>
                                         <div id="pieGame1" style="width: 640px;height:220px;"></div>
                                     </el-tabs>
                                 </el-col>
                                 <el-col :span="8" class="pieArea">
                                     <el-tabs type="border-card">
+                                        <div class="little-title">获得积分</div>
                                         <div id="pieGame2" style="width: 640px;height:220px;"></div>
                                     </el-tabs>
                                 </el-col>
                                 <el-col :span="8" class="pieArea">
                                     <el-tabs type="border-card">
+                                        <div class="little-title">游戏占比</div>
                                         <div id="pieGame3" style="width: 640px;height:220px;"></div>
                                     </el-tabs>
                                 </el-col>

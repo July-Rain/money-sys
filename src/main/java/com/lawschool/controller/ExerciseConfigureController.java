@@ -1,5 +1,6 @@
 package com.lawschool.controller;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.ExerciseConfigureEntity;
@@ -61,6 +62,7 @@ public class ExerciseConfigureController extends AbstractController{
      * @param entity
      * @return
      */
+    @SysLog("新增练习配置,并生成练习卷")
     @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody ExerciseConfigureEntity entity){
@@ -116,6 +118,7 @@ public class ExerciseConfigureController extends AbstractController{
      * @param prefix
      * @return
      */
+    @SysLog("生成练习卷名称")
     @RequestMapping(value = "/createName", method = RequestMethod.GET)
     public Result createName(@RequestParam String prefix){
 
@@ -137,6 +140,7 @@ public class ExerciseConfigureController extends AbstractController{
      * @param id
      * @return
      */
+    @SysLog("删除练习配置")
     @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public Result delete(@PathVariable("id") String id){

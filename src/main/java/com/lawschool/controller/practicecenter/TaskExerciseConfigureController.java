@@ -1,5 +1,6 @@
 package com.lawschool.controller.practicecenter;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.User;
@@ -64,6 +65,7 @@ public class TaskExerciseConfigureController extends AbstractController {
      * @param source，来源 0个人、1部门
      * @return
      */
+    @SysLog("保存练习配置")
     @RequestMapping(value = "/save/{source}", method = RequestMethod.POST)
     public Result save(@RequestBody TaskConfigureForm form,
                        @PathVariable("source") Integer source){
@@ -110,6 +112,7 @@ public class TaskExerciseConfigureController extends AbstractController {
      * @param id
      * @return
      */
+    @SysLog("删除练习配置")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public Result delete(@PathVariable("id") String id){
 

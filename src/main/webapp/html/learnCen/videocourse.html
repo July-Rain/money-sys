@@ -54,7 +54,18 @@
             float: right;
         }
         /* videojs 有关的样式 */
+        .el-dialog__body #dialog-player_html5_api{
+            left: 32% !important;
+            max-height: 1000px !important;
+        }
+        .el-dialog__body button.vjs-big-play-button{
+            width: 45px !important;
+            height: 45px !important;
 
+        }
+        .el-dialog__body span.vjs-icon-placeholder{
+            line-height: 43px !important;
+        }
     </style>
 </head>
 <body>
@@ -163,19 +174,19 @@
             </el-col>
         </el-row>
     </div>
-    <el-dialog class="dialog_minW750" title="视频课堂" :visible.sync="dialogVideo">
-        <div v-if="dialogVideo" style="max-height: 450px;text-align: center">
-            <video style="width:auto; max-height: 450px" controls autoplay preload="none" :poster="thisVideoPicAccUrl" @play="onPlay(thisVideoId)" @pause="onPause(thisVideoId,$event)">
+    <el-dialog class="dialog_minW750" title="视频课堂" :visible.sync="dialogVideo" @opened="dialogOpen" >
+        <div v-show="dialogVideo" style="max-height: 450px;text-align: center" ref="dialog">
+            <!--<video style="width:auto; max-height: 450px" controls autoplay preload="none" :poster="thisVideoPicAccUrl" @play="onPlay(thisVideoId)" @pause="onPause(thisVideoId,$event)">
                 <source :src="thisVideoContentUrl" type="video/mp4">
                 您的浏览器不支持视频播放
-            </video>
-            <!--<video id="dialog-player" class="video video-js vjs-big-play-centered" style="width:auto; max-height: 450px" preload="none"
+            </video>-->
+            <video id="dialog-player" class="video video-js vjs-big-play-centered" style="width:auto; max-height: 450px" preload="none"
                    :poster="thisVideoPicAccUrl"
                    @play="onPlay(thisVideoId)"
                    @pause="onPause(thisVideoId,$event)">
                 <source :src="thisVideoContentUrl" type="video/mp4">
                 您的浏览器不支持视频播放
-            </video>-->
+            </video>
         </div>
     </el-dialog>
     <el-dialog title="选择法律分类" :visible.sync="dialogLaw" >
