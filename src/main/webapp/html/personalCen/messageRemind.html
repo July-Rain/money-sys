@@ -92,11 +92,6 @@
                      size="mini">
                 <el-row>
                     <el-col :span="24">
-                        <el-form-item label="发件人：" >
-                            <el-input v-model="msg.releasePeopleName" disabled></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="24">
                         <el-form-item label="消息名称：" prop="title">
                             <el-input disabled v-model="msg.title" placeholder="请输入消息名称" clearable></el-input>
                         </el-form-item>
@@ -115,6 +110,11 @@
                                 <el-option label="系统消息" value="10008">系统消息</el-option>
                                 <el-option label="管理员消息" value="10009">管理员消息</el-option>
                             </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="24">
+                        <el-form-item label="发件人：" >
+                            <el-input v-model="msg.releasePeopleName" disabled></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">

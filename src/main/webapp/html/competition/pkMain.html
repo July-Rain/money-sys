@@ -73,7 +73,13 @@
             <button @click="joinWar">加入他人战区</button>
         </div>
     </div>
-
+    <!--加入队伍-->
+        <div class="model_area join_area" v-if="joinTeamShow">
+        <div class="inner">
+            <div class="title">加入他人队伍</div>
+            <input type="text" placeholder="输入队伍编号">
+        </div>
+    </div>
 </div>
 
 
@@ -143,5 +149,5 @@
         parent.location.href = baseURL + "modules/competition/teamGame.html?peopleNum=5&type=join&code=" + code;
     }
 </script>
-<script src="${rc.contextPath}/js/competition/pkMain.js"></script>
+<script src="${rc.contextPath}/js/competition/pkMain.js?_${.now?long}"></script>
 </html>

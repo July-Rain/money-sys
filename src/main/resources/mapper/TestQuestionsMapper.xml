@@ -442,7 +442,9 @@
             LAW_TESTQUESTIONS
           WHERE
             is_enble = '0'
+            AND RELEASE_STATUS = 1
             AND SPECIAL_KNOWLEDGE_ID = #{topicId}
+            AND QUESTION_TYPE <![CDATA[ <> ]]> '10007'
         ) T
         WHERE
         <![CDATA[ T .rn <= #{num} ]]>

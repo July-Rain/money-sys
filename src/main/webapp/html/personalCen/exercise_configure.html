@@ -13,6 +13,52 @@
             <el-breadcrumb-item>我的练习</el-breadcrumb-item>
             <el-breadcrumb-item>任务配置</el-breadcrumb-item>
         </el-breadcrumb>
+        <div class="info_card">
+            <div class="card_title">
+            </div>
+            <div class="card_contain">
+                <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+
+                    <el-form-item label="任务名称" prop="taskName">
+                        <el-input v-model="formInline.taskName" placeholder="任务名称" size="mini" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="开始日期" prop="startTime">
+                        <el-date-picker
+                                v-model="formInline.startTime"
+                                type="date"
+                                format="yyyy年MM月dd日"
+                                value-format="yyyy-MM-dd"
+                                placeholder="开始时间"
+                                size="mini"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="结束日期" prop="endTime">
+                        <el-date-picker
+                                v-model="formInline.endTime"
+                                type="date"
+                                format="yyyy年MM月dd日"
+                                value-format="yyyy-MM-dd"
+                                placeholder="结束时间"
+                                size="mini"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit" size="mini">
+                            <i class="iconfont icon-sousuo1"></i>
+                            查询
+                        </el-button>
+                        <el-button class="reset_btn" size="mini" @click="resetForm('formInline')">
+                            <i class="iconfont icon-tableresetpassword"></i>
+                            重置
+                        </el-button>
+
+                    </el-form-item>
+                </el-form>
+            </div>
+        </div>
         <div class="info_btn">
             <el-button size="mini" type="primary" @click="addConfig"><i class="iconfont icon-htmal5icon18"></i>新增练习配置</el-button>
         </div>
@@ -43,14 +89,12 @@
             <el-table-column
                     prop="total"
                     label="总题量"
-                    width="100"
                     header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
                     prop="userName"
                     label="创建人"
-                    width="150"
                     header-align="center"
                     align="center"
             >
@@ -180,16 +224,15 @@
                         </el-radio>
                     </el-form-item>
 
-                    <el-form-item label="部门：" v-show="exerciseConfigure.rangeType == 2">
-                        <el-input type="text" class="form-control" style="cursor:pointer;"
-                                  v-model="exerciseConfigure.depts"
-                                  @focus="deptShow" readonly="readonly" placeholder="所属部门"></el-input>
+                    <el-form-item label="使用部门：" v-show="exerciseConfigure.rangeType == 2">
+                        <el-input v-model="exerciseConfigure.deptNames"
+                                  readonly @focus="deptShow" placeholder="请选择使用部门" clearable>
+                        </el-input>
                     </el-form-item>
 
-                    <el-form-item label="人员(此处先不请求后台)：" v-show="exerciseConfigure.rangeType == 2">
-                        <el-input type="text" class="form-control" style="cursor:pointer;"
-                                  v-model="exerciseConfigure.users" disabled
-                        ></el-input>
+                    <el-form-item label="使用人员：" v-show="exerciseConfigure.rangeType == 2">
+                        <el-input v-model="exerciseConfigure.userNames" readonly
+                                  @focus="chooseUser" placeholder="请选择使用人员" clearable></el-input>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -239,19 +282,92 @@
             <!--对于同一级的节点，每次只能展开一个-->
             <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
                 <el-tree
-                        ref="treeForm"
-                        :data="treeData"
-                        :props="defaultProps"
+                        ref="deptTree"
+                        :data="deptData"
+                        :props="defaultDeptProps"
+                        accordion
                         show-checkbox
                         @check-change="handleCheckChange"
                         node-key="id"
-                        :default-expanded-keys="idArr" >
+                        :default-expanded-keys="idArr"
+                >
                 </el-tree>
             </el-scrollbar>
-
             <div slot="footer" class="dialog-footer">
                 <el-button size="mini" @click="cancelDept">取消</el-button>
                 <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog title="选择人员" :visible.sync="dialogUser" class="dialog_minW750">
+            <!--对于同一级的节点，每次只能展开一个-->
+            <div>
+                <el-col :span="6">
+                    <el-scrollbar wrap-class="depList" wrap-style="color: red;" view-style="font-weight: bold;"
+                                  view-class="view-box" :native="false">
+                        <el-tree
+                                :data="userData"
+                                :props="defaultUserProps"
+                                accordion
+                                node-key="id"
+                                :default-expanded-keys="idArr"
+                                @node-click="handleDeptNodeClick">
+                        </el-tree>
+                    </el-scrollbar>
+                </el-col>
+
+                <el-col :span="18" class="paddingLeft20">
+                    <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
+                        <el-form-item prop="userCode">
+                            <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
+                        </el-form-item>
+                        <el-form-item prop="userName">
+                            <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
+                            <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
+                        </el-form-item>
+                    </el-form>
+                    <div>
+                        <el-table
+                                :data="userTableData"
+                                border
+                                height="529"
+                                @selection-change="handleSelectionChange"
+                                style="width: 100%">
+                            <el-table-column
+                                    type="selection"
+                                    width="55">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="userCode"
+                                    label="身份证号"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="userName"
+                                    label="姓名"
+                                    width="280"
+                            >
+                            </el-table-column>
+
+                        </el-table>
+                        <el-pagination
+                                @size-change="userHandleSizeChange"
+                                @current-change="userHandleCurrentChange"
+                                :current-page="userForm.currPage"
+                                :page-sizes="[10, 20, 30, 40]"
+                                :page-size="userForm.pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="userForm.totalCount">
+                        </el-pagination>
+                    </div>
+                </el-col>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="cancelUser">取消</el-button>
+                <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
             </div>
         </el-dialog>
 

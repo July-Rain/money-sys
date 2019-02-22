@@ -32,6 +32,16 @@ public class UserExamForm extends DataEntity<UserExamForm> {
     private String checkExamId; //阅卷ID
     private String[] authArr;   //数据权限
     private String userId;
+    private String source ; //来源
+
+    public String getSource() {
+        return this.source;
+    }
+
+    public void setSource(final String source) {
+        this.source = source;
+    }
+
     /**
      * 考试分数
      */

@@ -9,6 +9,8 @@ import com.lawschool.service.exam.CheckUserExamFormService;
 import com.lawschool.service.exam.UserExamFormService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * ClassName: CheckUserExamFormServiceImpl
  * Description: TODO
@@ -18,4 +20,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CheckUserExamFormServiceImpl extends AbstractServiceImpl<CheckUserExamFormDao, CheckUserExamForm> implements CheckUserExamFormService {
+
+    @Override
+    public List<CheckUserExamForm> getAuditList(List<String> list) {
+        return dao.getAuditList(list);
+    }
 }

@@ -19,6 +19,7 @@ import com.lawschool.service.exam.*;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.RedisUtil;
 import com.lawschool.util.Result;
+import com.lawschool.util.UtilValidate;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,8 +96,7 @@ public class CheckExamUserServiceImpl extends AbstractServiceImpl<CheckExamUserD
                 //已注册
                 return Result.ok().put("userStatus", "1").put("checkExamUser", checkExamUser).put("examConfig", examConfig);
             }
-        }
-        {
+        }else {
             //审核人员
             if (checkExamUser == null) {
                 checkExamUser = checkUser;
@@ -160,12 +160,14 @@ public class CheckExamUserServiceImpl extends AbstractServiceImpl<CheckExamUserD
             }
         }else {
             //审核阅卷人员  审核阅卷人员不保存直接查 分差值大于配置分差值的试卷
-            int score = examConfig.getCheckScoreDifference();
-            userCheckList = userExamAnswerService.getListByDiffScore(score);
+            checkExamUser.setExamConfigId(examConfig.getId());
+            checkExamUser.setId(GetUUID.getUUIDs("CEU"));
+            dao.insert(checkExamUser);
         }
         //根据ID查找试卷
-        userExamFormList = userExamService.getListByIds(userCheckList);
-
+        if(UtilValidate.isNotEmpty(userCheckList)) {
+            userExamFormList = userExamService.getListByIds(userCheckList);
+        }
         return Result.ok().put("checkExamUser",checkExamUser);
     }
 
@@ -223,13 +225,15 @@ public class CheckExamUserServiceImpl extends AbstractServiceImpl<CheckExamUserD
 
         ExamConfig examConfig = examConfigService.selectById(checkExamUser.getExamConfigId());
 
+        List<String> list = new ArrayList<>();
         if("1".equals(checkExamUser.getCheckUserType())){
             //审核人员
-            //List<String> list =
-            checkUserExamForm.setList(new ArrayList<>());
+            list = userExamDao.getAuditList(examConfig.getId(),"2");
+            checkUserExamForm.setList(list);
         }else {
             //普通阅卷人员
             checkUserExamForm.setList(checkExamDao.getUserExamIdByCheckUserId(params.get("checkExamUserId").toString()));
+
         }
 
         checkUserExamForm.setUserExamId(checkExamUser.getId());
@@ -237,7 +241,11 @@ public class CheckExamUserServiceImpl extends AbstractServiceImpl<CheckExamUserD
             checkUserExamForm.setCheckStatus(params.get("checkStatus").toString());
         }
         Page<CheckUserExamForm> page = checkUserExamFormService.findPage(new Page<CheckUserExamForm>(params),checkUserExamForm);
-        //List<String>
+        if("1".equals(checkExamUser.getCheckUserType())){
+            List<CheckUserExamForm> checkUserExamForms = checkUserExamFormService.getAuditList(list);
+            page.setList(checkUserExamForms);
+            page.setCount(checkUserExamForms.size());
+        }
 
         return Result.ok().put("page",page);
     }

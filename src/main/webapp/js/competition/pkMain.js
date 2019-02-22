@@ -9,10 +9,20 @@ var vm = new Vue({
         teamAreaShow: false,
         teamPerNum: 3,
         warAreaShow:false,
-
+        joinTeamShow:false//加入队伍弹框！！！！
     },
     created: function () {
-
+        this.$nextTick(function () {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "battleRecord/winLeiTaiCountByUserId?winId="+jsgetUser().id,
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    vm.coinNum=result.jifen;
+                }
+            });
+        })
     },
     methods: {
         toUrl:function (url) {
@@ -48,12 +58,12 @@ var vm = new Vue({
         formationWar: function () {
             // 建立战区
             this.warAreaShow = false;
-            window.location.href = baseURL + "modules/competition/alonePkGameByCode.html?warType=formation";
+            window.location.href = baseURL + "modules/competition/alonePkGameByCode.html?warType=formation&type=add&code=0";
         },
         joinWar: function () {
             // 加入战区
             this.warAreaShow = false;
-            window.location.href = baseURL + "modules/competition/alonePkGameByCode.html?warType=join";
+            window.location.href = baseURL + "modules/competition/alonePkGameByCode.html?warType=join&type=join";
         },
 
     }

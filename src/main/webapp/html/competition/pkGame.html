@@ -29,7 +29,7 @@
             </p>
             <div class="left_progress">
                 <div class="progress">
-                    <div class="num">{{youscore}}</div>
+                    <div class="num">{{myscore}}</div>
                     <div class="line">
                         <div class="line_inner"></div>
                     </div>
@@ -98,7 +98,7 @@
 
 
     </div>
-    <el-row :gutter="24">
+    <el-row :gutter="24" v-if="false">
         <el-col :span="24">
             <el-tabs type="border-card">
                 <el-tab-pane label="单人随机在线比武">

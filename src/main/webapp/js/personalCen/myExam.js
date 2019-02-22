@@ -4,6 +4,7 @@ var vm = new Vue({
         formInline: { // 搜索表单
             examName:"",
             status: "",
+            source:"",
             limit: 10,
             page: 1,
             count: 0
@@ -47,7 +48,7 @@ var vm = new Vue({
             this.reload();
         },
         reload: function () {
-            console.info(vm.formInline);
+            vm.formInline.source = 1;
             $.ajax({
                 type: "POST",
                 url: baseURL + "user/exam/list",
