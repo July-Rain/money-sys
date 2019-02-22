@@ -67,6 +67,7 @@ public class MsgController extends AbstractController{
      * 删除选中的消息
      * @param id
      */
+    @SysLog("删除站内消息")
     @RequestMapping("/delete")
     public Result deleteByMsgId(@RequestParam String id){
         msgService.deleteByMsgId(id);
@@ -76,6 +77,7 @@ public class MsgController extends AbstractController{
      * 撤回选中的消息
      * @param id
      */
+    @SysLog("撤回选中的消息")
     @RequestMapping("/recall")
     public Result recall(@RequestParam String id){
         //先查后改  简单点
@@ -153,7 +155,6 @@ public class MsgController extends AbstractController{
         return Result.ok().put("msg",msg);
     }
 
-    @SysLog("前台获取已收到消息")
     @RequestMapping(value = "/findMsgList",method = RequestMethod.GET)
     public Result findMsgList(@RequestParam Map<String,Object> param){
 

@@ -1,5 +1,6 @@
 package com.lawschool.controller.bbs;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.bbs.PostEntity;
@@ -53,6 +54,7 @@ public class ReplyController extends AbstractController {
         return Result.ok().put("data", replyEntity);
     }
 
+    @SysLog("添加回复")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody ReplyEntity entity){
         replyService.save(entity);
@@ -67,6 +69,7 @@ public class ReplyController extends AbstractController {
         return Result.ok();
     }
 
+    @SysLog("删除回复")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Result delete(@RequestBody List<String> ids){
         replyService.delete(ids);

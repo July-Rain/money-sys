@@ -181,7 +181,6 @@ public class StuMediaController extends AbstractController {
      * @Param [accId]
      * @return com.lawschool.util.Result
      **/
-    
     @RequestMapping("/updateCount")
     public Result updateCount(String stuId, String stuType, String stuFrom, String taskId, BigDecimal playTime){
         //获取当前登陆人
@@ -201,7 +200,6 @@ public class StuMediaController extends AbstractController {
      * @Param [id]
      * @return com.lawschool.util.Result
      **/
-
     @RequestMapping("/countTime")
     public Result countTime(String stuId,String stuFrom,BigDecimal playTime,Boolean finishFlag){
         recordService.countTime(stuId,stuFrom,playTime,finishFlag );

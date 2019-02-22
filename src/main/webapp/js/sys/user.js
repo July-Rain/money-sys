@@ -324,6 +324,13 @@ var vm = new Vue({
             this.reload();
         },
 
+        // 部门选择事件
+        handleDeptNodeClick: function (data) {
+            console.log(data);
+            vm.teacher.orgCode= data.localOrgCode;
+            vm.teacher.orgName= data.localOrgName;
+            vm.teacher.orgId= data.id;
+        },
         //确定部门
         confimDept:function(){
 
@@ -451,6 +458,30 @@ var vm = new Vue({
         },
         toHome:function () {
             parent.location.reload()
-        }
+        },
+        // loadNode(node, resolve) {
+        //     if (node.level === 0) {
+        //         return;
+        //     } else {
+        //         this.getChildrenNode(node,resolve)
+        //     }
+        // },
+        // getChildrenNode(node,resolve) {
+        //     var orgId = node.data.orgId;
+        //     //加载部门树
+        //     $.ajax({
+        //         type: "POST",
+        //         url: baseURL + "org/lazytree?orgId="+orgId,
+        //         contentType: "application/json",
+        //         success: function(result){
+        //             if(result.code === 0){
+        //                 resolve(result.orgList);
+        //             }else{
+        //                 alert(result.msg);
+        //             }
+        //         }
+        //     });
+        //
+        // },
     }
 });

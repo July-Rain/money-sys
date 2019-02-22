@@ -9,7 +9,7 @@ var vm = new Vue({
         teamAreaShow: false,
         teamPerNum: 3,
         warAreaShow:false,
-
+        joinTeamShow:false//加入队伍弹框！！！！
     },
     created: function () {
         this.$nextTick(function () {

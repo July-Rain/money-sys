@@ -1,5 +1,6 @@
 package com.lawschool.controller;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.Answer;
 import com.lawschool.beans.Collection;
@@ -40,6 +41,7 @@ public class CollectionController extends AbstractController {
      * @Param [collection]
      * @return com.lawschool.util.Result
     **/
+    @SysLog("删除收藏")
     @RequestMapping("/delColl")
     public Result delCollection(@RequestBody Collection collection){
         int rest = collectionService.delCollection(collection, getUser());
@@ -53,6 +55,7 @@ public class CollectionController extends AbstractController {
      * @Param [collection]
      * @return com.lawschool.util.Result
     **/
+    @SysLog("添加收藏")
     @RequestMapping("/addColl")
     public Result addCollection(@RequestBody Collection collection){
         int rest = collectionService.addCollection(collection,getUser());
@@ -82,6 +85,7 @@ public class CollectionController extends AbstractController {
      * @Param [params]
      * @return com.lawschool.util.Result
     **/
+    @SysLog("一键组卷（收藏的题目）")
     @RequestMapping("/randomQuestColl")
     public Result randomQuestColl(@RequestParam Map<String,Object> params){
 

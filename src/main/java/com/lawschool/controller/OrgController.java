@@ -86,4 +86,16 @@ public class OrgController extends AbstractController {
         return orgService.addOrgLevel();
     }
 
+    @RequestMapping("/lazytree")
+    public Result lazytree(String orgId){
+        if(UtilValidate.isEmpty(orgId)){
+            orgId="0";
+        }
+        EntityWrapper<Org> ew = new EntityWrapper<Org>();
+        ew.eq("parent_id",orgId);
+        List<Org> orgList = orgService.queryForTree(orgId);
+        return Result.ok().put("orgList",orgList);
+
+    }
+
 }

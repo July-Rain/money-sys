@@ -31,8 +31,9 @@
             opt_user,
             opt_time,
             del_flag,
-            type
-
+            type,
+            dept_names,
+            user_names
         ) VALUES (
             #{id},
             #{prefix},
@@ -47,7 +48,9 @@
             #{optUser},
             #{optTime},
             #{delFlag},
-            #{type}
+            #{type},
+            #{deptNames},
+            #{userNames}
         )
     </insert>
 
@@ -117,7 +120,8 @@
         <where>
             o.del_flag = #{delFlag}
             <if test="users != null and users != ''">
-                AND (o.users LIKE '%'||#{users}||'%' OR o.depts LIKE '%'||#{depts}||'%')
+                AND ((o.users LIKE '%'||#{users}||'%' OR o.depts LIKE '%'||#{depts}||'%')
+                  OR (o.users = '-1' and o.depts = '-1'))
             </if>
         </where>
         <choose>

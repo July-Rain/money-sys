@@ -7,7 +7,7 @@
 </head>
 <body>
 <div id="app" v-cloak>
-    <div class="container">
+    <div class="container" style="height: 100vh">
 
         <div class="daliy">
             <p class="daliy_title">
@@ -42,7 +42,7 @@
             </div>
 
             <div class="answer_area" v-show="isAnswer">
-                <p>你的答案：<span>{{userAnswerStr}}</span>，正确答案：<span>{{rightAnswerStr}}</span></p>
+                <p :class="userAnswerStr!=rightAnswerStr?'err':''">你的答案：<span>{{userAnswerStr}}</span>，正确答案：<span>{{rightAnswerStr}}</span></p>
                 <div class="clearfix diff diff5">
                     <span>试题难度：</span>
                     <span>{{question.questionDifficulty == '10001' ? '初级' : question.questionDifficulty == '10002' ? '中级' : '高级'}}</span>

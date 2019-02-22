@@ -6,7 +6,10 @@ var vm = new Vue({
             limit: 10,
             page: 1,
             count: 0,
-            source: 0
+            source: 0,
+            taskName: '',
+            startTime: '',
+            endTime: ''
         },
         dialogConfig: false,
         configureEntity: {
@@ -273,7 +276,15 @@ var vm = new Vue({
         indexMethod: function (index) {
 
             return index + 1 + (vm.formInline.page-1) * vm.formInline.limit;
-        }
+        },
+        // 表单重置
+        resetForm: function (formName) {
+            this.$refs[formName].resetFields();
+        },
+        // 查询
+        onSubmit: function () {
+
+        },
     },
     created: function () {
         this.$nextTick(function () {

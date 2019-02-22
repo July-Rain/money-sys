@@ -1,5 +1,6 @@
 package com.lawschool.controller.system;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.system.DictEntity;
@@ -45,6 +46,7 @@ public class DictController extends AbstractController{
      * 保存
      * @return
      */
+    @SysLog("添加字典")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody DictEntity entity){
         if(StringUtils.isNotBlank(entity.getParentCode())){
@@ -78,6 +80,7 @@ public class DictController extends AbstractController{
      * 删除
      * @return
      */
+    @SysLog("删除字典")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Result delete(@RequestParam("id") String id, @RequestParam("isParent") Integer isParent){
 
