@@ -90,7 +90,33 @@ var vm = new Vue({
                 });
             }
         },
+        dialogOpen: function () {
+            // 初始化dialog
+            console.log('Sansa');
 
+            var dialogOptions = {
+                controls: true,
+                autoplay: true,
+                bigPlayButton: true,
+                controlBar:{
+                    //设置是否显示该组件
+                    playToggle: false,
+                    remainingTimeDisplay: true,
+                    fullscreenToggle: false,
+                    volumePanel: false
+                },
+            };
+            var dialogPlayer = videojs('dialog-player', dialogOptions);
+            var bigDialogButton = document.getElementsByClassName('vjs-big-play-button')[1];
+            console.log(bigDialogButton);
+            bigDialogButton.style.outline = 'none';
+            dialogPlayer.on('play', function () {
+                bigDialogButton.style.display = 'none';
+            });
+            dialogPlayer.on('pause', function () {
+                bigDialogButton.style.display = 'block';
+            });
+        },
         // 查询
         onSubmit: function () {
             this.reload();
@@ -177,6 +203,7 @@ var vm = new Vue({
         onVideoDialog: function (id,contentUrl,videoPicAccUrl){
             this.dialogVideo = true;
             this.$nextTick(function () {
+                // this.initDialogPlayer();
                 this.onPlay(id);
                 this.thisVideoId = id;
                 this.thisVideoContentUrl = contentUrl;
