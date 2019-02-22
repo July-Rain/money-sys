@@ -27,7 +27,7 @@ public class QuestForm {
 
     private Integer right;// 用户回答是否正确
     private String themeName;// 主題类型
-    private Integer score;  //题目分值
+    private double score;  //题目分值
     private String rightAnsCon; //正确答案内容
     private Integer isCollect;// 是否收藏，0未1已
 
@@ -152,11 +152,11 @@ public class QuestForm {
         this.themeName = themeName;
     }
 
-    public Integer getScore() {
+    public double getScore() {
         return this.score;
     }
 
-    public void setScore(final Integer score) {
+    public void setScore(final double score) {
         this.score = score;
     }
 

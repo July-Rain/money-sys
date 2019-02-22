@@ -113,10 +113,6 @@ var vm = new Vue({
             }else {
                 return new Date(Date.parse(time.replace(/-/g,  "/"))).getTime() < new Date().getTime()
             }
-
-
-
-
         }
     },
     created: function () {

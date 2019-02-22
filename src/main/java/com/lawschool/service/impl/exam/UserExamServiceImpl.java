@@ -230,14 +230,13 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
                     userExamAnswer.setUserScore(0);
                 }
             }
-            userExamAnswerDao.updateById(userExamAnswer.getUserAnsId(), userExamAnswer.getUserScore(), userExamAnswer.getId());
+            userExamAnswerDao.updateByIds(userExamAnswer.getUserAnsId(), userExamAnswer.getUserScore(), userExamAnswer.getId());
         }
         String isFinMark;
         if (isHaveSubject) {
             //有主观题，阅卷未完成
             isFinMark = "1";
-        }
-        {
+        }else {
             //无主观题  完成阅卷
             isFinMark = "0";
         }
@@ -284,7 +283,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
             //根据用户考试ID+问题ID查询考题详情
             UserExamAnswer userExamAnswer = userExamAnswerDao.findByuEIdAndQueId(userExamId, themeAnswerForm.getqId());
             userExamAnswer.setUserAnsId(themeAnswerForm.getAnswer());
-            userExamAnswerDao.updateById(userExamAnswer.getUserAnsId(), userExamAnswer.getUserScore(), userExamAnswer.getId());
+            userExamAnswerDao.updateByIds(userExamAnswer.getUserAnsId(), userExamAnswer.getUserScore(), userExamAnswer.getId());
         }
         //更新考试剩余时间
         userExamDao.updateRemainTimeById(remainingExamTime, userExamId);
@@ -345,6 +344,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
                 if (UtilValidate.isNotEmpty(answer)){
                     questForm.setRightAnsCon(answer.getQuestionContent());
                 }
+                questForm.setScore(userExamAnswer.getScore());
                 questForm.setUserAnswer(userExamAnswer.getUserAnsId());
                 questForm.setQuestionId(userExamAnswer.getId());
                 questFormList.add(questForm);

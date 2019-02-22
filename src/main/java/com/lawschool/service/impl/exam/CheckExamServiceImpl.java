@@ -58,56 +58,86 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
             userSubjectList = new ArrayList<>();
         }
 
-    //    List<QuestForm> subjectList = userExamService.buildExam(userSubjectList)==null?new ArrayList<>():userExamService.buildExam(userSubjectList);
+        List<QuestForm> subjectList = userExamService.buildExam(userSubjectList)==null?new ArrayList<>():userExamService.buildExam(userSubjectList);
 
         ExamConfig examConfig = examConfigService.selectById(userExam.getExamConfigId());
 
 
-        return Result.ok().put("subjectList", userSubjectList).put("examConfig", examConfig).put("userExam", userExam);
+        return Result.ok().put("subjectList", subjectList).put("examConfig", examConfig).put("userExam", userExam);
     }
 
     @Override
     public Result commitCheckExam(UserAnswerForm userAnswerForm) {
-
+        String userExamId = userAnswerForm.getUserExamId();
+        UserExam userExam = userExamDao.selectById(userExamId);
+        ExamConfig examConfig =examConfigService.selectById(userExam.getExamConfigId());
         List<CheckExamForm> checkExamForms= userAnswerForm.getCheckExamForm();
-        UserExam userExam = updateScore(checkExamForms,userAnswerForm);
-        userExam.setCheckStatus("2");
+        String isFinsh;
+        if(examConfig.getPaperPerSetNum()==2) {
+            isFinsh  = updateScoreByTwo(checkExamForms, userAnswerForm, examConfig.getExamScore());
+            userExam.setIsFinMark(isFinsh);
+        }else {
+            isFinsh  = updateScoreByOne(checkExamForms, userAnswerForm);
+            userExam.setIsFinMark(isFinsh);
+        }
         CheckExam checkExam = dao.selectById(userAnswerForm.getCheckExamId());
-        checkExam.setCheckStatus("1");
-        dao.updateById(checkExam);
-        userExamDao.update(userExam);
-
-        return Result.ok();
-    }
-
-    @Override
-    public Result saveCheckExam(UserAnswerForm userAnswerForm) {
-        List<CheckExamForm> checkExamForms= userAnswerForm.getCheckExamForm();
-        UserExam userExam = updateScore(checkExamForms,userAnswerForm);
-        userExam.setCheckStatus("1");
-        CheckExam checkExam = dao.selectById(userAnswerForm.getCheckExamId());
-        checkExam.setCheckStatus("1");
+        checkExam.setCheckStatus("2");  //完成阅卷
         dao.updateById(checkExam);
         userExamDao.updateById(userExam);
 
         return Result.ok();
     }
 
-    private UserExam updateScore(List<CheckExamForm> checkExamForms,UserAnswerForm userAnswerForm){
-        UserExam userExam = new UserExam();
+    @Override
+    public Result saveCheckExam(UserAnswerForm userAnswerForm) {
+//        List<CheckExamForm> checkExamForms= userAnswerForm.getCheckExamForm();
+//        updateScore(checkExamForms,userAnswerForm);
+//        userExam.setCheckStatus("1");
+//        CheckExam checkExam = dao.selectById(userAnswerForm.getCheckExamId());
+//        checkExam.setCheckStatus("1");
+//        dao.updateById(checkExam);
+//        userExamDao.updateById(userExam);
+
+        return Result.ok();
+    }
+
+    private String  updateScoreByTwo(List<CheckExamForm> checkExamForms,UserAnswerForm userAnswerForm,double diffScore){
+        String isFinsh = "1";
         for(CheckExamForm checkExamForm : checkExamForms){
             UserExamAnswer userExamAnswer = userExamAnswerDao.selectById(checkExamForm.getQueId());
-            userExam = userExamDao.selectById(userExamAnswer.getUserExamId());
             if("".equals(userExamAnswer.getFirCheckScore())||(userExamAnswer.getFirCheckScore()==0.0&&("".equals(userExamAnswer.getFirCheckUserId())||userExamAnswer.getFirCheckUserId()==null))){
                 userExamAnswer.setFirCheckScore(checkExamForm.getScore());
                 userExamAnswer.setFirCheckUserId(userAnswerForm.getCheckExamUserId());
             }else {
+                if("1".equals(isFinsh)){
+                    isFinsh = "0";
+                }
                 userExamAnswer.setSecCheckScore(checkExamForm.getScore());
                 userExamAnswer.setSecCheckUserId(userAnswerForm.getCheckExamUserId());
+                if(checkExamForm.getScore()-userExamAnswer.getFirCheckScore()<=diffScore){
+                    userExamAnswer.setUserScore((checkExamForm.getScore()+userExamAnswer.getFirCheckScore())/2);
+                }else {
+                    isFinsh = "2";
+                }
             }
-            userExamAnswerDao.updateAllColumnById(userExamAnswer);
+            userExamAnswerDao.updateById(userExamAnswer);
         }
-        return userExam;
+        return isFinsh;
+    }
+
+    private String  updateScoreByOne(List<CheckExamForm> checkExamForms,UserAnswerForm userAnswerForm){
+        String isFinsh = "1";
+        for(CheckExamForm checkExamForm : checkExamForms){
+            UserExamAnswer userExamAnswer = userExamAnswerDao.selectById(checkExamForm.getQueId());
+            if("".equals(userExamAnswer.getFirCheckScore())||(userExamAnswer.getFirCheckScore()==0.0&&("".equals(userExamAnswer.getFirCheckUserId())||userExamAnswer.getFirCheckUserId()==null))){
+                userExamAnswer.setFirCheckScore(checkExamForm.getScore());
+                userExamAnswer.setFirCheckUserId(userAnswerForm.getCheckExamUserId());
+                userExamAnswer.setUserScore(checkExamForm.getScore());
+                isFinsh ="0";
+            }
+            userExamAnswerDao.updateById(userExamAnswer);
+        }
+        return isFinsh;
     }
 
     @Override

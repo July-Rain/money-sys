@@ -41,5 +41,5 @@ public interface ExamConfigService extends AbstractService<ExamConfig> {
     CheckSetForm getCheckSetting(String id);
 
     ExamConfig getExamDetail( String id );
-    void deleteExamConfig(String id) throws Exception ;
+    Result deleteExamConfig(String id) ;
 }

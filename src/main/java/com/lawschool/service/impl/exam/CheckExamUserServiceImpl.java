@@ -166,7 +166,7 @@ public class CheckExamUserServiceImpl extends AbstractServiceImpl<CheckExamUserD
         //根据ID查找试卷
         userExamFormList = userExamService.getListByIds(userCheckList);
 
-        return Result.ok().put("userExamFormList",userExamFormList);
+        return Result.ok().put("checkExamUser",checkExamUser);
     }
 
     private void saveOnRedis(String examConfigId,int paperPerSetNum,int checkNum){
@@ -232,7 +232,7 @@ public class CheckExamUserServiceImpl extends AbstractServiceImpl<CheckExamUserD
             checkUserExamForm.setList(checkExamDao.getUserExamIdByCheckUserId(params.get("checkExamUserId").toString()));
         }
 
-
+        checkUserExamForm.setUserExamId(checkExamUser.getId());
         if(params.get("checkStatus")!=null){
             checkUserExamForm.setCheckStatus(params.get("checkStatus").toString());
         }

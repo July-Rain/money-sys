@@ -9,7 +9,7 @@
           AND TEST_QUE_ID = #{qId}
     </select>
 
-    <update id="updateById" >
+    <update id="updateByIds" >
         update LAW_USER_EXAM_ANSWER set user_ans_id = #{userAnsId},user_score=#{userScore}
         <where>
             id=#{id}

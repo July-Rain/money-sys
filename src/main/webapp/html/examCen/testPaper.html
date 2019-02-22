@@ -92,7 +92,7 @@ p,span{
     <div id="paper">
     <h2>{{examConfig.examName}}</h2>
     <div class="smg">
-        <p class="name">姓名:<span>王小明</span></p>
+        <p class="name">姓名:<span>{{user.userName}}</span></p>
         <p class="set">字体设置( <span class="text_s" @click="fontS">小</span> <span class="text_m" @click="fontM">中</span> <span class="text_l" @click="fontL">大</span>)</p>
     </div>
     <el-form :model="testForm" v-if="sinChoicList.length">
@@ -124,15 +124,15 @@ p,span{
         </div>
 
         <div class="subTitle" v-if="judgeList.length">
-            <p>三、判断题。判断题判断题判断题</p>
+            <p>三、判断题。</p>
         </div>
         <div class="question_area">
             <div v-for="(item,index) in judgeList" class="question_area">
                 <p class="ques_name">{{index+1}}. {{item.comContent}} 。</p>
                 <el-radio-group v-model="judge[index]">
-                    <el-adio :label="item2.id" v-for="item2 in item.answer">
+                    <el-radio :label="item2.id" v-for="item2 in item.answer">
                         {{item2.questionContent}}
-                    </el-adio>
+                    </el-radio>
                 </el-radio-group>
             </div>
         </div>

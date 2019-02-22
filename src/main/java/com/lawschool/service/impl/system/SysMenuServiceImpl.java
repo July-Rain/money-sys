@@ -88,7 +88,12 @@ public class SysMenuServiceImpl extends AbstractServiceImpl<SysMenuDao, SysMenuE
 
         // 顺序为parentId
         List<SysMenuEntity> childList = dao.findUserMenu(roleList, idList);
+
+        // 用于递归
+        List<SysMenuEntity> listForRecursion = new ArrayList<>();
+
         for(SysMenuEntity entity : list){
+
             List<SysMenuEntity> tempList = new ArrayList<SysMenuEntity>();
             String parentId = entity.getId();
 
@@ -101,6 +106,11 @@ public class SysMenuServiceImpl extends AbstractServiceImpl<SysMenuDao, SysMenuE
 
             entity.setList(tempList);
             childList.removeAll(tempList);
+            listForRecursion.addAll(tempList);
+        }
+
+        if(CollectionUtils.isNotEmpty(listForRecursion)){
+            this.handleList(listForRecursion, roleList);
         }
 
         return list;

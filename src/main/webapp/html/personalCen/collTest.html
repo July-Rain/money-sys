@@ -113,12 +113,12 @@
                                     </el-select>
                                 </el-form-item>
 
-                                <el-form-item prop="questionDifficulty" label="难度">
+                                <el-form-item prop="questionDifficulty" label="试题难度">
                                     <el-select v-model="formInline.questionDifficulty"  size="mini">
                                         <el-option v-for="(item,index) in qds" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
                                     </el-select>
                                 </el-form-item>
-                                <el-form-item prop="questionType" label="试题类型" label-width="96px">
+                                <el-form-item prop="questionType" label="试题类型">
                                     <el-select v-model="formInline.questionType"  size="mini">
                                         <el-option v-for="(item,index) in qts" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
                                     </el-select>

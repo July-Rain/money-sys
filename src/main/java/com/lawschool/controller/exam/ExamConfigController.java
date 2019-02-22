@@ -117,12 +117,10 @@ public class ExamConfigController extends AbstractController {
     @RequestMapping(value = "/delete" , method = RequestMethod.POST)
     private Result delete(
             @RequestParam("id") String id) {
-        try {
-           examConfigService.deleteExamConfig(id);
-        } catch (Exception e) {
-            return Result.error(e.getMessage());
-        }
-        return Result.ok();
+
+           Result res = examConfigService.deleteExamConfig(id);
+
+        return res;
     }
 
 

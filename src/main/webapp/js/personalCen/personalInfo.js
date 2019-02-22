@@ -32,8 +32,7 @@ var vm = new Vue({
                 { required: true, message: '新密码不能为空', trigger: 'blur'}
             ],
             newPassValidator: [
-                { required: true, message: '请再输入一次新密码', trigger: 'blur'},
-                { validator: this.checkPass, trigger: 'blur'}
+                { required: true, message: '请再输入一次新密码', trigger: 'blur'}
             ]
         },
     },
@@ -43,7 +42,6 @@ var vm = new Vue({
             parent.location.reload()
         },
         submitForm: function(info) {
-            this.checkPass();
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     alert('submit!');
@@ -56,15 +54,7 @@ var vm = new Vue({
         changeAvatar: function () {
             this.src = "../../statics/img/new.png"
         },
-        // 验证新旧密码是否相同
-        checkPass: function (rule, value, callback) {
-            console.log(value);
-            if (value !== this.info.newPassword) {
-                callback(new Error('两次输入密码不一致！'));
-            } else {
-                callback();
-            }
-        },
+
     },
     created: function(){
         /*this.$nextTick(function () {
@@ -88,5 +78,5 @@ var vm = new Vue({
         this.info.number = 321;
         this.info.id = 123;
         this.info.department = '执勤';
-    }
+    },
 });

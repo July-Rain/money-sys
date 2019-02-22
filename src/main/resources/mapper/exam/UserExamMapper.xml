@@ -114,7 +114,7 @@
 
     <select id="getListByExamConId" resultType="string">
       select id from LAW_USER_EXAM WHERE
-      EXAM_CONFIG_ID=#{examConfigId} and exam_status='0'
+      EXAM_CONFIG_ID=#{examConfigId} and exam_status='2'
     </select>
 
     <select id="getListByIds" resultType="com.lawschool.form.UserExamForm">
@@ -132,7 +132,7 @@
         FROM
             LAW_EXAM_CONFIG A
         INNER JOIN LAW_USER_EXAM b ON A . ID = b.EXAM_CONFIG_ID
-        where 1=1 and b.exam_status='0' and
+        where 1=1 and b.exam_status='2' and
         b.id IN
         <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
             #{item}

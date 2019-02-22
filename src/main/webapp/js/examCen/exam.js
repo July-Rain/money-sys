@@ -323,19 +323,38 @@ var vm = new Vue({
             vm.examConfigForm.mulMultipleSelection = vm.mulMultipleSelection;
             vm.examConfigForm.judgeMultipleSelection = vm.judgeMultipleSelection;
             vm.examConfigForm.subMultipleSelection = vm.subMultipleSelection;
-            $.ajax({
-                type:"POST",
-                url :baseURL + "exam/config/examConfig/genAutoQue",
-                data: JSON.stringify(
-                    vm.examConfigForm
-                ),
-                contentType: "application/json",
-                success :function (result) {
-                    if (result.code === 0){
-
+            console.info(vm.subMultipleSelection)
+            var subScore;
+            for (var i=0;i<vm.subMultipleSelection.length;i++){
+                subScore += vm.subMultipleSelection[i].perScore;
+            }
+            subScore = subScore+vm.sinMultipleSelection.length*vm.sinMultScore
+                +vm.mulMultipleSelection.length*vm.mulMultScore+vm.judgeMultipleSelection.length*vm.judgeMultScore;
+            if (subScore!=vm.examConfig.examScore){
+                vm.$alert( '配置规则总分应与试题总分相等', '操作失败', {
+                    confirmButtonText: '确定',
+                    callback: function () {
+                        return false;
                     }
-                }
-            })
+                });
+            }else {
+                $.ajax({
+                    type:"POST",
+                    url :baseURL + "exam/config/examConfig/genAutoQue",
+                    data: JSON.stringify(
+                        vm.examConfigForm
+                    ),
+                    contentType: "application/json",
+                    success :function (result) {
+                        if (result.code === 0){
+                            alert('试题配置完成');
+                            this.setExam = false;
+                            this.reload();
+                        }
+                    }
+                })
+            }
+
         },
         <!-- 随机出题开始-->
         //新增行
@@ -373,7 +392,6 @@ var vm = new Vue({
             this.dataListSelections = val;
         },
         handleSave:function(randomQuesData){
-            console.info(randomQuesData)
             if (randomQuesData.length<=0||randomQuesData==''){
                 vm.$alert('请配置随机出题规则', '操作失败', {
                     confirmButtonText: '确定',
@@ -384,7 +402,7 @@ var vm = new Vue({
             }else {
                 var isRight = true;
                 var msg ='';
-
+                var subScore=0;
                 for(var i= 0;i<randomQuesData.length;i++){
                     if(randomQuesData[i].questionNumber==null||randomQuesData[i].questionNumber==''){
                         isRight = false;
@@ -399,6 +417,7 @@ var vm = new Vue({
                         msg = '题目类型不能为空';
                         break;
                     }
+                    subScore +=parseFloat(randomQuesData[i].questionScore);
                 }
                 if(!isRight){
                     vm.$alert( msg, '操作失败', {
@@ -407,7 +426,15 @@ var vm = new Vue({
                             return false;
                         }
                     });
-                }else {
+                }else if (subScore!=vm.examConfig.examScore){
+                    console.info("111",subScore,vm.examConfig.examScore)
+                    vm.$alert( '配置规则总分应与试题总分相等', '操作失败', {
+                        confirmButtonText: '确定',
+                        callback: function () {
+                            return false;
+                        }
+                    });
+                }else{
                     vm.examConfigForm.id = vm.examConfig.id;
                     vm.examConfigForm.examQueConfigList = randomQuesData;
                     $.ajax({
@@ -419,7 +446,9 @@ var vm = new Vue({
                         contentType: "application/json",
                         success :function (result) {
                             if (result.code === 0){
+                                alert('试题配置完成');
                                 vm.randomQuesModal = false;
+                                vm.reload();
                             }
                         }
                     })
@@ -430,8 +459,7 @@ var vm = new Vue({
         },
         closeRanDia : function () {
             vm.randomQuesModal = false;
-        },
-
+        }
     },
     filters: {
         sinMultScoreFn: function (_length) {
