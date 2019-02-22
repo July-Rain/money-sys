@@ -73,6 +73,9 @@ var vm = new Vue({
         onSubmit: function () {
             this.refresh();
         },
+        resetForm: function (formName) {
+            this.$refs[formName].resetFields();
+        },
     },
     created: function () {
         this.$nextTick(function () {

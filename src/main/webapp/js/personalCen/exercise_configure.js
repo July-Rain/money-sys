@@ -30,7 +30,10 @@ var vm = new Vue({
         formInline: {
             limit: 10,
             page: 1,
-            count: 0
+            count: 0,
+            taskName: '',//筛选条件
+            startTime: '',
+            endTime: ''
         },
         treeData: [],
         dialogDept: false,
@@ -281,7 +284,15 @@ var vm = new Vue({
                 total: 0
             };
             vm.addConfigFlag = false;
-        }
+        },
+        // 表单重置
+        resetForm: function (formName) {
+            this.$refs[formName].resetFields();
+        },
+        // 查询
+        onSubmit: function () {
+
+        },
     },
     created: function () {
         this.$nextTick(function () {
