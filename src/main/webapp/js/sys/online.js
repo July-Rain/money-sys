@@ -117,6 +117,7 @@ var vm = new Vue({
         // el-tree节点点击事件
         handleNodeClick: function (data) {
             vm.formInline.orgCode= data.localOrgCode;
+            vm.formInline.orgId= data.orgId;
             this.reload();
         },
         uploadSuccess: function (response, file, fileList) {
