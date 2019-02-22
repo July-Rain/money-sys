@@ -19,14 +19,20 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
     private String rangeType;// 使用范围
     private Integer total;// 总题目数
     private String depts;// 使用部门
+
     private String users;// 使用人员
-
     private String type;// 练习卷类型
-
     private String questions;// 生成题目IDs
-
     private String userName;// 创建人员，冗余便于展示
     private Integer delFlag;// 0未删除、1删除
+
+    private String userNames;
+    private String deptNames;
+
+    @TableField(exist = false)
+    private List<String> deptIds;
+    @TableField(exist = false)
+    private List<String> userIds;
 
     @TableField(exist = false)
     private List<ExerciseConditionEntity> list;
@@ -147,5 +153,37 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
 
     public void setAnswerNum(Integer answerNum) {
         this.answerNum = answerNum;
+    }
+
+    public List<String> getDeptIds() {
+        return deptIds;
+    }
+
+    public void setDeptIds(List<String> deptIds) {
+        this.deptIds = deptIds;
+    }
+
+    public List<String> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<String> userIds) {
+        this.userIds = userIds;
+    }
+
+    public String getUserNames() {
+        return userNames;
+    }
+
+    public void setUserNames(String userNames) {
+        this.userNames = userNames;
+    }
+
+    public String getDeptNames() {
+        return deptNames;
+    }
+
+    public void setDeptNames(String deptNames) {
+        this.deptNames = deptNames;
     }
 }

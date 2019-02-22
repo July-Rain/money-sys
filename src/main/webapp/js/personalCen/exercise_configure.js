@@ -9,7 +9,9 @@ var vm = new Vue({
             name: '',
             prefix: '',
             list: [],
-            rangeType: 0
+            rangeType: 0,
+            deptIds: [],
+            userIds: []
         },
         rangeType: [
             {key:0, value:'个人'},
@@ -35,12 +37,17 @@ var vm = new Vue({
             startTime: '',
             endTime: ''
         },
-        treeData: [],
+        deptData: [],
+        userData: [],
         dialogDept: false,
-        defaultProps: {
+        defaultDeptProps: {
             children: 'child',
-            label: 'localOrgName'
-        },
+            label: 'orgName'
+        },//部门树的默认格式
+        defaultUserProps: {
+            children: 'child',
+            label: 'orgName'
+        },//部门人员的默认格式
         paperDialog: false,
         questionList: [],
         configRules: {
@@ -63,7 +70,18 @@ var vm = new Vue({
             name: [
                 {required: true, message: '请生成试卷名称', trigger: 'blur'}
             ]
-        }
+        },
+        dialogUser: false,
+        userForm: {
+            userCode: "",
+            userName: "",
+            orgCode: "",
+            currPage: 1,
+            pageSize: 10,
+            totalCount: 0
+
+        },//人员查询
+        userTableData: [],//人员表格信息
     },
     methods: {
         addConfig: function () {
@@ -204,34 +222,19 @@ var vm = new Vue({
         },
         deptShow:function(){
             vm.dialogDept=true;
-            if(vm.treeData.length==0){
-                $.ajax({
-                    type: "POST",
-                    url: baseURL + "org/tree",
-                    contentType: "application/json",
-                    success: function(result){
-
-                        if(result.code === 0){
-                            vm.treeData = result.orgList;
-                            // 默认展开第一级
-                            vm.treeData.map(function (m) {
-                                vm.idArr.push(m.id)
-                            });
-                        }else{
-                            alert(result.msg);
-                        }
-                    }
-                });
-            }
         },
         handleCheckChange: function (data, checked, node) {
-            if(checked == true){
-                this.checkedId = data.id;
-                this.$refs.treeForm.setCheckedNodes([data]);
-                vm.exerciseConfigure.depts= data.localOrgCode;
-            }
+
         },
         confimDept: function(){
+            this.multipleDeptSelection = this.$refs.deptTree.getCheckedNodes();
+            this.exerciseConfigure.deptIds = [];
+            var deptNames = [];
+            for (var i = 0; i < this.multipleDeptSelection.length; i++) {
+                this.exerciseConfigure.deptIds.push(this.multipleDeptSelection[i].id);
+                deptNames.push(this.multipleDeptSelection[i].orgName);
+            }
+            this.exerciseConfigure.deptNames = deptNames.join();
             vm.dialogDept = false;
         },
         cancelDept: function(){
@@ -285,6 +288,80 @@ var vm = new Vue({
             };
             vm.addConfigFlag = false;
         },
+        chooseUser: function () {
+            //选择人员
+            this.dialogUser = true;
+        },
+        handleDeptNodeClick: function (data) {
+            this.exerciseConfigure.orgCode = data.orgCode;
+            this.reloadUser();
+        },
+        cancelDept: function () {
+            this.dialogDept = false;
+        },
+        searchUser: function () {
+            vm.reloadUser();
+        },
+        reloadUser: function () {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "sys/getAllUsers",
+                dataType: "json",
+                data: vm.userForm,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.userTableData = result.page.list;
+                        vm.userForm.currPage = result.page.currPage;
+                        vm.userForm.pageSize = result.page.pageSize;
+                        vm.userForm.totalCount = parseInt(result.page.count);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        handleDeptNodeClick: function (data) {
+            this.userForm.orgCode = data.orgCode;
+            this.reloadUser();
+        },
+        confimUser: function () {
+            //  userNames
+            this.dialogUser = false;
+        },
+        cancelUser: function () {
+            this.dialogUser = false;
+        },
+        userHandleCurrentChange: function (val) {
+            this.userForm.currPage = val;
+            this.reloadUser();
+        },
+        getDept: function () {
+            //加载部门树
+            $.get(baseURL + "law/zTree", function (r) {
+                ztree = $.fn.zTree.init($("#classTree"), setting, r.classifyList);
+            })
+        },
+        userHandleSizeChange: function (val) {
+            this.userForm.pageSize = val;
+            this.reloadUser();
+        },
+        userHandleCurrentChange: function (val) {
+            this.userForm.currPage = val;
+            this.reloadUser();
+        },
+        handleSelectionChange(val) {
+            this.exerciseConfigure.userIds = [];
+            var userNames = [];
+            //选择人员信息
+            this.multipleSelection = val;
+            //遍历最终的人员信息
+            for (var i = 0; i < val.length; i++) {
+                this.exerciseConfigure.userIds.push(val[i].id);
+                userNames.push(val[i].userName)
+            }
+            this.exerciseConfigure.userNames = userNames.join();
+
+        },
         // 表单重置
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
@@ -296,7 +373,7 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
-            this.refresh();
+        this.refresh();
             $.ajax({
                 type: "GET",
                 url: baseURL + "exercise/random/dict",
@@ -309,6 +386,26 @@ var vm = new Vue({
                     }
                 }
             });
-        })
+
+            $.ajax({
+                type: "POST",
+                url: baseURL + "org/tree",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.deptData = result.orgList;
+                        vm.userData = result.orgList;
+                        // 默认展开第一级
+                        vm.userData.map(function (m) {
+                            vm.idArr.push(m.id)
+                        });
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+
+            this.reloadUser();
+     });
     }
 });
