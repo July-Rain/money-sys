@@ -1,3 +1,4 @@
+var menuId = getUrlParam('id');
 var vm = new Vue({
     el: '#app',
     data: {
@@ -19,7 +20,8 @@ var vm = new Vue({
             label: '本学年'
         }],
         selected: '',
-        colorList: ['#52c9e7','#3e98e8','#81bdd8','#5ebd5c','#feae24','#f97a1f','#f26443','#b97deb','#7e72f2','#4f7ee9']
+        colorList: ['#52c9e7','#3e98e8','#81bdd8','#5ebd5c','#feae24','#f97a1f','#f26443','#b97deb','#7e72f2','#4f7ee9'],
+        breadArr: []//面包屑数据
     },
     methods: {
         initBar1: function () {
@@ -296,5 +298,6 @@ var vm = new Vue({
                 }
             }
         });
+        this.breadArr=getBreadcrumb(menuId);
     }
 });
