@@ -198,11 +198,21 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <el-button type="primary" style="float:right;" @click="startExam(list.id)">
+                                        <el-button type="primary" style="float:right;" v-if="list.examStatus=='1'" @click="startExam(list)">
                                         <i class="iconfont"
                                            style="color: white;padding-right: 5px"
                                         >&#xe68c;
                                         </i>开始考试</el-button>
+                                        <el-button type="primary" style="float:right;" v-if="list.examStatus=='0'" @click="startExam(list)" >
+                                            <i class="iconfont"
+                                               style="color: white;padding-right: 5px"
+                                            >&#xe68c;
+                                            </i>继续考试</el-button>
+                                        <el-button type="primary" style="float:right;" v-if="list.examStatus=='2'" @click="viewExam(list)" >
+                                            <i class="iconfont"
+                                               style="color: white;padding-right: 5px"
+                                            >&#xe68c;
+                                            </i>查看试卷</el-button>
                                     </div>
                                 </div>
                             </el-carousel-item>

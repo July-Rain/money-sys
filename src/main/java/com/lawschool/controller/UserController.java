@@ -193,8 +193,14 @@ public class UserController extends AbstractController {
      * @return com.lawschool.util.Result
     **/
     @RequestMapping("/udtPsw")
-    public Result updatePassword(String password,String newPassword,HttpServletRequest request){
-        int rst = userService.updatePassword(getUser().getUserId(), password, newPassword,request);
+    public Result updatePassword(@RequestParam Map<String,Object> params,HttpServletRequest request){
+        if(UtilValidate.isEmpty(params.get("oldPassword"))){
+            return Result.error("旧密码不能为空");
+        }
+        if(UtilValidate.isEmpty(params.get("newPassword"))){
+            return Result.error("新密码不能为空");
+        }
+        int rst = userService.updatePassword(getUser().getId(), params.get("oldPassword").toString(),  params.get("newPassword").toString(),request);
         return rst==SUCCESS?Result.ok():Result.error("修改密码失败");
     }
 

@@ -3,63 +3,77 @@
 <head>
     <title>主题练习</title>
     <#include "/header.html">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/Daily.css">
 </head>
 <body>
     <div id="app" v-cloak>
-    <div class="header">
-        <div class="header-left">
-            <img src="${rc.contextPath}/statics/img/logo.png">
-            <a href="javascript:;">江苏省公安机关网上法律学校</a>
-        </div>
-    </div>
     <div class="container">
-        <div class="swiper-container swiper-no-swiping">
-            <div class="swiper-wrapper">
-                <div v-for="(item,index) in dataList"
-                     class="swiper-slide"
-                >
-                    {{index+1}}.
-                    [{{item.questionType=='10004'?'单选题':item.questionType=='10005'?'多选题':'判断题'}}]
-                    {{item.comContent}}
-                    (  )。
-                    <button v-if="item.questionType==10005  && item.right == null" @click="sure(index)">
-                        确定
-                    </button>
-                    <br/>
-                    <br/>
 
-                    <el-radio-group v-model="item.userAnswer"
-                                    v-if="item.questionType==10004 || item.questionType==10006" @change="affirm(index)">
-                        <el-radio :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
-                            {{item2.questionContent}}
-                        </el-radio>
-                        <el-radio :label="item2.id" v-for="item2 in item.answer" v-if="item.right != null" disabled>
-                            {{item2.questionContent}}
-                        </el-radio>
-                        <br/>
-                    </el-radio-group>
+        <div class="daliy">
+            <p class="daliy_title">
+                {{index}}.
+                <span>
+                    {{question.questionType==10004 ? '单选题' : question.questionType==10005 ? '多选题':'判断题'}}
+                </span>
+                {{question.comContent}}
+            </p>
 
-                    <el-checkbox-group v-if="item.questionType==10005" v-model="item.checkList">
-                        <el-checkbox :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
-                            {{item2.questionContent}}
-                        </el-checkbox>
-                        <el-checkbox disabled :label="item2.id" v-for="item2 in item.answer" v-if="item.right != null">
-                            {{item2.questionContent}}
-                        </el-checkbox>
-                        <br/>
-                    </el-checkbox-group>
+            <el-radio-group v-model="answers"
+                            v-if="question.questionType==10004 || question.questionType==10006"
+                            @change="affirm()"
+                            :disabled="isAnswer">
+                <el-radio :label="answer.id" v-for="(answer, index1) in question.answer">
+                    {{indexs[index1]}}、{{answer.questionContent}}
+                </el-radio>
+                <br/>
+            </el-radio-group>
 
-                    <br/>
-                    <br/>
+            <el-checkbox-group v-model="answers" v-if="question.questionType==10005" :disabled="isAnswer">
+                <el-checkbox :label="answer.id" v-for="(answer, index1) in question.answer">
+                    {{indexs[index1]}}、{{answer.questionContent}}
+                </el-checkbox>
+            </el-checkbox-group>
+
+            <div v-show="!isAnswer" class="questionDx">
+                <el-button type="warning"
+                           v-if="question.questionType==10005"
+                           @click="sure(question.answerId)">确定
+                </el-button>
+            </div>
+
+            <div class="answer_area" v-show="isAnswer">
+                <p>你的答案：<span>{{userAnswerStr}}</span>，正确答案：<span>{{rightAnswerStr}}</span></p>
+                <div class="clearfix diff diff5">
+                    <span>试题难度：</span>
+                    <span>{{question.questionDifficulty == '10001' ? '初级' : question.questionDifficulty == '10002' ? '中级' : '高级'}}</span>
+                </div>
+                <div class="basis clearfix">
+                    <span>答案描述：</span>
+                    <span>{{question.answerDescrible}}</span>
+                </div>
+                <div class="collection col-orange">
+                    <i :class="starIcon" @click="doCollect"></i>
+                    {{question.isCollect == 1 ? '已收藏' : '收藏本题'}}
                 </div>
             </div>
+            <div class="container-btn">
+                <el-col :span="10" class="align-rig">
+                    <a href="javascript:;" :class="isLast||index==1?'disabled':''" @click="last"><i class="el-icon-arrow-left"></i>上一题</a>
+                </el-col>
+                <el-col :span="4" class="align-cent">
+                    <a href="javascript:;" @click="save" style="color: #666666;">
+                        保 存
+                    </a>
+                    <a href="javascript:;" @click="commit" style="color: #666666;">
+                        {{title}}
+                    </a>
+                </el-col>
+                <el-col :span="10">
+                    <a href="javascript:;" :class="isNext?'disabled':''" @click="next">下一题<i class="el-icon-arrow-right el-icon--right"></i></a>
+                </el-col>
+            </div>
         </div>
-        <el-button-group>
-            <el-button type="primary" icon="el-icon-arrow-left" @click="last">上一页</el-button>
-            <el-button type="primary" @click="next">下一页<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
-            <el-button type="primary" @click="commit(-1)">保存<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
-            <el-button type="primary" @click="commit(1)">提交本次练习<i class="el-icon-arrow-right el-icon--right" ></i></el-button>
-        </el-button-group>
+
     </div>
 </div>
 </body>

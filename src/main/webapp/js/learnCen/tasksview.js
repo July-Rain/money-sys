@@ -107,7 +107,6 @@ var vm = new Vue({
     },
     filters: {
         timeout: function (time) {
-            debugger
             if(time === null){
                 return true
             }else {
@@ -179,6 +178,10 @@ var vm = new Vue({
         })
     },
     methods: {
+        //序列号计算
+        indexMethod:function (index) {
+            return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
+        },
         // 查询
         onSubmit: function () {
             this.reload();

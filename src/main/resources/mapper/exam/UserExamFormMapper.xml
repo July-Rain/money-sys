@@ -75,6 +75,9 @@
         <if test="examStatus != null and examStatus!='' ">
             and EXAM_STATUS =#{examStatus}
         </if>
+        <if test="source='1'">
+            and exam_status!='2'
+        </if>
         and enabled ='1' and status='1'
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">

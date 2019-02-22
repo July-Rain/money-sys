@@ -24,6 +24,7 @@ var vm = new Vue({
         otherList: [],
         questionList: [],
         examConfig: [],
+        userExam:[],
         mulChoicCheck: [],
         sinChoicCheck: [],
         judge:[],
@@ -48,7 +49,7 @@ var vm = new Vue({
                     if (result.code === 0) {
 
                         vm.examConfig = result.examConfig;
-
+                        vm.userExam = result.userExam;
                         vm.userAnswerForm.userExamId = result.userExam.id;
                         var _mul = result.mulChoicList;
                         if(_mul){

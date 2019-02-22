@@ -20,7 +20,8 @@ var vm = new Vue({
             userArr:[],//接收人数组
             recieveDate:"",
             releaseState:"",//发布状态
-            releaseDate:""
+            releaseDate:"",
+            recievePeopleNmae:'' //接收人
         },
         userTableData:[],//人员表格信息
         // userForm:{
@@ -72,9 +73,10 @@ var vm = new Vue({
             content:[
                 {required: true, message: '请输入消息内容', trigger: 'blur'},
             ],
-            // userName:[
-            //     {required: true, message: '请输入接收人', trigger: 'blur'},
-            // ],
+            recievePeopleNmae:[
+                {required: true, message: '请至少选择一个接收人', trigger: 'blur'}
+                // {type: 'array', required: true, message: '请至少选择一个接收人', trigger: 'change'},
+            ],
 
         },
         dialogConfig: false,//table弹出框可见性
@@ -237,9 +239,7 @@ var vm = new Vue({
 
         },
         handleCheckChange: function (data, checked, indeterminate) {
-            //alert("9999999999")
             console.log(data);tableData
-
         },
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
@@ -341,12 +341,29 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         addConfig: function () {
-
-            vm.sysMsg={};
+            vm.sysMsg={
+                id:"",
+                title:"",//标题
+                noticeType:"",//消息类型
+                content:"",//内容
+                releaseDept:"",//发布单位
+                releasePeople:"",//发布人
+                recieveDept:"",//接收单位
+                deptName:"",//接收单位名称
+                recievePeople:"",//接收人ID
+                userName:"",//接收人名称
+                deptArr:[],//接收单位数组
+                userArr:[],//接收人数组
+                recieveDate:"",
+                releaseState:"",//发布状态
+                releaseDate:"",
+                recievePeopleNmae:''//接收人
+            };
             vm.sysMsg.releasePeople=vm.user.id;
             vm.sysMsg.releasePeopleName=vm.user.fullName;
             this.title02 = "新增";
             this.dialogConfig = true;
+            this.teamtype2=true;
             //parent.location.href =baseURL+"modules/examCen/examConfig.html";
         },
         handleNodeClick: function (data) {

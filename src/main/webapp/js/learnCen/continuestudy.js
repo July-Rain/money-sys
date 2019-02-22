@@ -99,6 +99,10 @@ var vm = new Vue({
 
     },
     methods: {
+        //序列号计算
+        indexMethod:function (index) {
+            return index + 1 + (vm.queryCond.currPage-1) * vm.queryCond.pageSize;
+        },
         // 查询
         onSubmit: function () {
             this.reload();
@@ -199,7 +203,6 @@ var vm = new Vue({
             vm.dialogPic=false;
         },
         handleDetail: function (index , row) {
-            debugger
             //查看详情信息
             //1.记录学习记录
             if(vm.infoFlag=='law'){
