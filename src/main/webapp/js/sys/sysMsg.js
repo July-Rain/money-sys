@@ -363,6 +363,7 @@ var vm = new Vue({
             vm.sysMsg.releasePeopleName=vm.user.fullName;
             this.title02 = "新增";
             this.dialogConfig = true;
+            this.teamtype2=true;
             //parent.location.href =baseURL+"modules/examCen/examConfig.html";
         },
         handleNodeClick: function (data) {

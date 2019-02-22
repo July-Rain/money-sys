@@ -46,6 +46,10 @@ public class MsgController extends AbstractController{
         {
             String[] idArr = msg.getRecievePeople().split(",");
             for(int i=0;i<idArr.length;i++){
+                if(userService.selectUserByUserId(idArr[i])==null)
+                {
+                    System.out.println("sfsdfsd");
+                }
                 if(i==0)
                 {
                     msg.setRecievePeopleNmae(userService.selectUserByUserId(idArr[i]).getFullName());
