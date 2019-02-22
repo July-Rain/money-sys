@@ -48,7 +48,7 @@ public class MsgController extends AbstractController{
             for(int i=0;i<idArr.length;i++){
                 if(userService.selectUserByUserId(idArr[i])==null)
                 {
-                    System.out.println("sfsdfsd");
+                    continue;
                 }
                 if(i==0)
                 {
