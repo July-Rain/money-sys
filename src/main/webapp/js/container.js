@@ -1022,8 +1022,21 @@ var vm = new Vue({
                 }
             });
         },
-        startExam: function (id) {
-            alert("考试id:"+id)
+        startExam : function (list) {
+            var parentWin = window.parent;
+            var id = list.id;
+            var examStatus = list.examStatus;
+            var userExamId = list.userExamId==null?'':list.userExamId;
+            parentWin.document.getElementById("container").src
+                = 'modules/examCen/testPaper.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
+        },
+        viewExam : function (list) {
+            var parentWin = window.parent;
+            var id = list.id;
+            var examStatus = list.examStatus;
+            var userExamId = list.userExamId==null?'':list.userExamId;
+            parentWin.document.getElementById("container").src
+                = 'modules/personalCen/myScoreReport.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
         },
         carouselChange:function (index) {
             vm.popoverTitle = vm.examList[index].examName;

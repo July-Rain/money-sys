@@ -215,6 +215,14 @@
                 top.location.href = self.location.href;
             }
         },
+        created: function(){
+            document.onkeydown = function (event) {
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                if(e && e.keyCode==13){ // enter 键
+                    vm.login()
+                }
+            }
+        },
         methods: {
             handleClick: function (tab, event) {
                 console.log(tab, event);

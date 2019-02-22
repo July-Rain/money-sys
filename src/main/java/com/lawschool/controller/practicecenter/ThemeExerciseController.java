@@ -1,11 +1,16 @@
 package com.lawschool.controller.practicecenter;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractController;
+import com.lawschool.beans.practicecenter.ThemeExerciseEntity;
+import com.lawschool.dao.practicecenter.ThemeExerciseDao;
 import com.lawschool.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.lawschool.beans.User;
@@ -23,6 +28,9 @@ public class ThemeExerciseController extends AbstractController {
 
     @Autowired
     private ThemeExerciseService themeExerciseService;
+
+    @Autowired
+    private ThemeExerciseDao themeExerciseDao;
 
     /**
      * 主题练习首页列表
@@ -57,40 +65,50 @@ public class ThemeExerciseController extends AbstractController {
     /**
      * 开始任务
      * @param id 个人任务ID
-     * @param limit 每页显示题目数量
-     * @param page 当前页
+     * @param index 每页显示题目数量
+     * @param isReview 当前页
      * @return
      */
     @RequestMapping(value = "/paper", method = RequestMethod.GET)
     public Result start(@RequestParam String id,
-                        @RequestParam Integer limit,
-                        @RequestParam Integer page){
+                        @RequestParam Integer index,
+                        @RequestParam String isReview){
 
-        Map<String, Object> resultMap = themeExerciseService.showPaper(id, getUser().getId(), limit, page);
+        Map<String, Object> resultMap = themeExerciseService.showPaper(id, getUser().getId(), index, isReview);
 
-        return Result.ok().put("result", resultMap).put("id", id);
+        return Result.ok()
+                .put("question", resultMap.get("question"))
+                .put("id", id).put("typeName", resultMap.get("typeName"));
     }
 
     /**
      *
      * @param form
-     * @param type
      * @return
      */
-    @RequestMapping(value = "/preserve/{type}", method = RequestMethod.POST)
-    public Result preserve(@RequestBody ThemeForm form,
-                           @PathVariable("type") Integer type){
+    @RequestMapping(value = "/preserve", method = RequestMethod.POST)
+    public Result preserve(@RequestBody ThemeAnswerForm form){
 
         User user = getUser();
 
-        themeExerciseService.preserve(form.getList(), user.getId(), type, form.getId());
+        themeExerciseService.preserve(form, user.getId(), form.getTaskId());
 
-        return Result.ok();
+        return Result.ok().put("recordId", form.getId());
     }
 
-    @RequestMapping(value = "/analysis/{id}", method = RequestMethod.GET)
+    /**
+     * 提交练习，并返回统计信息
+     * @param id
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @RequestMapping(value = "/commit/{id}", method = RequestMethod.POST)
     public Result commit(@PathVariable("id") String id){
 
+        int result = themeExerciseDao.updateStatus(id, ThemeExerciseEntity.STATUS_OFF);
+        if(result < 1){
+            return Result.error("请重新提交...");
+        }
         AnalysisForm resultForm = themeExerciseService.analysisAnswer(id);
 
         return Result.ok().put("form", resultForm);
@@ -107,4 +125,20 @@ public class ThemeExerciseController extends AbstractController {
         String idNew = themeExerciseService.restart(id);
         return Result.ok().put("id", idNew);
     }
+
+    /**
+     * 收藏题目
+     * @return
+     */
+    @RequestMapping(value = "/doCollect/{type}", method = RequestMethod.POST)
+    public Result doCollect(@RequestBody CommonForm params, @PathVariable("type") Integer type){
+
+        String id = params.getKey();// 题目ID
+        String recordId = params.getValue();// 记录ID
+
+        themeExerciseService.doCollect(id, recordId, type);
+
+        return Result.ok();
+    }
+
 }

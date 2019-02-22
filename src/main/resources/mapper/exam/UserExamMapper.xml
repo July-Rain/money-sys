@@ -117,6 +117,10 @@
       EXAM_CONFIG_ID=#{examConfigId} and exam_status='2'
     </select>
 
+    <select id="getAuditList" resultType="string">
+      select id from LAW_USER_EXAM WHERE
+      EXAM_CONFIG_ID=#{examConfigId} and is_FIN_MARK=#{status}
+    </select>
     <select id="getListByIds" resultType="com.lawschool.form.UserExamForm">
         SELECT
             A . ID ID,

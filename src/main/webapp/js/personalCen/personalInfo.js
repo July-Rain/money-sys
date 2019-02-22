@@ -1,82 +1,122 @@
+
 var vm = new Vue({
     el: '#app',
-    data: {
-        src: "../../statics/img/dog.jpg",
-        info: {
-            name: "", // 用户名
-            number: "", // 警号
-            id: "", // 身份证号
-            department: "", // 部门名称
-            oldPassword: "", // 旧密码
-            newPassword: "", // 新密码
-            newPassValidator: "" // 新密码确认
-        },
-        rules: {
-            name: [
-                { required: true, message: '用户名不能为空', trigger: 'blur'}
-            ],
-            number: [
-                { required: true, message: '警号不能为空', trigger: 'blur'}
-            ],
-            id: [
-                { required: true, message: '身份证不能为空', trigger: 'blur'},
-                { type: 'number', message: '身份证必须为数字值' ,trigger: 'change'}
-            ],
-            department: [
-                { required: true, message: '部门名称不能为空', trigger: 'blur'}
-            ],
-            oldPassword: [
-                { required: true, message: '旧密码不能为空', trigger: 'blur'}
-            ],
-            newPassword: [
-                { required: true, message: '新密码不能为空', trigger: 'blur'}
-            ],
-            newPassValidator: [
-                { required: true, message: '请再输入一次新密码', trigger: 'blur'}
-            ]
-        },
+    data: function (){
+        var validatePass= function (rule, value, callback) {
+            if (value === '') {
+                callback(new Error('请输入密码'));
+            } else {
+                if (vm.password.newPassValidator !== '') {
+                    vm.$refs.password.validateField('newPassValidator');
+                }
+                callback();
+            }
+        };
+        var validatePass2 = function (rule, value, callback) {
+            if (value === '') {
+                callback(new Error('请再次输入密码'));
+            } else if (value !== vm.password.newPassword) {
+                callback(new Error('两次输入密码不一致!'));
+            } else {
+                callback();
+            }
+        };
+        return {
+            src: baseURL+"/statics/img/police_head.png",
+            importFileUrl:baseURL+"sys/upload",
+            password:{
+                oldPassword: "", // 旧密码
+                newPassword: "", // 新密码
+                newPassValidator: "", // 新密码确认
+            },
+            info: {},
+            rules: {
+                oldPassword: [
+                    { required: true, message: '旧密码不能为空', trigger: 'blur'}
+                ],
+                newPassword: [
+                    { required: true, message: '新密码不能为空', trigger: 'blur',validator: validatePass}
+                ],
+                newPassValidator: [
+                    { required: true, message: '',trigger: 'blur',validator: validatePass2}
+                ]
+            }
+        }
     },
     methods: {
         //获取url路径中参数
         toHome: function () {
             parent.location.reload()
         },
-        submitForm: function(info) {
-            this.$refs.form.validate((valid) => {
+        // 保存
+        submitForm: function (formName) {
+            this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    alert('submit!');
+                    console.log(valid)
+                    var url = "sys/udtPsw";
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + url,
+                        dataType: "json",
+                        data: vm.password,
+                        success: function (result) {
+                            if (result.code === 0) {
+                                vm.$alert('操作成功', '提示', {
+                                    confirmButtonText: '确定',
+                                    // callback: function () {
+                                    //     vm.dialogConfig = false;
+                                    //     vm.reload();
+                                    // }
+                                });
+                            } else {
+                                alert("原密码错误,修改密码失败");
+                            }
+                        }
+                    });
                 } else {
-                    alert('error submit!!');
+                    console.log('error submit!!');
                     return false;
                 }
             });
         },
-        changeAvatar: function () {
-            this.src = "../../statics/img/new.png"
+        // changeAvatar: function () {
+        //     this.src = "../../statics/img/new.png"
+        // },
+        //上传
+        uploadSuccess: function(response, file, fileList) {
+            debugger
+            vm.info.photo=response.accessoryId;
+            $.ajax({
+                type: "POST",
+                url: baseURL + "sys/updata",
+                contentType: "application/json",
+                data: JSON.stringify(vm.info),
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.$alert('操作成功', '提示', {
+                            confirmButtonText: '确定',
+                            // callback: function () {
+                            //     vm.dialogConfig = false;
+                            //     vm.reload();
+                            // }
+                        });
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+
+        beforeUpload: function () {
+            //to do
+        },
+
+        uploadProcess: function () {
+
         },
 
     },
     created: function(){
-        /*this.$nextTick(function () {
-
-            //学年目标
-            $.ajax({
-                type: "GET",
-                url: baseURL + "schoolYearPlan/yearPlan",
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-
-                    } else {
-
-                    }
-                }
-            });
-        });*/
-        // 模拟数据
-        this.info.name = 'Sansa';
-        this.info.number = 321;
-        this.info.id = 123;
-        this.info.department = '执勤';
+        this.info=getUser();
     },
 });

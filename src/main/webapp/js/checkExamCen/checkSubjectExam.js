@@ -20,17 +20,20 @@ var vm = new Vue({
         subjectList: [],
         examConfig:{},
         subject: [],
-        subScore:[]
-
+        subScore:[],
+        checkStatus:''
     },
     created: function () {
         this.$nextTick(function () {
+            vm.checkStatus = checkStatus;
             if (checkStatus == '0') {
                 //开始考试
                 vm.startCheckExam();
-            } else {
+            } else if (checkStatus == '1') {
                 //继续考试
-                vm.continueCheckExam();
+                vm.startCheckExam();
+            }else if (checkStatus =='3'){
+                vm.auditCheckExam();
             }
         })
 
@@ -123,10 +126,16 @@ var vm = new Vue({
                 vm.userAnswerForm.checkExamForm.push(obj)
             }
             console.info(vm.userAnswerForm);
+            var url ='';
+            if (checkStatus=='3'){
+                url = "check/exam/commitAuditExam";
+            }else{
+                url = "check/exam/commitCheckExam";
+            }
             $.ajax({
                 type: "POST",
                 async: false,
-                url: baseURL + "check/exam/commitCheckExam",
+                url: baseURL + url,
                 data: JSON.stringify(
                     vm.userAnswerForm
                 ),
@@ -144,6 +153,39 @@ var vm = new Vue({
                 }
             });
         },
+        auditCheckExam : function () {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "check/exam/auditCheckExam",
+                data: {
+                    userExamId: userExamId
+                },
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.examConfig = result.examConfig;
+                        //主观
+                        vm.subjectList = result.subjectList
+                        /*if(vm.subjectList){
+                            for(var i=0;i<vm.subjectList.length;i++){
+                                if(vm.subjectList[i].userAnswer){
+                                    vm.subject.push(vm.subjectList[i].userAnswer);
+                                }else{
+                                    vm.subject.push('');
+                                }
+                                console.info("subject="+vm.subject);
+                            }
+                        }
+*/
+
+                    } else {
+                        alert(result.msg);
+                        var parentWin = window.parent;
+                        parentWin.document.getElementById("container").src
+                            = 'modules/examCen/userExam.html';
+                    }
+                }
+            });
+        }
         // save: function () {
         //     vm.userAnswerForm.checkExamForm = [];
         //     vm.userAnswerForm.checkExamUserId = checkExamUserId;

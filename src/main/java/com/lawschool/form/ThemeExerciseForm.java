@@ -11,6 +11,7 @@ public class ThemeExerciseForm {
     private String themeName;// 主题名称
     private String total;// 题目总数
     private String answerNum;// 已回答数量
+    private String rightNum;// 正确数量
     private String status;// 任务状态
 
     public String getId() {
@@ -60,5 +61,12 @@ public class ThemeExerciseForm {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
+    public String getRightNum() {
+        return rightNum;
+    }
+
+    public void setRightNum(String rightNum) {
+        this.rightNum = rightNum;
+    }
 }
