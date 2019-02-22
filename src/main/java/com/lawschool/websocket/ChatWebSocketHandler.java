@@ -217,6 +217,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 								 sendMessageToUser(battlePlatform.getPlay2(),message);//给另一个人发消息
 								 USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay2()).close();
 
+								 competitionOnlineService.recordScore(battlePlatformId,"1",timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()).getWinReward(),"OnlinPk",battlePlatform.getPlay2());
 
 							 }
 							 else if(loginUser.getId().equals(battlePlatform.getPlay2()))
@@ -229,6 +230,9 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 								 TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 								 sendMessageToUser(battlePlatform.getPlay1(),message);//给另一个人发消息
 								 USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).close();
+
+								 competitionOnlineService.recordScore(battlePlatformId,"1",timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()).getWinReward(),"OnlinPk",battlePlatform.getPlay1());
+
 							 }
 
 
@@ -452,7 +456,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 
 
 
-				msg.setText("玩家"+loginUser.getFullName()+"加入,欢迎。。。。。。。。。。");
+				msg.setText("玩家"+loginUser.getFullName()+"加入,欢迎");
 				msg.setDate(new Date());
 
 				//把题目塞到信息里面去往页面打
