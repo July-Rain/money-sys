@@ -244,7 +244,7 @@ var vm = new Vue({
                 },
                 series : [
                     {
-                        name:'学习时长统计',
+                        name:'考试次数',
                         type:'pie',
                         radius : '55%',
                         center: ['50%', '50%'],
@@ -315,7 +315,7 @@ var vm = new Vue({
                 },
                 series : [
                     {
-                        name:'学习情况统计',
+                        name:'考试分数分布',
                         type:'pie',
                         radius : '55%',
                         center: ['50%', '50%'],
@@ -663,7 +663,7 @@ var vm = new Vue({
                 },
                 series : [
                     {
-                        name:'游戏类型',
+                        name:'主题回答数量(单位:题)',
                         type:'pie',
                         radius : '55%',
                         center: ['50%', '50%'],
@@ -725,7 +725,7 @@ var vm = new Vue({
                 },
                 series : [
                     {
-                        name:'游戏类型',
+                        name:'主题回答正确数量(单位:题)',
                         type:'pie',
                         radius : '55%',
                         center: ['50%', '50%'],

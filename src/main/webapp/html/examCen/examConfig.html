@@ -35,7 +35,7 @@
             padding-bottom: 0;
         }
         .configure .el-select>.el-input{
-            width: 220px;
+            /*width: 220px;*/
         }
         .configure .text-right{
             text-align: right;
@@ -46,6 +46,9 @@
         .configure .el-form-item--mini .el-form-item__content{
             height: 30px;
             line-height: 30px;
+        }
+        .dialog_minW750>.el-dialog{
+            min-width: 900px;
         }
     </style>
 </head>
@@ -221,19 +224,19 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">
-                    <el-form-item label="使用部门" prop="deptName">
+                    <el-form-item label="使用部门：" prop="deptName">
                         <el-input v-model="examConfig.deptName" readonly
                                   @focus="chooseDept" placeholder="请选择使用部门" :disabled="view" clearable></el-input>
                     </el-form-item>
                     </el-col>
                     <el-col :span="24">
-                    <el-form-item label="使用人员" prop="userName">
+                    <el-form-item label="使用人员：" prop="userName">
                         <el-input v-model="examConfig.userName" readonly
                                   @focus="chooseUser" placeholder="请选择使用人员" :disabled="view" clearable></el-input>
                     </el-form-item>
                     </el-col>
                     <el-col :span="24">
-                        <el-form-item label="是否启用" prop="enabled">
+                        <el-form-item label="是否启用：" prop="enabled">
                             <el-switch v-model="examConfig.enabled" active-text="有效" inactive-text="无效" active-value="1"
                                        inactive-value="0" :disabled="view"></el-switch>
                         </el-form-item>

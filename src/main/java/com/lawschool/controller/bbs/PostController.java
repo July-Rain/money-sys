@@ -1,5 +1,6 @@
 package com.lawschool.controller.bbs;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.bbs.PostCollectionEntity;
@@ -53,12 +54,13 @@ public class PostController extends AbstractController {
         return Result.ok().put("data", postEntity);
     }
 
+    @SysLog("添加帖子")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody PostEntity entity){
         postService.save(entity);
         return Result.ok();
     }
-
+    @SysLog("删除帖子")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Result delete(@RequestBody List<String> ids){
         postService.delete(ids);

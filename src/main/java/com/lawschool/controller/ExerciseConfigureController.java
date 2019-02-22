@@ -1,5 +1,6 @@
 package com.lawschool.controller;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.ExerciseConfigureEntity;
@@ -8,6 +9,7 @@ import com.lawschool.form.QuestForm;
 import com.lawschool.service.ExerciseConfigureService;
 import com.lawschool.util.RedisUtil;
 import com.lawschool.util.Result;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +62,7 @@ public class ExerciseConfigureController extends AbstractController{
      * @param entity
      * @return
      */
+    @SysLog("新增练习配置,并生成练习卷")
     @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody ExerciseConfigureEntity entity){
@@ -67,9 +71,28 @@ public class ExerciseConfigureController extends AbstractController{
         entity.preInsert(user.getId());
         entity.setDelFlag(0);
         entity.setUserName(user.getUserName());
-        // TODO 前端先不获取用户list
-        if(StringUtils.isNotBlank(entity.getRangeType()) &&  "2".equals(entity.getRangeType())){
+
+        if("0".equals(entity.getRangeType())){
+            // 个人
             entity.setUsers(user.getId());
+            entity.setDepts(null);
+        } else if("1".equals(entity.getRangeType())){
+            // 公开
+            entity.setUsers("-1");
+            entity.setDepts("-1");
+        } else if("2".equals(entity.getRangeType())){
+            // 部门
+            if(CollectionUtils.isEmpty(entity.getDeptIds()) && CollectionUtils.isEmpty(entity.getUserIds())){
+                return Result.error("请设置使用部门或使用人员信息...");
+            }
+
+            if(CollectionUtils.isNotEmpty(entity.getDeptIds())){
+                entity.setDepts(String.join(",", entity.getDeptIds()));
+            }
+
+            if(CollectionUtils.isNotEmpty(entity.getUserIds())){
+                entity.setUsers(String.join(",", entity.getUserIds()));
+            }
         }
 
         exerciseConfigureService.saveConfigure(entity);
@@ -95,6 +118,7 @@ public class ExerciseConfigureController extends AbstractController{
      * @param prefix
      * @return
      */
+    @SysLog("生成练习卷名称")
     @RequestMapping(value = "/createName", method = RequestMethod.GET)
     public Result createName(@RequestParam String prefix){
 
@@ -116,6 +140,7 @@ public class ExerciseConfigureController extends AbstractController{
      * @param id
      * @return
      */
+    @SysLog("删除练习配置")
     @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public Result delete(@PathVariable("id") String id){

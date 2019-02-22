@@ -1,5 +1,6 @@
 package com.lawschool.controller.system;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.User;
@@ -36,6 +37,7 @@ public class TopicTypeController extends AbstractController {
         return Result.ok().put("page", page);
     }
 
+    @SysLog("添加主题类型")
     @ResponseBody
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody TopicTypeEntity entity){
@@ -48,6 +50,7 @@ public class TopicTypeController extends AbstractController {
         return Result.ok();
     }
 
+    @SysLog("删除主题类型")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Result delete(@RequestBody String id){
         topicTypeService.updateDelFlag(id);

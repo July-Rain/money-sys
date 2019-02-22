@@ -1,6 +1,7 @@
 package com.lawschool.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.User;
@@ -99,6 +100,7 @@ public class UserController extends AbstractController {
         return Result.ok().put("page",pageUtils);
     }
 
+    @SysLog("添加用户")
     @RequestMapping("/add")
     public Result addUorT(@RequestBody User user){
         Result result= userService.addUser(user);
@@ -160,6 +162,7 @@ public class UserController extends AbstractController {
     * @Param [userId]
     * @return com.lawschool.util.Result
    **/
+   @SysLog("禁用用户")
     @RequestMapping("/deleteUser")
     public Result deleteUser(String id){
         int rst = userService.updateUserStatus(id, 2000, 800);
@@ -173,6 +176,7 @@ public class UserController extends AbstractController {
      * @Param [userId]
      * @return com.lawschool.util.Result
     **/
+    @SysLog("恢复用户")
     @RequestMapping("/recoveryUser")
     public Result recoveryUser(String id){
         int rst = userService.updateUserStatus(id, 800, 2000);
@@ -192,6 +196,7 @@ public class UserController extends AbstractController {
      * @Param [password, newPassword, request]
      * @return com.lawschool.util.Result
     **/
+    @SysLog("修改密码")
     @RequestMapping("/udtPsw")
     public Result updatePassword(@RequestParam Map<String,Object> params,HttpServletRequest request){
         if(UtilValidate.isEmpty(params.get("oldPassword"))){
@@ -226,6 +231,7 @@ public class UserController extends AbstractController {
      * @Param [user]
      * @return com.lawschool.util.Result
     **/
+    @SysLog("修改用户信息")
     @RequestMapping("/updata")
     public Result update(@RequestBody User user){
         int rst = userService.updateUser(user);
@@ -238,6 +244,7 @@ public class UserController extends AbstractController {
      * @Param [user]
      * @return com.lawschool.util.Result
      **/
+    @SysLog("修改用户信息")
     @RequestMapping("/updateBymyMedal")
     public Result updateBymyMedal(String myMedal){
         String userId=getUser().getId();
@@ -252,7 +259,7 @@ public class UserController extends AbstractController {
         User u = (User) SecurityUtils.getSubject().getPrincipal();
         return Result.ok().put("u",u);
     }
-
+    @SysLog("删除用户信息")
     @RequestMapping("/deleteuser")
     public Result deleteuser(String id){
         userService.deleteById(id);

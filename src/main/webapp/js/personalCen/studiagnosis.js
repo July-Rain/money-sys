@@ -27,7 +27,7 @@ var vm = new Vue({
                 value: '0',
                 label: '本学年'
             }],
-            selected: '',
+            selected: '0',
             colorList: ['#52c9e7','#3e98e8','#81bdd8','#5ebd5c','#feae24','#f97a1f','#f26443','#b97deb','#7e72f2','#4f7ee9'],
             studyPerNames: [],
             studyPerData: [],//学习占比
