@@ -4,10 +4,11 @@
  * Description:配置
  */
 var editor = null;
-var menuId=$("#menuId").val();
+var menuId=getUrlParam("id");
 var vm = new Vue({
     el: '#app',
     data: {
+        breadArr:[],
         idArr:[],
         formInline: { // 搜索表单
             stuTitle: '',
@@ -137,6 +138,7 @@ var vm = new Vue({
         this.$nextTick(function () {
             this.reload();
             this.reloadUser();
+            this.breadArr=getBreadcrumb(menuId);
         })
 
     },

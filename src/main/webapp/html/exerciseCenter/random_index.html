@@ -15,9 +15,9 @@
         max-width: 400px !important;
         width: 400px !important;
     }
-    .el-form-item__content{
-        padding-left: 100px;
-    }
+    /*.el-form-item__content{*/
+        /*padding-left: 100px;*/
+    /*}*/
     .el-form-item__label{
         margin-left: 5%;
     }
@@ -150,9 +150,9 @@
         </el-pagination>
 
         <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
-            <el-row>
+            <div>
                 <el-col :span="24">
-                    <el-form :model="exercise" ref="exercise" label-width="100px" class="demo-sysMenu" size="mini">
+                    <el-form size="mini" :model="exercise" ref="exercise" label-width="100px" class="demo-sysMenu" >
                         <el-form-item label="试题难度：">
                             <el-checkbox-group v-model="diffs">
                                 <el-checkbox v-for="item in diffList" :label="item">
@@ -188,14 +188,13 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-
-                        <el-form-item>
-                            <el-button type="primary" @click="saveTask()">开始练习</el-button>
-                        </el-form-item>
-
                     </el-form>
                 </el-col>
-            </el-row>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="closeDia">取消</el-button>
+                <el-button type="primary" @click="saveTask()">开始练习</el-button>
+            </div>
         </el-dialog>
     </div>
 </div>

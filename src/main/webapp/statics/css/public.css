@@ -134,5 +134,7 @@ ul li{
     margin-bottom: 15px;
 }
 /*el-dialog end*/
-
+.el-menu--popup{
+    min-width: auto;
+}
 /*element 公共样式修改  end */

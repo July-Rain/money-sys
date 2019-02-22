@@ -297,7 +297,7 @@
             <el-row>
                 <el-col :span="24">
                     <el-form-item label="阅卷人数：" prop="checkNum">
-                        <el-input-number size="medium" v-model="checkSetting.checkNum" placeholder="请输入阅卷人数" :min="0"
+                        <el-input-number v-model="checkSetting.checkNum" placeholder="请输入阅卷人数" :min="0"
                                          :max="1000" clearable
                         ></el-input-number>
                     </el-form-item>
@@ -307,7 +307,7 @@
                         <el-select v-model="checkSetting.paperPerSetNum"
                                    collapse-tags
                                    style="width: auto"
-                                   placeholder="请选择每套试卷阅卷人数" size="medium">
+                                   placeholder="请选择每套试卷阅卷人数" >
                             <el-option label="1人" value="1"></el-option>
                             <el-option label="2人" value="2"></el-option>
                         </el-select>
@@ -318,7 +318,7 @@
                         <el-select v-model="checkSetting.isAibitration"
                                    collapse-tags
                                    style="width: auto"
-                                   placeholder="请选择是否需要审核人员" size="medium">
+                                   placeholder="请选择是否需要审核人员" >
                             <el-option label="是" value="0"></el-option>
                             <el-option label="否" value="1"></el-option>
                         </el-select>
@@ -326,7 +326,7 @@
                 </el-col>
                 <el-col :span="24" v-if="checkSetting.isAibitration == 0">
                     <el-form-item label="审核分差值：" prop="checkScoreDifference">
-                        <el-input-number size="medium" v-model="checkSetting.checkScoreDifference"
+                        <el-input-number v-model="checkSetting.checkScoreDifference"
                                          placeholder="请输入审核分差值" :min="0" :max="1000" clearable
                         ></el-input-number>
                     </el-form-item>
@@ -348,7 +348,7 @@
             <el-row>
                 <el-col :span="24">
                     <el-form-item label="阅卷人数：" prop="checkNum">
-                        <el-input-number size="medium" v-model="checkSetting.checkNum" placeholder="请输入阅卷人数" :min="0"
+                        <el-input-number  v-model="checkSetting.checkNum" placeholder="请输入阅卷人数" :min="0"
                                          :max="1000" :disabled="true"
                         ></el-input-number>
                     </el-form-item>
@@ -358,7 +358,7 @@
                         <el-select v-model="checkSetting.paperPerSetNum"
                                    collapse-tags
                                    style="width: auto"
-                                   placeholder="请选择每套试卷阅卷人数" size="medium" :disabled="true">
+                                   placeholder="请选择每套试卷阅卷人数"  :disabled="true">
                             <el-option label="1人" value="1"></el-option>
                             <el-option label="2人" value="2"></el-option>
                         </el-select>
@@ -369,7 +369,7 @@
                         <el-select v-model="checkSetting.isAibitration"
                                    collapse-tags
                                    style="width: auto"
-                                   placeholder="请选择是否需要审核人员" size="medium" :disabled="true">
+                                   placeholder="请选择是否需要审核人员"  :disabled="true">
                             <el-option label="是" value="0"></el-option>
                             <el-option label="否" value="1"></el-option>
                         </el-select>
@@ -377,7 +377,7 @@
                 </el-col>
                 <el-col :span="24" v-if="checkSetting.isAibitration == 0">
                     <el-form-item label="审核分差值：" prop="checkScoreDifference">
-                        <el-input-number size="medium" v-model="checkSetting.checkScoreDifference"
+                        <el-input-number  v-model="checkSetting.checkScoreDifference"
                                          placeholder="请输入审核分差值" :min="0" :max="1000" :disabled="true"
                         ></el-input-number>
                     </el-form-item>
