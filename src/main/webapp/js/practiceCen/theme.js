@@ -11,7 +11,20 @@ var vm = new Vue({
             if(id == null || id == ''){
                 vm.found(obj);
             } else {
-                vm.jump(id);
+                var num;
+                if(obj.answerNum != null && obj.answerNum != ''){
+                    if(obj.answerNum == obj.total){
+                        num = obj.answerNum - 1;
+                    } else {
+                        num = obj.answerNum;
+                    }
+                } else {
+                    num = 0;
+                }
+                var parentWin = window.parent;
+                parentWin.document.getElementById("container").src
+                    = 'modules/exerciseCenter/theme_answer.html?id='+id
+                    +'&indexs='+num;
             }
 
         },
@@ -25,18 +38,16 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         var id = result.id;
-                        vm.jump(id);
+
+                        var parentWin = window.parent;
+                        parentWin.document.getElementById("container").src
+                            = 'modules/exerciseCenter/theme_answer.html?id='+id
+                            +'&indexs='+0;
                     } else {
                         alert(result.msg);
                     }
                 }
             });
-        },
-        jump: function (id) {
-            // 跳转页面
-            var parentWin = window.parent;
-            parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/theme_answer.html?id='+id;
         },
         reStart: function (id) {
             $.ajax({
@@ -46,7 +57,10 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         var nid = result.id;
-                        vm.jump(nid);
+                        var parentWin = window.parent;
+                        parentWin.document.getElementById("container").src
+                            = 'modules/exerciseCenter/theme_answer.html?id='+nid
+                            +'&indexs='+0;
                     } else {
                         alert(result.msg);
                     }
@@ -55,7 +69,14 @@ var vm = new Vue({
         },
         toHome: function () {
            parent.location.reload();
-        }
+        },
+        review: function (id) {
+            // 错题回顾
+            // 跳转页面
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/exerciseCenter/theme_answer.html?id='+id+'&isReview=1';
+        },
 
     },
     created: function(){

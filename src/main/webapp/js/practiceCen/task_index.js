@@ -1,3 +1,4 @@
+var menuId = getUrlParam('id');
 var vm = new Vue({
     el: '#app',
     data: {
@@ -9,7 +10,8 @@ var vm = new Vue({
             page: 1,
             count: 0,
             endTime:"",
-            startTime:""
+            startTime:"",
+            breadArr:[]
         },
     },
     methods: {
@@ -74,6 +76,7 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
+            this.breadArr=getBreadcrumb(menuId);
             vm.refresh();
         })
     }

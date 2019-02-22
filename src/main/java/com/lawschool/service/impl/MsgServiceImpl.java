@@ -91,7 +91,7 @@ public class MsgServiceImpl extends ServiceImpl<MsgDao,Msg> implements MsgServic
 
     /**
      * 删除单条数据
-     * @param id
+     * @param id a
      */
     @Override
     public void deleteByMsgId(String id) {

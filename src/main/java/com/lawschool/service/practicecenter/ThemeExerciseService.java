@@ -34,10 +34,11 @@ public interface ThemeExerciseService extends AbstractService<ThemeExerciseEntit
      * 展示题目信息（带分页）
      * @param id 个人任务ID
      * @param userId 当前用户ID
-     * @param limit 每页显示题目数量
+     * @param index 当前题目序号
+     * @param index 是否回顾
      * @return
      */
-    Map<String, Object> showPaper(String id, String userId, Integer limit, Integer page);
+    Map<String, Object> showPaper(String id, String userId, Integer index, String isReview);
 
     /**
      * 保存个人任务，并返回生成的ID
@@ -48,10 +49,10 @@ public interface ThemeExerciseService extends AbstractService<ThemeExerciseEntit
 
     /**
      * 保存答题记录
-     * @param list
+     * @param form
      * @param userId
      */
-    void preserve(List<ThemeAnswerForm> list, String userId, Integer type, String id);
+    void preserve(ThemeAnswerForm form, String userId, String id);
 
     /**
      * 提交 OR 保存
@@ -75,4 +76,12 @@ public interface ThemeExerciseService extends AbstractService<ThemeExerciseEntit
     String restart(String id);
 
     AnalysisForm analysis(String month, String userId);
+
+    /**
+     * 更新收藏状态
+     * @param id
+     * @param recordId
+     * @return
+     */
+    boolean doCollect(String id, String recordId, Integer type);
 }
