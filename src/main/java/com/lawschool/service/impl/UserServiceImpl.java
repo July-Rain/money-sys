@@ -149,7 +149,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
     @Override
     @Transactional(rollbackFor=Exception.class)
     public int login(String userCode,String password,HttpServletRequest request) {
-        List<User> users = userMapper.selectList(new EntityWrapper<User>().eq("USER_CODE",userCode));
+        List<User> users = userMapper.selectList(new EntityWrapper<User>().eq("id",userCode));
         if(users!=null && users.size()>0){
             User user=users.get(0);
             String salt=user.getSalt();
@@ -205,14 +205,13 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
     public int updatePassword(String userCode, String password, String newPassword,HttpServletRequest request) {
         int rst = this.login(userCode, password,request);
         if(rst==0){//用户存在
-            UserExample example=new UserExample();
-            example.createCriteria().andUserCodeEqualTo(userCode);
             User user=new User();
             String salt = RandomStringUtils.randomAlphanumeric(20);//生成盐
             String pass2=MD5Util.Md5Hex(newPassword+salt);//数据库中新密码
             user.setSalt(salt);
             user.setPassword(pass2);
-            int resr = userMapper.updateByExampleSelective(user, example);//修改密码
+            user.setId(userCode);
+            int resr = userMapper.update(user, new EntityWrapper<User>().eq("ID", user.getId()));//修改密码
             return resr==1?SUCCESS:ERROR;
         }
         return rst;//-2    -1

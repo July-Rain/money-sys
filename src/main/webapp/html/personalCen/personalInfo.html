@@ -67,48 +67,62 @@
         <div class="main">
             <div class="left">
                 <div class="avatar">
-                    <img :src="src" alt="用户头像">
-                    <p @click="changeAvatar">修改头像</p>
+                    <img v-if="info.photo" :src="'${rc.contextPath}/sys/download?accessoryId='+info.photo" alt="用户头像">
+                    <img v-if="!info.photo" :src="src" alt="用户头像">
+                    <el-upload
+                            class="avatar-uploader"
+                            name="importfile"
+                            :action="importFileUrl"
+                            :show-file-list="false"
+                            :on-success="uploadSuccess"
+                            :before-upload="beforeUpload">
+                        <!--<el-button type="primary" >点击上传</el-button>-->
+                        <p>修改头像</p>
+                    </el-upload>
                 </div>
             </div>
             <div class="right">
-                <el-form :model="info" :rules="rules" ref="form" label-width="160px" label-position="left">
+                <el-form :model="password" :rules="rules" ref="password" label-width="160px" label-position="left">
                     <div class="form">
                         <p class="info">个人基本信息</p>
                         <ul class="gray">
                             <li>
                                 <el-form-item
-                                        prop="name"
+                                        prop="fullName"
                                         label="用户名"
                                         >
-                                    <el-input v-model="info.name" :disabled="true"></el-input>
+                                    <el-input v-model="info.fullName" :disabled="true"></el-input>
                                 </el-form-item>
                             </li>
                             <li>
                                 <el-form-item
-                                        prop="number"
+                                        prop="userPoliceId"
                                         label="警号"
                                         >
-                                    <el-input v-model="info.number" :disabled="true"></el-input>
+                                    <el-input v-model="info.userPoliceId" :disabled="true"></el-input>
                                 </el-form-item>
                             </li>
                             <li>
                                 <el-form-item
-                                        prop="id"
+                                        prop="userCode"
                                         label="身份证"
                                         >
-                                    <el-input v-model.number="info.id" :disabled="true"></el-input>
+                                    <el-input v-model.number="info.userCode" :disabled="true"></el-input>
                                 </el-form-item>
                             </li>
                             <li>
                                 <el-form-item
-                                        prop="department"
+                                        prop="orgName"
                                         label="部门名称"
                                         >
-                                    <el-input v-model="info.department" :disabled="true"></el-input>
+                                    <el-input v-model="info.orgName" :disabled="true"></el-input>
                                 </el-form-item>
                             </li>
                         </ul>
+                    <!--</div>-->
+                <!--</el-form>-->
+                <!--<el-form :model="password" :rules="rules" ref="form" label-width="160px" label-position="left">-->
+                    <!--<div class="form">-->
                         <p class="info">修改登录密码</p>
                         <ul>
                             <li>
@@ -116,25 +130,25 @@
                                         label="旧密码"
                                         prop="oldPassword"
                                 >
-                                    <el-input v-model="info.oldPassword"></el-input>
+                                    <el-input v-model="password.oldPassword"></el-input>
                                 </el-form-item>
                             </li>
                             <li>
                                 <el-form-item
                                         label="输入新密码"
                                         prop="newPassword">
-                                    <el-input v-model="info.newPassword"></el-input>
+                                    <el-input v-model="password.newPassword" ></el-input>
                                 </el-form-item>
                             </li>
                             <li>
                                 <el-form-item
                                         label="输入确认新密码"
                                         prop="newPassValidator">
-                                    <el-input v-model="info.newPassValidator"></el-input>
+                                    <el-input v-model="password.newPassValidator"  ></el-input>
                                 </el-form-item>
                             </li>
                         </ul>
-                        <el-button class="button" type="primary" @click="submitForm(info)">
+                        <el-button class="button" type="primary" @click="submitForm('password')">
                             <i class="iconfont icon-baocun"
                                style="color: white;font-size: 16px;">
                             </i>
