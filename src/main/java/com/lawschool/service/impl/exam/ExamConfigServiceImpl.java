@@ -65,14 +65,14 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 		// 获取当前时间
 		Date date = new Date();
 		if (date.after(examConfig.getStartTime())) {
-			Result.error("考试开始后不允许删除");
+			return	Result.error("考试开始后不允许删除");
 		} else {
 			// 删除主表
 			examConfigDao.deleteById(id);
 			//删除关联关系表
 			deleteRelated(id);
+			return Result.ok();
 		}
-		return Result.ok();
 	}
 	
 	public void updateConfig(ExamConfig examConfig) throws Exception {
