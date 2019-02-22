@@ -94,6 +94,8 @@ p,span{
 <div id="app" v-cloak>
     <div id="paper">
     <h2>{{examConfig.examName}}</h2>
+        <h3>试卷总分：{{examConfig.examScore}}</h3>
+        <h3>我的分数：{{userExam.score}}</h3>
     <el-form :model="testForm" v-if="sinChoicList.length">
         <div class="subTitle">
             <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题1分，共50分。</p>
@@ -105,6 +107,10 @@ p,span{
                     {{item2.questionContent}}
                 </el-radio>
             </el-radio-group>
+            <p></p>
+            <p class="ques_name" v-if="item.rightAnswer!=null">正确答案：
+                <span v-for="item2 in item.rightAnswer" >{{item2.questionContent}};</span></p>
+            <p>    本题获得分数：{{item.userScore}}分</p>
         </div>
         <div class="subTitle" v-if="mulChoicList.length">
             <p>二、多选题。</p>
@@ -120,6 +126,10 @@ p,span{
                 </el-checkbox>
                 <br/>
             </el-checkbox-group>
+            <p></p>
+            <p class="ques_name" v-if="item.rightAnswer!=null">正确答案：
+                <span v-for="item2 in item.rightAnswer" >{{item2.questionContent}};</span></p>
+            <p>    本题获得分数：{{item.userScore}}分</p>
         </div>
 
         <div class="subTitle" v-if="judgeList.length">
@@ -129,19 +139,28 @@ p,span{
             <div v-for="(item,index) in judgeList" class="question_area">
                 <p class="ques_name">{{index+1}}. {{item.comContent}} 。</p>
                 <el-radio-group v-model="judge[index]">
-                    <el-adio :label="item2.id" v-for="item2 in item.answer">
+                    <el-radio :label="item2.id" v-for="item2 in item.answer">
                         {{item2.questionContent}}
-                    </el-adio>
+                    </el-radio>
                 </el-radio-group>
+                <p class="ques_name" v-if="item.rightAnswer!=null">正确答案：
+                    <span v-for="item2 in item.rightAnswer" >{{item2.questionContent}};</span></p>
+                <p>    本题获得分数：{{item.userScore}}分</p>
             </div>
+            <p></p>
         </div>
         <div class="subTitle" v-if="subjectList[0]">
             <p>四、主观题</p>
         </div>
         <div v-for="(item,index) in subjectList" class="question_area">
             <p class="ques_name">{{index+1}}. {{item.comContent}} 。</p>
-            答 ：<el-input type="text" v-model="subject[index]" placeholder="請輸入答案">
-        </el-input>
+            答 ：<el-input type="text" v-model="subject[index]" placeholder="請輸入答案"></el-input>
+            <p></p>
+            <p class="ques_name" v-if="item.rightAnswer!=null">正确答案：
+                <span v-for="item2 in item.rightAnswer" >{{item2.questionContent}};</span>
+            </p>
+            <p> 本题获得分数：{{item.userScore}}分</p>
+
         </div>
     </el-form>
     </div>
