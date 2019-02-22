@@ -275,7 +275,7 @@ var vm = new Vue({
             })
         },
         cancel : function(){
-            window.parent.vm.dialogView = false
+            window.parent.vm.dialogAdd = false
         },
 
         save : function(formName){
