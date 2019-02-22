@@ -362,7 +362,6 @@ var vm = new Vue({
             this.exerciseConfigure.userNames = userNames.join();
 
         },
-        },
         // 表单重置
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
@@ -374,7 +373,7 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
-            this.refresh();
+        this.refresh();
             $.ajax({
                 type: "GET",
                 url: baseURL + "exercise/random/dict",
@@ -407,6 +406,6 @@ var vm = new Vue({
             });
 
             this.reloadUser();
-        })
+     });
     }
 });
