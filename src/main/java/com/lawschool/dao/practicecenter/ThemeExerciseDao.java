@@ -46,4 +46,9 @@ public interface ThemeExerciseDao extends AbstractDao<ThemeExerciseEntity> {
 
     AnalysisForm analysis(@Param("month") String month, @Param("userId") String userId);
 
+    List<String> selectIdsForPage(@Param("userId") String userId,
+                                  @Param("taskId") String taskId,
+                                  @Param("index") Integer index);
+
+    boolean updateCollect(@Param("id") String id, @Param("type") Integer type);
 }

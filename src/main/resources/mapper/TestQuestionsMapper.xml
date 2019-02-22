@@ -594,6 +594,8 @@
         FROM LAW_TESTQUESTIONS
         WHERE
             IS_ENBLE = 0
+            AND RELEASE_STATUS = 1
+            AND QUESTION_TYPE <![CDATA[ <> ]]> '10007'
         AND special_Knowledge_Id IS NOT NULL
         GROUP BY special_Knowledge_Id
     </select>

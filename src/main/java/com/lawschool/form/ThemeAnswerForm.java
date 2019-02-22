@@ -21,6 +21,7 @@ public class ThemeAnswerForm implements Serializable {
     // ↓结果分析时用
     private Integer errorNum;// 回答错误数
     private Integer rightNum;// 回答正确数
+    private Integer totalNum;// 回答总数
 
     public String getqId() {
         return qId;
@@ -100,5 +101,13 @@ public class ThemeAnswerForm implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getTotalNum() {
+        return totalNum;
+    }
+
+    public void setTotalNum(Integer totalNum) {
+        this.totalNum = totalNum;
     }
 }
