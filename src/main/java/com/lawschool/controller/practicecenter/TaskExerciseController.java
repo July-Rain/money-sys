@@ -1,6 +1,7 @@
 package com.lawschool.controller.practicecenter;
 
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.User;
@@ -104,6 +105,7 @@ public class TaskExerciseController extends AbstractController {
      * @param id
      * @return
      */
+    @SysLog("提交练习")
     @RequestMapping(value = "/commit/{id}", method = RequestMethod.POST)
     public Result commit(@PathVariable("id") String id){
         User user = getUser();
@@ -118,6 +120,7 @@ public class TaskExerciseController extends AbstractController {
      * 收藏题目
      * @return
      */
+    @SysLog("收藏题目")
     @RequestMapping(value = "/doCollect/{type}", method = RequestMethod.POST)
     public Result doCollect(@RequestBody CommonForm params, @PathVariable("type") Integer type){
 

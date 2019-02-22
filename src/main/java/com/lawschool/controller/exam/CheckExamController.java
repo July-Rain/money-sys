@@ -1,5 +1,6 @@
 package com.lawschool.controller.exam;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.exam.CheckExamUser;
 import com.lawschool.form.UserAnswerForm;
@@ -35,6 +36,7 @@ public class CheckExamController extends AbstractController {
      * @param checkUser
      * @return
      */
+    @SysLog("阅卷人登陆")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Result login(@RequestBody CheckExamUser checkUser) {
         Result res = checkExamUserService.login(checkUser);
@@ -46,6 +48,7 @@ public class CheckExamController extends AbstractController {
      * @param checkExamUser
      * @return
      */
+    @SysLog("保存阅卷人信息")
     @RequestMapping(value = "/saveCheckExamUser" , method = RequestMethod.POST)
     public Result saveCheckExamUser(@RequestBody CheckExamUser checkExamUser){
         Result res = checkExamUserService.saveCheckExamUser(checkExamUser);
@@ -68,6 +71,7 @@ public class CheckExamController extends AbstractController {
      * @param userExamId
      * @return
      */
+    @SysLog("开始阅卷")
     @RequestMapping( value = "/startCheckExam" , method = RequestMethod.POST)
     public Result startCheckExam(String userExamId){
 
@@ -81,6 +85,7 @@ public class CheckExamController extends AbstractController {
      * @param userExamId
      * @return
      */
+    @SysLog("继续阅卷")
     @RequestMapping( value = "/continueCheckExam" , method = RequestMethod.POST)
     public Result continueCheckExam(String userExamId,String checkExamUserId){
 
@@ -94,6 +99,7 @@ public class CheckExamController extends AbstractController {
      * @param userAnswerForm
      * @return
      */
+    @SysLog("保存阅卷信息")
     @RequestMapping( value = "/saveCheckExam" , method = RequestMethod.POST)
     public Result saveCheckExam(@RequestBody UserAnswerForm userAnswerForm){
 
@@ -107,6 +113,7 @@ public class CheckExamController extends AbstractController {
       * @param userAnswerForm
      * @return
      */
+    @SysLog("提交阅卷信息")
     @RequestMapping( value = "/commitCheckExam" , method = RequestMethod.POST)
     public Result commitCheckExam(@RequestBody UserAnswerForm userAnswerForm){
 

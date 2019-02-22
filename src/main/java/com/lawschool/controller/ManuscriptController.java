@@ -1,5 +1,6 @@
 package com.lawschool.controller;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.*;
@@ -85,6 +86,7 @@ public class ManuscriptController extends AbstractController {
      * @param entity
      * @return
      */
+    @SysLog("保存题库")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody ManuscriptEntity entity){
         User user = getUser();
@@ -100,12 +102,14 @@ public class ManuscriptController extends AbstractController {
         }
     }
 
+    @SysLog("删除题库")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public Result delete(@PathVariable("id") String id){
         manuscriptService.myDelete(id);
         return Result.ok();
     }
 
+    @SysLog("审核题库")
     @RequestMapping(value = "/examine", method = RequestMethod.POST)
     public Result examine(@RequestBody CommonForm form){
         String id = form.getKey();

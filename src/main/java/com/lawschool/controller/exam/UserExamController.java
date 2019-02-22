@@ -1,5 +1,6 @@
 package com.lawschool.controller.exam;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.exam.ExamConfig;
@@ -82,6 +83,7 @@ public class UserExamController extends AbstractController {
      * @param userExamId
      * @return
      */
+    @SysLog("继续考试")
     @RequestMapping(value = "/continueExam", method = RequestMethod.POST)
     public Result continueExam(String userExamId) {
         Result res = userExamService.continueExam(userExamId, getUser());
@@ -94,6 +96,7 @@ public class UserExamController extends AbstractController {
      * @param userAnswerForm
      * @return
      */
+    @SysLog("提交考试")
     @RequestMapping(value = "/commitExam", method = RequestMethod.POST)
     public Result commitExam(@RequestBody UserAnswerForm userAnswerForm) {
 
@@ -107,6 +110,7 @@ public class UserExamController extends AbstractController {
         return Result.ok();
     }
 
+    @SysLog("保存考试信息")
     @RequestMapping(value = "/saveExam", method = RequestMethod.POST)
     public Result saveExam(@RequestBody UserAnswerForm userAnswerForm) {
 
