@@ -177,7 +177,6 @@ var vm = new Vue({
         onVideoDialog: function (id,contentUrl,videoPicAccUrl){
             this.dialogVideo = true;
             this.$nextTick(function () {
-                // this.initDialogPlayer();
                 this.onPlay(id);
                 this.thisVideoId = id;
                 this.thisVideoContentUrl = contentUrl;
