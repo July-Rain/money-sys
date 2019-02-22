@@ -36,4 +36,6 @@ public interface UserExamDao extends AbstractDao<UserExam> {
     CopyOnWriteArrayList<String> getListByExamConId(String examConfigId);
 
     List<UserExamForm> getListByIds(@Param("ids") List<String> ids);
+
+    List<String> getAuditList(@Param("examConfigId")String examConfigId ,@Param("status") String status);
 }

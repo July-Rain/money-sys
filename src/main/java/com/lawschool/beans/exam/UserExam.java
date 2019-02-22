@@ -24,7 +24,7 @@ public class UserExam extends DataEntity<UserExam> {
 
     private String examStatus;  //考试状态  （已完成/未完成） 0：已考 1：未考 2：已完成
 
-    private double score;   //考試分數
+    private float score;   //考試分數
 
     private String isFinMark;   //是否完成阅卷  0:完成 1：未完成 2待审核
 
@@ -82,11 +82,11 @@ public class UserExam extends DataEntity<UserExam> {
         this.examStatus = examStatus;
     }
 
-    public double getScore() {
+    public float getScore() {
         return this.score;
     }
 
-    public void setScore(final double score) {
+    public void setScore(final float score) {
         this.score = score;
     }
 

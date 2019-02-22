@@ -62,7 +62,35 @@ var vm = new Vue({
             this.reload();
         });
     },
+    mounted: function () {
+        this.initPlayer();
+    },
     methods: {
+        initPlayer: function () {
+            window.onload = function () {
+                var options = {
+                    controls: true,
+                    bigPlayButton: true,
+                    controlBar:{
+                        //设置是否显示该组件
+                        playToggle: false,
+                        remainingTimeDisplay: true,
+                        fullscreenToggle: false,
+                        volumePanel: false
+                    },
+                };
+                var myPlayer = videojs('my-player', options);
+                var bigButton = document.getElementsByClassName('vjs-big-play-button')[0];
+                bigButton.style.outline = 'none';
+                myPlayer.on('play', function () {
+                    bigButton.style.display = 'none';
+                });
+                myPlayer.on('pause', function () {
+                    bigButton.style.display = 'block';
+                });
+            }
+        },
+
         // 查询
         onSubmit: function () {
             this.reload();

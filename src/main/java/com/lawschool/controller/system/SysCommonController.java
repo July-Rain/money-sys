@@ -5,6 +5,7 @@ import com.lawschool.base.AbstractController;
 import com.lawschool.beans.User;
 import com.lawschool.beans.accessory.AccessoryEntity;
 import com.lawschool.beans.system.SysMenuEntity;
+import com.lawschool.service.UserService;
 import com.lawschool.service.accessory.AccessoryService;
 import com.lawschool.util.FileUtil;
 import com.lawschool.util.Result;
@@ -39,6 +40,9 @@ public class SysCommonController extends AbstractController {
 
     @Autowired
     private AccessoryService accessoryService;
+
+    @Autowired
+    private UserService userService;
     /**
      * @Author MengyuWu
      * @Description 系统文件上传
@@ -128,6 +132,7 @@ public class SysCommonController extends AbstractController {
     @ResponseBody
     public Result getuser(){
         User user = getUser();
-        return Result.ok().put("user", user);
+        User user1=userService.selectById(user.getId());
+        return Result.ok().put("user", user1);
     }
 }

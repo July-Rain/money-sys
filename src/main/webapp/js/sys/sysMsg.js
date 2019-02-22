@@ -5,6 +5,7 @@ var vm = new Vue({
         idArr:[],// 部门Tree默认展开数据
         user:{},
         teamtype2:true,
+        isEdit:true,//弹出框是否能编辑
         sysMsg:{
             id:"",
             title:"",//标题
@@ -359,6 +360,7 @@ var vm = new Vue({
                 releaseDate:"",
                 recievePeopleNmae:''//接收人
             };
+            vm.isEdit = false;
             vm.sysMsg.releasePeople=vm.user.id;
             vm.sysMsg.releasePeopleName=vm.user.fullName;
             this.title02 = "新增";
@@ -371,6 +373,8 @@ var vm = new Vue({
             this.reload();
         },
         handleEdit: function (index, row) {
+            vm.isEdit = false;
+
             this.title02 = "修改";
             this.dialogConfig = true;
             this.teamtype2=true;
@@ -381,8 +385,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.sysMsg = result.msg;
-                        console.info("2134124124214124")
-                        console.info(vm.sysMsg)
+                        vm.$refs['sysMsg'].resetFields();  // 清除整个表单的校验
                     } else {
                         alert(result.msg);
                     }
@@ -390,8 +393,8 @@ var vm = new Vue({
             });
         },
 
-        lookMsg:function(index, row)
-        {
+        lookMsg:function(index, row) {
+            vm.isEdit = true;
             this.title02 = "查看";
             this.dialogConfig = true;
             this.teamtype2=false;
@@ -402,6 +405,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.sysMsg = result.msg;
+                        vm.$refs['sysMsg'].resetFields();  // 清除整个表单的校验
                     } else {
                         alert(result.msg);
                     }

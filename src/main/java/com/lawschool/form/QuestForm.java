@@ -36,6 +36,43 @@ public class QuestForm {
     private List<AnswerForm> answer;//选项
     private List<String> checkList = new ArrayList<>();
 
+    private double firScore;     //閱卷分數1
+    private double secScore;     //阅卷分数2
+    private double userScore;   //用户取得分数
+    private List<AnswerForm> rightAnswer;   //正确选项
+
+    public List<AnswerForm> getRightAnswer() {
+        return this.rightAnswer;
+    }
+
+    public void setRightAnswer(final List<AnswerForm> rightAnswer) {
+        this.rightAnswer = rightAnswer;
+    }
+
+    public double getUserScore() {
+        return this.userScore;
+    }
+
+    public void setUserScore(final double userScore) {
+        this.userScore = userScore;
+    }
+
+    public double getFirScore() {
+        return this.firScore;
+    }
+
+    public void setFirScore(final double firScore) {
+        this.firScore = firScore;
+    }
+
+    public double getSecScore() {
+        return this.secScore;
+    }
+
+    public void setSecScore(final double secScore) {
+        this.secScore = secScore;
+    }
+
     public String getRightAnsCon() {
         return this.rightAnsCon;
     }

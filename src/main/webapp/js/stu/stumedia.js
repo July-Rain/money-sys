@@ -4,10 +4,11 @@
  * Description:配置
  */
 var editor = null;
-var menuId=$("#menuId").val();
+var menuId=getUrlParam("id");
 var vm = new Vue({
     el: '#app',
     data: {
+        breadArr:[],
         idArr:[],
         formInline: { // 搜索表单
             stuTitle: '',
@@ -137,10 +138,15 @@ var vm = new Vue({
         this.$nextTick(function () {
             this.reload();
             this.reloadUser();
+            this.breadArr=getBreadcrumb(menuId);
         })
 
     },
     methods: {
+        //序列号计算
+        indexMethod:function (index) {
+            return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
+        },
         // 查询
         onSubmit: function () {
             this.reload();

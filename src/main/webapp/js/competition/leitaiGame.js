@@ -240,8 +240,19 @@ websocket.onmessage = function(event) {
 
             setTimeout(function(){
                 vm.leitaiReady=false;
-                vm.play1=data.userList[0].fullName;
-                vm.play2=data.userList[1].fullName;
+
+                $(data.userList).each(function(){
+                    if(jsgetUser().fullName!=this.fullName)
+                    {
+                        vm.play2=this.fullName;
+                    }
+                    else
+                    {
+                        vm.play1=this.fullName;
+                    }
+                });
+
+
             },2000);
 
         }

@@ -17,7 +17,8 @@
         FROM
             LAW_EXAM_CONFIG A
         INNER JOIN LAW_USER_EXAM b ON A . ID = b.EXAM_CONFIG_ID
-        inner join law_check_exam c on b.id = c.user_Exam_Id and c.check_exam_user_id =#{userExamId}
+        inner join law_check_exam c on b.id = c.user_Exam_Id
+          and c.check_exam_user_id =#{userExamId}
         where 1=1
         <if test="list != null and list.size > 0">
             and b.id in
@@ -28,4 +29,28 @@
 
     </select>
 
+    <select id="getAuditList" resultType="com.lawschool.form.CheckUserExamForm">
+SELECT
+            A . ID ID,
+            b. ID user_Exam_Id,
+            A .EXAM_NAME,
+            A .EXAM_TYPE,
+            DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
+            A .EXAM_TIME,
+            A .ORGANIZED_ORG_CODE,
+            A .START_TIME,
+            A .END_TIME，
+            '3' check_status
+        FROM
+            LAW_EXAM_CONFIG A
+        INNER JOIN LAW_USER_EXAM b ON A . ID = b.EXAM_CONFIG_ID
+        where
+        1=1
+        <if test="list != null and list.size > 0">
+            and b.id in
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                #{list[${index}]}
+            </foreach>
+        </if>
+    </select>
 </mapper>

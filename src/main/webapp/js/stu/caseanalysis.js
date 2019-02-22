@@ -4,11 +4,12 @@
  * Description:配置
  */
 var editor = null;
-var menuId=$("#menuId").val();
+var menuId=getUrlParam("id");
 var vm = new Vue({
     el: '#app',
     data: {
         idArr:[],// 部门Tree默认展开数据
+        breadArr:[],
         navData: [],//导航
         formInline: { // 搜索表单
             caseTitle: '',
@@ -188,6 +189,10 @@ var vm = new Vue({
 
     },
     methods: {
+        //序列号计算
+        indexMethod:function (index) {
+            return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
+        },
         // 查询
         onSubmit: function () {
             this.reload();
@@ -527,6 +532,9 @@ var vm = new Vue({
             if(vm.caseAna.contentType=='1'){
                 loadEditor();
             }
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     },
     mounted: function() {

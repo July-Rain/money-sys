@@ -115,5 +115,29 @@ public class CheckExamController extends AbstractController {
         return res;
     }
 
+    /**
+     * 审核阅卷
+     * @param userExamId
+     * @return
+     */
+    @RequestMapping( value = "/auditCheckExam" , method = RequestMethod.POST)
+    public Result auditCheckExam(String userExamId){
 
+        Result res = checkExamService.startCheckExam(userExamId);
+
+        return res;
+    }
+
+    /**
+     * 提交审核阅卷信息
+     * @param userAnswerForm
+     * @return
+     */
+    @RequestMapping( value = "/commitAuditExam" , method = RequestMethod.POST)
+    public Result commitAuditExam(@RequestBody UserAnswerForm userAnswerForm){
+
+        Result res =checkExamService.commitAuditExam(userAnswerForm);// checkExamService.startCheckExam(userExamId);
+
+        return res;
+    }
 }

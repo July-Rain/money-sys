@@ -27,10 +27,10 @@
 <body>
 <div id="app" v-cloak>
     <div class="container">
-        <!--<el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">-->
-            <!--<el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>-->
-            <!--<el-breadcrumb-item v-for="item in breadArr">{{item.name}}</el-breadcrumb-item>-->
-        <!--</el-breadcrumb>-->
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item v-for="item in breadArr">{{item.name}}</el-breadcrumb-item>
+        </el-breadcrumb>
         <el-row :gutter="24">
             <el-col :span="4">
                 <el-scrollbar wrap-class="manList" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
@@ -119,13 +119,14 @@
                 <el-table
                         :data="tableData"
                         border
-                        height="599"
+                        height="539"
                         style="width: 100%">
                     <el-table-column
                             label="序号"
                             type="index"
                             header-align="center"
                             align="center"
+                            :index="indexMethod"
                             width="50">
                     </el-table-column>
                     <el-table-column

@@ -97,7 +97,7 @@ p,span{
     </div>
     <el-form :model="testForm" v-if="sinChoicList.length">
         <div class="subTitle">
-            <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题1分，共50分。</p>
+            <p>一、单项选择题。</p>
         </div>
         <div v-for="(item,index) in sinChoicList" class="question_area">
             <p class="ques_name">{{index+1}}. {{item.comContent}}。</p>

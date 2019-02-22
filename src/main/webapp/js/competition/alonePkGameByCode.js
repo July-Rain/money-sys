@@ -179,6 +179,7 @@ websocket.onmessage = function(event) {
     console.log("WebSocket:收到一条消息",data);
     datamag=data;
     vm.battleCode=data.battleCode;
+
     vm.QuestionList= data.tqList;
     //2种推送的消息
     //1.用户聊天信息：发送消息触发
