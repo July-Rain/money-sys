@@ -240,6 +240,8 @@ var vm = new Vue({
         next: function () {
             // 下一页
             if(total == vm.index){
+                vm.isNext = true;
+
                 var msg = "";
                 if(isReview != '' && isReview != null){
                     msg = '当前为最后一题，请结束本次错题回顾！';

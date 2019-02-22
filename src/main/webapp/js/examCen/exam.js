@@ -392,7 +392,6 @@ var vm = new Vue({
             this.dataListSelections = val;
         },
         handleSave:function(randomQuesData){
-            console.info(randomQuesData)
             if (randomQuesData.length<=0||randomQuesData==''){
                 vm.$alert('请配置随机出题规则', '操作失败', {
                     confirmButtonText: '确定',
@@ -404,7 +403,6 @@ var vm = new Vue({
                 var isRight = true;
                 var msg ='';
                 var subScore=0;
-                console.info("111",subScore)
                 for(var i= 0;i<randomQuesData.length;i++){
                     if(randomQuesData[i].questionNumber==null||randomQuesData[i].questionNumber==''){
                         isRight = false;
@@ -421,7 +419,6 @@ var vm = new Vue({
                     }
                     subScore +=parseFloat(randomQuesData[i].questionScore);
                 }
-                console.info("111",isRight,vm.examConfig.examScore)
                 if(!isRight){
                     vm.$alert( msg, '操作失败', {
                         confirmButtonText: '确定',
@@ -462,8 +459,7 @@ var vm = new Vue({
         },
         closeRanDia : function () {
             vm.randomQuesModal = false;
-        },
-
+        }
     },
     filters: {
         sinMultScoreFn: function (_length) {

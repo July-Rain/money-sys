@@ -87,16 +87,21 @@
                 </el-tabs>
             </el-col>
         </el-row>
-        <el-dialog :title="title02" :visible.sync="dialogConfig" :before-close="closeDia">
-            <el-form :model="msg" :rules="rules" ref="msg" label-width="100px" class="demo-msg"
+        <el-dialog :title="title02" :visible.sync="dialogConfig">
+            <el-form :model="msg" ref="msg" label-width="100px" class="demo-msg"
                      size="mini">
                 <el-row>
-                    <el-col :span="11">
-                        <el-form-item label="消息名称：" prop="title">
-                            <el-input v-model="msg.title" placeholder="请输入消息名称" clearable></el-input>
+                    <el-col :span="24">
+                        <el-form-item label="发件人：" >
+                            <el-input v-model="msg.releasePeopleName" disabled></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="11">
+                    <el-col :span="24">
+                        <el-form-item label="消息名称：" prop="title">
+                            <el-input disabled v-model="msg.title" placeholder="请输入消息名称" clearable></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="24">
                         <!--<el-form-item label="消息类型：" prop="noticeType">-->
                             <!--<el-radio-group v-model="msg.noticeType">-->
                                 <!--<el-radio label="系统消息" value="10008">系统消息</el-radio>-->
@@ -104,7 +109,7 @@
                             <!--</el-radio-group>-->
                         <!--</el-form-item>-->
                         <el-form-item label="消息类型：" prop="noticeType">
-                            <el-select v-model="msg.noticeType"
+                            <el-select disabled v-model="msg.noticeType"
                                        placeholder="消息类型"
                                        clearable>
                                 <el-option label="系统消息" value="10008">系统消息</el-option>
@@ -112,17 +117,12 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col span="11">
+                    <el-col :span="24">
                         <el-form-item label="消息内容：" prop="content">
                             <template>
-                                <el-input v-model="msg.content" @change="handleChange" :min="0" :max="10000"
+                                <el-input type="textarea" disabled v-model="msg.content" :min="0" :max="10000"
                                           placeholder="请输入消息内容"></el-input>
                             </template>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11">
-                        <el-form-item label="发件人：" >
-                            <el-input v-model="msg.releasePeopleName" disabled></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>

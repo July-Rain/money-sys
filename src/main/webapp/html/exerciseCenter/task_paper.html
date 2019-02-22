@@ -58,7 +58,7 @@
             </div>
             <div class="container-btn">
                 <el-col :span="10" class="align-rig">
-                    <a href="javascript:;" @click="last"><i class="el-icon-arrow-left"></i>上一题</a>
+                    <a href="javascript:;" :class="isLast||index==1?'disabled':''" @click="last"><i class="el-icon-arrow-left"></i>上一题</a>
                 </el-col>
                 <el-col :span="4" class="align-cent">
                     <a href="javascript:;" @click="save" style="color: #666666;">
@@ -69,7 +69,7 @@
                     </a>
                 </el-col>
                 <el-col :span="10">
-                    <a href="javascript:;" @click="next">下一题<i class="el-icon-arrow-right el-icon--right"></i></a>
+                    <a href="javascript:;" :class="isNext?'disabled':''" @click="next">下一题<i class="el-icon-arrow-right el-icon--right"></i></a>
                 </el-col>
             </div>
         </div>
