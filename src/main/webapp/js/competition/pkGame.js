@@ -36,20 +36,13 @@ var vm = new Vue({
         jifen:"0",//最终录入的成绩积分
         rollAreaShow: true,
         nameList: ["乔杰","李坤宇","乔杰","李坤宇","乔杰","李坤宇","乔杰","李坤宇","乔杰","李坤宇","乔杰","李坤宇"],
+        play1:"",
+        play2:"",
     },
     created: function () {
         this.$nextTick(function () {
             this.reload();
-            var resultName = "卜楠";
 
-
-            setTimeout(function () {
-                vm.nameList = ["乔杰","李坤宇",resultName,"李坤宇","乔杰","李坤宇","乔杰","李坤宇","旗鼓相当的对手","李坤宇","乔杰","李坤宇"];
-                vm.rollStop = true;
-                setTimeout(function () {
-                    vm.rollAreaShow = false
-                },2000)
-            },5000);
         })
     },
 
@@ -96,6 +89,14 @@ var vm = new Vue({
         },
         backPkMain: function () {
             window.location.href = baseURL + 'modules/competition/pkMain.html';
+        },
+        loadingStop: function (resultName) {
+
+            vm.nameList = ["乔杰","李坤宇",resultName,"李坤宇","乔杰","李坤宇","乔杰","李坤宇","旗鼓相当的对手","李坤宇","乔杰","李坤宇"];
+            vm.rollStop = true;
+            setTimeout(function () {
+                vm.rollAreaShow = false
+            },2000)
         }
     }
 });
@@ -184,23 +185,41 @@ websocket.onmessage = function(event) {
         $("#contentUl").append("<li><b>"+data.date+"</b><em>系统消息：</em><span>"+data.text+"</span></li>");
         //刷新在线用户列表
         $("#chatOnline").html("在线用户("+data.userList.length+")人");
+        var str=data.text
+        console.info("11",str)
+        if(str === '请等待 玩家加入' || str.indexOf("加入,欢迎") != -1) {
+
+        }else {
+            alert(data.text);
+        }
 
         // 当收到系统消息的时候  然且当是在线2人的时候 这时候 默认给第一题
         if(data.userList.length=="2")
         {
-            vm.dialogQuestion=true,
-            vm.radio_disabled=false;
-            vm.allnum=data.tqList.length;
-            vm.nownum=Number(nowtimu)+1;
-            vm.nowQscore=data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
-            vm.nowbattleTopicSetting=data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
-            vm.Question=data.tqList[Number(nowtimu)];
+            setTimeout(function(){
+                $(data.userList).each(function(){
+                    if(jsgetUser().fullName!=this.fullName) {
+                        vm.loadingStop(this.fullName);
+                        vm.play2=this.fullName;
+                    }else {
+                        vm.play1=this.fullName;
+                    }
+                });
+                vm.dialogQuestion=true,
+                vm.radio_disabled=false;
+                vm.allnum=data.tqList.length;
+                vm.nownum=Number(nowtimu)+1;
+                vm.nowQscore=data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
+                vm.nowbattleTopicSetting=data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
+                vm.Question=data.tqList[Number(nowtimu)];
+            },1000);
+
         }
         if(data.mycore!=undefined&&data.mycore!=null&&data.mycore!="")
         {
-            vm.jifen=data.mycore;
-            recordScoreFromTow(datamag.battlePlatform.id,vm.jifen,'OnlinPk',data.to);
-            alert("对手弃权,恭喜胜利,获得积分"+vm.jifen);
+            // vm.jifen=data.mycore;
+            // recordScoreFromTow(datamag.battlePlatform.id,vm.jifen,'OnlinPk',data.to);
+            // alert("对手弃权,恭喜胜利,获得积分"+vm.jifen);
 
         }
 

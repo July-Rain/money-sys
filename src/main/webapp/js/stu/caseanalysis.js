@@ -4,11 +4,12 @@
  * Description:配置
  */
 var editor = null;
-var menuId=$("#menuId").val();
+var menuId=getUrlParam("id");
 var vm = new Vue({
     el: '#app',
     data: {
         idArr:[],// 部门Tree默认展开数据
+        breadArr:[],
         navData: [],//导航
         formInline: { // 搜索表单
             caseTitle: '',
@@ -531,6 +532,9 @@ var vm = new Vue({
             if(vm.caseAna.contentType=='1'){
                 loadEditor();
             }
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     },
     mounted: function() {

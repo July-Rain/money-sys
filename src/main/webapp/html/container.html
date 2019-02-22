@@ -272,8 +272,9 @@
                         <el-row :gutter="66">
                             <el-col :span="12" v-for="(item, index) in videoData">
                                 <el-card :body-style="{ padding: '0px' }">
-                                    <video class="video" height="175" style="width: 100%;" controls preload="none"
-                                           :poster="item.videoPicAccUrl" @play="onPlay(item.id,item.comContent)"
+                                    <video id="my-player" class="video video-js vjs-big-play-centered" height="175" style="width: 100%;" preload="none"
+                                           :poster="item.videoPicAccUrl"
+                                           @play="onPlay(item.id,item.comContent)"
                                            @pause="onPause(item.id,$event)">
                                         <source :src="item.contentUrl" type="video/mp4">
                                         您的浏览器不支持视频播放
@@ -757,6 +758,7 @@
 
 <!-- import [current] JavaScript -->
 <script src="${rc.contextPath}/js/container.js?_${.now?long}"></script>
+<script src="${rc.contextPath}/statics/plugins/video/video.min.js"></script>
 <script>
     $(function () {
         // $('#app').css('background','#f00')

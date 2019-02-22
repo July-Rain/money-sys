@@ -172,38 +172,42 @@
                      size="mini">
                 <el-col :span="24">
                     <el-form-item label="消息标题：" prop="title">
-                        <el-input v-model="sysMsg.title" placeholder="请输入消息标题" clearable></el-input>
+                        <el-input :disabled="isEdit" v-model="sysMsg.title" :max="5000" placeholder="请输入消息标题" clearable></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
                     <el-form-item label="消息类型：" prop="noticeType">
                         <el-select v-model="sysMsg.noticeType"
                                    placeholder="消息类型"
+                                   :disabled="isEdit"
                                    clearable>
                             <el-option label="系统消息" value="10008">系统消息</el-option>
                             <el-option label="管理员消息" value="10009">管理员消息</el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
-
                 <!--<el-col :span="11">
                     <el-form-item label="发布单位：" prop="releaseDept">
                         <el-input v-model="sysMsg.releaseDept" placeholder="请输入发布单位" clearable></el-input>
                     </el-form-item>
                 </el-col>-->
                 <el-col :span="24">
-                    <el-form-item label="消息内容：" prop="content">
-                        <template>
-                            <el-input   type="textarea"  v-model="sysMsg.content" @change="handleChange" :min="0" :max="10000"
-                                      placeholder="请输入消息内容"></el-input>
-                        </template>
-                    </el-form-item>
-                </el-col>
-
-
-                <el-col :span="24">
                     <el-form-item label="发布人：" >
                         <el-input v-model="sysMsg.releasePeopleName" disabled></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="接收人：" prop="recievePeopleNmae">
+                        <el-input :disabled="isEdit" :max="5000" v-model="sysMsg.recievePeopleNmae" @focus="chooseUser" placeholder="请输接收人"
+                                  clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <el-form-item label="消息内容：" prop="content">
+                        <template>
+                            <el-input :disabled="isEdit"  type="textarea"  v-model="sysMsg.content" @change="handleChange" :min="0" :max="5000"
+                                      placeholder="请输入消息内容"></el-input>
+                        </template>
                     </el-form-item>
                 </el-col>
                 <!--<el-col :span="11">-->
@@ -223,12 +227,7 @@
                 <!--clearable></el-input>-->
                 <!--</el-form-item>-->
                 <!--</el-col>-->
-                <el-col :span="24">
-                    <el-form-item label="接收人：" prop="recievePeopleNmae">
-                        <el-input v-model="sysMsg.recievePeopleNmae" @focus="chooseUser" placeholder="请输接收人"
-                                  clearable></el-input>
-                    </el-form-item>
-                </el-col>
+
             </el-form>
             <div slot="footer" class="dialog-footer" v-show="teamtype2">
                 <el-button @click="closeDia">取消</el-button>
