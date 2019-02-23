@@ -17,9 +17,9 @@ var vm = new Vue({
         sum: 0,
         options: [{
             value: '0',
-            label: '本学年'
+            label: '本年度'
         }],
-        selected: '',
+        selected: '0',
         colorList: ['#52c9e7','#3e98e8','#81bdd8','#5ebd5c','#feae24','#f97a1f','#f26443','#b97deb','#7e72f2','#4f7ee9'],
         breadArr: []//面包屑数据
     },
