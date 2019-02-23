@@ -110,12 +110,10 @@ public class ExamConfigController extends AbstractController {
     @RequestMapping(value = "/saveOrUpdate" , method = RequestMethod.POST)
     private Result saveOrUpdate(
             @RequestBody ExamConfig examConfig) {
-        try {
-            newExamConfigService.saveOrUpdate(examConfig,getUser());
-        } catch (Exception e) {
-            return Result.error(e.getMessage());
-        }
-        return Result.ok();
+
+        Result   res = newExamConfigService.saveOrUpdate(examConfig,getUser());
+
+        return res;
     }
 
     @SysLog("删除考试配置")

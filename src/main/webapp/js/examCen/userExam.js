@@ -42,6 +42,9 @@ var vm = new Vue({
             vm.formInline.limit = event;
             this.reload();
         },
+        resetForm: function (formName) {
+            this.$refs[formName].resetFields();
+        },
         handleCurChange: function (event) {
             vm.formInline.page = event;
             this.reload();
