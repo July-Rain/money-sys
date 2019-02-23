@@ -56,36 +56,41 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
     private TestQuestionService testQuestionService;
 
     @Override
-    public void saveOrUpdate(ExamConfig examConfig, User user) {
-
-        String[] arr = examConfig.getSpecialKnowledgeArr();
-        if(UtilValidate.isNotEmpty(arr)){
-            examConfig.setSpecialKnowledgeId(StringUtils.join(arr,","));
-        }
-        examConfig.setOptTime(new Date());
-        examConfig.setOptUser(user.getUserId());
-        if(UtilValidate.isNotEmpty(examConfig.getId())){
-            //update 操作
-            ExamConfig ec = dao.selectById(examConfig.getId());
-            if(!ec.getQuestionWay().equals(examConfig.getQuestionWay())){
-                examConfig.setStatus("0");
+    public Result saveOrUpdate(ExamConfig examConfig, User user) {
+        Date date = new Date();
+        if(UtilValidate.isNotEmpty(examConfig.getId())&&date.after(examConfig.getStartTime())){
+            return	Result.error("考试开始后不允许修改");
+        } else {
+            String[] arr = examConfig.getSpecialKnowledgeArr();
+            if (UtilValidate.isNotEmpty(arr)) {
+                examConfig.setSpecialKnowledgeId(StringUtils.join(arr, ","));
             }
-            //删除权限表
-            authService.delete(new EntityWrapper<AuthRelationBean>().eq("function_flag","ExamConfig").eq("function_Id",examConfig.getId()));
-            dao.updateById(examConfig);
-        }else{
-            //insert 操作
-            examConfig.setId(GetUUID.getUUIDs("EC"));
-            examConfig.setStatus("0");
+            examConfig.setOptTime(new Date());
+            examConfig.setOptUser(user.getUserId());
+            if (UtilValidate.isNotEmpty(examConfig.getId())) {
+                //update 操作
+                ExamConfig ec = dao.selectById(examConfig.getId());
+                if (!ec.getQuestionWay().equals(examConfig.getQuestionWay())) {
+                    examConfig.setStatus("0");
+                }
+                //删除权限表
+                authService.delete(new EntityWrapper<AuthRelationBean>().eq("function_flag", "ExamConfig").eq("function_Id", examConfig.getId()));
+                dao.updateById(examConfig);
+            } else {
+                //insert 操作
+                examConfig.setId(GetUUID.getUUIDs("EC"));
+                examConfig.setStatus("0");
 
-            examConfig.setCreateTime(new Date());
-            examConfig.setCreateUser(user.getId());
-            dao.insert(examConfig);
+                examConfig.setCreateTime(new Date());
+                examConfig.setCreateUser(user.getId());
+                dao.insert(examConfig);
+            }
+            //存权限表
+            String[] deptIdArr = examConfig.getDeptArr();
+            String[] userIdArr = examConfig.getUserArr();
+            authService.insertAuthRelation(deptIdArr, userIdArr, examConfig.getId(), "ExamConfig", examConfig.getGroupForm());
+            return Result.ok();
         }
-        //存权限表
-        String[] deptIdArr=examConfig.getDeptArr();
-        String[] userIdArr=examConfig.getUserArr();
-        authService.insertAuthRelation(deptIdArr, userIdArr, examConfig.getId(), "ExamConfig", examConfig.getGroupForm());
     }
 
     @Override
