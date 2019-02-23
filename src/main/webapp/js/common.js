@@ -273,4 +273,49 @@ function echartsOption(myChart, option) {
 function toHome() {
     parent.location.reload()
 }
+// 数组去重
+function unique(arr){
 
+    var res = [arr[0]];
+
+    for(var i=1;i<arr.length;i++){
+
+        var repeat = false;
+
+        for(var j=0;j<res.length;j++){
+
+            if(arr[i] == res[j]){
+
+                repeat = true;
+
+                break;
+
+            }
+
+        }
+
+        if(!repeat){
+
+            res.push(arr[i]);
+
+        }
+
+    }
+
+    return res;
+
+}
+// 冒泡排序
+function a(arr) {
+    var t;
+    for(var i=0;i<arr.length;i++){
+        for(var j=i+1;j<arr.length;j++){
+            if(arr[i]>arr[j]){
+                t=arr[i];
+                arr[i]=arr[j];
+                arr[j]=t;
+            }
+        }
+    }
+    return arr
+}
