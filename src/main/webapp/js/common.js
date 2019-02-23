@@ -306,7 +306,7 @@ function unique(arr){
 
 }
 // 冒泡排序
-function a(arr) {
+function arrSort(arr) {
     var t;
     for(var i=0;i<arr.length;i++){
         for(var j=i+1;j<arr.length;j++){
