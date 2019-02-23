@@ -275,9 +275,14 @@ var vm = new Vue({
             })
         },
         cancel : function(){
-            window.parent.vm.dialogAdd = false
-        },
-
+            if(operate==='0') {
+                window.parent.vm.dialogAdd = false
+            }else if (operate==='1'){
+                window.parent.vm.dialogView = false
+            }else{
+                window.parent.vm.dialogEdit = false
+            }
+       },
         save : function(formName){
             if(operate==='1'){
                 window.parent.vm.dialogView = false
