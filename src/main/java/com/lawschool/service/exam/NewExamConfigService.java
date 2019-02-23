@@ -8,7 +8,7 @@ import com.lawschool.util.Result;
 
 public interface NewExamConfigService extends AbstractService<ExamConfig> {
 
-    void saveOrUpdate(ExamConfig examConfig, User user);
+    Result saveOrUpdate(ExamConfig examConfig, User user);
 
     Result genAutoQue(ExamConfigForm examConfigForm);
 

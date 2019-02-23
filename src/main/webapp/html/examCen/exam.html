@@ -327,7 +327,7 @@
                         </el-select>
                     </el-form-item>
                 </el-col>
-                <el-col :span="24" v-if="checkSetting.isAibitration == 0">
+                <el-col :span="24" v-if="checkSetting.paperPerSetNum == 2&&checkSetting.isAibitration == 0">
                     <el-form-item label="审核分差值：" prop="checkScoreDifference">
                         <el-input-number v-model="checkSetting.checkScoreDifference"
                                          placeholder="请输入审核分差值" :min="0" :max="1000" clearable
