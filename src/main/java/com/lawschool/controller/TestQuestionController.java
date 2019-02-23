@@ -8,11 +8,13 @@ import com.lawschool.beans.TestQuestions;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.util.Result;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -58,9 +60,19 @@ public class TestQuestionController {
     public Result info(@PathVariable("id") String id) {
         TestQuestions testQuestions = testQuestionService.findOne(id);
         List<Answer> answerList = answerService.getAnswerByQid(testQuestions.getId());
+        String answerId = testQuestions.getAnswerId();
+
+        List<String> list = new ArrayList<String>();
+        if(StringUtils.isNotBlank(answerId)){
+            list = Arrays.asList(answerId.split(","));
+        }
+
         for(Answer answer : answerList){
-            if(answer.getId().equals(testQuestions.getAnswerId())){
+
+            if(list.contains(answer.getId())){
                 answer.setIsAnswer(1);
+            } else {
+                answer.setIsAnswer(0);
             }
         }
         testQuestions.setAnswerList(answerList);

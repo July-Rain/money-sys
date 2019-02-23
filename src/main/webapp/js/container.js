@@ -19,6 +19,7 @@ var vm = new Vue({
             }
         }
         return {
+            videoDataId: ["SM20190130160129526544", "SM20190126164415860356"],
             navData: [],//导航
             learnTasks: 4,//学习任务
             practiceTasks: 5,//练习任务
@@ -464,7 +465,9 @@ var vm = new Vue({
     },
     methods: {
         initPlayer: function () {
+            var that = this;
             window.onload = function () {
+                console.log('视频id');
                 var options = {
                     controls: true,
                     bigPlayButton: true,
@@ -476,15 +479,17 @@ var vm = new Vue({
                         volumePanel: false
                     },
                 };
-                var myPlayer = videojs('my-player', options);
-                var bigButton = document.getElementsByClassName('vjs-big-play-button')[0];
-                bigButton.style.outline = 'none';
-                myPlayer.on('play', function () {
-                    bigButton.style.display = 'none';
-                });
-                myPlayer.on('pause', function () {
-                    bigButton.style.display = 'block';
-                });
+                that.videoDataId.forEach(function (val, index) {
+                    var myPlayer = videojs(val, options);
+                    var bigButton = document.getElementsByClassName('vjs-big-play-button')[index];
+                    bigButton.style.outline = 'none';
+                    myPlayer.on('play', function () {
+                        bigButton.style.display = 'none';
+                    });
+                    myPlayer.on('pause', function () {
+                        bigButton0.style.display = 'block';
+                    });
+                })
             }
         },
         onPlay:function (id,accId) {

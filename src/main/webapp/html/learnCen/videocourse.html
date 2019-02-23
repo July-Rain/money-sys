@@ -65,6 +65,13 @@
         }
         .el-dialog__body span.vjs-icon-placeholder{
             line-height: 43px !important;
+            font-size: 25px !important;
+        }
+        .el-dialog__body div.vjs-big-play-centered{
+            margin-bottom: 15px !important;
+        }
+        ul li div.video-content{
+            height: 175px !important;
         }
     </style>
 </head>
@@ -135,7 +142,7 @@
                                     <li v-for="(item, index) in videoData">
                                         <div class="item">
                                             <div class="video-content">
-                                                <video id="my-player" class="video video-js vjs-big-play-centered" height="155" style="width: 300px;" preload="none"
+                                                <video :id="item.id" class="video video-js vjs-big-play-centered" height="155" style="width: 300px;" preload="none"
                                                        :poster="item.videoPicAccUrl"
                                                        @play="onPlay(item.id)"
                                                        @pause="onPause(item.id,$event)">
@@ -175,15 +182,15 @@
         </el-row>
     </div>
     <el-dialog class="dialog_minW750" title="视频课堂" :visible.sync="dialogVideo" @opened="dialogOpen" >
-        <div v-show="dialogVideo" style="max-height: 450px;text-align: center" ref="dialog">
+        <div v-if="dialogVideo" style="max-height: 450px;text-align: center" ref="dialog">
             <!--<video style="width:auto; max-height: 450px" controls autoplay preload="none" :poster="thisVideoPicAccUrl" @play="onPlay(thisVideoId)" @pause="onPause(thisVideoId,$event)">
                 <source :src="thisVideoContentUrl" type="video/mp4">
                 您的浏览器不支持视频播放
             </video>-->
             <video id="dialog-player" class="video video-js vjs-big-play-centered" style="width:auto; max-height: 450px" preload="none"
                    :poster="thisVideoPicAccUrl"
-                   @play="onPlay(thisVideoId)"
-                   @pause="onPause(thisVideoId,$event)">
+                   @play="onPlay(thisVideoId, $event)"
+                   @pause="onPause(thisVideoId, $event)">
                 <source :src="thisVideoContentUrl" type="video/mp4">
                 您的浏览器不支持视频播放
             </video>

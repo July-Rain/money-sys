@@ -30,8 +30,6 @@ var vm = new Vue({
             }
         };
         var validateQueWay = function (rule, value, callback) {
-            alert(vm.examConfig.questionWay);
-        alert(vm.examConfig.groupForm)
             if (vm.examConfig.questionWay === '') {
                 callback(new Error('出题方式不能为空'))
             } else {
@@ -61,11 +59,10 @@ var vm = new Vue({
             for (var i = 1; i <= 15; i++) {
                 data.push({
                     key: i,
-                    label: `备选项 ${ i }`,
+                    label: '备选项'+i,
                     disabled: i % 4 === 0
                 });
             }
-            console.info("data格式",data)
             return data
 
         };
@@ -275,14 +272,19 @@ var vm = new Vue({
             })
         },
         cancel : function(){
-            window.parent.vm.dialogAdd = false
-        },
-
+            if(operate==='0') {
+                window.parent.vm.dialogAdd = false
+            }else if (operate==='1'){
+                window.parent.vm.dialogView = false
+            }else{
+                window.parent.vm.dialogEdit = false
+            }
+       },
         save : function(formName){
             if(operate==='1'){
                 window.parent.vm.dialogView = false
             }else {
-                this.$refs[formName].validate((valid) => {
+                this.$refs[formName].validate(function (valid) {
                     if (valid) {
                         vm.examConfig.qfList = vm.previewList;
                         var deptArr = vm.examConfig.deptIds ? vm.examConfig.deptIds.split(",") : [];
@@ -299,7 +301,10 @@ var vm = new Vue({
                             contentType: "application/json",
                             success: function (result) {
                                 if (result.code === 0) {
-                                    alert('保存成功');
+                                    vm.$message({
+                                        type: 'success',
+                                        message: '保存成功!'
+                                    });
                                     window.parent.vm.dialogAdd = false;
                                     window.parent.vm.dialogEdit = false;
                                     window.parent.vm.reload();

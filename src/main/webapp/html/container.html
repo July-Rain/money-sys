@@ -94,10 +94,12 @@
     .content5-2 .el-row,.content5-3 .el-row{
         margin-bottom: 0;
     }
+    video.vjs-big-play-centered{
+        height: 175px !important;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
-
     <div class="container">
         <el-row :gutter="20" class="content5-1">
             <el-col :span="12">
@@ -272,7 +274,7 @@
                         <el-row :gutter="66">
                             <el-col :span="12" v-for="(item, index) in videoData">
                                 <el-card :body-style="{ padding: '0px' }">
-                                    <video id="my-player" class="video video-js vjs-big-play-centered" height="175" style="width: 100%;" preload="none"
+                                    <video :id="item.id" class="video video-js vjs-big-play-centered" height="175" style="width: 100%;" preload="none"
                                            :poster="item.videoPicAccUrl"
                                            @play="onPlay(item.id,item.comContent)"
                                            @pause="onPause(item.id,$event)">
