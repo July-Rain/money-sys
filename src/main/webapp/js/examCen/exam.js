@@ -478,18 +478,18 @@ var vm = new Vue({
     },
     filters: {
         sinMultScoreFn: function (_length) {
-            if(vm.sinMultScore || vm.sinMultScore ===0){
-                return _length * vm.sinMultScore
+            if(this.sinMultScore || this.sinMultScore ===0){
+                return _length * this.sinMultScore
             }
         },
         mulMultScoreFn: function (_length) {
-            if(vm.mulMultScore || vm.mulMultScore ===0){
-                return _length * vm.mulMultScore
+            if(this.mulMultScore || this.mulMultScore ===0){
+                return _length * this.mulMultScore
             }
         },
         judgeMultScoreFn: function (_length) {
-            if(vm.judgeMultScore || vm.judgeMultScore ===0){
-                return _length * vm.judgeMultScore
+            if(this.judgeMultScore || this.judgeMultScore ===0){
+                return _length * this.judgeMultScore
             }
         },
         subMultScoreFn: function (_length) {
