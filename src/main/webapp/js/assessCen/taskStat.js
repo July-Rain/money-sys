@@ -313,5 +313,8 @@ var vm = new Vue({
             vm.formInline.orgCode=data.orgCode;
             this.reload();
         },
+        toHome: function () {
+            parent.location.reload()
+        }
     }
 });
