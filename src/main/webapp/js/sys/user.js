@@ -450,7 +450,7 @@ var vm = new Vue({
                         alert("存在重复的登陆账号，操作失败");
                         return;
                     }
-
+                    console.log(vm.teacher)
                     $.ajax({
                         type: "POST",
                         url: url,
