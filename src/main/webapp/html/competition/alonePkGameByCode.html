@@ -29,7 +29,7 @@
             </p>
             <div class="left_progress">
                 <div class="progress">
-                    <div class="num">{{youscore}}</div>
+                    <div class="num">{{myscore}}</div>
                     <div class="line">
                         <div class="line_inner"></div>
                     </div>
@@ -91,12 +91,10 @@
             <div class="inner">
                 <div class="left">
                     <div class="init">
-                        <ul>
-                            <li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>
-                            <li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>
-                            <li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>
-                        </ul>
-                        <p class="teamName">我的昵称战队</p>
+                        <!--<ul>-->
+                            <!--<li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>-->
+                        <!--</ul>-->
+                        <!--<p class="teamName">我的昵称战队</p>-->
                     </div>
 
                 </div>
@@ -108,9 +106,9 @@
                 </div>
                 <div class="right">
                     <div class="init">
-                        <ul>
-                            <li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>
-                        </ul>
+                        <!--<ul>-->
+                            <!--<li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>-->
+                        <!--</ul>-->
                         <!--<p class="teamName">我的昵称战队</p>-->
                     </div>
                 </div>
@@ -128,7 +126,7 @@
 
     </div>
 
-    <el-row :gutter="24">
+    <el-row :gutter="24"  v-if="false">
         <el-col :span="24">
             <el-tabs type="border-card">
                 <el-tab-pane label="单人邀请码在线比武">

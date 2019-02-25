@@ -41,7 +41,9 @@ var vm = new Vue({
         yesOrNoAnswer:"未答题",
         jifen:"0",//最终录入的成绩积分
         formationWarShow:false,//建立战区
-        joinWarShow:false//加入战区
+        joinWarShow:false,//加入战区
+        play1:"",
+        play2:"",
     },
     created: function () {
         this.$nextTick(function () {
@@ -49,9 +51,9 @@ var vm = new Vue({
             if(getUrlParam('warType') === 'formation'){
                 vm.formationWarShow = true
             }
-            if(getUrlParam('warType') === 'join'){
-                vm.joinWarShow = true
-            }
+            // if(getUrlParam('warType') === 'join'){
+            //     vm.joinWarShow = true
+            // }
         })
     },
 
@@ -194,9 +196,23 @@ websocket.onmessage = function(event) {
         //刷新在线用户列表
         $("#chatOnline").html("在线用户("+data.userList.length+")人");
 
+        alert(data.text);
+
+
         // 当收到系统消息的时候  然且当是在线2人的时候 这时候 默认给第一题
         if(data.userList.length=="2")
         {
+
+            $(data.userList).each(function(){
+                if(jsgetUser().fullName!=this.fullName) {
+
+                    vm.play2=this.fullName;
+                }else {
+                    vm.play1=this.fullName;
+                }
+            });
+
+            vm.formationWarShow=false,//关闭提示code提示输入框
             vm.dialogQuestion=true,
             vm.radio_disabled=false;
             vm.allnum=data.tqList.length;
@@ -208,9 +224,9 @@ websocket.onmessage = function(event) {
 
         if(data.mycore!=undefined&&data.mycore!=null&&data.mycore!="")
         {
-            vm.jifen=data.mycore;
-            recordScoreFromTow(datamag.battlePlatform.id,vm.jifen,'OnlinPkByCode',data.to);
-            alert("对手弃权,恭喜胜利,获得积分"+vm.jifen);
+            // vm.jifen=data.mycore;
+            // recordScoreFromTow(datamag.battlePlatform.id,vm.jifen,'OnlinPkByCode',data.to);
+            alert("对手弃权,恭喜胜利");
 
         }
 

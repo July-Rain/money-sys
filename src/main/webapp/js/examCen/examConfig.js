@@ -84,7 +84,10 @@ var vm = new Vue({
                 deptIds: "",
                 userIds: "",
                 reachRewardType:"",
-                enabled :"1"
+                enabled :"1",
+                isMustTest:"10029",
+                topicOrderType:"10032",
+                optionOrderType:"10032"
             },
             rules: {//表单验证规则
                 examName: [
