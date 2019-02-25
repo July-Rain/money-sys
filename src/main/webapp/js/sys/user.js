@@ -138,12 +138,15 @@ var vm = new Vue({
         handleUpt:function(index,row){
             vm.dialogtch=true;
             vm.teacher=row;
-            vm.handleRoles();
+
             if(vm.teacher.roles){
                 vm.teacher.tmroles=vm.teacher.roles.split(",");
+                console.log('144',vm.teacher.tmroles)
             }else{
                 vm.teacher.tmroles=[];
             }
+
+            vm.handleRoles();
 
         },
 
@@ -156,6 +159,7 @@ var vm = new Vue({
                 success:function (result) {
                     if(result.code==0){
                         vm.roles=result.roles;
+                        console.info("162",vm.roles)
                     }else{
                         alert(result.msg);
                     }
@@ -373,7 +377,8 @@ var vm = new Vue({
                         vm.teacher.roles=rs;
                         var url=baseURL + "sys/add";
                         var mytype="1"
-                        console.log(vm.teacher.id);
+                        console.info('380',vm.teacher);
+                        console.log(vm.roles);
                         if (vm.teacher.id != null && vm.teacher.id != '') {
                             url=baseURL+"sys/updata";
                             mytype="2"
