@@ -7,6 +7,7 @@ var vm = new Vue({
     el: '#app',
     data: {
         videoData: [],//视频列表
+        videoDataId: ["SM20190130160129526544", "SM20190126164415860356", "SM20190126163926376704", "SM20190126155217822288"],
         navData: [],//导航
         formInline: { // 搜索表单
             stuType:"3",
@@ -62,7 +63,55 @@ var vm = new Vue({
             this.reload();
         });
     },
+    mounted: function () {
+        this.initPlayer();
+    },
     methods: {
+        initPlayer: function () {
+            var that = this;
+            window.onload = function () {
+                var options = {
+                    controls: true,
+                    bigPlayButton: true,
+                    controlBar:{
+                        //设置是否显示该组件
+                        playToggle: false,
+                        remainingTimeDisplay: true,
+                        fullscreenToggle: false,
+                        volumePanel: false
+                    },
+                };
+                that.videoDataId.forEach(function (val, index) {
+                    var myPlayer = videojs(val, options);
+                })
+            }
+        },
+        dialogOpen: function () {
+            // 初始化dialog
+            // this.thisVideoContentUrl = contentUrl;  需要理清逻辑
+            var dialogOptions = {
+                controls: true,
+                autoplay: true,
+                bigPlayButton: true,
+                controlBar:{
+                    //设置是否显示该组件
+                    playToggle: false,
+                    remainingTimeDisplay: true,
+                    fullscreenToggle: false,
+                    volumePanel: false
+                },
+            };
+            var dialogPlayer = videojs('dialog-player', dialogOptions);
+            var bigDialogButton = document.getElementsByClassName('vjs-big-play-button')[this.videoDataId.length];
+            console.log(bigDialogButton);
+            bigDialogButton.style.outline = 'none';
+            dialogPlayer.on('play', function () {
+                bigDialogButton.style.display = 'none';
+            });
+            dialogPlayer.on('pause', function () {
+                bigDialogButton.style.display = 'block';
+            });
+        },
         // 查询
         onSubmit: function () {
             this.reload();
@@ -89,7 +138,9 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.videoData = result.page.list;
+                        // var videoDataId = [];
                         for(var i=0;i<vm.videoData.length;i++){
+                            // videoDataId.push(vm.videoData[i].id);
                             vm.videoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
                             if(vm.videoData[i].videoPicAcc){
                                 vm.videoData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
@@ -104,7 +155,7 @@ var vm = new Vue({
                                 vm.videoData[i].stuType="视频";
                             }
                         }
-                        console.log(vm.videoData)
+                        // console.log(videoDataId);
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
                         vm.formInline.totalCount = parseInt(result.page.totalCount);
@@ -149,13 +200,14 @@ var vm = new Vue({
         onVideoDialog: function (id,contentUrl,videoPicAccUrl){
             this.dialogVideo = true;
             this.$nextTick(function () {
+                // this.initDialogPlayer();
                 this.onPlay(id);
                 this.thisVideoId = id;
                 this.thisVideoContentUrl = contentUrl;
                 this.thisVideoPicAccUrl = videoPicAccUrl;
             })
         },
-        onPlay:function (id) {
+        onPlay:function (id, event) {
             //获取当前选择对象
             //请求后台修改播放量 记录学习记录
             $.ajax({

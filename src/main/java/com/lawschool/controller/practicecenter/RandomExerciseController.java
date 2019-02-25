@@ -1,6 +1,7 @@
 package com.lawschool.controller.practicecenter;
 
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.User;
@@ -88,6 +89,7 @@ public class RandomExerciseController extends AbstractController {
      * @param form
      * @return
      */
+    @SysLog("开始随机练习")
     @RequestMapping(value = "/start", method = RequestMethod.POST)
     public Result startExercise(@RequestBody RandomExerciseForm form){
 
@@ -148,6 +150,7 @@ public class RandomExerciseController extends AbstractController {
      * @param form
      * @return
      */
+    @SysLog("提交主题练习")
     @RequestMapping(value = "/commit", method = RequestMethod.POST)
     public Result commit(@RequestBody ThemeForm form){
         User user = getUser();
@@ -166,6 +169,7 @@ public class RandomExerciseController extends AbstractController {
      * @param form
      * @return
      */
+    @SysLog("保存答题记录")
     @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/saveAnswer", method = RequestMethod.POST)
     public Result saveAnswerRecord(@RequestBody ThemeAnswerForm form){
@@ -197,6 +201,7 @@ public class RandomExerciseController extends AbstractController {
      * 收藏题目
      * @return
      */
+    @SysLog("收藏题目")
     @RequestMapping(value = "/doCollect/{type}", method = RequestMethod.POST)
     public Result doCollect(@RequestBody CommonForm params, @PathVariable("type") Integer type){
 

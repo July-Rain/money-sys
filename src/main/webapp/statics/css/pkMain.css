@@ -282,3 +282,31 @@ button {
     margin-top: -24px;
 }
 
+/*加入队伍弹框*/
+.join_area .inner{
+    width: 507px;
+    height: 401px;
+    background: url("../img/competeCenter/shiban_daijinshu.png");
+    margin: 155px auto 0;
+    text-align: center;
+}
+.join_area .inner .title{
+    font-style: italic;
+    color: #fff;
+    font-size: 18px;
+    text-shadow: rgba(0,0,0,1) 0px 0px 10px;
+    line-height: 44px;
+    font-weight: bolder;
+    padding-top: 13px;
+}
+.join_area .inner input{
+    width: 337px;
+    height: 60px;
+    background: #dbdddf;
+    border-radius: 10px;
+    border: solid 2px rgba(29, 41, 57, 0.6);
+    padding: 0 22px;
+    margin-top: 100px;
+    font-size: 18px;
+    color: #999;
+}

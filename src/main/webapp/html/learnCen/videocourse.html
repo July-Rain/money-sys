@@ -22,6 +22,7 @@
         .content ul li{
             width: 20%;
             float: left;
+            margin-left: 20px;
         }
         .content ul li .item{
             padding-right: 25px;
@@ -51,6 +52,26 @@
         }
         .stuCreat{
             float: right;
+        }
+        /* videojs 有关的样式 */
+        .el-dialog__body #dialog-player_html5_api{
+            left: 32% !important;
+            max-height: 1000px !important;
+        }
+        .el-dialog__body button.vjs-big-play-button{
+            width: 45px !important;
+            height: 45px !important;
+
+        }
+        .el-dialog__body span.vjs-icon-placeholder{
+            line-height: 43px !important;
+            font-size: 25px !important;
+        }
+        .el-dialog__body div.vjs-big-play-centered{
+            margin-bottom: 15px !important;
+        }
+        ul li div.video-content{
+            height: 175px !important;
         }
     </style>
 </head>
@@ -113,7 +134,6 @@
 
                                 </el-form-item>
                             </el-form>
-
                         </div>
                     </div>
                     <div>
@@ -122,7 +142,10 @@
                                     <li v-for="(item, index) in videoData">
                                         <div class="item">
                                             <div class="video-content">
-                                                <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id)" @pause="onPause(item.id,$event)">
+                                                <video :id="item.id" class="video video-js vjs-big-play-centered" height="155" style="width: 300px;" preload="none"
+                                                       :poster="item.videoPicAccUrl"
+                                                       @play="onPlay(item.id)"
+                                                       @pause="onPause(item.id,$event)">
                                                     <source :src="item.contentUrl" type="video/mp4">
                                                     您的浏览器不支持视频播放
                                                 </video>
@@ -158,9 +181,16 @@
             </el-col>
         </el-row>
     </div>
-    <el-dialog class="dialog_minW750" title="视频课堂" :visible.sync="dialogVideo" >
-        <div v-if="dialogVideo" style="max-height: 450px;text-align: center">
-            <video style="width:auto; max-height: 450px" controls autoplay preload="none" :poster="thisVideoPicAccUrl" @play="onPlay(thisVideoId)" @pause="onPause(thisVideoId,$event)">
+    <el-dialog class="dialog_minW750" title="视频课堂" :visible.sync="dialogVideo" @opened="dialogOpen" >
+        <div v-if="dialogVideo" style="max-height: 450px;text-align: center" ref="dialog">
+            <!--<video style="width:auto; max-height: 450px" controls autoplay preload="none" :poster="thisVideoPicAccUrl" @play="onPlay(thisVideoId)" @pause="onPause(thisVideoId,$event)">
+                <source :src="thisVideoContentUrl" type="video/mp4">
+                您的浏览器不支持视频播放
+            </video>-->
+            <video id="dialog-player" class="video video-js vjs-big-play-centered" style="width:auto; max-height: 450px" preload="none"
+                   :poster="thisVideoPicAccUrl"
+                   @play="onPlay(thisVideoId, $event)"
+                   @pause="onPause(thisVideoId, $event)">
                 <source :src="thisVideoContentUrl" type="video/mp4">
                 您的浏览器不支持视频播放
             </video>
@@ -191,4 +221,5 @@
 
 <!-- import [current] JavaScript -->
 <script src="${rc.contextPath}/js/learnCen/videocourse.js?_${.now?long}"></script>
+<script src="${rc.contextPath}/statics/plugins/video/video.min.js"></script>
 </html>

@@ -33,7 +33,6 @@ public class DailyQuestionConfigurationController extends AbstractController {
      * @param params
      * @return
      */
-    @SysLog("展示每日一题配置")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public Result findPage(@RequestParam Map<String, Object> params){
         // 获取登录用户信息
@@ -52,7 +51,6 @@ public class DailyQuestionConfigurationController extends AbstractController {
     /**
      * 查询配置
      */
-    @SysLog("查询配置")
     @RequestMapping("/info")
     public Result info(String id){
         DailyQuestionConfiguration entity = dailyQuestionConfigurationService.selectByDailyId(id);
@@ -100,7 +98,6 @@ public class DailyQuestionConfigurationController extends AbstractController {
     /**
      * 每日一题题目展示
      */
-    @SysLog("题目展示")
     @RequestMapping(value = "/showDailyTest",method = RequestMethod.POST)
     public Result showTest(){
         Result r=  dailyQuestionConfigurationService.dailyTestCreate();
@@ -109,7 +106,6 @@ public class DailyQuestionConfigurationController extends AbstractController {
     /**
      * 每日一题题目展示
      */
-    @SysLog("新题目展示")
     @RequestMapping(value = "/newshowDailyTest",method = RequestMethod.POST)
     public Result newshowDailyTest(){
         Result r=  dailyQuestionConfigurationService.newDailyTestCreate();
@@ -117,6 +113,7 @@ public class DailyQuestionConfigurationController extends AbstractController {
     }
 
     //答过的题目入库保存
+    @SysLog("答过的题目入库保存")
     @RequestMapping("/saveQuestion")
     public void saveQuestion(@RequestBody TestQuestions testQuestions, String myanswer){
 
@@ -125,6 +122,7 @@ public class DailyQuestionConfigurationController extends AbstractController {
     }
 
     //保存分数
+    @SysLog("保存分数")
     @RequestMapping("/recordScore")
     public Result recordScore(String sorce){
         User u = (User) SecurityUtils.getSubject().getPrincipal();

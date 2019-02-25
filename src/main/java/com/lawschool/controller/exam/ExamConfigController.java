@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.Answer;
 import com.lawschool.beans.TestQuestions;
@@ -68,6 +69,7 @@ public class ExamConfigController extends AbstractController {
         }
     }
 
+    @SysLog("考试配置生成")
     @RequestMapping(value = "/examConfig/generate", method = RequestMethod.POST)
     private Result examConfigGen(
             @RequestBody ExamConfig examConfig) {
@@ -80,6 +82,7 @@ public class ExamConfigController extends AbstractController {
         return Result.ok();
     }
 
+    @SysLog("阅卷设置")
     @RequestMapping(value = "/checkset", method = RequestMethod.POST)
     private  Result checkset(@RequestBody CheckSetForm checkSetForm){
 
@@ -103,17 +106,17 @@ public class ExamConfigController extends AbstractController {
         return Result.ok().put("examConfig" , examConfig );
     }
 
+    @SysLog("保存考试配置")
     @RequestMapping(value = "/saveOrUpdate" , method = RequestMethod.POST)
     private Result saveOrUpdate(
             @RequestBody ExamConfig examConfig) {
-        try {
-            newExamConfigService.saveOrUpdate(examConfig,getUser());
-        } catch (Exception e) {
-            return Result.error(e.getMessage());
-        }
-        return Result.ok();
+
+        Result   res = newExamConfigService.saveOrUpdate(examConfig,getUser());
+
+        return res;
     }
 
+    @SysLog("删除考试配置")
     @RequestMapping(value = "/delete" , method = RequestMethod.POST)
     private Result delete(
             @RequestParam("id") String id) {
@@ -124,12 +127,14 @@ public class ExamConfigController extends AbstractController {
     }
 
 
+    @SysLog("生成自主考试配置")
     @RequestMapping( value = "/examConfig/genAutoQue" , method = RequestMethod.POST)
     private Result genAutoQue(@RequestBody ExamConfigForm examConfigForm){
         Result result = newExamConfigService.genAutoQue(examConfigForm);
         return result;
     }
 
+    @SysLog("生成随机考试配置")
     @RequestMapping( value = "/examConfig/genRandomQue" , method = RequestMethod.POST)
     private Result genRandomQue(@RequestBody ExamConfigForm examConfigForm){
         Result result = newExamConfigService.genRandomQue(examConfigForm);

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.practicecenter.ThemeExerciseEntity;
 import com.lawschool.dao.practicecenter.ThemeExerciseDao;
@@ -52,6 +53,7 @@ public class ThemeExerciseController extends AbstractController {
      * @param form
      * @return
      */
+    @SysLog("生成个人任务")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody ThemeExerciseForm form){
         User user = getUser();
@@ -101,6 +103,7 @@ public class ThemeExerciseController extends AbstractController {
      * @param id
      * @return
      */
+    @SysLog("提交练习")
     @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/commit/{id}", method = RequestMethod.POST)
     public Result commit(@PathVariable("id") String id){
@@ -119,6 +122,7 @@ public class ThemeExerciseController extends AbstractController {
      * @param id
      * @return
      */
+    @SysLog("清空重做")
     @RequestMapping(value = "/restart/{id}", method = RequestMethod.POST)
     public Result restart(@PathVariable("id") String id){
 
@@ -130,6 +134,7 @@ public class ThemeExerciseController extends AbstractController {
      * 收藏题目
      * @return
      */
+    @SysLog("收藏题目")
     @RequestMapping(value = "/doCollect/{type}", method = RequestMethod.POST)
     public Result doCollect(@RequestBody CommonForm params, @PathVariable("type") Integer type){
 

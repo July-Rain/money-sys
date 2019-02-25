@@ -221,9 +221,9 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
                 isHaveSubject = true;
             } else {
                 //单选多选判断  判断对错并且保存答案
-                String userAns = themeAnswerForm.getAnswer() == null ? "" : themeAnswerForm.getAnswer();
-                String rightAns = userExamAnswer.getRightAnsId().trim() == null ? "" : userExamAnswer.getRightAnsId().trim();
-                if (userAns.equals(rightAns)) {
+                String[] userAns = themeAnswerForm.getAnswer() == null ? "".split(",") : themeAnswerForm.getAnswer().split(",");
+                String[] rightAns = userExamAnswer.getRightAnsId().trim() == null ? "".split(",") : userExamAnswer.getRightAnsId().trim().split(",");
+                if (Arrays.equals(userAns, rightAns)) {
                     userExamAnswer.setUserScore(userExamAnswer.getScore());
                     totalScore += userExamAnswer.getScore();
                 } else {

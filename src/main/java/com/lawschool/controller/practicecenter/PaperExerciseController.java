@@ -1,6 +1,7 @@
 package com.lawschool.controller.practicecenter;
 
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.ExerciseConfigureEntity;
@@ -95,6 +96,7 @@ public class PaperExerciseController extends AbstractController {
      * @param formList
      * @return
      */
+    @SysLog("保存答题情况")
     @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/preserve/{type}", method = RequestMethod.POST)
     public Result preserve(@RequestBody List<ThemeAnswerForm> formList,
@@ -117,6 +119,7 @@ public class PaperExerciseController extends AbstractController {
      * @param id
      * @return
      */
+    @SysLog("提交答题情况")
     @RequestMapping(value = "/commit/{id}", method = RequestMethod.POST)
     public Result commit(@PathVariable("id") String id){
         User user = getUser();

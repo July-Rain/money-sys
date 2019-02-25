@@ -23,13 +23,18 @@ var vm = new Vue({
             queContent:'',
             typeId:''
         },
+        checkSetting: {
+            checkNum:'',
+            paperPerSetNum:'',
+            isAibitration:'',
+            checkScoreDifference:''
+        },
         skOption:[],
         tableData: [],//表格数据
         visible: false,
         examConfig: {
 
         },
-        checkSetting: {},
         rules: {//表单验证规则
             value: [
                 {required: true, message: '请输入参数名', trigger: 'blur'},
@@ -217,7 +222,14 @@ var vm = new Vue({
                 this.getCheckSetting(row.id);
             } else {
                 //生成
+                console.info("b",this.$refs)
+
                 this.checkSettingDia = true;
+                setTimeout(function () {
+                    vm.$refs["checkSetting"].resetFields();
+                },0)
+
+                console.info("c",this.$refs)
                 vm.checkSetting.id = row.id;
             }
         },
@@ -459,22 +471,25 @@ var vm = new Vue({
         },
         closeRanDia : function () {
             vm.randomQuesModal = false;
+        },
+        resetQueForm: function (name) {
+
         }
     },
     filters: {
         sinMultScoreFn: function (_length) {
-            if(vm.sinMultScore || vm.sinMultScore ===0){
-                return _length * vm.sinMultScore
+            if(this.sinMultScore || this.sinMultScore ===0){
+                return _length * this.sinMultScore
             }
         },
         mulMultScoreFn: function (_length) {
-            if(vm.mulMultScore || vm.mulMultScore ===0){
-                return _length * vm.mulMultScore
+            if(this.mulMultScore || this.mulMultScore ===0){
+                return _length * this.mulMultScore
             }
         },
         judgeMultScoreFn: function (_length) {
-            if(vm.judgeMultScore || vm.judgeMultScore ===0){
-                return _length * vm.judgeMultScore
+            if(this.judgeMultScore || this.judgeMultScore ===0){
+                return _length * this.judgeMultScore
             }
         },
         subMultScoreFn: function (_length) {

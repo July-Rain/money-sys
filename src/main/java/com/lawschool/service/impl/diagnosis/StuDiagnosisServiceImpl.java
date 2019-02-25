@@ -52,34 +52,39 @@ public class StuDiagnosisServiceImpl implements StuDiagnosisService {
         Map<String, Object> videoMap = new HashMap<String, Object>();
         param.put("stuFrom","videocen");
         videoMap.put("type","videocen");
-        videoMap.put("name","累计视频中心学习时长");
+        videoMap.put("name","视频中心");
         videoMap.put("countTime",countStuTime(param));
         videoMap.put("ratio",getRatio(param));
         stuInfo.add(videoMap);
-        //音频学习
-        Map<String, Object> audioMap = new HashMap<String, Object>();
-        param.put("stuFrom","audiocen");
-        audioMap.put("type","audiocen");
-        audioMap.put("name","累计音频中心学习时长");
-        audioMap.put("countTime",countStuTime(param));
-        audioMap.put("ratio",getRatio(param));
-        stuInfo.add(audioMap);
-        //案例分析
-        Map<String, Object> caseanaMap = new HashMap<String, Object>();
-        param.put("stuFrom","caseana");
-        caseanaMap.put("type","caseana");
-        caseanaMap.put("name","累计案例分析学习时长");
-        caseanaMap.put("countTime",countStuTime(param));
-        caseanaMap.put("ratio",getRatio(param));
-        stuInfo.add(caseanaMap);
+
         //学习任务
         Map<String, Object> learntaskMap = new HashMap<String, Object>();
         param.put("stuFrom","learntask");
         learntaskMap.put("type","learntask");
-        learntaskMap.put("name","累计学习任务学习时长");
+        learntaskMap.put("name","学习任务");
         learntaskMap.put("countTime",countStuTime(param));
         learntaskMap.put("ratio",getRatio(param));
         stuInfo.add(learntaskMap);
+
+
+        //案例分析
+        Map<String, Object> caseanaMap = new HashMap<String, Object>();
+        param.put("stuFrom","caseana");
+        caseanaMap.put("type","caseana");
+        caseanaMap.put("name","案例分析");
+        caseanaMap.put("countTime",countStuTime(param));
+        caseanaMap.put("ratio",getRatio(param));
+        stuInfo.add(caseanaMap);
+
+
+        //音频学习
+        Map<String, Object> audioMap = new HashMap<String, Object>();
+        param.put("stuFrom","audiocen");
+        audioMap.put("type","audiocen");
+        audioMap.put("name","音频中心");
+        audioMap.put("countTime",countStuTime(param));
+        audioMap.put("ratio",getRatio(param));
+        stuInfo.add(audioMap);
 
         result.put("stuInfo",stuInfo);
 

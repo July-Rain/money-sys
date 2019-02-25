@@ -1,6 +1,7 @@
 package com.lawschool.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.lawschool.annotation.SysLog;
 import com.lawschool.beans.SysConfig;
 import com.lawschool.beans.User;
 import com.lawschool.config.ShiroUtils;
@@ -51,7 +52,7 @@ public class SysLoginController {
 	 * @Param [username, password]
 	 * @return com.lawschool.util.Result
 	 **/
-	
+	@SysLog("登陆")
 	@ResponseBody
 	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
 	public Result login(String username, String password) {
@@ -78,7 +79,7 @@ public class SysLoginController {
 	 * @Param []
 	 * @return java.lang.String
 	 **/
-	
+	@SysLog("退出系统")
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
 	public String logout() {
 		//request.getSession().setAttribute("user", null);

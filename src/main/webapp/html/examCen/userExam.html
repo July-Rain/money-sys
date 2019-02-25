@@ -20,12 +20,12 @@
                         </div>
                         <div class="card_contain">
                             <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-                                <el-form-item prop="code">
+                                <el-form-item prop="examName" label="考卷名称">
                                     <el-input v-model="formInline.examName" placeholder="试卷名称" size="mini"></el-input>
                                 </el-form-item>
 
-                                <el-form-item prop="status">
-                                    <el-select v-model="formInline.status" placeholder="已考状态" size="mini">
+                                <el-form-item prop="status" label="已考状态">
+                                    <el-select v-model="formInline.status" placeholder="请选择" size="mini">
                                         <el-option label="已考" value="1"></el-option>
                                         <el-option label="未考" value="0"></el-option>
                                     </el-select>

@@ -121,6 +121,47 @@
                 <input type="text" placeholder="输入队伍编号">
             </div>
         </div>
+
+        <!--建立房间-->
+        <div class="model_area formation_war" v-if="formationWarShow">
+            <div class="inner">
+                <div class="left">
+                    <div class="init">
+                        <ul>
+                            <li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>
+                            <li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>
+                            <li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>
+                        </ul>
+                        <p class="teamName">我的昵称战队</p>
+                    </div>
+
+                </div>
+                <div class="mid">
+                    <div class="title">建立新房间</div>
+                    <h3>房间编号</h3>
+                    <p>1235645</p>
+                    <p class="msg">正在等待其他队伍加入你的房间...</p>
+                </div>
+                <div class="right">
+                    <div class="init">
+                        <ul>
+                            <li><img src="${rc.contextPath}/statics/img/dog.jpg" alt=""></li>
+                        </ul>
+                        <!--<p class="teamName">我的昵称战队</p>-->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!--加入房间-->
+        <div class="model_area join_area join_war" v-if="joinWarShow">
+            <div class="inner">
+                <div class="title">加入他人房间</div>
+                <input type="text" placeholder="输入房间号">
+                <button @click="joinFormationWar">建立新房间</button>
+            </div>
+        </div>
+
     </div>
 
     <el-row :gutter="24">

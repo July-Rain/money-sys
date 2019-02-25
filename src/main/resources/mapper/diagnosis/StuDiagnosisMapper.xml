@@ -85,12 +85,16 @@
     <select id="getRankNo" resultType="java.lang.Integer" parameterType="map">
         <!-- 统计学习时长排名-->
 
+        select rankNo from(
         SELECT
-          RANK () OVER (ORDER BY s.stuTime ASC) AS rankNo
+        RANK () OVER (ORDER BY s.stuTime ASC) AS rankNo,
+        s.full_name,
+        s.userId,
+        s.user_code
         FROM
           (
           SELECT
-          U .*, T .stuTime
+          U .*, T .stuTime,U.id as userId
           FROM
           LAW_USER U
           LEFT JOIN (
@@ -114,8 +118,10 @@
           USER_ID
           ) T ON U . ID = T .USER_ID
         ) s
+
+        ) rankNo
         WHERE
-        s. ID = #{userId}
+        rankNo. userId = #{userId}
 
     </select>
 

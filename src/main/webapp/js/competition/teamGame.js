@@ -39,7 +39,9 @@ var vm = new Vue({
         battlePlatform:{},//对战平台
         jifen:"0",
         joinTeamShow: false,
-        formationTeamShow: false
+        formationTeamShow: false,
+        formationWarShow: false,//组建房间弹框！！！
+        joinWarShow: true//加入房间弹框！！
     },
     created: function () {
         this.$nextTick(function () {

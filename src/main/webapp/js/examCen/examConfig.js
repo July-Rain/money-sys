@@ -33,7 +33,7 @@ var vm = new Vue({
             if (vm.examConfig.questionWay === '') {
                 callback(new Error('出题方式不能为空'))
             } else {
-                if (vm.examConfig.groupForm==='10028'&&!vm.examConfig.questionWay ==='10033'){
+                if (vm.examConfig.groupForm==='10028'&&vm.examConfig.questionWay =='10034'){
                     callback(new Error('选择随机组卷时出题方式只能为随机出题'))
                 } else {
                     callback()
@@ -44,8 +44,9 @@ var vm = new Vue({
         var validateReachReward = function (rule, value, callback) {
 
             if (vm.examConfig.reachRewardType!='10038'&&vm.examConfig.reachRewardType!='') {
+
                 if(vm.examConfig.reachReward===''){
-                    alert(11);
+
                     callback(new Error('请输入达标奖励分数'))
                 }else {
                     callback();
@@ -58,11 +59,10 @@ var vm = new Vue({
             for (var i = 1; i <= 15; i++) {
                 data.push({
                     key: i,
-                    label: `备选项 ${ i }`,
+                    label: '备选项'+i,
                     disabled: i % 4 === 0
                 });
             }
-            console.info("data格式",data)
             return data
 
         };
@@ -101,7 +101,7 @@ var vm = new Vue({
                     {required: true, message: '请选择是否必考', trigger: 'change'}
                 ],
                 questionWay:[
-                    {validator: validateQueWay, trigger: 'change'}
+                    {validator: validateQueWay, trigger: 'change',required: true}
                 ],
                 topicOrderType:[
                     {required: true, message: '请选择题目顺序', trigger: 'change'}
@@ -254,7 +254,9 @@ var vm = new Vue({
         getPassPnt : function(){
             vm.examConfig.passPnt = vm.examConfig.examScore*0.6;
         },
-
+        resetForm: function (formName) {
+            this.$refs[formName].resetFields();
+        },
         getExamDetail: function(id){
             $.ajax({
                 type : "GET",
@@ -270,14 +272,19 @@ var vm = new Vue({
             })
         },
         cancel : function(){
-            window.parent.vm.dialogView = false
-        },
-
+            if(operate==='0') {
+                window.parent.vm.dialogAdd = false
+            }else if (operate==='1'){
+                window.parent.vm.dialogView = false
+            }else{
+                window.parent.vm.dialogEdit = false
+            }
+       },
         save : function(formName){
             if(operate==='1'){
                 window.parent.vm.dialogView = false
             }else {
-                this.$refs[formName].validate((valid) => {
+                this.$refs[formName].validate(function (valid) {
                     if (valid) {
                         vm.examConfig.qfList = vm.previewList;
                         var deptArr = vm.examConfig.deptIds ? vm.examConfig.deptIds.split(",") : [];
@@ -294,7 +301,10 @@ var vm = new Vue({
                             contentType: "application/json",
                             success: function (result) {
                                 if (result.code === 0) {
-                                    alert('保存成功');
+                                    vm.$message({
+                                        type: 'success',
+                                        message: '保存成功!'
+                                    });
                                     window.parent.vm.dialogAdd = false;
                                     window.parent.vm.dialogEdit = false;
                                     window.parent.vm.reload();
@@ -330,6 +340,7 @@ var vm = new Vue({
         },
         cancelUser: function () {
             this.dialogUser=false;
+            // window.parent.vm.dialogAdd = false;
         },
         searchUser: function () {
             //查询人员信息
@@ -391,7 +402,7 @@ var vm = new Vue({
         chooseUser: function () {
             //选择人员
             this.dialogUser=true;
-
+            this.reloadUser();
         },
         reloadUser: function () {
             $.ajax({
