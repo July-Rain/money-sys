@@ -87,7 +87,7 @@ var vm = new Vue({
         videoFlag: false,
         videoUploadPercent: 0,
         deptCheckData: [],//部门默认选中节点
-        saveUserTableData: []//用于人员回显表格的对象
+        saveUserTableData: []//用于人员回显表格的对象  --回显需加
     },
     created: function () {
         this.$nextTick(function () {
@@ -435,7 +435,7 @@ var vm = new Vue({
             // console.info("stu",this.saveUserTableData)
             // console.info("let me see see",this.stuMedia.userArr);
             // this.stuMedia.userArr = ['U20190222151053715155'];
-            this.huixian(this.stuMedia.userArr)
+            this.huixian(this.stuMedia.userArr) //  --回显需加
 
 
         },
@@ -456,6 +456,7 @@ var vm = new Vue({
             this.dialogDept = false;
         },
         confimUser: function () {
+            //  --回显需加
             var val = this.multipleSelection;
             //遍历最终的人员信息
             for (var i = 0; i < val.length; i++) {
@@ -490,7 +491,7 @@ var vm = new Vue({
                         vm.userForm.pageSize = result.page.pageSize;
                         vm.userForm.totalCount = parseInt(result.page.totalCount);
 
-                        // 点击展示回显内容：
+                        // 点击展示回显内容：   --回显需加
                         vm.huixian(vm.stuMedia.userArr)
                     } else {
                         alert(result.msg);
@@ -507,8 +508,8 @@ var vm = new Vue({
             this.reloadUser();
         },
         huixian: function (ids) {
-            // saveUserTableData
-            if (!ids) {
+            // saveUserTableData    --回显需加
+            if(!ids){
                 return
             }
             var that = this;
@@ -528,6 +529,7 @@ var vm = new Vue({
             })
         },
         userToggleSelection(rows) {
+            //  --回显需加
             if (rows) {
                 rows.map(function (row) {
                     vm.$refs.userTable.toggleRowSelection(row);

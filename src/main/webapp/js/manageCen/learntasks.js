@@ -114,6 +114,7 @@ var vm = new Vue({
         policeclassOption:[],//所属警种
        // multipleClassSelection:[]//法律法规数据选择框
         deptCheckData:[],//部门默认选中节点
+        saveUserTableData: [],//用于人员回显表格的对象  --回显需加
         breadArr:[]//面包屑数据
     },
     created: function () {
@@ -171,6 +172,9 @@ var vm = new Vue({
                     vm.taskClassOption=result.dictlist;
                 }
             });
+
+        });
+        this.$nextTick(function () {
             this.reload();
             this.reloadUser();
             vm.menuForm=menu;
@@ -380,6 +384,8 @@ var vm = new Vue({
             //选择人员
             this.dialogUser=true;
 
+            this.huixian(this.learnTasks.userArr) //  --回显需加
+
         },
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
@@ -419,11 +425,49 @@ var vm = new Vue({
                         vm.userForm.currPage = result.page.currPage;
                         vm.userForm.pageSize = result.page.pageSize;
                         vm.userForm.totalCount = parseInt(result.page.totalCount);
+                        debugger
+                        // 点击展示回显内容：   --回显需加
+                        vm.huixian(vm.learnTasks.userArr)
                     } else {
                         alert(result.msg);
                     }
                 }
             });
+        },
+        huixian: function (ids) {
+            debugger
+            // saveUserTableData    --回显需加
+            if(!ids){
+                return
+            }
+            if(ids.length==0){
+                return
+            }
+            var that = this;
+            ids.map(function (_id) {
+                that.userTableData.map(function (_data) {
+                    if (_id == _data.id) {
+                        that.saveUserTableData.push(_data)
+                    }
+                })
+
+            });
+            console.info("saveUserTableData", that.saveUserTableData);
+            this.$nextTick(function () {
+                // vm.$refs.userTable.toggleRowSelection()
+                vm.userToggleSelection(that.saveUserTableData)
+
+            })
+        },
+        userToggleSelection(rows) {
+            //  --回显需加
+            if (rows) {
+                rows.map(function(row){
+                    vm.$refs.userTable.toggleRowSelection(row);
+                });
+            } else {
+                this.$refs.userTable.clearSelection();
+            }
         },
         userHandleSizeChange: function (val) {
             this.userForm.pageSize=val;
