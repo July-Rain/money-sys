@@ -84,6 +84,7 @@ var vm = new Vue({
                 that.videoDataId.forEach(function (val, index) {
                     var myPlayer = videojs(val, options);
                 })
+
             }
         },
         dialogOpen: function () {
