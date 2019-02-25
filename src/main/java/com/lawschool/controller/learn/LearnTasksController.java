@@ -101,7 +101,7 @@ public class LearnTasksController extends AbstractController {
 
     @RequestMapping("/info")
     public Result info(String id){
-        LearnTasksEntity tasksEntity = tasksService.selectById(id);
+        LearnTasksEntity tasksEntity = tasksService.selectLearnTask(id);
         return Result.ok().put("data", tasksEntity);
     }
     /**

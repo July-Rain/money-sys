@@ -423,6 +423,7 @@
                     <el-scrollbar wrap-class="depList" wrap-style="color: red;" view-style="font-weight: bold;"
                                   view-class="view-box" :native="false">
                         <el-tree
+
                                 :data="userData"
                                 :props="defaultUserProps"
                                 accordion
@@ -448,6 +449,7 @@
                     </el-form>
                     <div>
                         <el-table
+                                ref="userTable"
                                 :data="userTableData"
                                 border
                                 height="529"

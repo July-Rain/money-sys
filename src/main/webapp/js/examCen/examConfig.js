@@ -184,7 +184,8 @@ var vm = new Vue({
                 orgCode:"",
                 currPage: 1,
                 pageSize: 10,
-                totalCount:0
+                totalCount:0,
+                identify: '0'//表明是用户
 
             },//人员查询
             //选中题目
