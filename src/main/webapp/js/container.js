@@ -487,7 +487,7 @@ var vm = new Vue({
                         bigButton.style.display = 'none';
                     });
                     myPlayer.on('pause', function () {
-                        bigButton0.style.display = 'block';
+                        bigButton.style.display = 'block';
                     });
                 })
             }
