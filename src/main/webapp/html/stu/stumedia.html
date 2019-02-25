@@ -26,6 +26,21 @@
             font-size: 30px;
             color: #57A8DC;
         }
+        /* dialog videojs 样式 */
+        .el-dialog div.vjs-controls-enabled{
+            width: 50% !important;
+            height: 175px;
+            margin: 35px 100px 35px !important;
+        }
+        img.avatar{
+            width: 300px !important;
+            margin: 35px 100px 35px !important;
+        }
+        button.vjs-big-play-button{
+            top: 40% !important;
+            left: 50% !important;
+            outline: none !important;
+        }
         video::-webkit-media-controls-enclosure{ overflow: hidden; }
         video::-webkit-media-controls-panel{ width: calc(100% + 30px); }
     </style>
@@ -217,7 +232,6 @@
                             </el-form-item>
                         </template>
                         <template v-if="stuMedia.stuType=='2'">
-
                             <el-form-item label="音频上传：" prop="comContent" >
                                 <audio v-if="stuMedia.comContent !='' && videoFlag == false"
                                        :src="stuMedia.contentUrl" class="avatar" controls="controls">您的浏览器不支持音频播放
@@ -232,9 +246,7 @@
                                            :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess"
                                            :before-upload="beforeAudioUpload" :on-progress="uploadVideoProcess">
                                     <el-button type="primary">点击上传</el-button>
-
                                 </el-upload>
-
                             </el-form-item>
                         </template>
                         <template v-if="stuMedia.stuType=='3'">
@@ -254,15 +266,15 @@
                                 <P class="text">请保证图片格式正确，作为视频封面</P>
                             </el-form-item>
                             <el-form-item label="视频上传：" prop="comContent">
-                                <video v-if="stuMedia.comContent !='' && videoFlag == false"
-                                       :src="stuMedia.contentUrl" class="avatar" controls="controls">您的浏览器不支持视频播放
+                                <video v-if="stuMedia.comContent !='' && videoFlag == false" autoplay
+                                       :src="stuMedia.contentUrl" id="video-uploaded" class="avatar video-js" controls="controls">您的浏览器不支持视频播放
                                 </video>
                                 <i v-else-if="stuMedia.comContent =='' && videoFlag == false"
                                    class="iconfont icon-shipin"></i>
                                 <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent"
                                              style="margin-top:30px;"></el-progress>
                                 <!-- action必选参数, 上传的地址 -->
-                                <el-upload name="importfile" class="avatar-uploader el-upload--text"
+                                <el-upload class="video-button" name="importfile" class="avatar-uploader el-upload--text"
                                            :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess"
                                            :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
                                     <el-button type="primary">点击上传</el-button>

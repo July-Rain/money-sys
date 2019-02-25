@@ -59,6 +59,7 @@ var vm = new Vue({
                         if(result.code == 0){//登录成功
                             vm.checkExamUser = result.checkExamUser;
                             storage.setItem("checkExamUser",JSON.stringify(vm.checkExamUser));
+                            storage.setItem("userStatus","1");
                             vm.reload();
                         }else{
                             alert(result.msg);

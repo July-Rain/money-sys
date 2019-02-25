@@ -9,7 +9,8 @@ var vm = new Vue({
         teamAreaShow: false,
         teamPerNum: 3,
         warAreaShow:false,
-        joinTeamShow:false//加入队伍弹框！！！！
+        joinTeamShow:false,//加入队伍弹框！！！！
+        alonePkGameNum: ''
     },
     created: function () {
         this.$nextTick(function () {
@@ -23,6 +24,16 @@ var vm = new Vue({
                 }
             });
         })
+        document.onkeydown = function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if(e && e.keyCode==13){ // enter 键
+                if(vm.joinTeamShow){
+                    vm.joinTeamShow = false;
+                    window.location.href = baseURL + "modules/competition/alonePkGameByCode.html?warType=join&type=join&code=" + vm.alonePkGameNum;
+                }
+
+            }
+        }
     },
     methods: {
         toUrl:function (url) {
@@ -63,7 +74,9 @@ var vm = new Vue({
         joinWar: function () {
             // 加入战区
             this.warAreaShow = false;
-            window.location.href = baseURL + "modules/competition/alonePkGameByCode.html?warType=join&type=join";
+
+            this.joinTeamShow=true;
+            // window.location.href = baseURL + "modules/competition/alonePkGameByCode.html?warType=join&type=join";
         },
 
     }
