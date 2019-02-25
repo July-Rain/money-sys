@@ -90,7 +90,6 @@ var vm = new Vue({
         saveUserTableData: []//用于人员回显表格的对象  --回显需加
     },
     created: function () {
-
         this.$nextTick(function () {
             //法律分类树数据
             $.ajax({
@@ -141,9 +140,24 @@ var vm = new Vue({
             this.reloadUser();
             this.breadArr = getBreadcrumb(menuId);
         })
-
     },
     methods: {
+        // 初始化videojs
+        initPlayer: function () {
+            var options = {
+                bigPlayButton: true,
+            };
+            var videoUploaded = videojs('video-uploaded', options);
+            var toggleButton = document.getElementsByClassName('vjs-big-play-button')[0];
+            toggleButton.style.visibility = 'hidden';
+            console.log(toggleButton);
+            videoUploaded.on('pause', function () {
+                toggleButton.style.visibility = 'visible';
+            })
+            videoUploaded.on('play', function () {
+                toggleButton.style.visibility = 'hidden';
+            })
+        },
         //序列号计算
         indexMethod: function (index) {
             return index + 1 + (vm.formInline.currPage - 1) * vm.formInline.pageSize;
@@ -327,13 +341,18 @@ var vm = new Vue({
 
         },
         uploadSuccess: function (response, file, fileList) {
+            var that = this;
+            var videoButton = document.getElementsByClassName('video-button')[0];
             this.videoFlag = false;
             this.videoUploadPercent = 0;
             if (response.code == 0) {
+                videoButton.style.display = 'none';
                 vm.stuMedia.comContent = response.accessoryId;
                 vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
                 setTimeout(function () {
                     vm.stuMedia.stuTime = document.getElementsByClassName("avatar")[0].duration;
+                    vm.stuMedia.stuTime = document.getElementsByClassName("avatar")[0].duration;
+                    that.initPlayer();
                     //console.info("啊啊啊",document.getElementsByClassName("avatar")[0].currentTime,document.getElementsByClassName("avatar")[0].duration);
                 }, 800)
             } else {
@@ -341,9 +360,11 @@ var vm = new Vue({
             }
         },
         handlePicSuccess: function (response, file, fileList) {
+            var avatarUploader = document.getElementsByClassName('avatar-uploader')[0];
             if (response.code == 0) {
                 vm.stuMedia.videoPicAcc = response.accessoryId;
                 vm.stuMedia.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
+                avatarUploader.style.display = 'none';
             } else {
                 this.$message.error('图片上传失败，请重新上传！');
             }
@@ -510,7 +531,7 @@ var vm = new Vue({
         userToggleSelection(rows) {
             //  --回显需加
             if (rows) {
-                rows.map(function(row){
+                rows.map(function (row) {
                     vm.$refs.userTable.toggleRowSelection(row);
                 });
             } else {
