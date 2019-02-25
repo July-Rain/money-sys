@@ -45,7 +45,14 @@ var vm = new Vue({
                 {max: 50, message: '最大长度50', trigger: 'blur'}
             ]
         },
-        checkSettingRules: {},
+        checkSettingRules: {
+            checkNum: [
+                {required: true, message: '请输入阅卷人数', trigger: 'blur'}
+            ],
+            paperPerSetNum: [
+                {required: true, message: '请选择每套试卷阅卷人数', trigger: 'blur'}
+            ]
+        },
         checkSettingDia: false,//阅卷设置弹出框
         viewCheckSettingDia: false,//查看阅卷信息弹出框
         title: "",//弹窗的名称
@@ -178,7 +185,8 @@ var vm = new Vue({
         handleChange: function () {
 
         },
-        saveCheckSet: function () {
+        saveCheckSet: function (){
+            this.checkSettingDia = false;
             console.info(vm.checkSetting);
             $.ajax({
                 type: "POST",
@@ -189,8 +197,8 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         alert("保存成功");
-                        this.checkSettingDia = false;
-                        vm.reload();
+                        vm.closeCheckSettingDia();
+
                     } else {
                         alert(result.msg);
                     }
