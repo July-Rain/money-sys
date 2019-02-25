@@ -109,7 +109,7 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 			competitionOnlineService.saveQuestion(msg.getTq(),msg.getMyanswer(),msg.getFrom(),"OnlinPkByCode");
 		}
 
-
+		answerCount.put(msg.getFrom(),answerCount.get(msg.getFrom())+1);
 
 		msg.setDate(new Date());
 		//处理html的字符，转义：
@@ -215,6 +215,9 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 						sendMessageToUser(battlePlatform.getPlay2(),message);//给另一个人发消息
 						USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay2()).close();
+
+						competitionOnlineService.recordScore(battlePlatformId,"1",timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()).getWinReward(),"OnlinPkByCode",battlePlatform.getPlay2());
+
 					}
 					else if(loginUser.getId().equals(battlePlatform.getPlay2()))
 					{
@@ -226,6 +229,8 @@ public class ChatWebSocketHandlerAlonePkByCode implements WebSocketHandler {
 						TextMessage message = new TextMessage(GsonUtils.toJson(msg));
 						sendMessageToUser(battlePlatform.getPlay1(),message);//给另一个人发消息
 						USER_SOCKETSESSION_MAP.get(battlePlatform.getPlay1()).close();
+						competitionOnlineService.recordScore(battlePlatformId,"1",timussettingMap.get("onlinePksetting"+battlePlatform.getPlay1()).getWinReward(),"OnlinPkByCode",battlePlatform.getPlay1());
+
 					}
 
 
