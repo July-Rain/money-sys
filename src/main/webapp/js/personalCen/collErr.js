@@ -43,11 +43,40 @@ var vm = new Vue({
             //加载选项数据
             $.ajax({
                 type: "POST",
-                url: baseURL + "dict/getbyType/QUESTION_DIFF",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async: false,
+                data: {type: "QUESTION_DIFF", Parentcode: "0"},
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.qds = result.dictlist;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+
+            // $.ajax({
+            //     type: "POST",
+            //     url: baseURL + "dict/getByTypeAndParentcode",
+            //     dataType: "json",
+            //     async: false,
+            //     data: {type: "SPECIALKNOWLEDGE", Parentcode: "0"},
+            //     success: function (result) {
+            //         if (result.code === 0) {
+            //             vm.sks = result.dictlist;
+            //         } else {
+            //             alert(result.msg);
+            //         }
+            //     }
+            // });
+            $.ajax({
+                type: "GET",
+                url: baseURL + "exam/config/dict",
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.qds = result.forms;
+                        vm.sks = result.skOption;
                     } else {
                         alert(result.msg);
                     }
@@ -56,24 +85,13 @@ var vm = new Vue({
 
             $.ajax({
                 type: "POST",
-                url: baseURL + "dict/getbyType/SPECIALKNOWLEDGE",
-                contentType: "application/json",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async: false,
+                data: {type: "QUESTION_TYPE", Parentcode: "0"},
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.sks = result.forms;
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
-
-            $.ajax({
-                type: "POST",
-                url: baseURL + "dict/getbyType/QUESTION_TYPE",
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.qts = result.forms;
+                        vm.qts = result.dictlist;
                     } else {
                         alert(result.msg);
                     }
