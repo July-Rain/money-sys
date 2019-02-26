@@ -101,7 +101,7 @@ var vm = new Vue({
                         vm.reload();
                         vm.$message({
                             type: 'success',
-                            message: '删除成功!'
+                            message: '取消成功!'
                         });
 
                     }
@@ -131,7 +131,7 @@ var vm = new Vue({
                                 vm.videoData[i].videoPicAccUrl="http://temp.im/640x260";
                             }
                             if(vm.videoData[i].stuType=='1'){
-                                vm.videoData[i].stuType="文字";
+                                vm.videoData[i].stuType="图文";
                             }else if(vm.videoData[i].stuType=='2'){
                                 vm.videoData[i].stuType="音频";
                             }else if(vm.videoData[i].stuType=='3'){
