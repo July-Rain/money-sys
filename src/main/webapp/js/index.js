@@ -70,7 +70,9 @@ var vm = new Vue({
             console.log(key, keyPath);
         },
         toChild: function (item,event) {
-
+            if(item.url === null){
+                return
+            }
             if(item.url === 'container.html'){
                 vm.navData.splice(-1,1);
                 vm.showThis = false;
@@ -84,7 +86,6 @@ var vm = new Vue({
                 $(".header-right ul li").removeClass("this");
 
                 if(item.url.indexOf("?") == -1){
-
                     if(item.url == 'menu'){
                         console.info("item1",item);
                         vm.childUrl = item.list[0].url + "?id=" + item.id;
