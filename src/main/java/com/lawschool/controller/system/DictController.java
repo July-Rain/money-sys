@@ -55,6 +55,20 @@ public class DictController extends AbstractController{
             entity.setIsParent(1);
         }
 
+        // 判断是否重名
+        boolean duplicate = dictService.checkDuplicate(entity.getId(), entity.getName(), "name");
+        if(!duplicate){
+
+            return Result.error("该名称：" + entity.getName() + " 重名，请重新设置");
+        } else {
+
+            duplicate = dictService.checkDuplicate(entity.getId(), entity.getCode(), "code");
+            if(!duplicate){
+
+                return Result.error("该编码：" + entity.getCode() + " 重复，请重新设置");
+            }
+        }
+
         boolean result = dictService.save(entity);
         if(result){
             return Result.ok();
