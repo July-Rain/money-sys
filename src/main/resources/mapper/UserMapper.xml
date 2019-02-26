@@ -190,7 +190,7 @@ where 1=1
         <if test="userCode!=null and userCode != ''">
             and USER_CODE  like concat(concat('%',#{userCode}),'%')
         </if>
-        order by create_time desc
+        order by sort ASC
     </select>
     <select id="countUser" parameterType="map" resultType="java.lang.Integer">
         select
@@ -218,6 +218,6 @@ where 1=1
         <if test="userCode!=null and userCode != ''">
             and USER_CODE  like concat(concat('%',#{userCode}),'%')
         </if>
-        order by create_time desc
+        order by sort ASC
     </select>
 </mapper>

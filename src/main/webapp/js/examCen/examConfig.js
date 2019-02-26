@@ -84,7 +84,10 @@ var vm = new Vue({
                 deptIds: "",
                 userIds: "",
                 reachRewardType:"",
-                enabled :"1"
+                enabled :"1",
+                isMustTest:"10029",
+                topicOrderType:"10032",
+                optionOrderType:"10032"
             },
             rules: {//表单验证规则
                 examName: [
@@ -181,7 +184,8 @@ var vm = new Vue({
                 orgCode:"",
                 currPage: 1,
                 pageSize: 10,
-                totalCount:0
+                totalCount:0,
+                identify: '0'//表明是用户
 
             },//人员查询
             //选中题目

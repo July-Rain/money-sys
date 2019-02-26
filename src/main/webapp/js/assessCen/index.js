@@ -407,6 +407,9 @@ var vm = new Vue({
                 parent.location.href =baseURL+item.list[0].url;
             }
 
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     }
 });
