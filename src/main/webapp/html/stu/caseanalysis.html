@@ -39,6 +39,8 @@
                             :data="treeData"
                             :props="defaultProps"
                             accordion
+                            current-node-key="all"
+                            node-key="classifyId"
                             @node-click="handleNodeClick">
                     </el-tree>
                 </el-scrollbar>
@@ -153,7 +155,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="caseTime"
-                            label="裁决时间"
+                            label="裁判日期"
                             width="150"
                             header-align="center"
                             align="center"
@@ -216,7 +218,7 @@
             <div>
                 <el-col :span="24">
                     <el-form :model="caseAna" :rules="rules" ref="caseAna" label-width="115px" class="demo-caseAna" size="mini">
-                        <el-form-item label="案例资料类型：" prop="contentType">
+                        <el-form-item label="案例类型：" prop="contentType">
                             <el-radio-group v-model="caseAna.contentType" >
                                 <el-radio  label="1">图文</el-radio>
                                 <el-radio  label="2">音频</el-radio>
@@ -307,7 +309,7 @@
                                     type="date"
                                     format="yyyy年MM月dd日"
                                     value-format="yyyy-MM-dd"
-                                    placeholder="裁决时间"
+                                    placeholder="裁判日期"
                                     size="mini"
                             >
                             </el-date-picker>
@@ -329,7 +331,7 @@
                         <el-form-item label="使用人员：" prop="userName">
                             <el-input v-model="caseAna.userName" readonly @focus="chooseUser" placeholder="请选择使用人员" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="案例描述：" prop="caseDescribe">
+                        <el-form-item label="备注：" prop="caseDescribe">
                             <el-input type="textarea" maxlength="200" v-model="caseAna.caseDescribe"></el-input>
                         </el-form-item>
                     </el-form>
