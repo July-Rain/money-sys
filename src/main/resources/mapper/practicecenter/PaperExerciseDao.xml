@@ -25,7 +25,7 @@
             t.legal_basis,
             t.answer_describle,
             t.answer_choice_number,
-            r.ANSWER_ID AS "userAnswer",
+            r.ANSWER AS "userAnswer",
             r.right
         FROM law_testquestions t
         LEFT JOIN LAW_PAPER_RECORD r
