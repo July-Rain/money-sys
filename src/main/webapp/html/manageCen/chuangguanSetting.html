@@ -99,9 +99,12 @@
             <el-col :span="24">
                 <div class="info_btn">
 
-                    <el-button size="mini" type="primary" @click="add"><i class="iconfont icon-htmal5icon18"></i>新增配置</el-button>
-                    <el-button size="mini" type="primary" @click="update"><i class="iconfont icon-xiugaimima"></i>编辑</el-button>
-                    <el-button size="mini" type="danger" @click="del" plain><i class="iconfont icon-tubiaozhizuo-"></i>删除</el-button>
+                    <el-button size="mini" type="primary" @click="add"><i class="iconfont icon-htmal5icon18"></i>新增配置
+                    </el-button>
+                    <el-button size="mini" type="primary" @click="update"><i class="iconfont icon-xiugaimima"></i>编辑
+                    </el-button>
+                    <el-button size="mini" type="danger" @click="del" plain><i class="iconfont icon-tubiaozhizuo-"></i>删除
+                    </el-button>
                 </div>
 
                 <el-table
@@ -161,7 +164,6 @@
                         <template slot-scope="scope">
 
 
-
                             <el-popover
                                     placement="right"
                                     trigger="hover"
@@ -193,7 +195,7 @@
 
 
         <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
-            <el-row>
+            <el-row v-if="false">
                 <el-col :span="12">
                     <el-form :model="daguanArray" :rules="rules" ref="daguanArray" label-width="100px"
                              class="demo-daguanArray" size="mini">
@@ -248,7 +250,6 @@
                                     </th>
                                 </tr>
                             </table>
-
                             <div v-for="item2 in item.recruitCheckpointConfigurationList" class="swiper-slide">
 
                                 <table style="border: solid 2px black;width: 100%">
@@ -313,13 +314,13 @@
                             </div>
                         </div>
 
-                        <el-form-item>
-                            <el-button type="primary" @click="saveOrUpdate('daguanArray')">保存</el-button>
-                            <el-button @click="closeDia">取消</el-button>
-                        </el-form-item>
                     </el-form>
                 </el-col>
             </el-row>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="saveOrUpdate('daguanArray')">保存</el-button>
+                <el-button @click="closeDia">取消</el-button>
+            </span>
         </el-dialog>
 
 
