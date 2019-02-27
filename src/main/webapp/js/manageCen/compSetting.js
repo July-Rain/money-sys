@@ -9,7 +9,7 @@ var vm = new Vue({
             parent.location.reload()
         },
         toUrl: function (url) {
-            window.location.href = baseURL + "modules/competition/"+url+".html";
+            window.location.href = baseURL + "modules/manageCen/"+url+".html";
         }
     }
 })
