@@ -5,6 +5,7 @@
  */
 var editor = null;
 var menuId = getUrlParam("id");
+// 视频上传DOM 改为由v-show控制以实现上传视频替换功能后，会有一个warn，于功能无碍。待定。
 var vm = new Vue({
     el: '#app',
     data: {
@@ -149,20 +150,8 @@ var vm = new Vue({
                 bigPlayButton: false,
             };
             this.uploadedPlayer = videojs('video-uploaded', options);
-            /*if (!this.uploadedPlayer) {
-                this.uploadedPlayer = videojs('video-uploaded', options);
-            } else {
-                this.uploadedPlayer.dispose();
-                this.uploadedPlayer = videojs('video-uploaded', options);
-            }*/
         },
         // videojs
-        playerDispose: function () {
-            if (this.uploadedPlayer) {
-                this.uploadedPlayer.dispose();
-            }
-            return;
-        },
         //序列号计算
         indexMethod: function (index) {
             return index + 1 + (vm.formInline.currPage - 1) * vm.formInline.pageSize;
@@ -333,7 +322,6 @@ var vm = new Vue({
             vm.stuMedia.stuKnowledge = data.classifyName;
             vm.formInline.stuLawid = data.id;
             this.reload();
-            //console.log(data);
         },
         //部门人员控件中点击事件
         handleDeptNodeClick: function (data) {
@@ -346,17 +334,16 @@ var vm = new Vue({
 
         },
         uploadSuccess: function (response, file, fileList) {
-            // var that = this;  // videojs
+            var that = this;  // videojs
             this.videoFlag = false;
             this.videoUploadPercent = 0;
-
             if (response.code == 0) {
                 vm.stuMedia.comContent = response.accessoryId;
                 vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
                 setTimeout(function () {
                     vm.stuMedia.stuTime = document.getElementsByClassName("avatar")[0].duration;
                     vm.stuMedia.stuTime = document.getElementsByClassName("avatar")[0].duration;
-                    // that.initPlayer();
+                    that.initPlayer();
                     //console.info("啊啊啊",document.getElementsByClassName("avatar")[0].currentTime,document.getElementsByClassName("avatar")[0].duration);
                 }, 800)
             } else {
@@ -364,11 +351,9 @@ var vm = new Vue({
             }
         },
         handlePicSuccess: function (response, file, fileList) {
-            var avatarUploader = document.getElementsByClassName('avatar-uploader')[0];
             if (response.code == 0) {
                 vm.stuMedia.videoPicAcc = response.accessoryId;
                 vm.stuMedia.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
-                avatarUploader.style.display = 'none';
             } else {
                 this.$message.error('图片上传失败，请重新上传！');
             }
@@ -387,7 +372,6 @@ var vm = new Vue({
                 this.$message.error('上传视频大小不能超过100MB哦!');
                 return false;
             }
-
         },
         beforeAudioUpload: function (file) {
             /*if(!checkFile(file)) return false;*/
@@ -513,7 +497,7 @@ var vm = new Vue({
         },
         huixian: function (ids) {
             // saveUserTableData    --回显需加
-            if(!ids){
+            if (!ids) {
                 return
             }
             var that = this;

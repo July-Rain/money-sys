@@ -206,8 +206,6 @@
                 </div>
             </el-col>
         </el-row>
-
-
         <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogStuMedia" :before-close="closeDia"
                    ref="stuDialog">
             <el-row>
@@ -266,7 +264,7 @@
                                 <P class="text">请保证图片格式正确，作为视频封面</P>
                             </el-form-item>
                             <el-form-item label="视频上传：" prop="comContent">
-                                <video v-if="stuMedia.comContent !='' && videoFlag == false" autoplay
+                                <video v-show="stuMedia.comContent !='' && videoFlag == false" autoplay
                                        :src="stuMedia.contentUrl" id="video-uploaded" class="avatar video-js" controls="controls">您的浏览器不支持视频播放
                                 </video>
                                 <i v-else-if="stuMedia.comContent =='' && videoFlag == false"
@@ -274,7 +272,7 @@
                                 <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent"
                                              style="margin-top:30px;"></el-progress>
                                 <!-- action必选参数, 上传的地址 -->
-                                <el-upload class="video-button" name="importfile" class="avatar-uploader el-upload--text" :before-upload="playerDispose"
+                                <el-upload class="video-button" name="importfile" class="avatar-uploader el-upload--text"
                                            :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess"
                                            :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
                                     <el-button type="primary">点击上传</el-button>
