@@ -43,12 +43,15 @@ var vm = new Vue({
 
         //小关集合
         xiaoguanList: [],
-//专项知识
+        //专项知识
         zhuanxiangzhishiList: [],
-//试题类型
+        //试题类型
         itemtype: [],
-//试题难度
+        //试题难度
         itemjibie: [],
+
+        levelSum: 4,
+        nowLevel: 1
     },
     created: function () {
         this.$nextTick(function () {
@@ -199,7 +202,8 @@ var vm = new Vue({
 
 
         },
-        onselect: function (num) {//点完选择大关触发事件
+        onselect: function (num) {
+            //点完选择大关触发事件
             // alert(vId);
             vm.daguanArray = [];
             for (var k = 0; k < num; k++) {
@@ -424,6 +428,9 @@ var vm = new Vue({
         },
         toMain: function () {
             window.location.href = baseURL + 'modules/manageCen/compSetting.html'
+        },
+        checkLevel: function (index) {
+            this.nowLevel = index
         }
     }
 });

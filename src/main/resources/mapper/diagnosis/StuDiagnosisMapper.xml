@@ -87,14 +87,14 @@
 
         select rankNo from(
         SELECT
-        RANK () OVER (ORDER BY s.stuTime ASC) AS rankNo,
+        RANK () OVER (ORDER BY s.stuTime DESC) AS rankNo,
         s.full_name,
         s.userId,
         s.user_code
         FROM
           (
           SELECT
-          U .*, T .stuTime,U.id as userId
+          U .*, nvl(T .stuTime, 0) as stuTime,U.id as userId
           FROM
           LAW_USER U
           LEFT JOIN (
@@ -122,6 +122,49 @@
         ) rankNo
         WHERE
         rankNo. userId = #{userId}
+
+    </select>
+
+    <select id="getCountComRankNo" resultType="java.lang.Integer" parameterType="map">
+        <!-- 排名相同的人数-->
+
+        select count (1) from(
+        SELECT
+        RANK () OVER (ORDER BY s.stuTime DESC) AS rankNo,
+        s.full_name,
+        s.userId,
+        s.user_code
+        FROM
+        (
+        SELECT
+        U .*, nvl(T .stuTime, 0) as stuTime,U.id as userId
+        FROM
+        LAW_USER U
+        LEFT JOIN (
+        SELECT
+        SUM (STU_COUNT_TIME) AS stuTime,
+        USER_ID
+        FROM
+        LAW_STU_RECORD
+        where 1=1
+        <if test="stuFrom != null and stuFrom!=''">
+            AND STU_FROM = #{stuFrom}
+        </if>
+        <if test="startTime != null and startTime!=''">
+            AND <![CDATA[STU_TIME >= TO_DATE(#{startTime}, 'yyyy-mm-dd')]]>
+        </if>
+
+        <if test="endTime != null and endTime!=''">
+            AND <![CDATA[STU_TIME <= TO_DATE(#{endTime}, 'yyyy-mm-dd')]]>
+        </if>
+        GROUP BY
+        USER_ID
+        ) T ON U . ID = T .USER_ID
+        ) s
+
+        ) rankNo
+        WHERE
+        rankNo. rankNo = #{rankNo}
 
     </select>
 

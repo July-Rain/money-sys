@@ -170,7 +170,7 @@
         <el-dialog :title="title" :visible.sync="dialogtch" :before-close="closeTchDia">
             <el-col :span="24">
                 <el-form :model="teacher" :rules="rules" ref="teacher" label-width="100px" class="demo-sysConfig" size="mini">
-                    <el-form-item label="用户名：" prop="userName">
+                    <el-form-item label="姓名：" prop="userName">
                         <el-input v-model="teacher.userName" placeholder="请输入用户名" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="身份证号：" prop="userCode">
@@ -225,11 +225,14 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
+                    <el-form-item label="排序号：" prop="sort">
+                        <el-input type="number" v-model="teacher.sort" placeholder="请输入排序号" ></el-input>
+                    </el-form-item>
                 </el-form>
             </el-col>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="closeTchDia">取消</el-button>
-                <el-button type="primary" @click="saveOrUpdate('teacher')">保存设置</el-button>
+                <el-button type="primary" @click="saveOrUpdate('teacher')">保存</el-button>
             </div>
         </el-dialog>
     </div>

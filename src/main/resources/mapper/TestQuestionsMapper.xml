@@ -461,8 +461,11 @@
         FROM law_testquestions a
         <where>
             a.is_enble = '0'
-            <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
-                AND a.special_knowledge_id = #{specialKnowledgeId}
+            <if test="specialKnowledgeArr != null and specialKnowledgeArr.length > 0">
+                and a.specialKnowledgeId in
+                <foreach collection="specialKnowledgeArr" index="index" item="item" open="(" separator="," close=")">
+                    '${item}'
+                </foreach>
             </if>
             <if test="questionType != null and questionType != ''">
                 AND a.question_type = #{questionType}
@@ -613,4 +616,19 @@
     <delete id="deleteById">
         DELETE FROM LAW_TESTQUESTIONS WHERE ID = #{id}
     </delete>
+
+    <!--查询所需要的问题字段-->
+    <select id="listByIds" resultType="com.lawschool.beans.TestQuestions">
+        SELECT
+        <include refid="questionColumn"/>
+        FROM law_testquestions t
+        LEFT JOIN law_sys_topic c ON t.special_knowledge_id = c.id
+        <where>
+            t.id IN
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+        ORDER BY t.question_type
+    </select>
 </mapper>

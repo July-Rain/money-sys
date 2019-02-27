@@ -245,4 +245,9 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
 
         return true;
     }
+
+    @Override
+    public List<TestQuestions> listByIds(List<String> ids) {
+        return dao.listByIds(ids);
+    }
 }

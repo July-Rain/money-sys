@@ -226,7 +226,7 @@ public class LearnTasksController extends AbstractController {
         result.put("learnTasks",count);
         return  result;
     }
-    @SysLog("启用学习任务")
+    @SysLog("发布学习任务")
     @RequestMapping("/startTask")
     public Result startTask(String id){
         LearnTasksEntity learnTasksEntity = new LearnTasksEntity();

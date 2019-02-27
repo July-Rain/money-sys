@@ -239,7 +239,11 @@
               <if test="endTime != null  ">
                 <![CDATA[   and end_Time >= #{endTime}  ]]>
               </if>
-
+    <choose>
+      <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+        ORDER BY ${page.orderBy}
+      </when>
+    </choose>
 	</select>
 
   <!--查询所需要的问题字段-->

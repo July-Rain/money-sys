@@ -87,4 +87,14 @@ public interface StuDiagnosisDao {
      **/
     
     int countUser(String orgId);
+
+    /**
+     * @Author MengyuWu
+     * @Description 获取排名相同个数
+     * @Date 15:24 2019-1-7
+     * @Param [param]
+     * @return int
+     **/
+
+    int getCountComRankNo(Map<String,String> param);
 }
