@@ -69,10 +69,10 @@ var vm = new Vue({
             ],
 
             startTime: [
-                {required: true, message: '请输入学习任务开始时间', trigger: 'blur'}
+                {required: true, message: '请输入开始日期', trigger: 'blur'}
             ],
             endTime: [
-                {required: true, message: '请输入学习任务结束时间', trigger: 'blur'}
+                {required: true, message: '请输入结束日期', trigger: 'blur'}
             ],
 
         },
@@ -98,7 +98,8 @@ var vm = new Vue({
             currPage: 1,
             pageSize: 10,
             totalCount:0,
-            identify:'0',//表明是用户
+            identify:'0',// 表明是用户
+            userStatus:'2000'//查询有效的用户
 
         },//人员查询
         userTableData:[],//人员表格信息
@@ -260,6 +261,14 @@ var vm = new Vue({
             this.getDept();
         },
         handleEdit: function (index, row) {
+            //判断是否发布
+            if(vm.isUsed(row)){
+                vm.$message({
+                    type: 'error',
+                    message: '已发布的数据无法修改'
+                });
+                return;
+            }
             this.title = "修改学习任务";
             this.dialogLearnTask = true;
             this.deptCheckData=[];
@@ -279,6 +288,14 @@ var vm = new Vue({
             this.getDept();
         },
         handleDel: function (index, row) {
+            //判断是否发布
+            if(vm.isUsed(row)){
+                vm.$message({
+                    type: 'error',
+                    message: '已发布的数据无法删除'
+                });
+                return;
+            }
             vm.delIdArr.push(row.id);
             this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -309,7 +326,7 @@ var vm = new Vue({
 
         },
         handleStart: function (index, row) {
-            this.$confirm('启用后将不能修改, 是否继续?', '提示', {
+            this.$confirm('发布后将不能修改, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -323,18 +340,25 @@ var vm = new Vue({
                         vm.reload();
                         vm.$message({
                             type: 'success',
-                            message: '启用成功!'
+                            message: '发布成功!'
                         });
 
                     }
-                });s
-            }).catch(function () {
-                vm.$message({
-                    type: 'info',
-                    message: '已取消启用'
                 });
+            }).catch(function () {
+                // vm.$message({
+                //     type: 'info',
+                //     message: '已取消启用'
+                // });
             });
 
+        },
+        isUsed:function(row){
+          //是否启用
+            if(row.isUse=='1'){
+                return true;
+            }
+            return false;
         },
         closeDia: function () {
             this.dialogLearnTask = false;

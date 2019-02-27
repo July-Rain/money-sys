@@ -102,8 +102,8 @@
                         <el-form-item prop="userName" label="姓名">
                             <el-input v-model="formInline.userName" placeholder="姓名" size="mini"></el-input>
                         </el-form-item>
-                        <el-form-item prop="userCode" label="身份证号">
-                            <el-input v-model="formInline.userCode" placeholder="身份证号" size="mini"></el-input>
+                        <el-form-item prop="userPoliceId" label="警号">
+                            <el-input v-model="formInline.userPoliceId" placeholder="警号" size="mini"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit" size="mini">
@@ -128,8 +128,8 @@
 
                     <div class="info">
                         <p>姓名：{{item.userName}}</p>
-                        <!--<p>性别：{{item.userSex}}</p>-->
-                        <!--<p>工作时间：{{item.workTime}}</p>-->
+                        <p>警号：{{item.userPoliceId}}</p>
+                        <p>所属部门：{{item.orgName}}</p>
                     </div>
                 </div>
 

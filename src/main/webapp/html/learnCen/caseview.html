@@ -188,7 +188,7 @@
                             </el-table-column>
                             <el-table-column
                                     prop="caseTime"
-                                    label="裁决时间"
+                                    label="裁判日期"
                                     width="180"
                                     header-align="center"
                                     align="center"
@@ -235,12 +235,12 @@
                                         </audio>
                                         <div style="padding: 14px 14px 0 14px;">
                                             <p>
-                                                <span class="contentType">{{item.contentType}}</span>
+                                                <!--<span class="contentType">{{item.contentType}}</span>-->
                                                 <a href="javascript:;" class="title">{{item.caseTitle}}</a>
                                             </p>
                                             <p>
-                                                <!--<span class="stuIssuer">{{item.stuIssuer}}</span>
-                                                <span class="stuCreat">{{item.stuIsstime}}</span>-->
+                                                <span class="stuIssuer">{{item.createUserName}}</span>
+                                                <span class="stuCreat">{{item.createTime}}</span>
                                             </p>
                                         </div>
                                     </el-card>
@@ -259,12 +259,12 @@
                                     </video>
                                     <div style="padding: 14px 14px 0 14px;">
                                         <p>
-                                            <span class="contentType">{{item.contentType}}</span>
+                                            <!--<span class="contentType">{{item.contentType}}</span>-->
                                             <a href="javascript:;" class="title">{{item.caseTitle}}</a>
                                         </p>
                                         <p>
-                                            <!--<span class="stuIssuer">{{item.stuIssuer}}</span>
-                                            <span class="stuCreat">{{item.stuIsstime}}</span>-->
+                                            <span class="stuIssuer">{{item.createUserName}}</span>
+                                            <span class="stuCreat">{{item.createTime}}</span>
                                         </p>
                                     </div>
                                 </el-card>
