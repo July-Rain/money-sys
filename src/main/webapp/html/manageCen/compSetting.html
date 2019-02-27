@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
+    <#include "/header.html">
+    <style>
+        .rush_btn:nth-child(1){
+            background-color: #3790fc;
+        }
+        .rush_btn:nth-child(2){
+            background-color: #fab200;
+        }
+        .rush_btn:nth-child(3){
+            background-color: #ff6454;
+        }
+        .rush_btn{
+            padding-top: 26px;
+        }
+        .rush_btn > p{
+            color: #fff;
+            height: 18px;
+            line-height: 18px;
+            text-align: center;
+        }
+        .rush_btn > img{
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+        <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+        <el-breadcrumb-item>练习中心</el-breadcrumb-item>
+        <el-breadcrumb-item>主题练习</el-breadcrumb-item>
+    </el-breadcrumb>
+
+    <el-row :gutter="18">
+        <el-col :span="8">
+            <div class="rush_btn">
+                <p>闯关配置</p>
+                <img src="${rc.contextPath}/statics/img/setting/peizhi_a.png" alt="">
+            </div>
+        </el-col>
+        <el-col :span="8">
+            <div class="rush_btn">
+                <p>在线比武配置</p>
+                <img src="${rc.contextPath}/statics/img/setting/peizhi_b.png" alt="">
+            </div>
+        </el-col>
+        <el-col :span="8">
+            <div class="rush_btn">
+                <p>擂台配置</p>
+                <img src="${rc.contextPath}/statics/img/setting/peizhi_c.png" alt="">
+            </div>
+        </el-col>
+    </el-row>
+</div>
+<div style="height: 100px;width: 100px">
+    <button id="a" onclick="tiao('1')">闯关配置 </button>
+</div>
+<div>
+    <button id="b" onclick="tiao('2')">在线比武配置 </button>
+</div>
+<div>
+    <button id="c" onclick="tiao('3')">擂台配置 </button>
+</div>
+</body>
+<script type="text/javascript">
+
+    $(function () {
+//        alert("进入竞赛中心大页面");
+    });
+
+function tiao(a)
+{
+    if(a=="1")
+    {
+        parent.location.href =baseURL+"modules/competition/chuangguanSetting.html";
+    }
+    if(a=="2")
+    {
+        parent.location.href =baseURL+"modules/competition/pkOnlSetting.html";
+    }
+    if(a=="3")
+    {
+        parent.location.href =baseURL+"modules/competition/leitaiSetting.html";
+    }
+
+}
+
+</script>
+<!--<script src="${rc.contextPath}/statics/js/index2.js"></script>-->
+</html>
