@@ -193,10 +193,10 @@
                                         </i>
                                     </el-popover>
                                     <el-popover
-                                            v-if="scope.row.endTime | timeout"
+                                            v-if="!scope.row.endTime | timeout"
                                             placement="right"
                                             trigger="hover"
-                                            content="继续练习">
+                                            content="继续学习">
                                         <i class="iconfont icon-lianxi"
                                            @click="continueStudy(scope.$index, scope.row)"
                                            slot="reference"

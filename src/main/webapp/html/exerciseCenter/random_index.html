@@ -109,8 +109,8 @@
                     prop="status">
                 <template slot-scope="scope">
                     <el-popover
-                            placement="right"
-                            width="150"
+                            placement="left"
+                            width="105"
                             trigger="hover"
                             content="点击继续练习">
                         <i class="iconfont icon-lianxi tabIcon"
@@ -123,7 +123,7 @@
 
                     <el-popover
                             placement="right"
-                            width="150"
+                            width="75"
                             trigger="hover"
                             content="错题回顾"
                             v-if="scope.row.answerNum > scope.row.rightNum">

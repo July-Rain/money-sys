@@ -84,6 +84,7 @@ var vm = new Vue({
                 that.videoDataId.forEach(function (val, index) {
                     var myPlayer = videojs(val, options);
                 })
+
             }
         },
         dialogOpen: function () {
@@ -148,7 +149,7 @@ var vm = new Vue({
                                 vm.videoData[i].videoPicAccUrl=baseURL+'/statics/img/video_bg.png';
                             }
                             if(vm.videoData[i].stuType=='1'){
-                                vm.videoData[i].stuType="文字";
+                                vm.videoData[i].stuType="图文";
                             }else if(vm.videoData[i].stuType=='2'){
                                 vm.videoData[i].stuType="音频";
                             }else if(vm.videoData[i].stuType=='3'){

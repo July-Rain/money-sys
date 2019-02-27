@@ -87,7 +87,8 @@ var vm = new Vue({
             orgCode:"",
             currPage: 1,
             pageSize: 10,
-            totalCount:0
+            totalCount:0,
+            identify: '0'//表明是用户
 
         },//人员查询
         userTableData:[],//人员表格信息
@@ -110,7 +111,7 @@ var vm = new Vue({
             if(time === null){
                 return true
             }else {
-                return new Date(Date.parse(time.replace(/-/g,  "/"))).getTime() < new Date().getTime()
+                return new Date(Date.parse(time.replace(/-/g,  "/"))).getTime() > new Date().getTime()
             }
         }
     },
@@ -272,7 +273,7 @@ var vm = new Vue({
         },
         handleDel: function (index, row) {
             vm.delIdArr.push(row.id);
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+            this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'

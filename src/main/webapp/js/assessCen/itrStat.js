@@ -398,6 +398,9 @@ var vm = new Vue({
             }else{
                 this.redeptReload();
             }
+        },
+        toHome: function () {
+            parent.location.reload()
         }
     },
     filters: {

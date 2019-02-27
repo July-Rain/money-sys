@@ -142,7 +142,10 @@ var vm = new Vue({
             }else{
                 this.getStuDia();
             }
-        }
+        },
+        toHome: function () {
+            parent.location.reload()
+        },
     },
     filters: {
         objTstring: function (value) {

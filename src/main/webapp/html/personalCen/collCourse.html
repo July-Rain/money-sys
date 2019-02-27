@@ -58,7 +58,7 @@
 
                                 <el-form-item  label="类型" prop="stuType">
                                     <el-select v-model="formInline.stuType" placeholder="类型" size="mini">
-                                        <el-option label="文字" value="1"></el-option>
+                                        <el-option label="图文" value="1"></el-option>
                                         <el-option label="音频" value="2"></el-option>
                                         <el-option label="视频" value="3"></el-option>
                                     </el-select>
@@ -95,8 +95,8 @@
                                         <audio controls="controls" preload="none" v-if="item.stuType=='音频'">
                                             <source :src="item.contentUrl" controls="controls">
                                         </audio>
-                                        <div v-if="item.stuType=='文字'">
-                                            这是文字，但我不知道怎么展示，于是我写了这段话
+                                        <div v-if="item.stuType=='图文'">
+                                            图文，但我不知道怎么展示，于是我写了这段话
                                         </div>
                                         <div style="padding: 14px 14px 0 14px;">
                                             <p>

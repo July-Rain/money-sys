@@ -28,4 +28,13 @@ public interface DictionService extends AbstractService<DictEntity> {
      * @return
      */
     List<DictEntity> selectAllDict();
+
+    /**
+     * 判断名称或码值是否重复
+     * @param id
+     * @param str
+     * @param type
+     * @return
+     */
+    boolean checkDuplicate(String id, String str, String type);
 }

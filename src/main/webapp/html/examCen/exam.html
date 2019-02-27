@@ -83,57 +83,70 @@
         .question_area {
             padding: 10px 0 0 60px;
         }
-        .question_area ul{
+
+        .question_area ul {
             padding: 0 20px;
         }
+
         .question_area ul li {
             line-height: 34px;
             color: #2a2a2a;
         }
-        .subTitle > p > .el-input,.ques_name .el-input{
+
+        .subTitle > p > .el-input, .ques_name .el-input {
             padding: 0 10px;
             width: 80px;
             display: inline-block;
         }
-        .subTitle > p > .el-input input,.ques_name .el-input input{
+
+        .subTitle > p > .el-input input, .ques_name .el-input input {
             text-align: center;
         }
 
-        .ques_name button{
+        .ques_name button {
             float: right;
             margin-right: 120px;
         }
-        .config .el-dialog .el-dialog__body{
+
+        .config .el-dialog .el-dialog__body {
             padding: 0;
         }
-        .set_question .el-dialog .el-select>.el-input{
+
+        .set_question .el-dialog .el-select > .el-input {
             width: auto;
         }
-        .el-pagination__sizes .el-select>.el-input{
+
+        .el-pagination__sizes .el-select > .el-input {
             width: 100px !important;
         }
-        .random-topic .info_btn button{
+
+        .random-topic .info_btn button {
             margin-bottom: 8px;
             padding: 7px 12px;
         }
-        .random-topic .tit{
+
+        .random-topic .tit {
             background-color: #f8f8f8;
             margin-bottom: 8px;
             padding-top: 20px !important;
         }
-        .random-topic .el-dialog__body{
+
+        .random-topic .el-dialog__body {
             padding: 0;
         }
-        .random-topic .el-dialog__body>div>div{
+
+        .random-topic .el-dialog__body > div > div {
             overflow: hidden;
             padding: 0 20px;
         }
-        .random-topic .tit p{
+
+        .random-topic .tit p {
             font-size: 16px;
             color: #333;
             margin-bottom: 10px;
         }
-        .random-topic .tit p span{
+
+        .random-topic .tit p span {
             height: 18px;
             line-height: 18px;
             display: inline-block;
@@ -142,7 +155,8 @@
             font-size: 14px;
             color: #666;
         }
-        .random-topic .cell>.el-select,.random-topic .cell>.el-select>.el-input{
+
+        .random-topic .cell > .el-select, .random-topic .cell > .el-select > .el-input {
             width: 100%;
         }
     </style>
@@ -232,28 +246,24 @@
                 <el-table-column
                         prop="organizedOrgCode"
                         label="组考单位"
-                        width="150"
                         align="center"
                 >
                 </el-table-column>
                 <el-table-column
                         prop="startTime"
                         label="考试开始时间"
-                        width="180"
                         align="center"
                 >
                 </el-table-column>
                 <el-table-column
                         prop="endTime"
                         label="考试结束时间"
-                        width="180"
                         align="center"
                 >
                 </el-table-column>
                 <el-table-column
                         prop="status"
                         label="是否组卷完成"
-                        width="110"
                         align="center"
                 >
                     <template slot-scope="scope">
@@ -264,7 +274,6 @@
                 <el-table-column
                         prop="enabled"
                         label="是否启用"
-                        width="100"
                         align="center"
                 >
                     <template slot-scope="scope">
@@ -272,10 +281,11 @@
                         <el-tag v-else size="small" type="success">否</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="center">
+                <el-table-column label="操作" align="center" width="340">
                     <template slot-scope="scope">
+
                         <el-popover
-                                placement="right"
+                                placement="top-start"
                                 trigger="hover"
                                 content="查看">
                             <i class="iconfont icon-chakan tabIcon"
@@ -285,7 +295,7 @@
                             </i>
                         </el-popover>
                         <el-popover
-                                placement="right"
+                                placement="top-start"
                                 trigger="hover"
                                 content="编辑">
                             <i class="iconfont icon-xiugaimima tabIcon"
@@ -305,10 +315,17 @@
                             </i>
                         </el-popover>
 
-                        <el-button
-                                size="mini" @click="setExamFn(scope.$index, scope.row)" v-if="scope.row.status==0">
-                            设置考试信息
-                        </el-button>
+                        <el-popover
+                                v-if="scope.row.status==0"
+                                placement="top-start"
+                                trigger="hover"
+                                content="设置考试信息">
+                            <i class="iconfont icon-shezhi1 tabIcon"
+                               slot="reference"
+                               @click="setExamFn(scope.$index, scope.row)"
+                               style="color: #e31313;">
+                            </i>
+                        </el-popover>
 
                         <el-popover
                                 v-if="tableData[scope.$index].checkPassword==null"
@@ -370,7 +387,7 @@
                         <el-select v-model="checkSetting.paperPerSetNum"
                                    collapse-tags
                                    style="width: auto"
-                                   placeholder="请选择每套试卷阅卷人数" >
+                                   placeholder="请选择每套试卷阅卷人数">
                             <el-option label="1人" value="1"></el-option>
                             <el-option label="2人" value="2"></el-option>
                         </el-select>
@@ -381,7 +398,7 @@
                         <el-select v-model="checkSetting.isAibitration"
                                    collapse-tags
                                    style="width: auto"
-                                   placeholder="请选择是否需要审核人员" >
+                                   placeholder="请选择是否需要审核人员">
                             <el-option label="是" value="0"></el-option>
                             <el-option label="否" value="1"></el-option>
                         </el-select>
@@ -408,7 +425,7 @@
             <el-row>
                 <el-col :span="24">
                     <el-form-item label="阅卷人数：" prop="checkNum">
-                        <el-input-number  v-model="checkSetting.checkNum" placeholder="请输入阅卷人数" :min="0"
+                        <el-input-number v-model="checkSetting.checkNum" placeholder="请输入阅卷人数" :min="0"
                                          :max="1000" :disabled="true"
                         ></el-input-number>
                     </el-form-item>
@@ -418,7 +435,7 @@
                         <el-select v-model="checkSetting.paperPerSetNum"
                                    collapse-tags
                                    style="width: auto"
-                                   placeholder="请选择每套试卷阅卷人数"  :disabled="true">
+                                   placeholder="请选择每套试卷阅卷人数" :disabled="true">
                             <el-option label="1人" value="1"></el-option>
                             <el-option label="2人" value="2"></el-option>
                         </el-select>
@@ -429,7 +446,7 @@
                         <el-select v-model="checkSetting.isAibitration"
                                    collapse-tags
                                    style="width: auto"
-                                   placeholder="请选择是否需要审核人员"  :disabled="true">
+                                   placeholder="请选择是否需要审核人员" :disabled="true">
                             <el-option label="是" value="0"></el-option>
                             <el-option label="否" value="1"></el-option>
                         </el-select>
@@ -437,7 +454,7 @@
                 </el-col>
                 <el-col :span="24" v-if="checkSetting.isAibitration == 0">
                     <el-form-item label="审核分差值：" prop="checkScoreDifference">
-                        <el-input-number  v-model="checkSetting.checkScoreDifference"
+                        <el-input-number v-model="checkSetting.checkScoreDifference"
                                          placeholder="请输入审核分差值" :min="0" :max="1000" :disabled="true"
                         ></el-input-number>
                     </el-form-item>
@@ -470,22 +487,30 @@
             <h2>{{examConfig.examName}}</h2>
             <h3>总分 ： {{examConfig.examScore}}</h3>
             <div class="subTitle clearfix">
-                <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含{{sinMultipleSelection.length}}题，每题<el-input v-model="sinMultScore" type="number" placeholder="请输入分值" :min="1"></el-input>分，共{{sinMultipleSelection.length | sinMultScoreFn}}分。</p>
+                <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含{{sinMultipleSelection.length}}题，每题
+                    <el-input v-model="sinMultScore" type="number" placeholder="请输入分值" :min="1"></el-input>
+                    分，共{{sinMultipleSelection.length | sinMultScoreFn}}分。
+                </p>
                 <el-button type="primary" size="mini" @click="addQuestion('10004')">
                     <i class="iconfont icon-htmal5icon18"></i>
                     设置题目
                 </el-button>
             </div>
             <div class="question_area" v-for="(multiple,index) in sinMultipleSelection" :key="index">
-                <p class="ques_name">{{index+1}}.{{multiple.comContent}}。<el-button type="danger" icon="el-icon-delete" circle></el-button></p>
-                <el-radio-group >
+                <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
+                    <el-button type="danger" icon="el-icon-delete" circle></el-button>
+                </p>
+                <el-radio-group>
                     <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
                         {{item2.questionContent}}
                     </el-radio>
                 </el-radio-group>
             </div>
             <div class="subTitle clearfix">
-                <p>二、多选题。本部分含{{mulMultipleSelection.length}}题，每题<el-input type="number" v-model="mulMultScore" value="1" placeholder="请输入分值" :min="1"></el-input>分，共{{mulMultipleSelection.length | mulMultScoreFn}}分。</p>
+                <p>二、多选题。本部分含{{mulMultipleSelection.length}}题，每题
+                    <el-input type="number" v-model="mulMultScore" value="1" placeholder="请输入分值" :min="1"></el-input>
+                    分，共{{mulMultipleSelection.length | mulMultScoreFn}}分。
+                </p>
                 <el-button type="primary" size="mini" @click="addQuestion('10005')">
                     <i class="iconfont icon-htmal5icon18"></i>
                     设置题目
@@ -493,7 +518,7 @@
             </div>
             <div class="question_area" v-for="(multiple,index) in mulMultipleSelection" :key="index">
                 <p class="ques_name">{{index+1}}.{{multiple.comContent}}。</p>
-                <el-radio-group >
+                <el-radio-group>
                     <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
                         {{item2.questionContent}}
                     </el-radio>
@@ -501,7 +526,10 @@
             </div>
 
             <div class="subTitle clearfix">
-                <p>三、判断题。本部分含{{judgeMultipleSelection.length}}题，每题<el-input type="number" value="1" placeholder="请输入分值" :min="1"></el-input>分,共{{judgeMultipleSelection.length | judgeMultScoreFn}}分</p>
+                <p>三、判断题。本部分含{{judgeMultipleSelection.length}}题，每题
+                    <el-input type="number" value="1" placeholder="请输入分值" :min="1"></el-input>
+                    分,共{{judgeMultipleSelection.length | judgeMultScoreFn}}分
+                </p>
                 <el-button type="primary" size="mini" @click="addQuestion('10006')">
                     <i class="iconfont icon-htmal5icon18"></i>
                     设置题目
@@ -509,7 +537,7 @@
             </div>
             <div class="question_area" v-for="(multiple,index) in judgeMultipleSelection" :key="index">
                 <p class="ques_name">{{index+1}}.{{multiple.comContent}}。</p>
-                <el-radio-group >
+                <el-radio-group>
                     <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
                         {{item2.questionContent}}
                     </el-radio>
@@ -522,8 +550,11 @@
                     设置题目
                 </el-button>
             </div>
-            <div class="question_area"  v-for="(multiple,index) in subMultipleSelection" :key="index">
-                <p class="ques_name">{{index+1}}.{{multiple.comContent}}。分值：<el-input type="number" v-model="subMultipleSelection[index].perScore" value="1" placeholder="请输入分值"></el-input></p>
+            <div class="question_area" v-for="(multiple,index) in subMultipleSelection" :key="index">
+                <p class="ques_name">{{index+1}}.{{multiple.comContent}}。分值：
+                    <el-input type="number" v-model="subMultipleSelection[index].perScore" value="1"
+                              placeholder="请输入分值"></el-input>
+                </p>
             </div>
             <div>
                 <el-button type="primary" @click="genAutoQue">生成试卷</el-button>
@@ -539,11 +570,11 @@
                 <el-form :inline="true" :model="queformInline" ref="queformInline" class="demo-form-inline">
 
                     <el-form-item label="题目内容：">
-                        <el-input placeholder="请输入题目内容" size="mini"  v-model="queformInline.queContent"></el-input>
+                        <el-input placeholder="请输入题目内容" size="mini" v-model="queformInline.queContent"></el-input>
                     </el-form-item>
                     <el-form-item label="专项知识：" prop="typeId">
                         <el-select v-model="queformInline.typeId" size="mini"
-                                    collapse-tags style="width: auto" placeholder="请选择知识点" clearable>
+                                   collapse-tags style="width: auto" placeholder="请选择知识点" clearable>
                             <el-option v-for="item in skOption" :key="item.key"
                                        :label="item.value" :value="item.key"></el-option>
                         </el-select>
@@ -571,7 +602,7 @@
                     height="530"
                     style="width: 100%"
                     @selection-change="handleSelectionChange"
-                    >
+            >
                 <el-table-column
                         type="selection"
                         width="60">
@@ -586,7 +617,7 @@
                     <template slot-scope="props">
                         <el-form label-position="left" inline class="demo-table-expand">
                             <el-form-item label="答案内容：">
-                                <el-radio-group >
+                                <el-radio-group>
                                     <el-radio :label="item2.id" v-for="item2 in props.row.answerList">
                                         {{item2.questionContent}}
                                     </el-radio>
@@ -639,22 +670,25 @@
         </el-pagination>
         <span slot="footer" class="dialog-footer">
                 <el-button>取 消</el-button>
-                <el-button type="primary" @click = 'getQue' >确 定</el-button>
+                <el-button type="primary" @click='getQue'>确 定</el-button>
         </span>
     </el-dialog>
     <!--自主出题结束-->
 
     <!--随机出题开始-->
-    <el-dialog class="random-topic" title="随机出题" width="80%" :visible.sync="randomQuesModal" :before-close="closeRanDia">
+    <el-dialog class="random-topic" title="随机出题" width="80%" :visible.sync="randomQuesModal"
+               :before-close="closeRanDia">
         <div>
             <div class="tit">
                 <p><span>试卷名称：</span>{{examConfig.examName}}</p>
                 <p><span>总分：</span>{{examConfig.examScore}}</p>
             </div>
             <div class="info_btn">
-                <el-button type="primary" @click="handleAdd" size="mini"><i class="iconfont icon-htmal5icon18"></i>新增</el-button>
+                <el-button type="primary" @click="handleAdd" size="mini"><i class="iconfont icon-htmal5icon18"></i>新增
+                </el-button>
                 <el-button type="danger" @click="handleDelete(dataListSelections)"
-                           :disabled="dataListSelections.length <= 0" size="mini"><i class="iconfont icon-tubiaozhizuo-"></i>批量删除
+                           :disabled="dataListSelections.length <= 0" size="mini"><i
+                        class="iconfont icon-tubiaozhizuo-"></i>批量删除
                 </el-button>
             </div>
             <div>
@@ -706,7 +740,8 @@
                             width="150"
                             label="数量">
                         <template slot-scope="scope">
-                            <el-input-number size="mini" v-model="scope.row.questionNumber" @change="handleChange" :min="0" placeholder="请输入内容"></el-input-number>
+                            <el-input-number size="mini" v-model="scope.row.questionNumber" @change="handleChange"
+                                             :min="0" placeholder="请输入内容"></el-input-number>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -715,7 +750,8 @@
                             prop="questionScore"
                             label="分值">
                         <template slot-scope="scope">
-                            <el-input-number size="mini" v-model="scope.row.questionScore" @change="handleChange" :min="0" placeholder="请输入内容"></el-input-number>
+                            <el-input-number size="mini" v-model="scope.row.questionScore" @change="handleChange"
+                                             :min="0" placeholder="请输入内容"></el-input-number>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -731,7 +767,7 @@
                                 <i class="iconfont icon-tubiaozhizuo- tabIcon"
                                    slot="reference"
                                    @click="handleDel(scope.$index,randomQuesData)"
-                                   style="color: #e31313;" >
+                                   style="color: #e31313;">
                                 </i>
                             </el-popover>
                         </template>

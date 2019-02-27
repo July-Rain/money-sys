@@ -31,4 +31,15 @@ public interface DictionDao extends AbstractDao<DictEntity> {
     List<CommonForm> findCodeByType(@Param("code") String code);
 
     List<DictEntity> selectAllDict();
+
+    /**
+     * 查询是否同名
+     * @param id
+     * @param str
+     * @param type
+     * @return
+     */
+    Integer checkDuplicate(@Param("id") String id,
+                           @Param("str") String str,
+                           @Param("type") String type);
 }

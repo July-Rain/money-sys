@@ -5,46 +5,46 @@ var vm = new Vue({
     data: {
         //menuId:"",//菜单id
         navData: [],//导航
-        idArr:[],// 部门Tree默认展开数据
+        idArr: [],// 部门Tree默认展开数据
         formInline: { // 搜索表单
-            id:'',
+            id: '',
             userName: '',
             userCode: '',
-            orgCode:'',
-            identify:identify,//表明是用户
+            orgCode: '',
+            identify: identify,//表明是用户
             currPage: 1,
-            pageSize:10,
+            pageSize: 10,
             totalCount: 0
 
         },//检索条件
         tableData: [],//表格数据
 
-        title:"",//弹窗的名称
+        title: "",//弹窗的名称
         visible: false,
         dialogtch: false,//用户可见性
-        dialogDept:false,//部门可见性
+        dialogDept: false,//部门可见性
 
 
         treeData: [],//部门数据
-        treeForm:'',
+        treeForm: '',
         defaultProps: { // el-tree
             children: 'child',
             label: 'localOrgName'
         },
-        importFileUrl:baseURL+"sys/upload",
-        teacher:{
-            id:"",
-            userName:"",
-            userCode:"",
-            password:"",
-            photo:"",
-            orgCode:"",
-            identify:identify,//添加为用户
-            orgName:"",
-            userPoliceId:"",
-            roles:"",//角色
-            tmroles:[],
-            policeclass:""
+        importFileUrl: baseURL + "sys/upload",
+        teacher: {
+            id: "",
+            userName: "",
+            userCode: "",
+            password: "",
+            photo: "",
+            orgCode: "",
+            identify: identify,//添加为用户
+            orgName: "",
+            userPoliceId: "",
+            roles: "",//角色
+            tmroles: [],
+            policeclass: ""
         },
         rules: {//表单验证规则
             userName: [
@@ -58,16 +58,16 @@ var vm = new Vue({
             ],
 
             tmroles: [
-                { required: true, message: '请选择角色', trigger: 'change'}
+                {required: true, message: '请选择角色', trigger: 'change'}
             ],
             orgName: [
                 {required: true, message: '请选择部门', trigger: 'blur'},
             ],
         },
-        roles:[],
-        policeclassOption:[],//所属警种
-        breadArr:[],//面包屑数据
-        src: baseURL+"/statics/img/police_head.png",
+        roles: [],
+        policeclassOption: [],//所属警种
+        breadArr: [],//面包屑数据
+        src: baseURL + "/statics/img/police_head.png",
     },
     created: function () {
         this.$nextTick(function () {
@@ -76,14 +76,14 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "org/tree",
                 contentType: "application/json",
-                success: function(result){
-                    if(result.code === 0){
+                success: function (result) {
+                    if (result.code === 0) {
                         vm.treeData = result.orgList;
                         // 默认展开第一级
                         vm.treeData.map(function (m) {
                             vm.idArr.push(m.id)
                         });
-                    }else{
+                    } else {
                         alert(result.msg);
                     }
                 }
@@ -93,13 +93,13 @@ var vm = new Vue({
                 type: "GET",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
-                async:false,
-                data: {type:"POLICACLASS",Parentcode:"0"},
+                async: false,
+                data: {type: "POLICACLASS", Parentcode: "0"},
                 success: function (result) {
-                    vm.policeclassOption=result.dictlist;
+                    vm.policeclassOption = result.dictlist;
                 }
             });
-            this.breadArr=getBreadcrumb(menuId);
+            this.breadArr = getBreadcrumb(menuId);
             this.reload();
         });
     },
@@ -107,56 +107,75 @@ var vm = new Vue({
 
     methods: {
         //序列号计算
-        indexMethod:function (index) {
-            return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
+        indexMethod: function (index) {
+            return index + 1 + (vm.formInline.currPage - 1) * vm.formInline.pageSize;
         },
         // 查询
         onSubmit: function () {
             this.reload();
         },
         //用户添加
-        handleAdd:function(){
-            vm.teacher={
-                    id:"",
-                    userName:"",
-                    userCode:"",
-                    password:"",
-                    photo:"",
-                    orgCode:"",
-                    identify:identify,//添加为用户
-                    orgName:"",
-                    userPoliceId:"",
-                    roles:"",//角色
-                    tmroles:[],
-                    policeclass:""
-            },
-                vm.teacher.tmroles=[];
-            vm.dialogtch=true;
+        handleAdd: function () {
+            vm.teacher = {
+                id: "",
+                userName: "",
+                userCode: "",
+                password: "",
+                photo: "",
+                orgCode: "",
+                identify: identify,//添加为用户
+                orgName: "",
+                userPoliceId: "",
+                roles: "",//角色
+                tmroles: [],
+                policeclass: ""
+            }
+            vm.teacher.tmroles = ["1085052173405159425"];
+            vm.dialogtch = true;
             vm.handleRoles();
         },
         //用户修改vm.
-        handleUpt:function(index,row){
-            vm.dialogtch=true;
-            vm.teacher=row;
-            vm.handleRoles();
-            if(vm.teacher.roles){
-                vm.teacher.tmroles=vm.teacher.roles.split(",");
-            }else{
-                vm.teacher.tmroles=[];
+        handleUpt: function (index, row) {
+
+            vm.teacher = row;
+            console.log("teacher1",row);
+            vm.teacher = {
+                id: row.id,
+                userName: row.userName,
+                userCode: row.userCode,
+                password: row.password,
+                photo: row.photo,
+                orgCode: row.orgCode,
+                identify: row.identify,//添加为用户
+                orgName: row.orgName,
+                userPoliceId: row.userPoliceId,
+                roles: row.roles,//角色
+                tmroles: row.tmroles,
+                policeclass: row.policeclass
+            };
+            console.log("teacher",vm.teacher);
+            if (vm.teacher.roles) {
+                vm.teacher.tmroles = vm.teacher.roles.split(",");
+                console.log('144', vm.teacher.tmroles)
+            } else {
+                vm.teacher.tmroles = [];
             }
+            vm.dialogtch = true;
+            vm.handleRoles();
 
         },
 
         //获取角色列表
-        handleRoles:function(){
+        handleRoles: function () {
             $.ajax({
-                type : "POST",
+                type: "POST",
                 url: baseURL + "role/getAllRoles",
                 contentType: "application/json",
-                success:function (result) {
-                    if(result.code==0){
-                        vm.roles=result.roles;
-                    }else{
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.roles = result.roles;
+                        console.info("162", vm.roles)
+                    } else {
                         alert(result.msg);
                     }
                 }
@@ -164,15 +183,15 @@ var vm = new Vue({
         },
 
         //密码重置
-        handleEdit : function(index,row){
+        handleEdit: function (index, row) {
             $.ajax({
-                type : "POST",
-                url: baseURL + "sys/resetPassword?id="+row.id,
+                type: "POST",
+                url: baseURL + "sys/resetPassword?id=" + row.id,
                 contentType: "application/json",
-                success:function (result) {
-                    if(result.code==0){
+                success: function (result) {
+                    if (result.code == 0) {
                         alert("密码重置成功");
-                    }else{
+                    } else {
                         alert(result.msg);
                     }
                 }
@@ -180,16 +199,16 @@ var vm = new Vue({
         },
 
         //用户禁用
-        handleDel : function(index,row){
+        handleDel: function (index, row) {
             $.ajax({
-                type : "POST",
-                url: baseURL + "sys/deleteUser?id="+row.id,
+                type: "POST",
+                url: baseURL + "sys/deleteUser?id=" + row.id,
                 contentType: "application/json",
-                success:function (result) {
-                    if(result.code==0){
+                success: function (result) {
+                    if (result.code == 0) {
                         alert("禁用用户成功");
                         vm.reload();
-                    }else{
+                    } else {
                         alert(result.msg);
                     }
                 }
@@ -206,7 +225,7 @@ var vm = new Vue({
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: baseURL + 'sys/deleteuser?id='+row.id,
+                    url: baseURL + 'sys/deleteuser?id=' + row.id,
                     //async: true,
                     //data: JSON.stringify(row.id),
                     contentType: "application/json",
@@ -228,16 +247,16 @@ var vm = new Vue({
 
         },
         //用户恢复
-        handleRecovery : function(index,row){
+        handleRecovery: function (index, row) {
             $.ajax({
-                type : "POST",
-                url: baseURL + "sys/recoveryUser?id="+row.id,
+                type: "POST",
+                url: baseURL + "sys/recoveryUser?id=" + row.id,
                 contentType: "application/json",
-                success:function (result) {
-                    if(result.code==0){
+                success: function (result) {
+                    if (result.code == 0) {
                         alert("恢复用户成功");
                         vm.reload();
-                    }else{
+                    } else {
                         alert(result.msg);
                     }
                 }
@@ -251,18 +270,18 @@ var vm = new Vue({
         // },
 
         //展示部门
-        deptShow:function(){
-            vm.dialogDept=true;
-            if(vm.treeData.length==0){
+        deptShow: function () {
+            vm.dialogDept = true;
+            if (vm.treeData.length == 0) {
                 $.ajax({
                     type: "POST",
                     url: baseURL + "org/tree",
                     contentType: "application/json",
-                    success: function(result){
+                    success: function (result) {
 
-                        if(result.code === 0){
+                        if (result.code === 0) {
                             vm.treeData = result.orgList;
-                        }else{
+                        } else {
                             alert(result.msg);
                         }
                     }
@@ -285,13 +304,13 @@ var vm = new Vue({
         // 表单重置
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
-            vm.formInline.orgCode='';
+            vm.formInline.orgCode = '';
             vm.reload();
         },
 
         //关闭弹出框
-        closeTchDia : function(){
-            this.dialogtch=false;
+        closeTchDia: function () {
+            this.dialogtch = false;
             vm.reload();
         },
 
@@ -318,33 +337,33 @@ var vm = new Vue({
 
         // 部门选择事件
         handleNodeClick: function (data) {
-            vm.formInline.orgCode= data.localOrgCode;
-            vm.formInline.orgName= data.localOrgName;
-            vm.formInline.orgId= data.orgId;
+            vm.formInline.orgCode = data.localOrgCode;
+            vm.formInline.orgName = data.localOrgName;
+            vm.formInline.orgId = data.orgId;
             this.reload();
         },
 
         // 部门选择事件
         handleDeptNodeClick: function (data) {
             console.log(data);
-            vm.teacher.orgCode= data.localOrgCode;
-            vm.teacher.orgName= data.localOrgName;
-            vm.teacher.orgId= data.id;
+            vm.teacher.orgCode = data.localOrgCode;
+            vm.teacher.orgName = data.localOrgName;
+            vm.teacher.orgId = data.id;
         },
         //确定部门
-        confimDept:function(){
+        confimDept: function () {
 
-            vm.dialogDept=false;
+            vm.dialogDept = false;
         },
         //取消部门
-        cancelDept:function(){
-            vm.dialogDept=false;
+        cancelDept: function () {
+            vm.dialogDept = false;
         },
 
 
         //上传
-        uploadSuccess: function(response, file, fileList) {
-            vm.teacher.photo=response.accessoryId;
+        uploadSuccess: function (response, file, fileList) {
+            vm.teacher.photo = response.accessoryId;
         },
 
         beforeUpload: function () {
@@ -356,107 +375,105 @@ var vm = new Vue({
         },
 
         //保存
-        saveOrUpdate:function (formName) {
+        saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
 
-                    if (valid) {
+                if (valid) {
 
-                        var myuserPoliceId="";
-                        var myuserCode="";
-                        var rs="";
-                        vm.teacher.tmroles.map(function (item,index) {
-                            if(!(index==vm.roles.length-1  || index==0)){
-                                rs=rs+",";
-                            }
-                            rs=rs+item;
-                        });
-                        vm.teacher.roles=rs;
-                        var url=baseURL + "sys/add";
-                        var mytype="1"
-                        console.log(vm.teacher.id);
-                        if (vm.teacher.id != null && vm.teacher.id != '') {
-                            url=baseURL+"sys/updata";
-                            mytype="2"
+                    var myuserPoliceId = "";
+                    var myuserCode = "";
+                    var rs = "";
+                    vm.teacher.tmroles.map(function (item, index) {
+                        if (!(index == vm.roles.length - 1 || index == 0)) {
+                            rs = rs + ",";
                         }
-
-
-                        //保存前先判断 身份证号 与  警号 有没有重复 冲突  在js做  就不再java里判了
-                        //先判断警员号
-                        $.ajax({
-                            type : "POST",
-                            url: baseURL + "sys/userPoliceId?userPoliceId="+vm.teacher.userPoliceId+"&mytype="+mytype+"&id="+vm.teacher.id,
-                            dataType: "json",
-                            async:false,
-                            success:function (result) {
-                                if(result.code==0){
-
-                                    if(result.type=="1")//说明找到了
-                                    {
-                                        // alert("存在重复的警员号，添加失败");
-                                        myuserPoliceId="1";
-                                        return;
-                                    }
-                                }else{
-                                    alert(result.msg);
-                                }
-                            }
-                        });
-
-                        //在判断身份证号
-                        $.ajax({
-                            type : "POST",
-                            url: baseURL + "sys/userCode?userCode="+vm.teacher.userCode+"&mytype="+mytype+"&id="+vm.teacher.id,
-                            dataType: "json",
-                            async:false,
-                            success:function (result) {
-                                if(result.code==0){
-
-                                    if(result.type=="1")//说明找到了
-                                    {
-                                        // alert("存在重复的登陆账号，添加失败");
-                                        myuserCode="1";
-                                        return;
-                                    }
-                                }else{
-                                    alert(result.msg);
-                                }
-                            }
-                        });
-                        if(myuserPoliceId=="1")
-                        {
-                            alert("存在重复的警员号，操作失败");
-                            return;
-                        }
-                        if(myuserCode=="1")
-                        {
-                            alert("存在重复的登陆账号，操作失败");
-                            return;
-                        }
-
-                        $.ajax({
-                            type : "POST",
-                            url: url,
-                            contentType: "application/json",
-                            data:JSON.stringify(vm.teacher),
-                            async:false,
-                            success:function (result) {
-                                if(result.code==0){
-                                    alert("成功");
-                                    vm.closeTchDia();
-                                }else{
-                                    alert(result.msg);
-                                }
-                            }
-                        })
+                        rs = rs + item;
+                    });
+                    vm.teacher.roles = rs;
+                    var url = baseURL + "sys/add";
+                    var mytype = "1"
+                    console.info('380', vm.teacher);
+                    console.log(vm.roles);
+                    if (vm.teacher.id != null && vm.teacher.id != '') {
+                        url = baseURL + "sys/updata";
+                        mytype = "2"
                     }
-                    else {
-                        console.log('error submit!!');
-                        return false;
+
+
+                    //保存前先判断 身份证号 与  警号 有没有重复 冲突  在js做  就不再java里判了
+                    //先判断警员号
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + "sys/userPoliceId?userPoliceId=" + vm.teacher.userPoliceId + "&mytype=" + mytype + "&id=" + vm.teacher.id,
+                        dataType: "json",
+                        async: false,
+                        success: function (result) {
+                            if (result.code == 0) {
+
+                                if (result.type == "1")//说明找到了
+                                {
+                                    // alert("存在重复的警员号，添加失败");
+                                    myuserPoliceId = "1";
+                                    return;
+                                }
+                            } else {
+                                alert(result.msg);
+                            }
+                        }
+                    });
+
+                    //在判断身份证号
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + "sys/userCode?userCode=" + vm.teacher.userCode + "&mytype=" + mytype + "&id=" + vm.teacher.id,
+                        dataType: "json",
+                        async: false,
+                        success: function (result) {
+                            if (result.code == 0) {
+
+                                if (result.type == "1")//说明找到了
+                                {
+                                    // alert("存在重复的登陆账号，添加失败");
+                                    myuserCode = "1";
+                                    return;
+                                }
+                            } else {
+                                alert(result.msg);
+                            }
+                        }
+                    });
+                    if (myuserPoliceId == "1") {
+                        alert("存在重复的警员号，操作失败");
+                        return;
                     }
+                    if (myuserCode == "1") {
+                        alert("存在重复的登陆账号，操作失败");
+                        return;
+                    }
+                    console.log(vm.teacher)
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        contentType: "application/json",
+                        data: JSON.stringify(vm.teacher),
+                        async: false,
+                        success: function (result) {
+                            if (result.code == 0) {
+                                alert("成功");
+                                vm.closeTchDia();
+                            } else {
+                                alert(result.msg);
+                            }
+                        }
+                    })
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
             });
 
         },
-        toHome:function () {
+        toHome: function () {
             parent.location.reload()
         },
         // loadNode(node, resolve) {
