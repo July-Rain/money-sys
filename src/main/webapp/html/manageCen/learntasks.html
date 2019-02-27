@@ -204,7 +204,7 @@
                             <!--</el-table-column>-->
                             <el-table-column
                                     prop="startTime"
-                                    label="任务开始时间"
+                                    label="开始日期"
                                     width="150"
                                     header-align="center"
                                     align="center"
@@ -212,7 +212,7 @@
                             </el-table-column>
                             <el-table-column
                                     prop="endTime"
-                                    label="任务结束时间"
+                                    label="结束日期"
                                     width="150"
                                     header-align="center"
                                     align="center"
@@ -236,13 +236,13 @@
                             </el-table-column>-->
                             <el-table-column
                                     prop="isUse"
-                                    label="是否启用"
+                                    label="是否发布"
                                     align="center"
                                     header-align="center"
                                     width="100">
                                 <template slot-scope="scope">
-                                    <el-tag v-if="scope.row.isUse === '0'" size="small" type="danger">未启用</el-tag>
-                                    <el-tag v-else size="small" type="success">已启用</el-tag>
+                                    <el-tag v-if="scope.row.isUse === '0'" size="small" type="danger">未发布</el-tag>
+                                    <el-tag v-else size="small" type="success">已发布</el-tag>
                                 </template>
                             </el-table-column>
                             <el-table-column
@@ -281,7 +281,7 @@
                                             v-if="scope.row.isUse=='0'"
                                             placement="right"
                                             trigger="hover"
-                                            content="启用">
+                                            content="发布">
                                         <i class="iconfont icon-renyuanqiyong tabIcon"
                                            slot="reference"
                                            @click="handleStart(scope.$index, scope.row)"
