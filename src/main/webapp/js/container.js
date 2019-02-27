@@ -224,6 +224,7 @@ var vm = new Vue({
                 ]
             },
             videoData: [],//视频教程
+            videoDataId: [],
             newsData: [
                 {
                     title: '智能管理下全面打造案管智能管理下全面打造案管智能管理下全面打造案管全面智能管理下全面打造案管智能管理下全面打造案管智能管理下全面打造案管全面智能管理下全面打造案管智能管理下全面打造案管智能管理下全面打造案管全面',
@@ -818,6 +819,7 @@ var vm = new Vue({
                         vm.videoData = result.page.list;
                         console.log(vm.videoData);
                         for(var i=0;i<vm.videoData.length;i++){
+                            vm.videoDataId.push(vm.videoData[i].id);
                             vm.videoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
                             if(vm.videoData[i].videoPicAcc){
                                 vm.videoData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
@@ -826,6 +828,7 @@ var vm = new Vue({
                             }
                         }
                         console.info("videoData",vm.videoData)
+                        console.info("videoDataId",vm.videoDataId)
                     } else {
                         alert(result.msg);
                     }

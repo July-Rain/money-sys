@@ -7,6 +7,7 @@ var vm = new Vue({
     el: '#app',
     data: {
         videoData: [],//视频列表
+        videoDataId: [],
         navData: [],//导航
         formInline: { // 搜索表单
             stuType:"3",
@@ -42,7 +43,6 @@ var vm = new Vue({
         }//删除数据
     },
     created: function () {
-
         this.$nextTick(function () {
 
             //法律分类树数据
@@ -63,9 +63,29 @@ var vm = new Vue({
         this.$nextTick(function () {
             this.reload();
         })
-
+    },
+    mounted: function () {
+      this.initPlayer();
     },
     methods: {
+        initPlayer: function () {
+            window.onload = function () {
+                var options = {
+                    bigPlayButton: true
+                };
+                vm.videoDataId.forEach(function (val, index) {
+                    var favoritePlayer = videojs(val, options);
+                    var bigButton = document.getElementsByClassName('vjs-big-play-button')[index];
+                    bigButton.style.outline = 'none';
+                    favoritePlayer.on('play', function () {
+                        bigButton.style.display = 'none';
+                    });
+                    favoritePlayer.on('pause', function () {
+                        bigButton.style.display = 'block';
+                    });
+                })
+            }
+        },
         // 查询
         onSubmit: function () {
             this.reload();
@@ -124,6 +144,7 @@ var vm = new Vue({
                     if (result.code == 0) {
                         vm.videoData = result.result.list;
                         for(var i=0;i<vm.videoData.length;i++){
+                            vm.videoDataId.push(vm.videoData[i].id);
                             vm.videoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
                             if(vm.videoData[i].videoPicAcc){
                                 vm.videoData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
