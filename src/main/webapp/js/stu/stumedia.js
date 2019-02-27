@@ -36,6 +36,7 @@ var vm = new Vue({
             stuPoliceclass: "",//所属警种
             videoPicAcc: "",//视频首页
         },
+        uploadedPlayer: null, // 上传视频实例
         rules: {//表单验证规则
             stuType: [
                 {required: true, message: '请选择资料类型', trigger: 'blur'}
@@ -142,21 +143,25 @@ var vm = new Vue({
         })
     },
     methods: {
-        // 初始化videojs
+        // 初始化videojs // videojs
         initPlayer: function () {
             var options = {
-                bigPlayButton: true,
+                bigPlayButton: false,
             };
-            var videoUploaded = videojs('video-uploaded', options);
-            var toggleButton = document.getElementsByClassName('vjs-big-play-button')[0];
-            toggleButton.style.visibility = 'hidden';
-            console.log(toggleButton);
-            videoUploaded.on('pause', function () {
-                toggleButton.style.visibility = 'visible';
-            })
-            videoUploaded.on('play', function () {
-                toggleButton.style.visibility = 'hidden';
-            })
+            this.uploadedPlayer = videojs('video-uploaded', options);
+            /*if (!this.uploadedPlayer) {
+                this.uploadedPlayer = videojs('video-uploaded', options);
+            } else {
+                this.uploadedPlayer.dispose();
+                this.uploadedPlayer = videojs('video-uploaded', options);
+            }*/
+        },
+        // videojs
+        playerDispose: function () {
+            if (this.uploadedPlayer) {
+                this.uploadedPlayer.dispose();
+            }
+            return;
         },
         //序列号计算
         indexMethod: function (index) {
@@ -341,18 +346,17 @@ var vm = new Vue({
 
         },
         uploadSuccess: function (response, file, fileList) {
-            var that = this;
-            var videoButton = document.getElementsByClassName('video-button')[0];
+            // var that = this;  // videojs
             this.videoFlag = false;
             this.videoUploadPercent = 0;
+
             if (response.code == 0) {
-                videoButton.style.display = 'none';
                 vm.stuMedia.comContent = response.accessoryId;
                 vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
                 setTimeout(function () {
                     vm.stuMedia.stuTime = document.getElementsByClassName("avatar")[0].duration;
                     vm.stuMedia.stuTime = document.getElementsByClassName("avatar")[0].duration;
-                    that.initPlayer();
+                    // that.initPlayer();
                     //console.info("啊啊啊",document.getElementsByClassName("avatar")[0].currentTime,document.getElementsByClassName("avatar")[0].duration);
                 }, 800)
             } else {

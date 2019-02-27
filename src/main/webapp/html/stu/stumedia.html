@@ -274,7 +274,7 @@
                                 <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent"
                                              style="margin-top:30px;"></el-progress>
                                 <!-- action必选参数, 上传的地址 -->
-                                <el-upload class="video-button" name="importfile" class="avatar-uploader el-upload--text"
+                                <el-upload class="video-button" name="importfile" class="avatar-uploader el-upload--text" :before-upload="playerDispose"
                                            :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess"
                                            :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
                                     <el-button type="primary">点击上传</el-button>
