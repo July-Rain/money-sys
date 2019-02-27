@@ -108,18 +108,18 @@
                             <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
                                 <el-form-item prop="specialKnowledgeId" label="所属专项">
-                                    <el-select v-model="formInline.specialKnowledgeId" size="mini">
+                                    <el-select v-model="formInline.specialKnowledgeId" size="mini" clearable>
                                         <el-option v-for="(item,index) in sks" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
                                     </el-select>
                                 </el-form-item>
 
                                 <el-form-item prop="questionDifficulty" label="试题难度">
-                                    <el-select v-model="formInline.questionDifficulty"  size="mini">
+                                    <el-select v-model="formInline.questionDifficulty"  size="mini" clearable>
                                         <el-option v-for="(item,index) in qds" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item prop="questionType" label="试题类型">
-                                    <el-select v-model="formInline.questionType"  size="mini">
+                                    <el-select v-model="formInline.questionType"  size="mini" clearable>
                                         <el-option v-for="(item,index) in qts" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
                                     </el-select>
                                 </el-form-item>
@@ -225,7 +225,7 @@
                                     @size-change="handleSizeChange"
                                     @current-change="handleCurrentChange"
                                     :current-page="formInline.currPage"
-                                    :page-sizes="[1, 2, 3, 4]"
+                                    :page-sizes="[10, 20, 30, 40]"
                                     :page-size="formInline.pageSize"
                                     layout="total, sizes, prev, pager, next, jumper"
                                     :total="formInline.totalCount">

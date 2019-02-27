@@ -117,4 +117,24 @@
              AND IS_USE = 1
         </where>
     </select>
+
+    <select id="checkDuplicate" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM LAW_SYS_DICTION
+        <where>
+            DEL_FLAG = 0
+            <if test="id != '' and id != null">
+                AND id <![CDATA[ <> ]]> #{id}
+            </if>
+            <choose>
+                <when test="type == 'name'">
+                    AND NAME = #{str}
+                </when>
+                <otherwise>
+                    AND CODE = #{str}
+                </otherwise>
+            </choose>
+        </where>
+    </select>
 </mapper>

@@ -88,97 +88,114 @@
 <div id="app" v-cloak>
 
     <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>管理员入口</el-breadcrumb-item>
+            <el-breadcrumb-item>管理中心</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toMain">竞赛管理</span></el-breadcrumb-item>
+            <el-breadcrumb-item>闯关配置</el-breadcrumb-item>
+        </el-breadcrumb>
         <el-row :gutter="24">
             <el-col :span="24">
-                <el-tabs type="border-card">
-                    <el-tab-pane label="竞赛配置">
-                        <div>
-                            <el-button size="mini" type="primary" @click="add">新增</el-button>
-                            <el-button size="mini" type="primary" @click="update">编辑</el-button>
-                            <el-button size="mini" type="primary" @click="del">删除</el-button>
+                <div class="info_btn">
 
-                            <el-table
-                                    :data="tableData"
-                                    border
-                                    style="width: 100%">
+                    <el-button size="mini" type="primary" @click="add"><i class="iconfont icon-htmal5icon18"></i>新增配置
+                    </el-button>
+                    <el-button size="mini" type="primary" @click="update"><i class="iconfont icon-xiugaimima"></i>编辑
+                    </el-button>
+                    <el-button size="mini" type="danger" @click="del" plain><i class="iconfont icon-tubiaozhizuo-"></i>删除
+                    </el-button>
+                </div>
 
-                                <el-table-column
-                                        prop="markNumOrder"
-                                        label="第几大关"
-                                        width="280"
-                                        header-align="center"
-                                        align="center">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="smallNum"
-                                        label="小关数量"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="markReward"
-                                        label="大关是否奖励"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
-                                >
-                                    <template slot-scope="scope">
-                                        {{scope.row.markReward==1?"是":"否"}}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
-                                        prop="rewardScore"
-                                        label="大关奖励分值"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="unifyConfiguration"
-                                        label="是否统一配置"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
-                                >
-                                    <template slot-scope="scope">
-                                        {{scope.row.unifyConfiguration==1?"是":"否"}}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
-                                        label="操作"
-                                        header-align="center"
-                                        align="center"
-                                        width="180">
-                                    <template slot-scope="scope">
-                                        <el-button
-                                                size="mini"
-                                                @click="look(scope.$index, scope.row)">查看关卡配置
-                                        </el-button>
+                <el-table
+                        :data="tableData"
+                        border0
+                        style="width: 100%;border: 1px solid #dddddd">
 
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
-                            </el-pagination>
-                        </div>
-                    </el-tab-pane>
-                </el-tabs>
+                    <el-table-column
+                            prop="markNumOrder"
+                            label="第几大关"
+                            width="280"
+                            header-align="center"
+                            align="center">
+                    </el-table-column>
+                    <el-table-column
+                            prop="smallNum"
+                            label="小关数量"
+                            width="280"
+                            header-align="center"
+                            align="center"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                            prop="markReward"
+                            label="大关是否奖励"
+                            width="280"
+                            header-align="center"
+                            align="center"
+                    >
+                        <template slot-scope="scope">
+                            {{scope.row.markReward==1?"是":"否"}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="rewardScore"
+                            label="大关奖励分值"
+                            width="280"
+                            header-align="center"
+                            align="center"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                            prop="unifyConfiguration"
+                            label="是否统一配置"
+                            width="280"
+                            header-align="center"
+                            align="center"
+                    >
+                        <template slot-scope="scope">
+                            {{scope.row.unifyConfiguration==1?"是":"否"}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            label="操作"
+                            header-align="center"
+                            align="center">
+                        <template slot-scope="scope">
+
+
+                            <el-popover
+                                    placement="right"
+                                    trigger="hover"
+                                    content="查看关卡配置">
+                                <i class="iconfont icon-chakan tabIcon"
+                                   slot="reference"
+                                   @click="look(scope.$index, scope.row)"
+                                   style="color: #1381e3;font-size: 12px"
+                                >
+                                </i>
+                            </el-popover>
+
+
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="formInline.currPage"
+                        :page-sizes="[10, 20, 30, 40]"
+                        :page-size="formInline.pageSize"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="formInline.totalCount">
+                </el-pagination>
+
             </el-col>
         </el-row>
 
 
         <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
-            <el-row>
+            <el-row v-if="false">
                 <el-col :span="12">
                     <el-form :model="daguanArray" :rules="rules" ref="daguanArray" label-width="100px"
                              class="demo-daguanArray" size="mini">
@@ -233,7 +250,6 @@
                                     </th>
                                 </tr>
                             </table>
-
                             <div v-for="item2 in item.recruitCheckpointConfigurationList" class="swiper-slide">
 
                                 <table style="border: solid 2px black;width: 100%">
@@ -298,13 +314,13 @@
                             </div>
                         </div>
 
-                        <el-form-item>
-                            <el-button type="primary" @click="saveOrUpdate('daguanArray')">保存</el-button>
-                            <el-button @click="closeDia">取消</el-button>
-                        </el-form-item>
                     </el-form>
                 </el-col>
             </el-row>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="saveOrUpdate('daguanArray')">保存</el-button>
+                <el-button @click="closeDia">取消</el-button>
+            </span>
         </el-dialog>
 
 

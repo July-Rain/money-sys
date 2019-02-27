@@ -193,7 +193,7 @@
                                         </i>
                                     </el-popover>
                                     <el-popover
-                                            v-if="scope.row.endTime | timeout"
+                                            v-if="!scope.row.endTime | timeout"
                                             placement="right"
                                             trigger="hover"
                                             content="继续学习">

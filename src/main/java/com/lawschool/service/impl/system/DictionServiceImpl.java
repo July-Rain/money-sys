@@ -52,4 +52,19 @@ public class DictionServiceImpl extends AbstractServiceImpl<DictionDao, DictEnti
 
         return dao.selectAllDict();
     }
+
+    /**
+     * 校验名称和码值是否重复
+     * @param id 主键，无值为新增、有值为编辑
+     * @param str 判断的值
+     * @param type 值的类型
+     * @return true 不重名
+     */
+    public boolean checkDuplicate(String id, String str, String type){
+        Integer result = dao.checkDuplicate(id, str, type);
+        if(result > 0){
+            return false;
+        }
+        return true;
+    }
 }

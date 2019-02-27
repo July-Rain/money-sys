@@ -3,6 +3,83 @@
 <head>
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .info_list {
+            border-radius: 3px;
+            -webkit-box-shadow: 0 0 5px 2px rgba(0, 0, 0, .1);
+            -moz-box-shadow: 0 0 5px 2px rgba(0, 0, 0, .1);
+            box-shadow: 0 0 5px 2px rgba(0, 0, 0, .1);
+            padding-top: 16px;
+            padding-bottom: 40px;
+            margin-bottom: 8px;
+        }
+
+        .info_list .el-progress {
+            border: none;
+            margin: 0 auto;
+        }
+
+        .info_list .el-progress__text {
+            color: #333333;
+            font-size: 18px !important;
+        }
+
+        .info_list > .progress_area {
+            width: 88px;
+        }
+
+        .info_list > .button_area {
+            width: 100%;
+        }
+
+        .info_list > div {
+            margin: 0 auto;
+        }
+
+        .info_list h3, .info_list p {
+            text-align: center;
+        }
+
+        .info_list .button_area {
+            text-align: center;
+        }
+
+        .info_list .button_area > .el-button {
+            display: inline-block;
+        }
+
+        .info_list > h3 {
+            line-height: 54px;
+            font-weight: normal;
+        }
+
+        .info_list > p.msg {
+            line-height: 27px;
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+
+        .jixu {
+            background-color: #cae6fe;
+            border-color: #cae6fe;
+            color: #1381e3;
+        }
+
+        .chuoti {
+            background-color: #ffe2e2;
+            border-color: #ffe2e2;
+            color: #ff5b2f;
+        }
+
+        .chongzuo {
+            background-color: #fdf6ec;
+            border-color: #fdf6ec;
+            color: rgb(255, 120, 20);
+
+        }
+
+    </style>
 </head>
 <body>
 <div id="app" v-cloak>
@@ -12,89 +89,42 @@
             <el-breadcrumb-item>练习中心</el-breadcrumb-item>
             <el-breadcrumb-item>主题练习</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-table
-                :data="tableData"
-                style="width: 100%"
-                stripe
-                border>
-            <el-table-column
-                    prop="themeName"
-                    label="主题类型"
-                    header-align="center"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="total"
-                    label="总题数"
-                    header-align="center"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    label="已答题"
-                    header-align="center"
-                    align="center"
-                    prop="answerNum">
-            </el-table-column>
-            <el-table-column
-                    label="正确数"
-                    header-align="center"
-                    align="center"
-                    prop="rightNum">
-            </el-table-column>
-            <el-table-column
-                    label="操作"
-                    header-align="center"
-                    align="center"
-                    prop="status"
-                    align="center">
-                <template slot-scope="scope">
-                    <el-popover
-                            placement="right"
-                            trigger="hover"
-                            content="开始练习">
-                        <i class="iconfont icon-lianxi tabIcon" v-if="scope.row.status == 0 || scope.row.status == null"
-                           @click="start(scope.$index)"
-                           slot="reference"
-                           style="color: #1381e3;font-size: 20px" >
-                        </i>
-                    </el-popover>
-                    <el-popover
-                            placement="right"
-                            trigger="hover"
-                            content="继续练习">
-                        <i class="iconfont icon-lianxi tabIcon"
-                           v-if="scope.row.status == 1"
-                           @click="start(scope.$index)"
-                           slot="reference"
-                           style="color: #119e0b;font-size: 20px" >
-                        </i>
-                    </el-popover>
-                    <el-popover
-                            placement="right"
-                            trigger="hover"
-                            content="清空重做">
-                        <i class="iconfont icon-zhongzuo tabIcon"
-                           v-if="scope.row.status == 2"
-                           @click="reStart(scope.row.id)"
-                           slot="reference"
-                           style="color: #ff7814;font-size: 20px" >
-                        </i>
-                    </el-popover>
-                    <el-popover
-                            placement="right"
-                            trigger="hover"
-                            content="错题回顾">
-                        <i class="iconfont icon-cuotiku tabIcon"
-                           v-if="scope.row.answerNum > scope.row.rightNum"
-                           slot="reference"
-                           style="color: #ff1f14;font-size: 20px"
-                           @click="review(scope.row.id)">
-                        </i>
-                    </el-popover>
-
-                </template>
-            </el-table-column>
-        </el-table>
+        <el-row :gutter="20">
+            <el-col :span="6" v-for="(data,index) in tableData" :key="index">
+                <div class="info_list">
+                    <div class="progress_area">
+                        <el-progress type="circle"
+                                     :percentage="data.answerNum/data.total*100"
+                                     :width="88"
+                                     color="#1381e3"></el-progress>
+                    </div>
+                    <h3>{{data.themeName}}</h3>
+                    <p class="msg">共{{data.total}}题，已做{{data.answerNum}}题</p>
+                    <div class="button_area">
+                        <el-button type="primary" size="small"
+                                   @click="start(index)"
+                                   v-if="data.status == 0 || data.status == null">开始练习
+                        </el-button>
+                        <el-button type="primary jixu"
+                                   size="small"
+                                   v-if="data.status == 1"
+                                   @click="start(index)"
+                                   plain>继续练习</el-button>
+                        <el-button type="danger chuoti" size="small"
+                                   @click="review(data.id)"
+                                   v-if="data.answerNum > data.rightNum"
+                                   plain><i class="iconfont icon-cuotiku1"></i> 错题集
+                        </el-button>
+                        <el-button type="warning chongzuo" size="small"
+                                   v-if="data.status == 2"
+                                   @click="reStart(data.id)"
+                                   plain><i class="iconfont icon-zhongzuo"></i>
+                            清空重做
+                        </el-button>
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
     </div>
 </div>
 </body>
