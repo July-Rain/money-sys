@@ -8,16 +8,16 @@
 var vm = new Vue({
     el: '#app',
     data: {
-        bigcheckNum:[],//大关数量数据
+        bigcheckNum: [],//大关数量数据
         tableData: [],//表格数据
         daguanArray: [],
-        daguannum:'',
+        daguannum: '',
         formInline: { // 搜索表单
             currPage: 1,
             pageSize: 10,
             totalCount: 0
         },
-        rules1:[
+        rules1: [
             {required: true, message: '请输入参数名11', trigger: 'blur'},
             {pattern: regularExp("number"), message: '正则不匹配55', trigger: 'blur'}
         ],
@@ -38,17 +38,17 @@ var vm = new Vue({
             // ]
         },
         dialogConfig: false,//table弹出框可见性
-        dialog2:false,//查看小关详情弹出框
+        dialog2: false,//查看小关详情弹出框
         title: "",//弹窗的名称
 
- //小关集合
-        xiaoguanList:[],
+        //小关集合
+        xiaoguanList: [],
 //专项知识
-        zhuanxiangzhishiList:[],
+        zhuanxiangzhishiList: [],
 //试题类型
-        itemtype:[],
+        itemtype: [],
 //试题难度
-        itemjibie:[],
+        itemjibie: [],
     },
     created: function () {
         this.$nextTick(function () {
@@ -73,15 +73,15 @@ var vm = new Vue({
                         type: "POST",
                         url: baseURL + 'recruitConfiguration/delete',
 
-                        async:false,
+                        async: false,
                         dataType: "json",
                         success: function (result) {
-                            var url ="recruitConfiguration/save";
+                            var url = "recruitConfiguration/save";
                             $.ajax({
                                 type: "POST",
                                 url: baseURL + url,
                                 contentType: "application/json",
-                                async:false,
+                                async: false,
                                 data: JSON.stringify(vm.daguanArray),
                                 success: function (result) {
                                     if (result.code === 0) {
@@ -107,11 +107,6 @@ var vm = new Vue({
             });
 
 
-
-
-
-
-
         },
         add: function () {
 
@@ -119,43 +114,39 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + 'recruitConfiguration/findAll',
                 dataType: "json",
-                async:false,
+                async: false,
                 success: function (result) {
-                        if(result.data.length!="0")
-                        {
+                    if (result.data.length != "0") {
 
-                            vm.$alert('请先删除原有配置,在添加新的配置');
-                            vm.dialogConfig = false;
-                        }
-                        else
-                        {
-                            vm.title = "新增闯关配置";
-                            vm.dialogConfig = true;
-                        }
+                        vm.$alert('请先删除原有配置,在添加新的配置');
+                        vm.dialogConfig = false;
+                    } else {
+                        vm.title = "新增闯关配置";
+                        vm.dialogConfig = true;
+                    }
 
                 }
             });
 
-            vm.daguanArray=[];
-            vm.bigcheckNum=[];
+            vm.daguanArray = [];
+            vm.bigcheckNum = [];
             //每次打开添加按钮时候 取后台获取 字典表中大关和小关数量的配置
             $.ajax({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
-                async:false,
-                data: {type:"BIGCHECKNUM",Parentcode:"99997"},
+                async: false,
+                data: {type: "BIGCHECKNUM", Parentcode: "99997"},
                 success: function (result) {
                     if (result.code == 0) {
                         //区间也就2个值 也排序过了
-                        var bigchecknum1 =  result.dictlist[0].value;
-                        var bigchecknum2 =  result.dictlist[1].value;
-                        for(var i=bigchecknum1;i<=bigchecknum2;i++)
-                        {
-                           vm.bigcheckNum.push({
-                               value: i,
-                               label: i+'大关'
-                           })
+                        var bigchecknum1 = result.dictlist[0].value;
+                        var bigchecknum2 = result.dictlist[1].value;
+                        for (var i = bigchecknum1; i <= bigchecknum2; i++) {
+                            vm.bigcheckNum.push({
+                                value: i,
+                                label: i + '大关'
+                            })
                         }
                     } else {
                         alert(result.msg);
@@ -168,10 +159,10 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "recruitConfiguration/findAllTopic",
                 dataType: "json",
-                async:false,
+                async: false,
                 success: function (result) {
 
-                    vm.zhuanxiangzhishiList=result.data;
+                    vm.zhuanxiangzhishiList = result.data;
                 }
             });
 
@@ -180,16 +171,14 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
-                async:false,
-                data: {type:"QUESTION_TYPE",Parentcode:"0"},
+                async: false,
+                data: {type: "QUESTION_TYPE", Parentcode: "0"},
                 success: function (result) {
 
 
                     // vm.itemtype=result.dictlist;
-                    for(var tt=0;tt<result.dictlist.length;tt++)
-                    {
-                        if((result.dictlist[tt].value=="单选题")||(result.dictlist[tt].value=="判断题") ||(result.dictlist[tt].value=="多选题") )
-                        {
+                    for (var tt = 0; tt < result.dictlist.length; tt++) {
+                        if ((result.dictlist[tt].value == "单选题") || (result.dictlist[tt].value == "判断题") || (result.dictlist[tt].value == "多选题")) {
                             vm.itemtype.push(result.dictlist[tt]);
                         }
                     }
@@ -201,76 +190,72 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
-                async:false,
-                data: {type:"QUESTION_DIFF",Parentcode:"0"},
+                async: false,
+                data: {type: "QUESTION_DIFF", Parentcode: "0"},
                 success: function (result) {
-                    vm.itemjibie=result.dictlist;
+                    vm.itemjibie = result.dictlist;
                 }
             });
 
 
         },
-        onselect:function (num) {//点完选择大关触发事件
+        onselect: function (num) {//点完选择大关触发事件
             // alert(vId);
-            vm.daguanArray=[];
-            for(var k=0;k<num;k++)
-            {
+            vm.daguanArray = [];
+            for (var k = 0; k < num; k++) {
                 vm.daguanArray.push(
                     {
-                        id:'',
-                        markNumOrder:k+1,
-                        smallNum:'',
-                        rewardScore:'0',
-                        recruitCheckpointConfigurationList:[{id:'',unifyConfiguration:'1'}]
+                        id: '',
+                        markNumOrder: k + 1,
+                        smallNum: '',
+                        rewardScore: '0',
+                        recruitCheckpointConfigurationList: [{id: '', unifyConfiguration: '1'}]
                     }
                 )
             }
         },
-        onselectunifyConfiguration:function (num) {//点完是否统一配置触发事件
+        onselectunifyConfiguration: function (num) {//点完是否统一配置触发事件
 
-          // var xiaoguannum=   Number(num.markNumOrder);
+            // var xiaoguannum=   Number(num.markNumOrder);
 
-          var unifyConfiguration=num.unifyConfiguration
-            var smallNum= Number(num.smallNum);
-          if(!smallNum)
-          {
-              vm.$message({
-                  type: 'info',
-                  message: '请先设置小关数量!'
-              });
-              return;
-          }
-          //不管选的是是还是否  都先清除一遍  在加
-            num.recruitCheckpointConfigurationList=[];
-          if(unifyConfiguration=="0")//0不是统一配置
-          {
-                for(var p=0;p<smallNum;p++)
-                {
+            var unifyConfiguration = num.unifyConfiguration
+            var smallNum = Number(num.smallNum);
+            if (!smallNum) {
+                vm.$message({
+                    type: 'info',
+                    message: '请先设置小关数量!'
+                });
+                return;
+            }
+            //不管选的是是还是否  都先清除一遍  在加
+            num.recruitCheckpointConfigurationList = [];
+            if (unifyConfiguration == "0")//0不是统一配置
+            {
+                for (var p = 0; p < smallNum; p++) {
                     num.recruitCheckpointConfigurationList.push
                     (
-                        {id:'',howManySmall:p+1,unifyConfiguration:'0'}
+                        {id: '', howManySmall: p + 1, unifyConfiguration: '0'}
                     )
                 }
 
-          }
-          else if(unifyConfiguration=="1")//1是  是统一
-          {
-              num.recruitCheckpointConfigurationList.push
-              (
-                  {id:'',unifyConfiguration:'1'}
-              )
-          }
+            } else if (unifyConfiguration == "1")//1是  是统一
+            {
+                num.recruitCheckpointConfigurationList.push
+                (
+                    {id: '', unifyConfiguration: '1'}
+                )
+            }
             console.info(num);
         },
         look: function (index, row) {
             vm.title = "查看关卡配置";
-            vm.xiaoguanList =[];//每次打开前 都删一边
+            vm.xiaoguanList = [];//每次打开前 都删一边
             $.ajax({
                 type: "POST",
                 url: baseURL + 'recruitConfiguration/getSonList',
                 dataType: "json",
-                async:false,
-                data:{"id": row.id},
+                async: false,
+                data: {"id": row.id},
                 success: function (result) {
 
                     console.info(result)
@@ -295,7 +280,7 @@ var vm = new Vue({
                 $.ajax({
                     type: "POST",
                     url: baseURL + 'recruitConfiguration/delete',
-                    async:false,
+                    async: false,
                     dataType: "json",
                     success: function (result) {
                         vm.reload();
@@ -315,25 +300,24 @@ var vm = new Vue({
 
         },
         update: function () {
-            vm.daguanArray=[];
-            vm.bigcheckNum=[];
+            vm.daguanArray = [];
+            vm.bigcheckNum = [];
             //每次打开添加按钮时候 取后台获取 字典表中大关和小关数量的配置
             $.ajax({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
-                async:false,
-                data: {type:"BIGCHECKNUM",Parentcode:"99997"},
+                async: false,
+                data: {type: "BIGCHECKNUM", Parentcode: "99997"},
                 success: function (result) {
                     if (result.code == 0) {
                         //区间也就2个值 也排序过了
-                        var bigchecknum1 =  result.dictlist[0].value;
-                        var bigchecknum2 =  result.dictlist[1].value;
-                        for(var i=bigchecknum1;i<=bigchecknum2;i++)
-                        {
+                        var bigchecknum1 = result.dictlist[0].value;
+                        var bigchecknum2 = result.dictlist[1].value;
+                        for (var i = bigchecknum1; i <= bigchecknum2; i++) {
                             vm.bigcheckNum.push({
                                 value: i,
-                                label: i+'大关'
+                                label: i + '大关'
                             })
                         }
                     } else {
@@ -346,10 +330,10 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "recruitConfiguration/findAllTopic",
                 dataType: "json",
-                async:false,
+                async: false,
                 success: function (result) {
 
-                    vm.zhuanxiangzhishiList=result.data;
+                    vm.zhuanxiangzhishiList = result.data;
                 }
             });
 
@@ -358,16 +342,14 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
-                async:false,
-                data: {type:"QUESTION_TYPE",Parentcode:"0"},
+                async: false,
+                data: {type: "QUESTION_TYPE", Parentcode: "0"},
                 success: function (result) {
 
 
                     // vm.itemtype=result.dictlist;
-                    for(var tt=0;tt<result.dictlist.length;tt++)
-                    {
-                        if((result.dictlist[tt].value=="单选题")||(result.dictlist[tt].value=="判断题") ||(result.dictlist[tt].value=="多选题"))
-                        {
+                    for (var tt = 0; tt < result.dictlist.length; tt++) {
+                        if ((result.dictlist[tt].value == "单选题") || (result.dictlist[tt].value == "判断题") || (result.dictlist[tt].value == "多选题")) {
                             vm.itemtype.push(result.dictlist[tt]);
                         }
                     }
@@ -379,10 +361,10 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",
                 dataType: "json",
-                async:false,
-                data: {type:"QUESTION_DIFF",Parentcode:"0"},
+                async: false,
+                data: {type: "QUESTION_DIFF", Parentcode: "0"},
                 success: function (result) {
-                    vm.itemjibie=result.dictlist;
+                    vm.itemjibie = result.dictlist;
                 }
             });
 
@@ -390,18 +372,15 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + 'recruitConfiguration/findAll',
                 dataType: "json",
-                async:false,
+                async: false,
                 success: function (result) {
                     console.info(result);
                     console.info(result.data.length);
                     if (result.code === 0) {
-                        if(result.data.length=="0")
-                        {
+                        if (result.data.length == "0") {
                             vm.$alert('暂无数据');
 
-                        }
-                        else
-                        {
+                        } else {
                             vm.title = "编辑";
                             vm.dialogConfig = true;
                             vm.daguanArray = result.data;
@@ -427,7 +406,7 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "recruitConfiguration/list",
                 dataType: "json",
-                async:false,
+                async: false,
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
@@ -439,6 +418,12 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+        toHome: function () {
+            parent.location.reload()
+        },
+        toMain: function () {
+            window.location.href = baseURL + 'modules/manageCen/compSetting.html'
         }
     }
 });
