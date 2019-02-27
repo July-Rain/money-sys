@@ -3,10 +3,95 @@
 <head>
     <title>练习卷</title>
     <#include "/header.html">
+    <style>
+    /* 整体布局搭建 */
+        .container {
+            background: #EFEFEF;
+        }
+        .container .content {
+            position: relative;
+            width: 96vw;
+            margin: 0 auto;
+            background: #EFEFEF;
+        }
+        .content header, .bar {
+            background: white;
+        }
+        .content header {
+            width: 86vw;
+        }
+        .content .bar {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 9vw;
+            height: 40vw;
+        }
+    /* header样式 */
+        .content header {
+            border: 1px solid transparent;
+        }
+        .content header .title {
+            width: 47vw;
+            height: 4vw;
+            margin: 4vw 20vw;
+            font-size: 47px;
+        }
+        .content header .tips {
+            display: flex;
+            justify-content: space-between;
+            width: 77vw;
+            margin: 0 auto;
+            padding-bottom: 1vw;
+            border-bottom: 1px solid #dddddd;
+        }
+        .tips .username {
+            font-size: 22px;
+        }
+        .tips .font-size, .tips .duration {
+            font-size: 12px;
+            font-weight: 300;
+        }
+        .tips .font-size .current {
+            font-weight: 600;
+        }
+        .tips .font-size span:nth-child(2) {\
+            margin-left: 3px;
+            font-size: 17px;
+        }
+        .tips .font-size span:last-child {
+            margin-left: 3px;
+            font-size: 22px;
+        }
+        .tips .duration {
+            margin-top: 11px;
+        }
+        /* 试卷题目样式 */
+        .one-option, .multi-options, .checking {
+            width: 77vw;
+            margin: 0 auto;
+            background: white;
+        }
+        .content .description {
+            width: 75vw;
+            height: 4vw;
+            margin: 3vw auto;
+            font-size: 24px;
+        }
+        .content .first-question {
+            width: 77vw;
+            margin: 0 auto;
+            /*font-size: */
+        }
+        .content .question {
+            width: 77vw;
+            margin-top: 1vw;
+        }
+    </style>
 </head>
 <body>
-    <div id="app" v-cloak>
-    <div class="container">
+<div id="app" v-cloak>
+    <!--<div class="container">
         <div v-for="(item,index) in questionList"
              class="swiper-slide"
             >
@@ -19,7 +104,6 @@
             </button>
             <br/>
             <br/>
-
             <el-radio-group v-model="item.userAnswer"
                     v-if="item.questionType==10004 || item.questionType==10006" @change="affirm(index)">
                 <el-radio :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
@@ -30,7 +114,6 @@
                 </el-radio>
                 <br/>
             </el-radio-group>
-
             <el-checkbox-group v-if="item.questionType==10005" v-model="item.checkList">
                 <el-checkbox :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
                     {{item2.questionContent}}
@@ -40,7 +123,6 @@
                 </el-checkbox>
                 <br/>
             </el-checkbox-group>
-
             <br/>
             <br/>
         </div>
@@ -52,7 +134,6 @@
                 layout="total, prev, pager, next, jumper"
                 :total="count">
         </el-pagination>
-
         <div>
             <el-button
                     type="primary"
@@ -67,6 +148,103 @@
             >提交
             </el-button>
         </div>
+    </div>-->
+    <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>练习中心</el-breadcrumb-item>
+            <el-breadcrumb-item>组卷练习</el-breadcrumb-item>
+            <el-breadcrumb-item>{{ paperName }}</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="content">
+            <header>
+                <div class="title">{{ paperName }}</div>
+                <div class="tips">
+                    <span class="username">姓名：<span>{{ username }}</span></span>
+                    <span class="font-size" @click="changeFontSize($event)">字体：
+                        (<span class="font-size-span">小</span>
+                        <span class="font-size-span">中</span>
+                        <span class="font-size-span">大</span>)
+                    </span>
+                    <span class="duration">本卷计时{{ time }}小时，用时{{ hours }}小时{{ minutes }}分钟</span>
+                </div>
+                <div class="one-option">
+                    <div class="description">一. 单项选择题。每题所设选项中只有一个正确答案，多选，错选或不选均不得分。本部分含1—50题，每题{{ oneOptionScore }}分，共{{ oneOptiontTotalScore }}分。</div>
+                    <div class="first-question"></div>
+                    <div class="question" v-for="item in oneOptionList">
+                        <!--<div class="daliy">
+
+                            <el-radio-group v-model="answers"
+                                            v-if="question.questionType==10004 || question.questionType==10006"
+                                            @change="affirm()"
+                                            :disabled="isAnswer">
+                                <el-radio :label="answer.id" v-for="(answer, index1) in question.answer">
+                                    {{indexs[index1]}}、{{answer.questionContent}}
+                                </el-radio>
+                                <br/>
+                            </el-radio-group>
+
+                            <el-checkbox-group v-model="answers" v-if="question.questionType==10005" :disabled="isAnswer">
+                                <el-checkbox :label="answer.id" v-for="(answer, index1) in question.answer">
+                                    {{indexs[index1]}}、{{answer.questionContent}}
+                                </el-checkbox>
+                            </el-checkbox-group>
+
+                            <div v-show="!isAnswer" class="questionDx">
+                                <el-button type="warning"
+                                           v-if="question.questionType==10005"
+                                           @click="sure(question.answerId)">确定
+                                </el-button>
+                            </div>
+
+                            <div class="answer_area" v-show="isAnswer">
+                                <p>你的答案：<span>{{userAnswerStr}}</span>，正确答案：<span>{{rightAnswerStr}}</span></p>
+                                <div class="clearfix diff diff5">
+                                    <span>试题难度：</span>
+                                    <span>{{question.questionDifficulty == '10001' ? '初级' : question.questionDifficulty == '10002' ? '中级' : '高级'}}</span>
+                                </div>
+                                <div class="basis clearfix">
+                                    <span>答案描述：</span>
+                                    <span>{{question.answerDescrible}}</span>
+                                </div>
+                                <div class="collection col-orange">
+                                    <i :class="starIcon" @click="doCollect"></i>
+                                    {{question.isCollect == 1 ? '已收藏' : '收藏本题'}}
+                                </div>
+                            </div>
+                            <div class="container-btn">
+                                <el-col :span="10" class="align-rig">
+                                    <a href="javascript:;" :class="isLast||index==1?'disabled':''" @click="last"><i class="el-icon-arrow-left"></i>上一题</a>
+                                </el-col>
+                                <el-col :span="4" class="align-cent">
+                                    <a href="javascript:;" @click="save" style="color: #666666;">
+                                        保 存
+                                    </a>
+                                    <a href="javascript:;" @click="commit" style="color: #666666;">
+                                        {{title}}
+                                    </a>
+                                </el-col>
+                                <el-col :span="10">
+                                    <a href="javascript:;" :class="isNext?'disabled':''" @click="next">下一题<i class="el-icon-arrow-right el-icon&#45;&#45;right"></i></a>
+                                </el-col>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+                <div class="multi-options">
+                    <div class="description">二. 多选题。每题所设选项中有多个答案。本部分含1—5题，每题{{ multiOptionScore }}分，共{{ multiOptiontsTotalScore }}分。</div>
+                    <div class="first-question"></div>
+                    <div class="question" v-for="item in multiOptionsList">{{ item.id }}</div>
+                </div>
+                <div class="checking">
+                    <div class="description">三. 判断题。本部分含1-5题，每题{{ checkingScore }}分，共{{ checkingTotalScore }}分。</div>
+                    <div class="first-question"></div>
+                    <div class="question" v-for="item in checkingList">{{ item.id }}</div>
+                </div>
+            </header>
+            <div class="bar"></div>
+        </div>
+
     </div>
 </div>
 </body>
