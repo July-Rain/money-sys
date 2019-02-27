@@ -111,7 +111,14 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         //存权限表
         String[] deptIdArr=stuMedia.getDeptArr();
         String[] userIdArr=stuMedia.getUserArr();
-        authService.insertAuthRelation(deptIdArr,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getCreateUser());
+        String[] deptTemp=new String[1];
+        if(deptIdArr.length==0&&userIdArr.length==0){
+            deptTemp[0]=user.getOrgId();
+            authService.insertAuthRelation(deptTemp,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getCreateUser());
+        }else{
+            authService.insertAuthRelation(deptIdArr,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getCreateUser());
+        }
+
     }
     
     /**
@@ -291,8 +298,13 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         //存权限表
         String[] deptIdArr=stuMedia.getDeptArr();
         String[] userIdArr=stuMedia.getUserArr();
-        authService.insertAuthRelation(deptIdArr,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getOptUser());
-
+        String[] deptTemp=new String[1];
+        if(deptIdArr.length==0&&userIdArr.length==0){
+            deptTemp[0]=user.getOrgId();
+            authService.insertAuthRelation(deptTemp,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getCreateUser());
+        }else{
+            authService.insertAuthRelation(deptIdArr,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getCreateUser());
+        }
     }
 
     @Override

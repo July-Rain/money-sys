@@ -116,6 +116,7 @@ var vm = new Vue({
         },
         //用户添加
         handleAdd: function () {
+            vm.title="新增";
             vm.teacher = {
                 id: "",
                 userName: "",
@@ -128,7 +129,8 @@ var vm = new Vue({
                 userPoliceId: "",
                 roles: "",//角色
                 tmroles: [],
-                policeclass: ""
+                policeclass: "",
+                sort:0
             }
             vm.teacher.tmroles = ["1085052173405159425"];
             vm.dialogtch = true;
@@ -136,7 +138,7 @@ var vm = new Vue({
         },
         //用户修改vm.
         handleUpt: function (index, row) {
-
+            vm.title="修改";
             vm.teacher = row;
             console.log("teacher1",row);
             vm.teacher = {
@@ -151,7 +153,8 @@ var vm = new Vue({
                 userPoliceId: row.userPoliceId,
                 roles: row.roles,//角色
                 tmroles: row.tmroles,
-                policeclass: row.policeclass
+                policeclass: row.policeclass,
+                sort:row.sort
             };
             console.log("teacher",vm.teacher);
             if (vm.teacher.roles) {
@@ -184,6 +187,7 @@ var vm = new Vue({
 
         //密码重置
         handleEdit: function (index, row) {
+
             $.ajax({
                 type: "POST",
                 url: baseURL + "sys/resetPassword?id=" + row.id,
@@ -447,7 +451,7 @@ var vm = new Vue({
                         return;
                     }
                     if (myuserCode == "1") {
-                        alert("存在重复的登陆账号，操作失败");
+                        alert("存在重复的身份证号，操作失败");
                         return;
                     }
                     console.log(vm.teacher)

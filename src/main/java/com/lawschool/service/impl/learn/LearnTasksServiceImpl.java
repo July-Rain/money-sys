@@ -97,7 +97,14 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
             //存权限表
             String[] deptIdArr=learnTask.getDeptArr();
             String[] userIdArr=learnTask.getUserArr();
-            authService.insertAuthRelation(deptIdArr,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getCreateUser());
+
+            String[] deptTemp=new String[1];
+            if(deptIdArr.length==0&&userIdArr.length==0){
+                deptTemp[0]=user.getOrgId();
+                authService.insertAuthRelation(deptTemp,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getCreateUser());
+            }else{
+                authService.insertAuthRelation(deptIdArr,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getCreateUser());
+            }
             //保存对应的任务和人员信息
             countUser = tasksUserService.insertLearnUser(deptIdArr,userIdArr,learnTask.getId());
         }
@@ -260,7 +267,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         if(UtilValidate.isNotEmpty(userId)){  //创建人
             ew.eq("CREATE_USER",userId);
         }
-        if(UtilValidate.isNotEmpty(isUse)){  //是否启用
+        if(UtilValidate.isNotEmpty(isUse)){  //是否发布
             ew.eq("is_use",isUse);
         }
         ew.orderBy("CREATE_TIME",false);
@@ -308,7 +315,13 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
             //存权限表
             String[] deptIdArr=learnTask.getDeptArr();
             String[] userIdArr=learnTask.getUserArr();
-            authService.insertAuthRelation(deptIdArr,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getOptUser());
+            String[] deptTemp=new String[1];
+            if(deptIdArr.length==0&&userIdArr.length==0){
+                deptTemp[0]=user.getOrgId();
+                authService.insertAuthRelation(deptTemp,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getCreateUser());
+            }else{
+                authService.insertAuthRelation(deptIdArr,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getCreateUser());
+            }
             //保存对应的任务和人员信息
             countUser = tasksUserService.insertLearnUser(deptIdArr,userIdArr,learnTask.getId());
 

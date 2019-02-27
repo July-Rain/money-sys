@@ -10,7 +10,7 @@ var vm = new Vue({
         formInline: { // 搜索表单
             id:'',
             userName: '',
-            userCode: '',
+            userPoliceId: '',
             orgCode:'',
             identify:'1',//表明是教官
             currPage: 1,
