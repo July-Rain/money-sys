@@ -81,7 +81,58 @@
         padding: 0 10px;
         color: #909399;
         display: inline-block;
-    / / 悬浮块横向显示
+    }
+    .dialog_inner{
+        border-bottom: 1px solid #ddd;
+    }
+
+    .dialog_inner > ul{
+        float: left;
+        width: 94px;
+    }
+    .dialog_inner > ul li{
+        width: 100%;
+        color: #333;
+        font-size: 16px;
+        text-align: center;
+        line-height: 16px;
+        margin: 20px 0;
+        border-right: 6px solid transparent;
+        cursor: hand;
+    }
+    .dialog_inner > ul li.active{
+        border-right: 6px solid #1381e3;
+        color: #1381e3;
+    }
+    .dialog_inner .form_area{
+        border-left: 1px solid #ddd;
+        float: left;
+        width: calc(100% - 94px);
+    }
+    .special_dialog .el-dialog__body{
+        padding: 0;
+    }
+    .gray_area{
+        background-color: #f8f8f8;
+        padding-top: 10px;
+        margin: 10px 8px;
+    }
+    .form_area h4{
+        position: relative;
+        padding-left: 44px;
+        color: #333333;
+        font-size: 16px;
+        font-weight: normal;
+    }
+    .form_area h4:after{
+        content: '';
+        position: absolute;
+        left: 22px;
+        top: 3px;
+        width: 12px;
+        height: 12px;
+        background-color: #ff9000;
+        transform: rotate(45deg);
     }
 </style>
 <body>
@@ -194,8 +245,84 @@
         </el-row>
 
 
-        <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
-            <el-row v-if="false">
+        <el-dialog class="special_dialog" :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
+            <div class="dialog_inner clearfix">
+                <ul>
+                    <li @click="checkLevel(count)" :class="count===nowLevel?'active':''" v-for="count in levelSum">第 {{count}} 关</li>
+                </ul>
+                <div class="form_area">
+
+
+                    <el-form label-width="100px" class="demo-msg"
+                             size="mini">
+                        <div class="gray_area">
+                            <el-row>
+                                <el-col :span="12">
+                                    <el-form-item label="总题数量">
+                                        <el-input></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="6">
+                                    <el-form-item label="统一配置">
+                                        <el-switch></el-switch>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="6">
+                                    <el-form-item label="大关奖励">
+                                        <el-switch></el-switch>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="24">
+                                    <el-form-item label="大关奖励积分">
+                                        <el-input-number :min="1" :max="10"></el-input-number>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                        </div>
+                            <el-row>
+                                <el-col :span="5"><h4>第一题</h4></el-col>
+                                <el-col :span="9">
+                                    <el-form-item label="此题积分">
+                                        <el-input-number :min="1" :max="10"></el-input-number>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                            <el-row>
+                                <el-col :span="9" :offset="5">
+                                    <el-form-item label="试题难度">
+                                        <el-checkbox-group>
+                                            <el-checkbox label="初级"></el-checkbox>
+                                            <el-checkbox label="中级"></el-checkbox>
+                                            <el-checkbox label="高级"></el-checkbox>
+                                        </el-checkbox-group>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                            <el-row>
+                                <el-col :span="9" :offset="5">
+                                    <el-form-item label="专项知识">
+
+                                        <el-select placeholder="请选择">
+                                            <el-option label="区域一" value="shanghai"></el-option>
+                                            <el-option label="区域二" value="beijing"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="9" :offset="5">
+                                    <el-form-item label="试题类型">
+
+                                        <el-select placeholder="请选择">
+                                            <el-option label="区域一" value="shanghai"></el-option>
+                                            <el-option label="区域二" value="beijing"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                    </el-form>
+                </div>
+            </div>
+            <div style="background-color: blue;color: #fff;text-align: center">---------- ↓ 以下是原来的表单，逻辑还没有迁移上来 ↓ ----------</div>
+            <el-row>
                 <el-col :span="12">
                     <el-form :model="daguanArray" :rules="rules" ref="daguanArray" label-width="100px"
                              class="demo-daguanArray" size="mini">
