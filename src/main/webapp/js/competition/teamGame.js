@@ -41,26 +41,59 @@ var vm = new Vue({
         joinTeamShow: false,
         formationTeamShow: false,
         formationWarShow: false,//组建房间弹框！！！
-        joinWarShow: true//加入房间弹框！！
+        joinWarShow: false,//加入房间弹框！！
+
+        myTeamUser:[],
+        myTeamUser2:[],
+        roomNum:"",
+        otherTeamUser:[],
+        myScorea:"0",
+        otherScorea:"0",
+        zaibuzai:"2",//0不在 1 存在
     },
     created: function () {
         this.$nextTick(function () {
-            this.reload();
-            if(getUrlParam('teamType') === 'formation'){
-                vm.formationTeamShow = true
-            }
-            if(getUrlParam('teamType') === 'join'){
-                vm.joinTeamShow = true
-            }
+            // this.reload();
+            // if(getUrlParam('teamType') === 'formation'){
+                vm.formationTeamShow = true;
+            // }
+            // if(getUrlParam('teamType') === 'join'){
+            //     vm.joinTeamShow = true
+            // }
+
+
         });
+
         document.onkeydown = function (event) {
             var e = event || window.event || arguments.callee.caller.arguments[0];
             if(e && e.keyCode==13){ // enter 键
-                if(vm.joinTeamShow){
-                    vm.joinTeamShow = false;
-                    vm.formationTeamShow = true;
+                if(vm.joinWarShow){
+                    var roomcode=vm.roomNum;
+                    if(roomcode=="")
+                    {
+                        alert("请输入房间code码");
+                        return;
+                    }
+                    else
+                    {
+                        //先看能不能点  人不齐 不能点
+                        if(news.competitionTeam.nowScale!=news.competitionTeam.scale)
+                        {
+                            //人不齐  不可以点了
+                            alert("人不齐");
+                            return;
+                        }
+                        else
+                        {
+                            $("#joinroomDiv").hide();//div隐藏
+                            //人齐了 ，走send发消息这一步  告诉handler
+                            $("#msg").val("joinroom");
+                            news.teamOrGame="1";//下面就是要到比赛去了;
+                            news.battleCode=roomcode;
+                            sendMsg();
+                        }
+                    }
                 }
-
             }
         }
     },
@@ -107,12 +140,39 @@ var vm = new Vue({
 
         },
         formationTeamExit: function () {
-            this.formationTeamShow = false;
+            // this.formationTeamShow = false;
             // 退出组队
             // coding 返回pkMain
+            closeWebsocket();
+            location.href="main.html";
         },
         backPkMain: function () {
             window.location.href = baseURL + 'modules/competition/pkMain.html';
+        },
+        addroom:function()
+        {
+
+
+
+
+            //先看能不能点  人不齐 不能点
+            if(news.competitionTeam.nowScale!=news.competitionTeam.scale)
+            {
+                //人不齐  不可以点了
+                alert("人不齐");
+                return;
+            }
+            else
+            {
+                //人齐了 ，走send发消息这一步  告诉handler
+                $("#msg").val("addroom");
+                news.teamOrGame="1";//下面就是要到比赛去了;
+                sendMsg();
+
+                vm.formationWarShow=true;
+                vm.formationTeamShow = false;
+                vm.joinWarShow = false;
+            }
         }
 
     }
@@ -225,17 +285,29 @@ websocket.onmessage = function(event) {
 
         //===系统消息
         $("#contentUl").append("<li><b>"+data.date+"</b><em>系统消息：</em><span>"+data.text+"</span></li>");
+
+        if(data.text!="")
+        {
+            alert(data.text);
+        }
+
         //刷新在线用户列表
         $("#chatOnline").html("队伍人员("+data.userList.length+")人");
         $("#chatOnline2").html("队伍人员("+data.userList2.length+")人");
-        $("#chatUserList").empty();
 
+
+        $("#chatUserList").empty();
         $(data.userList).each(function(){
             console.info(this);
             $("#chatUserList").append("<li>"+this.fullName+"</li>");
         });
-        $("#chatUserList2").empty();
+        // ..
+        vm.myTeamUser = data.userList;
+        vm.myTeamUser2 = data.userList;
+        vm.otherTeamUser= data.userList2;
 
+
+        $("#chatUserList2").empty();
         $(data.userList2).each(function(){
             console.info(this);
             $("#chatUserList2").append("<li>"+this.fullName+"</li>");
@@ -263,10 +335,50 @@ websocket.onmessage = function(event) {
 
         }
 
+        // 如果队伍的人  和  队伍 配置的人数相等   显示 弹窗
+        if(Number(data.to.length)!=Number(data.competitionTeam.scale))
+        {
+
+            if(vm.u.id==vm.competitionTeam.userId)
+            {
+                vm.joinWarShow=false;
+            }
+
+        }
+
+        // 如果队伍的人  和  队伍 配置的人数相等   显示 弹窗
+        if((Number(data.to.length)==Number(data.competitionTeam.scale)) && data.teamOrGame!='1')
+        {
+
+            setTimeout(function() {
+                if (vm.u.id == vm.competitionTeam.userId) {
+                    vm.joinWarShow = true;
+                }
+            },2000);
+        }
+
+
 
         // 当收到系统消息的时候  看看是不是两个队伍匹配上了  看to的人和队伍配置人的2倍相比
         if(Number(data.to.length)==Number(data.competitionTeam.nowScale)*2)
         {
+            vm.formationWarShow = false;
+            vm.formationTeamShow = false;
+            vm.joinWarShow = false;
+
+            //遍历来看看 user  看两队伍 谁在前  谁在后
+
+            $(data.userList).each(function(){
+                vm.myTeamUser=data.userList2;
+                vm.otherTeamUser=data.userList;
+                if(jsgetUser().fullName==this.fullName) {
+                    vm.myTeamUser=data.userList;
+                    vm.otherTeamUser=data.userList2;
+                    return false;
+                }
+            });
+
+
 
             nowtimu=0;//因为下面send消息的时候 已经在不停的改变nowtimu的值  我要将他回归最初的状态
 
@@ -311,12 +423,29 @@ websocket.onmessage = function(event) {
             }
 
 
+            if(vm.zaibuzai=="2")
+            {
+                $('#chatUserList').find('li').each(function(){
+                    var thisli=$(this);
+                    vm.zaibuzai="0";
+
+                    if(jsgetUser().fullName==thisli.text())
+                    {
+                        vm.zaibuzai="1";
+                        return false;
+                    }
+                });
+
+            }
+
+
             $('#chatUserList').find('li').each(function(){
                     var thisli=$(this);
                     for(var t=0;t<answerpeople.length;t++){
 
                        if(answerpeople[t]==thisli.text())
                        {
+
                            if(writeAnswers[t]=="0")
                            {
                                thisli.append("<span>"+"答错了     +0分"+"</span>");
@@ -327,7 +456,15 @@ websocket.onmessage = function(event) {
 
                                vm.allScore1=Number(vm.allScore1)+Number(vm.nowQscore);
                            }
+
+
                        }
+
+                        // if(jsgetUser().fullName==thisli.text())
+                        // {
+                        //     vm.myScorea=vm.allScore1;
+                        //     vm.otherScorea=vm.allScore2;
+                        // }
                     }
             });
 
@@ -350,6 +487,30 @@ websocket.onmessage = function(event) {
             })
             $('#chatUserList li').last().html("总分为:"+vm.allScore1);
             $('#chatUserList2 li').last().html("总分为:"+vm.allScore2);
+
+            if( vm.zaibuzai=="0")
+            {
+                vm.myScorea=vm.allScore2;
+                vm.otherScorea=vm.allScore1;
+
+            }
+            else if(vm.zaibuzai=="1")
+            {
+                vm.myScorea=vm.allScore1;
+                vm.otherScorea=vm.allScore2;
+            }
+
+            // vm.myTeamUser2.map(function(_user){
+            //     vm.myScorea=vm.allScore2;
+            //     vm.otherScorea=vm.allScore1;
+            //     if(jsgetUser().fullName==_user.fullName) {
+            //         vm.myScorea=vm.allScore1;
+            //         vm.otherScorea=vm.allScore2;
+            //         return false;
+            //     }
+            // });
+
+
 
             if(answerpeople.length==data.to.length)
             {

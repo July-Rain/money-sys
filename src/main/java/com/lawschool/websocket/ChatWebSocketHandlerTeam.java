@@ -289,7 +289,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 			USER_TEAM.remove(competitionTeam.getTeamCode());//进入匹配了  将退伍信息去掉了
 			//发消息
 			msg.setFrom(null);//设置为系统发消息
-			msg.setText("请等待 其他队伍加入.。。。。。。。。");
+			msg.setText("");
 			msg.setDate(new Date());
 			msg.setBattlePlatform(battlePlatform);
 			msg.setBattleCode(battlePlatform.getBattleCode());
@@ -345,7 +345,7 @@ public class ChatWebSocketHandlerTeam implements WebSocketHandler {
 					USER_TEAM.remove(competitionTeam.getTeamCode());//进入匹配了  将退伍信息去掉了
 					//发消息
 					msg.setFrom(null);//设置为系统发消息
-					msg.setText("欢迎" +msg.getFromName()+"的队伍加入");
+					msg.setText("");
 					msg.setDate(new Date());
 					msg.setBattlePlatform(battlePlatform);
 					msg.setBattleCode(battlePlatform.getBattleCode());

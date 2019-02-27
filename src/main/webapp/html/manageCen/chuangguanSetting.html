@@ -81,103 +81,247 @@
         padding: 0 10px;
         color: #909399;
         display: inline-block;
-    / / 悬浮块横向显示
+    }
+    .dialog_inner{
+        border-bottom: 1px solid #ddd;
+    }
+
+    .dialog_inner > ul{
+        float: left;
+        width: 94px;
+    }
+    .dialog_inner > ul li{
+        width: 100%;
+        color: #333;
+        font-size: 16px;
+        text-align: center;
+        line-height: 16px;
+        margin: 20px 0;
+        border-right: 6px solid transparent;
+        cursor: hand;
+    }
+    .dialog_inner > ul li.active{
+        border-right: 6px solid #1381e3;
+        color: #1381e3;
+    }
+    .dialog_inner .form_area{
+        border-left: 1px solid #ddd;
+        float: left;
+        width: calc(100% - 94px);
+    }
+    .special_dialog .el-dialog__body{
+        padding: 0;
+    }
+    .gray_area{
+        background-color: #f8f8f8;
+        padding-top: 10px;
+        margin: 10px 8px;
+    }
+    .form_area h4{
+        position: relative;
+        padding-left: 44px;
+        color: #333333;
+        font-size: 16px;
+        font-weight: normal;
+    }
+    .form_area h4:after{
+        content: '';
+        position: absolute;
+        left: 22px;
+        top: 3px;
+        width: 12px;
+        height: 12px;
+        background-color: #ff9000;
+        transform: rotate(45deg);
     }
 </style>
 <body>
 <div id="app" v-cloak>
 
     <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>管理员入口</el-breadcrumb-item>
+            <el-breadcrumb-item>管理中心</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toMain">竞赛管理</span></el-breadcrumb-item>
+            <el-breadcrumb-item>闯关配置</el-breadcrumb-item>
+        </el-breadcrumb>
         <el-row :gutter="24">
             <el-col :span="24">
-                <el-tabs type="border-card">
-                    <el-tab-pane label="竞赛配置">
-                        <div>
-                            <el-button size="mini" type="primary" @click="add">新增</el-button>
-                            <el-button size="mini" type="primary" @click="update">编辑</el-button>
-                            <el-button size="mini" type="primary" @click="del">删除</el-button>
+                <div class="info_btn">
 
-                            <el-table
-                                    :data="tableData"
-                                    border
-                                    style="width: 100%">
+                    <el-button size="mini" type="primary" @click="add"><i class="iconfont icon-htmal5icon18"></i>新增配置
+                    </el-button>
+                    <el-button size="mini" type="primary" @click="update"><i class="iconfont icon-xiugaimima"></i>编辑
+                    </el-button>
+                    <el-button size="mini" type="danger" @click="del" plain><i class="iconfont icon-tubiaozhizuo-"></i>删除
+                    </el-button>
+                </div>
 
-                                <el-table-column
-                                        prop="markNumOrder"
-                                        label="第几大关"
-                                        width="280"
-                                        header-align="center"
-                                        align="center">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="smallNum"
-                                        label="小关数量"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="markReward"
-                                        label="大关是否奖励"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
-                                >
-                                    <template slot-scope="scope">
-                                        {{scope.row.markReward==1?"是":"否"}}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
-                                        prop="rewardScore"
-                                        label="大关奖励分值"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                        prop="unifyConfiguration"
-                                        label="是否统一配置"
-                                        width="280"
-                                        header-align="center"
-                                        align="center"
-                                >
-                                    <template slot-scope="scope">
-                                        {{scope.row.unifyConfiguration==1?"是":"否"}}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
-                                        label="操作"
-                                        header-align="center"
-                                        align="center"
-                                        width="180">
-                                    <template slot-scope="scope">
-                                        <el-button
-                                                size="mini"
-                                                @click="look(scope.$index, scope.row)">查看关卡配置
-                                        </el-button>
+                <el-table
+                        :data="tableData"
+                        border0
+                        style="width: 100%;border: 1px solid #dddddd">
 
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
-                                    :current-page="formInline.currPage"
-                                    :page-sizes="[10, 20, 30, 40]"
-                                    :page-size="formInline.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="formInline.totalCount">
-                            </el-pagination>
-                        </div>
-                    </el-tab-pane>
-                </el-tabs>
+                    <el-table-column
+                            prop="markNumOrder"
+                            label="第几大关"
+                            width="280"
+                            header-align="center"
+                            align="center">
+                    </el-table-column>
+                    <el-table-column
+                            prop="smallNum"
+                            label="小关数量"
+                            width="280"
+                            header-align="center"
+                            align="center"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                            prop="markReward"
+                            label="大关是否奖励"
+                            width="280"
+                            header-align="center"
+                            align="center"
+                    >
+                        <template slot-scope="scope">
+                            {{scope.row.markReward==1?"是":"否"}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="rewardScore"
+                            label="大关奖励分值"
+                            width="280"
+                            header-align="center"
+                            align="center"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                            prop="unifyConfiguration"
+                            label="是否统一配置"
+                            width="280"
+                            header-align="center"
+                            align="center"
+                    >
+                        <template slot-scope="scope">
+                            {{scope.row.unifyConfiguration==1?"是":"否"}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            label="操作"
+                            header-align="center"
+                            align="center">
+                        <template slot-scope="scope">
+
+
+                            <el-popover
+                                    placement="right"
+                                    trigger="hover"
+                                    content="查看关卡配置">
+                                <i class="iconfont icon-chakan tabIcon"
+                                   slot="reference"
+                                   @click="look(scope.$index, scope.row)"
+                                   style="color: #1381e3;font-size: 12px"
+                                >
+                                </i>
+                            </el-popover>
+
+
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="formInline.currPage"
+                        :page-sizes="[10, 20, 30, 40]"
+                        :page-size="formInline.pageSize"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="formInline.totalCount">
+                </el-pagination>
+
             </el-col>
         </el-row>
 
 
-        <el-dialog :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
+        <el-dialog class="special_dialog" :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
+            <div class="dialog_inner clearfix">
+                <ul>
+                    <li @click="checkLevel(count)" :class="count===nowLevel?'active':''" v-for="count in levelSum">第 {{count}} 关</li>
+                </ul>
+                <div class="form_area">
+
+
+                    <el-form label-width="100px" class="demo-msg"
+                             size="mini">
+                        <div class="gray_area">
+                            <el-row>
+                                <el-col :span="12">
+                                    <el-form-item label="总题数量">
+                                        <el-input></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="6">
+                                    <el-form-item label="统一配置">
+                                        <el-switch></el-switch>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="6">
+                                    <el-form-item label="大关奖励">
+                                        <el-switch></el-switch>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="24">
+                                    <el-form-item label="大关奖励积分">
+                                        <el-input-number :min="1" :max="10"></el-input-number>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                        </div>
+                            <el-row>
+                                <el-col :span="5"><h4>第一题</h4></el-col>
+                                <el-col :span="9">
+                                    <el-form-item label="此题积分">
+                                        <el-input-number :min="1" :max="10"></el-input-number>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                            <el-row>
+                                <el-col :span="9" :offset="5">
+                                    <el-form-item label="试题难度">
+                                        <el-checkbox-group>
+                                            <el-checkbox label="初级"></el-checkbox>
+                                            <el-checkbox label="中级"></el-checkbox>
+                                            <el-checkbox label="高级"></el-checkbox>
+                                        </el-checkbox-group>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                            <el-row>
+                                <el-col :span="9" :offset="5">
+                                    <el-form-item label="专项知识">
+
+                                        <el-select placeholder="请选择">
+                                            <el-option label="区域一" value="shanghai"></el-option>
+                                            <el-option label="区域二" value="beijing"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="9" :offset="5">
+                                    <el-form-item label="试题类型">
+
+                                        <el-select placeholder="请选择">
+                                            <el-option label="区域一" value="shanghai"></el-option>
+                                            <el-option label="区域二" value="beijing"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                    </el-form>
+                </div>
+            </div>
+            <div style="background-color: blue;color: #fff;text-align: center">---------- ↓ 以下是原来的表单，逻辑还没有迁移上来 ↓ ----------</div>
             <el-row>
                 <el-col :span="12">
                     <el-form :model="daguanArray" :rules="rules" ref="daguanArray" label-width="100px"
@@ -233,7 +377,6 @@
                                     </th>
                                 </tr>
                             </table>
-
                             <div v-for="item2 in item.recruitCheckpointConfigurationList" class="swiper-slide">
 
                                 <table style="border: solid 2px black;width: 100%">
@@ -298,13 +441,13 @@
                             </div>
                         </div>
 
-                        <el-form-item>
-                            <el-button type="primary" @click="saveOrUpdate('daguanArray')">保存</el-button>
-                            <el-button @click="closeDia">取消</el-button>
-                        </el-form-item>
                     </el-form>
                 </el-col>
             </el-row>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="saveOrUpdate('daguanArray')">保存</el-button>
+                <el-button @click="closeDia">取消</el-button>
+            </span>
         </el-dialog>
 
 
