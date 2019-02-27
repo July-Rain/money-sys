@@ -55,6 +55,21 @@
         .lay2 .chart3{
             padding: 30px 0 73px 0;
         }
+
+        /* 表格有关样式 */
+        .el-dialog {
+            width: 90%;
+        }
+
+        iframe {
+            border: none;
+        }
+        .dialogIfr{
+            min-height: 60vh;
+        }
+        .el-dialog__body{
+            padding: 0 10px 30px;
+        }
     </style>
 </head>
 <body>
@@ -86,6 +101,79 @@
             <div class="lay2">
                 <div class="chart3">
                     <div class="little-title">部门人员竞赛详情</div>
+                    <el-row :gutter="24">
+                        <el-col :span="24">
+                            <el-tabs type="border-card">
+                                <div>
+                                    <el-table
+                                            :data="tableData"
+                                            border
+                                            style="width: 100%">
+                                        <el-table-column
+                                                prop="userName"
+                                                label="人员"
+                                                width="100"
+                                                header-align="center"
+                                                align="center">
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="checkpoint"
+                                                label="闯关竞赛积分"
+                                                header-align="center"
+                                                align="center"
+                                        >
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="pk"
+                                                label="在线比武积分"
+                                                header-align="center"
+                                                align="center"
+                                        >
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="leitai"
+                                                label="擂台赛积分"
+                                                header-align="center"
+                                                align="center"
+                                        >
+                                        </el-table-column>
+
+                                        <el-table-column
+                                                label="操作"
+                                                header-align="center"
+                                                align="center"
+                                                width="180">
+                                            <template slot-scope="scope">
+                                                <el-popover
+                                                        placement="right"
+                                                        trigger="hover"
+                                                        content="查看">
+                                                    <i class="iconfont icon-chakan tabIcon"
+                                                       slot="reference"
+                                                       @click="look(scope.$index, scope.row)"
+                                                       style="color: #1381e3;font-size: 12px;">
+                                                    </i>
+                                                </el-popover>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                    <el-pagination
+                                            @size-change="handleSizeChange"
+                                            @current-change="handleCurrentChange"
+                                            :current-page="formInline.currPage"
+                                            :page-sizes="[10, 20, 30, 40]"
+                                            :page-size="formInline.pageSize"
+                                            layout="total, sizes, prev, pager, next, jumper"
+                                            :total="formInline.totalCount">
+                                    </el-pagination>
+                                </div>
+                            </el-tabs>
+                        </el-col>
+                    </el-row>
+                    <el-dialog :visible.sync="dialog2">
+                            <iframe class="dialogIfr" :src="src" width="100%" height="auto" frameborder="1" name="iframe名称">
+                            </iframe>
+                        </el-dialog>
                 </div>
             </div>
         </div>
