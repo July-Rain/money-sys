@@ -36,7 +36,7 @@ var vm = new Vue({
         caseProcessOption:[],
         contentTypeOption:[{
             code:'1',
-            value:'文字'
+            value:'图文'
         },{
             code:'2',
             value:'音频'
