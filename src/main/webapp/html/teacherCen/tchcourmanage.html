@@ -136,11 +136,21 @@
                                 <el-popover
                                         placement="right"
                                         trigger="hover"
-                                        content="查看">
-                                    <i class="iconfont icon-chakan tabIcon"
+                                        content="编辑">
+                                    <i class="iconfont icon-xiugaimima tabIcon"
                                        slot="reference"
-                                       @click="handleDetail(scope.$index, scope.row)"
-                                       style="color: #1381e3;font-size: 12px;">
+                                       @click="handleEdit(scope.$index, scope.row)"
+                                       style="color: #119e0a;">
+                                    </i>
+                                </el-popover>
+                                <el-popover
+                                        placement="right"
+                                        trigger="hover"
+                                        content="删除">
+                                    <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                                       slot="reference"
+                                       @click="handleDel(scope.$index, scope.row)"
+                                       style="color: #e31313;">
                                     </i>
                                 </el-popover>
                             </template>
@@ -179,6 +189,19 @@
                                 <div id="editor" style="width:100%;">
                                 </div>
                             </el-form-item>
+                            <el-form-item label="资料：" prop="comContent">
+                                <el-upload
+                                        class="avatar-uploader"
+                                        name="importfile"
+                                        :action="importFileUrl"
+                                        :file-list="fileList"
+                                        :on-success="handleAssSuccess"
+                                        :before-upload="beforePicUpload">
+                                    <el-button type="primary">点击上传</el-button>
+
+                                </el-upload>
+                            </el-form-item>
+
                         </template>
                         <template v-if="stuMediaTch.stuType=='2'">
                             <el-form-item label="视频封面上传：" prop="videoPicAcc">
@@ -233,5 +256,5 @@
 <!-- import [current] JavaScript -->
 
 <script type="text/javascript" src="${rc.contextPath}/statics/plugins/editor/wangEditor.min.js"></script>
-<script src="${rc.contextPath}/js/teacherCen/tchcourse.js?_${.now?long}"></script>
+<script src="${rc.contextPath}/js/teacherCen/tchcourmanage.js?_${.now?long}"></script>
 </html>

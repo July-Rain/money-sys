@@ -302,4 +302,16 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         int integer = userMapper.update(user, new EntityWrapper<User>().eq("ID", user.getId()));
         return integer==1?SUCCESS:ERROR;
     }
+
+    @Override
+    public int changeIdentify(String id, String identify) {
+        User user = new User();
+        user.setId(id);
+        if("0".equals(identify)){
+            user.setIdentify("1");
+        }else if("1".equals(identify)){
+            user.setIdentify("0");
+        }
+        return userMapper.update(user);
+    }
 }
