@@ -6,6 +6,20 @@ var id = getUrlParam('taskId');
 var vm = new Vue({
     el: "#app",
     data: {
+        oneOptionScore: 1,
+        multiOptionScore: 2,
+        checkingScore: 2,
+        oneOptiontTotalScore: 50,
+        multiOptiontsTotalScore: 10,
+        checkingTotalScore: 10,
+        oneOptionList: [],
+        multiOptionsList: [],
+        checkingList: [],
+        paperName: '卷子名称：第四季度执法资格考试',
+        username:'王小明',
+        time: 3,
+        hours: 2,
+        minutes: 20,
         questionList: [],
         answers: [],
         page: 1,
@@ -132,12 +146,25 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.questionList = result.page.list;
+                        console.log(vm.questionList)
                         vm.count = result.page.count;
                         id = result.page.id;
                         vm.preserved = [];
                     } else {
                         alert(result.msg);
                     }
+                    vm.questionList.forEach(function (val) {
+                        switch (val.questionType) {
+                            case '10004':
+                                vm.oneOptionList.push(val);
+                                break;
+                            case '10005':
+                                vm.multiOptionsList.push(val);
+                                break;
+                            default:
+                                return;
+                        }
+                    })
                 }
             });
         },
@@ -156,6 +183,18 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+        toHome: function () {
+            parent.location.reload()
+        },
+        //  样式转换方法
+        changeFontSize: function (e) {
+            var fontSpans = document.getElementsByClassName('font-size-span');
+            for (var i=0;i<fontSpans.length;i++) {
+                fontSpans[i].style.fontWeight = '300';
+            }
+            e.target.style.fontWeight = '600';
+            // 改变整体页面字体大小，待
         }
     },
     created: function () {

@@ -5,6 +5,7 @@
  */
 var editor = null;
 var menuId = getUrlParam("id");
+// 视频上传DOM 改为由v-show控制以实现上传视频替换功能后，会有一个warn，于功能无碍。待定。
 var vm = new Vue({
     el: '#app',
     data: {
@@ -36,6 +37,7 @@ var vm = new Vue({
             stuPoliceclass: "",//所属警种
             videoPicAcc: "",//视频首页
         },
+        uploadedPlayer: null, // 上传视频实例
         rules: {//表单验证规则
             stuType: [
                 {required: true, message: '请选择资料类型', trigger: 'blur'}
@@ -77,7 +79,8 @@ var vm = new Vue({
             currPage: 1,
             pageSize: 10,
             totalCount: 0,
-            identify: '0'//表明是用户
+            identify: '0',// 表明是用户
+            userStatus:'2000'//查询有效的用户
 
         },//人员查询
         userTableData: [],//人员表格信息
@@ -142,25 +145,21 @@ var vm = new Vue({
         })
     },
     methods: {
-        // 初始化videojs
+        // 初始化videojs // videojs
         initPlayer: function () {
             var options = {
-                bigPlayButton: true,
+                bigPlayButton: false,
             };
-            var videoUploaded = videojs('video-uploaded', options);
-            var toggleButton = document.getElementsByClassName('vjs-big-play-button')[0];
-            toggleButton.style.visibility = 'hidden';
-            console.log(toggleButton);
-            videoUploaded.on('pause', function () {
-                toggleButton.style.visibility = 'visible';
-            })
-            videoUploaded.on('play', function () {
-                toggleButton.style.visibility = 'hidden';
-            })
+            this.uploadedPlayer = videojs('video-uploaded', options);
         },
+        // videojs
         //序列号计算
         indexMethod: function (index) {
             return index + 1 + (vm.formInline.currPage - 1) * vm.formInline.pageSize;
+        },
+        //序列号计算
+        indexUserMethod: function (index) {
+            return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;
         },
         // 查询
         onSubmit: function () {
@@ -328,7 +327,6 @@ var vm = new Vue({
             vm.stuMedia.stuKnowledge = data.classifyName;
             vm.formInline.stuLawid = data.id;
             this.reload();
-            //console.log(data);
         },
         //部门人员控件中点击事件
         handleDeptNodeClick: function (data) {
@@ -341,12 +339,10 @@ var vm = new Vue({
 
         },
         uploadSuccess: function (response, file, fileList) {
-            var that = this;
-            var videoButton = document.getElementsByClassName('video-button')[0];
+            var that = this;  // videojs
             this.videoFlag = false;
             this.videoUploadPercent = 0;
             if (response.code == 0) {
-                videoButton.style.display = 'none';
                 vm.stuMedia.comContent = response.accessoryId;
                 vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
                 setTimeout(function () {
@@ -360,11 +356,9 @@ var vm = new Vue({
             }
         },
         handlePicSuccess: function (response, file, fileList) {
-            var avatarUploader = document.getElementsByClassName('avatar-uploader')[0];
             if (response.code == 0) {
                 vm.stuMedia.videoPicAcc = response.accessoryId;
                 vm.stuMedia.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
-                avatarUploader.style.display = 'none';
             } else {
                 this.$message.error('图片上传失败，请重新上传！');
             }
@@ -383,7 +377,6 @@ var vm = new Vue({
                 this.$message.error('上传视频大小不能超过100MB哦!');
                 return false;
             }
-
         },
         beforeAudioUpload: function (file) {
             /*if(!checkFile(file)) return false;*/
@@ -509,7 +502,7 @@ var vm = new Vue({
         },
         huixian: function (ids) {
             // saveUserTableData    --回显需加
-            if(!ids){
+            if (!ids) {
                 return
             }
             var that = this;

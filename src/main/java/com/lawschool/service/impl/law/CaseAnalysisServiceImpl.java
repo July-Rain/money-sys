@@ -54,7 +54,7 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         String endTime = (String)params.get("endTime");
         String createUser=(String)params.get("createUser");
         EntityWrapper<CaseAnalysisEntity> ew = new EntityWrapper<>();
-        ew.setSqlSelect("ID,CASE_TITLE,CASE_CONTENT,CONTENT_TYPE,CASE_TIME,DICTCODE2VALE(CASE_PROCESS) as CASE_PROCESS,DICTCODE2VALE(CASE_TYPE) as CASE_TYPE,DICTCODE2VALE(LAW_LEVEL) as LAW_LEVEL,VIDEO_PIC_ACC");
+        ew.setSqlSelect("ID,CASE_TITLE,CASE_CONTENT,CONTENT_TYPE,CASE_TIME,DICTCODE2VALE(CASE_PROCESS) as CASE_PROCESS,DICTCODE2VALE(CASE_TYPE) as CASE_TYPE,DICTCODE2VALE(LAW_LEVEL) as LAW_LEVEL,VIDEO_PIC_ACC,CREATE_TIME,CREATE_USER_NAME");
         if(UtilValidate.isNotEmpty(caseTitle)){
             ew.like("CASE_TITLE",caseTitle);
         }
@@ -97,7 +97,7 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
                 c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
                 Date tomorrow = c.getTime();
                 endParse = tomorrow;
-                //以开始时间搞
+                //以开始时间
                 ew.le("case_time", endParse);
             } catch (ParseException e) {
                 throw new RuntimeException();
@@ -127,14 +127,20 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         analysisEntity.setOptUser(user.getId());
         analysisEntity.setOptTime(new Date());
         analysisEntity.setCreateUser(user.getId());
+        analysisEntity.setCreateUserName(user.getUserName());
         analysisEntity.setCreateTime(new Date());
         analysisEntity.setCaseCode(GetUUID.getUUIDs("CA"));
         mapper.insert(analysisEntity);
         //存权限表
         String[] deptIdArr=analysisEntity.getDeptArr();
         String[] userIdArr=analysisEntity.getUserArr();
-        authService.insertAuthRelation(deptIdArr,userIdArr,analysisEntity.getId(),"CASEANALYSIS",analysisEntity.getCreateUser());
-
+        String[] deptTemp=new String[1];
+        if(deptIdArr.length==0&&userIdArr.length==0){
+            deptTemp[0]=user.getOrgId();
+            authService.insertAuthRelation(deptTemp,userIdArr,analysisEntity.getId(),"CASEANALYSIS",analysisEntity.getCreateUser());
+        }else{
+            authService.insertAuthRelation(deptIdArr,userIdArr,analysisEntity.getId(),"CASEANALYSIS",analysisEntity.getCreateUser());
+        }
     }
 
     @Override
@@ -163,8 +169,13 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         //存权限表
         String[] deptIdArr=analysisEntity.getDeptArr();
         String[] userIdArr=analysisEntity.getUserArr();
-        authService.insertAuthRelation(deptIdArr,userIdArr,analysisEntity.getId(),"CASEANALYSIS",analysisEntity.getOptUser());
-
+        String[] deptTemp=new String[1];
+        if(deptIdArr.length==0&&userIdArr.length==0){
+            deptTemp[0]=user.getOrgId();
+            authService.insertAuthRelation(deptTemp,userIdArr,analysisEntity.getId(),"CASEANALYSIS",analysisEntity.getCreateUser());
+        }else{
+            authService.insertAuthRelation(deptIdArr,userIdArr,analysisEntity.getId(),"CASEANALYSIS",analysisEntity.getCreateUser());
+        }
     }
 
     @Override

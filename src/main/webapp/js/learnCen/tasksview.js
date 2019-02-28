@@ -88,7 +88,8 @@ var vm = new Vue({
             currPage: 1,
             pageSize: 10,
             totalCount:0,
-            identify: '0'//表明是用户
+            identify: '0',// 表明是用户
+            userStatus:'2000'//查询有效的用户
 
         },//人员查询
         userTableData:[],//人员表格信息
@@ -182,6 +183,10 @@ var vm = new Vue({
         //序列号计算
         indexMethod:function (index) {
             return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
+        },
+        //序列号计算
+        indexUserMethod: function (index) {
+            return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;
         },
         // 查询
         onSubmit: function () {

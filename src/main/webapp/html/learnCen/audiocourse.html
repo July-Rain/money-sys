@@ -106,12 +106,11 @@
                                             <p>
                                                 <span v-if="!item.isColl" @click="collect(item.id)">收藏</span>
                                                 <span v-if="item.isColl" @click="cancelCollect(item.id)">取消收藏</span>
-                                                <span class="stuType">{{item.stuType}}</span>
                                                 <a href="javascript:;" class="title">{{item.stuTitle}}</a>
                                             </p>
                                             <p>
                                                 <span class="stuIssuer">{{item.stuIssuer}}</span>
-                                                <span class="stuCreat">{{item.stuCreat}}</span>
+                                                <span class="stuCreat">{{item.stuIsstime}}</span>
                                             </p>
                                         </div>
                                     </el-card>

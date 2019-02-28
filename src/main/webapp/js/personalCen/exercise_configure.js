@@ -79,12 +79,17 @@ var vm = new Vue({
             currPage: 1,
             pageSize: 10,
             totalCount: 0,
-            identify: '0'//表明是用户
+            identify: '0',// 表明是用户
+            userStatus:'2000'//查询有效的用户
 
         },//人员查询
         userTableData: [],//人员表格信息
     },
     methods: {
+        //序列号计算
+        indexUserMethod: function (index) {
+            return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;
+        },
         addConfig: function () {
             vm.title =  '新增练习配置';
             vm.dialogConfig = true;
@@ -306,7 +311,7 @@ var vm = new Vue({
         reloadUser: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sys/getAllUsers",
+                url: baseURL + "sys/getUorT?isMp=true",
                 dataType: "json",
                 data: vm.userForm,
                 success: function (result) {
@@ -314,7 +319,7 @@ var vm = new Vue({
                         vm.userTableData = result.page.list;
                         vm.userForm.currPage = result.page.currPage;
                         vm.userForm.pageSize = result.page.pageSize;
-                        vm.userForm.totalCount = parseInt(result.page.count);
+                        vm.userForm.totalCount = parseInt(result.page.totalCount);
                     } else {
                         alert(result.msg);
                     }

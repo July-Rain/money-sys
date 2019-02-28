@@ -84,4 +84,6 @@ public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
     List<CommonForm> countByThemeId();
 
     Boolean updateAnswerId(@Param("id") String id, @Param("answerId") String answerId);
+
+    List<TestQuestions> listByIds(List<String> ids);
 }

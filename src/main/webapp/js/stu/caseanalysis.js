@@ -41,7 +41,7 @@ var vm = new Vue({
             videoPicAccUrl:"",//视频首页url
             caseType:"",//案件类型
             lawLevel:"",//法院层级
-            caseTime:"",//裁决时间
+            caseTime:"",//裁判日期
             caseProcess:""//裁决程序
         },
         rules: {//表单验证规则
@@ -85,7 +85,8 @@ var vm = new Vue({
             currPage: 1,
             pageSize: 10,
             totalCount:0,
-            identify:'0',//表明是用户
+            identify:'0',// 表明是用户
+            userStatus:'2000'//查询有效的用户
 
         },//人员查询
         userTableData:[],//人员表格信息
@@ -193,6 +194,10 @@ var vm = new Vue({
         indexMethod:function (index) {
             return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
         },
+        //序列号计算
+        indexUserMethod: function (index) {
+            return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;
+        },
         // 查询
         onSubmit: function () {
             this.reload();
@@ -266,7 +271,7 @@ var vm = new Vue({
                 videoPicAccUrl:"",//视频首页url
                 caseType:"",//案件类型
                 lawLevel:"",//法院层级
-                caseTime:"",//裁决时间
+                caseTime:"",//裁判日期
                 caseProcess:""//裁决程序
             },
             //清空editor
@@ -437,7 +442,7 @@ var vm = new Vue({
         },
         uploadVideoProcess(event, file, fileList){
             this.videoFlag = true;
-            this.videoUploadPercent = file.percentage.toFixed(2);
+            this.videoUploadPercent = parseInt(file.percentage.toFixed(2));
         },
 
         changeStuType: function () {

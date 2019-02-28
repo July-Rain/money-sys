@@ -185,7 +185,8 @@ var vm = new Vue({
                 currPage: 1,
                 pageSize: 10,
                 totalCount:0,
-                identify: '0'//表明是用户
+                identify: '0',// 表明是用户
+                userStatus:'2000'//查询有效的用户
 
             },//人员查询
             //选中题目
@@ -255,6 +256,10 @@ var vm = new Vue({
         });
     },
     methods: {
+        //序列号计算
+        indexUserMethod: function (index) {
+            return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;
+        },
         getPassPnt : function(){
             vm.examConfig.passPnt = vm.examConfig.examScore*0.6;
         },

@@ -95,4 +95,6 @@ public interface TestQuestionService extends AbstractService<TestQuestions> {
     boolean updateAnswerId(String id, String answerId);
 
     boolean mySave(TestQuestions entity);
+
+    List<TestQuestions> listByIds(List<String> ids);
 }

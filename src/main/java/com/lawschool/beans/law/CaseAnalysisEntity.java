@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.annotations.Version;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.ejb.TransactionAttribute;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -48,7 +49,10 @@ public class CaseAnalysisEntity implements Serializable {
 
     private String createUser;
 
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date createTime;
+
+    private String createUserName; //创建人名称
 
     private String videoPicAcc;
 
@@ -283,5 +287,13 @@ public class CaseAnalysisEntity implements Serializable {
 
     public void setContentCount(Integer contentCount) {
         this.contentCount = contentCount;
+    }
+
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
     }
 }

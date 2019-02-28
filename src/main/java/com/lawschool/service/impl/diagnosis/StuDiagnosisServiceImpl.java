@@ -110,11 +110,16 @@ public class StuDiagnosisServiceImpl implements StuDiagnosisService {
      **/
     
     public String getRatio(Map<String, String> param){
+        //获取排名
         int rank=getRankNo(param);
+        //获取排名相同的总人数
+        param.put("rankNo",String.valueOf(rank));
+        int countCom=diagnosisDao.getCountComRankNo(param);
         int userCount=userService.selectCount(new EntityWrapper<User>());
-        double ratio=1;
-        if(userCount>=rank&&userCount!=0){
-            int others=userCount-rank;
+
+        double ratio=0;
+        if(userCount>=rank+countCom-1&&userCount!=0){
+            int others=userCount-rank-countCom+1;
             ratio=others*1.0/userCount;
  //           ratio= 100/others;//考虑被除数为0
         }

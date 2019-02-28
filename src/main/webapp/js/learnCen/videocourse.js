@@ -7,7 +7,8 @@ var vm = new Vue({
     el: '#app',
     data: {
         videoData: [],//视频列表
-        videoDataId: ["SM20190130160129526544", "SM20190126164415860356", "SM20190126163926376704", "SM20190126155217822288"],
+        videoDataId: [],
+        dialogPlayer: null,
         navData: [],//导航
         formInline: { // 搜索表单
             stuType:"3",
@@ -64,7 +65,6 @@ var vm = new Vue({
         });
     },
     mounted: function () {
-        this.initPlayer();
     },
     methods: {
         initPlayer: function () {
@@ -84,12 +84,9 @@ var vm = new Vue({
                 that.videoDataId.forEach(function (val, index) {
                     var myPlayer = videojs(val, options);
                 })
-
             }
         },
-        dialogOpen: function () {
-            // 初始化dialog
-            // this.thisVideoContentUrl = contentUrl;  需要理清逻辑
+        initDialogPlayer: function () {
             var dialogOptions = {
                 controls: true,
                 autoplay: true,
@@ -102,16 +99,25 @@ var vm = new Vue({
                     volumePanel: false
                 },
             };
-            var dialogPlayer = videojs('dialog-player', dialogOptions);
+            this.dialogPlayer = videojs('dialog-player', dialogOptions);
             var bigDialogButton = document.getElementsByClassName('vjs-big-play-button')[this.videoDataId.length];
             console.log(bigDialogButton);
             bigDialogButton.style.outline = 'none';
-            dialogPlayer.on('play', function () {
+            this.dialogPlayer.on('play', function () {
                 bigDialogButton.style.display = 'none';
             });
-            dialogPlayer.on('pause', function () {
+            this.dialogPlayer.on('pause', function () {
                 bigDialogButton.style.display = 'block';
             });
+        },
+        dialogOpen: function () {
+                if (!this.dialogPlayer) {
+                    this.initDialogPlayer();
+                } else {
+                    console.log(this.dialogPlayer);
+                    this.dialogPlayer.dispose();
+                    this.initDialogPlayer();
+                }
         },
         // 查询
         onSubmit: function () {
@@ -139,9 +145,9 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.videoData = result.page.list;
-                        // var videoDataId = [];
+                        console.log(vm.videoData);
                         for(var i=0;i<vm.videoData.length;i++){
-                            // videoDataId.push(vm.videoData[i].id);
+                            vm.videoDataId.push(vm.videoData[i].id);
                             vm.videoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
                             if(vm.videoData[i].videoPicAcc){
                                 vm.videoData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
@@ -156,16 +162,16 @@ var vm = new Vue({
                                 vm.videoData[i].stuType="视频";
                             }
                         }
-                        // console.log(videoDataId);
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
                         vm.formInline.totalCount = parseInt(result.page.totalCount);
-                        console.info("videoData",vm.videoData)
                     } else {
                         alert(result.msg);
                     }
                 }
-            });
+            }).then(
+                
+            );
         },
         // el-tree节点点击事件
         handleNodeClick: function (data) {
@@ -200,13 +206,12 @@ var vm = new Vue({
         },
         onVideoDialog: function (id,contentUrl,videoPicAccUrl){
             this.dialogVideo = true;
-            this.$nextTick(function () {
-                // this.initDialogPlayer();
+            // this.$nextTick(function () {
                 this.onPlay(id);
                 this.thisVideoId = id;
                 this.thisVideoContentUrl = contentUrl;
                 this.thisVideoPicAccUrl = videoPicAccUrl;
-            })
+            // })
         },
         onPlay:function (id, event) {
             //获取当前选择对象
@@ -291,7 +296,7 @@ var vm = new Vue({
                 comStucode:id,
                 type:'10'
             };
-            //取消收藏课程
+            // 取消收藏课程
             $.ajax({
                 type: "POST",
                 url: baseURL + "coll/delColl?comStucode="+id+"&type=10",
@@ -307,6 +312,12 @@ var vm = new Vue({
                 }
             });
         },
+    },
+    watch:  {
+        // 暂时记录：深度监控
+        'videoDataId' : function (newVal) {
+            vm.initPlayer();
+        }
     }
 });
 
