@@ -1,5 +1,6 @@
 package com.lawschool.beans.accessory;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
@@ -16,7 +17,10 @@ import java.util.Date;
 @TableName("law_sys_accessory")
 public class AccessoryEntity implements Serializable {
     private static final long serialVersionUID = 1L;
-
+    @TableField(exist = false)
+    private String name;
+    @TableField(exist = false)
+    private String url;
     /**
      * 附件id
      */
@@ -111,5 +115,21 @@ public class AccessoryEntity implements Serializable {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
