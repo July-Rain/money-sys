@@ -41,6 +41,8 @@ public class TaskExerciseConfigureController extends AbstractController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result list(@RequestParam Map<String, Object> params){
 
+        SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
+
         // 获取登录用户信息
         User user = getUser();
 
@@ -50,6 +52,21 @@ public class TaskExerciseConfigureController extends AbstractController {
         entity.setDelFlag(TaskExerciseConfigureEntity.DEL_NORMAL);
         if(params.get("source") != null){
             entity.setSource(Integer.parseInt(params.get("source").toString()));
+        }
+
+        if(params.get("name") != null){
+            entity.setName(String.valueOf(params.get("name")));
+        }
+
+        try{
+            if(params.get("kssj") != null && params.get("kssj") != ""){
+                entity.setKssj(sim.parse(String.valueOf(params.get("kssj"))));
+            }
+            if(params.get("jssj") != null && params.get("jssj") != ""){
+                entity.setJssj(sim.parse(String.valueOf(params.get("jssj"))));
+            }
+        } catch (Exception e){
+            return Result.error("日期格式错误，请修正...");
         }
 
         Page<TaskExerciseConfigureEntity> page = service.findPage(

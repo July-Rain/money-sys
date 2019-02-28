@@ -10,6 +10,7 @@ import com.lawschool.dao.*;
 import com.lawschool.service.CollectionService;
 import com.lawschool.util.*;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,25 +25,78 @@ import static java.lang.Integer.parseInt;
 public class CollectionServiceImpl  extends ServiceImpl<CollectionDao,Collection> implements CollectionService{
 
     @Autowired
-    CollectionDao collectionDao;
+    private CollectionDao collectionDao;
 
     @Autowired
-    TestQuestionsDao testQuestionsMapper;
+    private TestQuestionsDao testQuestionsMapper;
 
     @Autowired
-    OrgDao orgDao;
+    private OrgDao orgDao;
 
     @Autowired
-    PracticePaperDao practicePaperDao;
+    private PracticePaperDao practicePaperDao;
 
     @Autowired
-    PracticeRelevanceDao practiceRelevanceDao;
+    private PracticeRelevanceDao practiceRelevanceDao;
 
     @Autowired
-    AnswerDao answerDao;
+    private AnswerDao answerDao;
 
     @Autowired
-    UserQuestRecordDao userQuestRecordDao;
+    private UserQuestRecordDao userQuestRecordDao;
+
+    /**
+     * 收藏功能
+     * @param type 收藏类型：10课件收藏、20重点试题收藏、30错题收藏
+     * @param comStuCode 课件/试题ID
+     * @param isCancel true取消收藏、false收藏
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean doCollection(String type, String comStuCode, boolean isCancel){
+        User user = (User)SecurityUtils.getSubject().getPrincipal();
+
+        // 1.获取对应收藏数据
+        Collection collection = collectionDao.findOne(type, comStuCode, user.getId());
+
+        if(collection == null){
+            // 未被收藏过
+            if(isCancel){
+                // 取消收藏，正常情况下不存在此情况，直接返回结果
+                return true;
+
+            } else {
+                // 直接收藏数据
+
+                collection = new Collection();
+                collection.setComStucode(comStuCode);
+                collection.setType(Integer.parseInt(type));
+                collection.setId(IdWorker.getIdStr());
+                collection.setDelStatus(0);// 删除状态，0未删除
+                collection.setOpttime(new Date());// 收藏时间
+                collection.setOptuser(user.getFullName());
+                collection.setComUserid(user.getId());
+
+                int result = collectionDao.insert(collection);
+
+                return result == 1 ? true : false;
+            }
+        } else {
+            // 有收藏记录
+            // 当前收藏状态，true收藏、false取消收藏
+            boolean flag = collection.getDelStatus() == 0 ? true : false;
+
+            if(flag == isCancel){
+                // 更新收藏状态
+                return collectionDao.doAgain(collection.getId(), isCancel == true ? 1 : 0);
+            } else {
+                // 不用盘它，直接结束
+                return true;
+            }
+
+        }
+    }
 
     @Override
     //1 删  0 留  取消收藏
@@ -291,4 +345,5 @@ public class CollectionServiceImpl  extends ServiceImpl<CollectionDao,Collection
 
         return collectionDao.cancle(questionId, userId);
     }
+
 }

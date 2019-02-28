@@ -24,6 +24,15 @@
             del_flag = #{delFlag}
             AND create_user = #{createUser}
             AND source = #{source}
+            <if test="name !='' and name != null">
+                AND NAME LIKE '%'||#{name}||'%'
+            </if>
+            <if test="kssj != null">
+                AND create_time <![CDATA[ >= ]]> #{kssj}
+            </if>
+            <if test="jssj != null">
+                AND create_time <![CDATA[ <= ]]> #{jssj}
+            </if>
         </where>
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">

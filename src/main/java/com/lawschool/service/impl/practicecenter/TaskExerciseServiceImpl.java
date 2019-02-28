@@ -131,8 +131,14 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
 
         taskAnswerRecordService.saveForm(form);
 
+        // 答错的情况下，直接收藏到我的错题集
+        if(form.getRight() != 1){
+            boolean collectResult = collectionService.doCollection("30", form.getqId(), false);
+        }
+
         // 更新整体练习答题情况
-        dao.updateAnswerNum(form.getTaskId(), 1);
+        dao.updateAnswerNum(form.getTaskId(), 1, form.getRight());
+
     }
 
     @Override
@@ -193,23 +199,11 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
     @Transactional(rollbackFor = Exception.class)
     public boolean doCollect(String id, String recordId, Integer type){
 
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        boolean result = collectionService.doCollection("20", id, type==1 ? false : true);
 
-        if(type == 1){
-            com.lawschool.beans.Collection collect = new Collection();
-            collect.setId(IdWorker.getIdStr());
-            collect.setType(20);
-            collect.setComStucode(id);
-
-
-            // 0成功，1失败
-            int result = collectionService.addCollection(collect, user);
-        } else {
-            // 取消收藏
-            boolean result = collectionService.cancle(id, user.getId());
+        if(result){
+            dao.updateCollect(recordId, type);
         }
-
-        dao.updateCollect(recordId, type);
 
         return true;
     }

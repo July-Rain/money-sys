@@ -454,7 +454,7 @@ var vm = new Vue({
                 dataType: "json",
                 success: function (result) {
                     if (result.code == 0) {
-                        vm.examList = result.page.list;
+                        // vm.examList = result.page.list;
 
                     }
                 }
