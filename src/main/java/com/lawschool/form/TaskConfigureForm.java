@@ -1,5 +1,6 @@
 package com.lawschool.form;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +22,9 @@ public class TaskConfigureForm {
     private String themeName;
     private String deptNames;
     private String userNames;
+
+    private Date kssj;
+    private Date jssj;
 
     public String getName() {
         return name;
@@ -108,5 +112,21 @@ public class TaskConfigureForm {
 
     public void setUserNames(String userNames) {
         this.userNames = userNames;
+    }
+
+    public Date getKssj() {
+        return kssj;
+    }
+
+    public void setKssj(Date kssj) {
+        this.kssj = kssj;
+    }
+
+    public Date getJssj() {
+        return jssj;
+    }
+
+    public void setJssj(Date jssj) {
+        this.jssj = jssj;
     }
 }
