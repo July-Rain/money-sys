@@ -106,6 +106,12 @@ public class UserController extends AbstractController {
         Result result= userService.addUser(user);
         return result;
     }
+    @SysLog("修改员工身份")
+    @RequestMapping("/changeIdentify")
+    public Result changeIdentify(String id,String identify){
+       userService.changeIdentify(id,identify);
+       return  Result.ok();
+    }
 
     @RequestMapping("/userPoliceId")
     public Result userPoliceId(String userPoliceId ,String mytype,String id){
