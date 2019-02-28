@@ -150,7 +150,38 @@ var vm = new Vue({
         limit: 5,
         count: 0,
         preserved: [],
-
+        barData: [
+            {
+                href: "#oneOption",
+                questionType: '单选题',
+                currentFinishedNum: 1,
+                totalNum: 50
+            },
+            {
+                href: "#multiOptions",
+                questionType: '多选题',
+                currentFinishedNum: 0,
+                totalNum: 10
+            },
+            {
+                href: "#filling",
+                questionType: '填空题',
+                currentFinishedNum: 0,
+                totalNum: 5
+            },
+            {
+                href: "#checking",
+                questionType: '判断题',
+                currentFinishedNum: 0,
+                totalNum: 5
+            },
+            {
+                href: "#expressing",
+                questionType: '论述题',
+                currentFinishedNum: 0,
+                totalNum: 5
+            }
+        ],
     },
     methods: {
         sure: function (index) {// 多选
@@ -320,6 +351,13 @@ var vm = new Vue({
             }
             e.target.style.fontWeight = '600';
             // 改变整体页面字体大小，待
+        },
+        pickArea: function (e) {
+            var aTags = document.getElementsByClassName('type');
+            for (var i = 0; i < aTags.length; i++) {
+                aTags[i].style.color = 'black';
+            }
+            e.target.style.color = '#1381e3';
         }
     },
     created: function () {

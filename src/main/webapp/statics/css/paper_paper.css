@@ -16,7 +16,7 @@ body {
     top: 56px;
     right: 2vw;
     width: 9vw;
-    height: 40vw;
+    height: 35vw;
     background: white;
 }
 
@@ -97,16 +97,19 @@ margin-left: 3px;
 /* bar 样式 */
 .bar .category {
     width: 50px;
-    margin: 60px auto;
-    font-size: 16px;
+    margin: 20px auto;
 }
 .bar .category li {
     height: 80px;
     text-align: center;
 }
+.bar .category li a {
+    color: black;
+    font-size: 16px;
+}
 .bar .buttons {
     width: 100%;
-    padding-top: 40px;
+    padding-top: 35px;
     padding-left: 41px;
     border-top: 1px solid #dddddd;
 }
@@ -122,4 +125,7 @@ margin-left: 3px;
 }
 .el-checkbox.is-checked {
     background: #e1f1ff;
+}
+.done-something {
+    color: #1381e3 !important;
 }

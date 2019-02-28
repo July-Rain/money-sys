@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="multi-options">
-                    <div class="description">二. 多选题。每题所设选项中有多个答案。本部分含1-5题，每题{{ multiOptionScore }}分，共{{ multiOptiontsTotalScore }}分。</div>
+                    <div class="description"><a name="multiOptions"></a>二. 多选题。每题所设选项中有多个答案。本部分含1-5题，每题{{ multiOptionScore }}分，共{{ multiOptiontsTotalScore }}分。</div>
                     <div class="question daliy" v-for="(question, index) in multiOptionsList">
                         <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
                         <el-checkbox-group v-model="answersList">
@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <div class="checking">
-                    <div class="description">三. 判断题。本部分含1-5题，每题{{ checkingScore }}分，共{{ checkingTotalScore }}分。</div>
+                    <div class="description"><a name="checking"></a>三. 判断题。本部分含1-5题，每题{{ checkingScore }}分，共{{ checkingTotalScore }}分。</div>
                     <div class="question daliy" v-for="(question, index) in checkingList">
                         <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
                         <el-radio-group v-model="answers">
@@ -67,25 +67,9 @@
         </div>
         <div class="bar">
             <ul class="category">
-                <li>
-                    <a href="#oneOption">单选题</a>
-                    <div><span></span>/<span>50</span></div>
-                </li>
-                <li>
-                    <a href="#multiOptions">多选题</a>
-                    <div><span></span>/<span>10</span></div>
-                </li>
-                <li>
-                    <a href="#filling">填空题</a>
-                    <div><span></span>/<span>5</span></div>
-                </li>
-                <li>
-                    <a href="#checking">判断题</a>
-                    <div><span></span>/<span>5</span></div>
-                </li>
-                <li>
-                    <a href="#expressing">论述题</a>
-                    <div><span></span>/<span>5</span></div>
+                <li v-for="item in barData">
+                    <a class="type" :href="item.href" @click="pickArea($event)">{{ item.questionType }}</a>
+                    <div><span :class="{'done-something': item.currentFinishedNum}">{{ item.currentFinishedNum }}</span>/<span>{{ item.totalNum }}</span></div>
                 </li>
             </ul>
             <div class="buttons">
