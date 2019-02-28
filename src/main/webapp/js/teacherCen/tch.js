@@ -18,7 +18,7 @@ var vm = new Vue({
             totalCount: 0,
             userStatus:'2000'
         },
-        tchData:[],//教官数据
+        tchData:[1],//教官数据
         newsData:[],//最新课程数据
 
         visible: false,

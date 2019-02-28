@@ -150,3 +150,15 @@ ul li{
 }
 
 /*element 公共样式修改  end */
+
+
+
+.no_data{
+    text-align: center;
+    line-height: 100px;
+    color: #666;
+    font-size: 16px;
+}
+.no_data i{
+    color: #999
+}

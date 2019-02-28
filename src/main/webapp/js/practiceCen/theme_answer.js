@@ -109,6 +109,10 @@ var vm = new Vue({
             }
         },
         commit: function(){
+            if(vm.title !== '提 交'){
+                this.save();
+                return
+            }
             // 提交本次主题练习
             $.ajax({
                 type: "POST",
@@ -157,6 +161,7 @@ var vm = new Vue({
                                 vm.$alert('当前为最后一题，是否結束本次回顾！', '提示', {
                                     confirmButtonText: '确定',
                                     callback: function () {
+                                        vm.save()
                                     }
                                 });
 
@@ -260,8 +265,7 @@ var vm = new Vue({
         },
         save: function () {
             var parentWin = window.parent;
-            parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/theme_index.html';
+            parentWin.document.getElementById("container").src = 'modules/exerciseCenter/theme_index.html';
         }
     },
     created: function(){

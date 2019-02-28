@@ -167,19 +167,21 @@
                 </el-row>
             </el-col>
             <el-col :span="6">
-                <el-popover
+                <div class="box-card">
+                    <div class="header pl12">
+                        <span>我的考试</span>
+                    </div>
+                    <p class="no_data" style="line-height: 165px" v-if="examList.length===0"><i class="iconfont icon-xiaoxi"></i> 暂无考试数据</p>
+
+                    <el-popover
                         placement="right-end"
                         :title="popoverTitle"
                         width="200"
                         trigger="hover"
                         :content="popoverContent">
-                    <div slot="reference" class="box-card">
-                        <div class="header pl12">
-                            <span>我的考试</span>
-                        </div>
+                     <el-carousel  slot="reference" height="229px" indicator-position="none" @change="carouselChange" v-if="examList.length">
 
-                        <el-carousel height="229px" indicator-position="none" @change="carouselChange">
-                            <el-carousel-item v-if="examList.length" v-for="(list,index) in examList">
+                            <el-carousel-item v-for="(list,index) in examList">
                                 <div class="content exam">
                                     <div class="title">
                                         <img src="${rc.contextPath}/statics/img/jiantou.png">
@@ -223,8 +225,9 @@
                             </el-carousel-item>
                         </el-carousel>
 
-                    </div>
+
                 </el-popover>
+    </div>
 
             </el-col>
             <el-col :span="6">

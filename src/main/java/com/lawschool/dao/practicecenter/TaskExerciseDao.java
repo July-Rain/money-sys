@@ -26,9 +26,11 @@ public interface TaskExerciseDao extends AbstractDao<TaskExerciseEntity> {
      * @return
      */
     boolean updateAnswerNum(@Param("id") String id,
-                            @Param("num") Integer num);
+                            @Param("num") Integer num,
+                            @Param("rightNum") Integer rightNum);
 
-    boolean updateStatus(@Param("id") String id, @Param("status") Integer status);
+    boolean updateStatus(@Param("id") String id,
+                         @Param("status") Integer status);
 
     AnalysisForm analysis(@Param("month") String month, @Param("userId") String userId);
 

@@ -8,7 +8,10 @@ var vm = new Vue({
             limit: 10,
             page: 1,
             count: 0,
-            source: 1
+            source: 1,
+            jssj:"",
+            kssj:"",
+            name: ''
         },
         dialogConfig: false,
         configureEntity: {
@@ -62,6 +65,13 @@ var vm = new Vue({
 
     },
     methods: {
+        onSubmit: function () {
+            this.refresh();
+        },
+        resetForm: function (formName) {
+            this.$refs[formName].resetFields();
+            this.refresh();
+        },
         //序列号计算
         indexUserMethod: function (index) {
             return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;

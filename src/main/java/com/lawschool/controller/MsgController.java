@@ -41,25 +41,25 @@ public class MsgController extends AbstractController{
     public Result showAllMsgList(@RequestParam Map<String,Object> params){
         params.put("userId",getUser().getId());
         PageUtils pageUtils =msgService.selectAllMsg(params);
-        List<Msg> MsgList=(List<Msg>)pageUtils.getList();
-        for(Msg msg:MsgList)
-        {
-            String[] idArr = msg.getRecievePeople().split(",");
-            for(int i=0;i<idArr.length;i++){
-                if(userService.selectUserByUserId(idArr[i])==null)
-                {
-                    continue;
-                }
-                if(i==0)
-                {
-                    msg.setRecievePeopleNmae(userService.selectUserByUserId(idArr[i]).getFullName());
-                }
-                else {
-                    msg.setRecievePeopleNmae(msg.getRecievePeopleNmae() + "," + userService.selectUserByUserId(idArr[i]).getFullName());
-                }
-            }
-
-        }
+//        List<Msg> MsgList=(List<Msg>)pageUtils.getList();
+//        for(Msg msg:MsgList)
+//        {
+//            String[] idArr = msg.getRecievePeople().split(",");
+//            for(int i=0;i<idArr.length;i++){
+//                if(userService.selectUserByUserId(idArr[i])==null)
+//                {
+//                    continue;
+//                }
+//                if(i==0)
+//                {
+//                    msg.setRecievePeopleNmae(userService.selectUserByUserId(idArr[i]).getFullName());
+//                }
+//                else {
+//                    msg.setRecievePeopleNmae(msg.getRecievePeopleNmae() + "," + userService.selectUserByUserId(idArr[i]).getFullName());
+//                }
+//            }
+//
+//        }
         return Result.ok().put("page",pageUtils);
     }
 

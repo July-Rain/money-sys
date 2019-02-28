@@ -134,6 +134,59 @@
         background-color: #ff9000;
         transform: rotate(45deg);
     }
+    .read_area h3{
+        padding-left: 27px;
+        line-height: 16px;
+        color: #333;
+        font-size: 16px;
+        font-weight: normal;
+        position: relative;
+        margin-bottom: 21px;
+    }
+    .read_area h3:before{
+        content: '';
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        background-color: #ff9000;
+        left: 6px;
+        top: 2px;
+        transform: rotate(45deg);
+
+    }
+    .read_area ul{
+        margin-bottom: 10px;
+    }
+    .read_area ul li{
+        width: 300px;
+        height: 16px;
+        margin-bottom: 13px;
+        float: left;
+        padding-left: 10px;
+        color: #333333;
+        font-size: 16px;
+
+    }
+    .read_area ul li span{
+        font-size: 14px;
+        color: #999999;
+        width: 80px;
+        display: inline-block;
+    }
+    .read_area ul li i{
+        font-size: 12px;
+        padding: 0 1px;
+        color: #999;
+    }
+    .read_area ul li i.light{
+        color: #ff6600;
+    }
+    .read_area ul li span.diff{
+        color: #ff6600;
+        font-size: 14px;
+        padding-left: 5px;
+        line-height: 16px;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -251,7 +304,6 @@
                     <li @click="checkLevel(count)" :class="count===nowLevel?'active':''" v-for="count in levelSum">第 {{count}} 关</li>
                 </ul>
                 <div class="form_area">
-
 
                     <el-form label-width="100px" class="demo-msg"
                              size="mini">
@@ -452,37 +504,27 @@
 
 
         <el-dialog :title="title" :visible.sync="dialog2" :before-close="closedialog2">
-            <el-row>
-                <el-col :span="12">
-                    <el-form :model="xiaoguanList" ref="xiaoguanList" label-width="100px" class="demo-xiaoguanList"
+
+            <el-form :model="xiaoguanList" ref="xiaoguanList" label-width="100px" class="demo-xiaoguanList"
                              size="mini">
 
-                        <div v-for="item in xiaoguanList">
-
-                            <table style="width: 100%;height: 100%">
-                                <tr>
-                                    <td colspan="4">第{{item.howManySmall}}小关</td>
-
-                                </tr>
-                                <tr>
-                                    <td>专项知识ID</td>
-                                    <td>{{item.specialKnowledgeName}}</td>
-                                    <td>试题难度</td>
-                                    <td>{{item.itemDifficultyName}}</td>
-                                </tr>
-                                <tr>
-                                    <td>关卡积分</td>
-                                    <td>{{item.crossingPoints}}</td>
-                                    <td>大关是否奖励</td>
-                                    <td>{{item.markRewardName}}</td>
-                                </tr>
-                                <tr>
-                                    <td>奖励分值</td>
-                                    <td>{{item.rewardScore}}</td>
-                                    <td>试题类型？</td>
-                                    <td>{{item.itemTypeName}}</td>
-                                </tr>
-                            </table>
+                        <div class="read_area" v-for="item in xiaoguanList">
+                            <h3>第{{item.howManySmall}}小关</h3>
+                            <ul class="clearfix">
+                                <li><span>专项知识：</span>{{item.specialKnowledgeName}}</li>
+                                <li><span>试题难度：</span>
+                                    <i class="iconfont icon-shoucang1 light"></i>
+                                    <i :class="item.itemDifficultyName==='中级'||item.itemDifficultyName==='高级'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="item.itemDifficultyName==='中级'||item.itemDifficultyName==='高级'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="item.itemDifficultyName==='高级'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="item.itemDifficultyName==='高级'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <span class="diff">{{item.itemDifficultyName}}</span>
+                                </li>
+                                <li><span>关卡积分：</span>{{item.crossingPoints}}</li>
+                                <li><span>是否奖励：</span>{{item.markRewardName}}</li>
+                                <li><span>奖励分值：</span>{{item.rewardScore}}</li>
+                                <li><span>试题类型：</span>{{item.itemTypeName}}</li>
+                            </ul>
                             <!--<el-form-item label="第几小关">-->
                             <!--<el-input v-model="item.howManySmall" placeholder="第几小关" clearable></el-input>-->
                             <!--</el-form-item>-->
@@ -492,8 +534,7 @@
 
 
                     </el-form>
-                </el-col>
-            </el-row>
+
         </el-dialog>
     </div>
 </div>

@@ -28,6 +28,7 @@
                                     type="index"
                                     header-align="center"
                                     align="center"
+                                    :index="indexMethod"
                                     width="50">
                             </el-table-column>
                             <el-table-column
@@ -61,7 +62,7 @@
                                             @click="wear(scope.$index, scope.row)">{{user.myMedal===scope.row.badge?"已佩戴":"佩戴"}}
                                     </el-button>-->
                                     <el-popover
-                                            v-if="user.myMedal===scope.row.badge"
+                                            v-if="user.myMedal===scope.row.id"
                                             placement="right"
                                             trigger="hover"
                                             content="已佩戴">
@@ -71,7 +72,7 @@
                                         </i>
                                     </el-popover>
                                     <el-popover
-                                            v-if="user.myMedal!==scope.row.badge"
+                                            v-if="user.myMedal!==scope.row.id"
                                             placement="right"
                                             trigger="hover"
                                             content="佩戴">
@@ -91,8 +92,8 @@
                         </el-table>
                         <el-pagination
                                 @size-change="handleSizeChange"
-                                @current-change="handleCurrentChange"
-                                :current-page="form.pageNo"
+                                @current-change="handleCurChange"
+                                :current-page="form.page"
                                 :page-sizes="[10, 20, 30, 40]"
                                 :page-size="form.limit"
                                 layout="total, sizes, prev, pager, next, jumper"
@@ -107,5 +108,5 @@
 </div>
 </body>
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/personalCen/myMedal.js"></script>
+<script src="${rc.contextPath}/js/personalCen/myMedal.js?_${.now?long}"></script>
 </html>
