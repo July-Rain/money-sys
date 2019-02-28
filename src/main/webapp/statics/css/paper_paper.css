@@ -1,0 +1,125 @@
+/* 整体布局搭建 */
+body {
+    font-size: 12px;
+}
+.container {
+    position: relative;
+    background: #EFEFEF !important;
+}
+.container .content {
+    width: 86vw;
+    padding: 0 62px 10px;
+    background: white;
+}
+.container .bar {
+    position: fixed !important;
+    top: 56px;
+    right: 2vw;
+    width: 9vw;
+    height: 40vw;
+    background: white;
+}
+
+/* header样式 */
+.content {
+    border-top: 1px solid transparent;
+}
+.content header .title {
+    height: 38px;
+    margin: 54px auto;
+    text-align: center;
+    font-size: 38px;
+}
+.content header .tips {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 auto;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #dddddd;
+}
+.tips .username, .tips .username span {
+    font-size: 22px;
+}
+.tips .font-size, .tips .duration {
+    font-size: 12px;
+    font-weight: 300;
+}
+.tips .font-size .current {
+    font-weight: 600;
+}
+.tips .font-size span:nth-child(2) {
+margin-left: 3px;
+    font-size: 1.41rem;
+}
+.tips .font-size span:last-child {
+    margin-left: 3px;
+    font-size: 1.83rem;
+}
+.tips .duration {
+    margin-top: 11px;
+}
+
+/* 试卷题目样式 */
+.main {
+    width: 80%;
+    margin: 28px auto 0;
+    background: white;
+}
+.main .description {
+    font-size: 22px;
+}
+/* 题目公共样式 */
+.main .question {
+    margin: 22px auto;
+    padding: 26px 0 30px 0;
+    background: #f2f9ff;
+}
+.main .question .title {
+    margin-bottom: 28px;
+    padding-left: 54px;
+    font-size: 22px;
+}
+/* 题目样式 */
+.el-radio-group {
+    width: 100%;
+}
+.one-option label.el-radio, .multi-options label.el-checkbox, .checking label.el-radio {
+    display: block;
+    margin-left: 0;
+    padding-left: 54px;
+    height: 52px;
+    line-height: 52px;
+}
+.one-option .el-radio__label, .multi-options .el-checkbox__label, .checking .el-radio__label {
+    font-size: 20px;
+}
+/* bar 样式 */
+.bar .category {
+    width: 50px;
+    margin: 60px auto;
+    font-size: 16px;
+}
+.bar .category li {
+    height: 80px;
+    text-align: center;
+}
+.bar .buttons {
+    width: 100%;
+    padding-top: 40px;
+    padding-left: 41px;
+    border-top: 1px solid #dddddd;
+}
+.bar .buttons .el-button {
+    display: block;
+    margin-left: 0 !important;
+    margin-bottom:6px;
+}
+
+/* toggle 公共样式 */
+.el-radio.is-checked {
+    background: #e1f1ff;
+}
+.el-checkbox.is-checked {
+    background: #e1f1ff;
+}
