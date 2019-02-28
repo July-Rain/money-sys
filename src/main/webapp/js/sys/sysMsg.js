@@ -113,9 +113,10 @@ var vm = new Vue({
         })
     },
     methods: {
+
         //序列号计算
-        indexUserMethod: function (index) {
-            return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;
+        indexMethod: function (index) {
+            return index + 1 + (vm.formInline.currPage - 1) * vm.formInline.pageSize;
         },
         searchUser: function () {
             //查询人员信息
@@ -290,6 +291,7 @@ var vm = new Vue({
                         url: baseURL + url,
                         contentType: "application/json",
                         data: JSON.stringify(vm.sysMsg),
+                        async: false,
                         success: function (result) {
                             if (result.code === 0) {
                                 vm.$alert('操作成功', '提示', {
