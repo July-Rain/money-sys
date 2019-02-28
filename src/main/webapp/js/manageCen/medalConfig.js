@@ -6,25 +6,45 @@ var vm = new Vue({
         page: 1,//分页：当前页
         dialogFormVisible: false,
         form: {
-            titleName: '',
             integral: '',
             credit: '',
-            badge:'',
             limit: 10,
             page: 1,
             count: 0,
         },
+
+        medal:{},
+
         formLabelWidth: '200px',
         formLabelWidthS: '143px',
-        fileList: []
+        fileList: [],
+        rules: {
+            titleName: [
+                {max: 20, message: '最大长度20', trigger: 'blur'},
+                {required: true, message: '请输入名称', trigger: 'blur'}
+            ],
+            badge: [
+                {max: 20, message: '最大长度20', trigger: 'blur'},
+                {required: true, message: '请输入', trigger: 'blur'}
+            ],
+            integral: [
+                {required: true,max: 200, message: '最大长度200', trigger: 'blur'}
+            ],
+            credit: [
+                {required: true,max: 200, message: '最大长度200', trigger: 'blur'}
+            ]
+        },
     },
     mounted: function () {
 
     },
-    methods:{
-        indexMethod(index) {
-            return index+1;
+    methods:{ //序列号计算
+        indexMethod: function (index) {
+            return index + 1 + (vm.form.page - 1) * vm.form.limit;
         },
+        // indexMethod(index) {
+        //     return index+1;
+        // },
 
         // 文件上传
         handleRemove(file, fileList) {
@@ -49,13 +69,8 @@ var vm = new Vue({
             vm.reload();
         },
         addMedal: function () {
-            this.form = {
-                titleName: '',
-                integral: '',
-                credit: '',
-                badge:''
-            };
-            this.title = '新增头衔';
+            vm.medal={},
+            vm.title = '新增头衔';
             vm.dialogFormVisible = true
         },
 
@@ -67,7 +82,7 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-                        that.form = result.data;
+                        that.medal = result.data;
                         that.title = '编辑头衔';
                         that.dialogFormVisible = true;
                     } else {
@@ -90,6 +105,8 @@ var vm = new Vue({
                             confirmButtonText: '确定',
                             callback: function () {
                                 vm.dialogFormVisible = false;
+
+
                                 vm.reload();
                             }
                         });
@@ -99,26 +116,73 @@ var vm = new Vue({
                 }
             });
         },
-        save: function () {
-            $.ajax({
-                type: "POST",
-                url: baseURL + "medal/save",
-                contentType: "application/json",
-                data: JSON.stringify(vm.form),
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.$alert('操作成功', '提示', {
-                            confirmButtonText: '确定',
-                            callback: function () {
-                                vm.dialogFormVisible = false;
-                                vm.reload();
+        save: function (formName) {
+            this.$refs[formName].validate(function (valid) {
+
+                    if (valid) {
+
+                        //判断勋章名称  重复问题
+                        var mytype = "1"
+
+                        if (vm.medal.id != null && vm.medal.id != '') {
+
+                            mytype = "2"
+                        }
+
+                        $.ajax({
+                            type: "POST",
+                            url: baseURL + "medal/medalName?medalname=" + vm.medal.titleName + "&mytype=" + mytype + "&id=" + vm.medal.id,
+                            dataType: "json",
+                            async: false,
+                            success: function (result) {
+                                if (result.code == 0) {
+
+                                    if (result.type == "1")//说明找到了
+                                    {
+                                         alert("存在重复的勋章名称，添加失败");
+                                        return;
+                                    }
+                                    else if(result.type == "0")
+                                    {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: baseURL + "medal/save",
+                                            contentType: "application/json",
+                                            data: JSON.stringify(vm.medal),
+                                            success: function (result) {
+                                                if (result.code === 0) {
+                                                    vm.$alert('操作成功', '提示', {
+                                                        confirmButtonText: '确定',
+                                                        callback: function () {
+                                                            vm.dialogFormVisible = false;
+
+                                                            vm.reload();
+                                                        }
+                                                    });
+                                                } else {
+                                                    alert(result.msg);
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                } else {
+                                    alert(result.msg);
+                                }
                             }
                         });
-                    } else {
-                        alert(result.msg);
+
+                        //////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
                     }
-                }
+                    else {
+                        return false;
+                    }
             });
+
         },
         reload: function () {
             $.ajax({

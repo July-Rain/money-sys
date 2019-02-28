@@ -82,8 +82,11 @@ public class Msg implements Serializable{
      * 接收人
      */
     private String recievePeople;
-    @TableField(exist = false)
+
     private String recievePeopleNmae;
+
+
+
     /**
      * 创建日期
      */
