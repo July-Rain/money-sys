@@ -18,12 +18,12 @@
             <div class="card_contain">
                 <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                    <el-form-item label="任务名称" prop="taskName">
-                        <el-input v-model="formInline.taskName" placeholder="任务名称" size="mini" clearable></el-input>
+                    <el-form-item label="任务名称" prop="name">
+                        <el-input v-model="formInline.name" placeholder="任务名称" size="mini" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="开始日期" prop="startTime">
+                    <el-form-item label="开始日期" prop="kssj">
                         <el-date-picker
-                                v-model="formInline.startTime"
+                                v-model="formInline.kssj"
                                 type="date"
                                 format="yyyy年MM月dd日"
                                 value-format="yyyy-MM-dd"
@@ -32,9 +32,9 @@
                         >
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="结束日期" prop="endTime">
+                    <el-form-item label="结束日期" prop="jssj">
                         <el-date-picker
-                                v-model="formInline.endTime"
+                                v-model="formInline.jssj"
                                 type="date"
                                 format="yyyy年MM月dd日"
                                 value-format="yyyy-MM-dd"
@@ -89,13 +89,19 @@
                     align="center">
             </el-table-column>
             <el-table-column
-                    label="总题/已答题"
+                    label="已答题/总题量"
                     header-align="center"
                     align="center"
             >
                 <template slot-scope="scope">
-                    {{scope.row.total}}/{{scope.row.answerNum==null?0:scope.row.answerNum}}
+                    {{scope.row.answerNum==null?0:scope.row.answerNum}} / {{scope.row.total}}
                 </template>
+            </el-table-column>
+            <el-table-column
+                    label="正确率"
+                    header-align="center"
+                    align="center"
+                    :formatter="getRate">
             </el-table-column>
             <el-table-column
                     prop="createName"
@@ -106,9 +112,17 @@
             <el-table-column
                     prop="createTime"
                     label="创建时间"
-                    width="200"
+                    width="165"
                     header-align="center"
                     align="center">
+            </el-table-column>
+            <el-table-column
+                    label="任务状态"
+                    header-align="center"
+                    align="center">
+                <template slot-scope="scope">
+                    {{scope.row.status == 0 ? '练习中' : scope.row.status == 1 ? '已完结' : '待开始'}}
+                </template>
             </el-table-column>
             <el-table-column
                     label="操作"

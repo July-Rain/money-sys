@@ -20,12 +20,12 @@
             <div class="card_contain">
                 <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                    <el-form-item label="任务名称" prop="taskName">
-                        <el-input v-model="formInline.taskName" placeholder="任务名称" size="mini" clearable></el-input>
+                    <el-form-item label="任务名称" prop="name">
+                        <el-input v-model="formInline.name" placeholder="任务名称" size="mini" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="开始日期" prop="startTime">
+                    <el-form-item label="开始日期" prop="kssj">
                         <el-date-picker
-                                v-model="formInline.startTime"
+                                v-model="formInline.kssj"
                                 type="date"
                                 format="yyyy年MM月dd日"
                                 value-format="yyyy-MM-dd"
@@ -34,9 +34,9 @@
                         >
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="结束日期" prop="endTime">
+                    <el-form-item label="结束日期" prop="jssj">
                         <el-date-picker
-                                v-model="formInline.endTime"
+                                v-model="formInline.jssj"
                                 type="date"
                                 format="yyyy年MM月dd日"
                                 value-format="yyyy-MM-dd"

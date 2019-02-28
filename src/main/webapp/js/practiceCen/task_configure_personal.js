@@ -7,9 +7,9 @@ var vm = new Vue({
             page: 1,
             count: 0,
             source: 0,
-            taskName: '',
-            startTime: '',
-            endTime: ''
+            name: '',
+            kssj: '',
+            jssj: ''
         },
         dialogConfig: false,
         configureEntity: {
@@ -277,13 +277,12 @@ var vm = new Vue({
 
             return index + 1 + (vm.formInline.page-1) * vm.formInline.limit;
         },
-        // 表单重置
+        onSubmit: function () {
+            this.refresh();
+        },
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
-        },
-        // 查询
-        onSubmit: function () {
-
+            this.refresh();
         },
     },
     created: function () {

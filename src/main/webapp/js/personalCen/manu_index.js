@@ -90,6 +90,10 @@ var vm = new Vue({
         },//人员查询
     },
     methods: {
+        //序列号计算
+        indexUserMethod: function (index) {
+            return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;
+        },
         searchUser: function () {
             //查询人员信息
             vm.reloadUser();

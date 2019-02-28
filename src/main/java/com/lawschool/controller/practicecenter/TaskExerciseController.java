@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,12 +43,28 @@ public class TaskExerciseController extends AbstractController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result list(@RequestParam Map<String, Object> params){
 
+        SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
+
         // 获取登录用户信息
         User user = getUser();
 
         // 初始化查询参数
         TaskExerciseEntity entity = new TaskExerciseEntity();
         entity.setCreateUser(user.getId());
+        if(params.get("name") != null){
+            entity.setName(String.valueOf(params.get("name")));
+        }
+
+        try{
+            if(params.get("kssj") != null && params.get("kssj") != ""){
+                entity.setKssj(sim.parse(String.valueOf(params.get("kssj"))));
+            }
+            if(params.get("jssj") != null && params.get("jssj") != ""){
+                entity.setJssj(sim.parse(String.valueOf(params.get("jssj"))));
+            }
+        } catch (Exception e){
+            return Result.error("日期格式错误，请修正...");
+        }
 
         Page<TaskExerciseEntity> page = taskExerciseService.findPage(
                 new Page<TaskExerciseEntity>(params), entity
@@ -61,6 +78,7 @@ public class TaskExerciseController extends AbstractController {
      * @param id 个人任务ID
      * @param taskId 任务配置ID
      * @param index 当前题目序号
+     * @param isReview 有值为错题回顾
      * @return
      */
     @RequestMapping(value = "/paper", method = RequestMethod.GET)

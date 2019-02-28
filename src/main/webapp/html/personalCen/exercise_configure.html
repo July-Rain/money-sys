@@ -341,6 +341,14 @@
                                     width="55">
                             </el-table-column>
                             <el-table-column
+                                    label="序号"
+                                    type="index"
+                                    header-align="center"
+                                    align="center"
+                                    :index="indexUserMethod"
+                                    width="50">
+                            </el-table-column>
+                            <el-table-column
                                     prop="userCode"
                                     label="身份证号"
                             >
@@ -362,6 +370,7 @@
                                 layout="total, sizes, prev, pager, next, jumper"
                                 :total="userForm.totalCount">
                         </el-pagination>
+
                     </div>
                 </el-col>
             </div>

@@ -85,4 +85,13 @@ public interface CollectionService extends IService<Collection> {
      * @return
      */
     boolean cancle(String questionId, String userId);
+
+    /**
+     * 收藏功能
+     * @param type 收藏类型：10课件收藏、20重点试题收藏、30错题收藏
+     * @param comStuCode 课件/试题ID
+     * @param isCancel true取消收藏、false收藏
+     * @return
+     */
+    boolean doCollection(String type, String comStuCode, boolean isCancel);
 }

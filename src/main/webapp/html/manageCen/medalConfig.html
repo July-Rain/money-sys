@@ -83,13 +83,22 @@
             </el-table>
             <el-pagination
                     @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
+                    @current-change="handleCurChange"
                     :current-page="form.page"
                     :page-sizes="[10, 20, 30, 40]"
                     :page-size="form.limit"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="form.count">
             </el-pagination>
+            <!--<el-pagination-->
+                    <!--@size-change="handleSizeChange"-->
+                    <!--@current-change="handleCurChange"-->
+                    <!--:current-page="formInline.page"-->
+                    <!--:page-sizes="[10, 20, 30, 40]"-->
+                    <!--:page-size="formInline.limit"-->
+                    <!--layout="total, sizes, prev, pager, next, jumper"-->
+                    <!--:total="formInline.count">-->
+            <!--</el-pagination>-->
         </div>
  
         <el-dialog :title="title" :visible.sync="dialogFormVisible">

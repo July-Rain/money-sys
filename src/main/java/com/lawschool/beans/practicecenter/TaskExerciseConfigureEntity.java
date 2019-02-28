@@ -2,9 +2,11 @@ package com.lawschool.beans.practicecenter;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawschool.base.DataEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,8 +50,13 @@ public class TaskExerciseConfigureEntity extends DataEntity<TaskExerciseConfigur
     private List<String> classifys = new ArrayList<String>();
     @TableField(exist = false)
     private List<String> types = new ArrayList<String>();
+
     @TableField(exist = false)
     private List<String> topics = new ArrayList<String>();
+    @TableField(exist = false)
+    private Date kssj;
+    @TableField(exist = false)
+    private Date jssj;
 
     public String getName() {
         return name;
@@ -217,5 +224,21 @@ public class TaskExerciseConfigureEntity extends DataEntity<TaskExerciseConfigur
 
     public void setNumbers(String numbers) {
         this.numbers = numbers;
+    }
+
+    public Date getKssj() {
+        return kssj;
+    }
+
+    public void setKssj(Date kssj) {
+        this.kssj = kssj;
+    }
+
+    public Date getJssj() {
+        return jssj;
+    }
+
+    public void setJssj(Date jssj) {
+        this.jssj = jssj;
     }
 }

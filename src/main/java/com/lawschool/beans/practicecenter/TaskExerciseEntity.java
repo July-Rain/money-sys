@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
 
+import java.util.Date;
+
 /**
  * @Auther: Moon
  * @Date: 2019/1/2 16:44
- * @Description: 联系任务个人任务
+ * @Description: 练习任务个人任务
  */
 @TableName("LAW_EXERCISE_TASK")
 public class TaskExerciseEntity extends DataEntity<TaskExerciseEntity> {
@@ -37,6 +39,11 @@ public class TaskExerciseEntity extends DataEntity<TaskExerciseEntity> {
     private String createName;
     @TableField(exist = false)
     private String numbers;
+
+    @TableField(exist = false)
+    private Date kssj;
+    @TableField(exist = false)
+    private Date jssj;
 
     public String getTaskId() {
         return taskId;
@@ -132,5 +139,21 @@ public class TaskExerciseEntity extends DataEntity<TaskExerciseEntity> {
 
     public void setNumbers(String numbers) {
         this.numbers = numbers;
+    }
+
+    public Date getKssj() {
+        return kssj;
+    }
+
+    public void setKssj(Date kssj) {
+        this.kssj = kssj;
+    }
+
+    public Date getJssj() {
+        return jssj;
+    }
+
+    public void setJssj(Date jssj) {
+        this.jssj = jssj;
     }
 }
