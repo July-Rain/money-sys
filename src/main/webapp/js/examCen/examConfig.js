@@ -256,6 +256,10 @@ var vm = new Vue({
         });
     },
     methods: {
+        //序列号计算
+        indexUserMethod: function (index) {
+            return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;
+        },
         getPassPnt : function(){
             vm.examConfig.passPnt = vm.examConfig.examScore*0.6;
         },
