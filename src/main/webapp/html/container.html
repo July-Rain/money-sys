@@ -177,9 +177,10 @@
                         <div class="header pl12">
                             <span>我的考试</span>
                         </div>
+                        <p class="no_data" style="line-height: 165px" v-if="examList.length===0"><i class="iconfont icon-xiaoxi"></i> 暂无考试数据</p>
+                        <el-carousel height="229px" indicator-position="none" @change="carouselChange" v-if="examList.length">
 
-                        <el-carousel height="229px" indicator-position="none" @change="carouselChange">
-                            <el-carousel-item v-if="examList.length" v-for="(list,index) in examList">
+                            <el-carousel-item v-for="(list,index) in examList">
                                 <div class="content exam">
                                     <div class="title">
                                         <img src="${rc.contextPath}/statics/img/jiantou.png">
