@@ -22,6 +22,24 @@ public class ExamConfigForm {
     private List<TestQuestions> judgeMultipleSelection;   //判断
     private List<TestQuestions> subMultipleSelection;   //自主
     private List<ExamQueConfig> examQueConfigList;
+    private List<String> mustQueList;   //随机考试必考题
+    private String[] specialKnowledgeArr;
+
+    public List<String> getMustQueList() {
+        return this.mustQueList;
+    }
+
+    public void setMustQueList(final List<String> mustQueList) {
+        this.mustQueList = mustQueList;
+    }
+
+    public String[] getSpecialKnowledgeArr() {
+        return this.specialKnowledgeArr;
+    }
+
+    public void setSpecialKnowledgeArr(final String[] specialKnowledgeArr) {
+        this.specialKnowledgeArr = specialKnowledgeArr;
+    }
 
     public List<ExamQueConfig> getExamQueConfigList() {
         return this.examQueConfigList;

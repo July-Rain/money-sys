@@ -9,6 +9,8 @@ import com.lawschool.beans.*;
 import com.lawschool.beans.competition.CompetitionRecord;
 import com.lawschool.dao.*;
 import com.lawschool.form.AnswerForm;
+import com.lawschool.form.CommonDateForm;
+import com.lawschool.form.DailyForm;
 import com.lawschool.form.QuestForm;
 import com.lawschool.service.DailyQuestionConfigurationService;
 import com.lawschool.service.DailyRecordService;
@@ -16,6 +18,8 @@ import com.lawschool.service.IntegralService;
 import com.lawschool.service.UserQuestRecordService;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,23 +36,24 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
         implements DailyQuestionConfigurationService{
 
     @Autowired
-    DailyQuestionConfigurationDao dailyQuestionConfigurationDao;
+    private DailyQuestionConfigurationDao dailyQuestionConfigurationDao;
 
     @Autowired
-    TestQuestionsDao testQuestionsDao;
+    private TestQuestionsDao testQuestionsDao;
 
     @Autowired
-    AnswerDao answerDao;
+    private AnswerDao answerDao;
 
     @Autowired
-    DailyRecordDao dailyRecordDao;
+    private DailyRecordDao dailyRecordDao;
 
     @Autowired
-    DailySameDao dailySameDao;
+    private DailySameDao dailySameDao;
     @Autowired
-    UserQuestRecordService userQuestRecordService;
+    private UserQuestRecordService userQuestRecordService;
     @Autowired
     private IntegralService integralService;
+
     @Override
     public DailyQuestionConfiguration selectByDailyId(String id) {
         return dailyQuestionConfigurationDao.selectByDailyId(id);
@@ -69,28 +74,7 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
 //        循环list的得到实体
         for(DailyQuestionConfiguration dailyQuestion:list)
         {
-            try{
-                String s1 = sdf.format( dailyQuestion.getBeginTime());
-                Date beginTime =  sdf.parse(s1);
-                String s2 = sdf.format( dailyQuestion.getEndTime());
-                Date endTime =  sdf.parse(s2);
 
-                if ( (sdf.parse(sdf.format(dailyQuestionConfiguration.getEndTime())).getTime()< beginTime.getTime()) || (sdf.parse(sdf.format(dailyQuestionConfiguration.getBeginTime())).getTime()> endTime.getTime()))
-                {
-                    //无交集
-                }
-                else
-                {
-                    //有交集
-
-                    b=false;
-                    break;
-                }
-
-            }catch (Exception e)
-            {
-                System.out.println(e);
-            }
         }
         if(b==true)
         {
@@ -127,22 +111,7 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
             else{
 
                 try{
-                    String s1 = sdf.format( dailyQuestion.getBeginTime());
-                    Date beginTime =  sdf.parse(s1);
-                    String s2 = sdf.format( dailyQuestion.getEndTime());
-                    Date endTime =  sdf.parse(s2);
 
-                    if ( (sdf.parse(sdf.format(dailyQuestionConfiguration.getEndTime())).getTime()< beginTime.getTime()) || (sdf.parse(sdf.format(dailyQuestionConfiguration.getBeginTime())).getTime()> endTime.getTime()))
-                    {
-                        //无交集
-                    }
-                    else
-                    {
-                        //有交集
-
-                        b=false;
-                        break;
-                    }
 
                 }catch (Exception e)
                 {
@@ -277,41 +246,51 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
      */
     @Override
     public Result newDailyTestCreate() {
-        String s=null;
-        String myaswer=null;
-        User u = (User) SecurityUtils.getSubject().getPrincipal();
+        String s = null;
+        String myaswer = null;
+        User u = (User)SecurityUtils.getSubject().getPrincipal();
         QuestForm question = null;
-        DailyQuestionConfiguration  currentConfig = dailyQuestionConfigurationDao.findCurrentConfig();//查询当前每日一题的配置情况
 
-         if(currentConfig==null)
-         {
-             return Result.ok().put("code",1).put("msg","当天没有每日一题配置,请联系管理员");
-         }
-        //去答题记录表中 找数据，看有没有做过每日一题，因为做过的每日一题都会在答题记录表中有记录的
-        //先处理下今天的时间
+        // 当前使用中的每日一题设置
+        String currentId = this.getSettingsInUse();
+        if(StringUtils.isBlank(currentId)){
+            return Result.error("暂无每日一题，请联系管理员进行设置");
+        }
+
+        // 查询当前每日一题的配置情况
+        DailyQuestionConfiguration  currentConfig = dailyQuestionConfigurationDao.selectByDailyId(currentId);
+
+        if(currentConfig==null) {
+            return Result.ok().put("code",1).put("msg","当天没有每日一题配置,请联系管理员");
+        }
+        // 去答题记录表中 找数据，看有没有做过每日一题，因为做过的每日一题都会在答题记录表中有记录的
+        // 先处理下今天的时间
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try{
              s = sdf.format(new Date());
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e);
         }
         UserQuestRecord userQuestRecord=userQuestRecordService.selectOne(new EntityWrapper<UserQuestRecord>().eq("TO_CHAR(OPT_TIME,'YYYY-MM-DD')",s).eq("USER_ID",u.getId()).eq("SOURCE","everyDay"));
-        if(userQuestRecord==null)//没找到数据,说明今天没有做过 每日一题 。。。然而我要上题目  1，是每个人的题目都不一样   2.是每个人的题目都一样  先判断是哪种
-        {
+        if(userQuestRecord==null) {
+            // 没找到数据,说明今天没有做过每日一题 。。。然而我要上题目  1，是每个人的题目都不一样   2.是每个人的题目都一样  先判断是哪种
 
-
-            //随机一道试题
-            Map<String,Object> map = new HashMap<>();//传给sql
-            if(UtilValidate.isNotEmpty(currentConfig.getSpecialKnowledgeId())){//知识点
-                map.put("specialKnowledgeId",currentConfig.getSpecialKnowledgeId());
-            }
-            if(UtilValidate.isNotEmpty(currentConfig.getQuestionType())){//题型
-                map.put("questionType",currentConfig.getQuestionType());
-            }
-            if(UtilValidate.isNotEmpty(currentConfig.getQuestionDifficulty())){//难度
+            // 随机一道试题
+            // 封装查询参数
+            Map<String,Object> map = new HashMap<>();
+            // 难度
+            if(UtilValidate.isNotEmpty(currentConfig.getQuestionDifficulty())){
                 map.put("questionDifficulty",currentConfig.getQuestionDifficulty());
             }
+            // 题型
+            if(UtilValidate.isNotEmpty(currentConfig.getQuestionType())){
+                map.put("questionType",currentConfig.getQuestionType());
+            }
+            // 专题
+            if(UtilValidate.isNotEmpty(currentConfig.getSpecialKnowledgeId())){
+                map.put("specialKnowledgeId",currentConfig.getSpecialKnowledgeId());
+            }
+
             String questionId = dailyQuestionConfigurationDao.dailyTest(map);//题目ID
             question = testQuestionsDao.findTestQuestionById(questionId);//试题
             List<AnswerForm> listAnswer = answerDao.findByQuesId(questionId);//答案
@@ -423,5 +402,63 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
         integral.setPoint(Integer.parseInt(sorce));
         integral.setSrc("everyDay");
         integralService.addIntegralRecord(integral,u);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean mySave(DailyForm form){
+
+        // 题目难度多选
+        if(CollectionUtils.isNotEmpty(form.getDiffcs())){
+            form.setQuestionDifficulty(String.join(",", form.getDiffcs()));
+        }
+        if(CollectionUtils.isNotEmpty(form.getTopics())){
+            form.setSpecialKnowledgeId(String.join(",", form.getTopics()));
+        }
+
+        Integer result = 0;
+        if(StringUtils.isNotBlank(form.getId())){
+            // 更新
+            result = dailyQuestionConfigurationDao.myUpdate(form);
+
+        } else {
+            // 新增
+            form.setId(IdWorker.getIdStr());
+            result = dailyQuestionConfigurationDao.mySave(form);
+        }
+
+        if(result != 1){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 判断生效日期是否重复
+     *
+     * @param id
+     * @param date
+     * @return
+     */
+    public boolean doCheckDate(String id, Date date){
+        SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = sim.format(date);
+
+        Integer result = dailyQuestionConfigurationDao.doCheckDate(id, dateStr);
+        if(result > 0){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 获取使用中的每日设置ID
+     * @return
+     */
+    @Override
+    public String getSettingsInUse(){
+        String result = dao.getSettingsInUse();
+
+        return result;
     }
 }

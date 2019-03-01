@@ -255,6 +255,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.questionList = result.list;
+                        console.log(vm.questionList)
                     } else {
                         alert(result.msg);
                     }

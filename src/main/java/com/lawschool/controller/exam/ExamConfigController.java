@@ -8,8 +8,10 @@ import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.Answer;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.beans.exam.ExamQueConfig;
 import com.lawschool.form.*;
 import com.lawschool.service.AnswerService;
+import com.lawschool.service.exam.ExamQueConfigService;
 import com.lawschool.service.exam.NewExamConfigService;
 import com.lawschool.service.system.DictionService;
 import com.lawschool.service.system.TopicTypeService;
@@ -46,6 +48,9 @@ public class ExamConfigController extends AbstractController {
     @Autowired
     private AnswerService answerService;
 
+    @Autowired
+    private ExamQueConfigService examQueConfigService;
+
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params) {
         Result result;
@@ -58,29 +63,17 @@ public class ExamConfigController extends AbstractController {
     }
 
     @RequestMapping(value = "/examConfig/preview", method = RequestMethod.POST)
-    private Result examConfigPre(@RequestBody ExamConfig examConfig) {
+    private Result examConfigPre(@RequestBody ExamConfigForm examConfigForm) {
 
         Result res = new Result();
         try {
-            List<QuestForm> list = examConfigService.preview(examConfig);
-            return Result.ok().put("list", list);
+            res = newExamConfigService.preview(examConfigForm);
+            return res;
         } catch (Exception e) {
             return  Result.error(e.getMessage());
         }
     }
 
-    @SysLog("考试配置生成")
-    @RequestMapping(value = "/examConfig/generate", method = RequestMethod.POST)
-    private Result examConfigGen(
-            @RequestBody ExamConfig examConfig) {
-
-        try {
-            examConfigService.generate(examConfig);
-        } catch (Exception e) {
-            return Result.error(e.getMessage());
-        }
-        return Result.ok();
-    }
 
     @SysLog("阅卷设置")
     @RequestMapping(value = "/checkset", method = RequestMethod.POST)
@@ -101,9 +94,9 @@ public class ExamConfigController extends AbstractController {
     @RequestMapping( value = "/getExamDetail", method = RequestMethod.GET)
     private Result  getExamDetail(String id){
 
-        ExamConfig examConfig = examConfigService.getExamDetail(id);
+        Result result = examConfigService.getOneExam(id );
 
-        return Result.ok().put("examConfig" , examConfig );
+        return result;
     }
 
     @SysLog("保存考试配置")
@@ -138,6 +131,12 @@ public class ExamConfigController extends AbstractController {
     @RequestMapping( value = "/examConfig/genRandomQue" , method = RequestMethod.POST)
     private Result genRandomQue(@RequestBody ExamConfigForm examConfigForm){
         Result result = newExamConfigService.genRandomQue(examConfigForm);
+        return result;
+    }
+
+    @RequestMapping( value = "/examConfig/genRanQueAfterPreview" , method = RequestMethod.POST)
+    private Result genRanQueAfterPreview(@RequestBody ExamConfigForm examConfigForm){
+        Result result = newExamConfigService.genRanQueAfterPreview(examConfigForm);
         return result;
     }
 

@@ -100,6 +100,22 @@
     video.vjs-big-play-centered{
         height: 175px !important;
     }
+    .no_exams{
+        width: 70px;
+        margin: 55px auto 0;
+        text-align: center;
+    }
+    .no_exams img{
+        width: 100%;
+        height: auto;
+    }
+    .no_exams p {
+        height: 15px;
+        line-height: 15px;
+        font-size: 14px;
+        color: #a9a9a9;
+        margin-top: 14px;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -171,8 +187,10 @@
                     <div class="header pl12">
                         <span>我的考试</span>
                     </div>
-                    <p class="no_data" style="line-height: 165px" v-if="examList.length===0"><i class="iconfont icon-xiaoxi"></i> 暂无考试数据</p>
-
+                    <div class="no_exams" v-if="examList.length===0">
+                        <img src="${rc.contextPath}/statics/img/no_exams.png" alt="">
+                        <p>暂无考试</p>
+                    </div>
                     <el-popover
                         placement="right-end"
                         :title="popoverTitle"

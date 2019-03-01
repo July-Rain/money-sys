@@ -23,9 +23,6 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface ExamConfigService extends AbstractService<ExamConfig> {
 
-    List<QuestForm> preview(ExamConfig examConfig) throws Exception;
-
-    void generate(ExamConfig examConfig) throws Exception;
 
     List<QuestForm> getList(List<String> idList);
 
@@ -42,4 +39,7 @@ public interface ExamConfigService extends AbstractService<ExamConfig> {
 
     ExamConfig getExamDetail( String id );
     Result deleteExamConfig(String id) ;
+
+    Result getOneExam(String id );
+
 }

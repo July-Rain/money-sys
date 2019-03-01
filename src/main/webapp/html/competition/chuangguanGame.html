@@ -71,23 +71,14 @@
                 <el-button type="primary" @click="goon()" icon="el-icon">继续答题</el-button>
             </div>
         </el-dialog>
-        <el-dialog :title="title" :visible.sync="dialogerror" :show-close="closedialog" :close-on-click-modal="false">
-            <div style="height: 200px;text-align: center">
-                {{textmag}}
-                <br/><br/><br/><br/><br/><br/>
-                <el-button type="primary" @click="tomain">返回</el-button>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <!--<el-button type="primary" @click="begin">挑战</el-button>-->
-            </div>
-        </el-dialog>
-        <div class="rushFailed model_area" v-if="rushFailed">
+        <div class="rushFailed model_area" v-if="dialogerror">
             <div class="inner">
                 <img src="${rc.contextPath}/statics/img/competeCenter/chuangguan_lose.png" alt="">
                 <h3>扣除</h3>
                 <p>积分-16000</p>
                 <div class="button_area">
-                    <button>结束闯关</button>
-                    <button><i class="iconfont icon-zhongzuo"></i>再闯一次</button>
+                    <button @click="tomain">结束闯关</button>
+                    <button><i class="iconfont icon-zhongzuo" @click="replay"></i>再闯一次</button>
                 </div>
             </div>
         </div>

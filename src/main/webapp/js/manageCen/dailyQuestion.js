@@ -2,13 +2,20 @@ var menuId =getUrlParam('id');
 var vm = new Vue({
     el: '#app',
     data: {
-        dailyConfig:{
-
+        dailyConfig: {
+            ruleName: '',
+            createRule: '1',
+            obtainPoint: 0,
+            topics: [],
+            isShowAnswer: '1',
+            beginTime: null,
+            endTime: null,
+            diffcs: []
         },
-        specialKnowledgeIds:[],
-        xxx:true,
+        specialKnowledgeIds: [],
+        isEdit: true,
         //试题难度
-        itemjibie:[],
+        itemjibie: [],
         navData: [],//导航
         formInline: {
             limit: 10,
@@ -18,20 +25,26 @@ var vm = new Vue({
         tableData: [],//表格数据
         visible: false,
         dailyQuestion:[],
-
         rules: {//表单验证规则
-            // value: [
-            //     {required: true, message: '请输入参数名', trigger: 'blur'},
-            //     {max: 50, message: '最大长度50', trigger: 'blur'}
-            // ],
-            // code: [
-            //     {required: true, message: '请输入参数值', trigger: 'blur'},
-            //     {max: 50, message: '最大长度50', trigger: 'blur'}
-            // ]
+            ruleName: [
+                {required: true, message: '请输入设置名称', trigger: 'blur'},
+                {max: 50, message: '最大长度50', trigger: 'blur'}
+            ],
+            obtainPoint: [
+                {required: true, message: '请设置奖励积分数', trigger: 'blur'}
+            ],
+            beginTime: [
+                {required: true, message: '请选择生效日期', trigger: 'blur'}
+            ]
         },
-        dialogConfig: false,//table弹出框可见性
-        title: "",//弹窗的名称
-        delIdArr: []//删除数据
+        dialogConfig: false,// table弹出框可见性
+        title: "",// 弹窗的名称
+        delIdArr: [],// 删除数据,
+        pickerOptions: {
+            disabledDate(time) {
+                return time.getTime() < Date.now()-8.64e7;
+            }
+        }
     },
     created: function () {
         this.$nextTick(function () {
@@ -111,6 +124,19 @@ var vm = new Vue({
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
                         vm.formInline.count = result.page.count;
+                        if(vm.formInline.count > 0){
+                            vm.pickerOptions = {
+                                disabledDate(time) {
+                                    return time.getTime() < Date.now();
+                                }
+                            };
+                        } else {
+                            vm.pickerOptions = {
+                                disabledDate(time) {
+                                    return time.getTime() < Date.now()-8.64e7;
+                                }
+                            };
+                        }
                     } else {
                         alert(result.msg);
                     }
@@ -119,13 +145,11 @@ var vm = new Vue({
         },
         // 保存和修改
         saveOrUpdate: function (formName) {
-            console.info(vm.dailyConfig);
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    var url = vm.dailyConfig.id ? "dailyQuestion/update" : "dailyQuestion/insert";
                     $.ajax({
                         type: "POST",
-                        url: baseURL + url,
+                        url: baseURL + 'dailyQuestion/save',
                         contentType: "application/json",
                         data: JSON.stringify(vm.dailyConfig),
                         success: function (result) {
@@ -153,15 +177,13 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         addConfig: function () {
-            vm.xxx=true;
-                vm.dailyConfig={};//新增的时候制空
-                vm.sss();//获取专项知识点
-                this.title = "新增";
-                this.dialogConfig = true;
-            //parent.location.href =baseURL+"modules/examCen/examConfig.html";
+            vm.isEdit = true;
+            vm.sss();//获取专项知识点
+            this.title = "新增";
+            this.dialogConfig = true;
         },
         handlelook: function (index, row) {
-            vm.xxx=false;
+            vm.isEdit = false;
             this.title = "查看";
             this.dialogConfig = true;
             $.ajax({
@@ -183,7 +205,7 @@ var vm = new Vue({
             });
         },
         handleEdit: function (index, row) {
-            vm.xxx=true;
+            vm.isEdit = true;
             this.title = "修改";
             this.dialogConfig = true;
             $.ajax({
@@ -227,26 +249,30 @@ var vm = new Vue({
                     }
                 });
             }).catch(function () {
-                // vm.$message({
-                //     type: 'info',
-                //     message: '已取消删除'
-                // });
+
             });
 
         },
         closeDia: function () {
             this.dialogConfig = false;
+            this.dailyConfig = {
+                ruleName: '',
+                createRule: '1',
+                obtainPoint: 0,
+                topics: [],
+                isShowAnswer: '1',
+                beginTime: null,
+                endTime: null,
+                diffcs: []
+            };
             vm.reload();
         },
         reload: function () {
             vm.refresh();
         },
-
-
         toChild: function (item) {
 
             parent.location.href =baseURL+item.url+"?id="+item.id;
-
         },
         toHome: function () {
             parent.location.reload()

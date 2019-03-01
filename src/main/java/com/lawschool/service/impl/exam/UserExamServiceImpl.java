@@ -3,6 +3,7 @@ package com.lawschool.service.impl.exam;
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.base.Page;
 import com.lawschool.beans.Answer;
+import com.lawschool.beans.Integral;
 import com.lawschool.beans.User;
 import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.beans.exam.UserExam;
@@ -12,6 +13,7 @@ import com.lawschool.dao.exam.UserExamAnswerDao;
 import com.lawschool.dao.exam.UserExamDao;
 import com.lawschool.form.*;
 import com.lawschool.service.AnswerService;
+import com.lawschool.service.IntegralService;
 import com.lawschool.service.UserService;
 import com.lawschool.service.auth.AuthRelationService;
 import com.lawschool.service.exam.ExamConfigService;
@@ -67,6 +69,15 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
     @Autowired
     private UserExamFormService userExamFormService;
 
+    @Autowired
+    private IntegralService integralService;
+
+    /**
+     * 获取试卷
+     * @param examConfigId
+     * @param user
+     * @return
+     */
     @Override
     public Result getExam(String examConfigId, User user) {
         //获取考试配置信息
@@ -206,6 +217,8 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
     public void commitExam(UserAnswerForm userAnswerForm) {
 
         String userExamId = userAnswerForm.getUserExamId();
+        UserExam userExam = userExamDao.selectById(userExamId);
+        ExamConfig examConfig = examConfigService.selectById(userExam.getExamConfigId());
         List<ThemeAnswerForm> themeAnswerFormsList = userAnswerForm.getAnswerForm();
         //考试剩余时间
         Double remainingExamTime = userAnswerForm.getRemainingExamTime();
@@ -239,6 +252,20 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         }else {
             //无主观题  完成阅卷
             isFinMark = "0";
+
+            if(!"10038".equals(examConfig.getReachRewardType())){
+                Integral integral = new Integral();
+                if ("10039".equals(examConfig.getReachRewardType())){
+                    //学分
+                    integral.setType("0");
+                }else{
+                    integral.setType("1");
+                }
+                integral.setSrc("exam");
+                integral.setPoint(Integer.parseInt(examConfig.getReachReward()));
+                User user = userService.selectUserByUserId(userExam.getUserId());
+                integralService.addIntegralRecord(integral,user);
+            }
         }
         //提交试卷设置考试状态为完成
         String examStatus = "2";
