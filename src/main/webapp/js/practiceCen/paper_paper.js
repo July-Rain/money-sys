@@ -6,12 +6,8 @@ var id = getUrlParam('taskId');
 var vm = new Vue({
     el: "#app",
     data: {
-        oneOptionScore: 1,
-        multiOptionScore: 2,
-        checkingScore: 2,
-        oneOptiontTotalScore: 50,
-        multiOptiontsTotalScore: 10,
-        checkingTotalScore: 10,
+        // boolean
+        isSubmit: false,
         oneOptionList: [
             {
                 id: "6",
@@ -101,6 +97,7 @@ var vm = new Vue({
                 rightAnswer: null
             }
         ],
+        fillingList: [],
         checkingList: [
             {
                 id: "8",
@@ -138,11 +135,9 @@ var vm = new Vue({
                 rightAnswer: null
             }
         ],
+        expressingList: [],
         paperName: '卷子名称：第四季度执法资格考试',
         username: '王小明',
-        time: 3,
-        hours: 2,
-        minutes: 20,
         questionList: [],
         answers: [],
         answersList: [],
@@ -182,8 +177,80 @@ var vm = new Vue({
                 totalNum: 5
             }
         ],
+        // 时间变量
+        startTime: 0,
+        // 时间变量太多,用str变量操纵,待
+        leftHours: '00',
+        leftMinutes: '00',
+        leftSeconds: '00',
+        time: 3,
+        lefttime: 10800000,
+        consumedHours: '00',
+        consumedMinutes: '00',
+        consumedSeconds: '00',
     },
     methods: {
+        refresh: function () {
+            var obj = {
+                configureId: configureId,
+                id: id,
+                limit: vm.limit,
+                page: vm.page
+            };
+            $.ajax({
+                type: "GET",
+                url: baseURL + "exercise/paper/paper",
+                data: obj,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.questionList = result.page.list;
+                        console.log(vm.questionList);
+                        vm.count = result.page.count;
+                        id = result.page.id;
+                        vm.preserved = [];
+                    } else {
+                        alert(result.msg);
+                    }
+                    vm.questionList.forEach(function (val) {
+                        switch (val.questionType) {
+                            case '10004':
+                                vm.oneOptionList.push(val);
+                                break;
+                            case '10005':
+                                vm.multiOptionsList.push(val);
+                                break;
+                            default:
+                                return;
+                        }
+                    })
+                }
+            });
+        },
+        // 倒计时
+        computeTime: function () {
+            // 用计时器动态显示:间隔时间1s
+            this.lefttime -= 1000;
+            var results = this.figureTime(this.lefttime);
+            [this.leftHours, this.leftMinutes, this.leftSeconds] = [...results];
+        },
+        // 使用时间
+        consumedTime: function () {
+            var consumed =  3*3600000 - this.lefttime;
+            var results = this.figureTime(consumed);
+            [this.consumedHours, this.consumedMinutes, this.consumedSeconds] = [...results];
+        },
+        // 计算时间
+        figureTime: function (time) {
+            var hours = Math.floor(time/3600000); // 时
+            var minutes = Math.floor((time-hours*3600000)/60000); // 分
+            var seconds = Math.floor((time-hours*3600000-minutes*60000)/1000); // 秒
+            hours<10?hours='0'+hours:hours;
+            minutes<10?minutes='0'+minutes:minutes;
+            seconds<10?seconds='0'+seconds:seconds;
+            return [hours, minutes, seconds];
+        },
+
         sure: function (index) {// 多选
             var obj = vm.questionList[index];
             var answerId = obj.answerId;
@@ -287,43 +354,6 @@ var vm = new Vue({
             }
             vm.refresh();
         },
-        refresh: function () {
-            var obj = {
-                configureId: configureId,
-                id: id,
-                limit: vm.limit,
-                page: vm.page
-            };
-            $.ajax({
-                type: "GET",
-                url: baseURL + "exercise/paper/paper",
-                data: obj,
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.questionList = result.page.list;
-                        console.log(vm.questionList);
-                        vm.count = result.page.count;
-                        id = result.page.id;
-                        vm.preserved = [];
-                    } else {
-                        alert(result.msg);
-                    }
-                    vm.questionList.forEach(function (val) {
-                        switch (val.questionType) {
-                            case '10004':
-                                vm.oneOptionList.push(val);
-                                break;
-                            case '10005':
-                                vm.multiOptionsList.push(val);
-                                break;
-                            default:
-                                return;
-                        }
-                    })
-                }
-            });
-        },
         preserve: function (type) {
             // 保存答题情况
             $.ajax({
@@ -340,10 +370,11 @@ var vm = new Vue({
                 }
             });
         },
+
         toHome: function () {
             parent.location.reload()
         },
-        //  样式转换方法
+        // 改变字体大小
         changeFontSize: function (e) {
             var fontSpans = document.getElementsByClassName('font-size-span');
             for (var i = 0; i < fontSpans.length; i++) {
@@ -352,15 +383,27 @@ var vm = new Vue({
             e.target.style.fontWeight = '600';
             // 改变整体页面字体大小，待
         },
+        // 改变 bar 中元素被选择时的字体颜色
         pickArea: function (e) {
             var aTags = document.getElementsByClassName('type');
             for (var i = 0; i < aTags.length; i++) {
                 aTags[i].style.color = 'black';
             }
             e.target.style.color = '#1381e3';
+        },
+
+        // 提交试卷
+        submit: function () {
+            this.isSubmit = true;
+            // 展示使用时间
+            this.consumedTime();
+            // 禁用所有题目
+
         }
+
     },
     created: function () {
+        setInterval(this.computeTime,1000);
         this.$nextTick(function () {
             vm.refresh();
         });
