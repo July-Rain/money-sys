@@ -18,6 +18,7 @@
         <include refid="randomColumns"/>
         FROM law_exercise_random
         WHERE create_user = #{createUser}
+            AND ANSWER_NUM > 0
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">
                 ORDER BY ${page.orderBy}
