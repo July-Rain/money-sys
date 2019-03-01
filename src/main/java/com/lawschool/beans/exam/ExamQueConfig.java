@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
 
@@ -25,7 +26,7 @@ public class ExamQueConfig extends DataEntity<ExamQueConfig> {
     /**
      * 考试配置ID
      */
-    private String lawExamConfigId;
+    private String examConfigId;
 
     /**
      * 专项知识点
@@ -47,23 +48,45 @@ public class ExamQueConfig extends DataEntity<ExamQueConfig> {
      */
     private float questionScore;
 
-    /**
-     * 考试配置ID
-     * @return LAW_EXAM_CONFIG_ID 考试配置ID
-     */
-    public String getLawExamConfigId() {
-        return lawExamConfigId;
+    private float everyQuestionScore;   //每题分值
+
+    @TableField( exist = false)
+    private String typeName;
+
+    @TableField( exist = false)
+    private String[] specialKnowledgeArr;
+
+    public float getEveryQuestionScore() {
+        return this.everyQuestionScore;
     }
 
-    /**
-     * 考试配置ID
-     * @param lawExamConfigId 考试配置ID
-     */
-    public void setLawExamConfigId(String lawExamConfigId) {
-        this.lawExamConfigId = lawExamConfigId == null ? null : lawExamConfigId.trim();
+    public void setEveryQuestionScore(final float everyQuestionScore) {
+        this.everyQuestionScore = everyQuestionScore;
     }
 
-  
+    public String getTypeName() {
+        return this.typeName;
+    }
+
+    public void setTypeName(final String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String[] getSpecialKnowledgeArr() {
+        return this.specialKnowledgeArr;
+    }
+
+    public void setSpecialKnowledgeArr(final String[] specialKnowledgeArr) {
+        this.specialKnowledgeArr = specialKnowledgeArr;
+    }
+
+    public String getExamConfigId() {
+        return this.examConfigId;
+    }
+
+    public void setExamConfigId(final String examConfigId) {
+        this.examConfigId = examConfigId;
+    }
 
     /**
      * 题目类型（单选、多选等）

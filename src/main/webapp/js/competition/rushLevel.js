@@ -89,6 +89,7 @@ var vm = new Vue({
     methods: {
         // index 为当前面对关数
         getLevel: function (index) {
+            alert('这是第'+index+'关')
             this.levelList = [];
             for (var i = 0; i < 4; i++) {
                 this.levelList.push({
