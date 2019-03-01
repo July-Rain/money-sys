@@ -31,7 +31,7 @@
             <article class="main">
                 <div class="one-option">
                     <div class="description"><a name="oneOption"></a>一. 单项选择题。每题所设选项中只有一个正确答案，多选，错选或不选均不得分。本部分含1-50题，每题1分，共{{ oneOptionList.length*1 }}分。</div>
-                    <div class="question daliy" v-for="(question, index) in oneOptionList">
+                    <div class="question daliy" v-for="(question, index) in oneOptionList" :class="{'question-background': (index%2 == 0)}">
                         <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
                         <el-radio-group v-model="answers" :disabled="isSubmit">
                             <el-radio :label="answer.id" v-for="(answer, index) in question.answer">
@@ -43,21 +43,21 @@
                 </div>
                 <div class="multi-options">
                     <div class="description"><a name="multiOptions"></a>二. 多选题。每题所设选项中有多个答案。本部分含1-5题，每题2分，共{{ multiOptionsList.length*2 }}分。</div>
-                    <div class="question" v-for="(question, index) in multiOptionsList">
+                    <div class="question" v-for="(question, index) in multiOptionsList" :class="{'question-background': (index%2 == 0)}">
                         <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
                         <el-checkbox-group v-model="answersList" :disabled="isSubmit">
                             <el-checkbox :label="answer.id" v-for="(answer, index) in question.answer">
                                 {{ answer.questionContent }}
                             </el-checkbox>
                         </el-checkbox-group>
-                        <div class="answer_area" v-show="isAnswer">
-                            <p :class="userAnswerStr!=rightAnswerStr?'err':''">你的答案：<span>{{userAnswerStr}}</span>，正确答案：<span>{{rightAnswerStr}}</span></p>
+                        <div class="answer_area" v-show="isSubmit">
+                            <!--<p :class="userAnswerStr!=rightAnswerStr?'err':''">你的答案：<span>{{userAnswerStr}}</span>，正确答案：<span>{{rightAnswerStr}}</span></p>-->
                         </div>
                     </div>
                 </div>
                 <div class="checking">
                     <div class="description"><a name="checking"></a>三. 判断题。本部分含1-5题，每题2分，共{{ checkingList.length*2 }}分。</div>
-                    <div class="question daliy" v-for="(question, index) in checkingList">
+                    <div class="question daliy" v-for="(question, index) in checkingList" :class="{'question-background': (index%2 == 0)}">
                         <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
                         <el-radio-group v-model="answers" :disabled="isSubmit">
                             <el-radio :label="answer.id" v-for="(answer, index) in question.answer">

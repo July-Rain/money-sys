@@ -48,9 +48,304 @@ var vm = new Vue({
                 secScore: 0,
                 userScore: 0,
                 rightAnswer: null
+            },
+            {
+                id: "6",
+                comContent: "我国的根本政治制度是__________。",
+                questionDifficulty: "10001",
+                questionType: "10004",
+                answerId: "17",
+                legalBasis: null,
+                answerDescrible: null,
+                answerChoiceNumber: 3,
+                questionId: null,
+                userAnswer: null,
+                right: null,
+                themeName: "宪法",
+                score: 0,
+                rightAnsCon: null,
+                isCollect: null,
+                recordId: null,
+                answer: [
+                    {
+                        id: "16",
+                        questionContent: "人民民主专政制",
+                        questionId: "6"
+                    },
+                    {
+                        id: "17",
+                        questionContent: "人民代表大会制度",
+                        questionId: "6"
+                    },
+                    {
+                        id: "18",
+                        questionContent: "社会主义制度",
+                        questionId: "6"
+                    }
+                ],
+                checkList: [],
+                firScore: 0,
+                secScore: 0,
+                userScore: 0,
+                rightAnswer: null
+            },
+            {
+                id: "6",
+                comContent: "我国的根本政治制度是__________。",
+                questionDifficulty: "10001",
+                questionType: "10004",
+                answerId: "17",
+                legalBasis: null,
+                answerDescrible: null,
+                answerChoiceNumber: 3,
+                questionId: null,
+                userAnswer: null,
+                right: null,
+                themeName: "宪法",
+                score: 0,
+                rightAnsCon: null,
+                isCollect: null,
+                recordId: null,
+                answer: [
+                    {
+                        id: "16",
+                        questionContent: "人民民主专政制",
+                        questionId: "6"
+                    },
+                    {
+                        id: "17",
+                        questionContent: "人民代表大会制度",
+                        questionId: "6"
+                    },
+                    {
+                        id: "18",
+                        questionContent: "社会主义制度",
+                        questionId: "6"
+                    }
+                ],
+                checkList: [],
+                firScore: 0,
+                secScore: 0,
+                userScore: 0,
+                rightAnswer: null
+            },
+            {
+                id: "6",
+                comContent: "我国的根本政治制度是__________。",
+                questionDifficulty: "10001",
+                questionType: "10004",
+                answerId: "17",
+                legalBasis: null,
+                answerDescrible: null,
+                answerChoiceNumber: 3,
+                questionId: null,
+                userAnswer: null,
+                right: null,
+                themeName: "宪法",
+                score: 0,
+                rightAnsCon: null,
+                isCollect: null,
+                recordId: null,
+                answer: [
+                    {
+                        id: "16",
+                        questionContent: "人民民主专政制",
+                        questionId: "6"
+                    },
+                    {
+                        id: "17",
+                        questionContent: "人民代表大会制度",
+                        questionId: "6"
+                    },
+                    {
+                        id: "18",
+                        questionContent: "社会主义制度",
+                        questionId: "6"
+                    }
+                ],
+                checkList: [],
+                firScore: 0,
+                secScore: 0,
+                userScore: 0,
+                rightAnswer: null
+            },
+            {
+                id: "6",
+                comContent: "我国的根本政治制度是__________。",
+                questionDifficulty: "10001",
+                questionType: "10004",
+                answerId: "17",
+                legalBasis: null,
+                answerDescrible: null,
+                answerChoiceNumber: 3,
+                questionId: null,
+                userAnswer: null,
+                right: null,
+                themeName: "宪法",
+                score: 0,
+                rightAnsCon: null,
+                isCollect: null,
+                recordId: null,
+                answer: [
+                    {
+                        id: "16",
+                        questionContent: "人民民主专政制",
+                        questionId: "6"
+                    },
+                    {
+                        id: "17",
+                        questionContent: "人民代表大会制度",
+                        questionId: "6"
+                    },
+                    {
+                        id: "18",
+                        questionContent: "社会主义制度",
+                        questionId: "6"
+                    }
+                ],
+                checkList: [],
+                firScore: 0,
+                secScore: 0,
+                userScore: 0,
+                rightAnswer: null
             }
         ],
         multiOptionsList: [
+            {
+                id: "13",
+                comContent: "人民警察办理治安案件，有下列哪种行为应依法给予行政处分；构成犯罪的，依法追究刑事责任（ ）",
+                questionDifficulty: "10003",
+                questionType: "10005",
+                answerId: "38,39,40,41",
+                legalBasis: null,
+                answerDescrible: null,
+                answerChoiceNumber: 4,
+                questionId: null,
+                userAnswer: null,
+                right: null,
+                themeName: "人民警察法",
+                score: 0,
+                rightAnsCon: null,
+                isCollect: null,
+                recordId: null,
+                answer: [
+                    {
+                        id: "38",
+                        questionContent: "刑讯逼供、体罚、虐待、侮辱他人的",
+                        questionId: "13"
+                    },
+                    {
+                        id: "39",
+                        questionContent: "超过询问查证的时间限制人身自由的",
+                        questionId: "13"
+                    },
+                    {
+                        id: "40",
+                        questionContent: "违反规定不及时退还保证金的",
+                        questionId: "13"
+                    },
+                    {
+                        id: "41",
+                        questionContent: "接到要求制止违反治安管理行为的报警后，不及时出警的",
+                        questionId: "13"
+                    }
+                ],
+                checkList:[],
+                firScore: 0,
+                secScore: 0,
+                userScore: 0,
+                rightAnswer: null
+            },
+            {
+                id: "13",
+                comContent: "人民警察办理治安案件，有下列哪种行为应依法给予行政处分；构成犯罪的，依法追究刑事责任（ ）",
+                questionDifficulty: "10003",
+                questionType: "10005",
+                answerId: "38,39,40,41",
+                legalBasis: null,
+                answerDescrible: null,
+                answerChoiceNumber: 4,
+                questionId: null,
+                userAnswer: null,
+                right: null,
+                themeName: "人民警察法",
+                score: 0,
+                rightAnsCon: null,
+                isCollect: null,
+                recordId: null,
+                answer: [
+                    {
+                        id: "38",
+                        questionContent: "刑讯逼供、体罚、虐待、侮辱他人的",
+                        questionId: "13"
+                    },
+                    {
+                        id: "39",
+                        questionContent: "超过询问查证的时间限制人身自由的",
+                        questionId: "13"
+                    },
+                    {
+                        id: "40",
+                        questionContent: "违反规定不及时退还保证金的",
+                        questionId: "13"
+                    },
+                    {
+                        id: "41",
+                        questionContent: "接到要求制止违反治安管理行为的报警后，不及时出警的",
+                        questionId: "13"
+                    }
+                ],
+                checkList:[],
+                firScore: 0,
+                secScore: 0,
+                userScore: 0,
+                rightAnswer: null
+            },
+            {
+                id: "13",
+                comContent: "人民警察办理治安案件，有下列哪种行为应依法给予行政处分；构成犯罪的，依法追究刑事责任（ ）",
+                questionDifficulty: "10003",
+                questionType: "10005",
+                answerId: "38,39,40,41",
+                legalBasis: null,
+                answerDescrible: null,
+                answerChoiceNumber: 4,
+                questionId: null,
+                userAnswer: null,
+                right: null,
+                themeName: "人民警察法",
+                score: 0,
+                rightAnsCon: null,
+                isCollect: null,
+                recordId: null,
+                answer: [
+                    {
+                        id: "38",
+                        questionContent: "刑讯逼供、体罚、虐待、侮辱他人的",
+                        questionId: "13"
+                    },
+                    {
+                        id: "39",
+                        questionContent: "超过询问查证的时间限制人身自由的",
+                        questionId: "13"
+                    },
+                    {
+                        id: "40",
+                        questionContent: "违反规定不及时退还保证金的",
+                        questionId: "13"
+                    },
+                    {
+                        id: "41",
+                        questionContent: "接到要求制止违反治安管理行为的报警后，不及时出警的",
+                        questionId: "13"
+                    }
+                ],
+                checkList:[],
+                firScore: 0,
+                secScore: 0,
+                userScore: 0,
+                rightAnswer: null
+            },
             {
                 id: "13",
                 comContent: "人民警察办理治安案件，有下列哪种行为应依法给予行政处分；构成犯罪的，依法追究刑事责任（ ）",
@@ -99,6 +394,111 @@ var vm = new Vue({
         ],
         fillingList: [],
         checkingList: [
+            {
+                id: "8",
+                comContent: "根据《反恐怖主义法》的规定，恐怖主义必须具有政治、意识形态等目的（ ）",
+                questionDifficulty: "10001",
+                questionType: "10006",
+                answerId: "22",
+                legalBasis: null,
+                answerDescrible: null,
+                answerChoiceNumber: 2,
+                questionId: null,
+                userAnswer: null,
+                right: null,
+                themeName: "国家安全和公共安全法律",
+                score: 0,
+                rightAnsCon: null,
+                isCollect: null,
+                recordId: null,
+                answer: [
+                    {
+                        id: "22",
+                        questionContent: "正确",
+                        questionId: "8"
+                    },
+                    {
+                        id: "23",
+                        questionContent: "错误",
+                        questionId: "8"
+                    }
+                ],
+                checkList:[],
+                firScore: 0,
+                secScore: 0,
+                userScore: 0,
+                rightAnswer: null
+            },
+            {
+                id: "8",
+                comContent: "根据《反恐怖主义法》的规定，恐怖主义必须具有政治、意识形态等目的（ ）",
+                questionDifficulty: "10001",
+                questionType: "10006",
+                answerId: "22",
+                legalBasis: null,
+                answerDescrible: null,
+                answerChoiceNumber: 2,
+                questionId: null,
+                userAnswer: null,
+                right: null,
+                themeName: "国家安全和公共安全法律",
+                score: 0,
+                rightAnsCon: null,
+                isCollect: null,
+                recordId: null,
+                answer: [
+                    {
+                        id: "22",
+                        questionContent: "正确",
+                        questionId: "8"
+                    },
+                    {
+                        id: "23",
+                        questionContent: "错误",
+                        questionId: "8"
+                    }
+                ],
+                checkList:[],
+                firScore: 0,
+                secScore: 0,
+                userScore: 0,
+                rightAnswer: null
+            },
+            {
+                id: "8",
+                comContent: "根据《反恐怖主义法》的规定，恐怖主义必须具有政治、意识形态等目的（ ）",
+                questionDifficulty: "10001",
+                questionType: "10006",
+                answerId: "22",
+                legalBasis: null,
+                answerDescrible: null,
+                answerChoiceNumber: 2,
+                questionId: null,
+                userAnswer: null,
+                right: null,
+                themeName: "国家安全和公共安全法律",
+                score: 0,
+                rightAnsCon: null,
+                isCollect: null,
+                recordId: null,
+                answer: [
+                    {
+                        id: "22",
+                        questionContent: "正确",
+                        questionId: "8"
+                    },
+                    {
+                        id: "23",
+                        questionContent: "错误",
+                        questionId: "8"
+                    }
+                ],
+                checkList:[],
+                firScore: 0,
+                secScore: 0,
+                userScore: 0,
+                rightAnswer: null
+            },
             {
                 id: "8",
                 comContent: "根据《反恐怖主义法》的规定，恐怖主义必须具有政治、意识形态等目的（ ）",
@@ -251,6 +651,36 @@ var vm = new Vue({
             return [hours, minutes, seconds];
         },
 
+        toHome: function () {
+            parent.location.reload()
+        },
+        // 改变字体大小
+        changeFontSize: function (e) {
+            var fontSpans = document.getElementsByClassName('font-size-span');
+            for (var i = 0; i < fontSpans.length; i++) {
+                fontSpans[i].style.fontWeight = '300';
+            }
+            e.target.style.fontWeight = '600';
+            // 改变整体页面字体大小，待
+        },
+        // 改变 bar 中元素被选择时的字体颜色
+        pickArea: function (e) {
+            var aTags = document.getElementsByClassName('type');
+            for (var i = 0; i < aTags.length; i++) {
+                aTags[i].style.color = 'black';
+            }
+            e.target.style.color = '#1381e3';
+        },
+
+        // 提交试卷
+        submit: function () {
+            this.isSubmit = true;
+            // 展示使用时间
+            this.consumedTime();
+            // 禁用所有题目
+        },
+
+        // 修改后未用到的方法
         sure: function (index) {// 多选
             var obj = vm.questionList[index];
             var answerId = obj.answerId;
@@ -371,35 +801,7 @@ var vm = new Vue({
             });
         },
 
-        toHome: function () {
-            parent.location.reload()
-        },
-        // 改变字体大小
-        changeFontSize: function (e) {
-            var fontSpans = document.getElementsByClassName('font-size-span');
-            for (var i = 0; i < fontSpans.length; i++) {
-                fontSpans[i].style.fontWeight = '300';
-            }
-            e.target.style.fontWeight = '600';
-            // 改变整体页面字体大小，待
-        },
-        // 改变 bar 中元素被选择时的字体颜色
-        pickArea: function (e) {
-            var aTags = document.getElementsByClassName('type');
-            for (var i = 0; i < aTags.length; i++) {
-                aTags[i].style.color = 'black';
-            }
-            e.target.style.color = '#1381e3';
-        },
 
-        // 提交试卷
-        submit: function () {
-            this.isSubmit = true;
-            // 展示使用时间
-            this.consumedTime();
-            // 禁用所有题目
-
-        }
 
     },
     created: function () {
@@ -407,5 +809,5 @@ var vm = new Vue({
         this.$nextTick(function () {
             vm.refresh();
         });
-    }
+    },
 });

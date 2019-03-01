@@ -73,7 +73,6 @@ margin-left: 3px;
 .main .question {
     margin: 22px auto;
     padding: 26px 0 30px 0;
-    background: #f2f9ff;
 }
 .main .question .title {
     margin-bottom: 28px;
@@ -128,4 +127,7 @@ margin-left: 3px;
 }
 .done-something {
     color: #1381e3 !important;
+}
+.question-background {
+    background: #f2f9ff;
 }
