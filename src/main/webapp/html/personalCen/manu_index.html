@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>我要投稿</title>
+    <title>我要出题</title>
     <#include "/header.html">
 </head>
 <body>
@@ -10,11 +10,11 @@
         <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
             <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
             <el-breadcrumb-item>个人中心</el-breadcrumb-item>
-            <el-breadcrumb-item>我要投稿</el-breadcrumb-item>
+            <el-breadcrumb-item>我要出题</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="info_btn">
-            <el-button size="mini" type="primary" @click="addQue"><i class="iconfont icon-chutizujuan"></i>习题投稿</el-button>
-            <el-button size="mini" type="primary" @click="addStu"><i class="iconfont icon-shu"></i>学习投稿</el-button>
+            <el-button size="mini" type="primary" @click="addQue"><i class="iconfont icon-chutizujuan"></i>习题出题</el-button>
+            <el-button size="mini" type="primary" @click="addStu"><i class="iconfont icon-shu"></i>学习出题</el-button>
         </div>
         <el-table
                 :data="tableData"
@@ -25,11 +25,12 @@
                     type="index"
                     width="50"
                     label="序号"
+                    :index="indexMethod"
                     align="center">
             </el-table-column>
             <el-table-column
                     width="280"
-                    label="投稿类型"
+                    label="出题类型"
                     header-align="center"
                     align="center">
                 <template slot-scope="scope">
@@ -38,7 +39,7 @@
             </el-table-column>
             <el-table-column
                     prop="createTime"
-                    label="投稿时间"
+                    label="出题时间"
                     width="200"
                     header-align="center"
                     align="center">
@@ -77,6 +78,18 @@
                     <el-popover
                             placement="right"
                             trigger="hover"
+                            content="查看">
+                        <i class="iconfont icon-xiugaimima tabIcon"
+                           slot="reference"
+                           @click="look(scope.row.id)"
+                           style="color: #119e0a;"
+                        >
+                        </i>
+                    </el-popover>
+                    <el-popover
+                            v-if="scope.row.status == 2"
+                            placement="right"
+                            trigger="hover"
                             content="编辑">
                         <i class="iconfont icon-xiugaimima tabIcon"
                            slot="reference"
@@ -86,7 +99,7 @@
                         </i>
                     </el-popover>
                     <el-popover
-                            v-if="scope.row.status != 1"
+                            v-if="scope.row.status == 2"
                             placement="right"
                             trigger="hover"
                             content="删除">
@@ -111,14 +124,15 @@
                 :total="formInline.count">
         </el-pagination>
 
-        <el-dialog title="试题编辑" :visible.sync="dialogFormVisible">
-            <el-form :model="form" label-width="100px" size="mini">
+        <el-dialog title="习题出题" :visible.sync="dialogFormVisible">
+            <el-form :model="form" label-width="100px" size="mini" :rules="rules" ref="form">
                 <el-col :span="24">
-                    <el-form-item label="试题描述：">
+                    <el-form-item label="试题描述：" prop="comContent">
                         <el-input v-model="form.comContent" autocomplete="off"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="试题分类：">
+                    <el-form-item label="试题分类：" >
+
                         <el-radio v-for="item in typeList" v-model="form.typeId" :label="item.key">{{item.value}}</el-radio>
                     </el-form-item>
 
@@ -131,7 +145,7 @@
                         <P class="text">请保证视频格式正确，且不超过100M</P>
                     </el-form-item>
 
-                    <el-form-item label="试题类型：">
+                    <el-form-item label="试题类型：" >
                         <el-radio-group v-model="form.questionType">
                             <el-radio v-if="item.value != '主观题'" v-for="item in qtList" v-model="form.questionType" :label="item.key">
                                 {{item.value}}
@@ -139,7 +153,7 @@
                         </el-radio-group>
                     </el-form-item>
 
-                    <el-form-item label="配置选项：">
+                    <el-form-item label="配置选项：" >
                         <el-button size="mini" type="primary" @click="addAnswer">添加选项</el-button>
                     </el-form-item>
                     <el-table
@@ -198,7 +212,7 @@
                         </el-radio>
                     </el-form-item>
 
-                    <el-form-item label="主题类型：">
+                    <el-form-item label="主题类型：" >
                         <el-select v-model="form.specialKnowledgeId" placeholder="请选择">
                             <el-option
                                     v-for="item in topicList"
@@ -209,39 +223,39 @@
                         </el-select>
                     </el-form-item>
 
-                    <el-form-item label="法律依据：">
-                        <el-input v-model="form.legalBasis" autocomplete="off"></el-input>
-                    </el-form-item>
+                    <!--<el-form-item label="法律依据：">-->
+                        <!--<el-input v-model="form.legalBasis" autocomplete="off"></el-input>-->
+                    <!--</el-form-item>-->
 
-                    <el-form-item label="答案描述：">
+                    <el-form-item label="答案描述：" prop="answerDescrible">
                         <el-input v-model="form.answerDescrible" autocomplete="off"></el-input>
                     </el-form-item>
 
                 </el-col>
             </el-form>
-            <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
+            <div slot="footer" class="dialog-footer" :label-width="formLabelWidth" v-if="lookType">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="save">提交入库</el-button>
+                <el-button type="primary" @click="save('form')">提交入库</el-button>
             </div>
         </el-dialog>
 
         <el-dialog title="添加选项信息" :visible.sync="addConfigFlag">
             <el-row>
                 <el-col :span="24">
-                    <el-form :model="answer" label-width="100px" class="demo-sysMenu" size="mini">
-                        <el-form-item label="选项描述：">
+                    <el-form :model="answer" label-width="100px" class="demo-sysMenu" size="mini" :rules="rules3" ref="answer">
+                        <el-form-item label="选项描述：" prop="questionContent">
                             <el-input v-model="answer.questionContent" placeholder="选项描述" type="input"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="分数：">
+                        <el-form-item label="分数：" prop="score">
                             <el-input v-model="answer.score" placeholder="分数" type="number"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="排序：">
+                        <el-form-item label="排序：" prop="ordersort">
                             <el-input v-model="answer.ordersort" placeholder="排序" type="number"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="是否为答案：">
+                        <el-form-item label="是否为答案：" prop="isAnswer">
                             <el-radio-group v-model="answer.isAnswer">
                                 <el-radio :label="1">是</el-radio>
                                 <el-radio :label="0">否</el-radio>
@@ -249,16 +263,16 @@
                         </el-form-item>
 
                         <el-form-item>
-                            <el-button type="primary" @click="sure">确定</el-button>
+                            <el-button type="primary" @click="sure('answer')">确定</el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
             </el-row>
         </el-dialog>
 
-        <el-dialog title="学习投稿" :visible.sync="dialogStuMedia" ref="stuDialog">
+        <el-dialog title="学习出题" :visible.sync="dialogStuMedia" ref="stuDialog">
             <el-col :span="24">
-                <el-form :model="stuMedia" label-width="100px" class="demo-stuMedia" size="mini">
+                <el-form :model="stuMedia" label-width="100px" class="demo-stuMedia" size="mini" :rules="rules2" ref="stuMedia">
                     <el-form-item label="资料类型" prop="stuType">
                         <el-radio-group v-model="stuMedia.stuType" @change="changeStuType">
                             <el-radio  label="1">图文</el-radio>
@@ -266,7 +280,7 @@
                             <el-radio  label="3">视频</el-radio>
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="标题" prop="stuTitle">
+                    <el-form-item label="标题" prop="stuTitle" >
                         <el-input v-model="stuMedia.stuTitle" placeholder="请输入标题" clearable></el-input>
                     </el-form-item>
                     <template v-if="stuMedia.stuType=='1'">
@@ -311,7 +325,7 @@
                             <P class="text">请保证视频格式正确，且不超过100M</P>
                         </el-form-item>
                     </template>
-                    <el-form-item label="所属警种" prop="stuPoliceclass">
+                    <el-form-item label="所属警种" prop="stuPoliceclass" >
                         <el-select v-model="stuMedia.stuPoliceclass" placeholder="所属警种" >
                             <el-option
                                     v-for="item in stuPoliceclassOption"
@@ -333,7 +347,7 @@
                     </el-form-item>
                 </el-form>
             </el-col>
-            <div slot="footer" class="dialog-footer">
+            <div slot="footer" class="dialog-footer" v-if="lookType">
                 <el-button @click="closeDia">取消</el-button>
                 <el-button type="primary" @click="saveOrUpdate('stuMedia')">保存</el-button>
             </div>
