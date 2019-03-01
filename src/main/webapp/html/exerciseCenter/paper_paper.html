@@ -37,8 +37,12 @@
                             <el-radio :label="answer.id" v-for="(answer, index) in question.answer">
                                 {{ answer.questionContent }}
                             </el-radio>
-                            <br/>
                         </el-radio-group>
+                        <div class="answer-area" v-show="!isSubmit">
+                            <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
+                            <p :class="1==1 ? 'right' : 'err'">你的答案：<span>AB</span>，正确答案：<span>AB</span></p>
+                            <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
+                        </div>
                     </div>
                 </div>
                 <div class="multi-options">
@@ -50,8 +54,10 @@
                                 {{ answer.questionContent }}
                             </el-checkbox>
                         </el-checkbox-group>
-                        <div class="answer_area" v-show="isSubmit">
-                            <!--<p :class="userAnswerStr!=rightAnswerStr?'err':''">你的答案：<span>{{userAnswerStr}}</span>，正确答案：<span>{{rightAnswerStr}}</span></p>-->
+                        <div class="answer-area" v-show="!isSubmit">
+                            <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
+                            <p :class="1==1 ? 'right' : 'err'">你的答案：<span>AB</span>，正确答案：<span>AB</span></p>
+                            <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
                         </div>
                     </div>
                 </div>
@@ -63,12 +69,16 @@
                             <el-radio :label="answer.id" v-for="(answer, index) in question.answer">
                                 {{ answer.questionContent }}
                             </el-radio>
-                            <br/>
                         </el-radio-group>
+                        <div class="answer-area" v-show="!isSubmit">
+                            <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
+                            <p :class="0==1 ? 'right' : 'err'">你的答案：<span>AB</span>，正确答案：<span>AB</span></p>
+                            <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
+                        </div>
                     </div>
                 </div>
             </article>
-
+            <div class="score" v-if="isSubmit">{{ totalScore }}</div>
         </div>
         <div class="bar">
             <ul class="category">

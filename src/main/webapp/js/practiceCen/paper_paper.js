@@ -588,6 +588,8 @@ var vm = new Vue({
         consumedHours: '00',
         consumedMinutes: '00',
         consumedSeconds: '00',
+        // 总分
+        totalScore: 87
     },
     methods: {
         refresh: function () {
@@ -633,6 +635,10 @@ var vm = new Vue({
             this.lefttime -= 1000;
             var results = this.figureTime(this.lefttime);
             [this.leftHours, this.leftMinutes, this.leftSeconds] = [...results];
+            // 3个小时用完,强制提交
+            if (this.lefttime <= 0) {
+                this.submit();
+            }
         },
         // 使用时间
         consumedTime: function () {

@@ -22,7 +22,21 @@ body {
 
 /* header样式 */
 .content {
+    position: relative;
     border-top: 1px solid transparent;
+}
+.content .score {
+    position: absolute;
+    top: 25px;
+    right: 50px;
+    width: 88px;
+    height: 88px;
+    line-height: 88px;
+    padding: -1px 4px;
+    border-bottom: 5px solid #d93822;
+    font-size: 80px;
+    color: #d93822;
+    transform: rotate(10deg);
 }
 .content header .title {
     height: 38px;
@@ -72,12 +86,21 @@ margin-left: 3px;
 /* 题目公共样式 */
 .main .question {
     margin: 22px auto;
-    padding: 26px 0 30px 0;
+    padding: 26px 0 0 0;
 }
 .main .question .title {
     margin-bottom: 28px;
     padding-left: 54px;
     font-size: 22px;
+}
+.main .question .answer-area {
+    margin-top: 18px;
+    padding:10px 0 10px 54px;
+    background: white;
+}
+.main .question .answer-area p, .main .question .answer-area span {
+    font-size: 20px;
+    background: white;
 }
 /* 题目样式 */
 .el-radio-group {
@@ -130,4 +153,10 @@ margin-left: 3px;
 }
 .question-background {
     background: #f2f9ff;
+}
+.right {
+    color: #37aa57;
+}
+.err {
+    color: #fb1515
 }
