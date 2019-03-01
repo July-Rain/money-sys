@@ -33,7 +33,6 @@ var vm = new Vue({
             comContent: '',
             specialKnowledgeId: '',
             questionDifficulty: '',
-            legalBasis: '',
             answerId: '',
             isEnble: 2,
             optUser: '',
@@ -88,12 +87,78 @@ var vm = new Vue({
             userStatus:'2000'//查询有效的用户
 
         },//人员查询
+         lookType:true,
+
+        rules: {//表单验证规则
+
+            comContent: [
+                {required: true, message: '请输入试题描述', trigger: 'blur'},
+                {max: 2000, message: '最大长度2000', trigger: 'blur'}
+            ],
+            // typeList: [
+            //     {required: true, message: '请选择试题分类', trigger: 'blur'}
+            //
+            // ],
+            // questionType: [
+            //     {required: true, message: '请选择试题类型', trigger: 'blur'}
+            // ],
+            //
+            // diffList: [
+            //     {required: true, message: '请选择试题难度', trigger: 'blur'}
+            // ],
+            // specialKnowledgeId: [
+            //     {required: true, message: '请选择主题类型', trigger: 'blur'}
+            // ],
+            answerDescrible: [
+                {required: true, message: '答案描述', trigger: 'blur'},
+                {max: 2000, message: '最大长度2000', trigger: 'blur'}
+            ]
+        },
+        rules2: {//表单验证规则
+            stuTitle: [
+                {required: true, message: '请输入标题', trigger: 'blur'},
+                {max: 200, message: '最大长度200', trigger: 'blur'}
+            ],
+            stuPoliceclass: [
+                {required: true, message: '请选择所属警种', trigger: 'blur'},
+            ],
+            deptName: [
+                {required: true, message: '请选择使用部门', trigger: 'blur'},
+            ],
+
+            userName: [
+                {required: true, message: '请选择使用人员', trigger: 'change'}
+            ],
+            stuDescribe: [
+                {required: true, message: '请输入描述', trigger: 'blur'},
+                {max: 200, message: '最大长度200', trigger: 'blur'}
+            ],
+        },
+        rules3: {//表单验证规则
+            questionContent: [
+                {required: true, message: '请输入选项描述', trigger: 'blur'},
+                {max: 200, message: '最大长度200', trigger: 'blur'}
+            ],
+            score: [
+                {required: true, message: '请输入分数', trigger: 'blur'},
+            ],
+            ordersort: [
+                {required: true, message: '请输入排序', trigger: 'blur'},
+            ],
+
+            isAnswer: [
+                {required: true, message: '请选择是否为答案', trigger: 'change'}
+            ],
+
+        },
     },
     methods: {
-        //序列号计算
-        indexUserMethod: function (index) {
-            return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;
+
+//序列号计算
+        indexMethod: function (index) {
+            return index + 1 + (vm.formInline.page - 1) * vm.formInline.limit;
         },
+
         searchUser: function () {
             //查询人员信息
             vm.reloadUser();
@@ -196,6 +261,37 @@ var vm = new Vue({
             });
         },
         edit: function (id) {
+
+            vm.lookType=true;
+            $.ajax({
+                type: "GET",
+                url: baseURL + "manuscript/info",
+                data: {
+                    id: id
+                },
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.manu = result.data;
+                        var type = vm.manu.type;
+                        if (type == 0) {
+                            vm.form = vm.manu.test;
+                            vm.manu.stu = {};
+                            vm.dialogFormVisible = true;
+                        } else {
+                            vm.stuMedia = vm.manu.stu;
+                            vm.manu.test = {};
+                            vm.dialogStuMedia = true;
+                        }
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+
+        look: function (id) {
+            vm.lookType=false;
             $.ajax({
                 type: "GET",
                 url: baseURL + "manuscript/info",
@@ -223,10 +319,24 @@ var vm = new Vue({
             });
         },
         addQue: function () {
+
+
+            vm.form={
+                answerList: [],
+                isEnble: 2,
+                releaseStatus: 1,
+            };
+
+            vm.form.typeId ='0';
+            vm.form.questionType = vm.qtList[0].key;
+            vm.form.questionDifficulty = vm.diffList[0].key;
+            vm.form.specialKnowledgeId = vm.topicList[0].key;
+            vm.lookType=true;
             // 显示试题新增框
             vm.dialogFormVisible = true;
         },
         addStu: function () {
+            vm.lookType=true;
             vm.dialogStuMedia = true;
             this.stuMedia = {
                 id: "",
@@ -245,24 +355,36 @@ var vm = new Vue({
             //清空editor
             editor.txt.html("");
         },
-        save: function () {
-            vm.manu.test = vm.form;
-            vm.manu.type = 0;
-            $.ajax({
-                type: "POST",
-                url: baseURL + "manuscript/save",
-                data: JSON.stringify(vm.manu),
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.manu.test = {};
-                        vm.dialogFormVisible = false;
-                        vm.refresh();
-                    } else {
-                        alert(result.msg);
+        save: function (formName) {
+
+            this.$refs[formName].validate(function (valid) {
+
+                    if (valid) {
+
+                        vm.manu.test = vm.form;
+                        vm.manu.type = 0;
+                        $.ajax({
+                            type: "POST",
+                            url: baseURL + "manuscript/save",
+                            data: JSON.stringify(vm.manu),
+                            contentType: "application/json",
+                            success: function (result) {
+                                if (result.code === 0) {
+                                    vm.manu.test = {};
+                                    vm.dialogFormVisible = false;
+                                    vm.refresh();
+                                } else {
+                                    alert(result.msg);
+                                }
+                            }
+                        });
                     }
-                }
+                    else {
+                        console.log('error submit!!');
+                        return false;
+                    }
             });
+
         },
         toHome: function () {
 
@@ -318,16 +440,30 @@ var vm = new Vue({
         addAnswer: function () {
             vm.addConfigFlag = true;
         },
-        sure: function () {
-            vm.form.answerList.push(vm.answer);
-            vm.answer = {
-                questionContent: '',
-                score: 0,
-                ordersort: 1,
-                isAnswer: 0
-            };
-            vm.addConfigFlag = false;
+        sure: function (formName) {
+
+            this.$refs[formName].validate(function (valid) {
+
+                    if (valid) {
+                        vm.form.answerList.push(vm.answer);
+                        vm.answer = {
+                            questionContent: '',
+                            score: 0,
+                            ordersort: 1,
+                            isAnswer: 0
+                        };
+                        vm.addConfigFlag = false;
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+            });
+
         },
+
+
+
+
         changeStuType: function () {
             vm.stuMedia.comContent = "";
             vm.stuMedia.contentUrl = "";
@@ -358,24 +494,35 @@ var vm = new Vue({
             }
 
         },
-        saveOrUpdate: function () {
-            vm.manu.stu = vm.stuMedia;
-            vm.manu.type = 1;
-            $.ajax({
-                type: "POST",
-                url: baseURL + "manuscript/save",
-                data: JSON.stringify(vm.manu),
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.manu.stu = {};
-                        vm.dialogStuMedia = false;
-                        vm.refresh();
+        saveOrUpdate: function (formName) {
+
+            this.$refs[formName].validate(function (valid) {
+
+                    if (valid) {
+                        vm.manu.stu = vm.stuMedia;
+                        vm.manu.type = 1;
+                        $.ajax({
+                            type: "POST",
+                            url: baseURL + "manuscript/save",
+                            data: JSON.stringify(vm.manu),
+                            contentType: "application/json",
+                            success: function (result) {
+                                if (result.code === 0) {
+                                    vm.manu.stu = {};
+                                    vm.dialogStuMedia = false;
+                                    vm.refresh();
+                                } else {
+                                    alert(result.msg);
+                                }
+                            }
+                        });
                     } else {
-                        alert(result.msg);
+                        console.log('error submit!!');
+                        return false;
                     }
-                }
             });
+
+
         },
         closeDia: function () {
             this.dialogStuMedia = false;
@@ -429,7 +576,9 @@ var vm = new Vue({
                         vm.diffList = result.diffList;
                         vm.typeList = result.typeList;
                         vm.qtList = result.qtList;
+
                         vm.topicList = result.topicList;
+
                     } else {
                         alert(result.msg);
                     }

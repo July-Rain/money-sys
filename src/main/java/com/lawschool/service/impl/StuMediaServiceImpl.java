@@ -110,9 +110,10 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         mapper.insert(stuMedia);
         //存权限表
         String[] deptIdArr=stuMedia.getDeptArr();
+
         String[] userIdArr=stuMedia.getUserArr();
         String[] deptTemp=new String[1];
-        if(deptIdArr.length==0&&userIdArr.length==0){
+        if(UtilValidate.isNotEmpty(deptIdArr)&&UtilValidate.isNotEmpty(userIdArr)&&deptIdArr.length==0&&userIdArr.length==0){
             deptTemp[0]=user.getOrgId();
             authService.insertAuthRelation(deptTemp,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getCreateUser());
         }else{
@@ -299,7 +300,7 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         String[] deptIdArr=stuMedia.getDeptArr();
         String[] userIdArr=stuMedia.getUserArr();
         String[] deptTemp=new String[1];
-        if(deptIdArr.length==0&&userIdArr.length==0){
+        if(UtilValidate.isNotEmpty(deptIdArr)&&UtilValidate.isNotEmpty(userIdArr)&&deptIdArr.length==0&&userIdArr.length==0){
             deptTemp[0]=user.getOrgId();
             authService.insertAuthRelation(deptTemp,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getCreateUser());
         }else{

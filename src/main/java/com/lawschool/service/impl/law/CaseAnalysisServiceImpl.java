@@ -135,7 +135,7 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         String[] deptIdArr=analysisEntity.getDeptArr();
         String[] userIdArr=analysisEntity.getUserArr();
         String[] deptTemp=new String[1];
-        if(deptIdArr.length==0&&userIdArr.length==0){
+        if(UtilValidate.isNotEmpty(deptIdArr)&&UtilValidate.isNotEmpty(userIdArr)&&deptIdArr.length==0&&userIdArr.length==0){
             deptTemp[0]=user.getOrgId();
             authService.insertAuthRelation(deptTemp,userIdArr,analysisEntity.getId(),"CASEANALYSIS",analysisEntity.getCreateUser());
         }else{
@@ -170,7 +170,7 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         String[] deptIdArr=analysisEntity.getDeptArr();
         String[] userIdArr=analysisEntity.getUserArr();
         String[] deptTemp=new String[1];
-        if(deptIdArr.length==0&&userIdArr.length==0){
+        if(UtilValidate.isNotEmpty(deptIdArr)&&UtilValidate.isNotEmpty(userIdArr)&&deptIdArr.length==0&&userIdArr.length==0){
             deptTemp[0]=user.getOrgId();
             authService.insertAuthRelation(deptTemp,userIdArr,analysisEntity.getId(),"CASEANALYSIS",analysisEntity.getCreateUser());
         }else{

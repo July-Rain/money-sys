@@ -4,9 +4,11 @@ import com.lawschool.base.AbstractService;
 import com.lawschool.beans.DailyQuestionConfiguration;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
+import com.lawschool.form.DailyForm;
 import com.lawschool.form.QuestForm;
 import com.lawschool.util.Result;
 
+import java.util.Date;
 import java.util.Map;
 
 public interface DailyQuestionConfigurationService extends AbstractService<DailyQuestionConfiguration> {
@@ -20,10 +22,19 @@ public interface DailyQuestionConfigurationService extends AbstractService<Daily
     int updateByDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration);
 
     Result dailyTestCreate();//返回每日一题 以及 当前每日一题配置
-    Result  newDailyTestCreate();// （  新的   ）返回每日一题 以及 当前每日一题配置
-    public void saveQuestion(TestQuestions testQuestions,String myanswer);
+    Result newDailyTestCreate();// （  新的   ）返回每日一题 以及 当前每日一题配置
+    void saveQuestion(TestQuestions testQuestions,String myanswer);
 
-    public void recordScore( User u, String sorce);
+    void recordScore( User u, String sorce);
 
+    boolean mySave(DailyForm form);
 
+    boolean doCheckDate(String id, Date date);
+
+    /**
+     * 获取使用中的设置的ID
+     *  没有返回null
+     * @return
+     */
+    String getSettingsInUse();
 }

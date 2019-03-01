@@ -11,8 +11,6 @@ var vm = new Vue({
             endDate: '',
             credit: '',
             integral : '',
-            participantUser : '',
-            participantDept : '',
             remarks: '',
             page: 1,
             limit: 10,
