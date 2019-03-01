@@ -99,7 +99,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
             String[] userIdArr=learnTask.getUserArr();
 
             String[] deptTemp=new String[1];
-            if(deptIdArr.length==0&&userIdArr.length==0){
+            if(UtilValidate.isNotEmpty(deptIdArr)&&UtilValidate.isNotEmpty(userIdArr)&&deptIdArr.length==0&&userIdArr.length==0){
                 deptTemp[0]=user.getOrgId();
                 authService.insertAuthRelation(deptTemp,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getCreateUser());
             }else{
@@ -316,7 +316,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
             String[] deptIdArr=learnTask.getDeptArr();
             String[] userIdArr=learnTask.getUserArr();
             String[] deptTemp=new String[1];
-            if(deptIdArr.length==0&&userIdArr.length==0){
+            if(UtilValidate.isNotEmpty(deptIdArr)&&UtilValidate.isNotEmpty(userIdArr)&&deptIdArr.length==0&&userIdArr.length==0){
                 deptTemp[0]=user.getOrgId();
                 authService.insertAuthRelation(deptTemp,userIdArr,learnTask.getId(),"LEARNTASK",learnTask.getCreateUser());
             }else{
