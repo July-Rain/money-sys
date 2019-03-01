@@ -1,12 +1,13 @@
-package com.lawschool.controller;
+package com.lawschool.controller.teacher;
 
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
-import com.lawschool.beans.learn.StuRecordEntity;
+import com.lawschool.beans.teacher.StuMediaTch;
 import com.lawschool.service.StuMediaService;
 import com.lawschool.service.learn.StuRecordService;
+import com.lawschool.service.teacher.StuMediaTchService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
@@ -17,19 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.swing.text.html.parser.Entity;
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/stumedia")
-public class StuMediaController extends AbstractController {
+@RequestMapping("/stumediatch")
+public class StuMediaTchController extends AbstractController {
 
     @Autowired
-    private StuMediaService stuMediaService;
+    private StuMediaTchService stuMediaService;
 
     @Autowired
     private StuRecordService recordService;
@@ -56,8 +55,8 @@ public class StuMediaController extends AbstractController {
      * @return com.lawschool.util.Result
     **/
     @RequestMapping("/getStuMedia")
-    public Result getStuMedia(@RequestBody StuMedia stuMedia){
-        StuMedia stuMedia1 = stuMediaService.getStuMedia(stuMedia);
+    public Result getStuMedia(@RequestBody StuMediaTch stuMedia){
+        StuMediaTch stuMedia1 = stuMediaService.getStuMediaTch(stuMedia);
         return Result.ok().put("info",stuMedia1);
     }
     /**
@@ -69,14 +68,9 @@ public class StuMediaController extends AbstractController {
      **/
     @SysLog("添加课程")
     @RequestMapping("/insertStuMedia")
-    public Result insertStuMedia(@RequestBody StuMedia stuMedia){
-//        User user=getUser();
-//        if(user.getIdentify().equals("1")){//教官
-//            stuMedia.setId(GetUUID.getUUIDs("TM"));
-//        }else{
-//            stuMedia.setId(GetUUID.getUUIDs("SM"));
-//        }
-        stuMediaService.insertStuMedia(stuMedia,getUser());
+    public Result insertStuMedia(@RequestBody StuMediaTch stuMedia){
+        stuMedia.setId(GetUUID.getUUIDs("TM"));
+        stuMediaService.insertStuMediaTch(stuMedia,getUser());
         return Result.ok().put("id",stuMedia.getId());
     }
 
@@ -90,9 +84,9 @@ public class StuMediaController extends AbstractController {
     
     @SysLog("修改课程")
     @RequestMapping("/updateStuMedia")
-    public Result updateStuMedia(@RequestBody StuMedia stuMedia){
-        //User user=getUser();
-        stuMediaService.updateStuMedia(stuMedia,getUser());
+    public Result updateStuMedia(@RequestBody StuMediaTch stuMedia){
+        User user=getUser();
+        stuMediaService.updateStuMediaTch(stuMedia,getUser());
         return Result.ok().put("id",stuMedia.getId());
     }
 
@@ -107,7 +101,7 @@ public class StuMediaController extends AbstractController {
     @RequestMapping("/listTM")
     public Result listTM(@RequestParam Map<String,Object> params){
 
-        List<StuMedia> stuMedias = stuMediaService.selectTchMedia(params,getUser());
+        List<StuMediaTch> stuMedias = stuMediaService.selectTchMedia(params,getUser());
         if(UtilValidate.isEmpty(stuMedias)){
             return Result.error("身份错误或数据为空");
         }
@@ -154,7 +148,7 @@ public class StuMediaController extends AbstractController {
     
     @RequestMapping("/info")
     public Result info(String id){
-        StuMedia stuMedia = stuMediaService.selectStuMediaInfo(id);
+        StuMediaTch stuMedia = stuMediaService.selectStuMediaTchInfo(id);
         return Result.ok().put("data",stuMedia);
     }
 

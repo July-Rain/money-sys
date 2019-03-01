@@ -11,7 +11,7 @@ var vm = new Vue({
             userName: '',
             userCode: '',
             orgCode: '',
-            identify: identify,//表明是用户
+            identify: "",//表明是用户
             currPage: 1,
             pageSize: 10,
             totalCount: 0
@@ -39,7 +39,7 @@ var vm = new Vue({
             password: "",
             photo: "",
             orgCode: "",
-            identify: identify,//添加为用户
+            identify: "0",//添加为用户
             orgName: "",
             userPoliceId: "",
             roles: "",//角色
@@ -124,7 +124,7 @@ var vm = new Vue({
                 password: "",
                 photo: "",
                 orgCode: "",
-                identify: identify,//添加为用户
+                identify: "0",//添加为用户
                 orgName: "",
                 userPoliceId: "",
                 roles: "",//角色
@@ -195,6 +195,20 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         alert("密码重置成功");
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            })
+        },
+        changeIdentify: function(index, row){
+            $.ajax({
+                type: "POST",
+                url: baseURL + "sys/changeIdentify?id=" + row.id+"&identify="+row.identify,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        alert("操作成功");
                     } else {
                         alert(result.msg);
                     }

@@ -15,8 +15,8 @@ var vm = new Vue({
 
         medal:{},
 
-        formLabelWidth: '200px',
-        formLabelWidthS: '143px',
+        formLabelWidth: '150px',
+        formLabelWidthS: '100px',
         fileList: [],
         rules: {
             titleName: [
