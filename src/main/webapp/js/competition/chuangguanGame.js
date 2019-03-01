@@ -27,7 +27,6 @@ var vm = new Vue({
         // tableData: [],//表格数据
         dialogBegin: false,//准备好了吗 提示弹出框
         dialogQuestion: false,//开始答题  弹出
-        closedialog: false, //隐藏右上角X
         dialogerror: false,//答错提示
         dialogyes: false,//答对提示
 
@@ -40,7 +39,6 @@ var vm = new Vue({
         ],
         //题目
         Question: {},
-        rushFailed: false,
         rushSuccess: false
     },
     created: function () {
