@@ -10,18 +10,9 @@ var vm = new Vue({
             examName: '',
             startTime: '',
             endTime: '',
-            pageNo: 1,
-            pageSize: 1,
+            page: 1,
             limit: 10,
             count: 0
-        },
-        queformInline:{
-            pageNo: 1,
-            pageSize: 1,
-            limit: 10,
-            count: 0,
-            queContent:'',
-            typeId:''
         },
         checkSetting: {
             checkNum:'',
@@ -58,23 +49,8 @@ var vm = new Vue({
         title: "",//弹窗的名称
         delIdArr: [],//删除数据
         dialogAdd: false,
-        setExam: false,//设置考试弹框
         dialogView: false,
         dialogEdit: false,
-        setQuestion: false,// 设置题目弹框
-        tableData3: [],
-        sinMultipleSelection: [],//单选题多选框
-        mulMultipleSelection:[],//多选题
-        judgeMultipleSelection:[],//判断题
-        subMultipleSelection:[],  //主观题
-        sinMultScore:1,
-        mulMultScore:1,
-        judgeMultScore:1,
-        subMultScore:1,
-        randomQuesModal : false,
-        randomQuesData:[],
-        dataListSelections: [],//选中行
-        examConfigForm:{}
     },
     created: function () {
         this.$nextTick(function () {
@@ -100,19 +76,12 @@ var vm = new Vue({
             this.reload();
         },
         handleSizeChange: function (val) {
-            this.formInline.pageSize = val;
+            this.formInline.limit = val;
             this.reload();
         },
-        quehandleSizeChange: function (val) {
-            this.queformInline.pageSize = val;
-            this.queReload();
-        },
-        quehandleCurrentChange:function(val){
-            this.queformInline.currPage = val;
-            this.queReload();
-        },
+
         handleCurrentChange: function (val) {
-            this.formInline.currPage = val;
+            this.formInline.page = val;
             this.reload();
         },
         addConfig: function () {
@@ -132,6 +101,10 @@ var vm = new Vue({
             document.getElementById("dialogEdit").contentWindow.location.reload(true);
 
         },
+        //序列号计算
+        indexMethod: function (index) {
+            return index + 1 + (vm.formInline.currPage - 1) * vm.formInline.pageSize;
+        },
         handleDelExam: function (index, row) {
             var id = row.id;
             this.$confirm('此操作将永久删除该考试配置, 是否继续?', '提示', {
@@ -145,12 +118,15 @@ var vm = new Vue({
                     async: true,
                     contentType: "application/json",
                     success: function (result) {
-                        vm.reload();
-                        vm.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
-
+                        if (result.code === 0) {
+                            vm.reload();
+                            vm.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                        } else {
+                            alert(result.msg);
+                        }
                     }
                 });
             }).catch(function () {
@@ -182,9 +158,7 @@ var vm = new Vue({
             document.getElementById("dialogView").contentWindow.location.reload(true);
 
         },
-        handleChange: function () {
 
-        },
         saveCheckSet: function (){
             this.checkSettingDia = false;
             console.info(vm.checkSetting);
@@ -485,24 +459,11 @@ var vm = new Vue({
         }
     },
     filters: {
-        sinMultScoreFn: function (_length) {
-            if(this.sinMultScore || this.sinMultScore ===0){
-                return _length * this.sinMultScore
-            }
-        },
-        mulMultScoreFn: function (_length) {
-            if(this.mulMultScore || this.mulMultScore ===0){
-                return _length * this.mulMultScore
-            }
-        },
-        judgeMultScoreFn: function (_length) {
-            if(this.judgeMultScore || this.judgeMultScore ===0){
-                return _length * this.judgeMultScore
-            }
-        },
-        subMultScoreFn: function (_length) {
-            if(vm.subMultScore || vm.subMultScore ===0){
-                return _length * vm.subMultScore
+        timeout: function (startTime,endTime) {
+            if(startTime === null || endTime ==null ){
+                return true
+            }else {
+                return new Date(Date.parse(startTime.replace(/-/g,  "/"))).getTime() <=new Date().getTime()&&new Date(Date.parse(endTime.replace(/-/g,  "/"))).getTime() >=new Date().getTime
             }
         }
     }

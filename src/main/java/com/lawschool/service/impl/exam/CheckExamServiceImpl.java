@@ -1,6 +1,8 @@
 package com.lawschool.service.impl.exam;
 
 import com.lawschool.base.AbstractServiceImpl;
+import com.lawschool.beans.Integral;
+import com.lawschool.beans.User;
 import com.lawschool.beans.exam.CheckExam;
 import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.beans.exam.UserExam;
@@ -12,6 +14,8 @@ import com.lawschool.form.CalcScoreForm;
 import com.lawschool.form.CheckExamForm;
 import com.lawschool.form.QuestForm;
 import com.lawschool.form.UserAnswerForm;
+import com.lawschool.service.IntegralService;
+import com.lawschool.service.UserService;
 import com.lawschool.service.exam.CheckExamService;
 import com.lawschool.service.exam.ExamConfigService;
 import com.lawschool.service.exam.UserExamService;
@@ -46,6 +50,12 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
 
     @Autowired
     private ExamConfigService examConfigService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private IntegralService integralService;
 
     @Override
     public List<String> getUserExamIdBuCheckUserId(String checkUserId) {
@@ -87,6 +97,20 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
             //阅卷完成计算分数
             float firScore = userExamAnswerDao.getScoreByUserExamId(userExamId);
             countScore = firScore + scoreForm.getScore();
+
+            if(!"10038".equals(examConfig.getReachRewardType())){
+                Integral integral = new Integral();
+                if ("10039".equals(examConfig.getReachRewardType())){
+                    //学分
+                    integral.setType("0");
+                }else{
+                    integral.setType("1");
+                }
+                integral.setSrc("exam");
+                integral.setPoint(Integer.parseInt(examConfig.getReachReward()));
+                User user = userService.selectUserByUserId(userExam.getUserId());
+                integralService.addIntegralRecord(integral,user);
+            }
         }
         userExam.setIsFinMark(isFinsh);
         userExam.setScore(countScore);
@@ -200,6 +224,20 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
             userExamAnswer.setUserScore(checkExamForm.getScore());
             countScore +=checkExamForm.getScore();
             userExamAnswerDao.updateById(userExamAnswer);
+
+            if(!"10038".equals(examConfig.getReachRewardType())){
+                Integral integral = new Integral();
+                if ("10039".equals(examConfig.getReachRewardType())){
+                    //学分
+                    integral.setType("0");
+                }else{
+                    integral.setType("1");
+                }
+                integral.setSrc("exam");
+                integral.setPoint(Integer.parseInt(examConfig.getReachReward()));
+                User user = userService.selectUserByUserId(userExam.getUserId());
+                integralService.addIntegralRecord(integral,user);
+            }
         }
         userExam.setIsFinMark("0");
         userExam.setScore(countScore);

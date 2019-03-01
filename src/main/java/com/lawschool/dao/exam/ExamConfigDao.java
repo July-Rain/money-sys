@@ -36,4 +36,6 @@ public interface ExamConfigDao extends AbstractDao<ExamConfig>{
 	    void checkset(CheckSetForm checkSetForm);
 
 		CheckSetForm getCheckSetting(String id);
+
+	List<TestQuestions> findByQueAndEdIdForExam(@Param("idList")List<String> idList,@Param("examDetailId") String examDetailId);
 }
