@@ -38,7 +38,7 @@
                                 {{ answer.questionContent }}
                             </el-radio>
                         </el-radio-group>
-                        <div class="answer-area" v-show="!isSubmit">
+                        <div class="answer-area" v-show="isSubmit">
                             <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
                             <p :class="1==1 ? 'right' : 'err'">你的答案：<span>AB</span>，正确答案：<span>AB</span></p>
                             <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
@@ -54,7 +54,7 @@
                                 {{ answer.questionContent }}
                             </el-checkbox>
                         </el-checkbox-group>
-                        <div class="answer-area" v-show="!isSubmit">
+                        <div class="answer-area" v-show="isSubmit">
                             <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
                             <p :class="1==1 ? 'right' : 'err'">你的答案：<span>AB</span>，正确答案：<span>AB</span></p>
                             <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
@@ -70,7 +70,7 @@
                                 {{ answer.questionContent }}
                             </el-radio>
                         </el-radio-group>
-                        <div class="answer-area" v-show="!isSubmit">
+                        <div class="answer-area" v-show="isSubmit">
                             <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
                             <p :class="0==1 ? 'right' : 'err'">你的答案：<span>AB</span>，正确答案：<span>AB</span></p>
                             <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
