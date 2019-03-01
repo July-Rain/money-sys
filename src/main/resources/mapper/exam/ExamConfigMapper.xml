@@ -270,6 +270,27 @@
     ORDER BY t.question_type
   </select>
 
+  <select id="findByQueAndEdIdForExam" resultType="com.lawschool.beans.TestQuestions">
+    SELECT
+    t.id,
+    t.com_content,
+    t.question_difficulty,
+    t.question_type,
+    t.answer_id,
+    t.legal_basis,
+    t.answer_describle,
+    t.answer_choice_number
+    FROM law_testquestions t
+    inner JOIN LAW_EXAM_QUESTIONS q ON t.id = q.exam_library_id
+    and q.exam_detail_id=#{examDetailId}
+    <where>
+      t.id IN
+      <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </where>
+    ORDER BY t.question_type
+  </select>
   <update id="checkset" parameterType="com.lawschool.form.CheckSetForm">
     update LAW_EXAM_CONFIG
     <trim prefix="set" suffixOverrides=",">
