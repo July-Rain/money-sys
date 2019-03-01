@@ -39,7 +39,8 @@ var vm = new Vue({
         ],
         //题目
         Question: {},
-        rushSuccess: false
+        rushSuccess: false,
+        closedialog: false
     },
     created: function () {
         this.$nextTick(function () {
@@ -423,7 +424,11 @@ var vm = new Vue({
 
         },
         backRush: function () {
-            window.location.href = baseURL + 'modules/competition/rushLevel.html'
+            window.location.href = baseURL + 'modules/competition/rushLevel.html?index=1'
+        },
+        replay: function () {
+
+            window.location.href = baseURL + 'modules/competition/rushLevel.html?index=1'
         }
     }
 });
