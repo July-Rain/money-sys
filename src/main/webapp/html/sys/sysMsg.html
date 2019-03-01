@@ -36,6 +36,7 @@
                         type="index"
                         header-align="center"
                         align="center"
+                        :index="indexMethod"
                         width="50">
                 </el-table-column>
                 <el-table-column
@@ -296,6 +297,14 @@
                             <el-table-column
                                     type="selection"
                                     width="55">
+                            </el-table-column>
+                            <el-table-column
+                                    label="序号"
+                                    type="index"
+                                    header-align="center"
+                                    align="center"
+                                    :index="indexUserMethod"
+                                    width="50">
                             </el-table-column>
                             <el-table-column
                                     prop="userCode"

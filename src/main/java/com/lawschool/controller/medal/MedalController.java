@@ -1,5 +1,6 @@
 package com.lawschool.controller.medal;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
@@ -12,6 +13,7 @@ import com.lawschool.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +54,10 @@ public class MedalController extends AbstractController {
     @SysLog("保存勋章")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody MedalEntity entity) {
+
+
+//        entity.setCreateTime(new Date());
+//        entity.setCreateUser(getUser().getId());
         medalService.save(entity);
         return Result.ok();
     }
@@ -112,5 +118,36 @@ public class MedalController extends AbstractController {
     public Result wear(@PathVariable("id") String id) {
         userMedalService.enbleWear(getUser().getId(), id);
         return Result.ok();
+    }
+
+
+   //勋章名称重复问题
+    @RequestMapping("/medalName")
+    public Result medalName(String medalname,String mytype,String id){
+        String type="";
+
+        MedalEntity medalEntity=null;
+
+        if(mytype.equals("1"))
+        {
+             medalEntity= medalService.selectOne(new EntityWrapper<MedalEntity>().eq("title_name",medalname));
+
+        }
+        else if(mytype.equals("2"))
+        {
+             medalEntity= medalService.selectOne(new EntityWrapper<MedalEntity>().eq("title_name",medalname).ne("ID",id));
+
+        }
+
+        if(medalEntity==null)
+        {
+            type="0";
+        }
+        else
+        {
+            type="1";
+        }
+        return Result.ok().put("type",type);
+
     }
 }

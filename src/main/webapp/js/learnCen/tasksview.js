@@ -184,6 +184,10 @@ var vm = new Vue({
         indexMethod:function (index) {
             return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
         },
+        //序列号计算
+        indexUserMethod: function (index) {
+            return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;
+        },
         // 查询
         onSubmit: function () {
             this.reload();

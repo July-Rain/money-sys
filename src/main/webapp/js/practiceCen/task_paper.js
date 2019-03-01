@@ -81,6 +81,11 @@ var vm = new Vue({
                 = 'modules/exerciseCenter/task_index.html';
         },
         commit: function(){
+            if(this.title !== '提 交'){
+                var parentWin = window.parent;
+                parentWin.document.getElementById("container").src = 'modules/exerciseCenter/task_index.html';
+                return
+            }
             $.ajax({
                 type: "POST",
                 url: baseURL + "exercise/task/commit/" + id,
@@ -88,8 +93,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         var parentWin = window.parent;
-                        parentWin.document.getElementById("container").src
-                            = 'modules/exerciseCenter/task_index.html';
+                        parentWin.document.getElementById("container").src = 'modules/exerciseCenter/task_index.html';
                     } else {
                         alert(result.msg);
                     }
@@ -119,6 +123,8 @@ var vm = new Vue({
                                 vm.$alert('当前为最后一题，是否結束本次回顾！', '提示', {
                                     confirmButtonText: '确定',
                                     callback: function () {
+                                        var parentWin = window.parent;
+                                        parentWin.document.getElementById("container").src = 'modules/exerciseCenter/task_index.html';
                                     }
                                 });
 

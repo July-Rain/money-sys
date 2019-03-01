@@ -71,6 +71,8 @@
                 AND law_medal.credit &lt;= #{credit}
             </if>
         </where>
+        ORDER BY
+        CREATE_TIME DESC
     </select>
 
     <delete id="delete">

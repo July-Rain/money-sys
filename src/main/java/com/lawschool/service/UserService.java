@@ -89,4 +89,14 @@ public interface UserService  extends AbstractService<User> {
      * @return boolean
     **/
      int updateUser(User user);
+
+     /**
+      * @Author MengyuWu
+      * @Description 修改身份
+      * @Date 19:28 2019-2-28
+      * @Param [id, identify]
+      * @return int
+      **/
+     
+     int changeIdentify(String id,String identify);
 }

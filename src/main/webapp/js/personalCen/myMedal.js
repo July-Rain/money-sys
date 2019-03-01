@@ -9,9 +9,9 @@ var vm = new Vue({
             integral: '',
             credit: '',
             badge:'',
-            page: 1,
             limit: 10,
-            count: 0
+            page: 1,
+            count: 0,
         },
         formLabelWidth: '120px',
         isReceive : [],
@@ -22,6 +22,10 @@ var vm = new Vue({
 
     },
     methods: {
+        //序列号计算
+        indexMethod: function (index) {
+            return index + 1 + (vm.form.page - 1) * vm.form.limit;
+        },
         layFn() {
             $(".el-dialog").css("height", "auto")
         },
@@ -39,13 +43,13 @@ var vm = new Vue({
             return this.$confirm(`确定移除 ${file.name}？`);
         },
 
-        handleSizeChange: function (val) {
+        handleSizeChange: function (event) {
             vm.form.limit = event;
-            vm.refresh();
+            vm.reload();
         },
-        handleCurrentChange: function (val) {
+        handleCurChange: function (event) {
             vm.form.page = event;
-            vm.refresh();
+            vm.reload();
         },
         addExam: function () {
 
@@ -87,14 +91,17 @@ var vm = new Vue({
             });
         },
         wear: function (index,row) {
-            console.info(index);
-            console.info(row.badge);
+
+
+            console.info("@@@@@");
+            console.info(row);
             vm.user.myMedal=row.badge;
 
             //修改这个人身上背的勋章
               $.ajax({
                 type: "GET",
-                url: baseURL + "sys/updateBymyMedal?myMedal="+row.badge,
+                // url: baseURL + "sys/updateBymyMedal?myMedal="+row.badge,
+                  url: baseURL + "sys/updateBymyMedal?myMedal="+row.id,
                   dataType: "json",
                 async:false,
                 success: function (result) {
@@ -173,9 +180,11 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.tableData = result.page.list;
-                        vm.form.page = result.page.page;
+                        vm.form.page = result.page.pageNo;
                         vm.form.pageSize = result.page.pageSize;
                         vm.form.count = parseInt(result.page.count);
+
+
                     } else {
                         alert(result.msg);
                     }

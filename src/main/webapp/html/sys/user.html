@@ -72,7 +72,6 @@
                         <el-table-column
                                 prop="userName"
                                 label="姓名"
-                                width="140"
                                 align="center"
                         >
                         </el-table-column>
@@ -80,6 +79,7 @@
                                 prop="userPoliceId"
                                 label="警号"
                                 align="center"
+                                width="180"
                         >
                         </el-table-column>
                         <el-table-column
@@ -88,13 +88,26 @@
                                 align="center"
                         >
                         </el-table-column>
+
                         <el-table-column
                                 prop="orgName"
                                 label="部门名称"
                                 align="center"
+                                width="180"
                         >
                         </el-table-column>
-                        <el-table-column label="操作" width="267" prop="userStatus" align="center">
+                        <el-table-column
+                                prop="identify"
+                                label="是否是教官"
+                                header-align="center"
+                                align="center"
+                                width="80">
+                            <template slot-scope="scope">
+                                <el-tag v-if="scope.row.identify === '0'" size="small" type="danger">否</el-tag>
+                                <el-tag v-else size="small" type="success">是</el-tag>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作" width="350" prop="userStatus" align="center">
                             <template slot-scope="scope">
                                 <el-popover
                                         placement="right"
@@ -149,6 +162,30 @@
                                        slot="reference"
                                        @click="handleRecovery(scope.$index, scope.row)"
                                        style="color: #119e0a;" >&#xe660;
+                                    </i>
+                                </el-popover>
+                                <el-popover
+                                        v-if="scope.row.identify=='0'"
+                                        placement="right"
+                                        trigger="hover"
+                                        content="设置为教官">
+                                    <i class="iconfont icon-renyuanqiyong tabIcon"
+                                       slot="reference"
+                                       @click="changeIdentify(scope.$index, scope.row)"
+                                       style="color: #1381e3;"
+                                    >
+                                    </i>
+                                </el-popover>
+                                <el-popover
+                                        v-if="scope.row.identify=='1'"
+                                        placement="right"
+                                        trigger="hover"
+                                        content="取消教官身份">
+                                    <i class="iconfont icon-renyuanqiyong tabIcon"
+                                       slot="reference"
+                                       @click="changeIdentify(scope.$index, scope.row)"
+                                       style="color: #1381e3;"
+                                    >
                                     </i>
                                 </el-popover>
                             </template>
@@ -224,6 +261,10 @@
                             >
                             </el-option>
                         </el-select>
+                    </el-form-item>
+                    <el-form-item label="是否为教官：" prop="identify">
+                        <el-switch v-model="teacher.identify" active-text="是" inactive-text="否" active-value="1"
+                                   inactive-value="0" ></el-switch>
                     </el-form-item>
                     <el-form-item label="排序号：" prop="sort">
                         <el-input type="number" v-model="teacher.sort" placeholder="请输入排序号" ></el-input>

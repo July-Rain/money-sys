@@ -31,6 +31,7 @@ var vm = new Vue({
             userIds: "",
             stuDescribe: "",
             videoPicAcc: "",//视频首页
+            accessoryId:""
         },
         uploadedPlayer: null, // 上传视频实例
         rules: {//表单验证规则
@@ -134,14 +135,15 @@ var vm = new Vue({
                 userIds: "",
                 stuDescribe: "",
                 videoPicAcc: "",//视频首页
+                accessoryId:""
             },
                 //清空editor
                 editor.txt.html("");
             this.title = "新增";
             this.dialogStuMediaTch = true;
         },
-        handleDetail: function (index, row) {
-            this.title = "查看";
+        handleEdit: function (index, row) {
+            this.title = "修改";
             this.dialogStuMediaTch = true;
             this.deptCheckData = [];
             editor.txt.html("");
@@ -151,17 +153,23 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
+                        debugger
                         vm.stuMediaTch = result.data;
-                        vm.deptCheckData = result.data.deptArr;
-                        editor.txt.html(vm.stuMediaTch.comContent);
-                        for (var i = 0; i < vm.stuMediaTch.length; i++) {
-                            if (vm.stuMediaTch.stuType != '1' && vm.stuMediaTch.comContent) {
-                                vm.stuMediaTch.contentUrl = baseURL + "sys/download?accessoryId=" + vm.videoData[i].comContent;
-                                if (vm.stuMediaTch.videoPicAcc) {
-                                    vm.stuMediaTch.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.videoData[i].videoPicAcc;
-                                }
-
+                        if(vm.stuMediaTch.accessoryInfoList){
+                            vm.fileList=vm.stuMediaTch.accessoryInfoList;
+                            for(var i=0;i<vm.fileList.length;i++){
+                                vm.fileList[i].name = vm.fileList[i].accessoryName;
+                                vm.fileList[i].url = baseURL + "sys/download?accessoryId=" + vm.fileList[i].id;
                             }
+                        }
+                        if (vm.stuMediaTch.stuType != '1' && vm.stuMediaTch.comContent) {
+                            vm.stuMediaTch.contentUrl = baseURL + "sys/download?accessoryId=" + vm.stuMediaTch.comContent;
+                            if (vm.stuMediaTch.videoPicAcc) {
+                                vm.stuMediaTch.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.stuMediaTch.videoPicAcc;
+                            }
+
+                        }else if(vm.stuMediaTch.comContent){
+                            editor.txt.html(vm.stuMediaTch.comContent);
                         }
                     } else {
                         alert(result.msg);
@@ -306,6 +314,27 @@ var vm = new Vue({
             vm.stuMediaTch.videoPicAccUrl = "";
             if (vm.stuMediaTch.stuType == '1') {
                 loadEditor();
+            }
+        },
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePreview(file) {
+            console.log(file);
+        },
+        handleExceed(files, fileList) {
+            this.$message.warning("当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件");
+        },
+        beforeRemove(file, fileList) {
+            return this.$confirm("确定移除 ${ file.name }？");
+        },
+        handleAssSuccess: function (response, file, fileList) {
+            debugger
+            if (response.code == 0) {
+                vm.stuMediaTch.accessoryId = response.accessoryId;
+                fileList[fileList.length-1].url = baseURL + "sys/download?accessoryId=" + response.accessoryId;
+            } else {
+                this.$message.error('图片上传失败，请重新上传！');
             }
         },
         toHome: function () {

@@ -5,16 +5,30 @@ var vm = new Vue({
         tableData: [],
         formInline: {
             taskContent: '',
-            taskName: '',
+            name: '',
             limit: 10,
             page: 1,
             count: 0,
-            endTime:"",
-            startTime:"",
+            jssj:"",
+            kssj:"",
             breadArr:[]
         },
     },
     methods: {
+        getRate: function (row, column) {
+            var msg = '';
+
+            var answerNum = row.answerNum == null? 0 : row.answerNum;
+            if(answerNum == 0){
+                return msg;
+
+            }else {
+                var rightNum = row.rightNum==null? 0 : row.rightNum;
+                msg = rightNum/answerNum;
+                msg = (msg * 100).toFixed(2);
+                return msg + "%";
+            }
+        },
         handleSizeChange: function (event) {
             vm.formInline.limit = event;
             vm.refresh();
@@ -75,6 +89,7 @@ var vm = new Vue({
         },
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
+            this.refresh();
         },
     },
     created: function () {
