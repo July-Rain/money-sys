@@ -70,9 +70,7 @@ var vm = new Vue({
             console.log(key, keyPath);
         },
         toChild: function (item,event) {
-            if(item.url === null){
-                return
-            }
+
             if(item.url === 'container.html'){
                 vm.navData.splice(-1,1);
                 vm.showThis = false;
@@ -86,15 +84,16 @@ var vm = new Vue({
                 $(".header-right ul li").removeClass("this");
 
                 if(item.url.indexOf("?") == -1){
+
                     if(item.url == 'menu'){
+                        console.info("item1",item);
                         vm.childUrl = item.list[0].url + "?id=" + item.id;
                     }else{
+                        console.info("item2",item);
                         if(vm.childUrl === item.url + "?id=" + item.id){
-                            document.getElementById('container').src = vm.childUrl;
-                        }else{
-                            vm.childUrl = item.url + "?id=" + item.id;
+                            document.getElementById('container').contentWindow.location.reload(true);
                         }
-
+                        vm.childUrl = item.url + "?id=" + item.id;
 
                     }
 

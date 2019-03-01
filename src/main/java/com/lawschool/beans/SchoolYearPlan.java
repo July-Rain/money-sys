@@ -20,8 +20,6 @@ public class SchoolYearPlan extends DataEntity<SchoolYearPlan> {
     private Date endDate;//结束时间
     private String credit;//计划学分
     private String integral;//计划积分
-    private String participantUser;//计划参与人员
-    private String participantDept;//计划参与部门
     private String remarks;//备注
 
     public String getPlanName() {
@@ -74,21 +72,6 @@ public class SchoolYearPlan extends DataEntity<SchoolYearPlan> {
         this.integral = integral;
     }
 
-    public String getParticipantUser() {
-        return participantUser;
-    }
-
-    public void setParticipantUser(String participantUser) {
-        this.participantUser = participantUser;
-    }
-
-    public String getParticipantDept() {
-        return participantDept;
-    }
-
-    public void setParticipantDept(String participantDept) {
-        this.participantDept = participantDept;
-    }
 
     public String getRemarks() {
         return remarks;

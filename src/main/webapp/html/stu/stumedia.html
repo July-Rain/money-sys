@@ -14,35 +14,51 @@
             color: #57A8DC;
         }
 
-        .icon-yinpin{
+        .icon-yinpin {
             font-size: 30px;
             color: #57A8DC;
         }
-        .icon-tupian{
+
+        .icon-tupian {
             font-size: 30px;
             color: #57A8DC;
         }
-        .icon-shipin{
+
+        .icon-shipin {
             font-size: 30px;
             color: #57A8DC;
         }
+
         /* dialog videojs 样式 */
-        .el-dialog div.vjs-controls-enabled{
+        .el-dialog div.vjs-controls-enabled {
             width: 50% !important;
             height: 175px;
             margin: 35px 100px 35px !important;
         }
-        img.avatar{
+
+        img.avatar {
             width: 300px !important;
             margin: 35px 100px 35px !important;
         }
-        button.vjs-big-play-button{
+
+        button.vjs-big-play-button {
             top: 40% !important;
             left: 50% !important;
             outline: none !important;
         }
-        video::-webkit-media-controls-enclosure{ overflow: hidden; }
-        video::-webkit-media-controls-panel{ width: calc(100% + 30px); }
+
+        /*video::-webkit-media-controls-enclosure {*/
+            /*overflow: hidden;*/
+        /*}*/
+
+        /*video::-webkit-media-controls-panel {*/
+            /*width: calc(100% + 30px);*/
+        /*}*/
+
+
+        .el-dialog__wrapper textarea.el-textarea__inner{
+            height: 100px;
+        }
     </style>
 </head>
 <body>
@@ -109,8 +125,8 @@
                 </div>
                 <div>
                     <div class="info_btn">
-                        <el-button size="mini" type="primary" @click="addStuMedia"><i
-                                class="iconfont icon-htmal5icon18"></i>新增
+                        <el-button size="mini" type="primary" @click="addStuMedia">
+                            <i class="iconfont icon-htmal5icon18"></i>新增
                         </el-button>
                     </div>
                     <el-table
@@ -232,7 +248,7 @@
                             </el-form-item>
                         </template>
                         <template v-if="stuMedia.stuType=='2'">
-                            <el-form-item label="音频上传：" prop="comContent" >
+                            <el-form-item label="音频上传：" prop="comContent">
                                 <audio v-if="stuMedia.comContent !='' && videoFlag == false"
                                        :src="stuMedia.contentUrl" class="avatar" controls="controls">您的浏览器不支持音频播放
                                 </audio>
@@ -252,7 +268,7 @@
                         <template v-if="stuMedia.stuType=='3'">
                             <el-form-item label="视频封面上传：" prop="videoPicAcc">
                                 <img v-if="stuMedia.videoPicAcc !=''" :src="stuMedia.videoPicAccUrl" class="avatar">
-                                <i v-else class="iconfont icon-tupian"></i>
+                                <i class="iconfont icon-tupian"></i>
                                 <el-upload
                                         class="avatar-uploader"
                                         name="importfile"
@@ -267,20 +283,22 @@
                             </el-form-item>
                             <el-form-item label="视频上传：" prop="comContent">
                                 <video v-show="stuMedia.comContent !='' && videoFlag == false" autoplay
-                                       :src="stuMedia.contentUrl" id="video-uploaded" class="avatar video-js" controls="controls">您的浏览器不支持视频播放
+                                       :src="stuMedia.contentUrl" id="video-uploaded" class="avatar video-js"
+                                       controls="controls">您的浏览器不支持视频播放
                                 </video>
-                                <i v-else-if="stuMedia.comContent =='' && videoFlag == false"
+                                <i v-if="stuMedia.comContent =='' && videoFlag == false"
                                    class="iconfont icon-shipin"></i>
                                 <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent"
                                              style="margin-top:30px;"></el-progress>
                                 <!-- action必选参数, 上传的地址 -->
-                                <el-upload class="video-button" name="importfile" class="avatar-uploader el-upload--text"
+                                <el-upload class="video-button" name="importfile"
+                                           class="avatar-uploader el-upload--text"
                                            :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess"
                                            :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
                                     <el-button type="primary">点击上传</el-button>
 
                                 </el-upload>
-                                <P class="text">请保证视频格式正确，且不超过100M</P>
+                                <p class="text">请保证视频格式正确，且不超过100M</p>
                             </el-form-item>
                         </template>
                         <el-form-item label="所属警种：" prop="stuPoliceclass">
@@ -424,6 +442,7 @@
 
 <!-- import [current] JavaScript -->
 
-<script type="text/javascript" src="${rc.contextPath}/statics/plugins/editor/wangEditor.min.js"></script>
+
 <script src="${rc.contextPath}/js/stu/stumedia.js?_${.now?long}"></script>
+<script type="text/javascript" src="${rc.contextPath}/statics/plugins/editor/wangEditor.min.js"></script>
 </html>

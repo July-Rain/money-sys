@@ -27,7 +27,8 @@ var vm = new Vue({
         index: 1,
         question: {},
         starIcon: 'el-icon-star-off',
-        title: ''
+        title: '',
+        isReview: ''
     },
     methods: {
         sure: function (rightAnswer) {// 多选
@@ -272,8 +273,10 @@ var vm = new Vue({
         this.$nextTick(function () {
             if(isReview != null && isReview != ''){
                 vm.title = '结束回顾';
+                vm.isReview = '1';
             } else {
                 vm.title = '提 交';
+                vm.isReview = '-1';
             }
             if(indexs != null && indexs != ''){
                 vm.index = Number(indexs);
