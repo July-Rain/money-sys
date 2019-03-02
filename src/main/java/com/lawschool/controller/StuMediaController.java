@@ -76,6 +76,7 @@ public class StuMediaController extends AbstractController {
 //        }else{
 //            stuMedia.setId(GetUUID.getUUIDs("SM"));
 //        }
+        stuMedia.setId(GetUUID.getUUIDs("SM"));
         stuMediaService.insertStuMedia(stuMedia,getUser());
         return Result.ok().put("id",stuMedia.getId());
     }
