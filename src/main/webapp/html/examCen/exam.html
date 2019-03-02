@@ -291,7 +291,8 @@
                         <el-popover
                                 placement="top-start"
                                 trigger="hover"
-                                content="编辑">
+                                content="编辑"
+                        v-if="scope.row.startTime | timeout">
                             <i class="iconfont icon-xiugaimima tabIcon"
                                slot="reference"
                                @click="handleEdit(scope.$index, scope.row)"
@@ -301,26 +302,14 @@
                         <el-popover
                                 placement="top-start"
                                 trigger="hover"
-                                content="删除">
+                                content="删除"
+                                v-if="scope.row.startTime | timeout">
                             <i class="iconfont icon-tubiaozhizuo- tabIcon"
                                slot="reference"
                                @click="handleDelExam(scope.$index, scope.row)"
                                style="color: #e31313;">
                             </i>
                         </el-popover>
-
-                        <el-popover
-                                v-if="scope.row.status==0"
-                                placement="top-start"
-                                trigger="hover"
-                                content="设置考试信息">
-                            <i class="iconfont icon-shezhi1 tabIcon"
-                               slot="reference"
-                               @click="setExamFn(scope.$index, scope.row)"
-                               style="color: #e31313;">
-                            </i>
-                        </el-popover>
-
                         <el-popover
                                 v-if="tableData[scope.$index].checkPassword==null"
                                 placement="top-start"
@@ -382,8 +371,8 @@
                                    collapse-tags
                                    style="width: auto"
                                    placeholder="请选择每套试卷阅卷人数">
-                            <el-option label="1人" value="1"></el-option>
-                            <el-option label="2人" value="2"></el-option>
+                            <el-option label="1人" value="1" selectd="v-if="checkSetting.checkNum==1""></el-option>
+                            <el-option label="2人" value="2" v-if="checkSetting.checkNum>1"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -455,12 +444,15 @@
                 </el-col>
                 <el-col :span="24">
                     <el-form-item label="阅卷口令：" prop="checkScoreDifference">
-                        <el-input v-model="checkSetting.checkPassword" :disabled="true"></el-input>
+                        <el-input id="checkPassword" v-model="checkSetting.checkPassword" readonly>
+                        </el-input>
+                        <el-button @click="copyCheckPass">点击复制</el-button>
                     </el-form-item>
                 </el-col>
-                <el-col :span="24">
+                <el-col :span="24" v-if="checkSetting.isAibitration==0">
                     <el-form-item label="审核人员阅卷口令：" prop="checkScoreDifference">
-                        <el-input v-model="checkSetting.auditCheckPass" :disabled="true"></el-input>
+                        <el-input id="auditCheckPass" v-model="checkSetting.auditCheckPass" readonly></el-input>
+                        <el-button @click="copyAuditPass">点击复制</el-button>
                     </el-form-item>
                 </el-col>
             </el-row>

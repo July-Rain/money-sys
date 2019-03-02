@@ -47,6 +47,36 @@ public class UserExamAnswer extends DataEntity<UserExamAnswer> {
 
     private String checkStatus;     //  0:完成 1：未完成 2待审核
 
+    private String firCheckBase;    //初审打分依据
+
+    private String secCheckBase;    //二审打分依据
+
+    private String audCheckBase;    //审核打分依据
+
+    public String getFirCheckBase() {
+        return this.firCheckBase;
+    }
+
+    public void setFirCheckBase(final String firCheckBase) {
+        this.firCheckBase = firCheckBase;
+    }
+
+    public String getSecCheckBase() {
+        return this.secCheckBase;
+    }
+
+    public void setSecCheckBase(final String secCheckBase) {
+        this.secCheckBase = secCheckBase;
+    }
+
+    public String getAudCheckBase() {
+        return this.audCheckBase;
+    }
+
+    public void setAudCheckBase(final String audCheckBase) {
+        this.audCheckBase = audCheckBase;
+    }
+
     public String getCheckStatus() {
         return this.checkStatus;
     }

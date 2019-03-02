@@ -21,6 +21,7 @@ var vm = new Vue({
         examConfig:{},
         subject: [],
         subScore:[],
+        checkBase:[],
         checkStatus:''
     },
     created: function () {
@@ -122,6 +123,7 @@ var vm = new Vue({
                 var obj = {
                     queId: vm.subjectList[i].questionId,
                     score: vm.subScore[i] == '' ? '' : vm.subScore[i],
+                    checkBase:vm.checkBase[i] ==''?'':vm.checkBase[i]
                 };
                 vm.userAnswerForm.checkExamForm.push(obj)
             }

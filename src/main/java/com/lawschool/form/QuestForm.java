@@ -39,7 +39,36 @@ public class QuestForm {
     private double firScore;     //閱卷分數1
     private double secScore;     //阅卷分数2
     private double userScore;   //用户取得分数
+    private String firCheckBase;    //初审打分依据
+
+    private String secCheckBase;    //二审打分依据
+
+    private String audCheckBase;    //审核打分依据
     private List<AnswerForm> rightAnswer;   //正确选项
+
+    public String getFirCheckBase() {
+        return this.firCheckBase;
+    }
+
+    public void setFirCheckBase(final String firCheckBase) {
+        this.firCheckBase = firCheckBase;
+    }
+
+    public String getSecCheckBase() {
+        return this.secCheckBase;
+    }
+
+    public void setSecCheckBase(final String secCheckBase) {
+        this.secCheckBase = secCheckBase;
+    }
+
+    public String getAudCheckBase() {
+        return this.audCheckBase;
+    }
+
+    public void setAudCheckBase(final String audCheckBase) {
+        this.audCheckBase = audCheckBase;
+    }
 
     public List<AnswerForm> getRightAnswer() {
         return this.rightAnswer;

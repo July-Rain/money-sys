@@ -12,6 +12,15 @@ public class CheckExamForm {
     private String userExamAnsId;   //答题编号ID
     private String queId;// 答案 ID
     private double score;// 题目ID
+    private String checkBase;   //打分依据
+
+    public String getCheckBase() {
+        return this.checkBase;
+    }
+
+    public void setCheckBase(final String checkBase) {
+        this.checkBase = checkBase;
+    }
 
     public String getUserExamAnsId() {
         return this.userExamAnsId;

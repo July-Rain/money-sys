@@ -31,6 +31,9 @@ var vm = new Vue({
             children: 'child',
             label: 'libName'
         },//部门树的默认格式
+        dialogLaw:false,//查看详情页面
+        lawDesic:{},//法律法规实体信息
+        title:"",//法律法规查看详情标题
     },
     created: function () {
 
@@ -90,7 +93,9 @@ var vm = new Vue({
         },
         // 表单重置
         resetForm: function (formName) {
+            vm.formInline.libId="";
             this.$refs[formName].resetFields();
+            vm.reload();
         },
         reload: function () {
             $.ajax({
@@ -130,7 +135,7 @@ var vm = new Vue({
         },
         confimLib: function () {
             var node=this.$refs.libTree.getCurrentNode();
-            vm.formInline.libId=node.libId;
+            vm.formInline.libId=node.libCode;
             vm.formInline.libName=node.libName;
             this.dialogLib=false;
         },
@@ -145,9 +150,31 @@ var vm = new Vue({
             vm.formInline.libName="";
         },
         handleDetail: function (index,row) {
+            debugger
+            vm.title=row.lawTitle;
             //查看详情
+            $.ajax({
+                type: "POST",
+                url: baseURL +  "synlaw/lawDetail?lawid="+row.id+"&rid="+row.libId,
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        vm.dialogLaw=true;
+                        if(result.info.list[0]){
+                            vm.lawDesic=result.info.list[0];
+                        }
+                        console.log(result);
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
             //记录学习记录
             this.insertRecord(row.id);
+        },
+        closeDia:function(){
+            vm.dialogLaw=false;
         },
         insertRecord: function (id) {
             //插入学习记录
