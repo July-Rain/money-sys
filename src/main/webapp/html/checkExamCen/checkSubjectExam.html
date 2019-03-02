@@ -103,9 +103,11 @@
                 答 ：{{item.userAnswer}}
                 <div>
                  分值：<el-input type="number" v-model = "subScore[index]" placeholder="請輸入分值" :min="0" :max ="item.score" ></el-input>
+                    <el-input type="text" v-model="checkBase[index]"  placeholder="请输入打分依据" ></el-input>
                 </div>
                 <div v-if="checkStatus=='3'">
-                    阅卷分数1 ：{{item.firScore}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;阅卷分数2 ：{{item.secScore}}
+                   <p> 阅卷分数1 ：{{item.firScore}}&nbsp;&nbsp;&nbsp; 打分依据：{{item.firCheckBase}} </p>
+                    <p>阅卷分数2 ：{{item.secScore}}&nbsp;&nbsp;&nbsp; 打分依据：{{item.secCheckBase}}</p>
                 </div>
             </div>
         </el-form>
