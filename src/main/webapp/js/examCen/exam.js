@@ -1,56 +1,59 @@
 var menuId = getUrlParam('id');
 var storage = window.sessionStorage;
+
 var vm = new Vue({
     el: '#app',
-    data: {
+    data: function(){
         //menuId:"",//菜单id
-        labelPosition: 'left',
-        navData: [],//导航
-        formInline: { // 搜索表单
-            examName: '',
-            startTime: '',
-            endTime: '',
-            page: 1,
-            limit: 10,
-            count: 0
-        },
-        checkSetting: {
-            checkNum:'',
-            paperPerSetNum:'',
-            isAibitration:'',
-            checkScoreDifference:''
-        },
-        skOption:[],
-        tableData: [],//表格数据
-        visible: false,
-        examConfig: {
+        var valiCheckNum = function (rule, value, callback) {
+            if (vm.checkSetting.paperPerSetNum===''){
+                callback(new Error('每套试卷阅卷人数不能为空'))
+            }else{
+                if (vm.checkSetting.paperPerSetNum =='2'&&vm.checkSetting.checkNum<=1){
+                    callback(new Error('阅卷人数应大于等于每套试卷阅卷人数'))
+                }else{
+                    callback();
+                }
+            }
+        };
+       return {
+           labelPosition: 'left',
+           navData: [],//导航
+           formInline: { // 搜索表单
+               examName: '',
+               startTime: '',
+               endTime: '',
+               page: 1,
+               limit: 10,
+               count: 0
+           },
+           checkSetting: {
+               checkNum: '',
+               paperPerSetNum: '',
+               isAibitration: '',
+               checkScoreDifference: ''
+           },
+           skOption: [],
+           tableData: [],//表格数据
+           visible: false,
+           examConfig: {},
+           checkSettingRules: {
+               checkNum: [
+                   {required: true, message: '请输入阅卷人数', trigger: 'blur'}
+               ],
+               paperPerSetNum: [
+                   {required: true, trigger: 'blur', validator: valiCheckNum}
+               ]
+           },
 
-        },
-        rules: {//表单验证规则
-            value: [
-                {required: true, message: '请输入参数名', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ],
-            code: [
-                {required: true, message: '请输入参数值', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ]
-        },
-        checkSettingRules: {
-            checkNum: [
-                {required: true, message: '请输入阅卷人数', trigger: 'blur'}
-            ],
-            paperPerSetNum: [
-                {required: true, message: '请选择每套试卷阅卷人数', trigger: 'blur'}
-            ]
-        },
-        checkSettingDia: false,//阅卷设置弹出框
-        viewCheckSettingDia: false,//查看阅卷信息弹出框
-        title: "",//弹窗的名称
-        delIdArr: [],//删除数据
-        dialogAdd: false,
-        dialogView: false,
-        dialogEdit: false,
+           checkSettingDia: false,//阅卷设置弹出框
+           viewCheckSettingDia: false,//查看阅卷信息弹出框
+           title: "",//弹窗的名称
+           delIdArr: [],//删除数据
+           dialogAdd: false,
+           dialogView: false,
+           dialogEdit: false,
+       }
     },
     created: function () {
         this.$nextTick(function () {
@@ -146,25 +149,31 @@ var vm = new Vue({
 
         },
 
-        saveCheckSet: function (){
-            this.checkSettingDia = false;
-            console.info(vm.checkSetting);
-            $.ajax({
-                type: "POST",
-                url: baseURL + "exam/config/checkset",
-                dataType: "json",
-                data: JSON.stringify(vm.checkSetting),
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code == 0) {
-                        alert("保存成功");
-                        vm.closeCheckSettingDia();
+        saveCheckSet: function (formName){
+            this.$refs[formName].validate(function (valid) {
+                if (valid){
+                    this.checkSettingDia = false;
+                    console.info(vm.checkSetting);
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + "exam/config/checkset",
+                        dataType: "json",
+                        data: JSON.stringify(vm.checkSetting),
+                        contentType: "application/json",
+                        success: function (result) {
+                            if (result.code == 0) {
+                                alert("保存成功");
+                                vm.closeCheckSettingDia();
 
-                    } else {
-                        alert(result.msg);
-                    }
+                            } else {
+                                alert(result.msg);
+                            }
+                        }
+                    })
+                }else{
+                    return false
                 }
-            });
+            })
         },
         reload: function () {
             $.ajax({
@@ -238,11 +247,11 @@ var vm = new Vue({
         },
     },
     filters: {
-        timeout: function (startTime,endTime) {
-            if(startTime === null || endTime ==null ){
+        timeout: function (startTime) {
+            if(startTime === null  ){
                 return true
             }else {
-                return new Date(Date.parse(startTime.replace(/-/g,  "/"))).getTime() <=new Date().getTime()&&new Date(Date.parse(endTime.replace(/-/g,  "/"))).getTime() >=new Date().getTime
+                return new Date(Date.parse(startTime.replace(/-/g,  "/"))).getTime() <=new Date().getTime();
             }
         }
     }

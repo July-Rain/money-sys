@@ -35,12 +35,16 @@ var vm = new Vue({
         onSubmit: function () {
             this.reload();
         },
+        //序列号计算
+        indexMethod: function (index) {
+            return index + 1 + (vm.formInline.currPage - 1) * vm.formInline.pageSize;
+        },
         handleCurrentChange: function (val) {
-            this.formInline.currPage = val;
+            this.formInline.page = val;
             this.reload();
         },
         handleSizeChange: function (val) {
-            this.formInline.pageSize = val;
+            this.formInline.limit = val;
             this.reload();
         },
         openDia:function(){
