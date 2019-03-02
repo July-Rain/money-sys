@@ -86,10 +86,10 @@
             <div class="inner">
                 <img src="${rc.contextPath}/statics/img/competeCenter/chuangguan_success.png" alt="">
                 <h3>奖励</h3>
-                <p>积分+16000</p>
+                <p>积分+{{Score}}</p>
                 <div class="button_area">
-                    <button>结束闯关</button>
-                    <button><i class="iconfont icon-zhongzuo"></i>再闯一次</button>
+                    <button @click="tomain">结束闯关</button>
+                    <button @click="jumpNextLevel">{{btnName}}</button>
                 </div>
             </div>
         </div>

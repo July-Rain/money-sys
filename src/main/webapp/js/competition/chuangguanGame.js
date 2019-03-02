@@ -40,7 +40,8 @@ var vm = new Vue({
         //题目
         Question: {},
         rushSuccess: false,
-        closedialog: false
+        closedialog: false,
+        btnName: '下一关'
     },
     created: function () {
         this.$nextTick(function () {
@@ -94,56 +95,6 @@ var vm = new Vue({
             var obj2 = storage.getItem("questionList");
             var questionList = eval('(' + obj2 + ')');
             vm.QuestionList = questionList;
-
-
-
-
-            // $.ajax({
-            //     type: "POST",
-            //     url: baseURL + 'recruitConfiguration/findAll2',
-            //     dataType: "json",
-            //     async: false,
-            //     // data:{"id": row.id},
-            //     success: function (result) {
-            //         if (result.code === 0) {
-            //             console.info(result);
-            //             vm.BigGuanList = result.data;
-            //             //接下来我要给4个属性赋值
-            //             //获得一共几大关
-            //             // alert("一共"+result.data.length+"关");
-            //             //一共几大关
-            //             vm.allBignum = result.data.length;
-            //             // alert("当前一进来肯定第一关，不用想");
-            //             //现在第几大关
-            //             vm.nowBignum = "1";
-            //             // alert("当前第一关有"+result.data[0].recruitCheckpointConfigurationList.length+"小关");
-            //             // 当前大关多少小关
-            //             vm.allLitnum = result.data[0].recruitCheckpointConfigurationList.length;
-            //             //当前第几小关
-            //             // alert("当前一进来肯定第一关的第一小关，不用想");
-            //             vm.nowLitnum = "1";
-            //         } else {
-            //             alert(result.msg);
-            //         }
-            //     }
-            // });
-
-            // $.ajax({
-            //     type: "POST",
-            //     url: baseURL + 'recruitConfiguration/getQuest',
-            //     contentType: "application/json",
-            //     async: false,
-            //     data: JSON.stringify(vm.BigGuanList[0]),
-            //     success: function (result) {
-            //
-            //         if (result.code === 0) {
-            //             //将查到的所有题目交给了题目数组
-            //             vm.QuestionList = result.data;
-            //         } else {
-            //             alert(result.msg);
-            //         }
-            //     }
-            // });
 
             vm.Question = vm.QuestionList[Number(vm.nowLitnum) - 1];//重题目集合中把题目取出来
 
@@ -266,9 +217,13 @@ var vm = new Vue({
         questionYes: function () {
 
             vm.getScore();//每次答完题后会有个分数累加   当然只限于答对
-            vm.textmag = "恭喜你，回答正确,当前奖励积分" + vm.Score;
+            this.$message({
+                message: "恭喜你，回答正确,当前奖励积分" + vm.Score,
+                type: 'success'
+            });
             vm.oryesorno();//答完题目入库保存记录
-            vm.dialogyes = true;//答题正确后
+
+            this.goon()
         },
 
 
@@ -299,19 +254,7 @@ var vm = new Vue({
             vm.dialogyes = false;//继续答题
             vm.radio_disabled = false;//让答题框可选
             vm.answers = [];//答案集合制空
-            // alert(vm.allBignum);
-            // alert(vm.nowBignum);
-            // alert(vm.allLitnum);
-            // alert(vm.nowLitnum);
 
-            //一共几大关
-            // vm.allBignum="1";
-            // //现在第几大关
-            // vm.nowBignum="1";
-            // // 当前大关多少小关
-            // vm.allLitnum="2";
-            // //当前第几小关
-            // vm.nowLitnum="1";
 
             //先判断大关里面的小题有没有超过小题之和
             //如果没有超过
@@ -329,20 +272,20 @@ var vm = new Vue({
                 if ((Number(vm.nowBignum) + 1) <= Number(vm.allBignum)) {
                     //xian提示他这一大关成功闯过
                     //获得多少积分  并且有无大关奖励  是否进入下一个大关
-                    // alert("当前大关成功 下一大，你赢了");
+
+
+                    vm.rushSuccess = true;
+
                     //如果当前大关 没有大关通关奖励
                     if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "0") {
-                        vm.$alert("恭喜你，通过第" + vm.nowBignum + "大关，该大关没有大关通关奖励分值,当前奖励积分" + vm.Score)
+
+                        // vm.$alert("恭喜你，通过第" + vm.nowBignum + "大关，该大关没有大关通关奖励分值,当前奖励积分" + vm.Score)
+
                     } else if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "1") {
                         vm.Score = Number(vm.Score) + Number(vm.BigGuanList[Number(vm.nowBignum) - 1].rewardScore);  //下表原因  要减一
-                        vm.$alert("恭喜你，通过第" + vm.nowBignum + "大关，并获得大关通关奖励" + vm.BigGuanList[Number(vm.nowBignum) - 1].rewardScore + ",当前奖励积分" + vm.Score);
+                        // vm.$alert("恭喜你，通过第" + vm.nowBignum + "大关，并获得大关通关奖励" + vm.BigGuanList[Number(vm.nowBignum) - 1].rewardScore + ",当前奖励积分" + vm.Score);
                     }
 
-                    setTimeout(function () {
-                        // 跳转闯关页面
-                        window.location.href =baseURL+"modules/competition/rushLevel.html?coinNum="+vm.Score+"&index="+(Number(vm.nowBignum)+Number(1));
-                    },3000)
-                    //把分数和第几关传过去
 
 
 
@@ -350,16 +293,19 @@ var vm = new Vue({
 
 
                 } else if ((Number(vm.nowBignum) + 1) > Number(vm.allBignum)) {
+
+                    vm.rushSuccess = true;
+                    vm.btnName = '闯关成功';
                     // alert("闯关结束，你赢了");
                     if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "0") {
                         console.info(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowBignum) - 1]);
                         vm.recordScore(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowLitnum) - 1].id, vm.nowBignum, vm.nowLitnum, vm.Score);
-                        vm.$alert("恭喜你，通过所有大关，当前大关没有大关通关奖励分值,当前奖励积分" + vm.Score)
+                        // vm.$alert("恭喜你，通过所有大关，当前大关没有大关通关奖励分值,当前奖励积分" + vm.Score)
                     } else if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "1") {
 
                         vm.Score = Number(vm.Score) + Number(vm.BigGuanList[Number(vm.nowBignum) - 1].rewardScore);  //下表原因  要减一
                         vm.recordScore(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowLitnum) - 1].id, vm.nowBignum, vm.nowLitnum, vm.Score);
-                        vm.$alert("恭喜你，通过所有大关，并获得当前大关通关奖励" + vm.BigGuanList[Number(vm.nowBignum) - 1].rewardScore + ",当前奖励积分" + vm.Score);
+                        // vm.$alert("恭喜你，通过所有大关，并获得当前大关通关奖励" + vm.BigGuanList[Number(vm.nowBignum) - 1].rewardScore + ",当前奖励积分" + vm.Score);
                     }
 
                     vm.dialogQuestion = false;//关闭答题框
@@ -429,6 +375,14 @@ var vm = new Vue({
         replay: function () {
 
             window.location.href = baseURL + 'modules/competition/rushLevel.html?index=1'
+        },
+        jumpNextLevel: function(){
+            if(this.btnName==='闯关成功'){
+                window.location.href = baseURL + 'modules/competition/competeCenter.html';
+            }
+            window.location.href = baseURL+"modules/competition/rushLevel.html?coinNum="+vm.Score+"&index="+(Number(vm.nowBignum)+Number(1));
+
+            //把分数和第几关传过去
         }
     }
 });
