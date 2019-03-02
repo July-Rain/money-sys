@@ -1,6 +1,7 @@
 /* 整体布局搭建 */
-body {
-    font-size: 12px;
+html {
+    /* 控制字体大小 小 8px 中 10px 大 12px */
+    font-size: 10px;
 }
 .container {
     position: relative;
@@ -14,9 +15,9 @@ body {
 .container .bar {
     position: fixed !important;
     top: 56px;
-    right: 2vw;
+    right: 1vw;
     width: 9vw;
-    height: 35vw;
+    height: 530px;
     background: white;
 }
 
@@ -42,7 +43,7 @@ body {
     height: 38px;
     margin: 54px auto;
     text-align: center;
-    font-size: 38px;
+    font-size: 3.8rem;
 }
 .content header .tips {
     display: flex;
@@ -53,22 +54,25 @@ body {
     border-bottom: 1px solid #dddddd;
 }
 .tips .username, .tips .username span {
-    font-size: 22px;
+    font-size: 2.2rem;
 }
 .tips .font-size, .tips .duration {
-    font-size: 12px;
+    font-size: 1.2rem;
     font-weight: 300;
 }
 .tips .font-size .current {
     font-weight: 600;
 }
+.tips .font-size span:first-child {
+    font-size: 17.6px;
+}
 .tips .font-size span:nth-child(2) {
-margin-left: 3px;
-    font-size: 1.41rem;
+    margin-left: 3px;
+    font-size: 22px;
 }
 .tips .font-size span:last-child {
     margin-left: 3px;
-    font-size: 1.83rem;
+    font-size: 26.4px;
 }
 .tips .duration {
     margin-top: 11px;
@@ -81,25 +85,32 @@ margin-left: 3px;
     background: white;
 }
 .main .description {
-    font-size: 22px;
+    font-size: 2.2rem;
 }
 /* 题目公共样式 */
 .main .question {
-    margin: 22px auto;
+    margin: 10px auto;
     padding: 26px 0 0 0;
 }
 .main .question .title {
     margin-bottom: 28px;
     padding-left: 54px;
-    font-size: 22px;
+    font-size: 2.2rem;
 }
 .main .question .answer-area {
     margin-top: 18px;
     padding:10px 0 10px 54px;
     background: white;
 }
+.main .question .gray {
+    width: 150%;
+    height: 16px;
+    margin-left: -240px;
+    margin-right: -240px;
+    background: #EFEFEF;
+}
 .main .question .answer-area p, .main .question .answer-area span {
-    font-size: 20px;
+    font-size: 2rem;
     background: white;
 }
 /* 题目样式 */
@@ -114,7 +125,7 @@ margin-left: 3px;
     line-height: 52px;
 }
 .one-option .el-radio__label, .multi-options .el-checkbox__label, .checking .el-radio__label {
-    font-size: 20px;
+    font-size: 2rem;
 }
 /* bar 样式 */
 .bar .category {
@@ -125,13 +136,16 @@ margin-left: 3px;
     height: 80px;
     text-align: center;
 }
+.bar .category li:last-child {
+    height: 45px;
+}
 .bar .category li a {
     color: black;
-    font-size: 16px;
+    font-size: 1.6rem;
 }
 .bar .buttons {
     width: 100%;
-    padding-top: 35px;
+    padding-top: 21px;
     padding-left: 41px;
     border-top: 1px solid #dddddd;
 }
@@ -139,6 +153,31 @@ margin-left: 3px;
     display: block;
     margin-left: 0 !important;
     margin-bottom:6px;
+}
+.bar .display {
+    width: 100%;
+    padding: 20px 0 20px 30px;
+    border-top: 1px solid #dddddd;
+}
+.bar .display .right-num, .bar .display .error-num {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 0 10px;
+    color: black;
+}
+.bar .display .right-num {
+    border-right: 1px solid #dddddd;
+}
+.bar .display .right-num span, .bar .display .error-num span {
+    display: block;
+    font-size: 2.2rem;
+
+}
+.bar .display .green {
+    color: green;
+}
+.bar .display .red {
+    color: red;
 }
 
 /* toggle 公共样式 */
@@ -152,6 +191,7 @@ margin-left: 3px;
     color: #1381e3 !important;
 }
 .question-background {
+    margin: 22px auto;
     background: #f2f9ff;
 }
 .right {

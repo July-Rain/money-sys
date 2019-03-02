@@ -579,15 +579,10 @@ var vm = new Vue({
         ],
         // 时间变量
         startTime: 0,
-        // 时间变量太多,用str变量操纵,待
-        leftHours: '00',
-        leftMinutes: '00',
-        leftSeconds: '00',
+        countdown: '00:00:00',
         time: 3,
         lefttime: 10800000,
-        consumedHours: '00',
-        consumedMinutes: '00',
-        consumedSeconds: '00',
+        consumed: '00:00:00',
         // 总分
         totalScore: 87
     },
@@ -634,7 +629,9 @@ var vm = new Vue({
             // 用计时器动态显示:间隔时间1s
             this.lefttime -= 1000;
             var results = this.figureTime(this.lefttime);
-            [this.leftHours, this.leftMinutes, this.leftSeconds] = [...results];
+            let a, b, c;
+            [a, b, c] = [...results];
+            this.countdown = a + ':' + b + ':' + c;
             // 3个小时用完,强制提交
             if (this.lefttime <= 0) {
                 this.submit();
@@ -644,7 +641,9 @@ var vm = new Vue({
         consumedTime: function () {
             var consumed =  3*3600000 - this.lefttime;
             var results = this.figureTime(consumed);
-            [this.consumedHours, this.consumedMinutes, this.consumedSeconds] = [...results];
+            let a, b, c;
+            [a, b, c] = [...results];
+            this.consumed = a + ':' + b + ':' + c;
         },
         // 计算时间
         figureTime: function (time) {
@@ -662,12 +661,23 @@ var vm = new Vue({
         },
         // 改变字体大小
         changeFontSize: function (e) {
+            console.log(e);
             var fontSpans = document.getElementsByClassName('font-size-span');
+            var html = document.getElementsByTagName('html')[0];
+            console.log(html)
             for (var i = 0; i < fontSpans.length; i++) {
                 fontSpans[i].style.fontWeight = '300';
             }
             e.target.style.fontWeight = '600';
-            // 改变整体页面字体大小，待
+            // 改变整体页面字体大小
+            if (e.target.innerHTML === '小') {
+                html.style.fontsize = '8px';
+            } else if (e.target.innerHTML === '中') {
+                html.style.fontsize = '10px';
+            } else {
+                html.style.fontsize = '12px';
+            }
+            location.reload();
         },
         // 改变 bar 中元素被选择时的字体颜色
         pickArea: function (e) {
@@ -683,7 +693,10 @@ var vm = new Vue({
             this.isSubmit = true;
             // 展示使用时间
             this.consumedTime();
-            // 禁用所有题目
+            // 路径转换
+            /*var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/exerciseCenter/paper_index.html';*/
         },
 
         // 修改后未用到的方法
