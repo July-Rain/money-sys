@@ -5,50 +5,50 @@
  */
 
 //确定是邀请码房间的 创建者  还是加入者
-var type =getUrlParam('type');
-var code =getUrlParam('code');
+var type = getUrlParam('type');
+var code = getUrlParam('code');
 
 
-var datamag=null;
+var datamag = null;
 //回答过题目的人
-var answerpeople=[];
+var answerpeople = [];
 
 var vm = new Vue({
     el: '#app',
     data: {
-        allnum:"",
-        nownum:"",
+        allnum: "",
+        nownum: "",
 
-        battleCode:"",
-        u:"",
-        answers:"",
+        battleCode: "",
+        u: "",
+        answers: "",
         //题目集合
-        QuestionList:[
+        QuestionList: [
             // Question={id:""},
         ],
         //题目
-        Question:{},
+        Question: {},
         radio_disabled: false,
-        dialogQuestion:false,//开始答题  弹出
-        BattleTopicSettings:[],//题目配置集合
-        nowbattleTopicSetting:"",//当前题目配置
-        nowQscore:"",//当前题目分值
+        dialogQuestion: false,//开始答题  弹出
+        BattleTopicSettings: [],//题目配置集合
+        nowbattleTopicSetting: "",//当前题目配置
+        nowQscore: "",//当前题目分值
         //我的得分
-         myscore:"0",
+        myscore: "0",
         //对手的得分
-         youscore:"0",
+        youscore: "0",
         //对方是否已答题
-        yesOrNoAnswer:"未答题",
-        jifen:"0",//最终录入的成绩积分
-        formationWarShow:false,//建立战区
-        joinWarShow:false,//加入战区
-        play1:"",
-        play2:"",
+        yesOrNoAnswer: "未答题",
+        jifen: "0",//最终录入的成绩积分
+        formationWarShow: false,//建立战区
+        joinWarShow: false,//加入战区
+        play1: "",
+        play2: "",
     },
     created: function () {
         this.$nextTick(function () {
             this.reload();
-            if(getUrlParam('warType') === 'formation'){
+            if (getUrlParam('warType') === 'formation') {
                 vm.formationWarShow = true
             }
             // if(getUrlParam('warType') === 'join'){
@@ -61,17 +61,10 @@ var vm = new Vue({
     methods: {
         radioCheck: function (id, answerId, typeName) {
             vm.radio_disabled = true;
-            // var answer = vm.answers[0];
-            // alert(vm.answers);
-            // alert("我选的"+id);
-            // alert("正确的"+answerId);
             //如果答对了
-            if(id==answerId)
-            {
+            if (id == answerId) {
                 vm.questionYes();
-            }
-            else
-            {
+            } else {
                 vm.questionError();
             }
             //不管答对答错  都要走保存题目的方法
@@ -80,16 +73,18 @@ var vm = new Vue({
             sendMsg();
         },
         //答错事件
-        questionError:function(){
-            alert("答错了")
+        questionError: function () {
+            vm.$message.error('答错了');
 
 
         },
         //答对事件
-        questionYes:function()
-        {
-                vm.myscore=Number(vm.myscore)+Number(vm.nowQscore);
-                alert("答对了");
+        questionYes: function () {
+            vm.myscore = Number(vm.myscore) + Number(vm.nowQscore);
+            vm.$message({
+                message: '答对了',
+                type: 'success'
+            });
         },
 
 
@@ -109,32 +104,28 @@ var vm = new Vue({
 });
 
 
-
-
-
-
-var uid=null;
+var uid = null;
 //发送人编号
-var from=null;
+var from = null;
 //当前第几题  默认1  排序0
-var nowtimu=0;
+var nowtimu = 0;
 var fromName;
 //接收人编号
 //        var to="-1";
-var to= null;
+var to = null;
 
 $.ajax({
     type: "POST",
     url: baseURL + "websocket/pkAloneByCode",
     dataType: "json",
-    data:{"type":type,"code":code},
-    async:false,
+    data: {"type": type, "code": code},
+    async: false,
     success: function (result) {
-        vm.u=result.user;
-        uid=result.user.id;
+        vm.u = result.user;
+        uid = result.user.id;
 //发送人编号
-        from=result.user.id;
-        fromName=result.user.fullName;
+        from = result.user.id;
+        fromName = result.user.fullName;
     }
 });
 
@@ -152,12 +143,12 @@ var localhostPath = curWwwPath.substring(0, pos);
 //获取带"/"的项目名，如：/ems
 var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
 //获取项目的basePath   http://localhost:8080/ems/
-var basePath=localhostPath+projectName+"/";
-var path= basePath.substring(7);
+var basePath = localhostPath + projectName + "/";
+var path = basePath.substring(7);
 
 //不同浏览器的WebSocket对象类型不同
 if ('WebSocket' in window) {
-    websocket = new WebSocket("ws://" + path+ "alonePkGameByCode");
+    websocket = new WebSocket("ws://" + path + "alonePkGameByCode");
     console.log("=============WebSocket");
     //火狐
 } else if ('MozWebSocket' in window) {
@@ -170,134 +161,130 @@ if ('WebSocket' in window) {
 
 
 //打开Socket,
-websocket.onopen = function(event) {
+websocket.onopen = function (event) {
     console.log("WebSocket:已连接");
 }
 
 // 监听消息
 //onmessage事件提供了一个data属性，它可以包含消息的Body部分。消息的Body部分必须是一个字符串，可以进行序列化/反序列化操作，以便传递更多的数据。
-websocket.onmessage = function(event) {
-    var data=$.parseJSON(event.data);
-    console.log("WebSocket:收到一条消息",data);
-    datamag=data;
-    vm.battleCode=data.battleCode;
+websocket.onmessage = function (event) {
+    var data = $.parseJSON(event.data);
+    console.log("WebSocket:收到一条消息", data);
+    datamag = data;
+    vm.battleCode = data.battleCode;
 
-    vm.QuestionList= data.tqList;
+    vm.QuestionList = data.tqList;
     //2种推送的消息
     //1.用户聊天信息：发送消息触发
     //2.系统消息：登录和退出触发
     //判断是否是欢迎消息（没用户编号的就是欢迎消息）
-    if(data.from==undefined||data.from==null||data.from==""){
+    if (data.from == undefined || data.from == null || data.from == "") {
 
         // console.info("系统发的消息");
         // console.info("系统发的消息是"+data);
         //===系统消息
-        $("#contentUl").append("<li><b>"+data.date+"</b><em>系统消息：</em><span>"+data.text+"</span></li>");
+        $("#contentUl").append("<li><b>" + data.date + "</b><em>系统消息：</em><span>" + data.text + "</span></li>");
         //刷新在线用户列表
-        $("#chatOnline").html("在线用户("+data.userList.length+")人");
+        $("#chatOnline").html("在线用户(" + data.userList.length + ")人");
 
-        alert(data.text);
-
+        vm.$message({
+            message: data.text,
+            type: 'success'
+        });
 
         // 当收到系统消息的时候  然且当是在线2人的时候 这时候 默认给第一题
-        if(data.userList.length=="2")
-        {
+        if (data.userList.length == "2") {
 
-            $(data.userList).each(function(){
-                if(jsgetUser().fullName!=this.fullName) {
+            $(data.userList).each(function () {
+                if (jsgetUser().fullName != this.fullName) {
 
-                    vm.play2=this.fullName;
-                }else {
-                    vm.play1=this.fullName;
+                    vm.play2 = this.fullName;
+                } else {
+                    vm.play1 = this.fullName;
                 }
             });
 
-            vm.formationWarShow=false,//关闭提示code提示输入框
-            vm.dialogQuestion=true,
-            vm.radio_disabled=false;
-            vm.allnum=data.tqList.length;
-            vm.nownum=Number(nowtimu)+1;
-            vm.nowQscore=data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
-            vm.nowbattleTopicSetting=data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
-            vm.Question=data.tqList[Number(nowtimu)];
+            vm.formationWarShow = false,//关闭提示code提示输入框
+                vm.dialogQuestion = true,
+                vm.radio_disabled = false;
+            vm.allnum = data.tqList.length;
+            vm.nownum = Number(nowtimu) + 1;
+            vm.nowQscore = data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
+            vm.nowbattleTopicSetting = data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
+            vm.Question = data.tqList[Number(nowtimu)];
         }
 
-        if(data.mycore!=undefined&&data.mycore!=null&&data.mycore!="")
-        {
+        if (data.mycore != undefined && data.mycore != null && data.mycore != "") {
             // vm.jifen=data.mycore;
             // recordScoreFromTow(datamag.battlePlatform.id,vm.jifen,'OnlinPkByCode',data.to);
-            alert("对手弃权,恭喜胜利");
-
+            vm.$message({
+                message: '对手弃权,恭喜胜利',
+                type: 'success'
+            });
         }
 
         $("#chatUserList").empty();
 
-        $(data.userList).each(function(){
+        $(data.userList).each(function () {
             // console.info(this);
-            $("#chatUserList").append("<li>"+this.fullName+"</li>");
+            $("#chatUserList").append("<li>" + this.fullName + "</li>");
         });
         //当收到消息的时候 给人赋值
         // console.info(" 收到系统消息，是给"+data.to);
-        to=data.to;
-    }else{
+        to = data.to;
+    } else {
         // console.info("人发的消息");
         // console.info(data);
         //===普通消息
         //处理一下个人信息的显示：
-        if(data.fromName==fromName){
+        if (data.fromName == fromName) {
             // data.fromName="我";   我发送的
             // $("#contentUl").append("<li><span  style='display:block; float:right;'><em>"+data.fromName+"</em><span>"+data.text+data.nowtimu+"</span><b>"+data.date+"</b></span></li><br/>");
-        }else{
+        } else {
             //对手发送的
             // $("#contentUl").append("<li><b>"+data.date+"</b><em>"+data.fromName+"</em><span>"+data.text+data.nowtimu+"</span></li><br/>");
-            vm.youscore=data.mycore;
-            vm.yesOrNoAnswer="已答题";
+            vm.youscore = data.mycore;
+            vm.yesOrNoAnswer = "已答题";
         }
         answerpeople.push(data.from);
         // console.info("收到消息后"+answerpeople);
         //当受到普通消息是时候  判断发送人
-        if(answerpeople.length=="2")
-        {
-            setTimeout(function(){
-                answerpeople=[];//再将这个回答过的人制空
+        if (answerpeople.length == "2") {
+            setTimeout(function () {
+                answerpeople = [];//再将这个回答过的人制空
 
-            //如果2人都回答过了
-            // 题目要变
-            //收到消息时候来变化题目，前提是2人回答过
-            if(data.tqList.length <= Number(nowtimu))
-            {
-                if(Number(vm.myscore)==Number(vm.youscore))
-                {
-                    // vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.winReward);
-                    alert("全部题目答完,双方分数一样，平局,占不计入成绩表中");
-                }
-                else if(Number(vm.myscore)<Number(vm.youscore))
-                {
-                    vm.jifen=Number(data.competitionOnline.loserReward);
+                //如果2人都回答过了
+                // 题目要变
+                //收到消息时候来变化题目，前提是2人回答过
+                if (data.tqList.length <= Number(nowtimu)) {
+                    if (Number(vm.myscore) == Number(vm.youscore)) {
+                        // vm.myscore=Number(vm.myscore)+Number(data.competitionOnline.winReward);
+                        vm.$message({
+                            message: '全部题目答完,双方分数一样，平局,占不计入成绩表中',
+                            type: 'warning'
+                        });
+                    } else if (Number(vm.myscore) < Number(vm.youscore)) {
+                        vm.jifen = Number(data.competitionOnline.loserReward);
 
-                    recordScore(datamag.battlePlatform.id,'0',vm.jifen,'OnlinPkByCode',vm.u.id);
-                    alert("全部题目答完,，你输了，获得失败者奖励"+data.competitionOnline.loserReward);
-                }
-                else if(Number(vm.myscore)>Number(vm.youscore))
-                {
-                    vm.jifen=Number(data.competitionOnline.winReward);
+                        recordScore(datamag.battlePlatform.id, '0', vm.jifen, 'OnlinPkByCode', vm.u.id);
+                        alert("全部题目答完,，你输了，获得失败者奖励" + data.competitionOnline.loserReward);
+                    } else if (Number(vm.myscore) > Number(vm.youscore)) {
+                        vm.jifen = Number(data.competitionOnline.winReward);
 
-                    recordScore(datamag.battlePlatform.id,'1',vm.jifen,'OnlinPkByCode',vm.u.id);
-                    alert("全部题目答完,，你赢了，获得获胜者奖励"+data.competitionOnline.winReward);
+                        recordScore(datamag.battlePlatform.id, '1', vm.jifen, 'OnlinPkByCode', vm.u.id);
+                        alert("全部题目答完,，你赢了，获得获胜者奖励" + data.competitionOnline.winReward);
+                    }
+                    closeWebsocket();
+                } else {
+                    vm.dialogQuestion = true,
+                        vm.radio_disabled = false;
+                    vm.allnum = data.tqList.length;
+                    vm.nownum = Number(nowtimu) + 1;
+                    vm.nowQscore = data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
+                    vm.nowbattleTopicSetting = data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
+                    vm.Question = data.tqList[Number(nowtimu)];
+                    vm.yesOrNoAnswer = "未答题";
                 }
-                // alert("全部题目答完");
-                closeWebsocket();
-            }else
-            {
-               vm.dialogQuestion=true,
-               vm.radio_disabled=false;
-               vm.allnum=data.tqList.length;
-               vm.nownum=Number(nowtimu)+1;
-                vm.nowQscore=data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
-                vm.nowbattleTopicSetting=data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
-                vm.Question=data.tqList[Number(nowtimu)];
-                vm.yesOrNoAnswer="未答题";
-            }
             }, 3000);
         }
     }
@@ -305,27 +292,27 @@ websocket.onmessage = function(event) {
 };
 
 // 监听WebSocket的关闭
-websocket.onclose = function(event) {
+websocket.onclose = function (event) {
     console.info("连接已断开！");
 
-    $("#contentUl").append("<li><b>"+new Date().Format("yyyy-MM-dd hh:mm:ss")+"</b><em>系统消息：</em><span>连接已断开！</span></li>");
+    $("#contentUl").append("<li><b>" + new Date().Format("yyyy-MM-dd hh:mm:ss") + "</b><em>系统消息：</em><span>连接已断开！</span></li>");
     scrollToBottom();
-    console.log("WebSocket:已关闭：Client notified socket has closed",event);
+    console.log("WebSocket:已关闭：Client notified socket has closed", event);
 };
 
 //监听异常
-websocket.onerror = function(event) {
+websocket.onerror = function (event) {
     console.info("连接异常，建议重新登录");
-    $("#contentUl").append("<li><b>"+new Date().Format("yyyy-MM-dd hh:mm:ss")+"</b><em>系统消息：</em><span>连接异常，建议重新登录</span></li>");
+    $("#contentUl").append("<li><b>" + new Date().Format("yyyy-MM-dd hh:mm:ss") + "</b><em>系统消息：</em><span>连接异常，建议重新登录</span></li>");
     scrollToBottom();
-    console.log("WebSocket:发生错误 ",event);
+    console.log("WebSocket:发生错误 ", event);
 };
 
 
 //onload初始化
-$(function(){
+$(function () {
     //给退出聊天绑定事件
-    $("#exitBtn").on("click",function(){
+    $("#exitBtn").on("click", function () {
         closeWebsocket();
         // location.href="login.jsp";
     });
@@ -334,35 +321,35 @@ $(function(){
 });
 
 //发送消息
-function sendMsg(){
+function sendMsg() {
     //对象为空了
-    if(websocket==undefined||websocket==null){
-        alert('您的连接已经丢失，请退出聊天重新进入');
+    if (websocket == undefined || websocket == null) {
+        vm.$message.error('您的连接已经丢失，请退出聊天重新进入');
         return;
     }
     //获取用户要发送的消息内容
     // var msg=$("#msg").val();
-    var msg="我答题了";
-    if(msg==""){
+    var msg = "我答题了";
+    if (msg == "") {
         return;
-    }else{
-        nowtimu=nowtimu+1;
+    } else {
+        nowtimu = nowtimu + 1;
         console.info(datamag);
 
-        var data={};
-        data["from"]=from;
-        data["fromName"]=fromName;
-        data["to"]=to;
-        data["text"]=msg;
-        data["nowtimu"]=nowtimu;
-        data["tqList"]=datamag.tqList;
-        data["myanswer"]=vm.answers;
-        data["tq"]=vm.Question;
-        data["competitionOnline"]=datamag.competitionOnline;
-        data["mycore"]=vm.myscore;
-        data["youcore"]=vm.youscore;
-        data["battleCode"]=datamag.battleCode;
-        data["battlePlatform"]=datamag.battlePlatform;
+        var data = {};
+        data["from"] = from;
+        data["fromName"] = fromName;
+        data["to"] = to;
+        data["text"] = msg;
+        data["nowtimu"] = nowtimu;
+        data["tqList"] = datamag.tqList;
+        data["myanswer"] = vm.answers;
+        data["tq"] = vm.Question;
+        data["competitionOnline"] = datamag.competitionOnline;
+        data["mycore"] = vm.myscore;
+        data["youcore"] = vm.youscore;
+        data["battleCode"] = datamag.battleCode;
+        data["battlePlatform"] = datamag.battlePlatform;
         //发送消息
         websocket.send(JSON.stringify(data));
         //发送完消息，清空输入框
@@ -370,10 +357,9 @@ function sendMsg(){
     }
 }
 
-function addSorce()
-{
- //得分累加
-    vm.myscore=vm.myscore+Number(vm.nowQscore)
+function addSorce() {
+    //得分累加
+    vm.myscore = vm.myscore + Number(vm.nowQscore)
 }
 
 //关闭Websocket连接
@@ -383,12 +369,14 @@ function closeWebsocket() {
         websocket = null;
     }
 }
+
 //div滚动条(scrollbar)保持在最底部
-function scrollToBottom(){
+function scrollToBottom() {
     //var div = document.getElementById('chatCon');
     var div = document.getElementById('up');
     div.scrollTop = div.scrollHeight;
 }
+
 //格式化日期
 Date.prototype.Format = function (fmt) { //author: meizz
     var o = {
@@ -410,13 +398,13 @@ Date.prototype.Format = function (fmt) { //author: meizz
 //不管答对答错 都要入库方法
 function oryesorno() {
     //数据格式问题  把这两个时间值为空
-    vm.Question.tuIsstim="";
-    vm.Question.stuIsstim="";
+    vm.Question.tuIsstim = "";
+    vm.Question.stuIsstim = "";
     $.ajax({
         type: "POST",
-        url: baseURL + 'competitionOnline/saveQuestion?myanswer='+vm.answers,
+        url: baseURL + 'competitionOnline/saveQuestion?myanswer=' + vm.answers,
         contentType: "application/json",
-        async:false,
+        async: false,
         data: JSON.stringify(vm.Question),
         success: function (result) {
         }
@@ -426,30 +414,26 @@ function oryesorno() {
 }
 
 
-function recordScore(battlePlatformId,win,score,type,uid)
-{
+function recordScore(battlePlatformId, win, score, type, uid) {
     $.ajax({
         type: "POST",
         url: baseURL + 'competitionOnline/recordScore',
         dataType: "json",
 
-        data: {"battlePlatformId":battlePlatformId,"win":win,"score":score,"type":type,"uid":uid},
+        data: {"battlePlatformId": battlePlatformId, "win": win, "score": score, "type": type, "uid": uid},
         success: function (result) {
         }
     });
 }
-function recordScoreFromTow(battlePlatformId,score,type,users)
-{
-    var userArray= users.split(",");
 
-    for ( var i = 0; i <userArray.length; i++){
-        if(userArray[i]==vm.u.id)
-        {
-            recordScore(battlePlatformId,'1',score,type,userArray[i]);
-        }
-        else
-        {
-            recordScore(battlePlatformId,'0','0',type,userArray[i]);
+function recordScoreFromTow(battlePlatformId, score, type, users) {
+    var userArray = users.split(",");
+
+    for (var i = 0; i < userArray.length; i++) {
+        if (userArray[i] == vm.u.id) {
+            recordScore(battlePlatformId, '1', score, type, userArray[i]);
+        } else {
+            recordScore(battlePlatformId, '0', '0', type, userArray[i]);
         }
     }
 }

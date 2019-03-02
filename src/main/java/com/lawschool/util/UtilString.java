@@ -5,6 +5,9 @@ import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -111,5 +114,18 @@ public class UtilString {
         StringBuilder sb1 = new StringBuilder(newStr);
         String afterStr = sb1.reverse().toString();
         return afterStr;
+    }
+
+    public static Date String2Date(String str)  {
+
+        if(UtilValidate.isNotEmpty(str)){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            try {
+                return sdf.parse(str);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return  null;
     }
 }

@@ -58,10 +58,6 @@ var vm = new Vue({
         radioCheck: function (id, answerId, typeName) {
 
             vm.radio_disabled = true;
-            // var answer = vm.answers[0];
-            // alert(vm.answers);
-            // alert("我选的"+id);
-            // alert("正确的"+answerId);
             //如果答对了
             if(id==answerId)
             {
@@ -79,7 +75,10 @@ var vm = new Vue({
         //答错事件
         questionError:function()
         {
-            alert("答错了")
+            vm.$message({
+                message: '答错了',
+                type: 'warning'
+            });
 
 
         },
@@ -88,7 +87,10 @@ var vm = new Vue({
         {
 
                 vm.myscore=Number(vm.myscore)+Number(vm.nowQscore);
-                alert("答对了");
+            vm.$message({
+                message: '答对了',
+                type: 'success'
+            });
 
         },
 
@@ -133,7 +135,6 @@ $.ajax({
         if(matchSetting==null)
         {
             vm.msg="占无题目配置，请联系管理员";
-            // alert("占无题目配置，请联系管理员");
             vm.leizhu="";
 
         }
@@ -142,15 +143,25 @@ $.ajax({
                 vm.leizhu=result.matchSetting.winId;
                 if(result.matchSetting.winId==null || result.matchSetting.winId=="")
                 {
-                    alert("占时无擂主,你已成为擂主");
-                    vm.leizhu="占时无擂主";
+                    this.$message({
+                        message: '暂时无擂主,你已成为擂主',
+                        type: 'success'
+                    });
+                    vm.leizhu="暂时无擂主";
                 }
                 else
                 {
-                    alert("擂主为"+result.matchSetting.winName);
+                    vm.$message({
+                        message: "擂主为"+result.matchSetting.winName,
+                        type: 'success'
+                    });
+
                     if(result.matchSetting.winId==result.user.id)
                     {
-                        alert("欢迎擂主登陆");
+                        vm.$message({
+                            message: '欢迎擂主登陆',
+                            type: 'success'
+                        });
                     }
                     vm.leizhu=result.matchSetting.winName;
 
@@ -277,12 +288,18 @@ websocket.onmessage = function(event) {
             if(vm.leizhu==uid)
             {
                 //擂主不变
-                alert("对手弃权,你还是擂主");
+                vm.$message({
+                    message: '对手弃权,守擂成功',
+                    type: 'success'
+                });
             }
             else
             {
                 // 改变擂主   在Handler里改
-                alert("对手弃权，恭喜成为新擂主");
+                vm.$message({
+                    message: '对手弃权，恭喜成为新擂主',
+                    type: 'success'
+                });
             }
 
 
@@ -422,7 +439,7 @@ $(function(){
 function sendMsg(){
     //对象为空了
     if(websocket==undefined||websocket==null){
-        alert('您的连接已经丢失，请退出聊天重新进入');
+        this.$message.error('您的连接已经丢失，请退出聊天重新进入');
         return;
     }
     //获取用户要发送的消息内容
