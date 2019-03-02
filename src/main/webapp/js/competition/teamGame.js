@@ -71,7 +71,10 @@ var vm = new Vue({
                     var roomcode=vm.roomNum;
                     if(roomcode=="")
                     {
-                        alert("请输入房间code码");
+                        this.$message({
+                            message: '请输入房间code码',
+                            type: 'warning'
+                        });
                         return;
                     }
                     else
@@ -80,7 +83,10 @@ var vm = new Vue({
                         if(news.competitionTeam.nowScale!=news.competitionTeam.scale)
                         {
                             //人不齐  不可以点了
-                            alert("人不齐");
+                            vm.$message({
+                                message: '队伍人不齐',
+                                type: 'warning'
+                            });
                             return;
                         }
                         else
@@ -103,9 +109,6 @@ var vm = new Vue({
         radioCheck: function (id, answerId, typeName) {
             vm.radio_disabled = true;
             // var answer = vm.answers[0];
-            // alert(vm.answers);
-            // alert("我选的"+id);
-            // alert("正确的"+answerId);
             //如果答对了
 
            vm.rightAnswer= answerId;//把正确答案给上去
@@ -126,15 +129,17 @@ var vm = new Vue({
         //答错事件
         questionError:function()
         {
-            alert("答错了")
-
+            this.$message.error('答错了');
 
         },
         //答对事件
         questionYes:function()
         {
             vm.myScore=Number(vm.myScore)+Number(vm.nowQscore);
-            alert("答对了");
+            vm.$message({
+                message: '答对了',
+                type: 'success'
+            });
         },
         reload:function () {
 
@@ -159,7 +164,10 @@ var vm = new Vue({
             if(news.competitionTeam.nowScale!=news.competitionTeam.scale)
             {
                 //人不齐  不可以点了
-                alert("人不齐");
+                vm.$message({
+                    message: '队伍人不齐',
+                    type: 'warning'
+                });
                 return;
             }
             else
@@ -288,7 +296,10 @@ websocket.onmessage = function(event) {
 
         if(data.text!="")
         {
-            alert(data.text);
+            vm.$message({
+                message: data.text,
+                type: 'warning'
+            });
         }
 
         //刷新在线用户列表
@@ -321,15 +332,17 @@ websocket.onmessage = function(event) {
             {
 
                 // recordScore(news.battlePlatform.id,'0','0','teamOnline',vm.u.id);
-                alert("队友离开，不获得积分");
+                vm.$message.error('您的队友逃跑了，pk结束');
             }
 
             else if(data.strus=="1")//对方跑了
             {
                 vm.jifen=data.jifen;
                 // recordScore(news.battlePlatform.id,'1',vm.jifen,'teamOnline',vm.u.id);
-                alert("对手弃权,恭喜胜利,获得积分"+vm.jifen);
-
+                vm({
+                    message: "对手弃权,恭喜胜利,获得积分"+vm.jifen,
+                    type: 'success'
+                });
             }
 
 
@@ -651,7 +664,10 @@ $("#addroom").on("click",function(){
     if(news.competitionTeam.nowScale!=news.competitionTeam.scale)
     {
         //人不齐  不可以点了
-        alert("人不齐");
+        this.$message({
+            message: '队伍人不齐，无法开始',
+            type: 'warning'
+        });
         return;
     }
     else
@@ -675,7 +691,7 @@ $("#joinroomButton").on("click",function(){
     var roomcode=$("#joinroomCode").val();
     if(roomcode=="")
     {
-        alert("请输入房间code码");
+        vm.$message.error('请输入房间号');
         return;
     }
     else
@@ -684,7 +700,10 @@ $("#joinroomButton").on("click",function(){
         if(news.competitionTeam.nowScale!=news.competitionTeam.scale)
         {
             //人不齐  不可以点了
-            alert("人不齐");
+            vm.$message({
+                message: '人不齐',
+                type: 'warning'
+            });
             return;
         }
         else
@@ -720,8 +739,7 @@ function keySend(e) {
 function sendMsg(){
     //对象为空了
     if(websocket==undefined||websocket==null){
-        //alert('WebSocket connection not established, please connect.');
-        alert('您的连接已经丢失，请退出聊天重新进入');
+        this.$message.error('您的连接已经丢失，请退出聊天重新进入');
         return;
     }
     //获取用户要发送的消息内容

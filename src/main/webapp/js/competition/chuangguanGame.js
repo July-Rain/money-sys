@@ -374,7 +374,7 @@ var vm = new Vue({
         },
         replay: function () {
 
-            window.location.href = baseURL + 'modules/competition/rushLevel.html?index=1'
+            window.location.href = baseURL + 'modbtnNameules/competition/rushLevel.html?index=1'
         },
         jumpNextLevel: function(){
             if(this.btnName==='闯关成功'){
