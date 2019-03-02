@@ -91,24 +91,30 @@
         margin: 0 auto;
         display: block;
     }
-    .content5-1 .el-row:first-child{
+
+    .content5-1 .el-row:first-child {
         margin-bottom: 10px;
     }
-    .content5-2 .el-row,.content5-3 .el-row{
+
+    .content5-2 .el-row, .content5-3 .el-row {
         margin-bottom: 0;
     }
-    video.vjs-big-play-centered{
+
+    video.vjs-big-play-centered {
         height: 175px !important;
     }
-    .no_exams{
+
+    .no_exams {
         width: 70px;
         margin: 55px auto 0;
         text-align: center;
     }
-    .no_exams img{
+
+    .no_exams img {
         width: 100%;
         height: auto;
     }
+
     .no_exams p {
         height: 15px;
         line-height: 15px;
@@ -185,67 +191,75 @@
             <el-col :span="6">
                 <div class="box-card">
                     <div class="header pl12">
-                        <span>我的考试</span>
+                        <span>我的考试</span>·
                     </div>
                     <div class="no_exams" v-if="examList.length===0">
                         <img src="${rc.contextPath}/statics/img/no_exams.png" alt="">
                         <p>暂无考试</p>
                     </div>
                     <el-popover
-                        placement="right-end"
-                        :title="popoverTitle"
-                        width="200"
-                        trigger="hover"
-                        :content="popoverContent">
-                     <el-carousel  slot="reference" height="229px" indicator-position="none" @change="carouselChange" v-if="examList.length">
+                            placement="right-end"
+                            width="200"
 
-                            <el-carousel-item v-for="(list,index) in examList">
-                                <div class="content exam">
-                                    <div class="title">
-                                        <img src="${rc.contextPath}/statics/img/jiantou.png">
-                                        <span>{{index+1}}</span>
-                                        <span>{{list.examName}}</span>
+                           >
+                        <!--trigger="hover"-->
+                        <div slot="reference" style="background: #000">
+                            <el-carousel height="229px" indicator-position="none" @change="carouselChange"
+                                         v-if="examList.length">
+
+                                <el-carousel-item v-for="(list,index) in examList">
+                                    <div class="content exam">
+                                        <div class="title">
+                                            <img src="${rc.contextPath}/statics/img/jiantou.png">
+                                            <span>{{index+1}}</span>
+                                            <span>{{list.examName}}</span>
+                                        </div>
+                                        <div class="minContent">
+                                            <table>
+                                                <tbody>
+                                                <tr>
+                                                    <td>考试类型</td>
+                                                    <td>{{list.examTypeName}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>开始时间</td>
+                                                    <td>[{{list.startTime}}]</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>结束时间</td>
+                                                    <td>[{{list.endTime}}]</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <el-button type="primary" style="float:right;" v-if="list.examStatus=='0'"
+                                                       @click="startExam(list)">
+                                                <i class="iconfont"
+                                                   style="color: white;padding-right: 5px"
+                                                >&#xe68c;
+                                                </i>开始考试
+                                            </el-button>
+                                            <el-button type="primary" style="float:right;" v-if="list.examStatus=='1'"
+                                                       @click="startExam(list)">
+                                                <i class="iconfont"
+                                                   style="color: white;padding-right: 5px"
+                                                >&#xe68c;
+                                                </i>继续考试
+                                            </el-button>
+                                            <el-button type="primary" style="float:right;" v-if="list.examStatus=='2'"
+                                                       @click="viewExam(list)">
+                                                <i class="iconfont"
+                                                   style="color: white;padding-right: 5px"
+                                                >&#xe68c;
+                                                </i>查看试卷
+                                            </el-button>
+                                        </div>
                                     </div>
-                                    <div class="minContent">
-                                        <table>
-                                            <tbody>
-                                            <tr>
-                                                <td>考试类型</td>
-                                                <td>{{list.examTypeName}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>开始时间</td>
-                                                <td>[{{list.startTime}}]</td>
-                                            </tr>
-                                            <tr>
-                                                <td>结束时间</td>
-                                                <td>[{{list.endTime}}]</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                        <el-button type="primary" style="float:right;" v-if="list.examStatus=='1'" @click="startExam(list)">
-                                        <i class="iconfont"
-                                           style="color: white;padding-right: 5px"
-                                        >&#xe68c;
-                                        </i>开始考试</el-button>
-                                        <el-button type="primary" style="float:right;" v-if="list.examStatus=='0'" @click="startExam(list)" >
-                                            <i class="iconfont"
-                                               style="color: white;padding-right: 5px"
-                                            >&#xe68c;
-                                            </i>继续考试</el-button>
-                                        <el-button type="primary" style="float:right;" v-if="list.examStatus=='2'" @click="viewExam(list)" >
-                                            <i class="iconfont"
-                                               style="color: white;padding-right: 5px"
-                                            >&#xe68c;
-                                            </i>查看试卷</el-button>
-                                    </div>
-                                </div>
-                            </el-carousel-item>
-                        </el-carousel>
+                                </el-carousel-item>
+                            </el-carousel>
 
-
-                </el-popover>
-    </div>
+                        </div>
+                    </el-popover>
+                </div>
 
             </el-col>
             <el-col :span="6">
@@ -298,7 +312,8 @@
                         <el-row :gutter="66">
                             <el-col :span="12" v-for="(item, index) in videoData">
                                 <el-card :body-style="{ padding: '0px' }">
-                                    <video :id="item.id" class="video video-js vjs-big-play-centered" height="175" style="width: 100%;" preload="none"
+                                    <video :id="item.id" class="video video-js vjs-big-play-centered" height="175"
+                                           style="width: 100%;" preload="none"
                                            :poster="item.videoPicAccUrl"
                                            @play="onPlay(item.id,item.comContent)"
                                            @pause="onPause(item.id,$event)">
@@ -491,125 +506,125 @@
 
         <!--<div>-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;表单验证-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</div>-->
         <!--<ol>-->
-            <!--<li>输入框控制输入长度：最大输入长度maxlength='40',最小输入长度minlength</li>-->
-            <!--<li>是否可清空:clearable,禁用:disabled,只读:readonly</li>-->
-            <!--<li>当一个 form 元素中只有一个输入框时，在该输入框中按下回车应提交该表单。如果希望阻止这一默认行为，可以在 'el-form' 标签上添加 @submit.native.prevent。</li>-->
-            <!--<li>model:表单数据对象,rules:表单验证规则,size:用于控制该表单内组件的尺寸medium / small / mini,prop:表单域 model 字段</li>-->
-            <!--<li>表单重置:一、el-form 加ref属性，二、el-form-item 加prop属性</li>-->
-            <!--<li>表单验证:一、-->
-                <!--属性为验证规则，二、el-form-item 加prop属性设置为需校验的字段名即可-->
-            <!--</li>-->
+        <!--<li>输入框控制输入长度：最大输入长度maxlength='40',最小输入长度minlength</li>-->
+        <!--<li>是否可清空:clearable,禁用:disabled,只读:readonly</li>-->
+        <!--<li>当一个 form 元素中只有一个输入框时，在该输入框中按下回车应提交该表单。如果希望阻止这一默认行为，可以在 'el-form' 标签上添加 @submit.native.prevent。</li>-->
+        <!--<li>model:表单数据对象,rules:表单验证规则,size:用于控制该表单内组件的尺寸medium / small / mini,prop:表单域 model 字段</li>-->
+        <!--<li>表单重置:一、el-form 加ref属性，二、el-form-item 加prop属性</li>-->
+        <!--<li>表单验证:一、-->
+        <!--属性为验证规则，二、el-form-item 加prop属性设置为需校验的字段名即可-->
+        <!--</li>-->
         <!--</ol>-->
         <!--&lt;!&ndash;表单验证&ndash;&gt;-->
         <!--<el-row>-->
-            <!--<el-col :span="12">-->
-                <!--<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"-->
-                         <!--size="mini">-->
-                    <!--<el-form-item label="上级菜单" prop="parentName">-->
-                        <!--<el-popover-->
-                                <!--ref="menuListPopover"-->
-                                <!--placement="bottom-start"-->
-                                <!--trigger="click"-->
-                                <!--v-model="ruleForm.visible">-->
-                            <!--<el-tree-->
-                                    <!--:data="ruleForm.menuList"-->
-                                    <!--:props="ruleForm.menuListTreeProps"-->
-                                    <!--node-key="ruleForm.menuId"-->
-                                    <!--ref="ruleForm.menuListTree"-->
-                                    <!--@current-change="menuListTreeCurrentChangeHandle"-->
-                                    <!--:default-expand-all="true"-->
-                                    <!--:highlight-current="true"-->
-                                    <!--:expand-on-click-node="false">-->
-                            <!--</el-tree>-->
-                            <!--<el-input v-model="ruleForm.parentName" v-popover:menuListPopover slot="reference"-->
-                                      <!--:readonly="true" placeholder="点击选择上级菜单"></el-input>-->
-                        <!--</el-popover>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="活动名称" prop="name">-->
-                        <!--<el-input v-model="ruleForm.name" placeholder="提示语句" clearable></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="正则表达式" prop="phone">-->
-                        <!--<el-input v-model="ruleForm.phone" placeholder="提示语句" clearable></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="活动区域" prop="region">-->
-                        <!--<el-select v-model="ruleForm.region" placeholder="请选择活动区域">-->
-                            <!--<el-option label="区域一" value="shanghai"></el-option>-->
-                            <!--<el-option label="区域二" value="beijing"></el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="活动时间" required>-->
-                        <!--<el-col :span="11">-->
-                            <!--<el-form-item prop="date1">-->
-                                <!--<el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1"-->
-                                                <!--style="width: 100%;"></el-date-picker>-->
-                            <!--</el-form-item>-->
-                        <!--</el-col>-->
-                        <!--<el-col class="line" :span="2">-</el-col>-->
-                        <!--<el-col :span="11">-->
-                            <!--<el-form-item prop="date2">-->
-                                <!--<el-time-picker type="fixed-time" placeholder="选择时间" v-model="ruleForm.date2"-->
-                                                <!--style="width: 100%;"></el-time-picker>-->
-                            <!--</el-form-item>-->
-                        <!--</el-col>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="日期区间" prop="value6">-->
-                        <!--<el-date-picker-->
-                                <!--v-model="ruleForm.value6"-->
-                                <!--type="daterange"-->
-                                <!--range-separator="至"-->
-                                <!--start-placeholder="开始日期"-->
-                                <!--end-placeholder="结束日期">-->
-                        <!--</el-date-picker>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="日期区间">-->
-                        <!--<el-col :span="11">-->
-                            <!--<el-form-item prop="startDate">-->
-                                <!--<el-date-picker-->
-                                        <!--v-model="ruleForm.startDate"-->
-                                        <!--type="date"-->
-                                        <!--placeholder="开始日期">-->
-                                <!--</el-date-picker>-->
-                            <!--</el-form-item>-->
-                        <!--</el-col>-->
-                        <!--<el-col class="line" :span="2">至</el-col>-->
-                        <!--<el-col :span="11">-->
-                            <!--<el-form-item prop="endDate">-->
-                                <!--<el-date-picker-->
-                                        <!--v-model="ruleForm.endDate"-->
-                                        <!--type="date"-->
-                                        <!--placeholder="结束日期">-->
-                                <!--</el-date-picker>-->
-                            <!--</el-form-item>-->
-                        <!--</el-col>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="即时配送" prop="delivery">-->
-                        <!--<el-switch v-model="ruleForm.delivery"></el-switch>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="活动性质" prop="type">-->
-                        <!--<el-checkbox-group v-model="ruleForm.type">-->
-                            <!--<el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>-->
-                            <!--<el-checkbox label="地推活动" name="type"></el-checkbox>-->
-                            <!--<el-checkbox label="线下主题活动" name="type"></el-checkbox>-->
-                            <!--<el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>-->
-                        <!--</el-checkbox-group>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="特殊资源" prop="resource">-->
-                        <!--<el-radio-group v-model="ruleForm.resource">-->
-                            <!--<el-radio label="线上品牌商赞助"></el-radio>-->
-                            <!--<el-radio label="线下场地免费"></el-radio>-->
-                        <!--</el-radio-group>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="活动形式" prop="desc">-->
-                        <!--<el-input type="textarea" maxlength="200" v-model="ruleForm.desc"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item>-->
-                        <!--<el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>-->
-                        <!--<el-button size="mini" @click="resetForm('ruleForm')">-->
-                            <!--<i class="iconfont icon-tableresetpassword"></i>-->
-                            <!--重置</el-button>-->
-                    <!--</el-form-item>-->
-                <!--</el-form>-->
-            <!--</el-col>-->
+        <!--<el-col :span="12">-->
+        <!--<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"-->
+        <!--size="mini">-->
+        <!--<el-form-item label="上级菜单" prop="parentName">-->
+        <!--<el-popover-->
+        <!--ref="menuListPopover"-->
+        <!--placement="bottom-start"-->
+        <!--trigger="click"-->
+        <!--v-model="ruleForm.visible">-->
+        <!--<el-tree-->
+        <!--:data="ruleForm.menuList"-->
+        <!--:props="ruleForm.menuListTreeProps"-->
+        <!--node-key="ruleForm.menuId"-->
+        <!--ref="ruleForm.menuListTree"-->
+        <!--@current-change="menuListTreeCurrentChangeHandle"-->
+        <!--:default-expand-all="true"-->
+        <!--:highlight-current="true"-->
+        <!--:expand-on-click-node="false">-->
+        <!--</el-tree>-->
+        <!--<el-input v-model="ruleForm.parentName" v-popover:menuListPopover slot="reference"-->
+        <!--:readonly="true" placeholder="点击选择上级菜单"></el-input>-->
+        <!--</el-popover>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="活动名称" prop="name">-->
+        <!--<el-input v-model="ruleForm.name" placeholder="提示语句" clearable></el-input>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="正则表达式" prop="phone">-->
+        <!--<el-input v-model="ruleForm.phone" placeholder="提示语句" clearable></el-input>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="活动区域" prop="region">-->
+        <!--<el-select v-model="ruleForm.region" placeholder="请选择活动区域">-->
+        <!--<el-option label="区域一" value="shanghai"></el-option>-->
+        <!--<el-option label="区域二" value="beijing"></el-option>-->
+        <!--</el-select>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="活动时间" required>-->
+        <!--<el-col :span="11">-->
+        <!--<el-form-item prop="date1">-->
+        <!--<el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1"-->
+        <!--style="width: 100%;"></el-date-picker>-->
+        <!--</el-form-item>-->
+        <!--</el-col>-->
+        <!--<el-col class="line" :span="2">-</el-col>-->
+        <!--<el-col :span="11">-->
+        <!--<el-form-item prop="date2">-->
+        <!--<el-time-picker type="fixed-time" placeholder="选择时间" v-model="ruleForm.date2"-->
+        <!--style="width: 100%;"></el-time-picker>-->
+        <!--</el-form-item>-->
+        <!--</el-col>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="日期区间" prop="value6">-->
+        <!--<el-date-picker-->
+        <!--v-model="ruleForm.value6"-->
+        <!--type="daterange"-->
+        <!--range-separator="至"-->
+        <!--start-placeholder="开始日期"-->
+        <!--end-placeholder="结束日期">-->
+        <!--</el-date-picker>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="日期区间">-->
+        <!--<el-col :span="11">-->
+        <!--<el-form-item prop="startDate">-->
+        <!--<el-date-picker-->
+        <!--v-model="ruleForm.startDate"-->
+        <!--type="date"-->
+        <!--placeholder="开始日期">-->
+        <!--</el-date-picker>-->
+        <!--</el-form-item>-->
+        <!--</el-col>-->
+        <!--<el-col class="line" :span="2">至</el-col>-->
+        <!--<el-col :span="11">-->
+        <!--<el-form-item prop="endDate">-->
+        <!--<el-date-picker-->
+        <!--v-model="ruleForm.endDate"-->
+        <!--type="date"-->
+        <!--placeholder="结束日期">-->
+        <!--</el-date-picker>-->
+        <!--</el-form-item>-->
+        <!--</el-col>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="即时配送" prop="delivery">-->
+        <!--<el-switch v-model="ruleForm.delivery"></el-switch>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="活动性质" prop="type">-->
+        <!--<el-checkbox-group v-model="ruleForm.type">-->
+        <!--<el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>-->
+        <!--<el-checkbox label="地推活动" name="type"></el-checkbox>-->
+        <!--<el-checkbox label="线下主题活动" name="type"></el-checkbox>-->
+        <!--<el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>-->
+        <!--</el-checkbox-group>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="特殊资源" prop="resource">-->
+        <!--<el-radio-group v-model="ruleForm.resource">-->
+        <!--<el-radio label="线上品牌商赞助"></el-radio>-->
+        <!--<el-radio label="线下场地免费"></el-radio>-->
+        <!--</el-radio-group>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="活动形式" prop="desc">-->
+        <!--<el-input type="textarea" maxlength="200" v-model="ruleForm.desc"></el-input>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item>-->
+        <!--<el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>-->
+        <!--<el-button size="mini" @click="resetForm('ruleForm')">-->
+        <!--<i class="iconfont icon-tableresetpassword"></i>-->
+        <!--重置</el-button>-->
+        <!--</el-form-item>-->
+        <!--</el-form>-->
+        <!--</el-col>-->
         <!--</el-row>-->
 
         <el-button v-if="false" type="primary" @click="handleAdd" size="mini">新增</el-button>
@@ -692,14 +707,7 @@
         <el-button v-if="false" type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
 
 
-        <el-popover v-if="false"
-                    placement="right"
-                    :title="popover.title"
-                    width="200"
-                    trigger="hover"
-                    :content="popover.content">
-            <el-button slot="reference">hover 激活</el-button>
-        </el-popover>
+
         <p v-if="false">
             <a href="http://www.iconfont.cn/manage/index?spm=a313x.7781069.1998910419.11&manage_type=myprojects&projectId=947370&keyword=">iconfont图标：</a>
             <i class="iconfont icon-testing-mouse"></i>

@@ -289,21 +289,24 @@
                             </i>
                         </el-popover>
                         <el-popover
+                                v-if="timeout(scope.row.startTime)"
                                 placement="top-start"
                                 trigger="hover"
                                 content="编辑"
-                        v-if="scope.row.startTime | timeout">
+                        >
                             <i class="iconfont icon-xiugaimima tabIcon"
                                slot="reference"
                                @click="handleEdit(scope.$index, scope.row)"
-                               style="color: #119e0a;">
+                               style="color: #119e0a;"
+                               >
                             </i>
                         </el-popover>
                         <el-popover
+                                v-if="timeout(scope.row.startTime)"
                                 placement="top-start"
                                 trigger="hover"
                                 content="删除"
-                                v-if="scope.row.startTime | timeout">
+                        >
                             <i class="iconfont icon-tubiaozhizuo- tabIcon"
                                slot="reference"
                                @click="handleDelExam(scope.$index, scope.row)"
@@ -473,5 +476,5 @@
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/examCen/exam.js"></script>
+<script src="${rc.contextPath}/js/examCen/exam.js?_${.now?long}"></script>
 </html>

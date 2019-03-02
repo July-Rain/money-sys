@@ -17,16 +17,6 @@ var vm = new Vue({
             value: '',
             remark: '',
             status: "1"
-        },
-        rules: {//表单验证规则
-            value: [
-                {required: true, message: '请输入参数名', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ],
-            code: [
-                {required: true, message: '请输入参数值', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ]
         }
     },
     created: function () {
@@ -35,6 +25,10 @@ var vm = new Vue({
         })
     },
     methods:{
+        verifyTime :function(startTime,endTime){
+            var flag = new Date(Date.parse(startTime.replace(/-/g,  "/"))).getTime() <= new Date().getTime()&&new Date(Date.parse(endTime.replace(/-/g,  "/"))).getTime() >= new Date().getTime();
+            return flag;
+        },
         onSubmit: function () {
             this.reload();
         },
@@ -85,5 +79,6 @@ var vm = new Vue({
         toHome: function () {
             parent.location.reload()
         }
-    }
+    },
+
 });

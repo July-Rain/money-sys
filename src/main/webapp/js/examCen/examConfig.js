@@ -324,7 +324,7 @@ var vm = new Vue({
             return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;
         },
         getPassPnt : function(){
-            vm.examConfig.passPnt = vm.examConfig.examScore*0.6;
+            vm.examConfig.passPnt = (vm.examConfig.examScore*0.6).toFixed(0);
         },
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
@@ -1020,19 +1020,19 @@ var vm = new Vue({
 
     },
     filters: {
-        sinMultScoreFn: function (length) {
-            if(this.sinMultScore || this.sinMultScore ===0){
-                return length * this.sinMultScore
+        sinMultScoreFn: function (_length) {
+            if(vm.sinMultScore ){
+                return _length * vm.sinMultScore
             }
         },
         mulMultScoreFn: function (length) {
-            if(this.mulMultScore || this.mulMultScore === 0){
-                return length * this.mulMultScore
+            if(vm.mulMultScore || vm.mulMultScore === 0){
+                return length * vm.mulMultScore
             }
         },
         judgeMultScoreFn: function (_length) {
-            if(this.judgeMultScore || this.judgeMultScore ===0){
-                return _length * this.judgeMultScore
+            if(vm.judgeMultScore || vm.judgeMultScore ===0){
+                return _length * vm.judgeMultScore
             }
         },
         subMultScoreFn: function (_length) {

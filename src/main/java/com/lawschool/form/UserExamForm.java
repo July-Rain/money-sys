@@ -33,6 +33,15 @@ public class UserExamForm extends DataEntity<UserExamForm> {
     private String[] authArr;   //数据权限
     private String userId;
     private String source ; //来源
+    private String isMustTest;  //是否必考
+
+    public String getIsMustTest() {
+        return this.isMustTest;
+    }
+
+    public void setIsMustTest(final String isMustTest) {
+        this.isMustTest = isMustTest;
+    }
 
     public String getSource() {
         return this.source;

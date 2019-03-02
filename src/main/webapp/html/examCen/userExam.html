@@ -112,7 +112,7 @@
                                         </i>
                                     </el-popover>
                                     <el-popover
-                                            v-if="tableData[scope.$index].examStatus==0"
+                                            v-if="scope.row.examStatus==0&&verifyTime(scope.row.startTime,scope.row.endTime)"
                                             placement="right"
                                             trigger="hover"
                                             content="开始考试">
@@ -123,7 +123,7 @@
                                         </i>
                                     </el-popover>
                                     <el-popover
-                                            v-if="tableData[scope.$index].examStatus==1"
+                                            v-if="scope.row.examStatus==1&&verifyTime(scope.row.startTime,scope.row.endTime)"
                                             placement="right"
                                             trigger="hover"
                                             content="继续考试">
