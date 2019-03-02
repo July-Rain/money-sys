@@ -319,24 +319,7 @@
                     <el-form-item label="任务名称：" prop="taskName">
                         <el-input v-model="learnTasks.taskName" placeholder="请输入任务名称" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="任务内容：" prop="taskContent">
-                        <!--<el-input type="textarea" maxlength="200" v-model="learnTasks.taskContent" placeholder="请输入任务内容" clearable></el-input>-->
-                        <!--<el-tree
-                                ref="classTree"
-                                :data="classData"
-                                :props="defaultClassProps"
-                                accordion
-                                show-checkbox
-                                @check-change="handleClassCheckChange"
-                                node-key="infoId"
-                                :default-expanded-keys="[2079]"
-                        >
-                        </el-tree>-->
-                        <!-- 选择任务 -->
-                        <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
-                            <ul id="classTree" class="ztree"></ul>
-                        </el-scrollbar>
-                    </el-form-item>
+
                     <!--<el-form-item label="所属警种：" prop="policeclass">-->
                         <!--<el-select v-model="learnTasks.policeclass" placeholder="所属警种">-->
                             <!--<el-option-->
@@ -385,6 +368,24 @@
                     <el-form-item label="使用人员：" prop="userName" v-if="menuForm!='person'">
                         <el-input v-model="learnTasks.userName" readonly @focus="chooseUser" placeholder="请选择使用人员"
                                   clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="任务内容：" prop="taskContent">
+                        <!--<el-input type="textarea" maxlength="200" v-model="learnTasks.taskContent" placeholder="请输入任务内容" clearable></el-input>-->
+                        <!--<el-tree
+                                ref="classTree"
+                                :data="classData"
+                                :props="defaultClassProps"
+                                accordion
+                                show-checkbox
+                                @check-change="handleClassCheckChange"
+                                node-key="infoId"
+                                :default-expanded-keys="[2079]"
+                        >
+                        </el-tree>-->
+                        <!-- 选择任务 -->
+                        <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
+                            <ul id="classTree" class="ztree"></ul>
+                        </el-scrollbar>
                     </el-form-item>
                 </el-col>
             </el-form>
