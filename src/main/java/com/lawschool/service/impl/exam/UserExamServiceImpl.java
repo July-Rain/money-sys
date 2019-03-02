@@ -385,6 +385,9 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
                 questForm.setUserAnswer(userExamAnswer.getUserAnsId());
                 questForm.setUserScore(userExamAnswer.getUserScore());
                 questForm.setQuestionId(userExamAnswer.getId());
+                questForm.setFirCheckBase(userExamAnswer.getFirCheckBase());
+                questForm.setSecCheckBase(userExamAnswer.getSecCheckBase());
+                questForm.setAudCheckBase(userExamAnswer.getAudCheckBase());
                 questFormList.add(questForm);
             }
             return questFormList;

@@ -118,7 +118,7 @@ var vm = new Vue({
                     {required: true, message: '请输入开始时间', trigger: 'blur'}
                 ],
                 endTime:[
-                    {validator: validateDate, trigger: 'blur'}
+                    {validator: validateDate, trigger: 'blur',required: true}
                 ],
                 examTime : [
                     {required: true, message: '请输入考试时长', trigger: 'blur'}
@@ -313,7 +313,8 @@ var vm = new Vue({
                 vm.view = false;
                 vm.handleType = 'edit';
                 this.getExamDetail(examConfigId);
-            }
+            };
+            this.reloadUser();
 
         });
     },
@@ -450,14 +451,15 @@ var vm = new Vue({
         confimUser: function () {
             //  --回显需加
             var val = this.multipleSelection;
+
             //遍历最终的人员信息
             for (var i = 0; i < val.length; i++) {
                 if (i == 0) {
-                    vm.stuMedia.userIds = val[i].id;
-                    vm.stuMedia.userName = val[i].userName;
+                    vm.examConfig.userIds = val[i].id;
+                    vm.examConfig.userName = val[i].userName;
                 } else {
-                    vm.stuMedia.userIds = vm.stuMedia.userIds + ',' + val[i].id;
-                    vm.stuMedia.userName = vm.stuMedia.userName + ',' + val[i].userName;
+                    vm.examConfig.userIds = vm.examConfig.userIds + ',' + val[i].id;
+                    vm.examConfig.userName = vm.examConfig.userName + ',' + val[i].userName;
                 }
             }
             this.dialogUser=false;
@@ -527,7 +529,7 @@ var vm = new Vue({
             //选择人员
             this.dialogUser=true;
             //this.reloadUser();
-            this.huixian(this.stuMedia.userArr) //  --回显需加
+            this.huixian(this.examConfig.userArr) //  --回显需加
         },
         reloadUser: function () {
             $.ajax({

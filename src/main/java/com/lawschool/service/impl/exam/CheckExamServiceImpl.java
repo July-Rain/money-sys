@@ -144,12 +144,14 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
             if(UtilValidate.isEmpty(userExamAnswer.getFirCheckUserId())){
                 userExamAnswer.setFirCheckScore(checkExamForm.getScore());
                 userExamAnswer.setFirCheckUserId(userAnswerForm.getCheckExamUserId());
+                userExamAnswer.setFirCheckBase(checkExamForm.getCheckBase());
             }else {
                 if("1".equals(isFinsh)){
                     isFinsh = "0";
                 }
                 userExamAnswer.setSecCheckScore(checkExamForm.getScore());
                 userExamAnswer.setSecCheckUserId(userAnswerForm.getCheckExamUserId());
+                userExamAnswer.setSecCheckBase(checkExamForm.getCheckBase());
                 if(Math.abs(checkExamForm.getScore()-userExamAnswer.getFirCheckScore())<=diffScore){
                     userExamAnswer.setUserScore((checkExamForm.getScore()+userExamAnswer.getFirCheckScore())/2);
                     userExamAnswer.setCheckStatus("0");
@@ -222,6 +224,7 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
             userExamAnswer.setAudCheckScore(checkExamForm.getScore());
             userExamAnswer.setAudCheckUserId(userAnswerForm.getCheckExamUserId());
             userExamAnswer.setUserScore(checkExamForm.getScore());
+            userExamAnswer.setAudCheckBase(checkExamForm.getCheckBase());
             countScore +=checkExamForm.getScore();
             userExamAnswerDao.updateById(userExamAnswer);
 
