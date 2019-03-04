@@ -44,6 +44,7 @@ public class TestQuestionController {
         testQuestions.setQuestionDifficulty(questionDifficulty);
         testQuestions.setQuestionType(questionType);
         testQuestions.setComContent(queContent);
+
         Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), testQuestions);
         List<TestQuestions> list = page.getList();
         for(TestQuestions tes : list){
@@ -86,6 +87,7 @@ public class TestQuestionController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
     public Result save(@RequestBody TestQuestions testQuestions) {
+
 
         boolean result = testQuestionService.mySave(testQuestions);
         if(result){
