@@ -132,6 +132,7 @@
             rigth_number            = #{rigthNumber},
             opt_user                = #{optUser},
             opt_time                = #{optTime},
+            is_enble                = #{isEnble},
             video = #{video}
         <where>
             id = #{id}
@@ -363,7 +364,7 @@
         <include refid="questionColumn"/>
         FROM law_testquestions a
         <where>
-            a.is_enble = '0'
+            a.is_enble != '2'
             <if test="typeId != null and typeId != ''">
                 AND a.type_id = #{typeId}
             </if>
@@ -379,6 +380,7 @@
             <if test="comContent != null and comContent != ''">
                 AND a.com_content like concat(concat('%',#{comcontent}),'%')
             </if>
+
         </where>
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">

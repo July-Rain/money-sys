@@ -3,92 +3,112 @@
 <head>
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/testPaper.css">
 </head>
-<style>
-#app{
-    background-color:#efefef;
-    width: 100vw;
-    height: 100vh;
-}
-#paper{
-    width: 1180px;
-    background: #fff;
-    margin: 54px auto 47px;
-    padding: 165px 0 90px;
-}
-#paper h2{
-    height: 48px;
-    line-height: 48px;
-    font-family: MicrosoftYaHei;
-    font-size: 48px;
-    font-weight: normal;
-    font-stretch: normal;
-    letter-spacing: 0px;
-    color: #2a2a2a;
-    text-align: center;
-    margin-bottom: 70px;
-}
-#paper .smg{
-    height: 30px;
-    line-height: 30px;
-    margin-bottom: 19px;
 
-}
-p,span{
-    font-size: 24px;
-    color: #2a2a2a;
-}
-#paper .smg .name{
-    float: left;
-    padding-left: 149px;
-}
-#paper .smg .set{
-    float: right;
-    padding-right: 164px;
-}
-.text_s{
-    cursor:pointer;
-    font-size: 16px;
-}
-.text_m{
-    cursor:pointer;
-    font-size: 18px;
-}
-.text_l{
-    cursor:pointer;
-    font-size: 24px;
-    font-weight: bolder;
-}
-.subTitle{
-    padding: 20px 90px 0;
-}
-.question_area{
-    padding-top: 47px;
-    width: 935px;
-    margin: 0 auto;
-}
-.el-form-item__content{
-    line-height: 25px;
-
-}
-.el-radio,.el-radio__label,.el-checkbox,.el-checkbox__label{
-    font-size: 24px;
-    margin: 0!important;
-}
-.el-radio,.el-checkbox{
-    margin-top: 29px!important;
-}
-.el-radio-group label,.el-checkbox-group label{
-    display: block;
-}
-.timing{
-    position: fixed;
-    left: 10px;
-    top: 10px;
-}
-</style>
 <body>
+<!-- 修改后的html -->
 <div id="app" v-cloak>
+    <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>考试中心</el-breadcrumb-item>
+            <el-breadcrumb-item>{{ paperName }}</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="content">
+            <header>
+                <div class="title">{{ paperName }}</div>
+                <div class="tips">
+                    <span class="username">姓名：<span>{{ username }}</span></span>
+                    <span class="font-size" @click="changeFontSize($event)">字体：
+                        (<span class="font-size-span">小</span>
+                        <span class="font-size-span">中</span>
+                        <span class="font-size-span">大</span>)
+                    </span>
+                    <span class="duration" v-if="!isSubmit">本卷计时{{ time }}小时，还剩:<span style="font-weight: 900">{{ countdown }}</span></span>
+                    <span class="duration" v-if="isSubmit">本卷计时{{ time }}小时，用时<span style="font-weight: 900">{{ consumed }}</span></span>
+                </div>
+            </header>
+            <article class="main">
+                <div class="one-option">
+                    <div class="description"><a name="oneOption"></a>一. 单选题。每题所设选项中只有一个正确答案，多选，错选或不选均不得分。本部分含1-50题，每题1分，共{{ oneOptionList.length*1 }}分。</div>
+                    <div class="question daliy" v-for="(question, index) in oneOptionList" :class="{'question-background': (index%2 == 0)}">
+                        <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
+                        <el-radio-group v-model="answers" :disabled="isSubmit">
+                            <el-radio :label="answer.id" v-for="(answer, index) in question.answer">
+                                {{ answer.questionContent }}
+                            </el-radio>
+                        </el-radio-group>
+                        <div class="answer-area" v-show="isSubmit">
+                            <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
+                            <p :class="1==1 ? 'right' : 'err'">你的答案：<span>AB</span>，正确答案：<span>AB</span></p>
+                            <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
+                        </div>
+                        <div class="gray" v-if="isSubmit"></div>
+                    </div>
+                </div>
+                <div class="multi-options">
+                    <div class="description"><a name="multiOptions"></a>二. 多选题。每题所设选项中有多个答案。本部分含1-5题，每题2分，共{{ multiOptionsList.length*2 }}分。</div>
+                    <div class="question" v-for="(question, index) in multiOptionsList" :class="{'question-background': (index%2 == 0)}">
+                        <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
+                        <el-checkbox-group v-model="answersList" :disabled="isSubmit">
+                            <el-checkbox :label="answer.id" v-for="(answer, index) in question.answer">
+                                {{ answer.questionContent }}
+                            </el-checkbox>
+                        </el-checkbox-group>
+                        <div class="answer-area" v-show="isSubmit">
+                            <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
+                            <p :class="1==1 ? 'right' : 'err'">你的答案：<span>AB</span>，正确答案：<span>AB</span></p>
+                            <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
+                        </div>
+                        <div class="gray" v-if="isSubmit"></div>
+                    </div>
+                </div>
+                <div class="checking">
+                    <div class="description"><a name="checking"></a>三. 判断题。本部分含1-5题，每题2分，共{{ checkingList.length*2 }}分。</div>
+                    <div class="question daliy" v-for="(question, index) in checkingList" :class="{'question-background': (index%2 == 0)}">
+                        <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
+                        <el-radio-group v-model="answers" :disabled="isSubmit">
+                            <el-radio :label="answer.id" v-for="(answer, index) in question.answer">
+                                {{ answer.questionContent }}
+                            </el-radio>
+                        </el-radio-group>
+                        <div class="answer-area" v-show="isSubmit">
+                            <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
+                            <p :class="0==1 ? 'right' : 'err'">你的答案：<span>AB</span>，正确答案：<span>AB</span></p>
+                            <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
+                        </div>
+                        <div class="gray" v-if="isSubmit"></div>
+                    </div>
+                </div>
+            </article>
+            <div class="score" v-if="isSubmit">{{ totalScore }}</div>
+        </div>
+        <div class="bar">
+            <ul class="category">
+                <li v-for="item in barData">
+                    <a class="type" :href="item.href" @click="pickArea($event)"><i class="iconfont icon-biaodiandidian"></i>{{ item.questionType }}</a>
+                    <div><span :class="{'done-something': item.currentFinishedNum}">{{ item.currentFinishedNum }}</span>/<span>{{ item.totalNum }}</span></div>
+                </li>
+            </ul>
+            <div class="buttons" v-if="!isSubmit">
+                <el-button type="primary" @click="submit">交卷</el-button><el-button type="primary" plain class="save">保存</el-button>
+            </div>
+            <div class="display" v-if="isSubmit">
+                <div class="right-num">
+                    <span class="num">63</span>
+                    <span class="green">对</span>
+                </div>
+                <div class="error-num">
+                    <span class="num">4</span>
+                    <span class="red">错</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 修改前的html -->
+<!--<div id="app" v-cloak>
     <div id="paper">
     <h2>{{examConfig.examName}}</h2>
     <div class="smg">
@@ -149,9 +169,8 @@ p,span{
         <el-button @click="submit" type="success" style="float: right;">交卷</el-button>
     </div>
     <div v-if="minutes&&seconds" class="timing">考试时间剩余<span v-if="minutes">{{minutes}}</span>分钟<span v-if="seconds">{{seconds}}</span>秒</div>
-</div>
+</div>-->
 </body>
-
 <!-- import [current] JavaScript -->
 <script src="${rc.contextPath}/js/examCen/testPaper.js"></script>
 </html>
