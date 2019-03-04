@@ -493,6 +493,10 @@ var vm = new Vue({
             this.loadTabTreeData();
             console.log("加载数据");
         },
+
+        toHome: function () {
+            parent.location.reload()
+        },
     },
     filters: {
         objTstring: function (value) {

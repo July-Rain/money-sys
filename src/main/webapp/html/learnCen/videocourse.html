@@ -156,8 +156,8 @@
                                             </div>
                                             <div>
                                                 <p>
-                                                    <span v-if="!item.isColl" @click="collect(item.id)">收藏</span>
-                                                    <span v-if="item.isColl" @click="cancelCollect(item.id)">取消收藏</span>
+                                                    <span v-if="!item.isColl" @click="collect(item.id)"><i class="iconfont icon-shoucang"></i></span>
+                                                    <span v-if="item.isColl" @click="cancelCollect(item.id)"><i class="iconfont icon-shoucang1" style="color:#1381e3"></i></span>
                                                     <a href="javascript:;" class="title">{{item.stuTitle}}</a>
                                                 </p>
                                                 <p>
