@@ -492,10 +492,14 @@ var vm = new Vue({
         ],
         // 时间变量
         startTime: 0,
-        countdown: '00:00:00',
         time: 0,
         lefttime: 0,
-        consumed: '00:00:00',
+        leftHours: '00',
+        leftMinutes: '00',
+        leftSeconds: '00',
+        consumedHours: '00',
+        consumedMinutes: '00',
+        consumedSeconds: '00',
         // 总分
         totalScore: 87,
 
@@ -646,9 +650,7 @@ var vm = new Vue({
             // 用计时器动态显示:间隔时间1s
             this.lefttime -= 1000;
             var results = this.figureTime(this.lefttime);
-            let a, b, c;
-            [a, b, c] = [...results];
-            this.countdown = a + ':' + b + ':' + c;
+            [this.leftHours, this.leftMinutes, this.leftSeconds] = [...results];
             // 3个小时用完,强制提交
             if (this.lefttime <= 0) {
                 this.submit();
@@ -658,9 +660,7 @@ var vm = new Vue({
         consumedTime: function () {
             var consumed =  3*3600000 - this.lefttime;
             var results = this.figureTime(consumed);
-            let a, b, c;
-            [a, b, c] = [...results];
-            this.consumed = a + ':' + b + ':' + c;
+            [this.consumedHours, this.consumedMinutes, this.consumedSeconds] = [...results];
         },
         // 计算时间
         figureTime: function (time) {
