@@ -54,7 +54,6 @@
         SELECT
             id, role_name, remark, create_time
         FROM law_sys_role
-        ORDER BY CREATE_TIME
     </select>
 
     <delete id="delete">
