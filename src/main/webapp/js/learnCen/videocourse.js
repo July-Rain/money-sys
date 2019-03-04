@@ -86,6 +86,7 @@ var vm = new Vue({
                 })
             }
         },
+        // 初始化对话框视频
         initDialogPlayer: function () {
             var dialogOptions = {
                 controls: true,
