@@ -144,10 +144,11 @@ p,span{
             答 ：<el-input type="text" v-model="subject[index]" placeholder="請輸入答案"></el-input>
         </div>
     </el-form>
+        <el-button @click="save" style="float: right;"> 返回</el-button>
         <el-button @click="save" type="success" style="float: right;">保存</el-button>
         <el-button @click="submit" type="success" style="float: right;">交卷</el-button>
     </div>
-    <div v-if="minutes&&seconds" class="timing">考试时间剩余<span v-if="minutes">{{minutes}}</span>min<span v-if="seconds">{{seconds}}</span>s</div>
+    <div v-if="minutes&&seconds" class="timing">考试时间剩余<span v-if="minutes">{{minutes}}</span>分钟<span v-if="seconds">{{seconds}}</span>秒</div>
 </div>
 </body>
 

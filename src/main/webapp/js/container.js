@@ -454,8 +454,7 @@ var vm = new Vue({
                 dataType: "json",
                 success: function (result) {
                     if (result.code == 0) {
-                        // vm.examList = result.page.list;
-
+                       vm.examList = result.page.list;
                     }
                 }
             })
@@ -1079,8 +1078,15 @@ var vm = new Vue({
                 = 'modules/personalCen/myScoreReport.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
         },
         carouselChange:function (index) {
-            vm.popoverTitle = vm.examList[index].examName;
-            vm.popoverContent = vm.examList[index].id;
+            vm.popoverTitle = "试卷名称："+vm.examList[index].examName;
+            var msg = '';
+            if (vm.examList[index].isMustTest==='10029'){
+                msg = '是';
+            }else if(vm.examList[index].isMustTest==='10030'){
+                msg = '否';
+            }
+            vm.popoverContent ="是否必考："+ msg;
+            vm.popoverContent = vm.popoverContent +"组考单位："+ vm.examList[index].organizedOrgCode;
         }
     },
     computed: {

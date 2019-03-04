@@ -55,12 +55,23 @@ var vm = new Vue({
            dialogEdit: false,
        }
     },
+
     created: function () {
         this.$nextTick(function () {
             this.reload();
         })
     },
     methods: {
+        timeout: function (time) {
+            console.info(time)
+            if(time === null){
+                return true
+            }else {
+                var flag = new Date(Date.parse(time.replace(/-/g,  "/"))).getTime() > new Date().getTime();
+                console.info(flag)
+                return flag;
+            }
+        },
         // 查询
         onSubmit: function () {
             this.reload();
@@ -245,14 +256,5 @@ var vm = new Vue({
             Url2.select(); // 选择对象
             document.execCommand("Copy"); // 执行浏览器复制命令
         },
-    },
-    filters: {
-        timeout: function (startTime) {
-            if(startTime === null  ){
-                return true
-            }else {
-                return new Date(Date.parse(startTime.replace(/-/g,  "/"))).getTime() <=new Date().getTime();
-            }
-        }
     }
 });
