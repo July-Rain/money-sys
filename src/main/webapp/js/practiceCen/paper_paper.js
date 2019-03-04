@@ -8,6 +8,8 @@ var vm = new Vue({
     data: {
         // boolean
         isSubmit: false,
+        // 题目数据
+        questionList: [],
         oneOptionList: [
             {
                 id: "6",
@@ -536,15 +538,7 @@ var vm = new Vue({
             }
         ],
         expressingList: [],
-        paperName: '卷子名称：第四季度执法资格考试',
-        username: '王小明',
-        questionList: [],
-        answers: [],
-        answersList: [],
-        page: 1,
-        limit: 5,
-        count: 0,
-        preserved: [],
+        // bar
         barData: [
             {
                 href: "#oneOption",
@@ -584,9 +578,19 @@ var vm = new Vue({
         lefttime: 10800000,
         consumed: '00:00:00',
         // 总分
-        totalScore: 87
+        totalScore: 87,
+
+        paperName: '卷子名称：第四季度执法资格考试',
+        username: '王小明',
+        answers: [],
+        answersList: [],
+        page: 1,
+        limit: 5,
+        count: 0,
+        preserved: [],
     },
     methods: {
+        // created中执行以获取数据
         refresh: function () {
             var obj = {
                 configureId: configureId,
@@ -667,32 +671,31 @@ var vm = new Vue({
         toHome: function () {
             parent.location.reload()
         },
+
         // 改变字体大小
         changeFontSize: function (e) {
-            console.log(e);
             var fontSpans = document.getElementsByClassName('font-size-span');
-            var html = document.getElementsByTagName('html')[0];
-            console.log(html)
+            var html = document.getElementById('html');
             for (var i = 0; i < fontSpans.length; i++) {
                 fontSpans[i].style.fontWeight = '300';
             }
-            e.target.style.fontWeight = '600';
             //  待
             if (e.target.innerHTML === '小') {
-                html.style.fontsize = '8px';
+                html.style.fontSize = '10px';
             } else if (e.target.innerHTML === '中') {
-                html.style.fontsize = '10px';
+                html.style.fontSize = '12px';
+            } else if (e.target.innerHTML === '大') {
+                html.style.fontSize = '14px';
             } else {
-                html.style.fontsize = '12px';
+                return;
             }
-            location.reload();
+            e.target.style.fontWeight = '600';
         },
         // 改变 bar 中元素被选择时的字体颜色 & 定位字体图标
         pickArea: function (e) {
             var aTags = document.getElementsByClassName('type');
             var icons = document.getElementsByClassName('icon-biaodiandidian');
             var icon = e.target.getElementsByClassName('iconfont')[0];
-            console.log(icon, icons)
             for (var i = 0; i < aTags.length; i++) {
                 aTags[i].style.color = 'black';
             }
@@ -834,9 +837,6 @@ var vm = new Vue({
                 }
             });
         },
-
-
-
     },
     created: function () {
         setInterval(this.computeTime,1000);

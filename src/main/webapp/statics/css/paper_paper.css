@@ -60,11 +60,10 @@ html {
     font-size: 1.2rem;
     font-weight: 300;
 }
-.tips .font-size .current {
-    font-weight: 600;
-}
+
 .tips .font-size span:first-child {
     font-size: 17.6px;
+    font-weight: 900;
 }
 .tips .font-size span:nth-child(2) {
     margin-left: 3px;
