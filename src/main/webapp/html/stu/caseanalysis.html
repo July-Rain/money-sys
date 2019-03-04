@@ -325,6 +325,10 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
+                        <el-form-item label="法律主题分类：" prop="caseLawname">
+                            <el-input v-model="caseAna.caseLawname" readonly @focus="chooseLaw" placeholder="请选择法律主题分类"
+                                      clearable></el-input>
+                        </el-form-item>
                         <el-form-item label="使用部门：" prop="deptName">
                             <el-input v-model="caseAna.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门" clearable></el-input>
                         </el-form-item>
@@ -442,6 +446,27 @@
             <div slot="footer" class="dialog-footer">
                 <el-button size="mini" @click="cancelUser">取消</el-button>
                 <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog title="选择法律法规主题分类" :visible.sync="dialogLaw">
+            <!--对于同一级的节点，每次只能展开一个-->
+            <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;"
+                          view-class="view-box" :native="false">
+                <el-tree
+                        ref="lawTree"
+                        :data="lawData"
+                        :props="defaultProps"
+                        accordion
+                        show-checkbox
+                        @check-change="handleCheckChange"
+                        node-key="classifyId"
+                        :default-checked-keys="lawCheckData">
+                </el-tree>
+            </el-scrollbar>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="cancelLaw">取消</el-button>
+                <el-button type="primary" size="mini" @click="confimLaw">保存</el-button>
             </div>
         </el-dialog>
 
