@@ -611,12 +611,20 @@ var vm = new Vue({
                     }
                     vm.questionList.forEach(function (val) {
                         switch (val.questionType) {
+                            // 单选题
                             case '10004':
                                 vm.oneOptionList.push(val);
                                 break;
+                            // 多选题
                             case '10005':
                                 vm.multiOptionsList.push(val);
                                 break;
+                            // 判断题
+                            case '10006':
+                                vm.checkingList.push(val);
+                            // 主观题
+                            case '10007':
+                                vm.expressingList.push(val);
                             default:
                                 return;
                         }
@@ -669,7 +677,7 @@ var vm = new Vue({
                 fontSpans[i].style.fontWeight = '300';
             }
             e.target.style.fontWeight = '600';
-            // 改变整体页面字体大小
+            //  待
             if (e.target.innerHTML === '小') {
                 html.style.fontsize = '8px';
             } else if (e.target.innerHTML === '中') {
@@ -679,13 +687,20 @@ var vm = new Vue({
             }
             location.reload();
         },
-        // 改变 bar 中元素被选择时的字体颜色
+        // 改变 bar 中元素被选择时的字体颜色 & 定位字体图标
         pickArea: function (e) {
             var aTags = document.getElementsByClassName('type');
+            var icons = document.getElementsByClassName('icon-biaodiandidian');
+            var icon = e.target.getElementsByClassName('iconfont')[0];
+            console.log(icon, icons)
             for (var i = 0; i < aTags.length; i++) {
                 aTags[i].style.color = 'black';
             }
+            for (var i = 0; i < icons.length; i++) {
+                icons[i].style.display = 'none';
+            }
             e.target.style.color = '#1381e3';
+            icon.style.display = 'inline-block';
         },
 
         // 提交试卷

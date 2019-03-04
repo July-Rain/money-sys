@@ -140,8 +140,17 @@ html {
     height: 45px;
 }
 .bar .category li a {
+    position: relative;
     color: black;
     font-size: 1.6rem;
+}
+.bar .category .icon-biaodiandidian {
+    display: none;
+    position: absolute;
+    left: -30px;
+    top: 0px;
+    color: #1381e3;
+    font-size: 20px;
 }
 .bar .buttons {
     width: 100%;
