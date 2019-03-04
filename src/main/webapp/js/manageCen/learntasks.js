@@ -453,7 +453,6 @@ var vm = new Vue({
                         vm.userForm.currPage = result.page.currPage;
                         vm.userForm.pageSize = result.page.pageSize;
                         vm.userForm.totalCount = parseInt(result.page.totalCount);
-                        debugger
                         // 点击展示回显内容：   --回显需加
                         vm.huixian(vm.learnTasks.userArr)
                     } else {

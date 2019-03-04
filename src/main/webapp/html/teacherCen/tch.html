@@ -82,6 +82,9 @@
         font-size: 12px;
         padding: 3px 16px 5px;
     }
+    .title{
+        color: black !important;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -157,14 +160,23 @@
                             <!--<span class="date">2019-04-16</span>-->
                         <!--</li>-->
                         <li v-for="item in newsData">
-                            <a :href="'${rc.contextPath}/sys/download?accessoryId='+item.comContent" class="title">{{item.stuTitle}}</a>
+                            <!--<a :href="'${rc.contextPath}/sys/download?accessoryId='+item.comContent" class="title">{{item.stuTitle}}</a>-->
+                            <span class="title" @click="getStuContent(item)">{{item.stuTitle}}</span>
                             <span class="date">{{item.stuIsstime}}</span>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
-
+        <el-dialog class="dialog_minW750" title="视频课堂" :visible.sync="dialogVideo" @opened="dialogOpen" >
+            <div v-if="dialogVideo" style="max-height: 450px;text-align: center" ref="dialog">
+                <video id="dialog-player" class="video video-js vjs-big-play-centered" style="width:auto; max-height: 450px" preload="none"
+                       :poster="thisVideoPicAccUrl">
+                    <source :src="thisVideoContentUrl" type="video/mp4">
+                    您的浏览器不支持视频播放
+                </video>
+            </div>
+        </el-dialog>
 
     </div>
 

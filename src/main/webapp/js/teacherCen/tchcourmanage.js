@@ -153,7 +153,6 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-                        debugger
                         vm.stuMediaTch = result.data;
                         if(vm.stuMediaTch.accessoryInfoList){
                             vm.fileList=vm.stuMediaTch.accessoryInfoList;

@@ -187,10 +187,22 @@ websocket.onmessage = function (event) {
         //刷新在线用户列表
         $("#chatOnline").html("在线用户(" + data.userList.length + ")人");
 
-        vm.$message({
-            message: data.text,
-            type: 'success'
-        });
+
+        if(data.text.indexOf('未找到')!==-1){
+            vm.$alert('请点击确定，返回首页重新输入房间号','房间不存在',{
+                confirmButtonText:'确定',
+                showClose:false,
+                callback: function () {
+                    window.location.href = baseURL + 'competition/pkMain.html'
+                }
+            })
+        }else {
+            vm.$message({
+                message: data.text,
+                type: 'success'
+            });
+
+        }
 
         // 当收到系统消息的时候  然且当是在线2人的时候 这时候 默认给第一题
         if (data.userList.length == "2") {

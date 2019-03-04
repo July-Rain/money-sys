@@ -45,6 +45,8 @@ public class CaseAnalysisEntity implements Serializable {
 
     private String caseLawid;
 
+    private String caseLawname;
+
     private String delStatus;
 
     private String createUser;
@@ -295,5 +297,13 @@ public class CaseAnalysisEntity implements Serializable {
 
     public void setCreateUserName(String createUserName) {
         this.createUserName = createUserName;
+    }
+
+    public String getCaseLawname() {
+        return caseLawname;
+    }
+
+    public void setCaseLawname(String caseLawname) {
+        this.caseLawname = caseLawname;
     }
 }

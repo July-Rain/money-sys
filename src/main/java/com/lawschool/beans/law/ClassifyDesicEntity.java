@@ -24,7 +24,7 @@ public class ClassifyDesicEntity implements Serializable {
     @TableLogic
     private Short delFlag;
 
-    private Integer orderNum;
+    private String orderNum;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createTime;
 
@@ -86,11 +86,11 @@ public class ClassifyDesicEntity implements Serializable {
         this.delFlag = delFlag;
     }
 
-    public Integer getOrderNum() {
+    public String getOrderNum() {
         return orderNum;
     }
 
-    public void setOrderNum(Integer orderNum) {
+    public void setOrderNum(String orderNum) {
         this.orderNum = orderNum;
     }
 

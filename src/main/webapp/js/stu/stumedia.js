@@ -47,7 +47,10 @@ var vm = new Vue({
                 {max: 100, message: '最大长度100', trigger: 'blur'}
             ],
             comContent: [
-                {required: true, message: '请添加内容', trigger: 'blur'}
+                {required: true, message: '请添加内容', trigger: 'blur'},
+            ],
+            stuKnowledge: [
+                {required: true, message: '请选择法律主题分类', trigger: 'blur'}
             ]
         },
         dialogStuMedia: false,//table弹出框可见性
@@ -90,7 +93,12 @@ var vm = new Vue({
         videoFlag: false,
         videoUploadPercent: 0,
         deptCheckData: [],//部门默认选中节点
-        saveUserTableData: []//用于人员回显表格的对象  --回显需加
+        saveUserTableData: [],//用于人员回显表格的对象  --回显需加
+        dialogLaw:false,//法律法规主题分类弹窗
+        lawCheckData:[],//法律法规回显表格数据
+        multipleLawSelection: [],//选中法律法规信息
+        lawData: [],//法律知识库分类树 --去除全部的
+
     },
     created: function () {
         this.$nextTick(function () {
@@ -107,6 +115,20 @@ var vm = new Vue({
                     }
                 }
             });
+            //去除全部
+            $.ajax({
+                type: "POST",
+                url: baseURL + "law/alltree?flag=true",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.lawData = result.classifyList;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+
 
             //加载部门数据
             $.ajax({
@@ -214,12 +236,10 @@ var vm = new Vue({
             vm.reload();
         },
         addStuMedia: function () {
-            if (!vm.stuMedia.stuLawid) {
-                alert("请选择左侧专项知识");
-                return;
-            }
-            var lawId = vm.stuMedia.stuLawid;
-            var lawName = vm.stuMedia.stuKnowledge;
+            // if (!vm.stuMedia.stuLawid) {
+            //     alert("请选择左侧专项知识");
+            //     return;
+            // }
             this.stuMedia = {
                 id: "",
                 stuType: "1",
@@ -230,8 +250,8 @@ var vm = new Vue({
                 stuDescribe: "",
                 userName: "",//适用人员姓名
                 deptName: "",//适用部门姓名
-                stuLawid: lawId,//专项知识id
-                stuKnowledge: lawName,//专项知识
+                stuLawid: "",//专项知识id
+                stuKnowledge: "",//专项知识
                 videoPicAcc: "",//视频首页
             },
                 //清空editor
@@ -243,15 +263,18 @@ var vm = new Vue({
             this.title = "修改";
             this.dialogStuMedia = true;
             this.deptCheckData = [];
+            this.lawCheckData = [];
             editor.txt.html("");
             $.ajax({
                 type: "POST",
                 url: baseURL + 'stumedia/info?id=' + row.id,
                 contentType: "application/json",
                 success: function (result) {
+                    debugger
                     if (result.code === 0) {
                         vm.stuMedia = result.data;
                         vm.deptCheckData = result.data.deptArr;
+                        vm.lawCheckData = result.data.stuLawid.split(",");
                         editor.txt.html(vm.stuMedia.comContent);
                         for (var i = 0; i < vm.stuMedia.length; i++) {
                             if (vm.stuMedia.stuType != '1' && vm.stuMedia.comContent) {
@@ -545,6 +568,26 @@ var vm = new Vue({
             if (vm.stuMedia.stuType == '1') {
                 loadEditor();
             }
+        },
+        chooseLaw:function(){
+            //选择法律法规主题分类
+            this.dialogLaw = true;
+        },
+        cancelLaw:function(){
+            this.dialogLaw = false;
+        },
+        confimLaw:function(){
+            this.multipleLawSelection = this.$refs.lawTree.getCheckedNodes();
+            for (var i = 0; i < this.multipleLawSelection.length; i++) {
+                if (!this.stuMedia.stuLawid) {
+                    this.stuMedia.stuLawid = this.multipleLawSelection[i].classifyId;
+                    this.stuMedia.stuKnowledge = this.multipleLawSelection[i].classifyName;
+                } else {
+                    this.stuMedia.stuLawid += "," + this.multipleLawSelection[i].classifyId;
+                    this.stuMedia.stuKnowledge += "," + this.multipleLawSelection[i].classifyName;
+                }
+            }
+            this.dialogLaw = false;
         },
         toHome: function () {
             parent.location.reload()
