@@ -247,7 +247,7 @@ button {
     width: 112px;
     height: 16px;
     position: absolute;
-    right: 63px;
+    right: 10px;
     top: 52px;
 }
 .formation_area .inner .btns button{
@@ -255,15 +255,6 @@ button {
     font-size: 14px;
     width: 48%;
     text-align: center;
-}
-.formation_area .inner .btns button:first-child:after{
-    content: '';
-    width: 1px;
-    height: 16px;
-    position: absolute;
-    right: 54px;
-    top: 1px;
-    background: #75431f;
 }
 .formation_area .inner .users{
     text-align: center;

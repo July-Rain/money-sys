@@ -50,6 +50,8 @@ var vm = new Vue({
         myScorea:"0",
         otherScorea:"0",
         zaibuzai:"2",//0不在 1 存在
+
+        teamCodeLabel: '组队编号：'
     },
     created: function () {
         this.$nextTick(function () {
@@ -60,6 +62,7 @@ var vm = new Vue({
             // if(getUrlParam('teamType') === 'join'){
             //     vm.joinTeamShow = true
             // }
+
 
 
         });
@@ -149,7 +152,7 @@ var vm = new Vue({
             // 退出组队
             // coding 返回pkMain
             closeWebsocket();
-            location.href="main.html";
+            location.href=baseURL+'competition/pkMain.html';
         },
         backPkMain: function () {
             window.location.href = baseURL + 'modules/competition/pkMain.html';
@@ -300,6 +303,7 @@ websocket.onmessage = function(event) {
                 message: data.text,
                 type: 'warning'
             });
+            vm.teamCodeLabel = data.text;
         }
 
         //刷新在线用户列表

@@ -95,7 +95,6 @@
             <div class="inner">
                 <div class="title"></div>
                 <div class="btns">
-
                     <button @click="formationTeamExit">退出</button>
                 </div>
                 <ul class="users">
@@ -104,7 +103,7 @@
                         <p>{{user.fullName}}</p>
                     </li>
                 </ul>
-                <p class="team_num"><span>组队编号：</span>{{competitionTeam.teamCode}}</p>
+                <p class="team_num"><span>{{teamCodeLabel}}</span>{{competitionTeam.teamCode}}</p>
 
             </div>
         </div>
