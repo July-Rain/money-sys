@@ -75,7 +75,7 @@ public class CheckExamUserServiceImpl extends AbstractServiceImpl<CheckExamUserD
             return Result.error("阅卷口令错误，请核对！");
         }
         Subject subject = ShiroUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken("checkexam", "123456");
+        UsernamePasswordToken token = new UsernamePasswordToken("123456", "123456");
         subject.login(token);
 
         CheckExamUser checkExamUser = dao.findByUserCodeAndPassword(checkUser.getCheckPassword(), checkUser.getExamUserCode(), checkUser.getCheckUserType());
