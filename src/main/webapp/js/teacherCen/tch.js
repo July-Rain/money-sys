@@ -25,12 +25,17 @@ var vm = new Vue({
         dialogConfig: false,//table弹出框可见性
         title:"",//弹窗的名称
         tchId:"",//教官的id
+        dialogVideo:false,//视频页面
+        thisVideoContentUrl:"",//当前播放视频的url
+        thisVideoPicAccUrl:"",//当前播放视频的默认封面
+        dialogPlayer: null,
+        videoDataId: [],
     },
     created: function () {
         this.$nextTick(function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "stumedia/list",
+                url: baseURL + "stumediatch/list",
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -104,8 +109,69 @@ var vm = new Vue({
         beforeAvatarUpload: function () {
             if(!checkFile(file)) return false;
         },
+        getStuContent:function(item){
+
+        },//获取信息
+        initPlayer: function () {
+            var that = this;
+            window.onload = function () {
+                var options = {
+                    controls: true,
+                    bigPlayButton: true,
+                    controlBar:{
+                        //设置是否显示该组件
+                        playToggle: false,
+                        remainingTimeDisplay: true,
+                        fullscreenToggle: false,
+                        volumePanel: false
+                    },
+                };
+                that.videoDataId.forEach(function (val, index) {
+                    var myPlayer = videojs(val, options);
+                })
+            }
+        },
+        initDialogPlayer: function () {
+            var dialogOptions = {
+                controls: true,
+                autoplay: true,
+                bigPlayButton: true,
+                controlBar:{
+                    //设置是否显示该组件
+                    playToggle: false,
+                    remainingTimeDisplay: true,
+                    fullscreenToggle: false,
+                    volumePanel: false
+                },
+            };
+            this.dialogPlayer = videojs('dialog-player', dialogOptions);
+            var bigDialogButton = document.getElementsByClassName('vjs-big-play-button')[this.videoDataId.length];
+            console.log(bigDialogButton);
+            bigDialogButton.style.outline = 'none';
+            this.dialogPlayer.on('play', function () {
+                bigDialogButton.style.display = 'none';
+            });
+            this.dialogPlayer.on('pause', function () {
+                bigDialogButton.style.display = 'block';
+            });
+        },
+        dialogOpen: function () {
+            if (!this.dialogPlayer) {
+                this.initDialogPlayer();
+            } else {
+                console.log(this.dialogPlayer);
+                this.dialogPlayer.dispose();
+                this.initDialogPlayer();
+            }
+        },
         toUrl: function (url) {
             window.location.href = baseURL + url
+        }
+    },
+    watch:  {
+        // 暂时记录：深度监控
+        'videoDataId' : function (newVal) {
+            vm.initPlayer();
         }
     }
 }).$mount('#app');

@@ -8,7 +8,7 @@ html {
     background: #EFEFEF !important;
 }
 .container .content {
-    width: 86vw;
+    width: 77vw;
     padding: 0 62px 10px;
     background: white;
 }
@@ -16,7 +16,7 @@ html {
     position: fixed !important;
     top: 56px;
     right: 1vw;
-    width: 9vw;
+    width: 18vw;
     height: 530px;
     background: white;
 }
@@ -56,10 +56,7 @@ html {
 .tips .username, .tips .username span {
     font-size: 2.2rem;
 }
-.tips .font-size, .tips .duration {
-    font-size: 1.2rem;
-    font-weight: 300;
-}
+
 
 .tips .font-size span:first-child {
     font-size: 17.6px;
@@ -73,9 +70,7 @@ html {
     margin-left: 3px;
     font-size: 26.4px;
 }
-.tips .duration {
-    margin-top: 11px;
-}
+
 
 /* 试卷题目样式 */
 .main {
@@ -131,8 +126,24 @@ html {
     width: 50px;
     margin: 20px auto;
 }
+.bar .time {
+    width: 100%;
+    margin: 30px auto 0;
+    padding-bottom: 25px;
+    text-align: center;
+    border-bottom: 1px solid #dddddd;
+}
+.bar .time .duration {
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin-top: 11px;
+}
+.bar .time .duration>span {
+    display: block;
+    margin-top: 25px;
+}
 .bar .category li {
-    height: 80px;
+    height: 50px;
     text-align: center;
 }
 .bar .category li:last-child {
@@ -154,11 +165,12 @@ html {
 .bar .buttons {
     width: 100%;
     padding-top: 21px;
-    padding-left: 41px;
+    padding-left: 75px;
     border-top: 1px solid #dddddd;
 }
 .bar .buttons .el-button {
     display: block;
+    width: 160px;
     margin-left: 0 !important;
     margin-bottom:6px;
 }

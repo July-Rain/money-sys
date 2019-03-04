@@ -37,6 +37,7 @@ var vm = new Vue({
             userName:"",//适用人员姓名
             deptName:"",//适用部门姓名
             caseLawid:"",//专项知识id
+            caseLawname:"",//专项知识的name
             videoPicAcc:"",//视频首页
             videoPicAccUrl:"",//视频首页url
             caseType:"",//案件类型
@@ -54,6 +55,9 @@ var vm = new Vue({
             ],
             caseContent: [
                 {required: true, message: '请添加内容', trigger: 'blur'}
+            ],
+            caseLawname: [
+                {required: true, message: '请选择法律主题分类', trigger: 'blur'}
             ]
         },
         dialogCaseAna: false,//table弹出框可见性
@@ -97,7 +101,11 @@ var vm = new Vue({
         caseProcessOption:[],//裁判程序
         videoFlag:false,
         videoUploadPercent:0,
-        deptCheckData:[]//部门默认选中节点
+        deptCheckData:[],//部门默认选中节点
+        dialogLaw:false,//法律法规主题分类弹窗
+        lawCheckData:[],//法律法规回显表格数据
+        multipleLawSelection: [],//选中法律法规信息
+        lawData: [],//法律知识库分类树 --去除全部的
     },
     created: function () {
 
@@ -129,7 +137,19 @@ var vm = new Vue({
                     }
                 }
             });
-
+            //去除全部
+            $.ajax({
+                type: "POST",
+                url: baseURL + "law/alltree?flag=true",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.lawData = result.classifyList;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
             //加载部门数据
             $.ajax({
                 type: "POST",
@@ -250,11 +270,10 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         addCaseAna: function () {
-            if(!vm.caseAna.caseLawid){
-                alert("请选择左侧专项知识");
-                return ;
-            }
-            var lawId=vm.caseAna.caseLawid;
+            // if(!vm.caseAna.caseLawid){
+            //     alert("请选择左侧专项知识");
+            //     return ;
+            // }
             this.caseAna= {
                 id:"",
                 contentType: "1",//资料类型
@@ -266,7 +285,8 @@ var vm = new Vue({
                 caseDescribe:"",//案件描述
                 userName:"",//适用人员姓名
                 deptName:"",//适用部门姓名
-                caseLawid:lawId,//专项知识id
+                caseLawid:"",//专项知识id
+                caseLawname:"",//专项知识的name
                 videoPicAcc:"",//视频首页
                 videoPicAccUrl:"",//视频首页url
                 caseType:"",//案件类型
@@ -283,6 +303,7 @@ var vm = new Vue({
             this.title="修改";
             this.dialogCaseAna=true;
             this.deptCheckData=[];
+            this.lawCheckData = [];
             editor.txt.html("");
             $.ajax({
                 type: "POST",
@@ -292,6 +313,7 @@ var vm = new Vue({
                     if(result.code === 0){
                         vm.caseAna = result.data;
                         vm.deptCheckData=result.data.deptArr;
+                        vm.lawCheckData = result.data.caseLawid.split(",");
                        /* if(vm.caseAna.contentType=='1'){
                             loadEditor();
                         }*/
@@ -537,6 +559,26 @@ var vm = new Vue({
             if(vm.caseAna.contentType=='1'){
                 loadEditor();
             }
+        },
+        chooseLaw:function(){
+            //选择法律法规主题分类
+            this.dialogLaw = true;
+        },
+        cancelLaw:function(){
+            this.dialogLaw = false;
+        },
+        confimLaw:function(){
+            this.multipleLawSelection = this.$refs.lawTree.getCheckedNodes();
+            for (var i = 0; i < this.multipleLawSelection.length; i++) {
+                if (!this.caseAna.caseLawid) {
+                    this.caseAna.caseLawid = this.multipleLawSelection[i].classifyId;
+                    this.caseAna.caseLawname = this.multipleLawSelection[i].classifyName;
+                } else {
+                    this.caseAna.caseLawid += "," + this.multipleLawSelection[i].classifyId;
+                    this.caseAna.caseLawname += "," + this.multipleLawSelection[i].classifyName;
+                }
+            }
+            this.dialogLaw = false;
         },
         toHome: function () {
             parent.location.reload()

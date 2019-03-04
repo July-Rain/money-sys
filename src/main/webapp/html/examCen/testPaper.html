@@ -25,8 +25,7 @@
                         <span class="font-size-span">中</span>
                         <span class="font-size-span">大</span>)
                     </span>
-                    <span class="duration" v-if="!isSubmit">本卷计时{{ time }}小时，还剩:<span style="font-weight: 900">{{ countdown }}</span></span>
-                    <span class="duration" v-if="isSubmit">本卷计时{{ time }}小时，用时<span style="font-weight: 900">{{ consumed }}</span></span>
+
                 </div>
             </header>
             <article class="main">
@@ -85,6 +84,18 @@
             <div class="score" v-if="isSubmit">{{ totalScore }}</div>
         </div>
         <div class="bar">
+            <div class="time">
+                <span class="duration" v-if="!isSubmit">本卷计时{{ time }}小时，还剩:<span style="font-weight: 900">
+                    <span>{{ leftHours }}</span>
+                    <span>{{ leftMinutes }}</span>
+                    <span>{{ leftSeconds }}</span>
+                </span></span>
+                <span class="duration" v-if="isSubmit">本卷计时{{ time }}小时，用时<span style="font-weight: 900">
+                    <span>{{ consumedHours }}</span>
+                    <span>{{ consumedMinutes }}</span>
+                    <span>{{ consumedSeconds }}</span>
+                </span></span>
+            </div>
             <ul class="category">
                 <li v-for="item in barData">
                     <a class="type" :href="item.href" @click="pickArea($event)"><i class="iconfont icon-biaodiandidian"></i>{{ item.questionType }}</a>

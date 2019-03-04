@@ -58,7 +58,7 @@ public class ClassifyDesicServiceImpl extends ServiceImpl<ClassifyDesicDao,Class
         EntityWrapper<ClassifyDesicEntity> ew = new EntityWrapper<>();
         ew.setSqlSelect("ID,LAW_CODE,LAW_TITLE,ISSUE_TIME,LIB_ID,CLASSIFY_ID,ISSUE_ORG,STATUS");
         if(UtilValidate.isNotEmpty(classifyId)){
-            ew.eq("classify_id",classifyId);
+            ew.like("classify_id",classifyId);
         }
         if(UtilValidate.isNotEmpty(libId)){
             ew.eq("lib_id",libId);
