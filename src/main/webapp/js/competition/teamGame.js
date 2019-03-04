@@ -149,7 +149,7 @@ var vm = new Vue({
             // 退出组队
             // coding 返回pkMain
             closeWebsocket();
-            location.href="main.html";
+            location.href=baseURL+'competition/pkMain.html';
         },
         backPkMain: function () {
             window.location.href = baseURL + 'modules/competition/pkMain.html';
