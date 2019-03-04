@@ -3,7 +3,48 @@
 <head>
     <title>练习卷</title>
     <#include "/header.html">
-    <link rel="stylesheet" href="${rc.contextPath}/statics/css/paper_paper.css">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/testPaper.css">
+    <style>
+        .content {
+            width: 77vw !important;
+        }
+        .bar {
+            width: 18vw !important;
+            height: 400px !important;
+        }
+        /* 进度条 */
+        .info_list {
+            padding-top: 16px;
+            padding-bottom: 5px;
+            margin-bottom: 8px;
+        }
+        .info_list .el-progress {
+            border: none;
+            margin: 0 auto;
+        }
+        .info_list .el-progress__text {
+            color: #333333;
+            font-size: 18px !important;
+        }
+        .info_list > .progress_area {
+            width: 88px;
+            margin: 15px auto 25px;
+        }
+        .info_list .info {
+            width: 90%;
+            margin: 15px auto;
+        }
+        .info_list .info p {
+            padding:8px;
+        }
+        .bar .buttons .el-button span {
+            display: block;
+            width: 100px !important;
+        }
+        .bar .buttons {
+            padding-left: 81px !important;
+        }
+    </style>
 </head>
 <body>
 <div id="app" v-cloak>
@@ -15,22 +56,8 @@
             <el-breadcrumb-item>{{ paperName }}</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="content">
-            <header>
-                <div class="title">{{ paperName }}</div>
-                <div class="tips">
-                    <span class="username">姓名：<span>{{ username }}</span></span>
-                    <span class="font-size" @click="changeFontSize($event)">字体：
-                        (<span class="font-size-span">小</span>
-                        <span class="font-size-span">中</span>
-                        <span class="font-size-span">大</span>)
-                    </span>
-                    <span class="duration" v-if="!isSubmit">本卷计时{{ time }}小时，还剩:<span style="font-weight: 900">{{ countdown }}</span></span>
-                    <span class="duration" v-if="isSubmit">本卷计时{{ time }}小时，用时<span style="font-weight: 900">{{ consumed }}</span></span>
-                </div>
-            </header>
             <article class="main">
                 <div class="one-option">
-                    <div class="description"><a name="oneOption"></a>一. 单项选择题。每题所设选项中只有一个正确答案，多选，错选或不选均不得分。本部分含1-50题，每题1分，共{{ oneOptionList.length*1 }}分。</div>
                     <div class="question daliy" v-for="(question, index) in oneOptionList" :class="{'question-background': (index%2 == 0)}">
                         <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
                         <el-radio-group v-model="answers" :disabled="isSubmit">
@@ -47,7 +74,6 @@
                     </div>
                 </div>
                 <div class="multi-options">
-                    <div class="description"><a name="multiOptions"></a>二. 多选题。每题所设选项中有多个答案。本部分含1-5题，每题2分，共{{ multiOptionsList.length*2 }}分。</div>
                     <div class="question" v-for="(question, index) in multiOptionsList" :class="{'question-background': (index%2 == 0)}">
                         <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
                         <el-checkbox-group v-model="answersList" :disabled="isSubmit">
@@ -64,7 +90,6 @@
                     </div>
                 </div>
                 <div class="checking">
-                    <div class="description"><a name="checking"></a>三. 判断题。本部分含1-5题，每题2分，共{{ checkingList.length*2 }}分。</div>
                     <div class="question daliy" v-for="(question, index) in checkingList" :class="{'question-background': (index%2 == 0)}">
                         <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
                         <el-radio-group v-model="answers" :disabled="isSubmit">
@@ -81,27 +106,23 @@
                     </div>
                 </div>
             </article>
-            <div class="score" v-if="isSubmit">{{ totalScore }}</div>
         </div>
         <div class="bar">
-            <ul class="category">
-                <li v-for="item in barData">
-                    <a class="type" :href="item.href" @click="pickArea($event)"><i class="iconfont icon-biaodiandidian"></i>{{ item.questionType }}</a>
-                    <div><span :class="{'done-something': item.currentFinishedNum}">{{ item.currentFinishedNum }}</span>/<span>{{ item.totalNum }}</span></div>
-                </li>
-            </ul>
-            <div class="buttons" v-if="!isSubmit">
-                <el-button type="primary" @click="submit">交卷</el-button><el-button type="primary" plain class="save">保存</el-button>
+            <div class="info_list">
+                <div class="progress_area">
+                    <el-progress type="circle"
+                                 :percentage="2/5*100"
+                                 :width="88"
+                                 color="#1381e3"></el-progress>
+                </div>
+                <div class="info">
+                    <p>创建人：{{ creator }}</p>
+                    <p>类型： {{ type }}</p>
+                    <p>创建时间： {{ createdTime }}</p>
+                </div>
             </div>
-            <div class="display" v-if="isSubmit">
-                <div class="right-num">
-                    <span class="num">63</span>
-                    <span class="green">对</span>
-                </div>
-                <div class="error-num">
-                    <span class="num">4</span>
-                    <span class="red">错</span>
-                </div>
+            <div class="buttons">
+                <el-button type="primary" @click="submit">提交</el-button><el-button type="primary" plain class="save">保存，下次继续</el-button>
             </div>
         </div>
     </div>
