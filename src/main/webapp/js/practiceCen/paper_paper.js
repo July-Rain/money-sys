@@ -668,17 +668,19 @@ var vm = new Vue({
             return [hours, minutes, seconds];
         },
 
+        // 路径方法
         toHome: function () {
             parent.location.reload()
         },
-
+        goBack: function () {
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/exerciseCenter/paper_index.html';
+        },
         // 改变字体大小
         changeFontSize: function (e) {
             var fontSpans = document.getElementsByClassName('font-size-span');
             var html = document.getElementById('html');
-            for (var i = 0; i < fontSpans.length; i++) {
-                fontSpans[i].style.fontWeight = '300';
-            }
             //  待
             if (e.target.innerHTML === '小') {
                 html.style.fontSize = '10px';
@@ -688,6 +690,9 @@ var vm = new Vue({
                 html.style.fontSize = '14px';
             } else {
                 return;
+            }
+            for (var i = 0; i < fontSpans.length; i++) {
+                fontSpans[i].style.fontWeight = '300';
             }
             e.target.style.fontWeight = '600';
         },
