@@ -30,7 +30,6 @@ var vm = new Vue({
                             //第一次进来 我给你的 一些数据
                             vm.BigGuanList = result.data;
                             vm.getLevel(Number(getUrlParam('index')), result.data.length);
-                            alert("1共"+result.data.length+"关")
                             storage.setItem("BigList", JSON.stringify(result.data));
 
                         } else {
@@ -57,14 +56,13 @@ var vm = new Vue({
                     }
                 });
             } else {
+                //不是第一关说明过关，我们都动一下
+                vm.moveClass = true;
 
                 var obj = storage.getItem("BigList");
 
 
-
-
                 var BigList = eval('(' + obj + ')');
-                alert("2共"+BigList.length+"关")
                 vm.getLevel(Number(getUrlParam('index')), BigList.length);
                 // 开启新的一轮去查题目，并从新给4个属性赋值
                 //还要提示积分什么的。
@@ -108,11 +106,9 @@ var vm = new Vue({
 
             console.info("1", this.levelList)
         },
-        rushAnimation: function () {
-            this.moveClass = true;
-            setTimeout(function () {
-                window.location.href = baseURL + "modules/competition/chuangguanGame.html?index=" + getUrlParam('index') + "&coinNum=" + vm.coinNum;
-            }, 1000)
+        jumpGame: function () {
+
+            window.location.href = baseURL + "modules/competition/chuangguanGame.html?index=" + getUrlParam('index') + "&coinNum=" + vm.coinNum;
 
         },
         backMain: function () {
