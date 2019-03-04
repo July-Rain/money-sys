@@ -131,9 +131,11 @@
                         <el-input v-model="form.comContent" autocomplete="off"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="试题分类：" >
+                    <el-form-item label="试题分类：">
+                        <el-radio-group v-model="form.typeId">
+                            <el-radio v-for="item in typeList" :label="item.key">{{item.value}}</el-radio>
+                        </el-radio-group>
 
-                        <el-radio v-for="item in typeList" v-model="form.typeId" :label="item.key">{{item.value}}</el-radio>
                     </el-form-item>
 
                     <el-form-item label="视频上传：" v-if="form.typeId == 1">
@@ -145,11 +147,9 @@
                         <P class="text">请保证视频格式正确，且不超过100M</P>
                     </el-form-item>
 
-                    <el-form-item label="试题类型：" >
+                    <el-form-item label="试题类型：">
                         <el-radio-group v-model="form.questionType">
-                            <el-radio v-if="item.value != '主观题'" v-for="item in qtList" v-model="form.questionType" :label="item.key">
-                                {{item.value}}
-                            </el-radio>
+                            <el-radio v-if="item.value != '主观题'" v-for="item in qtList" :label="item.key">{{item.value}}</el-radio>
                         </el-radio-group>
                     </el-form-item>
 
@@ -199,7 +199,7 @@
                                 align="center"
                                 prop="status">
                             <template slot-scope="scope">
-                                <el-button type="primary" size="mini">
+                                <el-button type="primary" size="mini" @click="delanswer(scope)">
                                     删除
                                 </el-button>
                             </template>
@@ -248,11 +248,11 @@
                         </el-form-item>
 
                         <el-form-item label="分数：" prop="score">
-                            <el-input v-model="answer.score" placeholder="分数" type="number"></el-input>
+                            <el-input v-model="answer.score" placeholder="分数"></el-input>
                         </el-form-item>
 
                         <el-form-item label="排序：" prop="ordersort">
-                            <el-input v-model="answer.ordersort" placeholder="排序" type="number"></el-input>
+                            <el-input v-model="answer.ordersort" placeholder="排序"></el-input>
                         </el-form-item>
 
                         <el-form-item label="是否为答案：" prop="isAnswer">
