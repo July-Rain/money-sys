@@ -38,4 +38,6 @@ public interface UserExamDao extends AbstractDao<UserExam> {
     List<UserExamForm> getListByIds(@Param("ids") List<String> ids);
 
     List<String> getAuditList(@Param("examConfigId")String examConfigId ,@Param("status") String status);
+
+    boolean updateCollect(@Param("id") String id, @Param("type") Integer type);
 }

@@ -52,7 +52,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                        prop="auditor"
+                        prop="auditorName"
                         label="审核人"
                         width="200"
                         header-align="center"
@@ -70,7 +70,7 @@
                         header-align="center"
                         align="center">
                     <template slot-scope="scope">
-                        <el-button type="primary" size="mini" @click="examine(scope.row.id)">
+                        <el-button   :disabled="'0'!=scope.row.status" type="primary" size="mini" @click="examine(scope.row.id)">
                             审核
                         </el-button>
                     </template>
@@ -87,107 +87,111 @@
                     :total="formInline.count">
             </el-pagination>
 
-            <!--<el-dialog title="试题编辑" :visible.sync="dialogFormVisible">-->
-                <!--<el-form :model="form" label-width="100px" size="small">-->
-                    <!--<el-col :span="24">-->
-                        <!--<el-form-item label="试题描述：">-->
-                            <!--<el-input v-model="form.comContent" autocomplete="off" disabled></el-input>-->
-                        <!--</el-form-item>-->
+            <el-dialog title="试题编辑" :visible.sync="dialogFormVisible">
+                <el-form :model="form" label-width="100px" size="small">
+                    <el-col :span="24">
+                        <el-form-item label="试题描述：">
+                            <el-input v-model="form.comContent" autocomplete="off" disabled></el-input>
+                        </el-form-item>
 
-                        <!--<el-form-item label="试题分类：" disabled>-->
-                            <!--<el-radio disabled v-for="item in typeList" v-model="form.typeId" :label="item.key">{{item.value}}</el-radio>-->
-                        <!--</el-form-item>-->
+                        <el-form-item label="试题分类：" disabled>
+                            <el-radio disabled v-for="item in typeList" v-model="form.typeId" :label="item.key">{{item.value}}</el-radio>
+                        </el-form-item>
 
-                        <!--<el-form-item label="视频上传：" v-if="form.typeId == 1" disabled>-->
-                            <!--<el-upload disabled name="importfile" class="avatar-uploader el-upload&#45;&#45;text" :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess" :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">-->
-                                <!--<video width="320" height="180" v-if="form.video !='' && videoFlag == false" :src="form.videoUrl" class="avatar" controls="controls" >您的浏览器不支持视频播放</video>-->
-                                <!--<i v-else-if="form.video =='' && videoFlag == false" class="iconfont icon-shipin"></i>-->
-                                <!--<el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>-->
-                            <!--</el-upload>-->
-                            <!--<P class="text">请保证视频格式正确，且不超过100M</P>-->
-                        <!--</el-form-item>-->
+                        <el-form-item label="视频上传：" v-if="form.typeId == 1" disabled>
+                            <el-upload disabled name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess" :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
+                                <video width="320" height="180" v-if="form.video !='' && videoFlag == false" :src="form.videoUrl" class="avatar" controls="controls" >您的浏览器不支持视频播放</video>
+                                <i v-else-if="form.video =='' && videoFlag == false" class="iconfont icon-shipin"></i>
+                                <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
+                            </el-upload>
+                            <P class="text">请保证视频格式正确，且不超过100M</P>
+                        </el-form-item>
 
-                        <!--<el-form-item label="试题类型：">-->
-                            <!--<el-radio-group disabled v-model="form.questionType">-->
-                                <!--<el-radio v-if="item.value != '主观题'" v-for="item in qtList" v-model="form.questionType" :label="item.key">-->
-                                    <!--{{item.value}}-->
-                                <!--</el-radio>-->
-                            <!--</el-radio-group>-->
-                        <!--</el-form-item>-->
+                        <el-form-item label="试题类型：">
+                            <el-radio-group disabled v-model="form.questionType">
+                                <el-radio v-if="item.value != '主观题'" v-for="item in qtList" v-model="form.questionType" :label="item.key">
+                                    {{item.value}}
+                                </el-radio>
+                            </el-radio-group>
+                        </el-form-item>
 
-                        <!--<el-table-->
-                                <!--:data="form.answerList"-->
-                                <!--style="width: 100%"-->
-                                <!--stripe-->
-                                <!--v-if="form.answerList.length > 0">-->
-                            <!--<el-table-column-->
-                                    <!--type="index"-->
-                                    <!--label="序号">-->
-                            <!--</el-table-column>-->
-                            <!--<el-table-column-->
-                                    <!--label="选项内容"-->
-                                    <!--header-align="center"-->
-                                    <!--align="center"-->
-                                    <!--prop="questionContent">-->
-                            <!--</el-table-column>-->
+                        <el-table
+                                :data="form.answerList"
+                                style="width: 100%"
+                                stripe
+                                v-if="form.answerList.length > 0">
+                            <el-table-column
+                                    type="index"
+                                    label="序号">
+                            </el-table-column>
+                            <el-table-column
+                                    label="选项内容"
+                                    header-align="center"
+                                    align="center"
+                                    prop="questionContent">
+                            </el-table-column>
 
-                            <!--<el-table-column-->
-                                    <!--label="分数"-->
-                                    <!--header-align="center"-->
-                                    <!--align="center"-->
-                                    <!--prop="score">-->
-                            <!--</el-table-column>-->
+                            <el-table-column
+                                    label="分数"
+                                    header-align="center"
+                                    align="center"
+                                    prop="score">
+                            </el-table-column>
 
-                            <!--<el-table-column-->
-                                    <!--label="排序"-->
-                                    <!--header-align="center"-->
-                                    <!--align="center"-->
-                                    <!--prop="ordersort">-->
-                            <!--</el-table-column>-->
+                            <el-table-column
+                                    label="排序"
+                                    header-align="center"
+                                    align="center"
+                                    prop="ordersort">
+                            </el-table-column>
 
-                            <!--<el-table-column-->
-                                    <!--label="是否设为答案"-->
-                                    <!--header-align="center"-->
-                                    <!--align="center"-->
-                                    <!--prop="isAnswer">-->
-                            <!--</el-table-column>-->
+                            <el-table-column
+                                    label="是否设为答案"
+                                    header-align="center"
+                                    align="center"
+                                    prop="isAnswer">
+                            </el-table-column>
 
-                        <!--</el-table>-->
+                        </el-table>
 
-                        <!--<el-form-item label="试题难度：" disabled>-->
-                            <!--<el-radio disabled v-for="item in diffList" v-model="form.questionDifficulty" :label="item.key">-->
-                                <!--{{item.value}}-->
-                            <!--</el-radio>-->
-                        <!--</el-form-item>-->
+                        <el-form-item label="试题难度：" disabled>
+                            <el-radio disabled v-for="item in diffList" v-model="form.questionDifficulty" :label="item.key">
+                                {{item.value}}
+                            </el-radio>
+                        </el-form-item>
 
-                        <!--<el-form-item label="主题类型：">-->
-                            <!--<el-select disabled v-model="form.specialKnowledgeId" placeholder="请选择">-->
-                                <!--<el-option-->
-                                        <!--v-for="item in topicList"-->
-                                        <!--:key="item.key"-->
-                                        <!--:label="item.value"-->
-                                        <!--:value="item.key">-->
-                                <!--</el-option>-->
-                            <!--</el-select>-->
-                        <!--</el-form-item>-->
+                        <el-form-item label="主题类型：">
+                            <el-select disabled v-model="form.specialKnowledgeId" placeholder="请选择">
+                                <el-option
+                                        v-for="item in topicList"
+                                        :key="item.key"
+                                        :label="item.value"
+                                        :value="item.key">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
 
                         <!--<el-form-item label="法律依据：" disabled>-->
                             <!--<el-input disabled v-model="form.legalBasis" autocomplete="off"></el-input>-->
                         <!--</el-form-item>-->
 
-                        <!--<el-form-item label="答案描述：" disabled>-->
-                            <!--<el-input disabled v-model="form.answerDescrible" autocomplete="off"></el-input>-->
-                        <!--</el-form-item>-->
+                        <el-form-item label="答案描述：" disabled>
+                            <el-input disabled v-model="form.answerDescrible" autocomplete="off"></el-input>
+                        </el-form-item>
 
-                    <!--</el-col>-->
 
-                <!--</el-form>-->
+                        <el-form-item label="审核意见：" disabled>
+                            <el-input  v-model="form.opinion" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
 
-                <!--<div slot="footer" class="dialog-footer" :label-width="formLabelWidth">-->
-                    <!--<el-button type="primary" @click="saveExamine(0)">审核不通过</el-button>-->
-                    <!--<el-button type="primary" @click="saveExamine(1)">审核通过</el-button>-->
-                <!--</div>-->
-            <!--</el-dialog>-->
+                </el-form>
+
+                <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
+                    <el-button type="primary" @click="saveExamine(1,0)">审核不通过</el-button>
+                    <el-button type="primary" @click="saveExamine(1,1)">审核通过</el-button>
+                </div>
+            </el-dialog>
 
             <el-dialog title="审核" :visible.sync="dialogStuMedia" ref="stuDialog">
                 <div>
@@ -264,12 +268,17 @@
                         <el-form-item label="描述" prop="stuDescribe">
                             <el-input disabled type="textarea" maxlength="200" v-model="stuMedia.stuDescribe"></el-input>
                         </el-form-item>
+
+
+                        <el-form-item label="审核意见：" disabled>
+                            <el-input  v-model="form.opinion" autocomplete="off"></el-input>
+                        </el-form-item>
                     </el-form>
                 </div>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogStuMedia = false">取消</el-button>
-                    <el-button type="primary" @click="saveExamine(0)">审核不通过</el-button>
-                    <el-button type="primary" @click="saveExamine(1)">审核通过</el-button>
+                    <el-button type="primary" @click="saveExamine(2,0)">审核不通过</el-button>
+                    <el-button type="primary" @click="saveExamine(2,1)">审核通过</el-button>
                 </div>
             </el-dialog>
         </div>

@@ -205,6 +205,8 @@ var vm = new Vue({
 
         },
         examine: function (id) {
+            vm.form.opinion="";
+            vm.stuMedia.opinion="";
             $.ajax({
                 type: "GET",
                 url: baseURL + "manuscript/info",
@@ -213,6 +215,8 @@ var vm = new Vue({
                 },
                 contentType: "application/json",
                 success: function (result) {
+
+                    console.info(result);
                     if (result.code == 0) {
                         vm.manu = result.data;
                         var type = vm.manu.type;
@@ -231,11 +235,22 @@ var vm = new Vue({
                 }
             });
         },
-        saveExamine: function (type) {
+        saveExamine: function (typea,type) {
+
+            if(typea==1)
+            {
+                var opinion = vm.form.opinion;
+            }
+            else if(typea==2)
+            {
+                var opinion = vm.stuMedia.opinion;
+            }
             var id = vm.manu.id;
+
             var obj = {
                key: id,
-               value: type
+               value: type,
+                opinion: opinion,
             };
             $.ajax({
                 type: "POST",
@@ -244,6 +259,12 @@ var vm = new Vue({
                 data: JSON.stringify(obj),
                 success: function(result){
                     if(result.code === 0){
+                        vm.$message({
+                            type: 'success',
+                            message: '审核完成!'
+                        });
+                        vm.dialogFormVisible = false;
+                        vm.dialogStuMedia = false;
                         vm.refresh();
                     }else{
                         alert(result.msg);

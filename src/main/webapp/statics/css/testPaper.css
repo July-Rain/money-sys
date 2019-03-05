@@ -1,7 +1,7 @@
 /* 整体布局搭建 */
 html {
     /* 控制字体大小 小 8px 中 10px 大 12px */
-    font-size: 10px;
+    font-size: 9px;
 }
 .container {
     position: relative;
@@ -19,6 +19,13 @@ html {
     width: 18vw;
     height: 530px;
     background: white;
+}
+
+.clearfix:after {
+    content: '.';
+    height: 0;
+    display: block;
+    clear: both;
 }
 
 /* header样式 */
@@ -80,6 +87,7 @@ html {
 }
 .main .description {
     font-size: 2.2rem;
+    font-weight: 900;
 }
 /* 题目公共样式 */
 .main .question {
@@ -91,10 +99,63 @@ html {
     padding-left: 54px;
     font-size: 2.2rem;
 }
+.main .question .el-radio {
+    position: relative;
+}
+.main .question .icon-dui1 {
+    position: absolute;
+    right: 20px;
+    color: #37aa57;
+}
 .main .question .answer-area {
-    margin-top: 18px;
-    padding:10px 0 10px 54px;
+    /*margin-top: 22px;*/
+    position: relative;
+    padding:20px 0 20px 54px;
     background: white;
+}
+.main .question .answer-area .collection {
+    position: absolute;
+    right: 20px;
+    top: 40px;
+    font-size: 1.6rem;
+}
+.main .question .answer-area .collection i {
+    margin-right: 5px;
+    color: #dddddd;
+    font-size: 2rem;
+}
+.main .question .answer-area::before {
+    content:'.';
+    height: 0;
+    width: 77vw;
+    margin-left: -14vw;
+    margin-bottom: 20px;
+    display: block;
+    border: 1px dashed #dddddd;
+}
+.main .question .answer-area i {
+    color: #dddddd;
+}
+.main .question .answer-area .answer-text {
+    margin-top: 16px;
+    font-size: 1.6rem;
+    color: #999999;
+}
+.main .question .answer-area .answer-text span {
+    font-size: 1.6rem;
+    color: #333333;
+}
+.main .question .answer-area .text {
+    margin-top: 16px;
+}
+.main .question .diff {
+    margin-left: 14px;
+    font-size: 1.6rem !important;
+    color: #ff6600;
+}
+.main .question .answer-area .icon-shoucang1 {
+    margin-right: 6px;
+    font-size: 1.6rem;
 }
 .main .question .gray {
     width: 150%;
@@ -121,6 +182,18 @@ html {
 .one-option .el-radio__label, .multi-options .el-checkbox__label, .checking .el-radio__label {
     font-size: 2rem;
 }
+/* 主观题样式 */
+.main .expressing .button {
+    float: right;
+    margin-top: 10px;
+}
+.main .expressing .el-textarea {
+    padding-left: 55px;
+}
+.main .expressing textarea {
+    min-height: 100px !important;
+    background: #fbfcfe;
+}
 /* bar 样式 */
 .bar .category {
     width: 50px;
@@ -133,6 +206,10 @@ html {
     text-align: center;
     border-bottom: 1px solid #dddddd;
 }
+.bar .duration .consumed-time {
+    font-size: 1.9rem;
+    color: #1381e3;
+}
 .bar .time .duration {
     font-size: 1.2rem;
     font-weight: 300;
@@ -141,6 +218,12 @@ html {
 .bar .time .duration>span {
     display: block;
     margin-top: 25px;
+}
+.bar .time .duration>span span {
+    padding: 8px;
+    background: #1b1b1b;
+    border-radius: 2px;
+    color: white;
 }
 .bar .category li {
     height: 50px;
@@ -176,13 +259,18 @@ html {
 }
 .bar .display {
     width: 100%;
-    padding: 20px 0 20px 30px;
+    padding: 20px 0 20px 0;
     border-top: 1px solid #dddddd;
+}
+.bar .display .number {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
 }
 .bar .display .right-num, .bar .display .error-num {
     display: inline-block;
     margin-top: 20px;
-    padding: 0 10px;
+    padding: 0 40px;
     color: black;
 }
 .bar .display .right-num {
@@ -219,4 +307,13 @@ html {
 }
 .err {
     color: #fb1515
+}
+.right-answer {
+    background: #e3fff1;
+}
+.light {
+    color: #ff6600 !important;
+}
+.favorite {
+    color: #ff6600 !important;
 }

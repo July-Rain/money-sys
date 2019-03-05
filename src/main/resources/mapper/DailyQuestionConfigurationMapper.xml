@@ -313,4 +313,22 @@ USERID2NAME(CREATE_USER) AS "creatUserName"
         WHERE
 	        ROWNUM = 1
     </select>
+
+    <select id="getSetInUse" resultType="com.lawschool.beans.DailyQuestionConfiguration">
+        SELECT
+	        *
+        FROM
+	    (
+		    SELECT
+			    *
+            FROM
+                LAW_DAILY_QUESTION
+            WHERE
+                TO_CHAR (BEGIN_TIME, 'yyyyMMdd') <![CDATA[ <= ]]> TO_CHAR (SYSDATE, 'yyyyMMdd')
+            ORDER BY
+                BEGIN_TIME DESC
+	    )
+        WHERE
+	        ROWNUM = 1
+    </select>
 </mapper>

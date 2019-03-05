@@ -109,13 +109,13 @@ var vm = new Vue({
             stuPoliceclass: [
                 {required: true, message: '请选择所属警种', trigger: 'blur'},
             ],
-            deptName: [
-                {required: true, message: '请选择使用部门', trigger: 'blur'},
-            ],
-
-            userName: [
-                {required: true, message: '请选择使用人员', trigger: 'change'}
-            ],
+            // deptName: [
+            //     {required: true, message: '请选择使用部门', trigger: 'blur'},
+            // ],
+            //
+            // userName: [
+            //     {required: true, message: '请选择使用人员', trigger: 'change'}
+            // ],
             stuDescribe: [
                 {required: true, message: '请输入描述', trigger: 'blur'},
                 {max: 200, message: '最大长度200', trigger: 'blur'}
@@ -313,8 +313,9 @@ var vm = new Vue({
             });
         },
         addQue: function () {
-
+            vm.manu.id = '';
             vm.form = {
+                id:'',
                 answerList: [],
                 isEnble: 2,
                 releaseStatus: 1,
@@ -329,6 +330,7 @@ var vm = new Vue({
             vm.dialogFormVisible = true;
         },
         addStu: function () {
+            vm.manu.id = '';
             vm.lookType=true;
             vm.dialogStuMedia = true;
             this.stuMedia = {
