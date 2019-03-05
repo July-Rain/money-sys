@@ -1004,10 +1004,10 @@ var vm = new Vue({
                 }
             });
         },
-        everyTi:function()
-        {
-            vm.dialogyes= true;
-
+        everyTi:function() {
+            if(vm.questionForm != null){
+                vm.dialogyes= true;
+            }
         },
         onSubmit:function(answerId) {
             console.info(vm.answers)
