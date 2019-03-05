@@ -298,10 +298,12 @@ var vm = new Vue({
             editor.txt.html("");
             this.title="新增";
             this.dialogCaseAna=true;
+            this.deptCheckData=[];
+            this.lawCheckData = [];
         },
         handleEdit: function (index, row){
             this.title="修改";
-            this.dialogCaseAna=true;
+
             this.deptCheckData=[];
             this.lawCheckData = [];
             editor.txt.html("");
@@ -311,6 +313,7 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if(result.code === 0){
+                        vm.dialogCaseAna=true;
                         vm.caseAna = result.data;
                         vm.deptCheckData=result.data.deptArr;
                         vm.lawCheckData = result.data.caseLawid.split(",");
@@ -318,12 +321,10 @@ var vm = new Vue({
                             loadEditor();
                         }*/
                         editor.txt.html(vm.caseAna.caseContent);
-                        for (var i=0;i<vm.caseAna.length;i++){
-                            if(vm.caseAna.contentType!='1'&&vm.caseAna.caseContent){
-                                vm.caseAna.caseContentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].caseContent;
-                                if(vm.caseAna.videoPicAcc){
-                                    vm.caseAna.videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
-                                }
+                        if(vm.caseAna.contentType!='1'&&vm.caseAna.caseContent){
+                            vm.caseAna.caseContentUrl=baseURL+"sys/download?accessoryId="+vm.caseAna.caseContent;
+                            if(vm.caseAna.videoPicAcc){
+                                vm.caseAna.videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.caseAna.videoPicAcc;
                             }
                         }
                     }else{

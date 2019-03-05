@@ -260,10 +260,12 @@ var vm = new Vue({
                 editor.txt.html("");
             this.title = "新增";
             this.dialogStuMedia = true;
+            this.deptCheckData=[];
+            this.lawCheckData = [];
         },
         handleEdit: function (index, row) {
             this.title = "修改";
-            this.dialogStuMedia = true;
+
             this.deptCheckData = [];
             this.lawCheckData = [];
             editor.txt.html("");
@@ -272,20 +274,18 @@ var vm = new Vue({
                 url: baseURL + 'stumedia/info?id=' + row.id,
                 contentType: "application/json",
                 success: function (result) {
-                    debugger
                     if (result.code === 0) {
+                        vm.dialogStuMedia = true;
                         vm.stuMedia = result.data;
                         vm.deptCheckData = result.data.deptArr;
                         vm.lawCheckData = result.data.stuLawid.split(",");
                         editor.txt.html(vm.stuMedia.comContent);
-                        for (var i = 0; i < vm.stuMedia.length; i++) {
-                            if (vm.stuMedia.stuType != '1' && vm.stuMedia.comContent) {
-                                vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + vm.videoData[i].comContent;
-                                if (vm.stuMedia.videoPicAcc) {
-                                    vm.stuMedia.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.videoData[i].videoPicAcc;
-                                }
-
+                        if (vm.stuMedia.stuType != '1' && vm.stuMedia.comContent) {
+                            vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.comContent;
+                            if (vm.stuMedia.videoPicAcc) {
+                                vm.stuMedia.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.videoPicAcc;
                             }
+
                         }
                     } else {
                         alert(result.msg);
