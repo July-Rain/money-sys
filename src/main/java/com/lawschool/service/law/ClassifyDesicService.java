@@ -37,4 +37,14 @@ public interface ClassifyDesicService extends IService<ClassifyDesicEntity> {
     
     PageUtils queryPage(Map<String,Object> param);
 
+    /**
+     * @Author MengyuWu
+     * @Description 分页查询法律法规文件
+     * @Date 19:02 2018-12-26
+     * @Param [param]
+     * @return com.lawschool.util.PageUtils
+     **/
+
+    PageUtils queryPageBySyn(Map<String,Object> param);
+
 }

@@ -33,6 +33,8 @@ public class LawClassifyEntity implements Serializable ,Comparable<LawClassifyEn
 
     private Date createTime;//创建时间
 
+    private String synFlag;//更新标记
+
     @TableField(exist=false)
     private List<?> list;
 
@@ -106,6 +108,14 @@ public class LawClassifyEntity implements Serializable ,Comparable<LawClassifyEn
 
     public void setList(List<?> list) {
         this.list = list;
+    }
+
+    public String getSynFlag() {
+        return synFlag;
+    }
+
+    public void setSynFlag(String synFlag) {
+        this.synFlag = synFlag;
     }
 
     @Override
