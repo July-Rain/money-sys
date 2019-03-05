@@ -159,6 +159,11 @@
         .random-topic .cell > .el-select, .random-topic .cell > .el-select > .el-input {
             width: 100%;
         }
+        .copy_btn .el-button{
+            background-color: #cae6fe;
+            margin-left: 11px;
+            border-color: transparent;
+        }
     </style>
 </head>
 <body>
@@ -445,24 +450,28 @@
                         ></el-input-number>
                     </el-form-item>
                 </el-col>
-                <el-col :span="24">
+                <el-col :span="19">
                     <el-form-item label="阅卷口令：" prop="checkScoreDifference">
                         <el-input id="checkPassword" v-model="checkSetting.checkPassword" readonly>
                         </el-input>
-                        <el-button @click="copyCheckPass">点击复制</el-button>
                     </el-form-item>
                 </el-col>
-                <el-col :span="24" v-if="checkSetting.isAibitration==0">
+                <el-col :span="5" class="copy_btn">
+                    <el-button @click="copyCheckPass" size="mini" type="primary" plain><i class="iconfont icon-fuzhi"></i> 点击复制</el-button>
+                </el-col>
+                <el-col :span="19" v-if="checkSetting.isAibitration==0">
                     <el-form-item label="审核人员阅卷口令：" prop="checkScoreDifference">
                         <el-input id="auditCheckPass" v-model="checkSetting.auditCheckPass" readonly></el-input>
-                        <el-button @click="copyAuditPass">点击复制</el-button>
                     </el-form-item>
+                </el-col>
+                <el-col :span="5" class="copy_btn" v-if="checkSetting.isAibitration==0">
+                    <el-button @click="copyAuditPass" size="mini" type="primary" plain><i class="iconfont icon-fuzhi"></i> 点击复制</el-button>
                 </el-col>
             </el-row>
         </el-form>
     </el-dialog>
-    <el-dialog class="config" title="新增考试配置" :visible.sync="dialogAdd" width="918px">
-        <iframe id="dialogAdd" src="examConfig.html" frameborder="0" width="100%" height="654px"></iframe>
+    <el-dialog class="config" title="新增考试配置" :visible.sync="dialogAdd" width="1200px">
+        <iframe id="dialogAdd" src="examConfig.html" frameborder="0" width="100%" height="570px"></iframe>
     </el-dialog>
     <el-dialog class="config" title="查看考试配置" :visible.sync="dialogView" width="918px">
         <iframe id="dialogView" src="examConfig.html" frameborder="0" width="100%" height="654px"></iframe>
