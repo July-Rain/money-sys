@@ -1,6 +1,7 @@
 package com.lawschool.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.Page;
 import com.lawschool.beans.Answer;
@@ -133,4 +134,51 @@ public class TestQuestionController {
         return Result.ok();
     }
 
+
+
+
+    /**
+     * 修改试题状态   启用，禁用
+     */
+    @RequestMapping(value = "/changisEnble", method = RequestMethod.POST)
+    public Result changisEnble(String id,String isEnble) {
+
+        TestQuestions tq=   testQuestionService.selectById(id);
+        tq.setIsEnble(isEnble);
+        testQuestionService.updateById(tq);
+        return Result.ok();
+    }
+
+
+
+
+    //试题名称重复问题
+    @RequestMapping("/tqComContent")
+    public Result tqComContent(String comContent,String mytype,String id){
+        String type="";
+
+        TestQuestions tq=null;
+
+        if(mytype.equals("1"))
+        {
+            tq= testQuestionService.selectOne(new EntityWrapper<TestQuestions>().eq("COM_CONTENT",comContent));
+
+        }
+        else if(mytype.equals("2"))
+        {
+            tq= testQuestionService.selectOne(new EntityWrapper<TestQuestions>().eq("COM_CONTENT",comContent).ne("ID",id));
+
+        }
+
+        if(tq==null)
+        {
+            type="0";
+        }
+        else
+        {
+            type="1";
+        }
+        return Result.ok().put("type",type);
+
+    }
 }

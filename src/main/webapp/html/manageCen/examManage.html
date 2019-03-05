@@ -24,6 +24,7 @@
             <el-table
                     :data="tableData"
                     border
+                    stripe
                     style="width: 100%">
                 <el-table-column
                         type="index"
@@ -92,6 +93,19 @@
                         align="center"
                         label="操作">
                     <template slot-scope="scope">
+
+                        <el-button
+                                v-if="'0'===scope.row.isEnble"
+                                size="mini"
+                                @click="changisEnble(scope.row,'1')">禁用
+                        </el-button>
+                        <el-button
+                                v-if="'1'===scope.row.isEnble"
+                                size="mini"
+                                @click="changisEnble(scope.row,'0')">启用
+                        </el-button>
+
+
                         <el-popover
                                 placement="right"
                                 trigger="hover"
@@ -220,7 +234,7 @@
                                 align="center"
                                 prop="status">
                             <template slot-scope="scope">
-                                <el-button type="primary" size="mini" :disabled="isEdit">
+                                <el-button type="primary" size="mini" :disabled="isEdit" @click="delanswer(scope)">
                                     删除
                                 </el-button>
                             </template>
@@ -287,20 +301,20 @@
         <el-dialog title="添加选项信息" :visible.sync="addConfigFlag">
             <el-row>
                 <el-col :span="24">
-                    <el-form :model="answer" label-width="100px" class="demo-sysMenu" size="mini">
-                        <el-form-item label="选项描述：">
+                    <el-form :model="answer" label-width="100px" class="demo-sysMenu" size="mini" :rules="rules3" ref="answer">
+                        <el-form-item label="选项描述：" prop="questionContent">
                             <el-input v-model="answer.questionContent" placeholder="选项描述" type="input"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="分数：">
-                            <el-input v-model="answer.score" placeholder="分数" type="number"></el-input>
+                        <el-form-item label="分数：" prop="score">
+                            <el-input v-model="answer.score" placeholder="分数"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="排序：">
-                            <el-input v-model="answer.ordersort" placeholder="排序" type="number"></el-input>
+                        <el-form-item label="排序：" prop="ordersort">
+                            <el-input v-model="answer.ordersort" placeholder="排序"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="是否为答案：">
+                        <el-form-item label="是否为答案：" prop="isAnswer">
                             <el-radio-group v-model="answer.isAnswer">
                                 <el-radio :label="1">是</el-radio>
                                 <el-radio :label="0">否</el-radio>
@@ -308,7 +322,7 @@
                         </el-form-item>
 
                         <el-form-item>
-                            <el-button type="primary" @click="sure">确定</el-button>
+                            <el-button type="primary" @click="sure('answer')">确定</el-button>
                         </el-form-item>
 
                     </el-form>
