@@ -96,6 +96,11 @@ var vm = new Vue({
 
                             var userAnswer = vm.questionForm.userAnswer;
                             var type = vm.questionForm.questionType;
+                            if(vm.questionForm.isCollect == '1'){
+                                vm.starIcon = 'el-icon-star-on';
+                            } else {
+                                vm.starIcon = 'el-icon-star-off';
+                            }
                             if(type == '10005'){
                                 // 多选题
                                 vm.answers = userAnswer.split(',');

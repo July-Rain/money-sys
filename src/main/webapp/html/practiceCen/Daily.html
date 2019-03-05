@@ -68,7 +68,7 @@
                 </div>
 
                 <div class="answer_area" v-if="showAnswer">
-                    <p>你的答案:<span>{{userAnswerStr}}</span>，正确答案:<span>{{rightAnswerStr}}</span></p>
+                    <p :class="userAnswerStr!=rightAnswerStr?'err':''">你的答案：<span>{{userAnswerStr}}</span>，正确答案：<span>{{rightAnswerStr}}</span></p>
                     <div class="basis clearfix">
                         <p>答案描述：</p>
                         <p>{{questionForm.answerDescrible}}</p>
@@ -80,7 +80,11 @@
                 </div>
             </div>
             <div class="daliy" v-if="questionForm == null">
-                暂无每日一题或答题记录
+                <p class="daliy_title">
+                    <span>
+                        暂无每日一题或答题记录
+                    </span>
+                </p>
             </div>
         </div>
 
