@@ -31,4 +31,6 @@ public interface DailyQuestionConfigurationDao extends AbstractDao<DailyQuestion
     Integer myUpdate(DailyForm form);
 
     String getSettingsInUse();
+
+    DailyQuestionConfiguration getSetInUse();
 }
