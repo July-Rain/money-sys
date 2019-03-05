@@ -500,6 +500,20 @@ var vm = new Vue({
         },
         confimUser: function () {
             this.dialogUser=false;
+            //遍历最终的人员信息
+            if(val.length==0){
+                vm.caseAna.userIds = "";
+                vm.caseAna.userName = "";
+            }
+            for (var i=0;i<val.length;i++){
+                if (!this.caseAna.userIds ) {
+                    this.caseAna.userIds=val[i].id;
+                    this.caseAna.userName=val[i].userName;
+                }else{
+                    this.caseAna.userIds+=","+val[i].id;
+                    this.caseAna.userName+=","+val[i].userName;
+                }
+            }
         },
         cancelUser: function () {
             this.dialogUser=false;
@@ -538,16 +552,7 @@ var vm = new Vue({
         handleSelectionChange(val) {
             //选择人员信息
             this.multipleSelection = val;
-            //遍历最终的人员信息
-            for (var i=0;i<val.length;i++){
-                if (!this.caseAna.userIds ) {
-                    this.caseAna.userIds=val[i].id;
-                    this.caseAna.userName=val[i].userName;
-                }else{
-                    this.caseAna.userIds+=","+val[i].id;
-                    this.caseAna.userName+=","+val[i].userName;
-                }
-            }
+
 
         },
         changeStuType:function () {

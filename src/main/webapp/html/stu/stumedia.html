@@ -326,6 +326,17 @@
                             <el-input v-model="stuMedia.userName" readonly @focus="chooseUser" placeholder="请选择使用人员"
                                       clearable></el-input>
                         </el-form-item>
+                        <el-form-item label="制作时间：" prop="stuCreat">
+                            <el-date-picker
+                                    v-model="stuMedia.stuCreat"
+                                    type="date"
+                                    format="yyyy年MM月dd日"
+                                    value-format="yyyy-MM-dd"
+                                    placeholder="制作时间"
+                                    size="mini"
+                            >
+                            </el-date-picker>
+                        </el-form-item>
                         <el-form-item label="描述：" prop="stuDescribe">
                             <el-input type="textarea" maxlength="200" v-model="stuMedia.stuDescribe"></el-input>
                         </el-form-item>

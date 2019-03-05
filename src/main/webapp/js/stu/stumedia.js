@@ -36,6 +36,7 @@ var vm = new Vue({
             stuKnowledge: "",//专项知识
             stuPoliceclass: "",//所属警种
             videoPicAcc: "",//视频首页
+            stuCreat:new Date(),//获取当前时间
         },
         uploadedPlayer: null, // 上传视频实例
         rules: {//表单验证规则
@@ -253,6 +254,7 @@ var vm = new Vue({
                 stuLawid: "",//专项知识id
                 stuKnowledge: "",//专项知识
                 videoPicAcc: "",//视频首页
+                stuCreat:new Date()
             },
                 //清空editor
                 editor.txt.html("");
@@ -475,6 +477,10 @@ var vm = new Vue({
             //  --回显需加
             var val = this.multipleSelection;
             //遍历最终的人员信息
+            if(val.length==0){
+                vm.stuMedia.userIds = "";
+                vm.stuMedia.userName = "";
+            }
             for (var i = 0; i < val.length; i++) {
                 if (i == 0) {
                     vm.stuMedia.userIds = val[i].id;
