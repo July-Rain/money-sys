@@ -86,4 +86,11 @@ public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
     Boolean updateAnswerId(@Param("id") String id, @Param("answerId") String answerId);
 
     List<TestQuestions> listByIds(List<String> ids);
+
+    /**
+     * 根据条件随机获取一道题目
+     * @param params
+     * @return
+     */
+    QuestForm obtainByRandom(Map<String, String> params);
 }

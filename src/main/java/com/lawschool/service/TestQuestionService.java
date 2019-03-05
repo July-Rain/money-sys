@@ -97,4 +97,11 @@ public interface TestQuestionService extends AbstractService<TestQuestions> {
     boolean mySave(TestQuestions entity);
 
     List<TestQuestions> listByIds(List<String> ids);
+
+    /**
+     * 根据条件随机获取一道题目
+     * @param params
+     * @return
+     */
+    QuestForm obtainByRandom(Map<String, String> params);
 }

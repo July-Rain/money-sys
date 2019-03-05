@@ -255,4 +255,15 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
     public List<TestQuestions> listByIds(List<String> ids) {
         return dao.listByIds(ids);
     }
+
+    /**
+     * 根据查询条件随机获取一道题目
+     * @param params
+     * @return
+     */
+    @Override
+    public QuestForm obtainByRandom(Map<String, String> params){
+
+        return dao.obtainByRandom(params);
+    }
 }
