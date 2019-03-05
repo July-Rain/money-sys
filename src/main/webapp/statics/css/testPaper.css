@@ -87,6 +87,7 @@ html {
 }
 .main .description {
     font-size: 2.2rem;
+    font-weight: 900;
 }
 /* 题目公共样式 */
 .main .question {
@@ -98,10 +99,63 @@ html {
     padding-left: 54px;
     font-size: 2.2rem;
 }
+.main .question .el-radio {
+    position: relative;
+}
+.main .question .icon-dui1 {
+    position: absolute;
+    right: 20px;
+    color: #37aa57;
+}
 .main .question .answer-area {
-    margin-top: 18px;
-    padding:10px 0 10px 54px;
+    /*margin-top: 22px;*/
+    position: relative;
+    padding:20px 0 20px 54px;
     background: white;
+}
+.main .question .answer-area .collection {
+    position: absolute;
+    right: 20px;
+    top: 40px;
+    font-size: 1.6rem;
+}
+.main .question .answer-area .collection i {
+    margin-right: 5px;
+    color: #dddddd;
+    font-size: 2rem;
+}
+.main .question .answer-area::before {
+    content:'.';
+    height: 0;
+    width: 77vw;
+    margin-left: -14vw;
+    margin-bottom: 20px;
+    display: block;
+    border: 1px dashed #dddddd;
+}
+.main .question .answer-area i {
+    color: #dddddd;
+}
+.main .question .answer-area .answer-text {
+    margin-top: 16px;
+    font-size: 1.6rem;
+    color: #999999;
+}
+.main .question .answer-area .answer-text span {
+    font-size: 1.6rem;
+    color: #333333;
+}
+.main .question .answer-area .text {
+    margin-top: 16px;
+}
+.main .question .diff {
+    margin-left: 14px;
+    font-size: 1.6rem !important;
+    color: #ff6600;
+}
+.main .question .answer-area .icon-shoucang1 {
+    margin-right: 6px;
+    font-size: 1.6rem;
 }
 .main .question .gray {
     width: 150%;
@@ -253,4 +307,13 @@ html {
 }
 .err {
     color: #fb1515
+}
+.right-answer {
+    background: #e3fff1;
+}
+.light {
+    color: #ff6600 !important;
+}
+.favorite {
+    color: #ff6600 !important;
 }

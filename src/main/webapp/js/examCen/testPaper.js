@@ -8,6 +8,7 @@ var vm = new Vue({
         // 修改后的数据
         // boolean
         isSubmit: false,
+        isFavored: false,
         // 题目数据
         oneOptionList: [
             {
@@ -506,6 +507,7 @@ var vm = new Vue({
         // 主观题答案
         answer: '',
 
+        favoriteText: '收藏此题',
         paperName: '',
         username: '',
         answers: [],
@@ -716,12 +718,23 @@ var vm = new Vue({
             e.target.style.color = '#1381e3';
             icon.style.display = 'inline-block';
         },
+        // 收藏
+        favor: function () {
+            this.isFavored = !this.isFavored;
+            if (this.isFavored) {
+                this.favoriteText = '已收藏';
+            } else {
+                this.favoriteText = '收藏此题';
+            }
+        },
 
         // 提交试卷
         submit: function () {
+            // var isChecked = document.getElementsByClassName('is-checked');
             this.isSubmit = true;
             // 展示使用时间
             this.consumedTime();
+
             // 路径转换
             /*var parentWin = window.parent;
             parentWin.document.getElementById("container").src
