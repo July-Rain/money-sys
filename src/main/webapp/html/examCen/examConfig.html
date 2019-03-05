@@ -38,6 +38,9 @@
         .configure .el-select>.el-input{
             width: 220px;
         }
+        .el-pagination__sizes .el-select>.el-input{
+            width: 100px;
+        }
         .configure .text-right{
             text-align: right;
         }
@@ -275,7 +278,7 @@
                 <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
             </div>
         </el-dialog>
-        <el-dialog title="选择人员" :visible.sync="dialogUser" class="dialog_minW750">
+        <el-dialog title="选择人员" :visible.sync="dialogUser" width="90%" class="dialog_minW750">
             <!--对于同一级的节点，每次只能展开一个-->
             <div>
                 <el-col :span="6">
@@ -314,6 +317,7 @@
                                 ref="userTable"
                                 :data="userTableData"
                                 border
+                                stripe
                                 height="529"
                                 @selection-change="handleSelectionChange"
                                 style="width: 100%">
@@ -488,6 +492,7 @@
                         :data="tableData3"
                         tooltip-effect="dark"
                         height="530"
+                        stripe
                         style="width: 100%"
                         @selection-change="handleQueSelectionChange"
                 >
@@ -578,6 +583,7 @@
                             height="324"
                             style="width: 100%"
                             show-summary
+                            stripe
                             :summary-method="getSummaries"
                         >
                         <el-table-column
@@ -787,6 +793,7 @@
                         :data="tableData3"
                         tooltip-effect="dark"
                         height="530"
+                        stripe
                         style="width: 100%"
                         @selection-change="handleQueSelectionChange"
                 >

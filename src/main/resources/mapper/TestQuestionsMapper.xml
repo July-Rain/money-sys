@@ -632,4 +632,40 @@
         </where>
         ORDER BY a.question_type
     </select>
+
+    <select id="obtainByRandom" parameterType="map" resultType="com.lawschool.form.QuestForm">
+        SELECT * from (
+            SELECT
+                t.id,
+                t.com_content,
+                t.question_difficulty,
+                t.question_type,
+                t.answer_id,
+                t.legal_basis,
+                t.answer_describle,
+                t.answer_choice_number,
+                c.name AS "themeName"
+            FROM law_testquestions t
+            LEFT JOIN LAW_SYS_TOPIC c ON t.special_Knowledge_Id = c.id
+            <where>
+                t.IS_ENBLE = 0
+                AND t.RELEASE_STATUS = 1
+                AND t.QUESTION_TYPE <![CDATA[ <> ]]> '10007'
+                <if test="topics != null and topics != ''">
+                    AND t.special_Knowledge_Id IN
+                    <foreach collection="topics.split(',')" separator="," open="(" close=")" item="item">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="difficulty != '' and difficulty != null">
+                    AND t.QUESTION_DIFFICULTY in
+                    <foreach collection="difficulty.split(',')" open="(" close=")" separator="," item="item">
+                        #{item}
+                    </foreach>
+                </if>
+            </where>
+            ORDER BY dbms_random.value()
+        )
+        WHERE ROWNUM = 1
+    </select>
 </mapper>

@@ -17,16 +17,6 @@ public interface DailyQuestionConfigurationService extends AbstractService<Daily
 
     void deleteByDailyId(String id);//删除每日一题配置
 
-    int insertDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration);
-
-    int updateByDailyConfig(DailyQuestionConfiguration dailyQuestionConfiguration);
-
-    Result dailyTestCreate();//返回每日一题 以及 当前每日一题配置
-    Result newDailyTestCreate();// （  新的   ）返回每日一题 以及 当前每日一题配置
-    void saveQuestion(TestQuestions testQuestions,String myanswer);
-
-    void recordScore( User u, String sorce);
-
     boolean mySave(DailyForm form);
 
     boolean doCheckDate(String id, Date date);
@@ -36,5 +26,20 @@ public interface DailyQuestionConfigurationService extends AbstractService<Daily
      *  没有返回null
      * @return
      */
-    String getSettingsInUse();
+    String getSetIdInUse();
+
+    /**
+     * 获取使用中的设置
+     *  没有返回null
+     * @return
+     */
+    DailyQuestionConfiguration getSetInUse();
+
+    /**
+     * 获取题目
+     * @param date
+     * @param userId
+     * @return
+     */
+    QuestForm getQuestion(String date, String userId);
 }

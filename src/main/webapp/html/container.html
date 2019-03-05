@@ -196,7 +196,7 @@
             <el-col :span="6">
                 <div class="box-card">
                     <div class="header pl12">
-                        <span>我的考试</span>·
+                        <span>我的考试</span>
                     </div>
                     <div class="no_exams" v-if="examList.length===0">
                         <img src="${rc.contextPath}/statics/img/no_exams.png" alt="">
@@ -700,7 +700,7 @@
         <el-button v-if="false" type="text" @click="dialogTableVisible = true">打开嵌套表格的 Dialog</el-button>
 
         <el-dialog v-if="false" title="收货地址" :visible.sync="dialogTableVisible">
-            <el-table :data="tableData">
+            <el-table :data="tableData" stripe>
                 <el-table-column property="date" label="日期" width="150"></el-table-column>
                 <el-table-column property="name" label="姓名" width="200"></el-table-column>
                 <el-table-column property="address" label="地址"></el-table-column>
@@ -760,34 +760,27 @@
             <el-radio-group v-model="answers"
                             v-if="questionForm.questionType==10004 || questionForm.questionType==10006"
                             :disabled="radio_disabled">
-                <el-radio :label="answer.id" v-for="answer in questionForm.answer"
-                          @change="radioCheck(answer.id, questionForm.answerId, questionForm.questionType)">
+                <el-radio :label="answer.id" v-for="answer in questionForm.answer">
                     {{answer.questionContent}}
                 </el-radio>
-                <br/>
             </el-radio-group>
 
 
             <!--多选题-->
-
-            <el-checkbox-group v-model="answers" v-if="questionForm.questionType==10005">
-                <el-checkbox :label="answer.id" v-for="answer in questionForm.answer" :disabled="checkboxdisabled">
+            <el-checkbox-group v-model="answers" v-if="questionForm.questionType==10005" :disabled="radio_disabled">
+                <el-checkbox :label="answer.id" v-for="answer in questionForm.answer">
                     {{answer.questionContent}}
                 </el-checkbox>
-                <br/>
             </el-checkbox-group>
 
-            <el-button type="primary" :disabled="checkboxdisabled" v-if="questionForm.questionType==10005"
-                       @click="onSubmit(questionForm.answerId)">提交
-            </el-button>
+            <div class="questionDx" v-if="!radio_disabled">
+                <el-button type="warning" @click="commit">提交
+                </el-button>
+            </div>
 
-
-            <!--<el-button type="primary" v-if="questionForm.questionType==10005" @click="onSubmit(questionForm.answerId)">提交</el-button><br/>-->
             <br/>
             <span v-show="showDetail">
                 <span v-show="answerShow">答案描述：{{questionForm.answerDescrible}}</span><br/>
-                <span v-show="legalBasisShow">法律依据：{{questionForm.legalBasis}}</span><br/>
-                <!--<span>题目难度：{{questionForm.questionDifficulty}}</span>-->
             </span>
         </div>
     </el-dialog>

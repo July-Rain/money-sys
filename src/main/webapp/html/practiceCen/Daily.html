@@ -19,7 +19,11 @@
                 <el-date-picker
                         v-model="daliyDate"
                         type="date"
-                        placeholder="选择日期">
+                        placeholder="选择日期"
+                        @change="doDate"
+                        value-format="yyyy-MM-dd"
+                        editable="false"
+                        :picker-options="pickerOptions">
                 </el-date-picker>
                 <ul>
                     <li :class="info.active?'active':''" @click="dateChange(index)" v-for="(info,index) in dateList" :key="index">
@@ -28,69 +32,60 @@
                     </li>
                 </ul>
             </div>
-            <div class="daliy">
-                <p class="daliy_title"><span>{{questionForm.questionType==10004?'单选题':questionForm.questionType==10005?'多选题':'判断题'}}</span>{{questionForm.comContent}}
+            <div class="daliy" v-if="questionForm != null">
+                <p class="daliy_title">
+                    <span>
+                        {{questionForm.questionType==10004 ? '单选题' : questionForm.questionType==10005 ? '多选题':'判断题'}}
+                    </span>
+                    {{questionForm.comContent}}
                 </p>
+
                 <!--单选 与判断-->
                 <el-radio-group v-model="answers"
                                 v-if="questionForm.questionType==10004 || questionForm.questionType==10006"
-                                :disabled="radio_disabled">
-                    <el-radio :label="answer.id" v-for="answer in questionForm.answer"
-                              @change="radioCheck(answer.id, questionForm.answerId, questionForm.questionType)">
+                                :disabled="showAnswer">
+                    <el-radio :label="answer.id" v-for="answer in questionForm.answer">
                         {{answer.questionContent}}
                     </el-radio>
-                    <br/>
                 </el-radio-group>
 
-
                 <!--多选题-->
-
-                <el-checkbox-group v-model="answers" v-if="questionForm.questionType==10005">
-                    <el-checkbox :label="answer.id" v-for="answer in questionForm.answer" :disabled="checkboxdisabled">
+                <el-checkbox-group v-model="answers" v-if="questionForm.questionType==10005" :disabled="showAnswer">
+                    <el-checkbox :label="answer.id" v-for="answer in questionForm.answer">
                         {{answer.questionContent}}
                     </el-checkbox>
-                    <br/>
                 </el-checkbox-group>
 
-                <el-button type="primary" :disabled="checkboxdisabled" v-if="questionForm.questionType==10005"
-                           @click="onSubmit(questionForm.answerId)">提交
-                </el-button>
+                <div class="questionDx" v-if="!showAnswer">
+                    <el-button type="warning" @click="commit">
+                        提交
+                    </el-button>
+                    <el-button type="info" icon="el-icon-question"
+                               v-if="isShowAnswer == '1'" @click="showTips">
+                        提示
+                    </el-button>
+                </div>
 
-
-
-
-                <!--<el-button type="primary" v-if="questionForm.questionType==10005" @click="onSubmit(questionForm.answerId)">提交</el-button><br/>-->
-                <span v-show="showDetail">
-                <span v-show="answerShow">答案描述：{{questionForm.answerDescrible}}</span><br/>
-                <span v-show="legalBasisShow">法律依据：{{questionForm.legalBasis}}</span><br/>
-                    <!--<span>题目难度：{{questionForm.questionDifficulty}}</span>-->
-                </span>
-
-                <div class="answer_area">
-                    <p>你的答案:<span>BD</span>，正确答案:<span>BD</span></p>
-                    <!--diff1~diff5表示五角星亮几个-->
-                    <div class="clearfix diff diff5">
-                        <span>试题难度：</span>
-                        <span>
-                            <i class="iconfont icon-shoucang1"></i>
-                            <i class="iconfont icon-shoucang1"></i>
-                            <i class="iconfont icon-shoucang1"></i>
-                            <i class="iconfont icon-shoucang1"></i>
-                            <i class="iconfont icon-shoucang1"></i>
-                        </span>
-                        <span>中等</span>
-                    </div>
+                <div class="answer_area" v-if="showAnswer">
+                    <p :class="userAnswerStr!=rightAnswerStr?'err':''">你的答案：<span>{{userAnswerStr}}</span>，正确答案：<span>{{rightAnswerStr}}</span></p>
                     <div class="basis clearfix">
-                        <p>法律依据：</p>
-                        <p>{{questionForm.legalBasis}}法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据法律依据</p>
+                        <p>答案描述：</p>
+                        <p>{{questionForm.answerDescrible}}</p>
                     </div>
                     <div class="collection col-orange">
-                        <i class="el-icon-star-off"></i>
-                        <i class="el-icon-star-on"></i>
-                        已收藏
+                        <i :class="starIcon" @click="doCollect"></i>
+                        {{questionForm.isCollect == 1 ? '已收藏' : '收藏'}}
                     </div>
                 </div>
             </div>
+            <div class="daliy" style="border: none;height: 187px;margin: -10px auto 0;">
+                <div class="no_exams" v-if="questionForm == null">
+                    <img src="${rc.contextPath}/statics/img/no_exams.png" alt="">
+                    <p>暂无每日一题记录</p>
+                </div>
+            </div>
+
+
         </div>
 
     </div>

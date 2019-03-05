@@ -8,72 +8,22 @@ import com.lawschool.form.AnswerForm;
 import java.util.List;
 
 /**
- * @Author liuhuan
- * 每日一题记录表
+ * @Auther: Moon
+ * @Date: 2019/1/16 19:04 重写
+ * @Description: 每日一题答题记录
  */
 @TableName("LAW_DAILY_RECORD")
 public class DailyRecord extends DataEntity<DailyRecord> {
 
-    /**
-     * 题目内容
-     */
-    private String comContent;
+    private static final long serialVersionUID = 5993512128918943902L;
 
-    /**
-     * 题目ID
-     */
-    private String questionId;
+    private String questionId;// 题目ID
+    private String answer;// 用户选项ID，对选逗号分隔
+    private String userId;// 用户ID
+    private Integer right;// 是否正确,0错误、1正确
+    private Integer isCollect;// 是否收藏，0为收藏、1收藏
 
-    /**
-     * 试题难度
-     */
-    private String questionDifficulty;
-
-    /**
-     * 试题类型
-     */
-    private String questionType;
-
-    /**
-     * 答案ID
-     */
-    private String answerId;
-
-    /**
-     * 法律依据
-     */
-    private String legalBasis;
-
-    /**
-     * 答案描述
-     */
-    private String answerDescrible;
-
-    /**
-     * 是否做过(已做、未做)
-     */
-    private String isDown;
-
-    /**
-     * 用户ID
-     * @return
-     */
-    private String userId;
-
-    /**
-     * 答案数组
-     * @return
-     */
-    @TableField(exist = false)
-    private List<AnswerForm> answerList;
-
-    public String getComContent() {
-        return comContent;
-    }
-
-    public void setComContent(String comContent) {
-        this.comContent = comContent;
-    }
+    private String themeName;// 主题名称，用于统计
 
     public String getQuestionId() {
         return questionId;
@@ -83,52 +33,12 @@ public class DailyRecord extends DataEntity<DailyRecord> {
         this.questionId = questionId;
     }
 
-    public String getQuestionDifficulty() {
-        return questionDifficulty;
+    public String getAnswer() {
+        return answer;
     }
 
-    public void setQuestionDifficulty(String questionDifficulty) {
-        this.questionDifficulty = questionDifficulty;
-    }
-
-    public String getQuestionType() {
-        return questionType;
-    }
-
-    public void setQuestionType(String questionType) {
-        this.questionType = questionType;
-    }
-
-    public String getAnswerId() {
-        return answerId;
-    }
-
-    public void setAnswerId(String answerId) {
-        this.answerId = answerId;
-    }
-
-    public String getLegalBasis() {
-        return legalBasis;
-    }
-
-    public void setLegalBasis(String legalBasis) {
-        this.legalBasis = legalBasis;
-    }
-
-    public String getAnswerDescrible() {
-        return answerDescrible;
-    }
-
-    public void setAnswerDescrible(String answerDescrible) {
-        this.answerDescrible = answerDescrible;
-    }
-
-    public String getIsDown() {
-        return isDown;
-    }
-
-    public void setIsDown(String isDown) {
-        this.isDown = isDown;
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public String getUserId() {
@@ -139,27 +49,27 @@ public class DailyRecord extends DataEntity<DailyRecord> {
         this.userId = userId;
     }
 
-    public List<AnswerForm> getAnswerList() {
-        return answerList;
+    public Integer getRight() {
+        return right;
     }
 
-    public void setAnswerList(List<AnswerForm> answerList) {
-        this.answerList = answerList;
+    public void setRight(Integer right) {
+        this.right = right;
     }
 
-    @Override
-    public String toString() {
-        return "DailyRecord{" +
-                "comContent='" + comContent + '\'' +
-                ", questionId='" + questionId + '\'' +
-                ", questionDifficulty='" + questionDifficulty + '\'' +
-                ", questionType='" + questionType + '\'' +
-                ", answerId='" + answerId + '\'' +
-                ", legalBasis='" + legalBasis + '\'' +
-                ", answerDescrible='" + answerDescrible + '\'' +
-                ", isDown='" + isDown + '\'' +
-                ", userId='" + userId + '\'' +
-                ", answerList=" + answerList +
-                '}';
+    public Integer getIsCollect() {
+        return isCollect;
+    }
+
+    public void setIsCollect(Integer isCollect) {
+        this.isCollect = isCollect;
+    }
+
+    public String getThemeName() {
+        return themeName;
+    }
+
+    public void setThemeName(String themeName) {
+        this.themeName = themeName;
     }
 }

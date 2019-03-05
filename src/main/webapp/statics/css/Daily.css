@@ -96,7 +96,7 @@
 }
 .clearfix .daliy{
     float: left;
-    width: 84vw;
+    width: 82vw;
 }
 .el-date-editor.el-input, .el-date-editor.el-input__inner{
     width: 9vw;
@@ -220,4 +220,28 @@
 }
 .answer_area .diff5 > span > i:nth-child(1),.answer_area .diff5 > span > i:nth-child(2),.answer_area .diff5 > span > i:nth-child(3),.answer_area .diff5 > span > i:nth-child(4),.answer_area .diff5 > span > i:nth-child(5){
     color: #ff6600;
+}
+
+/*日期缩小宽度不够*/
+.el-input--prefix .el-input__inner{
+    padding-right: 0;
+}
+
+.no_exams {
+    width: 200px;
+    margin: 55px auto 0;
+    text-align: center;
+}
+
+.no_exams img {
+    height: auto;
+    width: 70px;
+}
+
+.no_exams p {
+    height: 15px;
+    line-height: 15px;
+    font-size: 14px;
+    color: #a9a9a9;
+    margin-top: 14px;
 }

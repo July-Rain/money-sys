@@ -73,6 +73,7 @@
                             <el-table
                                     :data="tableData"
                                     border
+                                    stripe
                                     style="width: 100%">
                                 <el-table-column
                                         label="序号"
@@ -165,8 +166,8 @@
                 </el-tree>
             </el-scrollbar>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" size="mini" @click="confimLib">保存</el-button>
                 <el-button size="mini" @click="cancelLib">取消</el-button>
+                <el-button type="primary" size="mini" @click="confimLib">保存</el-button>
             </div>
 
         </el-dialog>

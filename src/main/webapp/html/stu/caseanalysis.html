@@ -121,6 +121,7 @@
                 <el-table
                         :data="tableData"
                         border
+                        stripe
                         height="539"
                         style="width: 100%">
                     <el-table-column
@@ -404,6 +405,7 @@
                                 :data="userTableData"
                                 border
                                 height="529"
+                                stripe
                                 @selection-change="handleSelectionChange"
                                 style="width: 100%">
                             <el-table-column

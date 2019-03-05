@@ -34,4 +34,54 @@
       #{optTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},#{userId}
       )
     </insert>
+
+    <select id="getRecord" resultType="com.lawschool.form.QuestForm">
+        SELECT
+            t.id,
+            t.com_content,
+            t.question_difficulty,
+            t.question_type,
+            t.answer_id,
+            t.legal_basis,
+            t.answer_describle,
+            t.answer_choice_number,
+            r.ANSWER_ID AS "userAnswer",
+            r.ID AS "recordId",
+            r.IS_COLLECT AS "isCollect"
+        FROM LAW_DAILY_RECORD r
+        LEFT JOIN LAW_TESTQUESTIONS t ON r.QUESTION_ID = t.ID
+        <where>
+            TO_CHAR(r.CREATE_TIME, 'yyyy-MM-dd') = #{date}
+            AND r.USER_ID = #{userId}
+        </where>
+    </select>
+
+    <insert id="mySave" parameterType="com.lawschool.form.ThemeAnswerForm">
+        INSERT INTO
+            LAW_DAILY_RECORD
+            (
+                ID,
+                QUESTION_ID,
+                ANSWER_ID,
+                USER_ID,
+                RIGHT,
+                THEME_NAME,
+                CREATE_TIME
+            ) VALUES (
+                #{id},
+                #{qId},
+                #{answer},
+                #{createUser},
+                #{right},
+                #{themeName},
+                #{createTime}
+            )
+    </insert>
+
+    <update id="updateCollect">
+        UPDATE LAW_DAILY_RECORD
+        SET
+            IS_COLLECT = #{type}
+        WHERE ID = #{id}
+    </update>
 </mapper>

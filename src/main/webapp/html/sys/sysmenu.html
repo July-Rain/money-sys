@@ -91,7 +91,7 @@
                             <el-button size="mini" type="primary" @click="add"><i class="iconfont icon-htmal5icon18"></i>新增</el-button>
                         </div>
                         <el-table @expand-change="change"
-                                :data="tableData"
+                                :data="tableData" stripe
                                 border
                                 style="width: 100%"
                                 :row-class-name="getRowClass">
@@ -100,12 +100,14 @@
                                         :data="childData"
                                         @expand-change="changeTwo"
                                         border
+                                        stripe
                                         style="width: 100%"
                                         :row-class-name="getRowClass">
                                     <el-table-column type="expand">
                                         <el-table
                                                 :data="childDataTwo"
                                                 border
+                                                stripe
                                                 style="width: 100%">
                                             <el-table-column
                                                     prop="name"
