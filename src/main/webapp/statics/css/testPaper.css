@@ -1,7 +1,7 @@
 /* 整体布局搭建 */
 html {
     /* 控制字体大小 小 8px 中 10px 大 12px */
-    font-size: 10px;
+    font-size: 9px;
 }
 .container {
     position: relative;
@@ -19,6 +19,13 @@ html {
     width: 18vw;
     height: 530px;
     background: white;
+}
+
+.clearfix:after {
+    content: '.';
+    height: 0;
+    display: block;
+    clear: both;
 }
 
 /* header样式 */
@@ -121,6 +128,18 @@ html {
 .one-option .el-radio__label, .multi-options .el-checkbox__label, .checking .el-radio__label {
     font-size: 2rem;
 }
+/* 主观题样式 */
+.main .expressing .button {
+    float: right;
+    margin-top: 10px;
+}
+.main .expressing .el-textarea {
+    padding-left: 55px;
+}
+.main .expressing textarea {
+    min-height: 100px !important;
+    background: #fbfcfe;
+}
 /* bar 样式 */
 .bar .category {
     width: 50px;
@@ -133,6 +152,10 @@ html {
     text-align: center;
     border-bottom: 1px solid #dddddd;
 }
+.bar .duration .consumed-time {
+    font-size: 1.9rem;
+    color: #1381e3;
+}
 .bar .time .duration {
     font-size: 1.2rem;
     font-weight: 300;
@@ -141,6 +164,12 @@ html {
 .bar .time .duration>span {
     display: block;
     margin-top: 25px;
+}
+.bar .time .duration>span span {
+    padding: 8px;
+    background: #1b1b1b;
+    border-radius: 2px;
+    color: white;
 }
 .bar .category li {
     height: 50px;
@@ -176,13 +205,18 @@ html {
 }
 .bar .display {
     width: 100%;
-    padding: 20px 0 20px 30px;
+    padding: 20px 0 20px 0;
     border-top: 1px solid #dddddd;
+}
+.bar .display .number {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
 }
 .bar .display .right-num, .bar .display .error-num {
     display: inline-block;
     margin-top: 20px;
-    padding: 0 10px;
+    padding: 0 40px;
     color: black;
 }
 .bar .display .right-num {

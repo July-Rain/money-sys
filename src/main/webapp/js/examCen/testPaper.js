@@ -500,8 +500,11 @@ var vm = new Vue({
         consumedHours: '00',
         consumedMinutes: '00',
         consumedSeconds: '00',
+        consumed: '',
         // 总分
         totalScore: 87,
+        // 主观题答案
+        answer: '',
 
         paperName: '',
         username: '',
@@ -661,6 +664,7 @@ var vm = new Vue({
             var consumed =  3*3600000 - this.lefttime;
             var results = this.figureTime(consumed);
             [this.consumedHours, this.consumedMinutes, this.consumedSeconds] = [...results];
+            this.consumedMinutes = Number(this.consumedMinutes)*60 + Number(this.consumedMinutes);
         },
         // 计算时间
         figureTime: function (time) {
@@ -681,20 +685,22 @@ var vm = new Vue({
         changeFontSize: function (e) {
             var fontSpans = document.getElementsByClassName('font-size-span');
             var html = document.getElementById('html');
-            //  待
+
             if (e.target.innerHTML === '小') {
-                html.style.fontSize = '10px';
+                html.style.fontSize = '9px';
             } else if (e.target.innerHTML === '中') {
                 html.style.fontSize = '12px';
             } else if (e.target.innerHTML === '大') {
-                html.style.fontSize = '14px';
+                html.style.fontSize = '13px';
             } else {
                 return;
             }
             for (var i = 0; i < fontSpans.length; i++) {
                 fontSpans[i].style.fontWeight = '300';
+                fontSpans[i].style.background = 'white';
             }
             e.target.style.fontWeight = '600';
+            e.target.style.background = '#eff8ff';
         },
         // 改变 bar 中元素被选择时的字体颜色 & 定位字体图标
         pickArea: function (e) {
@@ -721,6 +727,10 @@ var vm = new Vue({
             parentWin.document.getElementById("container").src
                 = 'modules/exerciseCenter/paper_index.html';*/
         },
+        submitSubject: function () {
+            
+        }
+        
 
         // 修改前的方法
         /*startExam: function () {
