@@ -40,7 +40,8 @@ var vm = new Vue({
                 newPassValidator: [
                     { required: true, message: '',trigger: 'blur',validator: validatePass2}
                 ]
-            }
+            },
+            isVisible: false
         }
     },
     methods: {
@@ -68,6 +69,7 @@ var vm = new Vue({
                                     //     vm.reload();
                                     // }
                                 });
+                                vm.isVisible = false;
                             } else {
                                 alert("原密码错误,修改密码失败");
                             }
@@ -79,9 +81,6 @@ var vm = new Vue({
                 }
             });
         },
-        // changeAvatar: function () {
-        //     this.src = "../../statics/img/new.png"
-        // },
         //上传
         uploadSuccess: function(response, file, fileList) {
             vm.info.photo=response.accessoryId;
@@ -113,6 +112,10 @@ var vm = new Vue({
         uploadProcess: function () {
 
         },
+        // 打开对话框
+        openDialog: function () {
+            this.isVisible = true;
+        }
 
     },
     created: function(){

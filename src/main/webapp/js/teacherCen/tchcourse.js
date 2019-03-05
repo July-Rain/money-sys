@@ -5,6 +5,8 @@
  */
 var editor = null;
 var menuId = getUrlParam("id");
+var createUser=getUrlParam("createUser");
+
 // 视频上传DOM 改为由v-show控制以实现上传视频替换功能后，会有一个warn，于功能无碍。待定。
 var vm = new Vue({
     el: '#app',
@@ -18,7 +20,8 @@ var vm = new Vue({
             currPage: 1,
             pageSize: 10,
             totalCount: 0,
-            stuLawid: ""
+            stuLawid: "",
+            createUser:createUser
         },
         tableData: [],//表格数据
         visible: false,
@@ -207,7 +210,7 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "stumediatch/listICreate?isMp=true",
+                url: baseURL + "stumediatch/list?isMp=true",
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {

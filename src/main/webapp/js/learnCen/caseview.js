@@ -65,7 +65,7 @@ var vm = new Vue({
                     }
                 }
             });
-            // 案件类型
+            // 案例类型
             $.ajax({
                 type: "POST",
                 url: baseURL + "dict/getByTypeAndParentcode",

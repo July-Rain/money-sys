@@ -203,6 +203,8 @@ var vm = new Vue({
             // this.$refs['form'].resetFields();
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
+
+                  console.info(vm.form);
                     $.ajax({
                         type: "POST",
                         url: baseURL + "testQuestion/save",

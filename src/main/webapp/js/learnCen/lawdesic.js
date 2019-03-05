@@ -45,6 +45,7 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
+                        console.log(result.classifyList)
                         vm.treeData = result.classifyList;
                     }else{
                         alert(result.msg);
@@ -105,6 +106,7 @@ var vm = new Vue({
                 data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
+
                         vm.tableData = result.page.list;
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
@@ -150,7 +152,6 @@ var vm = new Vue({
             vm.formInline.libName="";
         },
         handleDetail: function (index,row) {
-            debugger
             vm.title=row.lawTitle;
             //查看详情
             $.ajax({

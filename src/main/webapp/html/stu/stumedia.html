@@ -301,6 +301,7 @@
                                 <p class="text">请保证视频格式正确，且不超过100M</p>
                             </el-form-item>
                         </template>
+
                         <el-form-item label="所属警种：" prop="stuPoliceclass">
                             <el-select v-model="stuMedia.stuPoliceclass" placeholder="所属警种" clearable>
                                 <el-option
@@ -311,6 +312,10 @@
                                 >
                                 </el-option>
                             </el-select>
+                        </el-form-item>
+                        <el-form-item label="法律主题分类：" prop="stuKnowledge">
+                            <el-input v-model="stuMedia.stuKnowledge" readonly @focus="chooseLaw" placeholder="请选择法律主题分类"
+                                      clearable></el-input>
                         </el-form-item>
                         <el-form-item label="使用部门：" prop="deptName">
                             <el-input v-model="stuMedia.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门"
@@ -353,6 +358,7 @@
                 <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
             </div>
         </el-dialog>
+
 
         <el-dialog title="选择人员" :visible.sync="dialogUser" class="dialog_minW750">
             <!--对于同一级的节点，每次只能展开一个-->
@@ -436,6 +442,26 @@
             </div>
         </el-dialog>
 
+        <el-dialog title="选择法律法规主题分类" :visible.sync="dialogLaw">
+            <!--对于同一级的节点，每次只能展开一个-->
+            <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;"
+                          view-class="view-box" :native="false">
+                <el-tree
+                        ref="lawTree"
+                        :data="lawData"
+                        :props="defaultProps"
+                        accordion
+                        show-checkbox
+                        @check-change="handleCheckChange"
+                        node-key="classifyId"
+                        :default-checked-keys="lawCheckData">
+                </el-tree>
+            </el-scrollbar>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="cancelLaw">取消</el-button>
+                <el-button type="primary" size="mini" @click="confimLaw">保存</el-button>
+            </div>
+        </el-dialog>
     </div>
 </div>
 </body>
