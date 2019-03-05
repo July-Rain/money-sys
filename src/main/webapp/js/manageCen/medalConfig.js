@@ -1,7 +1,7 @@
 var vm = new Vue({
     el: '#app',
     data: {
-        title:'新增头衔',
+        title:'新增勋章',
         tableData: [],//表格数据
         page: 1,//分页：当前页
         dialogFormVisible: false,
@@ -70,7 +70,7 @@ var vm = new Vue({
         },
         addMedal: function () {
             vm.medal={},
-            vm.title = '新增头衔';
+            vm.title = '新增勋章';
             vm.dialogFormVisible = true
         },
 
@@ -83,7 +83,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         that.medal = result.data;
-                        that.title = '编辑头衔';
+                        that.title = '编辑勋章';
                         that.dialogFormVisible = true;
                     } else {
                         alert(result.msg);

@@ -13,6 +13,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -202,6 +203,9 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
         return dao.updateAnswerId(id, answerId);
     }
 
+
+
+    @Transactional(rollbackFor = Exception.class)
     public boolean mySave(TestQuestions entity){
         List<Answer> answerList = entity.getAnswerList();
         if(CollectionUtils.isEmpty(answerList)){
@@ -239,7 +243,8 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
                 // 更新实体信息
                 this.updateAnswerId(entity.getId(), answerId.substring(0, answerId.length()-1));
             } else {
-                return false;
+                //答案里面 没有正确答案
+                throw new RuntimeException("sadsda");
             }
         }
 

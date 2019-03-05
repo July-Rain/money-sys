@@ -14,7 +14,7 @@
         </el-breadcrumb>
         <div>
             <div class="info_btn">
-                <el-button type="primary" @click="addMedal()" size="mini">新增头衔</el-button>
+                <el-button type="primary" @click="addMedal()" size="mini">新增勋章</el-button>
             </div>
             <el-table
                     :data="tableData"
@@ -140,7 +140,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="save('xunzhang')">设置完成</el-button>
+                <el-button type="primary" @click="save('xunzhang')">保存</el-button>
             </div>
 
         </el-dialog>

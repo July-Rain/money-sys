@@ -353,7 +353,7 @@ var vm = new Vue({
             this.$refs[formName].validate(function (valid) {
 
                     if (valid) {
-                        debugger;
+
                         var yesAnswer=0;//设置为正确答案的 个数
                         //先校验 下答题配置选项 问题
 
