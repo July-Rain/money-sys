@@ -53,6 +53,16 @@ public class UserExamAnswer extends DataEntity<UserExamAnswer> {
 
     private String audCheckBase;    //审核打分依据
 
+    private Integer isCollect;  //是否收藏 0未、1已
+
+    public Integer getIsCollect() {
+        return this.isCollect;
+    }
+
+    public void setIsCollect(final Integer isCollect) {
+        this.isCollect = isCollect;
+    }
+
     public String getFirCheckBase() {
         return this.firCheckBase;
     }

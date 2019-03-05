@@ -28,8 +28,11 @@ var vm = new Vue({
         mulChoicCheck: [],
         sinChoicCheck: [],
         judge:[],
-        subject: []
-
+        subject: [],
+        sinStarIcon:[],
+        mulStarIcon:[],
+        judStarIcon:[],
+        subStarIcon:[],
     },
     created: function () {
         this.$nextTick(function () {
@@ -62,6 +65,11 @@ var vm = new Vue({
                                 }else {
                                     vm.mulChoicCheck.push([])
                                 }
+                                if (_mul[i].isCollect===1){
+                                    vm.mulStarIcon.push('el-icon-star-on');
+                                } else{
+                                    vm.mulStarIcon.push('el-icon-star-off');
+                                }
                             }
                         }
                         //单选
@@ -73,6 +81,11 @@ var vm = new Vue({
                                     vm.sinChoicCheck.push(vm.sinChoicList[i].userAnswer);
                                 }else{
                                     vm.sinChoicCheck.push('');
+                                }
+                                if (vm.sinChoicList[i].isCollect===1){
+                                   vm.sinStarIcon.push('el-icon-star-on');
+                                } else{
+                                   vm.sinStarIcon.push('el-icon-star-off');
                                 }
                             }
                         }
@@ -87,6 +100,11 @@ var vm = new Vue({
                                 }else{
                                     vm.judge.push('');
                                 }
+                                if (vm.judgeList[i].isCollect===1){
+                                    vm.judStarIcon.push('el-icon-star-on');
+                                } else{
+                                    vm.judStarIcon.push('el-icon-star-off');
+                                }
                             }
                         }
                         //主观
@@ -98,7 +116,11 @@ var vm = new Vue({
                                 }else{
                                     vm.subject.push('');
                                 }
-                                console.info("subject="+vm.subject);
+                                if (vm.subjectList[i].isCollect===1){
+                                    vm.subStarIcon.push('el-icon-star-on');
+                                } else{
+                                    vm.subStarIcon.push('el-icon-star-off');
+                                }
                             }
                         }
 
@@ -107,6 +129,81 @@ var vm = new Vue({
                         var parentWin = window.parent;
                         parentWin.document.getElementById("container").src
                             = 'modules/examCen/userExam.html';
+                    }
+                }
+            });
+        },
+        doCollect :function(index,type){
+            var obj ={};
+            var type;
+            if(type==='10004'){
+                obj={
+                    key: vm.sinChoicList[index].id,
+                    value : vm.sinChoicList[index].questionId
+                }
+                if(vm.sinChoicList[index].isCollect == 1){
+                    type = 0;
+                    vm.sinChoicList[index].isCollect = 0;
+                    vm.sinStarIcon[index] = 'el-icon-star-off';
+                } else {
+                    type = 1;
+                    vm.sinChoicList[index].isCollect = 1;
+                    vm.sinStarIcon [index]= 'el-icon-star-on';
+                }
+            }else if (type ==='10005'){
+                obj={
+                    key: vm.mulChoicList[index].id,
+                    value : vm.mulChoicList[index].questionId
+                }
+                if(vm.mulChoicList[index].isCollect == 1){
+                    type = 0;
+                    vm.mulChoicList[index].isCollect = 0;
+                    vm.mulStarIcon[index] = 'el-icon-star-off';
+                } else {
+                    type = 1;
+                    vm.mulChoicList[index].isCollect = 1;
+                    vm.mulStarIcon[index] = 'el-icon-star-on';
+                }
+            }else if(type==='10006'){
+                obj={
+                    key: vm.judgeList[index].id,
+                    value : vm.judgeList[index].questionId
+                }
+                if(vm.judgeList[index].isCollect == 1){
+                    type = 0;
+                    vm.judgeList[index].isCollect = 0;
+                    vm.judStarIcon[index] = 'el-icon-star-off';
+                } else {
+                    type = 1;
+                    vm.judgeList[index].isCollect = 1;
+                    vm.judStarIcon[index] = 'el-icon-star-on';
+                }
+            }else if(type==='10007'){
+                obj={
+                    key: vm.subjectList[index].id,
+                    value : vm.subjectList[index].questionId
+                }
+                if(vm.subjectList[index].isCollect == 1){
+                    type = 0;
+                    vm.subjectList[index].isCollect = 0;
+                    vm.subStarIcon[index] = 'el-icon-star-off';
+                } else {
+                    type = 1;
+                    vm.subjectList[index].isCollect = 1;
+                    vm.subStarIcon[index] = 'el-icon-star-on';
+                }
+            }
+
+            $.ajax({
+                type: "POST",
+                url: baseURL + "user/exam/doCollect/"+type,
+                data: JSON.stringify(obj),
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+
+                    } else {
+                        alert(result.msg);
                     }
                 }
             });
