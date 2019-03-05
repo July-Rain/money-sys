@@ -77,9 +77,14 @@
                     </div>
                 </div>
             </div>
-            <div class="daliy" v-if="questionForm == null">
-                暂无每日一题或答题记录
+            <div class="daliy" style="border: none;height: 187px;margin: -10px auto 0;">
+                <div class="no_exams" v-if="questionForm == null">
+                    <img src="${rc.contextPath}/statics/img/no_exams.png" alt="">
+                    <p>暂无每日一题记录</p>
+                </div>
             </div>
+
+
         </div>
 
     </div>
