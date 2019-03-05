@@ -1,16 +1,16 @@
 package com.lawschool.controller;
 
+import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.DailyQuestionConfiguration;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
-import com.lawschool.beans.practicecenter.TaskExerciseEntity;
-import com.lawschool.form.DailyForm;
-import com.lawschool.form.QuestForm;
-import com.lawschool.service.AnswerService;
+import com.lawschool.form.*;
 import com.lawschool.service.DailyQuestionConfigurationService;
+import com.lawschool.service.DailyRecordService;
+import com.lawschool.util.DateTimeUtils;
 import com.lawschool.util.Result;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,20 +19,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 每日一题管理
- * @author liuhuan
+ *
  */
 @RestController
 @RequestMapping("/dailyQuestion")
 public class DailyQuestionConfigurationController extends AbstractController {
     @Autowired
     private DailyQuestionConfigurationService dailyQuestionConfigurationService;
+
+    @Autowired
+    private DailyRecordService dailyRecordService;
 
     /**
      * 展示配置列表
@@ -55,7 +57,7 @@ public class DailyQuestionConfigurationController extends AbstractController {
         List<DailyQuestionConfiguration> list = page.getList();
         if(CollectionUtils.isNotEmpty(list)){
             // 获取当前使用中的设置ID
-            String currentId = dailyQuestionConfigurationService.getSettingsInUse();
+            String currentId = dailyQuestionConfigurationService.getSetIdInUse();
             if(StringUtils.isBlank(currentId)){
                 currentId = "-1";
             }
@@ -144,53 +146,142 @@ public class DailyQuestionConfigurationController extends AbstractController {
         }
     }
 
-    /**
-     * 修改配置
-     */
-    @SysLog("修改配置")
-    @RequestMapping(value = "/update",method = RequestMethod.POST)
-    public Result updateDailyConfig(@RequestBody DailyQuestionConfiguration dailyQuestionConfiguration){
-      int i=  dailyQuestionConfigurationService.updateByDailyConfig(dailyQuestionConfiguration);
-        if(i==0)
-        {
-            return Result.ok().put("code",1).put("msg","修改失败，输入的时间区间和已添加的时间段有交集");
-        }
-        return Result.ok().put("id",dailyQuestionConfiguration.getId());
-    }
-
+//    /**
+//     * 每日一题题目展示
+//     */
+//    @RequestMapping(value = "/showDailyTest",method = RequestMethod.POST)
+//    public Result showTest(){
+//        Result r=  dailyQuestionConfigurationService.dailyTestCreate();
+//        return r;
+//    }
     /**
      * 每日一题题目展示
      */
-    @RequestMapping(value = "/showDailyTest",method = RequestMethod.POST)
-    public Result showTest(){
-        Result r=  dailyQuestionConfigurationService.dailyTestCreate();
-        return r;
-    }
-    /**
-     * 每日一题题目展示
-     */
-    @RequestMapping(value = "/newshowDailyTest",method = RequestMethod.POST)
-    public Result newshowDailyTest(){
-        Result r=  dailyQuestionConfigurationService.newDailyTestCreate();
-        return r;
-    }
+//    @RequestMapping(value = "/newshowDailyTest",method = RequestMethod.POST)
+//    public Result newshowDailyTest(){
+//        Result r=  dailyQuestionConfigurationService.newDailyTestCreate();
+//        return r;
+//    }
 
     //答过的题目入库保存
-    @SysLog("答过的题目入库保存")
-    @RequestMapping("/saveQuestion")
-    public void saveQuestion(@RequestBody TestQuestions testQuestions, String myanswer){
+//    @SysLog("答过的题目入库保存")
+//    @RequestMapping("/saveQuestion")
+//    public void saveQuestion(@RequestBody TestQuestions testQuestions, String myanswer){
+//
+//        dailyQuestionConfigurationService.saveQuestion(testQuestions,myanswer);
+//
+//    }
 
-        dailyQuestionConfigurationService.saveQuestion(testQuestions,myanswer);
+    // 保存分数
+//    @SysLog("保存分数")
+//    @RequestMapping("/recordScore")
+//    public Result recordScore(String sorce){
+//        User u = (User) SecurityUtils.getSubject().getPrincipal();
+//        dailyQuestionConfigurationService.recordScore(u,sorce);
+//        return Result.ok();
+//    }
 
+    /**
+     * 获取本周日期
+     * @return
+     */
+    @RequestMapping(value = "/dateList", method = RequestMethod.GET)
+    public Result getDateList(){
+
+        // 获取本周所有日期
+        List<String> days = DateTimeUtils.getWeekDays();
+
+        // 获取当天为第几天
+        int todayIndex = DateTimeUtils.getDayOfWeek();
+        if(todayIndex == 0){// 周日
+            todayIndex = 6;
+        } else {
+            // 原本应该-1,但是下标从0开始
+            todayIndex = todayIndex -2;
+        }
+
+        // 定义返回结果集
+        List<DailyDateForm> result = new ArrayList<>(todayIndex + 1);
+
+        String[] weeks = new String[]{"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
+
+        // 用于接收今日日期，用于返回
+        String today = "";
+
+        for(int i=0; i<=todayIndex; i++){
+            DailyDateForm form = new DailyDateForm();
+            form.setDate(days.get(i));
+            if(i == todayIndex){
+                form.setDay("今日");
+                form.setActive(true);
+                today = days.get(i);
+            } else {
+                form.setDay(weeks[i]);
+                form.setActive(false);
+            }
+
+            result.add(form);
+        }
+
+        return Result.ok().put("dateList", result).put("today", today);
     }
 
-    //保存分数
-    @SysLog("保存分数")
-    @RequestMapping("/recordScore")
-    public Result recordScore(String sorce){
-        User u = (User) SecurityUtils.getSubject().getPrincipal();
-        dailyQuestionConfigurationService.recordScore(u,sorce);
+    /**
+     * 获取题目信息
+     * @param date 格式yyyy-MM-dd
+     * @return
+     */
+    @RequestMapping(value = "/getQuestion", method = RequestMethod.GET)
+    public Result getQuestion(@RequestParam(required = false) String date){
+        User user = getUser();
+
+        if("-1".equals(date)){
+            Date now = new Date();
+            date = DateTimeUtils.getToday();
+        }
+
+        QuestForm question = dailyQuestionConfigurationService.getQuestion(date, user.getId());
+
+        // 是否显示答案信息，默认为否
+        String isShowAnswer = "0";
+
+        // 获取设置相关信息
+        DailyQuestionConfiguration config = dailyQuestionConfigurationService.getSetInUse();
+
+        if(config != null){
+            // 有设置信息
+            isShowAnswer = config.getIsShowAnswer();
+        }
+
+        return Result.ok().put("question", question).put("isShowAnswer", isShowAnswer);
+    }
+
+    /**
+     * 保存每日一题答题记录
+     * @param form
+     * @return
+     */
+    @RequestMapping(value = "/saveAnswer", method = RequestMethod.POST)
+    public Result saveAnswer(@RequestBody ThemeAnswerForm form){
+        User user = getUser();
+        form.setId(IdWorker.getIdStr());
+        form.setCreateUser(user.getId());
+        form.setCreateTime(new Date());
+
+        dailyRecordService.mySave(form);
+
+        return Result.ok().put("recordId", form.getId());
+    }
+
+    @SysLog("收藏题目")
+    @RequestMapping(value = "/doCollect/{type}", method = RequestMethod.POST)
+    public Result doCollect(@RequestBody CommonForm params, @PathVariable("type") Integer type){
+
+        String id = params.getKey();// 题目ID
+        String recordId = params.getValue();// 记录ID
+
+        dailyRecordService.doCollect(id, recordId, type);
+
         return Result.ok();
     }
-
 }
