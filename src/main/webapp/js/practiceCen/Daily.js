@@ -15,7 +15,12 @@ var vm = new Vue({
         rightAnswerStr: '',
         userAnswerStr: '',
         indexs: ['A', 'B', 'C', 'D', 'E', 'F'],
-        todayDate: null
+        todayDate: null,
+        pickerOptions:{
+            disabledDate(time) {
+                return time.getTime() > Date.now();
+            }
+        }
     },
     methods: {
         showTips: function(){

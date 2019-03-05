@@ -22,7 +22,8 @@
                         placeholder="选择日期"
                         @change="doDate"
                         value-format="yyyy-MM-dd"
-                        editable="false">
+                        editable="false"
+                        :picker-options="pickerOptions">
                 </el-date-picker>
                 <ul>
                     <li :class="info.active?'active':''" @click="dateChange(index)" v-for="(info,index) in dateList" :key="index">
