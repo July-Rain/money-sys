@@ -34,8 +34,8 @@
             <div class="daliy" v-if="questionForm != null">
                 <p class="daliy_title">
                     <span>
-                    {{questionForm.questionType==10004 ? '单选题' : questionForm.questionType==10005 ? '多选题':'判断题'}}
-                </span>
+                        {{questionForm.questionType==10004 ? '单选题' : questionForm.questionType==10005 ? '多选题':'判断题'}}
+                    </span>
                     {{questionForm.comContent}}
                 </p>
 
@@ -46,7 +46,6 @@
                     <el-radio :label="answer.id" v-for="answer in questionForm.answer">
                         {{answer.questionContent}}
                     </el-radio>
-                    <br/>
                 </el-radio-group>
 
                 <!--多选题-->
@@ -54,16 +53,15 @@
                     <el-checkbox :label="answer.id" v-for="answer in questionForm.answer">
                         {{answer.questionContent}}
                     </el-checkbox>
-                    <br/>
                 </el-checkbox-group>
 
-                <span v-if="isShowAnswer == '1' && !showAnswer">
-                    <span>答案描述：</span>
-                    <span>{{questionForm.answerDescrible}}</span>
-                </span>
-
                 <div class="questionDx" v-if="!showAnswer">
-                    <el-button type="warning" @click="commit">提交
+                    <el-button type="warning" @click="commit">
+                        提交
+                    </el-button>
+                    <el-button type="info" icon="el-icon-question"
+                               v-if="isShowAnswer == '1'" @click="showTips">
+                        提示
                     </el-button>
                 </div>
 
@@ -80,11 +78,7 @@
                 </div>
             </div>
             <div class="daliy" v-if="questionForm == null">
-                <p class="daliy_title">
-                    <span>
-                        暂无每日一题或答题记录
-                    </span>
-                </p>
+                暂无每日一题或答题记录
             </div>
         </div>
 
