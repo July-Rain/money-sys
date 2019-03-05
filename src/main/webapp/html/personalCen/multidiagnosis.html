@@ -17,6 +17,93 @@
         left: -120px !important;
         width: 100% !important;
     }
+    .charts_area{
+        box-shadow: 0 0 5px 3px rgba(0,0,0,.1);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .charts_area .title{
+        height: 30px;
+        line-height: 30px;
+        background-color: #e7f1fa;
+
+    }
+    .charts_area .title h2{
+        font-weight: normal;
+        color: #fff;
+        background-color: #1381e3;
+        float: left;
+        text-align: center;
+        width: 126px;
+        font-size: 16px;
+    }
+    .charts_area .contain{
+        padding: 19px 0;
+    }
+    .charts_area .contain h3{
+        color: #333333;
+        border-left: solid #1381e3 5px;
+        padding-left: 12px;
+        line-height: 20px;
+
+    }
+    .charts_area #canvas1{
+        width: 20vw;
+        height: 26.5vw;
+    }
+    .progress_area{
+        width: 395px;
+        padding-top: 25px;
+        margin: 0 auto;
+    }
+    .progress_area li > p{
+        line-height: 56px;
+        font-size: 14px;
+
+    }
+    .progress_area li > p:first-child{
+        float: left;
+        color: #333333;
+    }
+    .progress_area li > p.right{
+        float: right;
+        color: #666666;
+    }
+    .progress_area li > p span{
+        color: #36aae0;
+        padding-right: 15px;
+    }
+    .progress_area li:nth-child(2) > p span{
+        color: #5ebd5c;
+        padding-right: 15px;
+    }
+    .progress_area li:nth-child(3) > p span{
+        color: #feae24;
+        padding-right: 15px;
+    }
+    .progress_area li:nth-child(4) > p span{
+        color: #f97a1f;
+        padding-right: 15px;
+    }
+    .el-progress{
+        border: none;
+    }
+    .el-progress-bar__outer{
+        background-color: #e1e6eb;
+        width: 100%;
+    }
+    .progress_area li:nth-child(1) .el-progress-bar__inner{
+        background-color: #36aae0;
+    }
+    .progress_area li:nth-child(2) .el-progress-bar__inner{
+        background-color: #5ebd5c;
+    }
+    .progress_area li:nth-child(3) .el-progress-bar__inner{
+        background-color: #feae24;
+    }
+    .progress_area li:nth-child(4) .el-progress-bar__inner{
+        background-color: #f97a1f;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -27,64 +114,59 @@
             <el-breadcrumb-item>诊断中心</el-breadcrumb-item>
             <el-breadcrumb-item>综合诊断</el-breadcrumb-item>
         </el-breadcrumb>
+
+
+        <div class="charts_area">
+            <div class="title">
+                <h2><i class="iconfont icon-shu2"></i> 学情看板</h2>
+            </div>
+            <div class="contain">
+                <el-row :gutter="20" style="padding: 0 21px;">
+                    <el-col :span="8">
+                        <h3>学习时长占比</h3>
+                        <div id="canvas1"></div>
+                    </el-col>
+                    <el-col :span="8">
+                        <h3>学习次数（单位：次）</h3>
+                        <div id="canvas2"></div>
+                    </el-col>
+                    <el-col :span="8">
+                        <h3>学情统计</h3>
+                        <ul class="progress_area">
+
+                            <li class="clearfix" v-for="(item, index) in stuInfo">
+                                <p><span>{{item.countTime}}h</span>{{item.name}}</p>
+                                <p class="right">超过{{item.ratio}}同学</p>
+                                <el-progress percentage="item.ratio*100" :show-text="showText" :stroke-width="strokeWidth"></el-progress>
+                            </li>
+
+                        </ul>
+                    </el-col>
+                </el-row>
+
+            </div>
+        </div>
+
         <el-row class="content5-3">
             <el-col :span="24">
                 <div class="box-card boardCard">
                     <div class="header header_special">
                         <span>学情看板</span>
                         <div class="more">
-                            <!--<el-form :model="dateRange"  ref="formInline">
-                            <el-form-item prop="startTime">-->
-                            <!--<el-date-picker-->
-                                    <!--v-model="dateRange.startTime"-->
-                                    <!--type="date"-->
-                                    <!--size="mini"-->
-                                    <!--placeholder="开始日期">-->
-                            <!--</el-date-picker>-->
-                            <!--</el-form-item>-->
-                            <!--至-->
-                            <!--<el-form-item prop="endTime">-->
-                            <!--<el-date-picker-->
-                                    <!--v-model="dateRange.endTime"-->
-                                    <!--type="date"-->
-                                    <!--size="mini"-->
-                                    <!--placeholder="结束日期">-->
-                            <!--</el-date-picker>-->
-                            <!--</el-form-item>
-                            <el-form-item>-->
-                            <!--<el-button type="primary" @click="onSubmit" size="mini">-->
-                                <!--<i class="iconfont"-->
-                                   <!--style="color: white;" >&#xe664;-->
-                                <!--</i>-->
-                                <!--查询</el-button>-->
-                            <!-- <el-button @click="resetForm('formInline')" size="mini">重置</el-button>
-                         </el-form-item>
-                         </el-form>-->
+
                         </div>
                     </div>
                     <div class="content board" style="padding-top: 17px;">
                         <el-row :gutter="20">
-                            <el-col :span="8" class="pieArea">
-                                <el-tabs type="border-card">
-                                    <div class="little-title">学习时长占比</div>
-                                    <div id="pie1" style="width: 300px;height:220px;"></div>
-                                </el-tabs>
-                            </el-col>
 
-                            <el-col :span="8" class="pieArea">
-                                <el-tabs type="border-card">
-                                    <div class="little-title">学习次数(单位:次)</div>
-                                    <div id="pienum" style="width: 300px;height:220px;"></div>
-                                </el-tabs>
-                            </el-col>
                             <el-col :span="8" class="infoCount">
                                 <div class="little-title">学情统计</div>
                                 <div class="infoMsg">
                                     <ul>
 
-                                        <li  v-for="(item, index) in stuInfo">
-                                            <p class="info"><i></i>{{item.name}}:<span>{{item.countTime}}h</span></p>
-                                            <p class="contrast">击败了<span>{{item.ratio}}</span>的同学</p>
+                                        <li>
+                                            <p class="info"><i></i>:<span>h</span></p>
+                                            <p class="contrast">击败了<span></span>的同学</p>
                                         </li>
                                     </ul>
                                 </div>
