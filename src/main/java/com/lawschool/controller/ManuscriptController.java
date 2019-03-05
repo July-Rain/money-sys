@@ -112,10 +112,15 @@ public class ManuscriptController extends AbstractController {
     @SysLog("审核题库")
     @RequestMapping(value = "/examine", method = RequestMethod.POST)
     public Result examine(@RequestBody CommonForm form){
+
         String id = form.getKey();
         String type = form.getValue();
-
-        boolean result = manuscriptService.examine(id, type);
+        String opinion = form.getOpinion();
+        if(opinion==null){
+            opinion="";
+        }
+        String userid=getUser().getId();
+        boolean result = manuscriptService.examine(id, type,userid,opinion);
         if(result){
             return Result.ok();
         } else {

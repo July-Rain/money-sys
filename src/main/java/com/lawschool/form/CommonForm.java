@@ -9,7 +9,7 @@ package com.lawschool.form;
 public class CommonForm {
     private String key;
     private String value;
-
+    private String opinion;
     public String getKey() {
         return key;
     }
@@ -20,6 +20,14 @@ public class CommonForm {
 
     public String getValue() {
         return value;
+    }
+
+    public String getOpinion() {
+        return opinion;
+    }
+
+    public void setOpinion(String opinion) {
+        this.opinion = opinion;
     }
 
     public void setValue(String value) {
