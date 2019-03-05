@@ -32,8 +32,8 @@ var vm = new Vue({
         addConfigFlag: false,
         answer: {
             questionContent: '',
-            score: 0,
-            ordersort: 1,
+            score: '',
+            ordersort: '',
             isAnswer: 0
         },
         formInline: {
@@ -64,6 +64,27 @@ var vm = new Vue({
             specialKnowledgeId: [
                 {required: true, message: '请选择主题类型', trigger: 'blur'}
             ]
+        },
+        rules3: {//表单验证规则
+            questionContent: [
+                {required: true, message: '请输入选项描述', trigger: 'blur'},
+                {max: 200, message: '最大长度200', trigger: 'blur'}
+            ],
+            score: [
+                {required: true, message: '请输入分数', trigger: 'blur'},
+                { pattern: regularExp("number"), message: '请输入正整数',trigger: 'blur' },
+                {max: 3, message: '最大长度3', trigger: 'blur'},
+            ],
+            ordersort: [
+                {required: true, message: '请输入排序', trigger: 'blur'},
+                { pattern: regularExp("number"), message: '请输入正整数' ,trigger: 'blur'},
+                {max: 3, message: '最大长度3', trigger: 'blur'},
+            ],
+
+            isAnswer: [
+                {required: true, message: '请选择是否为答案', trigger: 'change'}
+            ],
+
         },
         isEdit: false
     },
@@ -204,42 +225,225 @@ var vm = new Vue({
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
 
-                  console.info(vm.form);
+
+                    var yesAnswer=0;//设置为正确答案的 个数
+                    //先校验 下答题配置选项 问题
+
+                    //如果没有 配置过
+                    if(vm.form.answerList.length=='0')
+                    {
+
+                        vm.$message({
+                            type: 'info',
+                            message: '请先添加配置选项!'
+                        });
+                        return;
+                    }
+
+                    //看看 当前的试题类型
+                    //10004  单选题      10005  多选题      10006  判断题
+                    if(vm.form.questionType=='10004')
+                    {
+                        yesAnswer=0;//每次进来 先重置下；
+                        if(vm.form.answerList.length=='1')
+                        {
+                            vm.$message({
+                                type: 'info',
+                                message: '请至少添加2个配置选项!'
+                            });
+                            return;
+                        }
+
+                        else if(vm.form.answerList.length>'1')
+                        {
+                            //有2个 以上的答案。。  但是要确保有一个是正确答案
+                            //循环
+                            $.each(vm.form.answerList, function(){
+                                if(this.isAnswer=='1')
+                                {
+                                    yesAnswer=yesAnswer+1;
+                                }
+                            });
+
+                            if(yesAnswer==0)
+                            {
+                                vm.$message({
+                                    type: 'info',
+                                    message: '请选择一个正确配置选项!'
+                                });
+                                return;
+                            }
+                            else if(yesAnswer>1)
+                            {
+                                vm.$message({
+                                    type: 'info',
+                                    message: '请选择一个正确配置选项!'
+                                });
+                                return;
+                            }
+                        }
+                    }
+
+                    if(vm.form.questionType=='10005')
+                    {
+                        yesAnswer=0;//每次进来 先重置下；
+                        if(vm.form.answerList.length<='2')
+                        {
+                            vm.$message({
+                                type: 'info',
+                                message: '请至少添加3个配置选项!'
+                            });
+                            return;
+                        }
+
+                        else if(vm.form.answerList.length>'1')
+                        {
+                            //有2个 以上的答案。。  但是要确保有一个是正确答案
+                            //循环
+                            $.each(vm.form.answerList, function(){
+                                if(this.isAnswer=='1')
+                                {
+                                    yesAnswer=yesAnswer+1;
+                                }
+                            });
+
+                            if(yesAnswer<2)
+                            {
+                                vm.$message({
+                                    type: 'info',
+                                    message: '请最少选择两个正确配置选项!'
+                                });
+                                return;
+                            }
+                            else if(yesAnswer>=vm.form.answerList.length)
+                            {
+                                vm.$message({
+                                    type: 'info',
+                                    message: '请选择一个错误配置选项!'
+                                });
+                                return;
+                            }
+                        }
+                    }
+                    if(vm.form.questionType=='10006')
+                    {
+                        yesAnswer=0;//每次进来 先重置下；
+                        if(vm.form.answerList.length!='2')
+                        {
+                            vm.$message({
+                                type: 'info',
+                                message: '请添加2个配置选项!'
+                            });
+                            return;
+                        }
+
+                        else if(vm.form.answerList.length=='2')
+                        {
+                            //有2个 以上的答案。。  但是要确保有一个是正确答案
+                            //循环
+                            $.each(vm.form.answerList, function(){
+                                if(this.isAnswer=='1')
+                                {
+                                    yesAnswer=yesAnswer+1;
+                                }
+                            });
+
+                            if(yesAnswer!=1)
+                            {
+                                vm.$message({
+                                    type: 'info',
+                                    message: '请选择1个正确配置选项!'
+                                });
+                                return;
+                            }
+                        }
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //判断试题名称  重复问题
+                    var mytype = "1"
+
+                    if (vm.form.id != null && vm.form.id != '') {
+
+                        mytype = "2"
+                    }
+
                     $.ajax({
                         type: "POST",
-                        url: baseURL + "testQuestion/save",
-                        contentType: "application/json",
-                        data: JSON.stringify(vm.form),
+                        url: baseURL + "testQuestion/tqComContent?comContent=" + vm.form.comContent + "&mytype=" + mytype + "&id=" + vm.form.id,
+                        dataType: "json",
+                        async: false,
                         success: function (result) {
-                            if (result.code === 0) {
-                                vm.$alert('操作成功', '提示', {
-                                    confirmButtonText: '确定',
-                                    callback: function () {
-                                        vm.dialogFormVisible = false;
-                                        vm.reload();
-                                        vm.form = {
-                                            typeId: '',
-                                            questionType: '',
-                                            comContent: '',
-                                            specialKnowledgeId: '',
-                                            questionDifficulty: '',
-                                            legalBasis: '',
-                                            answerId: '',
-                                            isEnble: '0',
-                                            optUser: '',
-                                            stuOptdepartment: '',
-                                            page: 1,
-                                            limit: 10,
-                                            count: 0,
-                                            video: '',
-                                            videoUrl: '',
-                                            answerList: []
-                                        };
+
+                            if (result.code == 0) {
+                                if (result.type == "1")//说明找到了
+                                    {
+                                        alert("存在重复的试题描述，添加失败");
+                                        return;
                                     }
-                                });
-                            } else {
+                                else if(result.type == "0")
+                                    {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: baseURL + "testQuestion/save",
+                                            contentType: "application/json",
+                                            data: JSON.stringify(vm.form),
+                                            success: function (result) {
+                                                if (result.code === 0) {
+                                                    vm.$alert('操作成功', '提示', {
+                                                        confirmButtonText: '确定',
+                                                        callback: function () {
+                                                            vm.dialogFormVisible = false;
+                                                            vm.reload();
+                                                            vm.form = {
+                                                                typeId: '',
+                                                                questionType: '',
+                                                                comContent: '',
+                                                                specialKnowledgeId: '',
+                                                                questionDifficulty: '',
+                                                                legalBasis: '',
+                                                                answerId: '',
+                                                                isEnble: '0',
+                                                                optUser: '',
+                                                                stuOptdepartment: '',
+                                                                page: 1,
+                                                                limit: 10,
+                                                                count: 0,
+                                                                video: '',
+                                                                videoUrl: '',
+                                                                answerList: []
+                                                            };
+                                                        }
+                                                    });
+                                                } else {
+                                                    alert(result.msg);
+                                                }
+                                            }
+                                        });
+                                    }
+                            }
+                            else {
                                 alert(result.msg);
                             }
+
                         }
                     });
                 } else {
@@ -247,6 +451,28 @@ var vm = new Vue({
                     return false;
                 }
             });
+
+        },
+
+        changisEnble: function (row,isEnble) {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "testQuestion/changisEnble?id="+row.id+"&isEnble="+isEnble,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.$alert('操作成功', '提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                                vm.reload();
+                            }
+                        });
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+
 
         },
         reload: function () {
@@ -270,16 +496,34 @@ var vm = new Vue({
         addAnswer: function () {
             vm.addConfigFlag = true;
         },
-        sure: function () {
-            vm.form.answerList.push(vm.answer);
-            vm.answer = {
-                questionContent: '',
-                score: 0,
-                ordersort: 1,
-                isAnswer: 0
-            }
-            vm.addConfigFlag = false;
+
+        sure: function (formName) {
+
+            this.$refs[formName].validate(function (valid) {
+
+                if (valid) {
+                    vm.form.answerList.push(vm.answer);
+                    vm.answer = {
+                        questionContent: '',
+                        score: "",
+                        ordersort: "",
+                        isAnswer: 0
+                    };
+                    vm.addConfigFlag = false;
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+
         },
+
+        delanswer:function (scope) {
+
+            vm.form.answerList.splice(scope.$index,1);
+
+        },
+
         toHome: function () {
             parent.location.reload()
         },
