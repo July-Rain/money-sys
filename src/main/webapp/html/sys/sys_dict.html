@@ -94,11 +94,13 @@
                         <el-table @expand-change="change"
                                   :data="tableData"
                                   border
+                                  stripe
                                   style="width: 100%">
                             <el-table-column type="expand">
                                 <el-table
                                         :data="childData"
                                         border
+                                        stripe
                                         style="width: 100%">
                                     <el-table-column
                                             prop="name"

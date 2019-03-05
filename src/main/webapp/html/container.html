@@ -700,7 +700,7 @@
         <el-button v-if="false" type="text" @click="dialogTableVisible = true">打开嵌套表格的 Dialog</el-button>
 
         <el-dialog v-if="false" title="收货地址" :visible.sync="dialogTableVisible">
-            <el-table :data="tableData">
+            <el-table :data="tableData" stripe>
                 <el-table-column property="date" label="日期" width="150"></el-table-column>
                 <el-table-column property="name" label="姓名" width="200"></el-table-column>
                 <el-table-column property="address" label="地址"></el-table-column>

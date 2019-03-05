@@ -24,6 +24,7 @@
             <el-table
                     :data="tableData"
                     border
+                    stripe
                     style="width: 100%">
                 <!--<el-table-column-->
                         <!--prop="id"-->
@@ -292,6 +293,7 @@
                                 :data="userTableData"
                                 border
                                 height="529"
+                                stripe
                                 @selection-change="handleSelectionChange"
                                 style="width: 100%">
                             <el-table-column
