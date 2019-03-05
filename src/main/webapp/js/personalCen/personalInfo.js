@@ -62,16 +62,14 @@ var vm = new Vue({
                         data: vm.password,
                         success: function (result) {
                             if (result.code === 0) {
-                                vm.$alert('操作成功', '提示', {
-                                    confirmButtonText: '确定',
-                                    // callback: function () {
-                                    //     vm.dialogConfig = false;
-                                    //     vm.reload();
-                                    // }
+                                vm.$message({
+                                    message: '密码修改成功',
+                                    type: 'success'
                                 });
+
                                 vm.isVisible = false;
                             } else {
-                                alert("原密码错误,修改密码失败");
+                                vm.$message.error('原密码错误,修改密码失败');
                             }
                         }
                     });
