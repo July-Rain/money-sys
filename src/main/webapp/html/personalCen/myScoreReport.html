@@ -101,9 +101,14 @@ p,span{
             <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题1分，共50分。</p>
         </div>
         <div v-for="(item,index) in sinChoicList" class="question_area">
-            <p class="ques_name">{{index+1}}. {{item.comContent}}。</p>
-            <el-radio-group v-model="sinChoicCheck[index]">
-                <el-radio :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
+            <p class="ques_name">{{index+1}}. {{item.comContent}}。
+
+                <i :class="sinStarIcon[index]" @click="doCollect(index,'10004')"></i>
+                {{item.isCollect == 1 ? '已收藏' : '收藏本题'}}
+
+            </p>
+            <el-radio-group v-model="sinChoicCheck[index]" :disabled="true">
+                <el-radio :label="item2.id" v-for="item2 in item.answer" >
                     {{item2.questionContent}}
                 </el-radio>
             </el-radio-group>
@@ -116,8 +121,10 @@ p,span{
             <p>二、多选题。</p>
         </div>
         <div v-for="(item,index) in mulChoicList" class="question_area">
-            <p class="ques_name">{{index+1}}. {{item.comContent}}。</p>
-            <el-checkbox-group  v-model="mulChoicCheck[index]">
+            <p class="ques_name">{{index+1}}. {{item.comContent}}。
+                <i :class="mulStarIcon[index]" @click="doCollect(index,'10005')"></i>
+                {{item.isCollect == 1 ? '已收藏' : '收藏本题'}}</p>
+            <el-checkbox-group  v-model="mulChoicCheck[index]" :disabled="true">
                 <el-checkbox :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
                     {{item2.questionContent}}
                 </el-checkbox>
@@ -137,8 +144,10 @@ p,span{
         </div>
         <div class="question_area">
             <div v-for="(item,index) in judgeList" class="question_area">
-                <p class="ques_name">{{index+1}}. {{item.comContent}} 。</p>
-                <el-radio-group v-model="judge[index]">
+                <p class="ques_name">{{index+1}}. {{item.comContent}} 。
+                    <i :class="judStarIcon[index]" @click="doCollect(index,'10006')"></i>
+                    {{item.isCollect == 1 ? '已收藏' : '收藏本题'}}</p>
+                <el-radio-group v-model="judge[index]" :disabled="true">
                     <el-radio :label="item2.id" v-for="item2 in item.answer">
                         {{item2.questionContent}}
                     </el-radio>
@@ -153,8 +162,10 @@ p,span{
             <p>四、主观题</p>
         </div>
         <div v-for="(item,index) in subjectList" class="question_area">
-            <p class="ques_name">{{index+1}}. {{item.comContent}} 。</p>
-            答 ：<el-input type="text" v-model="subject[index]" placeholder="請輸入答案"></el-input>
+            <p class="ques_name">{{index+1}}. {{item.comContent}} 。
+                <i :class="subStarIcon[index]" @click="doCollect(index,'10007')"></i>
+                {{item.isCollect == 1 ? '已收藏' : '收藏本题'}}</p>
+            答 ：<el-input type="text" v-model="subject[index]" placeholder="請輸入答案" :disabled="true"></el-input>
             <p></p>
             <p class="ques_name" v-if="item.rightAnswer!=null">正确答案：
                 <span v-for="item2 in item.rightAnswer" >{{item2.questionContent}};</span>

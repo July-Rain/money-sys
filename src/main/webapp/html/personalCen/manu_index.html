@@ -191,6 +191,10 @@
                                 header-align="center"
                                 align="center"
                                 prop="isAnswer">
+
+                            <template slot-scope="scope">
+                                   {{scope.row.isAnswer == 0 ? '否' : '是'}}
+                            </template>
                         </el-table-column>
 
                         <el-table-column

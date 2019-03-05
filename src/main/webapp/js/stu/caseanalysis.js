@@ -89,7 +89,7 @@ var vm = new Vue({
             currPage: 1,
             pageSize: 10,
             totalCount:0,
-            identify:'0',// 表明是用户
+            identify:'',// 表明是用户
             userStatus:'2000'//查询有效的用户
 
         },//人员查询
@@ -298,10 +298,12 @@ var vm = new Vue({
             editor.txt.html("");
             this.title="新增";
             this.dialogCaseAna=true;
+            this.deptCheckData=[];
+            this.lawCheckData = [];
         },
         handleEdit: function (index, row){
             this.title="修改";
-            this.dialogCaseAna=true;
+
             this.deptCheckData=[];
             this.lawCheckData = [];
             editor.txt.html("");
@@ -311,6 +313,7 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if(result.code === 0){
+                        vm.dialogCaseAna=true;
                         vm.caseAna = result.data;
                         vm.deptCheckData=result.data.deptArr;
                         vm.lawCheckData = result.data.caseLawid.split(",");
@@ -318,12 +321,10 @@ var vm = new Vue({
                             loadEditor();
                         }*/
                         editor.txt.html(vm.caseAna.caseContent);
-                        for (var i=0;i<vm.caseAna.length;i++){
-                            if(vm.caseAna.contentType!='1'&&vm.caseAna.caseContent){
-                                vm.caseAna.caseContentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].caseContent;
-                                if(vm.caseAna.videoPicAcc){
-                                    vm.caseAna.videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
-                                }
+                        if(vm.caseAna.contentType!='1'&&vm.caseAna.caseContent){
+                            vm.caseAna.caseContentUrl=baseURL+"sys/download?accessoryId="+vm.caseAna.caseContent;
+                            if(vm.caseAna.videoPicAcc){
+                                vm.caseAna.videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.caseAna.videoPicAcc;
                             }
                         }
                     }else{
@@ -500,6 +501,20 @@ var vm = new Vue({
         },
         confimUser: function () {
             this.dialogUser=false;
+            //遍历最终的人员信息
+            if(val.length==0){
+                vm.caseAna.userIds = "";
+                vm.caseAna.userName = "";
+            }
+            for (var i=0;i<val.length;i++){
+                if (!this.caseAna.userIds ) {
+                    this.caseAna.userIds=val[i].id;
+                    this.caseAna.userName=val[i].userName;
+                }else{
+                    this.caseAna.userIds+=","+val[i].id;
+                    this.caseAna.userName+=","+val[i].userName;
+                }
+            }
         },
         cancelUser: function () {
             this.dialogUser=false;
@@ -538,16 +553,7 @@ var vm = new Vue({
         handleSelectionChange(val) {
             //选择人员信息
             this.multipleSelection = val;
-            //遍历最终的人员信息
-            for (var i=0;i<val.length;i++){
-                if (!this.caseAna.userIds ) {
-                    this.caseAna.userIds=val[i].id;
-                    this.caseAna.userName=val[i].userName;
-                }else{
-                    this.caseAna.userIds+=","+val[i].id;
-                    this.caseAna.userName+=","+val[i].userName;
-                }
-            }
+
 
         },
         changeStuType:function () {

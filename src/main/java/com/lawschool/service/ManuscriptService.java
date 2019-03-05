@@ -15,5 +15,5 @@ public interface ManuscriptService extends AbstractService<ManuscriptEntity> {
 
     Boolean myDelete(String id);
 
-    Boolean examine(String id, String type);
+    Boolean examine(String id, String type,String userid,String opinion);
 }

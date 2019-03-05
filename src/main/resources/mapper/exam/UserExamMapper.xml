@@ -142,4 +142,11 @@
             #{item}
         </foreach>
     </select>
+
+    <update id="updateCollect">
+        UPDATE LAW_USER_EXAM_ANSWER
+        SET
+            IS_COLLECT = #{type}
+        WHERE ID = #{id}
+    </update>
 </mapper>

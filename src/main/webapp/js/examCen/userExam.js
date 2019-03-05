@@ -68,14 +68,6 @@ var vm = new Vue({
             parentWin.document.getElementById("container").src
                 = 'modules/examCen/testPaper.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
         },
-        // formatterEnd: function (row, column) {
-        //     var _time = new Date(row.endTime);
-        //     return _time.getFullYear() + "/" + (_time.getMonth() + 1) + "/" + _time.getDate() + " " + _time.getHours() + ":" + _time.getMinutes() + ":" + _time.getSeconds();
-        // },
-        // formatterStart: function (row, column) {
-        //     var _time = new Date(row.startTime);
-        //     return _time.getFullYear() + "/" + (_time.getMonth() + 1) + "/" + _time.getDate() + " " + _time.getHours() + ":" + _time.getMinutes() + ":" + _time.getSeconds();
-        // },
         toHome: function () {
             parent.location.reload()
         }

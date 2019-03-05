@@ -5,5 +5,5 @@ import com.lawschool.beans.ManuscriptEntity;
 import org.apache.ibatis.annotations.Param;
 
 public interface ManuscriptDao extends AbstractDao<ManuscriptEntity> {
-    Boolean updateExamine(@Param("id") String id, @Param("status") Integer status);
+    Boolean updateExamine(@Param("id") String id, @Param("status") Integer status,@Param("userid") String userid,@Param("opinion") String opinion);
 }

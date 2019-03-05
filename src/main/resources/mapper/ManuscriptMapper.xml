@@ -53,6 +53,7 @@
             source_id AS "sourceId",
             status AS "status",
             auditor AS "auditor",
+            USERID2NAME(auditor) AS "auditorName",
             opinion AS "opinion",
             author AS "author",
             create_time AS "createTime"
@@ -103,7 +104,9 @@
     <update id="updateExamine">
         UPDATE LAW_MANUSCRIPT
         SET
-            status = #{status}
+            status = #{status},
+            AUDITOR= #{userid},
+            OPINION= #{opinion}
         WHERE
             id = #{id}
     </update>

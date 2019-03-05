@@ -38,13 +38,16 @@ public class TestQuestionController {
         String typeId = (String) params.get("typeId");
         String questionDifficulty = (String) params.get("questionDifficulty");
         String questionType = (String) params.get("questionType");
-        String queContent = (String) params.get("queContent");
+        String queContent = (String) params.get("comContent");
+        String isEnble = (String) params.get("isEnble");
+
 
         TestQuestions testQuestions = new TestQuestions();
         testQuestions.setTypeId(typeId);
         testQuestions.setQuestionDifficulty(questionDifficulty);
         testQuestions.setQuestionType(questionType);
         testQuestions.setComContent(queContent);
+        testQuestions.setIsEnble(isEnble);
 
         Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), testQuestions);
         List<TestQuestions> list = page.getList();

@@ -241,8 +241,9 @@
                         <el-form-item label="标题：" prop="stuTitle">
                             <el-input v-model="stuMedia.stuTitle" placeholder="请输入标题" clearable></el-input>
                         </el-form-item>
-                        <template v-if="stuMedia.stuType=='1'">
-                            <el-form-item label="内容：" prop="comContent">
+                        <template v-show="stuMedia.stuType=='1'">
+                            <!-- 此处由v-if 改成v-show 为渲染富文本插件  请勿随意修改  by july-->
+                            <el-form-item label="内容：" prop="comContent" v-show="stuMedia.stuType=='1'">
                                 <!--<el-input  type="textarea" maxlength="200" v-model="stuMedia.comContent"></el-input>-->
                                 <div id="editor" style="width:100%;">
                                 </div>
@@ -325,6 +326,17 @@
                         <el-form-item label="使用人员：" prop="userName">
                             <el-input v-model="stuMedia.userName" readonly @focus="chooseUser" placeholder="请选择使用人员"
                                       clearable></el-input>
+                        </el-form-item>
+                        <el-form-item label="制作时间：" prop="stuCreat">
+                            <el-date-picker
+                                    v-model="stuMedia.stuCreat"
+                                    type="date"
+                                    format="yyyy年MM月dd日"
+                                    value-format="yyyy-MM-dd"
+                                    placeholder="制作时间"
+                                    size="mini"
+                            >
+                            </el-date-picker>
                         </el-form-item>
                         <el-form-item label="描述：" prop="stuDescribe">
                             <el-input type="textarea" maxlength="200" v-model="stuMedia.stuDescribe"></el-input>

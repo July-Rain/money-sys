@@ -24,7 +24,13 @@ public class ManuscriptEntity extends DataEntity<ManuscriptEntity> {
     private Integer type;// 投稿类型，0题库、1学习
     private String sourceId;// 来源ID
     private Integer status;// 审核状态
+
+
+
+
     private String auditor;// 审核人
+    @TableField(exist = false)
+    private String auditorName;// 审核人中文
     private String opinion;// 审核意见
     private String author;// 作者
     private String orgCode;// 作者部门
@@ -104,5 +110,13 @@ public class ManuscriptEntity extends DataEntity<ManuscriptEntity> {
 
     public void setOrgCode(String orgCode) {
         this.orgCode = orgCode;
+    }
+
+    public String getAuditorName() {
+        return auditorName;
+    }
+
+    public void setAuditorName(String auditorName) {
+        this.auditorName = auditorName;
     }
 }

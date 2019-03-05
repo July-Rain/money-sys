@@ -24,6 +24,8 @@ public interface SynLawService {
     
     Result synClassify();
 
+    Result synClassifyAll();
+
     /**
      * @Author MengyuWu
      * @Description 同步法律法规库
@@ -53,4 +55,14 @@ public interface SynLawService {
      **/
     
     Result lawDetail(String lawid,String rid);
+
+    /**
+     * @Author MengyuWu
+     * @Description 同步法律法规决定
+     * @Date 13:52 2019-3-1
+     * @Param []
+     * @return com.lawschool.util.Result
+     **/
+
+    Result synClassDesicList(Map<String,String> param);
 }

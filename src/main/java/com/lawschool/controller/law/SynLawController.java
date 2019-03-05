@@ -37,6 +37,10 @@ public class SynLawController {
     public Result synClassify(){
        return  lawService.synClassify();
     }
+    @RequestMapping("synClassAll")
+    public Result synClassAll(){
+        return  lawService.synClassifyAll();
+    }
 
     @RequestMapping("synClassLib")
     public Result synClassLib(){
@@ -54,7 +58,11 @@ public class SynLawController {
 
         return  lawService.lawDetail(lawid,rid);
     }
+    @RequestMapping("synClassDesicList")
+    public Result synClassDesicList(@RequestParam Map<String,String> param){
+        return  lawService.synClassDesicList(param);
 
+    }
 
 
 

@@ -41,4 +41,6 @@ public interface UserExamService  extends AbstractService<UserExam> {
     List<QuestForm> buildExam(List<UserExamAnswer> list);
 
     Result viewExam(String userExamId,User user);
+
+    boolean doCollect(String id, String recordId, Integer type);
 }
