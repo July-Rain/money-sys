@@ -18,6 +18,15 @@ var vm = new Vue({
         todayDate: null
     },
     methods: {
+        showTips: function(){
+            this.$notify.info({
+                title: '提示',
+                message: vm.questionForm.answerDescrible,
+                duration: 0,
+                position: 'bottom-right',
+                offset: 100
+            });
+        },
         doDate: function(){
             if(vm.daliyDate != '' && vm.daliyDate != null){
                 vm.getQuestion(vm.daliyDate);
