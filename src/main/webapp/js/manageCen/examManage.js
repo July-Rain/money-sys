@@ -37,6 +37,9 @@ var vm = new Vue({
             isAnswer: 0
         },
         formInline: {
+
+            comContent: '',
+            isEnble: '',
             page: 1,
             limit: 10,
             count: 0
@@ -220,6 +223,29 @@ var vm = new Vue({
 
             });
         },
+
+
+
+        // 查询
+        onSubmit: function () {
+
+
+            this.reload();
+        },
+        // 表单重置
+        resetForm: function (formName) {
+
+            vm.formInline= {
+
+                comContent: '',
+                 isEnble:  '',
+                    page:  1,
+                    limit:  10,
+                    count:  0,
+            }
+            this.reload();
+        },
+
         save: function (formName) {
             // this.$refs['form'].resetFields();
             this.$refs[formName].validate(function (valid) {
@@ -358,25 +384,6 @@ var vm = new Vue({
                             }
                         }
                     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                 //判断试题名称  重复问题
                     var mytype = "1"

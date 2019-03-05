@@ -87,9 +87,8 @@ public class ManuscriptServiceImpl extends AbstractServiceImpl<ManuscriptDao, Ma
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean examine(String id, String type){
+    public Boolean examine(String id, String type,String userid,String opinion){
         Integer status = 0;
-
         if("0".equals(type)){
             status = ManuscriptEntity.STATUS_FAIL;
         } else {
@@ -109,6 +108,6 @@ public class ManuscriptServiceImpl extends AbstractServiceImpl<ManuscriptDao, Ma
 
         }
 
-        return dao.updateExamine(id, status);
+        return dao.updateExamine(id, status, userid,opinion);
     }
 }
