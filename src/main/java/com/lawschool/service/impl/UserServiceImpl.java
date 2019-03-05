@@ -248,6 +248,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         String pass2=MD5Util.Md5Hex(user.getPassword()+salt);//数据库中新密码
         user.setSalt(salt);
         user.setPassword(pass2);
+        user.setIsAdmin(1);//默认不为超级管理员
         if(user.getIdentify().equals("1")){
             user.setId(GetUUID.getUUIDs("T"));
         }

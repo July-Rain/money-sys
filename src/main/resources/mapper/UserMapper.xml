@@ -176,9 +176,9 @@ where 1=1
         <if test="userStatus!=null and userStatus != ''">
             and USER_STATUS = '2000'
         </if>
-        <!--<if test="identify!=null and identify != ''">-->
-            <!--and IDENTIFY = #{identify,jdbcType=VARCHAR}-->
-        <!--</if>-->
+        <if test="identify!=null and identify != '' and identify !='0'">
+            and IDENTIFY = #{identify,jdbcType=VARCHAR}
+        </if>
         <if test="orgId!=null and orgId != ''">
             and ORG_ID  in (select o.id FROM
             LAW_ORG o
@@ -207,9 +207,9 @@ where 1=1
         <if test="userStatus!=null and userStatus != ''">
             and USER_STATUS = '2000'
         </if>
-        <!--<if test="identify!=null and identify != ''">-->
-            <!--and IDENTIFY = #{identify,jdbcType=VARCHAR}-->
-        <!--</if>-->
+        <if test="identify!=null and identify != '' and identify !='0'">
+            and IDENTIFY = #{identify,jdbcType=VARCHAR}
+        </if>
         <if test="orgId!=null and orgId != ''">
             and ORG_ID  in (select o.id FROM
             LAW_ORG o

@@ -134,14 +134,14 @@ public class SynLawServiceImpl implements SynLawService {
             JSONObject object = JSONObject.fromObject(jsonArray.get(i));
             ClassifyDesicEntity entity = new ClassifyDesicEntity();
             entity.setId(object.get("id").toString());
-            entity.setOrderNum(Integer.parseInt(object.get("id").toString()));
+            entity.setOrderNum(object.get("id").toString());
             entity.setLawTitle(object.get("name").toString());
             entity.setLibId(object.get("rid").toString());
             entity.setIssueTime(UtilString.String2Date(object.get("issuedate").toString()));
             entity.setStatus(UtilValidate.isNotEmpty(param.get("status"))?param.get("status"):"其他");
             entity.setIssueOrg(object.get("issueddept").toString());
             entity.setCreateTime(new Date());
-            entity.setClassifyId(param.get("classNumber"));
+            entity.setClassifyId(object.get("subjectId").toString());
             entityList.add(entity);
         }
         //更新数据库 有则更新  无则新增

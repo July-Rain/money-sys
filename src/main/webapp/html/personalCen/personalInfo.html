@@ -5,10 +5,13 @@
     <#include "/header.html">
 </head>
 <style>
+    .container {
+        height: 100vh;
+    }
     .main{
         display: flex;
         width: 71%;
-        height: 80%;
+        height: 70vh;
         margin: 0 auto;
         border: 1px solid #dddddd;
         border-radius: 2px;
@@ -54,6 +57,15 @@
     .right .form .button{
         margin-left: 220px;
         margin-bottom: 20px;
+    }
+    .right .el-button {
+        margin: 20px 0 10px 160px;
+    }
+    .right .el-dialog__wrapper {
+        top: 10vh;
+    }
+    .right .form .button {
+        margin-left: 270px;
     }
 </style>
 <body>
@@ -119,41 +131,46 @@
                                 </el-form-item>
                             </li>
                         </ul>
-                    <!--</div>-->
-                <!--</el-form>-->
-                <!--<el-form :model="password" :rules="rules" ref="form" label-width="160px" label-position="left">-->
-                    <!--<div class="form">-->
                         <p class="info">修改登录密码</p>
-                        <ul>
-                            <li>
-                                <el-form-item
-                                        label="旧密码"
-                                        prop="oldPassword"
-                                >
-                                    <el-input v-model="password.oldPassword"></el-input>
-                                </el-form-item>
-                            </li>
-                            <li>
-                                <el-form-item
-                                        label="输入新密码"
-                                        prop="newPassword">
-                                    <el-input v-model="password.newPassword" ></el-input>
-                                </el-form-item>
-                            </li>
-                            <li>
-                                <el-form-item
-                                        label="输入确认新密码"
-                                        prop="newPassValidator">
-                                    <el-input v-model="password.newPassValidator"  ></el-input>
-                                </el-form-item>
-                            </li>
-                        </ul>
-                        <el-button class="button" type="primary" @click="submitForm('password')">
-                            <i class="iconfont icon-baocun"
-                               style="color: white;font-size: 16px;">
-                            </i>
-                            保存
-                        </el-button>
+                        <el-button @click="openDialog" type="primary">修改密码</el-button>
+                        <el-dialog
+                              title="修改登录密码"
+                              :visible.sync="isVisible"
+                              width="40%"
+                              top="10vh"
+                        >
+                            <ul>
+                                <li>
+                                    <el-form-item
+                                            label="旧密码"
+                                            prop="oldPassword"
+                                    >
+                                        <el-input v-model="password.oldPassword"></el-input>
+                                    </el-form-item>
+                                </li>
+                                <li>
+                                    <el-form-item
+                                            label="输入新密码"
+                                            prop="newPassword">
+                                        <el-input v-model="password.newPassword" ></el-input>
+                                    </el-form-item>
+                                </li>
+                                <li>
+                                    <el-form-item
+                                            label="输入确认新密码"
+                                            prop="newPassValidator">
+                                        <el-input v-model="password.newPassValidator"  ></el-input>
+                                    </el-form-item>
+                                </li>
+                            </ul>
+                            <el-button class="button" type="primary" @click="submitForm('password')">
+                                <i class="iconfont icon-baocun"
+                                   style="color: white;font-size: 16px;">
+                                </i>
+                                保存
+                            </el-button>
+                        </el-dialog>
+
                     </div>
                 </el-form>
             </div>

@@ -41,17 +41,20 @@ public class LawClassifyController extends AbstractController {
         return Result.ok().put("classifyList", bulidDeptTree(classifyList));
     }
     @RequestMapping("/alltree")
-    public Result alltree(){
+    public Result alltree(String flag){
         EntityWrapper<LawClassifyEntity> ew = new EntityWrapper<LawClassifyEntity>();
         List<LawClassifyEntity> classifyList = classifyService.selectList(ew
                 .eq("del_flag","0"));
-        LawClassifyEntity classifyEntity = new LawClassifyEntity();
-        classifyEntity.setClassifyId("all");
-        classifyEntity.setId("");
-        classifyEntity.setParentId("0");
-        classifyEntity.setClassifyName("全部");
-        classifyEntity.setOrderNum(0);
-        classifyList.add(classifyEntity);
+        if(UtilValidate.isEmpty(flag)){
+            LawClassifyEntity classifyEntity = new LawClassifyEntity();
+            classifyEntity.setClassifyId("all");
+            classifyEntity.setId("");
+            classifyEntity.setParentId("0");
+            classifyEntity.setClassifyName("全部");
+            classifyEntity.setOrderNum(0);
+            classifyList.add(classifyEntity);
+        }
+
         return Result.ok().put("classifyList", bulidDeptTree(classifyList));
     }
     /**
