@@ -284,7 +284,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         if(authArr.length>0){
             userExamForm.setAuthArr(authArr);
         }
-        userExamForm.setUserId(user.getId());
+        userExamForm.setUserId(user.getUserId());
         if(UtilValidate.isNotEmpty(params.get("status"))){
             userExamForm.setExamStatus(params.get("status").toString());
         }

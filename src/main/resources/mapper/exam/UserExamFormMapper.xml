@@ -15,7 +15,7 @@
         DICTCODE2VALE (A .reach_Reward_Type) reach_Reward_Type_NAME,
         DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
         A .EXAM_TIME,
-        A .ORGANIZED_ORG_CODE,
+        o .full_name ORGANIZED_ORG_CODE,
         A .START_TIME,
         A .END_TIME,
         b.EXAM_STATUS,
@@ -25,13 +25,15 @@
         FROM
         LAW_EXAM_CONFIG A
         INNER JOIN LAW_USER_EXAM b ON A . ID = b.EXAM_CONFIG_ID
-        where 1=1
+        left  join law_org o on a.ORGANIZED_ORG_CODE = o.local_org_code
+        where 1=1 and o.org_status >=2000
         <if test="authArr != null and authArr.length > 0">
             and a.id in
             <foreach collection="authArr" index="index" item="item" open="(" separator="," close=")">
                 '${item}'
             </foreach>
         </if>
+        and b.user_id = #{userId}
         UNION ALL
         SELECT
         A . ID ID,
@@ -45,7 +47,7 @@
         DICTCODE2VALE (A .reach_Reward_Type) reach_Reward_Type_NAME,
         DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
         A .EXAM_TIME,
-        A .ORGANIZED_ORG_CODE,
+        o .full_name ORGANIZED_ORG_CODE,
         A .START_TIME,
         A .END_TIME,
         '0' EXAM_STATUS,
@@ -54,12 +56,13 @@
         a.enabled
         FROM
         LAW_EXAM_CONFIG A
-        WHERE
+        left  join law_org o on a.ORGANIZED_ORG_CODE = o.local_org_code
+        where 1=1 and o.org_status >=2000 and
         A ."ID" NOT IN (
         SELECT
         exam_config_id
         FROM
-        LAW_USER_EXAM
+        LAW_USER_EXAM where user_id = #{userId}
         )
         <if test="authArr != null and authArr.length > 0">
             and a.id in
