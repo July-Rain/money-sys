@@ -206,7 +206,7 @@ var vm = new Vue({
         },
         handleEdit: function (index, row) {
             vm.isEdit = true;
-            this.title = "修改";
+            this.title = "编辑";
             this.dialogConfig = true;
             $.ajax({
                 type: "POST",
