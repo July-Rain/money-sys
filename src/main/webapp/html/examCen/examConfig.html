@@ -59,10 +59,26 @@
             display: inline-block;
             width: 75px;
         }
+        .contain_title{
+            height: 46px;
+            background-color: #edf5fc;
+            padding: 14px 44px;
+        }
+        .contain_title h2{
+            font-weight: normal;
+            padding-left: 8px;
+            border-left: 6px solid #1381e3;
+            font-size: 14px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
 <div id="app" v-cloak style="width: 100%;min-width: 0;">
+    <!--固定头部-->
+    <div class="contain_title">
+        <h2>考试配置</h2>
+    </div>
     <div class="container configure">
         <el-form :model="examConfig" :rules="rules" ref="examConfig" label-width="100px" class="demo-examConfig"
                      size="mini">
@@ -73,15 +89,6 @@
                                       :disabled="view"></el-input>
                         </el-form-item>
                     </el-col>
-                   <!-- <el-col :span="24">
-                        <el-form-item label="专项知识：" prop="specialKnowledgeId">
-                            <el-select v-model="examConfig.specialKnowledgeArr" size="mini"
-                                       multiple collapse-tags style="width: auto" placeholder="多选" :disabled="view">
-                                <el-option v-for="item in skOption" :key="item.key"
-                                           :label="item.value" :value="item.key"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>-->
                     <el-col :span="12">
                         <el-form-item label="考试类型：" prop="examType">
                             <el-select v-model="examConfig.examType"
@@ -169,20 +176,6 @@
                             </template>
                         </el-form-item>
                     </el-col>
-                    <!--<el-col :span="12">
-                        <el-form-item label="显示答案：" prop="answerShowRule" style="width: auto">
-                            <el-select v-model="examConfig.answerShowRule"
-                                       collapse-tags
-                                       style="width: auto"
-                                       placeholder="请选择显示答案规则" size="mini" :disabled="view">
-                                <el-option v-for="item in asuOption"
-                                           :key="item.key"
-                                           :label="item.value"
-                                           :value="item.key">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>-->
                     <el-col :span="12">
                         <el-form-item label="考试总分：" prop="examScore">
                             <template>
