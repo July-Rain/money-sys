@@ -18,7 +18,8 @@ var vm = new Vue({
             video: '',
             videoUrl: '',
             answerList: [],
-            releaseStatus: '0'
+            releaseStatus: '0',
+            status: '1'
         },
         formLabelWidth: '120px',
         fileList: [],
@@ -166,6 +167,7 @@ var vm = new Vue({
             vm.reload();
         },
         addExam: function () {
+            vm.form.status= '1'
             vm.dialogFormVisible = true;
             vm.isEdit = false;
         },
@@ -187,6 +189,7 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code == 0) {
+                        console.info(result);
                         vm.form = result.data;
                         vm.dialogFormVisible = true;
                         if(vm.form.typeId == '1'){
@@ -200,8 +203,9 @@ var vm = new Vue({
                 }
             });
         },
+        //假删除
         handleDel: function (index, row) {
-            this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+            this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -393,6 +397,17 @@ var vm = new Vue({
                         mytype = "2"
                     }
 
+
+
+
+
+
+
+
+                    console.info(vm.form);
+
+
+
                     $.ajax({
                         type: "POST",
                         url: baseURL + "testQuestion/tqComContent?comContent=" + vm.form.comContent + "&mytype=" + mytype + "&id=" + vm.form.id,
@@ -431,12 +446,13 @@ var vm = new Vue({
                                                                 isEnble: '0',
                                                                 optUser: '',
                                                                 stuOptdepartment: '',
-                                                                page: 1,
-                                                                limit: 10,
-                                                                count: 0,
+                                                                // page: 1,
+                                                                // limit: 10,
+                                                                // count: 0,
                                                                 video: '',
                                                                 videoUrl: '',
-                                                                answerList: []
+                                                                answerList: [],
+                                                                status:'1',
                                                             };
                                                         }
                                                     });

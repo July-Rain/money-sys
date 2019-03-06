@@ -81,7 +81,8 @@
              create_time,
              opt_user,
              opt_time,
-             video
+             video,
+             STATUS
         ) VALUES (
             #{id},
             #{typeId},
@@ -106,7 +107,8 @@
             #{createTime},
             #{optUser},
             #{optTime},
-            #{video}
+            #{video},
+            #{status}
         )
     </insert>
 
@@ -276,6 +278,8 @@
         FROM law_testquestions a
         <where>
             a.is_enble = '0'
+            AND a.STATUS='1'
+            AND  a.RELEASE_STATUS='1'
             <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
                 AND a.special_knowledge_id = #{specialKnowledgeId}
             </if>
@@ -305,6 +309,8 @@
         FROM law_testquestions a
         <where>
             a.is_enble = '0'
+            AND a.STATUS='1'
+            AND  a.RELEASE_STATUS='1'
             <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
                 AND a.special_knowledge_id = #{specialKnowledgeId}
             </if>
@@ -365,6 +371,7 @@
         FROM law_testquestions a
         <where>
             a.is_enble != '2'
+            AND a.STATUS='1'
             <if test="typeId != null and typeId != ''">
                 AND a.type_id = #{typeId}
             </if>
@@ -403,6 +410,8 @@
         FROM law_testquestions a
         <where>
             a.is_enble = '0'
+            AND a.STATUS='1'
+            AND  a.RELEASE_STATUS='1'
             <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
                 AND a.special_knowledge_id = #{specialKnowledgeId}
             </if>
@@ -444,6 +453,8 @@
             LAW_TESTQUESTIONS
           WHERE
             is_enble = '0'
+             AND STATUS='1'
+
             AND RELEASE_STATUS = 1
             AND SPECIAL_KNOWLEDGE_ID = #{topicId}
             AND QUESTION_TYPE <![CDATA[ <> ]]> '10007'
@@ -463,6 +474,8 @@
         FROM law_testquestions a
         <where>
             a.is_enble = '0'
+            AND a.STATUS='1'
+            AND  a.RELEASE_STATUS='1'
             <if test="specialKnowledgeArr != null and specialKnowledgeArr.length > 0">
                 and a.specialKnowledgeId in
                 <foreach collection="specialKnowledgeArr" index="index" item="item" open="(" separator="," close=")">
@@ -538,6 +551,8 @@
                 </foreach>
             </if>
             AND IS_ENBLE = 0
+            AND STATUS='1'
+            AND  RELEASE_STATUS='1'
         </where>
     </select>
 
@@ -584,6 +599,8 @@
                     </foreach>
                 </if>
                 AND IS_ENBLE = 0
+                AND STATUS='1'
+
                 AND RELEASE_STATUS = 1
                 AND QUESTION_TYPE <![CDATA[ <> ]]> '10007'
                 ORDER BY
@@ -601,7 +618,8 @@
         FROM LAW_TESTQUESTIONS
         WHERE
             IS_ENBLE = 0
-            AND RELEASE_STATUS = 1
+             AND STATUS='1'
+            AND  RELEASE_STATUS='1'
             AND QUESTION_TYPE <![CDATA[ <> ]]> '10007'
         AND special_Knowledge_Id IS NOT NULL
         GROUP BY special_Knowledge_Id
@@ -649,6 +667,8 @@
             LEFT JOIN LAW_SYS_TOPIC c ON t.special_Knowledge_Id = c.id
             <where>
                 t.IS_ENBLE = 0
+                AND a.STATUS='1'
+                AND  a.RELEASE_STATUS='1'
                 AND t.RELEASE_STATUS = 1
                 AND t.QUESTION_TYPE <![CDATA[ <> ]]> '10007'
                 <if test="topics != null and topics != ''">
