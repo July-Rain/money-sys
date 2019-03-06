@@ -92,50 +92,6 @@ var vm = new Vue({
     },
 
     methods: {
-        /*// created中执行以获取数据
-        refresh: function () {
-            $.ajax({
-                type: "POST",
-                url: baseURL + "user/exam/startExam",
-                data: {
-                    examConfigId: examConfigId
-                },
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.paperName = result.examConfig.examName;
-                        console.log(result);
-                        // 单选题
-                        vm.sinChoicList = result.sinChoicList;
-                        // 多选题
-                        vm.mulChoicList = result.mulChoicList;
-                        // 判断题
-                        vm.judgeList = result.judgeList;
-                        // 主观题
-                        vm.subjectList = result.subjectList;
-                        // 考试时间
-                        vm.lefttime = result.examConfig.examTime*60000;
-                        vm.displayTime = result.examConfig.examTime;
-                        console.log(displayTime)
-                        // 考试人员
-                        vm.username = result.user.userName;
-
-                        vm.examConfig = result.examConfig;
-                        vm.userAnswerForm.userExamId = result.userExam.id;
-
-                        var _mul = result.mulChoicList;
-                        _mul.forEach(function (val) {
-                            vm.testForm.mulChoic.push([]);
-                            vm.mulChoicCheck.push([]);
-                        })
-                    } else {
-                        alert(result.msg);
-                        var parentWin = window.parent;
-                        parentWin.document.getElementById("container").src
-                            = 'modules/examCen/userExam.html';
-                    }
-                }
-            });
-        },*/
         // 倒计时
         computeTime: function () {
             // 用计时器动态显示:间隔时间1s
@@ -500,6 +456,29 @@ var vm = new Vue({
             $(".text_m").css({"font-size": "18px", "font-weight": "normal"});
             $(".text_l").css({"font-size": "24px", "font-weight": "bolder"})
         },*/
+
+        updateCommon: function (index, arr) {
+            vm.barData[index].currentFinishedNum = 0;
+            if (index!=1) {
+                arr.forEach(function (val) {
+                    if (val) {
+                        vm.barData[index].currentFinishedNum ++;
+                    }
+                })
+            } else {
+                arr.forEach(function (val) {
+                    if (val.length) {
+                        vm.barData[index].currentFinishedNum ++;
+                    }
+                })
+            }
+        },
+        update: function () {
+            this.updateCommon(0, vm.sinChoicCheck);
+            this.updateCommon(1, vm.mulChoicCheck);
+            this.updateCommon(2, vm.judge);
+            this.updateCommon(3, vm.subject);
+        }
     },
     created: function () {
         this.$nextTick(function () {

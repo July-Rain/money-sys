@@ -35,8 +35,12 @@ var vm = new Vue({
         exercise:[],
         params:{
             pname:"",
-            num:""
-        }
+            num:"",
+            scourceFrom:"WRONGQUE"
+        },
+        taskName:'',
+        taskId:'',
+        genTaskByQue:false
     },
     created: function () {
         this.$nextTick(function () {
@@ -119,23 +123,35 @@ var vm = new Vue({
             this.$refs[formName].resetFields();
         },
         onCom:function(){
+            if (vm.params.num >vm.formInline.totalCount){
+                alert("出题数量不能大于收藏试题总数量");
+                return false;
+            }else if (vm.params.num<0|| vm.params.num % 1 != 0){
+                alert("出题数量必须为正整数");
+                return false;
+            }
             $.ajax({
                 type: "POST",
-                url: baseURL + 'coll/randomErrorColl',
+                url: baseURL + 'coll/randomQuestColl',
                 dataType: "json",
                 async:false,
                 data: vm.params,
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.title1 = '一键组卷';
-                        vm.random = true;
-                        vm.exercise=result.data;
-                        console.log(vm.exercise)
+                        vm.taskName = result.name;
+                        vm.taskId = result.id;
+                        vm.genTaskByQue = true;
                     } else {
                         alert(result.msg);
                     }
                 }
             });
+        },
+        closeGenDia : function(){
+            vm.genTaskByQue = false;
+        },
+        jumpTask : function(){
+            alert(vm.taskId);
         },
         handleInfo: function (index, row) {
             this.title = "试题详情";
