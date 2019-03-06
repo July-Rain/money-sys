@@ -103,7 +103,7 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         stuMedia.setCreateTime(new Date());
         stuMedia.setStuCode(GetUUID.getUUIDs("SC"));
         stuMedia.setStuCount(0);
-        stuMedia.setStuCreat(new Date());
+        //stuMedia.setStuCreat(new Date());
         stuMedia.setStuIssuer(user.getUserName());
         stuMedia.setStuIssdepartment(user.getOrgName());
         stuMedia.setStuIsstime(new Date());
@@ -115,6 +115,8 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         String[] deptTemp=new String[1];
         if(UtilValidate.isNotEmpty(deptIdArr)&&UtilValidate.isNotEmpty(userIdArr)&&deptIdArr.length==0&&userIdArr.length==0){
             deptTemp[0]=user.getOrgId();
+            //递归查询下面数据
+
             authService.insertAuthRelation(deptTemp,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getCreateUser());
         }else{
             authService.insertAuthRelation(deptIdArr,userIdArr,stuMedia.getId(),"STUMEDIA",stuMedia.getCreateUser());
@@ -264,7 +266,7 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
            }
         }
 
-        ew.orderBy("STU_ISSTIME",false);
+            ew.orderBy("STU_CREAT",false);
         //Page<StuMedia> page = new Page<StuMedia>();
        /* Page<StuMedia> page = new Page<StuMedia>(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
 

@@ -124,7 +124,7 @@ public class StuDiagnosisServiceImpl implements StuDiagnosisService {
  //           ratio= 100/others;//考虑被除数为0
         }
         //保留两位小数
-        return  String.format("%.2f", ratio*100)+"%";
+        return  String.format("%.2f", ratio*100);
     }
     @Override
     public int getRankNo(Map<String, String> param) {

@@ -162,3 +162,9 @@ ul li{
 .no_data i{
     color: #999
 }
+/*表格中文本超出用...代替*/
+.el-table .cell{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

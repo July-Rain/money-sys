@@ -132,7 +132,7 @@ var vm = new Vue({
                 policeclass: "",
                 sort:0
             }
-            vm.teacher.tmroles = ["1085052173405159425"];
+           // vm.teacher.tmroles = ["1085052173405159425"];
             vm.dialogtch = true;
             vm.handleRoles();
         },

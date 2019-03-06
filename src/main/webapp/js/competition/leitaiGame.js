@@ -43,6 +43,9 @@ var vm = new Vue({
         play2:"",
         winLeiTaiByUser:"",
         jifenByUser:"",
+        successShow:false,
+        failShow:false,
+        winCoin:'',//奖励分数（无论成功失败）
     },
     created: function () {
         this.$nextTick(function () {
@@ -95,8 +98,8 @@ var vm = new Vue({
         },
 
 
-        reload: function () {
-
+        rePlay: function () {
+            window.location.reload()
 
         }
     }
@@ -344,7 +347,10 @@ websocket.onmessage = function(event) {
             {
                 if(Number(vm.myscore)==Number(vm.youscore))
                 {
-                    alert("双方分数一样，擂主不变，平局，占不计入成绩表中");
+                    vm.$message({
+                        message: '双方分数一样，擂主不变，平局，占不计入成绩表中',
+                        type: 'success'
+                    });
                 }
                 else if(Number(vm.myscore)<Number(vm.youscore))
                 {
@@ -352,7 +358,8 @@ websocket.onmessage = function(event) {
                     recordScore(datamag.battlePlatform.id,'0',vm.jifen,'leitai',vm.u.id);
                     // alert("全部题目答完");
                     closeWebsocket();
-                    alert("你输了，获得失败者奖励"+data.matchSetting.loserReward);
+                    vm.failShow = true;
+                    vm.winCoin = data.matchSetting.loserReward;
                 }
                 else if(Number(vm.myscore)>Number(vm.youscore))
                 {
@@ -363,7 +370,8 @@ websocket.onmessage = function(event) {
                         // alert("全部题目答完");
                         closeWebsocket();
                         //擂主不变
-                        alert("你赢了，擂主还是你，获得获胜者奖励"+data.matchSetting.winReward);
+                        vm.successShow = true;
+                        vm.winCoin = data.matchSetting.winReward;
                     }
                     else
                     {
@@ -380,7 +388,9 @@ websocket.onmessage = function(event) {
                         });
                         // alert("全部题目答完");
                         closeWebsocket();
-                        alert("你赢了，恭喜成为新擂主，获得获胜者奖励"+data.matchSetting.winReward);
+                        //擂主不变
+                        vm.successShow = true;
+                        vm.winCoin = data.matchSetting.winReward;
                     }
 
 
@@ -389,7 +399,7 @@ websocket.onmessage = function(event) {
 
             }else
             {
-               vm.dialogQuestion=true,
+               vm.dialogQuestion=true;
                vm.radio_disabled=false;
                vm.allnum=data.tqList.length;
                vm.nownum=Number(nowtimu)+1;

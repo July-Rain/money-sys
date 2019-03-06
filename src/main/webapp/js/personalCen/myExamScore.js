@@ -6,7 +6,7 @@ var vm = new Vue({
             limit: 10,
             page: 1,
             count: 0,
-           // status:"2" //考试状态已完成
+          // status:"2" //考试状态已完成
         },
         tableData: [],//表格数据
         visible: false,
@@ -51,6 +51,10 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+        //序列号计算
+        indexMethod: function (index) {
+            return index + 1 + (vm.formInline.page - 1) * vm.formInline.limit;
         },
         viewExam : function (index,row) {
             var parentWin = window.parent;

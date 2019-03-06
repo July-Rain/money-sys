@@ -454,3 +454,161 @@ button {
     color: #fefefe;
     padding-top: 19px;
 }
+.success_area .inner{
+    width: 636px;
+    height: 592px;
+    margin: 200px auto 0;
+    background-image: url("../img/leitai/leitai_shiban_success.png");
+    background-size: 100% 100%;
+    padding-top: 1px;
+}
+.success_area .vs_box{
+    width: 389px;
+    height: 198px;
+    margin: 123px auto 0;
+}
+.success_area .vs_box .head{
+    width: 76px;
+    height: 76px;
+    border: 2px solid #1f5ce5;
+    border-radius: 50%;
+    position: relative;
+    margin: 0 auto;
+}
+.success_area .vs_box .head img{
+    border-radius: 50%;
+}
+.success_area .vs_box .head > span{
+    display: block;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #ff8602;
+    color: #fff;
+    line-height: 28px;
+    font-size: 14px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+}
+.success_area .vs_box .right_box .head{
+    border-color: #c73030;
+}
+.success_area .vs_box .left_box{
+    float: left;
+    width: 100px;
+}
+
+.success_area .vs_box .mid_box{
+    float: left;
+    width: 189px;
+    text-align: center;
+    margin-top: 16px;
+}
+.success_area .vs_box .right_box{
+    float: right;
+    width: 100px;
+}
+.success_area .vs_box p.name{
+    text-align: center;
+    color: #d5d7df;
+    font-size: 14px;
+    line-height: 34px;
+    padding-bottom: 5px;
+}
+.success_area .vs_box p.per{
+    color: #fff;
+    font-size: 16px;
+    border-radius: 16px;
+    text-align: center;
+    line-height: 32px;
+    background-color: rgba(255,255,255,.25);
+}
+.success_area .vs_box p.time{
+    color: #fff;
+    font-size: 16px;
+    border-radius: 16px;
+    text-align: center;
+    margin-top: 13px;
+    line-height: 32px;
+    background-color: rgba(255,255,255,.25);
+}
+.success_area .vs_box .vs{
+    color: #fff;
+    font-size: 36px;
+    margin-bottom: 78px;
+    line-height: 29px;
+}
+.success_area .vs_box .mid_msg{
+    color: #5d6c7d;
+    font-size: 16px;
+    line-height: 17px;
+    margin-top: 28px;
+}
+.success_area .inner h2{
+    height: 18px;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    width: 98px;
+    margin: 17px auto 14px;
+    font-weight: normal;
+    position: relative;
+}
+.success_area .inner h2:before{
+    content: '';
+    width: 117px;
+    height: 1px;
+    background-color: #fff;
+    position: absolute;
+    left: -118px;
+    top: 10px;
+}
+.success_area .inner h2:after{
+    content: '';
+    width: 117px;
+    height: 1px;
+    background-color: #fff;
+    position: absolute;
+    right: -118px;
+    top: 10px;
+}
+.success_area .inner .coin{
+    line-height: 75px;
+    color: #fef73b;
+    width: 208px;
+    height: 63px;
+    font-size: 24px;
+    padding-left: 70px;
+    background: url("../img/competeCenter/coin.png") no-repeat;
+    background-position-y: 11px;
+    margin: 0 auto;
+}
+.success_area .inner .btn_area{
+    text-align: center;
+    margin-top: -15px;
+}
+.success_area .inner .btn_area button{
+    width: 227px;
+    height: 119px;
+    color: #fff;
+    font-weight: bolder;
+    text-shadow: rgba(0,0,0,1) 0px 0px 10px;
+    font-size: 18px;
+    display: inline-block;
+}
+.success_area .inner .btn_area .btn_orange{
+    background-image: url("../img/competeCenter/btn_org.png");
+}
+.success_area .inner .btn_area .btn_blue{
+    background-image: url("../img/competeCenter/btn_blue.png");
+}
+.fail_area .inner{
+    background-image: url("../img/leitai/leitai_shiban_lose.png");
+}
+
+.success_area.fail_area .inner{
+    width: 640px;
+    height: 592px;
+}

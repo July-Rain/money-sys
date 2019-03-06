@@ -5,6 +5,7 @@ import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.beans.exam.UserExam;
+import com.lawschool.form.CommonForm;
 import com.lawschool.form.ThemeAnswerForm;
 import com.lawschool.form.UserAnswerForm;
 import com.lawschool.form.UserExamForm;
@@ -125,6 +126,22 @@ public class UserExamController extends AbstractController {
         Result res = userExamService.viewExam(userExamId, getUser());
 
         return res;
+    }
+
+    /**
+     * 收藏题目
+     * @return
+     */
+    @SysLog("收藏题目")
+    @RequestMapping(value = "/doCollect/{type}", method = RequestMethod.POST)
+    public Result doCollect(@RequestBody CommonForm params, @PathVariable("type") Integer type){
+
+        String id = params.getKey();// 题目ID
+        String recordId = params.getValue();// 记录ID
+
+        userExamService.doCollect(id, recordId, type);
+
+        return Result.ok();
     }
 
 }

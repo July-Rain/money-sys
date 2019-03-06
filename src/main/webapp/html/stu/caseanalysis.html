@@ -229,8 +229,9 @@
                         <el-form-item label="案例标题：" prop="caseTitle">
                             <el-input v-model="caseAna.caseTitle" placeholder="请输入标题" clearable></el-input>
                         </el-form-item>
-                        <template v-if="caseAna.contentType=='1'">
-                            <el-form-item label="内容：" prop="caseContent">
+                        <template v-show="caseAna.contentType=='1'">
+                            <!-- 此处由v-if 改成v-show 为渲染富文本插件  请勿随意修改  by july-->
+                            <el-form-item label="内容：" prop="caseContent" v-show="caseAna.contentType=='1'">
                                 <!--<el-input type="textarea" maxlength="200" v-model="caseAna.caseContent"></el-input>-->
                                 <div id="editor" style="width: 100%;">
                                 </div>

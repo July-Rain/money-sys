@@ -13,6 +13,7 @@ import com.lawschool.dao.exam.UserExamAnswerDao;
 import com.lawschool.dao.exam.UserExamDao;
 import com.lawschool.form.*;
 import com.lawschool.service.AnswerService;
+import com.lawschool.service.CollectionService;
 import com.lawschool.service.IntegralService;
 import com.lawschool.service.UserService;
 import com.lawschool.service.auth.AuthRelationService;
@@ -71,6 +72,9 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
 
     @Autowired
     private IntegralService integralService;
+
+    @Autowired
+    private CollectionService collectionService;
 
     /**
      * 获取试卷
@@ -280,7 +284,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         if(authArr.length>0){
             userExamForm.setAuthArr(authArr);
         }
-        userExamForm.setUserId(user.getId());
+        userExamForm.setUserId(user.getUserId());
         if(UtilValidate.isNotEmpty(params.get("status"))){
             userExamForm.setExamStatus(params.get("status").toString());
         }
@@ -388,6 +392,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
                 questForm.setFirCheckBase(userExamAnswer.getFirCheckBase());
                 questForm.setSecCheckBase(userExamAnswer.getSecCheckBase());
                 questForm.setAudCheckBase(userExamAnswer.getAudCheckBase());
+                questForm.setIsCollect(userExamAnswer.getIsCollect());
                 questFormList.add(questForm);
             }
             return questFormList;
@@ -431,5 +436,16 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         return Result.ok().put("sinChoicList", sinChoicList).put("mulChoicList", mulChoicList)
                 .put("judgeList", judgeList).put("subjectList", subjectList).put("examConfig", examConfig).put("userExam", userExam).put("user", user);
 
+    }
+
+    @Override
+    public boolean doCollect(String id, String recordId, Integer type) {
+        boolean result = collectionService.doCollection("20", id, type==1 ? false : true);
+
+        if(result){
+            dao.updateCollect(recordId, type);
+        }
+
+        return true;
     }
 }
