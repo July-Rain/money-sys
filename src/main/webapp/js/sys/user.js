@@ -138,7 +138,7 @@ var vm = new Vue({
         },
         //用户修改vm.
         handleUpt: function (index, row) {
-            vm.title="修改";
+            vm.title="编辑";
             vm.teacher = row;
             console.log("teacher1",row);
             vm.teacher = {

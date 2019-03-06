@@ -143,7 +143,7 @@ var vm = new Vue({
             this.dialogStuMediaTch = true;
         },
         handleEdit: function (index, row) {
-            this.title = "修改";
+            this.title = "编辑";
             this.dialogStuMediaTch = true;
             this.deptCheckData = [];
             editor.txt.html("");

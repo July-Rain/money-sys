@@ -167,7 +167,7 @@ var vm = new Vue({
             if (id == null) {
                 return;
             }
-            this.title = "修改";
+            this.title = "编辑";
             this.dialogConfig = true;
             $.ajax({
                 type: "POST",
