@@ -126,6 +126,7 @@ $.ajax({
     dataType: "json",
     async:false,
     success: function (result) {
+        debugger;
         vm.u=result.user;
         uid=result.user.id;
 //发送人编号
@@ -146,7 +147,7 @@ $.ajax({
                 vm.leizhu=result.matchSetting.winId;
                 if(result.matchSetting.winId==null || result.matchSetting.winId=="")
                 {
-                    this.$message({
+                    vm.$message({
                         message: '暂时无擂主,你已成为擂主',
                         type: 'success'
                     });
