@@ -140,6 +140,12 @@ var vm = new Vue({
         toHome: function () {
             parent.location.reload()
         },
+        goBack: function () {
+            alert("请先保存，直接退出不会保存数据。");
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/examCen/userExam.html';
+        },
         // 改变字体大小
         changeFontSize: function (e) {
             var fontSpans = document.getElementsByClassName('font-size-span');
@@ -457,6 +463,7 @@ var vm = new Vue({
             $(".text_l").css({"font-size": "24px", "font-weight": "bolder"})
         },*/
 
+        // bar栏完成题数实时更新
         updateCommon: function (index, arr) {
             vm.barData[index].currentFinishedNum = 0;
             if (index!=1) {
@@ -482,6 +489,9 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
+            // 隐藏 返回首页 按钮
+            var goHomeButton = window.parent.document.getElementsByClassName('header-right')[0];
+            goHomeButton.style.display = 'none';
             // vm.refresh();
             if (examStatus == '0') {
                 //开始考试
