@@ -89,6 +89,9 @@ var vm = new Vue({
         this.$nextTick(function () {
 
             vm.user=jsgetUser();//获得人
+
+            this.reload();
+            this.reloadUser();
             //加载部门数据
             $.ajax({
                 type: "POST",
@@ -108,8 +111,7 @@ var vm = new Vue({
                 }
             });
 
-            this.reload();
-            this.reloadUser();
+
         })
     },
     methods: {
