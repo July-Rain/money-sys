@@ -12,7 +12,7 @@ var vm = new Vue({
                 endTime: '',
             },
             echartsTab: '',//学情看板分页
-            seriesData:[],
+            seriesData:[{name: "视频中心", type: "videocen", countTime: 0, ratio: "0.00%"}],
             colorList: ['#52c9e7','#3e98e8','#81bdd8','#5ebd5c','#feae24','#f97a1f','#f26443','#b97deb','#7e72f2','#4f7ee9'],
             stuInfo:{
                 stuCount:0,//学习时长
@@ -36,7 +36,8 @@ var vm = new Vue({
             dataBySorce:[],
             dataByCorrect:[],
             user:{},
-
+            showText:false,
+            strokeWidth: 8
         }
     },
     created: function () {
@@ -88,7 +89,7 @@ var vm = new Vue({
         //echarts
         initPie1: function () {
             // 基于准备好的dom，初始化echarts实例
-            var myChart = echarts.init(document.getElementById('pie1'));
+            var myChart = echarts.init(document.getElementById('canvas1'));
             // 指定图表的配置项和数据
             var option = {
                 backgroundColor: '#fff',
@@ -151,7 +152,7 @@ var vm = new Vue({
         },
         initPieNum: function () {
             // 基于准备好的dom，初始化echarts实例
-            var myChart = echarts.init(document.getElementById('pienum'));
+            var myChart = echarts.init(document.getElementById('canvas2'));
             // 指定图表的配置项和数据
             var option = {
                 backgroundColor: '#fff',
@@ -779,7 +780,7 @@ var vm = new Vue({
                 data: vm.dateRange,
                 success: function (result) {
                     if (result.code == 0) {
-                        vm.seriesData = result.data;
+                        // vm.seriesData = result.data;
                         console.info(result.data)
                         vm.stuInfo=result.stuInfo;
                         vm.seriesNumData = result.stuCount;

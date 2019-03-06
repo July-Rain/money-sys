@@ -344,7 +344,10 @@ websocket.onmessage = function(event) {
             {
                 if(Number(vm.myscore)==Number(vm.youscore))
                 {
-                    alert("双方分数一样，擂主不变，平局，占不计入成绩表中");
+                    vm.$message({
+                        message: '双方分数一样，擂主不变，平局，占不计入成绩表中',
+                        type: 'success'
+                    });
                 }
                 else if(Number(vm.myscore)<Number(vm.youscore))
                 {
@@ -389,7 +392,7 @@ websocket.onmessage = function(event) {
 
             }else
             {
-               vm.dialogQuestion=true,
+               vm.dialogQuestion=true;
                vm.radio_disabled=false;
                vm.allnum=data.tqList.length;
                vm.nownum=Number(nowtimu)+1;

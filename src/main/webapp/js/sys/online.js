@@ -10,7 +10,7 @@ var vm = new Vue({
             userName: '',
             userCode: '',
             orgCode:'',
-            identify:'0',// 表明是用户
+            identify:'',// 表明是用户
             userStatus:'2000',//查询有效的用户
             isOnline:'1',//表明查询在线
             currPage: 1,

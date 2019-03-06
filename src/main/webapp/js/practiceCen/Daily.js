@@ -20,7 +20,8 @@ var vm = new Vue({
             disabledDate(time) {
                 return time.getTime() > Date.now();
             }
-        }
+        },
+        justFalse: false
     },
     methods: {
         showTips: function(){

@@ -36,6 +36,7 @@ var vm = new Vue({
             stuKnowledge: "",//专项知识
             stuPoliceclass: "",//所属警种
             videoPicAcc: "",//视频首页
+            stuCreat:new Date(),//获取当前时间
         },
         uploadedPlayer: null, // 上传视频实例
         rules: {//表单验证规则
@@ -82,7 +83,7 @@ var vm = new Vue({
             currPage: 1,
             pageSize: 10,
             totalCount: 0,
-            identify: '0',// 表明是用户
+            identify: '',// 表明是用户
             userStatus:'2000'//查询有效的用户
 
         },//人员查询
@@ -253,15 +254,18 @@ var vm = new Vue({
                 stuLawid: "",//专项知识id
                 stuKnowledge: "",//专项知识
                 videoPicAcc: "",//视频首页
+                stuCreat:new Date()
             },
                 //清空editor
                 editor.txt.html("");
             this.title = "新增";
             this.dialogStuMedia = true;
+            this.deptCheckData=[];
+            this.lawCheckData = [];
         },
         handleEdit: function (index, row) {
             this.title = "修改";
-            this.dialogStuMedia = true;
+
             this.deptCheckData = [];
             this.lawCheckData = [];
             editor.txt.html("");
@@ -270,20 +274,18 @@ var vm = new Vue({
                 url: baseURL + 'stumedia/info?id=' + row.id,
                 contentType: "application/json",
                 success: function (result) {
-                    debugger
                     if (result.code === 0) {
+                        vm.dialogStuMedia = true;
                         vm.stuMedia = result.data;
                         vm.deptCheckData = result.data.deptArr;
                         vm.lawCheckData = result.data.stuLawid.split(",");
                         editor.txt.html(vm.stuMedia.comContent);
-                        for (var i = 0; i < vm.stuMedia.length; i++) {
-                            if (vm.stuMedia.stuType != '1' && vm.stuMedia.comContent) {
-                                vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + vm.videoData[i].comContent;
-                                if (vm.stuMedia.videoPicAcc) {
-                                    vm.stuMedia.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.videoData[i].videoPicAcc;
-                                }
-
+                        if (vm.stuMedia.stuType != '1' && vm.stuMedia.comContent) {
+                            vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.comContent;
+                            if (vm.stuMedia.videoPicAcc) {
+                                vm.stuMedia.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.videoPicAcc;
                             }
+
                         }
                     } else {
                         alert(result.msg);
@@ -475,6 +477,10 @@ var vm = new Vue({
             //  --回显需加
             var val = this.multipleSelection;
             //遍历最终的人员信息
+            if(val.length==0){
+                vm.stuMedia.userIds = "";
+                vm.stuMedia.userName = "";
+            }
             for (var i = 0; i < val.length; i++) {
                 if (i == 0) {
                     vm.stuMedia.userIds = val[i].id;

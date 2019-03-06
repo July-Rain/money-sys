@@ -326,3 +326,8 @@ Array.prototype.remove = function(val) {
         this.splice(index, 1);
     }
 };
+// 去除百分比符号
+function clearPercentageSymbol(str) {
+    str = str.replace(/%/g, "");//取消字符串中出现的所有逗号
+    return str;
+}

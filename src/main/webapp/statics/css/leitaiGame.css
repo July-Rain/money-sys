@@ -454,3 +454,76 @@ button {
     color: #fefefe;
     padding-top: 19px;
 }
+.success_area .inner{
+    width: 636px;
+    height: 592px;
+    margin: 200px auto 0;
+    background-image: url("../img/leitai/leitai_shiban_success.png");
+    background-size: 100% 100%;
+    padding-top: 1px;
+}
+.success_area .vs_box{
+    width: 389px;
+    height: 198px;
+    margin-top: 115px;
+}
+.success_area .vs_box .head{
+    width: 76px;
+    height: 76px;
+    border: 2px solid #1f5ce5;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+}
+.success_area .vs_box .head > span{
+    display: block;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #ff8602;
+    color: #fff;
+    line-height: 28px;
+    font-size: 14px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.success_area .vs_box .right_box .head{
+    border-color: #c73030;
+}
+.success_area .vs_box .left_box{
+    float: left;
+    width: 100px;
+}
+
+.success_area .vs_box .mid_box{
+    margin: 0 auto;
+}
+.success_area .vs_box .right_box{
+    float: right;
+    width: 100px;
+}
+.success_area .vs_box p.name{
+    text-align: center;
+    color: #d5d7df;
+    font-size: 14px;
+    line-height: 34px;
+    padding-bottom: 5px;
+}
+.success_area .vs_box p.per{
+    background: #bdf9fe;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 16px;
+    text-align: center;
+}
+.success_area .vs_box p.time{
+    background: #bdf9fe;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 16px;
+    text-align: center;
+    margin-top: 13px
+}
+
