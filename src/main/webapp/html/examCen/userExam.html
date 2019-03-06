@@ -103,11 +103,6 @@
                             </el-table-column>
                             <el-table-column label="操作" align="center">
                                 <template slot-scope="scope">
-                                    <!--<el-button-->
-                                            <!--size="mini"-->
-                                            <!--@click="startExam(scope.$index, scope.row)">-->
-                                        <!--{{tableData[scope.$index].examStatus==1?"继续考试":"开始考试"}}-->
-                                    <!--</el-button>-->
                                     <el-popover
                                             v-if="scope.row.examStatus==2"
                                             placement="right"

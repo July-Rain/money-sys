@@ -154,6 +154,7 @@ var vm = new Vue({
                 roles: row.roles,//角色
                 tmroles: row.tmroles,
                 policeclass: row.policeclass,
+                isAdmin:row.isAdmin,
                 sort:row.sort
             };
             console.log("teacher",vm.teacher);

@@ -6,7 +6,8 @@ var vm = new Vue({
             limit: 10,
             page: 1,
             count: 0,
-          // status:"2" //考试状态已完成
+            status:"2", //考试状态已完成
+            source:'0'  //成绩报告
         },
         tableData: [],//表格数据
         visible: false,
