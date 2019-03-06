@@ -74,6 +74,9 @@ var vm = new Vue({
             endTime: [
                 {required: true, message: '请输入结束日期', trigger: 'blur'}
             ],
+            taskContent: [
+                {required: true, message: '请选择学习内容', trigger: 'blur'}
+            ],
 
         },
         dialogLearnTask: false,//table弹出框可见性
@@ -116,7 +119,23 @@ var vm = new Vue({
        // multipleClassSelection:[]//法律法规数据选择框
         deptCheckData:[],//部门默认选中节点
         saveUserTableData: [],//用于人员回显表格的对象  --回显需加
-        breadArr:[]//面包屑数据
+        breadArr:[],//面包屑数据
+        dialogLearnConTask:false,//学习内容的弹窗
+        learnTaskTreeData:[],//学习内容树数据
+        learnTaskData:[],//学习内容数据
+        defaultLearnTaskProps:{
+            children: 'child',
+            label: 'infoName'
+        },//学习内容默认数据
+        taskForm:{
+            title:"",
+            infoType:"",
+            infoId:"",
+            currPage: 1,
+            pageSize: 10,
+            totalCount:0,
+        },//学习任务内容管理
+
     },
     created: function () {
         this.$nextTick(function () {
@@ -145,6 +164,7 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
+                        console.log(result.classifyList);
                         vm.classData = result.classifyList;
                     }else{
                         alert(result.msg);
@@ -191,6 +211,10 @@ var vm = new Vue({
         indexUserMethod: function (index) {
             return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;
         },
+        //序列号计算
+        indexComMethod: function (index) {
+            return index + 1 + (vm.taskForm.currPage - 1) * vm.taskForm.pageSize;
+        },
         // 查询
         onSubmit: function () {
             this.reload();
@@ -207,13 +231,14 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
+                    debugger
                     var url = vm.learnTasks.id ? "learntasks/update?menuFrom="+vm.menuForm : "learntasks/insert?menuFrom="+vm.menuForm;
                     var deptArr = vm.learnTasks.deptIds?vm.learnTasks.deptIds.split(","):[];
                     var userArr = vm.learnTasks.userIds?vm.learnTasks.userIds.split(","):[];
                     vm.learnTasks.deptArr=deptArr;
                     vm.learnTasks.userArr=userArr;
-                    var nodes = ztree.getCheckedNodes(true);
-                    vm.learnTasks.taskContentList=nodes;
+                    //var nodes = ztree.getCheckedNodes(true);
+                    //vm.learnTasks.taskContentList=nodes;
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
@@ -242,6 +267,13 @@ var vm = new Vue({
         // 表单重置
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
+            if(formName=="formInline"){
+                this.reload();
+            }else if(formName=="userForm"){
+                this.reloadUser();
+            }else if(formName=="taskForm"){
+                this.reloadTask();
+            }
         },
         addLearnTask: function () {
             this.learnTasks = {
@@ -262,7 +294,7 @@ var vm = new Vue({
             };
             this.title = "新增学习任务";
             this.dialogLearnTask = true;
-            this.getDept();
+            //this.getDept();
         },
         handleEdit: function (index, row) {
             //判断是否发布
@@ -289,7 +321,7 @@ var vm = new Vue({
                     }
                 }
             });
-            this.getDept();
+            //this.getDept();
         },
         handleDel: function (index, row) {
             //判断是否发布
@@ -534,6 +566,79 @@ var vm = new Vue({
             $.get(baseURL + "law/zTree", function(r){
                 ztree = $.fn.zTree.init($("#classTree"), setting, r.classifyList);
             })
+        },
+        chooseTaskContent:function(){
+            this.dialogLearnConTask=true;
+            //选择学习内容数据
+        },
+        handleTaskNodeClick:function(data){
+            this.taskForm.infoId=data.infoId;
+            this.taskForm.dataId=data.dataId;
+            this.taskForm.infoType=data.infoType;
+            this.reloadTask();
+
+        },//点击事件
+        searchContent:function(){
+            //查询内容
+            this.reloadTask();
+        },
+        handleLearnTaskChange:function(val){
+            //点击事件
+            this.multipleClassSelection = val;
+        },
+        learnTaskSizeChange:function(val){
+            //学习任务改变页码
+            this.taskForm.pageSize=val;
+            this.reloadTask();
+        },
+        learnTaskCurrentChange:function(val){
+            //学习任务内容当前也改变
+            this.taskForm.currPage=val;
+            this.reloadTask();
+        },
+        reloadTask:function(){
+            //加载学习任务数据
+            $.ajax({
+                type: "POST",
+                url: baseURL + "learntasks/allComInfo",
+                dataType: "json",
+                data: vm.taskForm,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.learnTaskData=result.page.list;
+                        vm.infoFlag=result.page.remarks;
+
+                        vm.taskForm.currPage = result.page.currPage;
+                        vm.taskForm.pageSize = result.page.pageSize;
+                        vm.taskForm.totalCount = parseInt(result.page.totalCount);
+                        console.info("infoData",vm.learnTaskData)
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        cancelTaskCom:function(){
+            this.dialogLearnConTask=false;
+        },
+        confimTaskCom:function(){
+            debugger
+            this.learnTasks.taskContent="";
+            this.dialogLearnConTask=false;
+            //遍历最终的人员信息
+            this.learnTasks.taskContentList= this.multipleClassSelection;
+            var val=this.multipleClassSelection;
+            if(val.length==0){
+                vm.learnTasks.taskContent= "";
+            }
+            for (var i=0;i<val.length;i++){
+                if (this.learnTasks.taskContent == "") {
+                    this.learnTasks.taskContent=val[i].infoName;
+                }else{
+                    this.learnTasks.taskContent+=","+val[i].infoName;
+                }
+            }
+            console.log("taskContent",this.taskContentList);
         },
         toHome: function () {
             parent.location.reload()

@@ -83,4 +83,26 @@ public class ClassifyDesicServiceImpl extends ServiceImpl<ClassifyDesicDao,Class
         //获取接口数据
         return null;
     }
+
+    @Override
+    public PageUtils queryListByUser(Map<String, Object> params) {
+        Page<TaskDesicEntity> page = new Page<TaskDesicEntity>(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
+        String infoType=(String)params.get("infoType");
+        String taskId=(String)params.get("taskId");
+        String infoId=(String)params.get("infoId");
+        String userId=(String)params.get("userId");
+        String dataId=(String)params.get("dataId");
+        String infoName=(String)params.get("infoName");
+        TaskDesicEntity taskDesicEntity = new TaskDesicEntity();
+        taskDesicEntity.setInfoType(infoType);
+        taskDesicEntity.setTaskId(taskId);
+        taskDesicEntity.setInfoId(infoId);
+        taskDesicEntity.setUserId(userId);
+        taskDesicEntity.setDataId(dataId);
+        taskDesicEntity.setInfoName(infoName);
+        page.setRecords(desicDao.queryListByUser(page,taskDesicEntity));
+        page.setTotal(desicDao.countListByUser(taskDesicEntity));
+        return new PageUtils(page);
+    }
+
 }

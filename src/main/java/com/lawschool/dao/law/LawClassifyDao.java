@@ -17,4 +17,7 @@ import java.util.List;
  */
 public interface LawClassifyDao extends BaseMapper<LawClassifyEntity> {
     List<TaskDesicEntity> queryClassTree();
+
+    List<TaskDesicEntity> queryClassTreeData();
+
 }

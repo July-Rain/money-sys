@@ -209,6 +209,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         alert("操作成功");
+                        vm.reload();
                     } else {
                         alert(result.msg);
                     }

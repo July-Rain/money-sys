@@ -24,7 +24,7 @@ var vm = new Vue({
         visible: false,
         stuMediaTch: {
             id: "",
-            stuType: "1",
+            stuType: "pic",
             stuTitle: "",
             comContent: "",
             deptIds: "",
@@ -128,7 +128,7 @@ var vm = new Vue({
         addStuMedia: function () {
             this.stuMediaTch = {
                 id: "",
-                stuType: "1",
+                stuType: "pic",
                 stuTitle: "",
                 comContent: "",
                 deptIds: "",

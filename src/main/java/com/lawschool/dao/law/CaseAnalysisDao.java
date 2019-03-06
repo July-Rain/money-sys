@@ -39,4 +39,26 @@ public interface CaseAnalysisDao extends BaseMapper<CaseAnalysisEntity> {
     
 
     int countListCaseAnaByTask( TaskDesicEntity desicEntity);
+
+    /**
+     * @Author MengyuWu
+     * @Description 查询学习任务下的列表 --制作学习任务需要
+     * @Date 10:47 2018-12-27
+     * @Param [page, desicEntity]
+     * @return java.util.List<com.lawschool.beans.law.CaseAnalysisEntity>
+     **/
+
+
+
+    List<TaskDesicEntity> listCaseAnaByUser(Page page, TaskDesicEntity desicEntity);
+    /**
+     * @Author MengyuWu
+     * @Description 统计条数 --制作学习任务需要
+     * @Date 10:47 2018-12-27
+     * @Param [desicEntity]
+     * @return int
+     **/
+
+
+    int countListCaseAnaByUser( TaskDesicEntity desicEntity);
 }
