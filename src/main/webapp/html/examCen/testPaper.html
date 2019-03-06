@@ -180,12 +180,12 @@
         </div>
         <div class="bar">
             <div class="time">
-                <span class="duration" v-if="!isSubmit">本卷计时{{ time*60 }}分钟，还剩:<span style="font-weight: 900">
+                <span class="duration" v-if="!isSubmit">本卷计时{{ displayTime }}分钟，还剩:<span style="font-weight: 900">
                     <span>{{ leftHours }}</span>:
                     <span>{{ leftMinutes }}</span>:
                     <span>{{ leftSeconds }}</span>
                 </span></span>
-                <span class="duration" v-if="isSubmit">本卷计时{{ time*60 }}分钟，<span class="consumed-time" style="font-weight: 900">用时{{ consumedMinutes }}分钟{{ consumedSeconds }}秒</span></span>
+                <span class="duration" v-if="isSubmit">本卷计时{{ displayTime }}分钟，<span class="consumed-time" style="font-weight: 900">用时{{ consumedMinutes }}分钟{{ consumedSeconds }}秒</span></span>
             </div>
             <ul class="category">
                 <li v-for="item in barData">
@@ -194,7 +194,9 @@
                 </li>
             </ul>
             <div class="buttons" v-if="!isSubmit">
-                <el-button type="primary" @click="submit">交卷</el-button><el-button @click="save" type="primary" plain class="save">保存</el-button>
+                <el-button type="primary" @click="submit" size="small">交卷</el-button>
+                <el-button @click="save" type="primary" plain class="save" size="small">保存</el-button>
+                <el-button @click="save" type="primary" plain class="save" size="small">返回</el-button>
             </div>
             <div class="display" v-if="isSubmit">
                 <div class="number">

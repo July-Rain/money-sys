@@ -37,37 +37,31 @@ var vm = new Vue({
             {
                 href: "#oneOption",
                 questionType: '单选题',
-                currentFinishedNum: 1,
-                totalNum: 50
+                currentFinishedNum: 0,
+                totalNum: 0
             },
             {
                 href: "#multiOptions",
                 questionType: '多选题',
                 currentFinishedNum: 0,
-                totalNum: 10
-            },
-            {
-                href: "#filling",
-                questionType: '填空题',
-                currentFinishedNum: 0,
-                totalNum: 5
+                totalNum: 0
             },
             {
                 href: "#checking",
                 questionType: '判断题',
                 currentFinishedNum: 0,
-                totalNum: 5
+                totalNum: 0
             },
             {
                 href: "#expressing",
                 questionType: '论述题',
                 currentFinishedNum: 0,
-                totalNum: 5
+                totalNum: 0
             }
         ],
         // 时间变量
-        startTime: 0,
-        time: 0,
+        timer: null, //定时器
+        displayTime: 0,
         lefttime: 0,
         leftHours: '00',
         leftMinutes: '00',
@@ -87,43 +81,18 @@ var vm = new Vue({
         limit: 5,
         count: 0,
         preserved: [],
-
         examConfig: [],
         // 修改前的数据
         /*,
-
-
-
         otherList: [],
-        questionList: [],
-
         user:[],
         page: 1,
         limit: 5,
-        count: 0,
-        maxtime: 60 * 60,//总时长
-        minutes: 0,//显示分
-        seconds: 0,//显示秒
-        timer: null,//定时器
-        mulChoicCheck: [],
-        sinChoicCheck: [],
-        judge:[],
-        subject: []*/
+        count: 0,*/
     },
-    /*created: function () {
-        this.$nextTick(function () {
-            if (examStatus == '0') {
-                //开始考试
-                vm.startExam();
-            } else {
-                //继续考试
-                vm.continueExam();
-            }
-            vm.timer = setInterval("vm.CountDown()", 1000);
-        })
-    },*/
+
     methods: {
-        // created中执行以获取数据
+        /*// created中执行以获取数据
         refresh: function () {
             $.ajax({
                 type: "POST",
@@ -145,7 +114,8 @@ var vm = new Vue({
                         vm.subjectList = result.subjectList;
                         // 考试时间
                         vm.lefttime = result.examConfig.examTime*60000;
-                        vm.time = (result.examConfig.examTime)/60;
+                        vm.displayTime = result.examConfig.examTime;
+                        console.log(displayTime)
                         // 考试人员
                         vm.username = result.user.userName;
 
@@ -165,50 +135,7 @@ var vm = new Vue({
                     }
                 }
             });
-            /*var obj = {
-                configureId: configureId,
-                id: id,
-                limit: vm.limit,
-                page: vm.page
-            };
-            $.ajax({
-                type: "GET",
-                url: baseURL + "exercise/paper/paper",
-                data: obj,
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.questionList = result.page.list;
-                        console.log(vm.questionList);
-                        vm.count = result.page.count;
-                        id = result.page.id;
-                        vm.preserved = [];
-                    } else {
-                        alert(result.msg);
-                    }
-                    vm.questionList.forEach(function (val) {
-                        switch (val.questionType) {
-                            // 单选题
-                            case '10004':
-                                vm.oneOptionList.push(val);
-                                break;
-                            // 多选题
-                            case '10005':
-                                vm.multiOptionsList.push(val);
-                                break;
-                            // 判断题
-                            case '10006':
-                                vm.checkingList.push(val);
-                            // 主观题
-                            case '10007':
-                                vm.expressingList.push(val);
-                            default:
-                                return;
-                        }
-                    })
-                }
-            });*/
-        },
+        },*/
         // 倒计时
         computeTime: function () {
             // 用计时器动态显示:间隔时间1s
@@ -217,12 +144,27 @@ var vm = new Vue({
             [this.leftHours, this.leftMinutes, this.leftSeconds] = [...results];
             // 3个小时用完,强制提交
             if (this.lefttime <= 0) {
-                this.submit();
+                vm.$alert('时间到，结束!', '提示', {
+                    confirmButtonText: '确定',
+                    callback: function () {
+                        vm.submit();
+                        var parentWin = window.parent;
+                        parentWin.document.getElementById("container").src
+                            = 'modules/examCen/userExam.html';
+                    }
+                });
             }
+            // 考试时间还剩五分钟的提示
+            if (this.lefttime == 5 * 60000) {
+                this.$notify.info({
+                    title: '提示',
+                    message: '距离考试结束时间还有五分钟！'
+                });
+            };
         },
         // 使用时间
         consumedTime: function () {
-            var consumed =  this.time*3600000 - this.lefttime;
+            var consumed =  this.displayTime*60000 - this.lefttime;
             var results = this.figureTime(consumed);
             [this.consumedHours, this.consumedMinutes, this.consumedSeconds] = [...results];
             this.consumedMinutes = Number(this.consumedHours)*60 + Number(this.consumedMinutes);
@@ -289,6 +231,8 @@ var vm = new Vue({
 
         // 提交试卷
         submit: function () {
+            // 解除定时器
+            this.timer = null;
             // this.isSubmit = true;
             // 展示使用时间
             this.consumedTime();
@@ -405,8 +349,7 @@ var vm = new Vue({
             });
         },
 
-        // 修改前的方法
-        /*startExam: function () {
+        startExam: function () {
             $.ajax({
                 type: "POST",
                 url: baseURL + "user/exam/startExam",
@@ -418,26 +361,31 @@ var vm = new Vue({
                         vm.examConfig = result.examConfig;
                         vm.user = result.user;
                         vm.userAnswerForm.userExamId = result.userExam.id;
-                        var _mul = result.mulChoicList;
-                        for (var i = 0; i < _mul.length; i++) {
-                            vm.testForm.mulChoic.push([]);
-                        }
+                        vm.paperName = result.examConfig.examName;
+                        // 考试时间
+                        vm.lefttime = result.examConfig.examTime*60000;
+                        vm.displayTime = result.examConfig.examTime;
 
-                        vm.userAnswerForm.userExamId = result.userExam.id;
                         var _mul = result.mulChoicList;
-                        for (var i = 0; i < _mul.length; i++) {
+                        _mul.forEach(function (val) {
+                            vm.testForm.mulChoic.push([]);
                             vm.mulChoicCheck.push([]);
-                        }
+                        });
                         //单选
                         vm.sinChoicList = result.sinChoicList;
-
+                        vm.barData[0].totalNum = vm.sinChoicList.length;
                         //多选
                         vm.mulChoicList = result.mulChoicList;
+                        vm.barData[1].totalNum = vm.mulChoicList.length;
                         //判断
                         vm.judgeList = result.judgeList;
+                        vm.barData[2].totalNum = vm.judgeList.length;
                         //主观
                         vm.subjectList = result.subjectList;
-                        vm.maxtime = result.examConfig.examTime * 60;
+                        vm.barData[3].totalNum = vm.subjectList.length;
+
+                        // 考试人员
+                        vm.username = result.user.userName;
 
                     } else {
                         alert(result.msg);
@@ -447,8 +395,8 @@ var vm = new Vue({
                     }
                 }
             });
-        },*/
-        /*continueExam: function () {
+        },
+        continueExam: function () {
             $.ajax({
                 type: "POST",
                 url: baseURL + "user/exam/continueExam",
@@ -459,16 +407,22 @@ var vm = new Vue({
                     if (result.code === 0) {
                         vm.user = result.user;
                         vm.examConfig = result.examConfig;
+                        // 考试人员
+                        vm.username = result.user.userName;
+                        vm.displayTime = result.examConfig.examTime;
+                        vm.lefttime = result.userExam.remainingExamTime * 60000;
+
+                        vm.paperName = result.examConfig.examName;
 
                         vm.userAnswerForm.userExamId = result.userExam.id;
                         var _mul = result.mulChoicList;
                         if(_mul){
                             for (var i = 0; i < _mul.length; i++) {
                                 vm.testForm.mulChoic.push([]);
-
                                 if(_mul[i].userAnswer){
                                     var _arr = _mul[i].userAnswer.split(",");
                                     vm.mulChoicCheck.push(_arr)
+                                    vm.barData[1].currentFinishedNum ++;
                                 }else {
                                     vm.mulChoicCheck.push([])
                                 }
@@ -476,25 +430,28 @@ var vm = new Vue({
                         }
                         //单选
                         vm.sinChoicList = result.sinChoicList;
-                        console.info("vm.sinChoicList: "+vm.sinChoicList )
+                        vm.barData[0].totalNum = vm.sinChoicList.length;
                         if(vm.sinChoicList){
                             for(var i=0;i<vm.sinChoicList.length;i++){
                                 if(vm.sinChoicList[i].userAnswer){
                                     vm.sinChoicCheck.push(vm.sinChoicList[i].userAnswer);
+                                    vm.barData[0].currentFinishedNum ++;
                                 }else{
                                     vm.sinChoicCheck.push('');
                                 }
                             }
                         }
-                        console.info("sinChoicList",vm.sinChoicList)
                         //多选
                         vm.mulChoicList = result.mulChoicList;
+                        vm.barData[1].totalNum = vm.mulChoicList.length;
                         //判断
                         vm.judgeList = result.judgeList;
+                        vm.barData[2].totalNum = vm.judgeList.length;
                         if(vm.judgeList){
                             for(var i=0;i<vm.judgeList.length;i++){
                                 if(vm.judgeList[i].userAnswer){
                                     vm.judge.push(vm.judgeList[i].userAnswer);
+                                    vm.barData[2].currentFinishedNum ++;
                                 }else{
                                     vm.judge.push('');
                                 }
@@ -502,17 +459,17 @@ var vm = new Vue({
                         }
                         //主观
                         vm.subjectList = result.subjectList;
+                        vm.barData[3].totalNum = vm.subjectList.length;
                         if(vm.subjectList){
                             for(var i=0;i<vm.subjectList.length;i++){
                                 if(vm.subjectList[i].userAnswer){
                                     vm.subject.push(vm.subjectList[i].userAnswer);
+                                    vm.barData[3].currentFinishedNum ++;
                                 }else{
                                     vm.subject.push('');
                                 }
-                                console.info("subject="+vm.subject);
                             }
                         }
-                        vm.maxtime = result.userExam.remainingExamTime * 60;
                     } else {
                         alert(result.msg);
                         var parentWin = window.parent;
@@ -521,7 +478,7 @@ var vm = new Vue({
                     }
                 }
             });
-        },*/
+        },
         /*fontS: function () {
             console.log(2)
             $("p,span").css("font-size", "16px");
@@ -543,38 +500,18 @@ var vm = new Vue({
             $(".text_m").css({"font-size": "18px", "font-weight": "normal"});
             $(".text_l").css({"font-size": "24px", "font-weight": "bolder"})
         },*/
-
-
-        /*CountDown: function () {
-            if (vm.maxtime >= 0) {
-                vm.minutes = Math.floor(vm.maxtime / 60);
-                vm.seconds = Math.floor(vm.maxtime % 60);
-                if (vm.maxtime == 5 * 60) {
-                    this.$notify.info({
-                        title: '提示',
-                        message: '距离考试结束时间还有五分钟！'
-                    });
-                };
-                --vm.maxtime;
-            } else {
-                clearInterval(vm.timer);
-                vm.$alert('时间到，结束!', '提示', {
-                    confirmButtonText: '确定',
-                    callback: function () {
-                        vm.submit();
-                        var parentWin = window.parent;
-                        parentWin.document.getElementById("container").src
-                            = 'modules/examCen/userExam.html';
-                    }
-                });
-
-            }
-        },*/
     },
     created: function () {
-        setInterval(this.computeTime,1000);
         this.$nextTick(function () {
-            vm.refresh();
+            // vm.refresh();
+            if (examStatus == '0') {
+                //开始考试
+                vm.startExam();
+            } else {
+                //继续考试
+                vm.continueExam();
+            }
+            this.timer = setInterval(this.computeTime,1000);
         });
     }
 });
