@@ -113,6 +113,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
     @Override
     public int updateUserStatus(String id, Integer nowStatus, Integer updateStatus) {
         User use=new User();
+        use.setIsAdmin(1);
         use.setUserStatus(updateStatus);
         EntityWrapper<User> ew=new EntityWrapper<>();
         ew.eq("ID",id);
@@ -132,6 +133,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
     public int updateUserOnlineStatus(String id, String nowStatus, String updateStatus) {
         User use=new User();
         use.setIsOnline(updateStatus);
+        use.setIsAdmin(1);
         EntityWrapper<User> ew=new EntityWrapper<>();
         ew.eq("ID",id);
         ew.eq("IS_ONLINE",nowStatus);
@@ -300,6 +302,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
     **/
     @Override
     public  int updateUser(User user) {
+        user.setIsAdmin(1);
         int integer = userMapper.update(user, new EntityWrapper<User>().eq("ID", user.getId()));
         return integer==1?SUCCESS:ERROR;
     }
@@ -308,11 +311,12 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
     public int changeIdentify(String id, String identify) {
         User user = new User();
         user.setId(id);
+        user.setIsAdmin(1);
         if("0".equals(identify)){
             user.setIdentify("1");
         }else if("1".equals(identify)){
             user.setIdentify("0");
         }
-        return userMapper.update(user);
+        return userMapper.updateById(user);
     }
 }
