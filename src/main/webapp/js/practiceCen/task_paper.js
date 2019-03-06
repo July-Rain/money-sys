@@ -120,7 +120,7 @@ var vm = new Vue({
                                 vm.index--;
                             }
                             if(isReview != null && isReview != ''){
-                                vm.$alert('当前为最后一题，是否結束本次回顾！', '提示', {
+                                vm.$alert('当前为最后一题，是否结束本次回顾！', '提示', {
                                     confirmButtonText: '确定',
                                     callback: function () {
                                         var parentWin = window.parent;

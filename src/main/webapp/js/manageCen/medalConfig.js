@@ -92,29 +92,38 @@ var vm = new Vue({
             });
         },
         handleDel: function (index, row) {
-            var arr = new Array();
-            arr.push(row.id);
-            $.ajax({
-                type: "POST",
-                url: baseURL + "medal/delete",
-                contentType: "application/json",
-                data: JSON.stringify(arr),
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.$alert('操作成功', '提示', {
-                            confirmButtonText: '确定',
-                            callback: function () {
-                                vm.dialogFormVisible = false;
 
 
-                                vm.reload();
-                            }
-                        });
-                    } else {
-                        alert(result.msg);
+            this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(function () {
+                var arr = new Array();
+                arr.push(row.id);
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "medal/delete",
+                    contentType: "application/json",
+                    data: JSON.stringify(arr),
+                    success: function (result) {
+                        if (result.code === 0) {
+                            vm.$message({
+                                message: '已删除',
+                                type: 'success'
+                            });
+                            vm.dialogFormVisible = false;
+                            vm.reload();
+                        } else {
+                            alert(result.msg);
+                        }
                     }
-                }
+                });
+
+            }).catch(function () {
+
             });
+
         },
         save: function (formName) {
             this.$refs[formName].validate(function (valid) {
@@ -139,7 +148,7 @@ var vm = new Vue({
 
                                     if (result.type == "1")//说明找到了
                                     {
-                                         alert("存在重复的勋章名称，添加失败");
+                                        vm.$message.error('存在重复的勋章名称，保存失败');
                                         return;
                                     }
                                     else if(result.type == "0")
@@ -151,14 +160,13 @@ var vm = new Vue({
                                             data: JSON.stringify(vm.medal),
                                             success: function (result) {
                                                 if (result.code === 0) {
-                                                    vm.$alert('操作成功', '提示', {
-                                                        confirmButtonText: '确定',
-                                                        callback: function () {
-                                                            vm.dialogFormVisible = false;
-
-                                                            vm.reload();
-                                                        }
+                                                    vm.$message({
+                                                        message: '勋章保存成功',
+                                                        type: 'success'
                                                     });
+                                                    vm.dialogFormVisible = false;
+
+                                                    vm.reload();
                                                 } else {
                                                     alert(result.msg);
                                                 }

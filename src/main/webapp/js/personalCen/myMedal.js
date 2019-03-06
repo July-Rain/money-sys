@@ -77,13 +77,13 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.$alert('操作成功', '提示', {
-                            confirmButtonText: '确定',
-                            callback: function () {
-                                vm.dialogFormVisible = false;
-                                vm.reload();
-                            }
+
+                        vm.$message({
+                            message: '保存成功',
+                            type: 'success'
                         });
+                        vm.dialogFormVisible = false;
+                        vm.reload();
                     } else {
                         alert(result.msg);
                     }
@@ -106,7 +106,10 @@ var vm = new Vue({
                 async:false,
                 success: function (result) {
                     if (result.code == 0) {
-                        alert("佩戴成功");
+                        vm.$message({
+                            message: '佩戴成功',
+                            type: 'success'
+                        });
                          vm.reload();
                     } else {
                         alert(result.msg);
@@ -114,24 +117,6 @@ var vm = new Vue({
                 }
             });
 
-            // $.ajax({
-            //     type: "POST",
-            //     url: baseURL + "medal/wear/" + row.id,
-            //     contentType: "application/json",
-            //     success: function (result) {
-            //         if (result.code === 0) {
-            //             vm.$alert('操作成功', '提示', {
-            //                 confirmButtonText: '确定',
-            //                 callback: function () {
-            //                     vm.dialogFormVisible = false;
-            //                     vm.reload();
-            //                 }
-            //             });
-            //         } else {
-            //             alert(result.msg);
-            //         }
-            //     }
-            // });
         },
         reload: function () {
 
@@ -200,18 +185,6 @@ var vm = new Vue({
         this.$nextTick(function () {
 
             vm.reload();
-            // $.ajax({
-            //     type: "GET",
-            //     url: baseURL + "medal/myMedal",
-            //     dataType: "json",
-            //     success: function (result) {
-            //         if (result.code == 0) {
-            //             vm.isReceive = result.list;
-            //         } else {
-            //             alert(result.msg);
-            //         }
-            //     }
-            // });
 
         })
     }

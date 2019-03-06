@@ -264,7 +264,7 @@ var vm = new Vue({
             this.lawCheckData = [];
         },
         handleEdit: function (index, row) {
-            this.title = "修改";
+            this.title = "编辑";
 
             this.deptCheckData = [];
             this.lawCheckData = [];

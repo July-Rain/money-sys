@@ -8,6 +8,7 @@ import com.lawschool.beans.*;
 import com.lawschool.beans.Collection;
 import com.lawschool.dao.*;
 import com.lawschool.service.CollectionService;
+import com.lawschool.service.ExerciseConfigureService;
 import com.lawschool.util.*;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.SecurityUtils;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.lawschool.util.Constant.*;
@@ -44,6 +46,12 @@ public class CollectionServiceImpl  extends ServiceImpl<CollectionDao,Collection
 
     @Autowired
     private UserQuestRecordDao userQuestRecordDao;
+
+    @Autowired
+    private RedisUtil redisUtil;
+
+    @Autowired
+    private ExerciseConfigureService exerciseConfigureService;
 
     /**
      * 收藏功能
@@ -185,67 +193,20 @@ public class CollectionServiceImpl  extends ServiceImpl<CollectionDao,Collection
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result randomQuestColl( Map<String, Object> params, User user) {
-        int num=10;
-        //1,生成题目
-        Map<String,TestQuestions> map=new HashedMap();
-        if(UtilValidate.isNotEmpty(params.get("num"))){
-            try{
-                num= parseInt(params.get("num").toString());
-            }catch(Exception e){
-                return Result.error("题目个数要为整型");
-            }
-        }
-        params.put("num",num);//获取组成10题
-        params.put("userId",user.getId());
-        List<TestQuestions> testQuestions = testQuestionsMapper.randomQuestColl(params);//仅仅只有id,提高效率
-
-        //2。生成练习
-        String pid = GetUUID.getUUIDs("PP");
-        PracticePaper practicePaper=new PracticePaper();
-        practicePaper.setId(pid);
-
-        practicePaper.setPracCreatUser(UtilValidate.isNotEmpty(user.getUserName())?user.getUserName():"");
-        practicePaper.setPracCreatTime(new Date());
-
-        practicePaper.setPracticeName(UtilValidate.isNotEmpty(params.get("pname"))? params.get("pname").toString():"收藏练习");
-
-        if(UtilValidate.isNotEmpty(user.getOrgCode())){
-            List<Org> org_code = orgDao.selectList(new EntityWrapper<Org>().setSqlSelect("ORG_NAME").eq("ORG_CODE", user.getOrgCode()));
-            practicePaper.setPracCreatDepartment(UtilValidate.isNotEmpty(org_code) && UtilValidate.isNotEmpty(org_code.get(0).getDictionaryName())?org_code.get(0).getDictionaryName():"");
-        }
-        practicePaper.setOptuser(UtilValidate.isNotEmpty(user.getUserName())?user.getUserName():"");
-        practicePaper.setOpttime(new Date());
-
-        if(UtilValidate.isNotEmpty(params.get("knowledge"))){
-            practicePaper.setStuKnowledge(params.get("knowledge").toString());
-        }
-
-        practicePaper.setCount(num);
-        practicePaper.setPracPaperType("自定义");
-
-        practicePaperDao.insert(practicePaper);
-
-        //3.生成练习-试题关联表，以及选项的获取
-        testQuestions.stream().forEach(e->{
-            String qid=e.getId();
-            TestQuestions question = testQuestionsMapper.selectById(qid);//获取题目
-            List<Answer> answers = answerDao.selectList(new EntityWrapper<Answer>().eq("QUESTION_ID", qid));//选项
-
-            //记录表
-            String rid = GetUUID.getUUIDs("PR");
-            PracticeRelevance relevance=new PracticeRelevance();
-            relevance.setId(rid);
-            relevance.setPracticeId(pid);
-            relevance.setQuestionId(qid);
-
-            practiceRelevanceDao.insert(relevance);
-
-            question.setAnswerList(answers);
-            map.put(question.getId(),question);
-        });
-
-
-        return Result.ok().put("pid",pid).put("data",map);
+        //生成试卷名称
+        String name = generateName(params.get("pname").toString());
+        ExerciseConfigureEntity entity = new ExerciseConfigureEntity();
+        entity.preInsert(user.getId());
+        entity.setDelFlag(0);
+        entity.setUserName(user.getUserName());
+        entity.setUsers(user.getId());
+        entity.setDepts(null);
+        entity.setTotal(parseInt(params.get("num").toString()));
+        entity.setName(name);
+        entity.setPrefix(params.get("pname").toString());
+        entity.setScouceFrom(params.get("scourceFrom").toString());
+        exerciseConfigureService.insert(entity);
+        return Result.ok().put("id", entity.getId()).put("name",entity.getName());
     }
 
     //我的收藏-我的错题（获取我的所有的错题）-zjw
@@ -346,4 +307,16 @@ public class CollectionServiceImpl  extends ServiceImpl<CollectionDao,Collection
         return collectionDao.cancle(questionId, userId);
     }
 
+    private String generateName(String prefix){
+        Date date = new Date();
+        SimpleDateFormat sim = new SimpleDateFormat("yyyyMMdd");
+        String time = sim.format(date);
+        String name = prefix + "" + time;
+
+        String key = "NUMBER" + time;
+        String value = redisUtil.getNumber(key, 24*60*60, 4);
+
+        name += value;
+        return name;
+    }
 }

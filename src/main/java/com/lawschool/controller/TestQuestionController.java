@@ -117,12 +117,17 @@ public class TestQuestionController {
     @SysLog("删除试题")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public Result deleteById(@PathVariable("id") String id) {
-        List<String> idList = new ArrayList<>(1);
-        idList.add(id);
+        //假删除
+//        List<String> idList = new ArrayList<>(1);
+//        idList.add(id);
+//
+//        testQuestionService.delete(idList);
+//        // 删除答案
+//        answerService.deleteByQuestionIds(idList);
 
-        testQuestionService.delete(idList);
-        // 删除答案
-        answerService.deleteByQuestionIds(idList);
+        TestQuestions tq= testQuestionService.selectById(id);
+        tq.setStatus("0");
+        testQuestionService.updateById(tq);
         return Result.ok();
     }
 
@@ -141,13 +146,21 @@ public class TestQuestionController {
 
 
     /**
-     * 修改试题状态   启用，禁用
+     * 修改试题状态   启用，禁用,发布
      */
     @RequestMapping(value = "/changisEnble", method = RequestMethod.POST)
     public Result changisEnble(String id,String isEnble) {
 
         TestQuestions tq=   testQuestionService.selectById(id);
-        tq.setIsEnble(isEnble);
+
+        if(isEnble.equals("3")) {
+            tq.setReleaseStatus("1");
+
+        }
+        else{
+            tq.setIsEnble(isEnble);
+
+        }
         testQuestionService.updateById(tq);
         return Result.ok();
     }

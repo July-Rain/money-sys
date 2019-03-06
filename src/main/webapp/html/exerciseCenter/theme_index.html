@@ -110,16 +110,16 @@
                                    v-if="data.status == 1"
                                    @click="start(index)"
                                    plain>继续练习</el-button>
-                        <el-button type="danger chuoti" size="small"
-                                   @click="review(data.id)"
-                                   v-if="data.answerNum > data.rightNum"
-                                   plain><i class="iconfont icon-cuotiku1"></i> 错题集
-                        </el-button>
                         <el-button type="warning chongzuo" size="small"
                                    v-if="data.status == 2"
                                    @click="reStart(data.id)"
                                    plain><i class="iconfont icon-zhongzuo"></i>
                             清空重做
+                        </el-button>
+                        <el-button type="danger chuoti" size="small"
+                                   @click="review(data.id)"
+                                   v-if="data.answerNum > data.rightNum"
+                                   plain><i class="iconfont icon-cuotiku1"></i> 错题集
                         </el-button>
                     </div>
                 </div>

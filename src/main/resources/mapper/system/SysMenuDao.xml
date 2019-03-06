@@ -21,13 +21,14 @@
     <!-- 查询用户菜单 -->
     <select id="findUserMenu" resultType="com.lawschool.beans.system.SysMenuEntity">
         SELECT
-            m.id AS "id",
+        DISTINCT m.id AS "id",
             m.name AS "name",
             m.parent_id AS "parentId",
             m.url AS "url",
             m.PERMS AS "PERMS",
             m.TYPE AS "type",
-            m.ICON AS "icon"
+            m.ICON AS "icon",
+            m.ORDER_NUM as "orderNum"
         FROM LAW_SYS_MENU m
         <if test="list != null and list.size > 0">
             RIGHT JOIN LAW_SYS_ROLE_MENU r ON m.id = r.MENU_ID

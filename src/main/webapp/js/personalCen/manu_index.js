@@ -40,7 +40,8 @@ var vm = new Vue({
             video: '',
             videoUrl: '',
             releaseStatus: 1,
-            answerList: []
+            answerList: [],
+            status:'1',
         },
         importFileUrl: baseURL + "sys/upload",//文件上传url
         addConfigFlag: false,
@@ -315,6 +316,7 @@ var vm = new Vue({
         addQue: function () {
             vm.manu.id = '';
             vm.form = {
+                status:'1',
                 id:'',
                 answerList: [],
                 isEnble: 2,
