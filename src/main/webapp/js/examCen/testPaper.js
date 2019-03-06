@@ -82,6 +82,7 @@ var vm = new Vue({
         count: 0,
         preserved: [],
         examConfig: [],
+        goHomeButton: null
         // 修改前的数据
         /*,
         otherList: [],
@@ -137,12 +138,10 @@ var vm = new Vue({
         },
 
         // 路径方法
-        toHome: function () {
-            parent.location.reload()
-        },
         goBack: function () {
             alert("请先保存，直接退出不会保存数据。");
             var parentWin = window.parent;
+            vm.goHomeButton.style.display = 'block';
             parentWin.document.getElementById("container").src
                 = 'modules/examCen/userExam.html';
         },
@@ -241,6 +240,7 @@ var vm = new Vue({
                     if (result.code === 0) {
                         alert("提交成功");
                         var parentWin = window.parent;
+                        vm.goHomeButton.style.display = 'block';
                         parentWin.document.getElementById("container").src
                             = 'modules/examCen/userExam.html';
                     } else {
@@ -302,6 +302,7 @@ var vm = new Vue({
                     if (result.code === 0) {
                         alert("保存成功");
                         var parentWin = window.parent;
+                        vm.goHomeButton.style.display = 'block';
                         parentWin.document.getElementById("container").src
                             = 'modules/examCen/userExam.html';
                     } else {
@@ -490,8 +491,8 @@ var vm = new Vue({
     created: function () {
         this.$nextTick(function () {
             // 隐藏 返回首页 按钮
-            var goHomeButton = window.parent.document.getElementsByClassName('header-right')[0];
-            goHomeButton.style.display = 'none';
+            vm.goHomeButton = window.parent.document.getElementsByClassName('header-right')[0];
+            vm.goHomeButton.style.display = 'none';
             // vm.refresh();
             if (examStatus == '0') {
                 //开始考试
