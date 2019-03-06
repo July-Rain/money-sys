@@ -112,7 +112,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
     **/
     @Override
     public int updateUserStatus(String id, Integer nowStatus, Integer updateStatus) {
-        User use=new User();
+        User use=userMapper.selectById(id);
         use.setIsAdmin(1);
         use.setUserStatus(updateStatus);
         EntityWrapper<User> ew=new EntityWrapper<>();
@@ -131,9 +131,8 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
     **/
     @Override
     public int updateUserOnlineStatus(String id, String nowStatus, String updateStatus) {
-        User use=new User();
+        User use= userMapper.selectById(id);
         use.setIsOnline(updateStatus);
-        use.setIsAdmin(1);
         EntityWrapper<User> ew=new EntityWrapper<>();
         ew.eq("ID",id);
         ew.eq("IS_ONLINE",nowStatus);
@@ -207,7 +206,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
     public int updatePassword(String userCode, String password, String newPassword,HttpServletRequest request) {
         int rst = this.login(userCode, password,request);
         if(rst==0){//用户存在
-            User user=new User();
+            User user=userMapper.selectById(userCode);
             String salt = RandomStringUtils.randomAlphanumeric(20);//生成盐
             String pass2=MD5Util.Md5Hex(newPassword+salt);//数据库中新密码
             user.setSalt(salt);
@@ -302,16 +301,14 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
     **/
     @Override
     public  int updateUser(User user) {
-        user.setIsAdmin(1);
         int integer = userMapper.update(user, new EntityWrapper<User>().eq("ID", user.getId()));
         return integer==1?SUCCESS:ERROR;
     }
 
     @Override
     public int changeIdentify(String id, String identify) {
-        User user = new User();
+        User user =userMapper.selectById(id);
         user.setId(id);
-        user.setIsAdmin(1);
         if("0".equals(identify)){
             user.setIdentify("1");
         }else if("1".equals(identify)){
