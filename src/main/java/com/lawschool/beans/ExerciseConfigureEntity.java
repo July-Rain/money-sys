@@ -3,6 +3,7 @@ package com.lawschool.beans;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
@@ -28,6 +29,8 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
 
     private String userNames;
     private String deptNames;
+
+    private String scouceFrom;  //来源 默认 ‘TASKCONFIG’还有‘KEYQUE’--重点试题组卷  ‘WRONGQUE’--错题组卷
 
     @TableField(exist = false)
     private List<String> deptIds;
@@ -185,5 +188,13 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
 
     public void setDeptNames(String deptNames) {
         this.deptNames = deptNames;
+    }
+
+    public String getScouceFrom() {
+        return this.scouceFrom;
+    }
+
+    public void setScouceFrom(final String scouceFrom) {
+        this.scouceFrom = scouceFrom;
     }
 }

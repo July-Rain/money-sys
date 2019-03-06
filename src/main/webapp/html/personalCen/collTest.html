@@ -308,6 +308,13 @@
                 </el-col>
             </el-row>
         </el-dialog>
+
+       <el-dialog title="提示" :visible.sync="genTaskByQue" :before-close="closeGenDia">
+            <h3>练习卷《{{taskName}}》已经生成，<a style="color: #666"  @click="jumpTask">点此跳转</a></h3>
+           <div slot="footer" class="dialog-footer">
+               <el-button @click="closeGenDia">关闭</el-button>
+           </div>
+        </el-dialog>
     </div>
 </div>
 </body>

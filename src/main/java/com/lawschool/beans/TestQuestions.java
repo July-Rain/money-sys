@@ -41,6 +41,12 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     private String isEnble;//启用禁用
     private String video;// 视频
 
+
+    //是否被删除的状态位
+    private String status;//0删除   1未删除
+
+
+
     @TableField(exist = false)
     private String videoUrl;
 
@@ -285,5 +291,13 @@ public class TestQuestions extends DataEntity<TestQuestions> {
 
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

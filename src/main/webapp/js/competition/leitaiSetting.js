@@ -423,6 +423,12 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+        toHome: function () {
+            parent.location.reload()
+        },
+        toMain: function () {
+            window.location.href = baseURL + 'modules/manageCen/compSetting.html'
         }
     }
 });

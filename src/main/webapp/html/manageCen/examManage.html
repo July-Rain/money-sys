@@ -114,7 +114,17 @@
                 </el-table-column>
 
                 <el-table-column
-                        label="状态"
+                        label="是否发布"
+                        width="90"
+                        header-align="center"
+                        align="center">
+                    <template slot-scope="scope">
+                        {{scope.row.releaseStatus == '0' ? '未发布' : '已发布'}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                        label="是否启用"
                         width="90"
                         header-align="center"
                         align="center">
@@ -131,18 +141,27 @@
                     <template slot-scope="scope">
 
                         <el-button
-                                v-if="'0'===scope.row.isEnble"
+                                v-if="'0'===scope.row.releaseStatus"
+                                size="mini"
+                                @click="changisEnble(scope.row,'3')">发布
+                        </el-button>
+
+
+
+                        <el-button
+                                v-if="'0'===scope.row.isEnble && '1'===scope.row.releaseStatus"
                                 size="mini"
                                 @click="changisEnble(scope.row,'1')">禁用
                         </el-button>
                         <el-button
-                                v-if="'1'===scope.row.isEnble"
+                                v-if="'1'===scope.row.isEnble && '1'===scope.row.releaseStatus"
                                 size="mini"
                                 @click="changisEnble(scope.row,'0')">启用
                         </el-button>
 
 
                         <el-popover
+
                                 placement="right"
                                 trigger="hover"
                                 content="查看">
@@ -153,6 +172,7 @@
                             </i>
                         </el-popover>
                         <el-popover
+                                v-if="'0'===scope.row.releaseStatus"
                                 placement="right"
                                 trigger="hover"
                                 content="编辑">
@@ -163,6 +183,7 @@
                             </i>
                         </el-popover>
                         <el-popover
+                                v-if="'0'===scope.row.releaseStatus"
                                 placement="right"
                                 trigger="hover"
                                 content="删除">
@@ -309,8 +330,8 @@
                         <el-switch v-model="form.releaseStatus"
                                    active-text="发布"
                                    inactive-text="不发布"
-                                   active-value="0"
-                                   inactive-value="1"
+                                   active-value="1"
+                                   inactive-value="0"
                                    :disabled="isEdit"></el-switch>
                     </el-form-item>
                 </el-col>

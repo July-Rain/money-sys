@@ -33,7 +33,8 @@
             del_flag,
             type,
             dept_names,
-            user_names
+            user_names,
+            source_from
         ) VALUES (
             #{id},
             #{prefix},
@@ -50,7 +51,8 @@
             #{delFlag},
             #{type},
             #{deptNames},
-            #{userNames}
+            #{userNames},
+            #{scouceFrom}
         )
     </insert>
 

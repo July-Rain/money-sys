@@ -10,6 +10,7 @@ import com.lawschool.service.AnswerService;
 import com.lawschool.service.CollectionService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
+import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -89,9 +90,15 @@ public class CollectionController extends AbstractController {
     @RequestMapping("/randomQuestColl")
     public Result randomQuestColl(@RequestParam Map<String,Object> params){
 
-        Result result=collectionService.randomQuestColl(params,getUser());
+        if(UtilValidate.isEmpty(params.get("pname"))){
+            return Result.error("试卷名称不能为空");
+        }else if (UtilValidate.isEmpty(params.get("num"))) {
+            return Result.error("题目数量不能为空");
+        }else {
+            Result result = collectionService.randomQuestColl(params, getUser());
 
-        return result;
+            return result;
+        }
     }
 
 
