@@ -111,40 +111,7 @@
                 <p>规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则</p>
             </div>
         </div>
-        <!--打擂胜利弹框-->
-        <div class="model_area success_area">
-            <div class="inner">
-                <div class="vs_box clearfix">
-                    <div class="left_box">
-                        <div class="head">
-                            <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
-                            <span>胜</span>
-                        </div>
-                        <p class="name">孙小康</p>
-                        <p class="per">80%</p>
-                        <p class="time">1分20秒</p>
-                    </div>
-                    <div class="mid_box">
 
-                    </div>
-                    <div class="right_box">
-                        <div class="head">
-                            <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
-                            <span>胜</span>
-                        </div>
-                        <p class="name">王帅奇</p>
-                        <p class="per">18%</p>
-                        <p class="time">1分20秒</p>
-                    </div>
-                </div>
-                <h2>获得</h2>
-                <p class="coin"></p>
-                <div class="btn_area">
-                    <button>结束</button>
-                    <button>继续攻擂</button>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="container container2" v-if="!leitaiReady">
         <button class="return_back" @click="goBack">
@@ -216,6 +183,78 @@
                 </el-radio-group>
 
             </el-form>
+        </div>
+        <!--打擂胜利弹框-->
+        <div class="model_area success_area" v-if="successShow">
+            <div class="inner">
+                <div class="vs_box clearfix">
+                    <div class="left_box">
+                        <div class="head">
+                            <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                            <span>胜</span>
+                        </div>
+                        <p class="name">孙小康</p>
+                        <p class="per">80%</p>
+                        <p class="time">1分20秒</p>
+                    </div>
+                    <div class="mid_box">
+                        <p class="vs">VS</p>
+                        <p class="mid_msg">正确率</p>
+                        <p class="mid_msg">总用时</p>
+                    </div>
+                    <div class="right_box">
+                        <div class="head">
+                            <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                            <span>胜</span>
+                        </div>
+                        <p class="name">王帅奇</p>
+                        <p class="per">18%</p>
+                        <p class="time">1分20秒</p>
+                    </div>
+                </div>
+                <h2>获得</h2>
+                <p class="coin">积分+{{winCoin}}</p>
+                <div class="btn_area">
+                    <button class="btn_orange" @click="goBack">结束</button>
+                    <button class="btn_blue" @click="rePlay">继续守擂</button>
+                </div>
+            </div>
+        </div>
+        <!--打擂失败弹框-->
+        <div class="model_area success_area fail_area" v-if="failShow">
+            <div class="inner">
+                <div class="vs_box clearfix">
+                    <div class="left_box">
+                        <div class="head">
+                            <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                            <span>胜</span>
+                        </div>
+                        <p class="name">孙小康</p>
+                        <p class="per">80%</p>
+                        <p class="time">1分20秒</p>
+                    </div>
+                    <div class="mid_box">
+                        <p class="vs">VS</p>
+                        <p class="mid_msg">正确率</p>
+                        <p class="mid_msg">总用时</p>
+                    </div>
+                    <div class="right_box">
+                        <div class="head">
+                            <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                            <span>胜</span>
+                        </div>
+                        <p class="name">王帅奇</p>
+                        <p class="per">18%</p>
+                        <p class="time">1分20秒</p>
+                    </div>
+                </div>
+                <h2>奖励</h2>
+                <p class="coin">积分+{{winCoin}}</p>
+                <div class="btn_area">
+                    <button class="btn_orange" @click="goBack">结束</button>
+                    <button class="btn_blue" @click="rePlay">继续攻擂</button>
+                </div>
+            </div>
         </div>
     </div>
     <div style="height: 700px;" v-if="false">
