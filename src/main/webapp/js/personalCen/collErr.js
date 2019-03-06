@@ -36,7 +36,7 @@ var vm = new Vue({
         params:{
             pname:"",
             num:""
-        }
+        },
     },
     created: function () {
         this.$nextTick(function () {

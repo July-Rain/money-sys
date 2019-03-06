@@ -4,6 +4,9 @@
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
     <style>
+        .container {
+            height: 100vh;
+        }
         .header-right ul{
             background: transparent;
         }
@@ -73,6 +76,39 @@
         .green{
             color:green;
         }
+
+        /* 组卷样式 */
+        .right.card_contain {
+            padding: 0;
+            text-align: center;
+        }
+        .right .el-form-item {
+            margin: 18px 18px 23px 18px;
+        }
+        .right .el-input {
+            margin-left: -8px;
+        }
+        .right .el-button {
+            width: 72px;
+            height: 72px;
+            margin: 30px auto 45px;
+            border-radius: 50%;
+        }
+        .right .el-form-item__label {
+            margin: 0 0 10px -125px;
+        }
+        .right .el-input-number__decrease {
+            left: -7px;
+        }
+        .right .el-input-number__increase {
+            right: -7px;
+        }
+        .card_contain .title {
+            padding: 15px 0;
+            border-bottom: 1px solid #dddddd;
+            text-align: center;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -85,23 +121,8 @@
             <el-breadcrumb-item>重点试题</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row :gutter="24">
-            <el-col :span="24">
+            <el-col :span="19">
                 <el-tabs type="border-card">
-                    <el-form :inline="true" :model="params" ref="params" class="demo-form-inline">
-
-                        <el-form-item prop="pname" label="卷名">
-                            <el-input v-model="params.pname"  clearable size="mini"></el-input>
-                        </el-form-item>
-
-                        <el-form-item prop="num" label="题数">
-                            <el-input v-model="params.num" type="number" clearable size="mini"></el-input>
-                        </el-form-item>
-
-                        <el-form-item>
-                            <el-button type="primary" @click="onCom" size="mini">确定</el-button>
-                            <el-button size="mini" @click="resetForm('params')">重置</el-button>
-                        </el-form-item>
-                    </el-form>
                     <div class="info_card">
                         <div class="card_title"></div>
                         <div class="card_contain">
@@ -234,7 +255,28 @@
                         </div>
                 </el-tabs>
             </el-col>
+            <el-col :span="5">
+                <el-tabs type="border-card">
+                    <div class="info_card">
+                        <div class="card_title"></div>
+                        <div class="right card_contain">
+                            <div class="title">一键组卷</div>
+                            <el-form label-position="top" :model="params" ref="params">
+                                <el-form-item label="卷名" prop="pname">
+                                    <el-input placeholder="输入试卷名"  v-model="params.pname"></el-input>
+                                </el-form-item>
+                                <el-form-item label="题数" prop="num">
+                                    <!--  :max="formInline.totalCount" -->
+                                    <el-input-number :min="1" v-model="params.num"></el-input-number>
+                                </el-form-item>
+                                <el-button type="primary" @click="onCom">确定</el-button>
+                            </el-form>
+                        </div>
+                    </div>
+                </el-tabs>
+            </el-col>
         </el-row>
+
 
 
 
