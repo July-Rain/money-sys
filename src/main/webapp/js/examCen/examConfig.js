@@ -917,19 +917,6 @@ var vm = new Vue({
                 var msg ='';
                 var subScore=0;
                 for(var i= 0;i<randomQuesData.length;i++){
-                    if(randomQuesData[i].questionNumber==null||randomQuesData[i].questionNumber==''){
-                        isRight = false;
-                        msg = '题目数量不能为空';
-                        break;
-                    }else if(randomQuesData[i].questionScore==null||randomQuesData[i].questionScore==''){
-                        isRight = false;
-                        msg = '题目分值不能为空';
-                        break;
-                    }else if(randomQuesData[i].questionType==null||randomQuesData[i].questionType==''){
-                        isRight = false;
-                        msg = '题目类型不能为空';
-                        break;
-                    }
                     subScore +=parseFloat(randomQuesData[i].questionScore);
                 }
                 if(!isRight){
