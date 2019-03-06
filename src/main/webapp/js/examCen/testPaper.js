@@ -10,454 +10,28 @@ var vm = new Vue({
         isSubmit: false,
         isFavored: false,
         // 题目数据
-        oneOptionList: [
-            {
-                id: "6",
-                comContent: "我国的根本政治制度是__________。",
-                questionDifficulty: "10001",
-                questionType: "10004",
-                answerId: "17",
-                legalBasis: null,
-                answerDescrible: null,
-                answerChoiceNumber: 3,
-                questionId: null,
-                userAnswer: null,
-                right: null,
-                themeName: "宪法",
-                score: 0,
-                rightAnsCon: null,
-                isCollect: null,
-                recordId: null,
-                answer: [
-                    {
-                        id: "16",
-                        questionContent: "人民民主专政制",
-                        questionId: "6"
-                    },
-                    {
-                        id: "17",
-                        questionContent: "人民代表大会制度",
-                        questionId: "6"
-                    },
-                    {
-                        id: "18",
-                        questionContent: "社会主义制度",
-                        questionId: "6"
-                    }
-                ],
-                checkList: [],
-                firScore: 0,
-                secScore: 0,
-                userScore: 0,
-                rightAnswer: null
-            },
-            {
-                id: "6",
-                comContent: "我国的根本政治制度是__________。",
-                questionDifficulty: "10001",
-                questionType: "10004",
-                answerId: "17",
-                legalBasis: null,
-                answerDescrible: null,
-                answerChoiceNumber: 3,
-                questionId: null,
-                userAnswer: null,
-                right: null,
-                themeName: "宪法",
-                score: 0,
-                rightAnsCon: null,
-                isCollect: null,
-                recordId: null,
-                answer: [
-                    {
-                        id: "16",
-                        questionContent: "人民民主专政制",
-                        questionId: "6"
-                    },
-                    {
-                        id: "17",
-                        questionContent: "人民代表大会制度",
-                        questionId: "6"
-                    },
-                    {
-                        id: "18",
-                        questionContent: "社会主义制度",
-                        questionId: "6"
-                    }
-                ],
-                checkList: [],
-                firScore: 0,
-                secScore: 0,
-                userScore: 0,
-                rightAnswer: null
-            },
-            {
-                id: "6",
-                comContent: "我国的根本政治制度是__________。",
-                questionDifficulty: "10001",
-                questionType: "10004",
-                answerId: "17",
-                legalBasis: null,
-                answerDescrible: null,
-                answerChoiceNumber: 3,
-                questionId: null,
-                userAnswer: null,
-                right: null,
-                themeName: "宪法",
-                score: 0,
-                rightAnsCon: null,
-                isCollect: null,
-                recordId: null,
-                answer: [
-                    {
-                        id: "16",
-                        questionContent: "人民民主专政制",
-                        questionId: "6"
-                    },
-                    {
-                        id: "17",
-                        questionContent: "人民代表大会制度",
-                        questionId: "6"
-                    },
-                    {
-                        id: "18",
-                        questionContent: "社会主义制度",
-                        questionId: "6"
-                    }
-                ],
-                checkList: [],
-                firScore: 0,
-                secScore: 0,
-                userScore: 0,
-                rightAnswer: null
-            },
-        ],
-        multiOptionsList: [
-            {
-                id: "13",
-                comContent: "人民警察办理治安案件，有下列哪种行为应依法给予行政处分；构成犯罪的，依法追究刑事责任（ ）",
-                questionDifficulty: "10003",
-                questionType: "10005",
-                answerId: "38,39,40,41",
-                legalBasis: null,
-                answerDescrible: null,
-                answerChoiceNumber: 4,
-                questionId: null,
-                userAnswer: null,
-                right: null,
-                themeName: "人民警察法",
-                score: 0,
-                rightAnsCon: null,
-                isCollect: null,
-                recordId: null,
-                answer: [
-                    {
-                        id: "38",
-                        questionContent: "刑讯逼供、体罚、虐待、侮辱他人的",
-                        questionId: "13"
-                    },
-                    {
-                        id: "39",
-                        questionContent: "超过询问查证的时间限制人身自由的",
-                        questionId: "13"
-                    },
-                    {
-                        id: "40",
-                        questionContent: "违反规定不及时退还保证金的",
-                        questionId: "13"
-                    },
-                    {
-                        id: "41",
-                        questionContent: "接到要求制止违反治安管理行为的报警后，不及时出警的",
-                        questionId: "13"
-                    }
-                ],
-                checkList:[],
-                firScore: 0,
-                secScore: 0,
-                userScore: 0,
-                rightAnswer: null
-            },
-            {
-                id: "13",
-                comContent: "人民警察办理治安案件，有下列哪种行为应依法给予行政处分；构成犯罪的，依法追究刑事责任（ ）",
-                questionDifficulty: "10003",
-                questionType: "10005",
-                answerId: "38,39,40,41",
-                legalBasis: null,
-                answerDescrible: null,
-                answerChoiceNumber: 4,
-                questionId: null,
-                userAnswer: null,
-                right: null,
-                themeName: "人民警察法",
-                score: 0,
-                rightAnsCon: null,
-                isCollect: null,
-                recordId: null,
-                answer: [
-                    {
-                        id: "38",
-                        questionContent: "刑讯逼供、体罚、虐待、侮辱他人的",
-                        questionId: "13"
-                    },
-                    {
-                        id: "39",
-                        questionContent: "超过询问查证的时间限制人身自由的",
-                        questionId: "13"
-                    },
-                    {
-                        id: "40",
-                        questionContent: "违反规定不及时退还保证金的",
-                        questionId: "13"
-                    },
-                    {
-                        id: "41",
-                        questionContent: "接到要求制止违反治安管理行为的报警后，不及时出警的",
-                        questionId: "13"
-                    }
-                ],
-                checkList:[],
-                firScore: 0,
-                secScore: 0,
-                userScore: 0,
-                rightAnswer: null
-            },
-            {
-                id: "13",
-                comContent: "人民警察办理治安案件，有下列哪种行为应依法给予行政处分；构成犯罪的，依法追究刑事责任（ ）",
-                questionDifficulty: "10003",
-                questionType: "10005",
-                answerId: "38,39,40,41",
-                legalBasis: null,
-                answerDescrible: null,
-                answerChoiceNumber: 4,
-                questionId: null,
-                userAnswer: null,
-                right: null,
-                themeName: "人民警察法",
-                score: 0,
-                rightAnsCon: null,
-                isCollect: null,
-                recordId: null,
-                answer: [
-                    {
-                        id: "38",
-                        questionContent: "刑讯逼供、体罚、虐待、侮辱他人的",
-                        questionId: "13"
-                    },
-                    {
-                        id: "39",
-                        questionContent: "超过询问查证的时间限制人身自由的",
-                        questionId: "13"
-                    },
-                    {
-                        id: "40",
-                        questionContent: "违反规定不及时退还保证金的",
-                        questionId: "13"
-                    },
-                    {
-                        id: "41",
-                        questionContent: "接到要求制止违反治安管理行为的报警后，不及时出警的",
-                        questionId: "13"
-                    }
-                ],
-                checkList:[],
-                firScore: 0,
-                secScore: 0,
-                userScore: 0,
-                rightAnswer: null
-            },
-            {
-                id: "13",
-                comContent: "人民警察办理治安案件，有下列哪种行为应依法给予行政处分；构成犯罪的，依法追究刑事责任（ ）",
-                questionDifficulty: "10003",
-                questionType: "10005",
-                answerId: "38,39,40,41",
-                legalBasis: null,
-                answerDescrible: null,
-                answerChoiceNumber: 4,
-                questionId: null,
-                userAnswer: null,
-                right: null,
-                themeName: "人民警察法",
-                score: 0,
-                rightAnsCon: null,
-                isCollect: null,
-                recordId: null,
-                answer: [
-                    {
-                        id: "38",
-                        questionContent: "刑讯逼供、体罚、虐待、侮辱他人的",
-                        questionId: "13"
-                    },
-                    {
-                        id: "39",
-                        questionContent: "超过询问查证的时间限制人身自由的",
-                        questionId: "13"
-                    },
-                    {
-                        id: "40",
-                        questionContent: "违反规定不及时退还保证金的",
-                        questionId: "13"
-                    },
-                    {
-                        id: "41",
-                        questionContent: "接到要求制止违反治安管理行为的报警后，不及时出警的",
-                        questionId: "13"
-                    }
-                ],
-                checkList:[],
-                firScore: 0,
-                secScore: 0,
-                userScore: 0,
-                rightAnswer: null
-            }
-        ],
+        sinChoicList: [],
+        mulChoicList: [],
+        judgeList: [],
+        subjectList: [],
         fillingList: [],
-        checkingList: [
-            {
-                id: "8",
-                comContent: "根据《反恐怖主义法》的规定，恐怖主义必须具有政治、意识形态等目的（ ）",
-                questionDifficulty: "10001",
-                questionType: "10006",
-                answerId: "22",
-                legalBasis: null,
-                answerDescrible: null,
-                answerChoiceNumber: 2,
-                questionId: null,
-                userAnswer: null,
-                right: null,
-                themeName: "国家安全和公共安全法律",
-                score: 0,
-                rightAnsCon: null,
-                isCollect: null,
-                recordId: null,
-                answer: [
-                    {
-                        id: "22",
-                        questionContent: "正确",
-                        questionId: "8"
-                    },
-                    {
-                        id: "23",
-                        questionContent: "错误",
-                        questionId: "8"
-                    }
-                ],
-                checkList:[],
-                firScore: 0,
-                secScore: 0,
-                userScore: 0,
-                rightAnswer: null
-            },
-            {
-                id: "8",
-                comContent: "根据《反恐怖主义法》的规定，恐怖主义必须具有政治、意识形态等目的（ ）",
-                questionDifficulty: "10001",
-                questionType: "10006",
-                answerId: "22",
-                legalBasis: null,
-                answerDescrible: null,
-                answerChoiceNumber: 2,
-                questionId: null,
-                userAnswer: null,
-                right: null,
-                themeName: "国家安全和公共安全法律",
-                score: 0,
-                rightAnsCon: null,
-                isCollect: null,
-                recordId: null,
-                answer: [
-                    {
-                        id: "22",
-                        questionContent: "正确",
-                        questionId: "8"
-                    },
-                    {
-                        id: "23",
-                        questionContent: "错误",
-                        questionId: "8"
-                    }
-                ],
-                checkList:[],
-                firScore: 0,
-                secScore: 0,
-                userScore: 0,
-                rightAnswer: null
-            },
-            {
-                id: "8",
-                comContent: "根据《反恐怖主义法》的规定，恐怖主义必须具有政治、意识形态等目的（ ）",
-                questionDifficulty: "10001",
-                questionType: "10006",
-                answerId: "22",
-                legalBasis: null,
-                answerDescrible: null,
-                answerChoiceNumber: 2,
-                questionId: null,
-                userAnswer: null,
-                right: null,
-                themeName: "国家安全和公共安全法律",
-                score: 0,
-                rightAnsCon: null,
-                isCollect: null,
-                recordId: null,
-                answer: [
-                    {
-                        id: "22",
-                        questionContent: "正确",
-                        questionId: "8"
-                    },
-                    {
-                        id: "23",
-                        questionContent: "错误",
-                        questionId: "8"
-                    }
-                ],
-                checkList:[],
-                firScore: 0,
-                secScore: 0,
-                userScore: 0,
-                rightAnswer: null
-            },
-            {
-                id: "8",
-                comContent: "根据《反恐怖主义法》的规定，恐怖主义必须具有政治、意识形态等目的（ ）",
-                questionDifficulty: "10001",
-                questionType: "10006",
-                answerId: "22",
-                legalBasis: null,
-                answerDescrible: null,
-                answerChoiceNumber: 2,
-                questionId: null,
-                userAnswer: null,
-                right: null,
-                themeName: "国家安全和公共安全法律",
-                score: 0,
-                rightAnsCon: null,
-                isCollect: null,
-                recordId: null,
-                answer: [
-                    {
-                        id: "22",
-                        questionContent: "正确",
-                        questionId: "8"
-                    },
-                    {
-                        id: "23",
-                        questionContent: "错误",
-                        questionId: "8"
-                    }
-                ],
-                checkList:[],
-                firScore: 0,
-                secScore: 0,
-                userScore: 0,
-                rightAnswer: null
-            }
-        ],
-        expressingList: [],
+
+        // 答题数据
+        mulChoicCheck: [],
+        sinChoicCheck: [],
+        judge:[],
+        subject: [],
+        testForm: {
+            sinChoic: [],
+            mulChoic: [],
+            judge: [],
+            subject: []
+        },
+        userAnswerForm: {
+            answerForm: [],
+            userExamId: [],
+            remainingExamTime: []
+        },
         // bar
         barData: [
             {
@@ -504,37 +78,25 @@ var vm = new Vue({
         consumed: '',
         // 总分
         totalScore: 87,
-        // 主观题答案
-        answer: '',
 
         favoriteText: '收藏此题',
         paperName: '',
         username: '',
         answers: [],
-        answersList: [],
         page: 1,
         limit: 5,
         count: 0,
         preserved: [],
+
+        examConfig: [],
         // 修改前的数据
-        /*testForm: {
-            sinChoic: [],
-            mulChoic: [],
-            judge: [],
-            subject: []
-        },
-        userAnswerForm: {
-            answerForm: [],
-            userExamId: [],
-            remainingExamTime: []
-        },
-        sinChoicList: [],
-        mulChoicList: [],
-        judgeList: [],
-        subjectList: [],
+        /*,
+
+
+
         otherList: [],
         questionList: [],
-        examConfig: [],
+
         user:[],
         page: 1,
         limit: 5,
@@ -574,30 +136,27 @@ var vm = new Vue({
                         vm.paperName = result.examConfig.examName;
                         console.log(result);
                         // 单选题
-                        vm.oneOptionList = result.sinChoicList;
+                        vm.sinChoicList = result.sinChoicList;
                         // 多选题
                         vm.mulChoicList = result.mulChoicList;
                         // 判断题
-                        vm.checkingList = result.judgeList;
+                        vm.judgeList = result.judgeList;
                         // 主观题
-                        vm.expressingList = result.subjectList;
+                        vm.subjectList = result.subjectList;
                         // 考试时间
                         vm.lefttime = result.examConfig.examTime*60000;
                         vm.time = (result.examConfig.examTime)/60;
                         // 考试人员
-                        vm.username = result.user.fullName;
-                        // vm.examConfig = result.examConfig;
-                        // vm.userAnswerForm.userExamId = result.userExam.id;
-                        /*var _mul = result.mulChoicList;
-                        for (var i = 0; i < _mul.length; i++) {
-                            vm.testForm.mulChoic.push([]);
-                        }*/
+                        vm.username = result.user.userName;
 
-                        /*vm.userAnswerForm.userExamId = result.userExam.id;
+                        vm.examConfig = result.examConfig;
+                        vm.userAnswerForm.userExamId = result.userExam.id;
+
                         var _mul = result.mulChoicList;
-                        for (var i = 0; i < _mul.length; i++) {
+                        _mul.forEach(function (val) {
+                            vm.testForm.mulChoic.push([]);
                             vm.mulChoicCheck.push([]);
-                        }*/
+                        })
                     } else {
                         alert(result.msg);
                         var parentWin = window.parent;
@@ -663,10 +222,10 @@ var vm = new Vue({
         },
         // 使用时间
         consumedTime: function () {
-            var consumed =  3*3600000 - this.lefttime;
+            var consumed =  this.time*3600000 - this.lefttime;
             var results = this.figureTime(consumed);
             [this.consumedHours, this.consumedMinutes, this.consumedSeconds] = [...results];
-            this.consumedMinutes = Number(this.consumedMinutes)*60 + Number(this.consumedMinutes);
+            this.consumedMinutes = Number(this.consumedHours)*60 + Number(this.consumedMinutes);
         },
         // 计算时间
         figureTime: function (time) {
@@ -730,20 +289,121 @@ var vm = new Vue({
 
         // 提交试卷
         submit: function () {
-            // var isChecked = document.getElementsByClassName('is-checked');
-            this.isSubmit = true;
+            // this.isSubmit = true;
             // 展示使用时间
             this.consumedTime();
-
-            // 路径转换
-            /*var parentWin = window.parent;
-            parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/paper_index.html';*/
+            vm.userAnswerForm.answerForm = [];
+            vm.userAnswerForm.remainingExamTime = vm.lefttime/60000;
+            for (var i = 0; i < vm.sinChoicList.length; i++) {
+                var obj = {
+                    qId: vm.sinChoicList[i].id,
+                    answer: vm.sinChoicCheck[i] == '' ? '' : vm.sinChoicCheck[i]
+                };
+                vm.userAnswerForm.answerForm.push(obj)
+            }
+            for (var i = 0; i < vm.mulChoicList.length; i++) {
+                var obj = {
+                    qId: vm.mulChoicList[i].id,
+                    answer: vm.mulChoicCheck[i] == '' ? '' : vm.mulChoicCheck[i].join(','),
+                };
+                vm.userAnswerForm.answerForm.push(obj)
+            }
+            for (var i = 0; i < vm.judgeList.length; i++) {
+                var obj = {
+                    qId: vm.judgeList[i].id,
+                    answer: vm.judge[i] == '' ? '' : vm.judge[i],
+                };
+                vm.userAnswerForm.answerForm.push(obj)
+            }
+            for (var i = 0; i < vm.subjectList.length; i++) {
+                var obj = {
+                    qId: vm.subjectList[i].id,
+                    answer: vm.subject[i] == '' ? '' : vm.subject[i],
+                };
+                vm.userAnswerForm.answerForm.push(obj)
+            }
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: baseURL + "user/exam/commitExam",
+                data: JSON.stringify(
+                    vm.userAnswerForm
+                ),
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result.code === 0) {
+                        alert("提交成功");
+                        var parentWin = window.parent;
+                        parentWin.document.getElementById("container").src
+                            = 'modules/examCen/userExam.html';
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         },
+        // 提交主观题答案
         submitSubject: function () {
-            
-        }
-        
+
+        },
+        // 保存
+        save: function () {
+            // 展示使用时间
+            this.consumedTime();
+            vm.userAnswerForm.answerForm = [];
+            vm.userAnswerForm.remainingExamTime = vm.lefttime/60000;
+
+            for (var i = 0; i < vm.sinChoicList.length; i++) {
+                var obj = {
+                    qId: vm.sinChoicList[i].id,
+                    answer: vm.sinChoicCheck[i] == '' ? '' : vm.sinChoicCheck[i]
+                };
+                vm.userAnswerForm.answerForm.push(obj)
+            }
+            for (var i = 0; i < vm.mulChoicList.length; i++) {
+                var obj = {
+                    qId: vm.mulChoicList[i].id,
+                    answer: vm.mulChoicCheck[i] == '' ? '' : vm.mulChoicCheck[i].join(','),
+                };
+                vm.userAnswerForm.answerForm.push(obj)
+            }
+            for (var i = 0; i < vm.judgeList.length; i++) {
+                var obj = {
+                    qId: vm.judgeList[i].id,
+                    answer: vm.judge[i] == '' ? '' : vm.judge[i],
+                };
+                vm.userAnswerForm.answerForm.push(obj)
+            }
+            for (var i = 0; i < vm.subjectList.length; i++) {
+                var obj = {
+                    qId: vm.subjectList[i].id,
+                    answer: vm.subject[i] == '' ? '' : vm.subject[i],
+                };
+                vm.userAnswerForm.answerForm.push(obj)
+            }
+            console.info(vm.userAnswerForm);
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: baseURL + "user/exam/saveExam",
+                data: JSON.stringify(
+                    vm.userAnswerForm
+                ),
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result.code === 0) {
+                        alert("保存成功");
+                        var parentWin = window.parent;
+                        parentWin.document.getElementById("container").src
+                            = 'modules/examCen/userExam.html';
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
 
         // 修改前的方法
         /*startExam: function () {
@@ -883,114 +543,8 @@ var vm = new Vue({
             $(".text_m").css({"font-size": "18px", "font-weight": "normal"});
             $(".text_l").css({"font-size": "24px", "font-weight": "bolder"})
         },*/
-        /*submit: function () {
-            vm.userAnswerForm.answerForm = [];
-            vm.userAnswerForm.remainingExamTime = vm.maxtime/60;
-            for (var i = 0; i < vm.sinChoicList.length; i++) {
-                var obj = {
-                    qId: vm.sinChoicList[i].id,
-                    answer: vm.sinChoicCheck[i] == '' ? '' : vm.sinChoicCheck[i]
-                };
-                vm.userAnswerForm.answerForm.push(obj)
-            }
-            for (var i = 0; i < vm.mulChoicList.length; i++) {
-                var obj = {
-                    qId: vm.mulChoicList[i].id,
-                    answer: vm.mulChoicCheck[i] == '' ? '' : vm.mulChoicCheck[i].join(','),
-                };
-                vm.userAnswerForm.answerForm.push(obj)
-            }
-            for (var i = 0; i < vm.judgeList.length; i++) {
-                var obj = {
-                    qId: vm.judgeList[i].id,
-                    answer: vm.judge[i] == '' ? '' : vm.judge[i],
-                };
-                vm.userAnswerForm.answerForm.push(obj)
-            }
-            for (var i = 0; i < vm.subjectList.length; i++) {
-                var obj = {
-                    qId: vm.subjectList[i].id,
-                    answer: vm.subject[i] == '' ? '' : vm.subject[i],
-                };
-                vm.userAnswerForm.answerForm.push(obj)
-            }
-            console.info(vm.userAnswerForm);
-            $.ajax({
-                type: "POST",
-                async: false,
-                url: baseURL + "user/exam/commitExam",
-                data: JSON.stringify(
-                    vm.userAnswerForm
-                ),
-                datatype: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    if (result.code === 0) {
-                        alert("提交成功");
-                        var parentWin = window.parent;
-                        parentWin.document.getElementById("container").src
-                            = 'modules/examCen/userExam.html';
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
-        },*/
-        /*save: function () {
-            vm.userAnswerForm.answerForm = [];
-            vm.userAnswerForm.remainingExamTime = vm.maxtime/60;
-            console.info(vm.sinChoicCheck);
 
-            for (var i = 0; i < vm.sinChoicList.length; i++) {
-                var obj = {
-                    qId: vm.sinChoicList[i].id,
-                    answer: vm.sinChoicCheck[i] == '' ? '' : vm.sinChoicCheck[i]
-                };
-                vm.userAnswerForm.answerForm.push(obj)
-            }
-            for (var i = 0; i < vm.mulChoicList.length; i++) {
-                var obj = {
-                    qId: vm.mulChoicList[i].id,
-                    answer: vm.mulChoicCheck[i] == '' ? '' : vm.mulChoicCheck[i].join(','),
-                };
-                vm.userAnswerForm.answerForm.push(obj)
-            }
-            for (var i = 0; i < vm.judgeList.length; i++) {
-                var obj = {
-                    qId: vm.judgeList[i].id,
-                    answer: vm.judge[i] == '' ? '' : vm.judge[i],
-                };
-                vm.userAnswerForm.answerForm.push(obj)
-            }
-            for (var i = 0; i < vm.subjectList.length; i++) {
-                var obj = {
-                    qId: vm.subjectList[i].id,
-                    answer: vm.subject[i] == '' ? '' : vm.subject[i],
-                };
-                vm.userAnswerForm.answerForm.push(obj)
-            }
-            console.info(vm.userAnswerForm);
-            $.ajax({
-                type: "POST",
-                async: false,
-                url: baseURL + "user/exam/saveExam",
-                data: JSON.stringify(
-                    vm.userAnswerForm
-                ),
-                datatype: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    if (result.code === 0) {
-                        alert("保存成功");
-                        var parentWin = window.parent;
-                        parentWin.document.getElementById("container").src
-                            = 'modules/examCen/userExam.html';
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
-        },*/
+
         /*CountDown: function () {
             if (vm.maxtime >= 0) {
                 vm.minutes = Math.floor(vm.maxtime / 60);
@@ -1016,16 +570,6 @@ var vm = new Vue({
 
             }
         },*/
-        /*shuffle: function (a) {
-            var j, x, i;
-            for (i = a.length; i; i--) {
-                j = Math.floor(Math.random() * i);
-                x = a[i - 1];
-                a[i - 1] = a[j];
-                a[j] = x;
-            }
-            return a;
-        }*/
     },
     created: function () {
         setInterval(this.computeTime,1000);
