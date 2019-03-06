@@ -81,7 +81,8 @@
              create_time,
              opt_user,
              opt_time,
-             video
+             video,
+             STATUS
         ) VALUES (
             #{id},
             #{typeId},
@@ -106,7 +107,8 @@
             #{createTime},
             #{optUser},
             #{optTime},
-            #{video}
+            #{video},
+            #{status}
         )
     </insert>
 
@@ -365,6 +367,7 @@
         FROM law_testquestions a
         <where>
             a.is_enble != '2'
+            AND a.STATUS='1'
             <if test="typeId != null and typeId != ''">
                 AND a.type_id = #{typeId}
             </if>
