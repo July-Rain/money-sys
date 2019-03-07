@@ -5,7 +5,9 @@ var userExamId = getUrlParam("userExamId");
 var vm = new Vue({
     el: '#app',
     data: {
-
+        isSubmit: true, // 是否提交 待
+        isFavored: false, // 是否收藏
+        // 答题数据
         testForm: {
             sinChoic: [],
             mulChoic: [],
@@ -17,18 +19,57 @@ var vm = new Vue({
             userExamId: [],
             remainingExamTime: []
         },
+        mulChoicCheck: [],
+        sinChoicCheck: [],
+        judge:[],
+        subject: [],
+        // 题目数据
         sinChoicList: [],
         mulChoicList: [],
         judgeList: [],
         subjectList: [],
         otherList: [],
         questionList: [],
+        // bar
+        barData: [
+            {
+                href: "#oneOption",
+                questionType: '单选题',
+                currentFinishedNum: 0,
+                totalNum: 0
+            },
+            {
+                href: "#multiOptions",
+                questionType: '多选题',
+                currentFinishedNum: 0,
+                totalNum: 0
+            },
+            {
+                href: "#checking",
+                questionType: '判断题',
+                currentFinishedNum: 0,
+                totalNum: 0
+            },
+            {
+                href: "#expressing",
+                questionType: '论述题',
+                currentFinishedNum: 0,
+                totalNum: 0
+            }
+        ],
+
+        displayTime: 0,
+        consumedMinutes: '00', // 所用分钟
+        consumedSeconds: '00', // 所用秒
+        totalScore: 87,
+
+        favoriteText: '收藏此题',
+        paperName: '',
+        username: '',
+
         examConfig: [],
         userExam:[],
-        mulChoicCheck: [],
-        sinChoicCheck: [],
-        judge:[],
-        subject: [],
+
         sinStarIcon:[],
         mulStarIcon:[],
         judStarIcon:[],
@@ -41,6 +82,12 @@ var vm = new Vue({
 
     },
     methods: {
+        // 路径方法
+        goBack: function () {
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/personalCen/myExamScore.html';
+        },
         viewExam: function () {
             $.ajax({
                 type: "POST",
@@ -49,6 +96,7 @@ var vm = new Vue({
                     userExamId: userExamId
                 },
                 success: function (result) {
+                    console.log(result)
                     if (result.code === 0) {
 
                         vm.examConfig = result.examConfig;
@@ -128,12 +176,12 @@ var vm = new Vue({
                         alert(result.msg);
                         var parentWin = window.parent;
                         parentWin.document.getElementById("container").src
-                            = 'modules/examCen/userExam.html';
+                            = 'modules/personalCen/myExamScore.html';
                     }
                 }
             });
         },
-        doCollect :function(index,type){
+        /*doCollect :function(index,type){
             var obj ={};
             var type;
             if(type==='10004'){
@@ -207,8 +255,8 @@ var vm = new Vue({
                     }
                 }
             });
-        },
-        fontS: function () {
+        },*/
+        /*fontS: function () {
             console.log(2)
             $("p,span").css("font-size", "16px");
             $(".text_s").css({"font-size": "16px", "font-weight": "bolder"});
@@ -238,6 +286,6 @@ var vm = new Vue({
                 a[j] = x;
             }
             return a;
-        }
+        }*/
     }
 });
