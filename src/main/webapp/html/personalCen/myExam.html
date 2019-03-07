@@ -96,7 +96,18 @@
                             <el-table-column label="操作" align="center">
                                 <template slot-scope="scope">
                                     <el-popover
-                                            v-if="tableData[scope.$index].examStatus==0"
+                                            v-if="scope.row.examStatus==2"
+                                            placement="right"
+                                            trigger="hover"
+                                            content="查看">
+                                        <i class="iconfont icon-chakan tabIcon"
+                                           slot="reference"
+                                           @click="viewExam(scope.$index, scope.row)"
+                                           style="color: #1381e3;font-size: 12px;">
+                                        </i>
+                                    </el-popover>
+                                    <el-popover
+                                            v-if="scope.row.examStatus==0&&verifyTime(scope.row.startTime,scope.row.endTime)"
                                             placement="right"
                                             trigger="hover"
                                             content="开始考试">
@@ -107,7 +118,7 @@
                                         </i>
                                     </el-popover>
                                     <el-popover
-                                            v-if="tableData[scope.$index].examStatus==1"
+                                            v-if="scope.row.examStatus==1&&verifyTime(scope.row.startTime,scope.row.endTime)"
                                             placement="right"
                                             trigger="hover"
                                             content="继续考试">
@@ -117,12 +128,6 @@
                                            style="color: #119e0a;" >&#xe68c;
                                         </i>
                                     </el-popover>
-
-                                    <!--<el-button-->
-                                            <!--size="mini"-->
-                                            <!--@click="startExam(scope.$index, scope.row)">-->
-                                        <!--{{tableData[scope.$index].examStatus==1?"继续考试":"开始考试"}}-->
-                                    <!--</el-button>-->
                                 </template>
                             </el-table-column>
                         </el-table>

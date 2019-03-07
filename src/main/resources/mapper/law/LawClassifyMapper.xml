@@ -11,7 +11,7 @@
     <result column="ORDER_NUM" jdbcType="DECIMAL" property="orderNum" />
     <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
-  <select id="queryClassTree" resultType="com.lawschool.beans.law.TaskDesicEntity">
+  <select id="queryClassTreeData" resultType="com.lawschool.beans.law.TaskDesicEntity">
         -- 虚拟节点数据
         SELECT
             id  as dataId,
@@ -194,6 +194,118 @@
             FROM
                 LAW_CASE_ANALYSIS
 				where CONTENT_TYPE='3'
+
+  </select>
+
+    <select id="queryClassTree" resultType="com.lawschool.beans.law.TaskDesicEntity">
+         -- 虚拟节点数据
+        SELECT
+            id  as dataId,
+            CODE AS infoId,
+            id AS infoCode,
+            "VALUE" AS infoName,
+            PARENT_CODE AS infoParentId,
+            'sham' AS infoType
+        FROM
+            LAW_SYS_DICT
+        where type='TASK_TREE'
+         UNION ALL
+--法律法规数据
+        SELECT
+            CLASSIFY_CODE  AS dataId,
+            'law_'||ID AS infoId,
+            CLASSIFY_CODE AS infoCode,
+            CLASSIFY_NAME AS infoName,
+            'law_'||PARENT_ID AS infoParentId,
+            'law' AS infoType
+        FROM
+            LAW_CLASSIFY
+        WHERE
+            DEL_FLAG = '0'
+
+        UNION ALL
+--学习管理数据  -- 图文
+        SELECT
+            ID  AS dataId,
+            'stu_pic_'||ID AS infoId,
+            CLASSIFY_CODE AS infoCode,
+            CLASSIFY_NAME AS infoName,
+            'stu_pic_'||PARENT_ID AS infoParentId,
+            'stu_pic' AS infoType
+        FROM
+            LAW_CLASSIFY
+        WHERE
+            DEL_FLAG = '0'
+
+        UNION ALL
+--学习管理数据  -- 音频
+        SELECT
+            ID  AS dataId,
+            'stu_audio_'||ID AS infoId,
+            CLASSIFY_CODE AS infoCode,
+            CLASSIFY_NAME AS infoName,
+            'stu_audio_'||PARENT_ID AS infoParentId,
+            'stu_audio' AS infoType
+        FROM
+            LAW_CLASSIFY
+        WHERE
+            DEL_FLAG = '0'
+        UNION ALL
+
+--学习管理数据  -- 视频
+        SELECT
+            ID  AS dataId,
+            'stu_video_'||ID AS infoId,
+            CLASSIFY_CODE AS infoCode,
+            CLASSIFY_NAME AS infoName,
+            'stu_video_'||PARENT_ID AS infoParentId,
+            'stu_video' AS infoType
+        FROM
+            LAW_CLASSIFY
+        WHERE
+            DEL_FLAG = '0'
+
+        UNION ALL
+--案例分析数据 --图文
+        SELECT
+            ID  AS dataId,
+            'case_pic_'||ID AS infoId,
+            CLASSIFY_CODE AS infoCode,
+            CLASSIFY_NAME AS infoName,
+            'case_pic_'||PARENT_ID AS infoParentId,
+            'case_pic' AS infoType
+        FROM
+            LAW_CLASSIFY
+        WHERE
+            DEL_FLAG = '0'
+
+				UNION ALL
+--案例分析数据 --音频
+        SELECT
+            ID  AS dataId,
+            'case_audio_'||ID AS infoId,
+            CLASSIFY_CODE AS infoCode,
+            CLASSIFY_NAME AS infoName,
+            'case_audio_'||PARENT_ID AS infoParentId,
+            'case_audio' AS infoType
+        FROM
+            LAW_CLASSIFY
+        WHERE
+            DEL_FLAG = '0'
+        UNION ALL
+
+--案例分析数据 --视频
+        SELECT
+            ID  AS dataId,
+            'case_video_'||ID AS infoId,
+            CLASSIFY_CODE AS infoCode,
+            CLASSIFY_NAME AS infoName,
+            'case_video_'||PARENT_ID AS infoParentId,
+            'case_video' AS infoType
+        FROM
+            LAW_CLASSIFY
+        WHERE
+            DEL_FLAG = '0'
 
   </select>
 </mapper>

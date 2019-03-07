@@ -12,7 +12,7 @@ var vm = new Vue({
             value: '',
             name: '',
             status: "",
-            stuType:"3",
+            stuType:"video",
             currPage: 1,
             addsrc:"1",
             createUser:"",
@@ -26,7 +26,7 @@ var vm = new Vue({
         visible: false,
         stuMedia: {
             id:"",
-            stuType: "1",
+            stuType: "video",
             stuTitle: "",
             comContent: "",
             deptIds: "",
@@ -119,11 +119,11 @@ var vm = new Vue({
                             }else{
                                 vm.videoData[i].videoPicAccUrl="http://temp.im/640x260";
                             }
-                            if(vm.videoData[i].stuType=='1'){
+                            if(vm.videoData[i].stuType=='pic'){
                                 vm.videoData[i].stuType="图文";
-                            }else if(vm.videoData[i].stuType=='2'){
+                            }else if(vm.videoData[i].stuType=='audio'){
                                 vm.videoData[i].stuType="音频";
-                            }else if(vm.videoData[i].stuType=='3'){
+                            }else if(vm.videoData[i].stuType=='video'){
                                 vm.videoData[i].stuType="视频";
                             }
                         }

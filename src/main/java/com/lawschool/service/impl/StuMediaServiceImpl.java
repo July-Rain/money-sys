@@ -340,6 +340,27 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         return dao.updateStatus(id, status);
     }
 
+    @Override
+    public PageUtils listStuByUser(Map<String, Object> params) {
+        Page page = new Page(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
+        String infoType=(String)params.get("infoType");
+        String taskId=(String)params.get("taskId");
+        String infoId=(String)params.get("infoId");
+        String dataId=(String)params.get("dataId");
+        String infoName=(String)params.get("infoName");
+        TaskDesicEntity taskDesicEntity = new TaskDesicEntity();
+        taskDesicEntity.setInfoType(infoType);
+        taskDesicEntity.setTaskId(taskId);
+        taskDesicEntity.setInfoId(infoId);
+        taskDesicEntity.setDataId(dataId);
+        taskDesicEntity.setInfoName(infoName);
+        String userId=(String)params.get("userId");
+        taskDesicEntity.setUserId(userId);
+        page.setRecords(mapper.listStuByUser(page,taskDesicEntity));
+        page.setTotal(mapper.countListStuByUser(taskDesicEntity));
+        return new PageUtils(page);
+    }
+
     public boolean isColl(String id,String userId){
         boolean isColl = false;
         EntityWrapper<Collection> ew=new EntityWrapper();

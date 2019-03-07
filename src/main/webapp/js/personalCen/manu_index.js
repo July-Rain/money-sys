@@ -49,7 +49,7 @@ var vm = new Vue({
         dialogStuMedia: false,
         stuMedia: {
             id: "",
-            stuType: "1",
+            stuType: "pic",
             stuTitle: "",
             comContent: "",
             deptIds: "",
@@ -337,7 +337,7 @@ var vm = new Vue({
             vm.dialogStuMedia = true;
             this.stuMedia = {
                 id: "",
-                stuType: "1",
+                stuType: "pic",
                 stuTitle: "",
                 comContent: "",
                 deptIds: "",
@@ -604,7 +604,7 @@ var vm = new Vue({
             vm.stuMedia.contentUrl = "";
             vm.stuMedia.videoPicAcc = "";
             vm.stuMedia.videoPicAccUrl = "";
-            if (vm.stuMedia.stuType == '1') {
+            if (vm.stuMedia.stuType == 'pic') {
                 loadEditor();
             }
         },

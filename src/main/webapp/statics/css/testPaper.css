@@ -196,7 +196,7 @@ html {
 }
 /* bar 样式 */
 .bar .category {
-    width: 50px;
+    width: 50%;
     margin: 20px auto;
 }
 .bar .time {

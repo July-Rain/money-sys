@@ -44,5 +44,25 @@ public interface StuMediaDao extends AbstractDao<StuMedia> {
 
     int countListStuByTask( TaskDesicEntity desicEntity);
 
+    /**
+     * @Author MengyuWu
+     * @Description 查询学习任务下的列表 --根据人员查询学习任务
+     * @Date 10:28 2018-12-27
+     * @Param [page, stuMedia]
+     * @return java.util.List<com.lawschool.beans.StuMedia>
+     **/
+
+
+    List<TaskDesicEntity> listStuByUser(Page page, TaskDesicEntity desicEntity);
+    /**
+     * @Author MengyuWu
+     * @Description --根据人员查询学习任务
+     * @Date 10:14 2018-12-27
+     * @Param [stuMedia]
+     * @return int
+     **/
+
+    int countListStuByUser( TaskDesicEntity desicEntity);
+
     boolean updateStatus(@Param("id") String id, @Param("status") String status);
 }

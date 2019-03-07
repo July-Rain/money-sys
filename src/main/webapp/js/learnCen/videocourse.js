@@ -11,7 +11,7 @@ var vm = new Vue({
         dialogPlayer: null,
         navData: [],//导航
         formInline: { // 搜索表单
-            stuType:"3",
+            stuType:"video",
             currPage: 1,
             pageSize: 10,
             totalCount:0,
@@ -23,7 +23,7 @@ var vm = new Vue({
         visible: false,
         stuMedia: {
             id:"",
-            stuType: "1",
+            stuType: "video",
             stuTitle: "",
             comContent: "",
             deptIds: "",
@@ -155,11 +155,11 @@ var vm = new Vue({
                             }else{
                                 vm.videoData[i].videoPicAccUrl=baseURL+'/statics/img/video_bg.png';
                             }
-                            if(vm.videoData[i].stuType=='1'){
+                            if(vm.videoData[i].stuType=='pic'){
                                 vm.videoData[i].stuType="图文";
-                            }else if(vm.videoData[i].stuType=='2'){
+                            }else if(vm.videoData[i].stuType=='audio'){
                                 vm.videoData[i].stuType="音频";
-                            }else if(vm.videoData[i].stuType=='3'){
+                            }else if(vm.videoData[i].stuType=='video'){
                                 vm.videoData[i].stuType="视频";
                             }
                         }
@@ -305,7 +305,7 @@ var vm = new Vue({
                 data: JSON.stringify(coll),
                 success: function(result){
                     if(result.code === 0){
-                        alert("取消收藏成功！");
+                        this.$message('取消收藏成功');
                         vm.reload();
                     }else{
                         alert(result.msg);

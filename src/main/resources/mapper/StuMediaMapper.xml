@@ -286,23 +286,96 @@
             ) M
         INNER JOIN LAW_STU_MEDIA c ON M .DATA_ID = c. ID
         LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
+
+        union  all
+
+          SELECT
+          c. ID,
+          c.CASE_TITLE,
+          c.CASE_CODE,
+          c.VIDEO_PIC_ACC,
+          c.CASE_CONTENT,
+          c.CASE_TIME,
+          c.CONTENT_TYPE,
+          r.id as recordId
+          FROM
+          (
+          SELECT
+          DISTINCT(T.id),
+          T .DATA_ID
+          FROM
+          LAW_TASKS_DESIC T
+          WHERE
+          T .TASK_ID = #{taskId}
+          <if test="infoType != null and infoType!=''">
+              AND T .INFO_TYPE = #{infoType}
+          </if>
+
+          START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
+          ) M
+          INNER JOIN LAW_CASE_ANALYSIS c ON M .DATA_ID = c. ID
+          LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
   </select>
   <select id="countListStuByTask" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
             count(1)
         FROM
             (
-                SELECT
-                DISTINCT(T.id),
-                    T .DATA_ID
-                FROM
-                    LAW_TASKS_DESIC T
-                WHERE
-                    T .TASK_ID = #{taskId}
-                AND T .INFO_TYPE = #{infoType} START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
-            ) M
-        INNER JOIN LAW_STU_MEDIA c ON M .DATA_ID = c. ID
-        LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
+                  SELECT
+                  c. ID,
+                  c.STU_CODE,
+                  c.STU_TITLE,
+                  c.VIDEO_PIC_ACC,
+                  c.STU_ISSTIME,
+                  c.STU_ISSUER,
+                  c.STU_LAWID,
+                  c.com_content,
+                  DICTCODE2VALE(c.STU_POLICECLASS) as stuPoliceclassName,
+                  c.stu_count,
+                  r.id as recordId
+                  FROM
+                  (
+                  SELECT
+                  DISTINCT(T.id),
+                  T .DATA_ID
+                  FROM
+                  LAW_TASKS_DESIC T
+                  WHERE
+                  T .TASK_ID = #{taskId}
+                  AND T .INFO_TYPE = #{infoType} START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
+                  ) M
+                  INNER JOIN LAW_STU_MEDIA c ON M .DATA_ID = c. ID
+                  LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
+
+                  union  all
+
+                  SELECT
+                  c. ID,
+                  c.CASE_TITLE,
+                  c.CASE_CODE,
+                  c.VIDEO_PIC_ACC,
+                  c.CASE_CONTENT,
+                  c.CASE_TIME,
+                  c.CONTENT_TYPE,
+                  r.id as recordId
+                  FROM
+                  (
+                  SELECT
+                  DISTINCT(T.id),
+                  T .DATA_ID
+                  FROM
+                  LAW_TASKS_DESIC T
+                  WHERE
+                  T .TASK_ID = #{taskId}
+                  <if test="infoType != null and infoType!=''">
+                      AND T .INFO_TYPE = #{infoType}
+                  </if>
+
+                  START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
+                  ) M
+                  INNER JOIN LAW_CASE_ANALYSIS c ON M .DATA_ID = c. ID
+                  LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
+            )
   </select>
 
   <delete id="deleteById">
@@ -338,4 +411,74 @@
         SET DEL_STATUS = #{status}
         WHERE id = #{id}
     </update>
+
+    <select id="listStuByUser" resultType="com.lawschool.beans.law.TaskDesicEntity" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+        SELECT
+        A . ID as dataId,
+        'stu_'||A.stu_type||'_'||A.ID AS infoId,
+        A.STU_CODE AS infoCode,
+        A.STU_TITLE AS infoName,
+        'stu_'||A.stu_type||'_'||A.stuLawId AS infoParentId,
+        'stu_'||A.stu_type||'_data' AS infoType
+        FROM
+        (
+        SELECT
+        REGEXP_SUBSTR (
+        T .STU_LAWID,
+        '[^,]+',
+        1,
+        ROWNUM
+        ) AS stuLawId,
+        T .*
+        FROM
+        LAW_STU_MEDIA T
+        <![CDATA[CONNECT BY ROWNUM <= LENGTH (T .STU_LAWID) - LENGTH (REGEXP_REPLACE (T .STU_LAWID, ',', '')) + 1 ]]>
+        ) A
+        WHERE A.del_status = 0
+        <if test="dataId != null and dataId!=''">
+            AND A .stuLawId = #{dataId}
+        </if>
+        <if test="infoType != null and infoType!=''">
+            AND A .stu_type = #{infoType}
+        </if>
+        <if test="userId != null and userId!=''">
+            AND CREATE_user = #{userId}
+        </if>
+        <if test="infoName != null and infoName!=''">
+            and A .stu_title  like '%'||#{infoName}||'%'
+        </if>
+
+  </select>
+    <select id="countListStuByUser" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+        SELECT
+        count(1)
+        FROM
+        (
+        SELECT
+        REGEXP_SUBSTR (
+        T .STU_LAWID,
+        '[^,]+',
+        1,
+        ROWNUM
+        ) AS stuLawId,
+        T .*
+        FROM
+        LAW_STU_MEDIA T
+        <![CDATA[CONNECT BY ROWNUM <= LENGTH (T .STU_LAWID) - LENGTH (REGEXP_REPLACE (T .STU_LAWID, ',', '')) + 1 ]]>
+        ) A
+        WHERE A.del_status = 0
+        <if test="dataId != null and dataId!=''">
+            AND A .stuLawId = #{dataId}
+        </if>
+        <if test="infoType != null and infoType!=''">
+            AND A .stu_type = #{infoType}
+        </if>
+        <if test="userId != null and userId!=''">
+            AND CREATE_user = #{userId}
+        </if>
+        <if test="infoName != null and infoName!=''">
+            and A .stu_title  like '%'||#{infoName}||'%'
+        </if>
+  </select>
+
 </mapper>

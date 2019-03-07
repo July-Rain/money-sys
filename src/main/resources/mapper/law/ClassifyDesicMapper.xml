@@ -15,7 +15,7 @@
     <result column="ISSUE_ORG" jdbcType="NVARCHAR" property="issueOrg" />
       <result column="recordId" jdbcType="NVARCHAR" property="recordId" />
   </resultMap>
-  <select id="queryListByTask" resultMap="BaseResultMap" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+    <select id="queryListByTask" resultMap="BaseResultMap" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
             c. ID,
             c.LAW_CODE,
@@ -56,4 +56,35 @@
         INNER JOIN LAW_CLASSIFY_DESIC c ON M .DATA_ID = c. ID
         LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
   </select>
+
+    <select id="queryListByUser" resultType="com.lawschool.beans.law.TaskDesicEntity" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+        SELECT
+            id as dataId,
+           'law_'||ID AS infoId,
+            LAW_CODE AS infoCode,
+            LAW_TITLE AS infoName,
+            'law_'||CLASSIFY_ID AS infoParentId,
+            'law_data' AS infoType,
+            ISSUE_TIME AS createTime
+        FROM
+            LAW_CLASSIFY_DESIC
+        WHERE DEL_FLAG = '0'
+        <if test="dataId != null and dataId!=''">
+            AND CLASSIFY_ID = #{dataId}
+        </if>
+        <if test="infoName != null and infoName!=''">
+            and LAW_TITLE  like '%'||#{infoName}||'%'
+        </if>
+  </select>
+    <select id="countListByUser" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+        SELECT
+        count(1)
+        FROM
+        LAW_CLASSIFY_DESIC
+        WHERE 1=1
+        <if test="dataId != null and dataId!=''">
+            AND CLASSIFY_ID = #{dataId}
+        </if>
+  </select>
+
 </mapper>

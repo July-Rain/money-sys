@@ -5,32 +5,32 @@
  */
 var ztree;
 var taskId=getUrlParam("id");
-var setting = {
-    data: {
-        simpleData: {
-            enable: true,
-            idKey: "infoId",
-            pIdKey: "infoParentId",
-            rootPId: -1,
-
-        },
-        key: {
-            url:"nourl",
-            name:"infoName"
-        }
-
-    },
-    callback: {
-        onClick: zTreeOnClick
-    }
-};
+// var setting = {
+//     data: {
+//         simpleData: {
+//             enable: true,
+//             idKey: "infoId",
+//             pIdKey: "infoParentId",
+//             rootPId: -1,
+//
+//         },
+//         key: {
+//             url:"nourl",
+//             name:"infoName"
+//         }
+//
+//     },
+//     callback: {
+//         onClick: zTreeOnClick
+//     }
+// };
 var vm = new Vue({
     el: '#app',
     data: {
         infoData: [],//列表
         navData: [],//导航
         formInline: { // 搜索表单
-            stuType:"3",
+            stuType:"law",
             currPage: 1,
             pageSize: 10,
             totalCount:0,
@@ -40,7 +40,7 @@ var vm = new Vue({
             endTime:""
         },
         queryCond:{
-            infoType:"",
+            infoType:"law",
             taskId:"",
             infoId:"",
             currPage: 1,
@@ -50,7 +50,7 @@ var vm = new Vue({
         visible: false,
         stuMedia: {
             id:"",
-            stuType: "1",
+            stuType: "pic",
             stuTitle: "",
             comContent: "",
             deptIds: "",
@@ -71,20 +71,39 @@ var vm = new Vue({
         oldTime:0,//原播放时间
         dialogPic:false,
         caseContent:"",
-        title:"查看"
+        title:"查看",
+        defaultLearnTaskProps:{
+            children: 'list',
+            label: 'classifyName'
+        },//学习内容默认数据
+        classData:[],//树形数据
     },
     created: function () {
 
         this.$nextTick(function () {
 
             //法律分类树数据
+            // $.ajax({
+            //     type: "POST",
+            //     url: baseURL + "law/tree",
+            //     contentType: "application/json",
+            //     success: function(result){
+            //         if(result.code === 0){
+            //             vm.treeData = result.classifyList;
+            //         }else{
+            //             alert(result.msg);
+            //         }
+            //     }
+            // });
+            //加载法律法规数据
             $.ajax({
                 type: "POST",
-                url: baseURL + "law/tree",
+                url: baseURL + "law/alltree",
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
-                        vm.treeData = result.classifyList;
+                        console.log(result.classifyList);
+                        vm.classData = result.classifyList;
                     }else{
                         alert(result.msg);
                     }
@@ -94,7 +113,7 @@ var vm = new Vue({
         })
         this.$nextTick(function () {
             this.reload();
-            this.getZtree();
+            //this.getZtree();
         })
 
     },
@@ -330,16 +349,14 @@ var vm = new Vue({
                     }
                 }
             });
-        }
+        },
+        handleTaskNodeClick:function(data){
+            vm.queryCond.infoType= data.infoType;
+            vm.queryCond.taskId= data.taskId;
+            vm.queryCond.infoId= data.infoId;
+            vm.reload();
+
+        },//点击事件
     }
 });
 
-//ztree节点点击事件
-function zTreeOnClick(event, treeId, treeNode) {
-    console.log(treeNode);
-    var type = treeNode.infoType;
-    vm.queryCond.infoType= treeNode.infoType;
-    vm.queryCond.taskId= treeNode.taskId;
-    vm.queryCond.infoId= treeNode.infoId;
-    vm.reload();
-}

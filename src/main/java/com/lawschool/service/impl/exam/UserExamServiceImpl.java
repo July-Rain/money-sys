@@ -300,6 +300,9 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         if(UtilValidate.isNotEmpty(params.get("source"))){
             userExamForm.setSource(params.get("source").toString());
         }
+        if (UtilValidate.isEmpty(params.get("limit"))){
+            params.put("limit","10");
+        }
         String orderBy = " exam_status,IS_MUST_TEST, start_time ";
         params.put("orderBy",orderBy);
         Page<UserExamForm> userExamFormPage = userExamFormService.findPage(new Page<UserExamForm>(params),userExamForm);

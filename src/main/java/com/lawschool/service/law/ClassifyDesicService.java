@@ -1,5 +1,6 @@
 package com.lawschool.service.law;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.law.ClassifyDesicEntity;
 import com.lawschool.beans.law.TaskDesicEntity;
@@ -46,5 +47,15 @@ public interface ClassifyDesicService extends IService<ClassifyDesicEntity> {
      **/
 
     PageUtils queryPageBySyn(Map<String,Object> param);
+
+    /**
+     * @Author MengyuWu
+     * @Description 根据当前用户  查询对应的学习内容信息（管理员维护学习任务时）
+     * @Date 10:14 2018-12-27
+     * @Param [page, desicEntity]
+     * @return java.util.List<com.lawschool.beans.law.ClassifyDesicEntity>
+     **/
+
+    PageUtils queryListByUser(Map<String, Object> params);
 
 }

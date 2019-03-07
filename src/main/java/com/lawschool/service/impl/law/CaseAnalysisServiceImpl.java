@@ -196,6 +196,27 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
     }
 
     @Override
+    public PageUtils listCaseAnaByUser(Map<String, Object> params) {
+        Page<TaskDesicEntity> page = new Page<TaskDesicEntity>(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
+        String infoType=(String)params.get("infoType");
+        String taskId=(String)params.get("taskId");
+        String infoId=(String)params.get("infoId");
+        String dataId=(String)params.get("dataId");
+        String infoName=(String)params.get("infoName");
+        TaskDesicEntity taskDesicEntity = new TaskDesicEntity();
+        taskDesicEntity.setInfoType(infoType);
+        taskDesicEntity.setTaskId(taskId);
+        taskDesicEntity.setInfoId(infoId);
+        taskDesicEntity.setDataId(dataId);
+        taskDesicEntity.setInfoName(infoName);
+        String userId=(String)params.get("userId");
+        taskDesicEntity.setUserId(userId);
+        page.setRecords(mapper.listCaseAnaByUser(page,taskDesicEntity));
+        page.setTotal(mapper.countListCaseAnaByUser(taskDesicEntity));
+        return new PageUtils(page);
+    }
+
+    @Override
     public int updateCount(String stuId) {
         CaseAnalysisEntity caseAna = new CaseAnalysisEntity();
         caseAna.setContentCount(1);

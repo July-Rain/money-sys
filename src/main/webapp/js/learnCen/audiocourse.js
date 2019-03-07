@@ -9,7 +9,7 @@ var vm = new Vue({
         videoData: [],//视频列表
         navData: [],//导航
         formInline: { // 搜索表单
-            stuType:"2",
+            stuType:"audio",
             currPage: 1,
             pageSize: 10,
             totalCount:0,
@@ -21,7 +21,7 @@ var vm = new Vue({
         visible: false,
         stuMedia: {
             id:"",
-            stuType: "1",
+            stuType: "audio",
             stuTitle: "",
             comContent: "",
             deptIds: "",

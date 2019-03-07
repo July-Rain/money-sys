@@ -7,7 +7,8 @@ var vm = new Vue({
             source:"",
             limit: 10,
             page: 1,
-            count: 0
+            count: 0,
+            source:'1'
         },
         tableData: [],//表格数据
         visible: false,
@@ -18,16 +19,6 @@ var vm = new Vue({
             value: '',
             remark: '',
             status: "1"
-        },
-        rules: {//表单验证规则
-            value: [
-                {required: true, message: '请输入参数名', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ],
-            code: [
-                {required: true, message: '请输入参数值', trigger: 'blur'},
-                {max: 50, message: '最大长度50', trigger: 'blur'}
-            ]
         }
     },
     created: function () {
@@ -72,14 +63,10 @@ var vm = new Vue({
             parentWin.document.getElementById("container").src
                 = 'modules/examCen/testPaper.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
         },
-        // formatterEnd: function (row, column) {
-        //     var _time = new Date(row.endTime);
-        //     return _time.getFullYear() + "/" + (_time.getMonth() + 1) + "/" + _time.getDate() + " " + _time.getHours() + ":" + _time.getMinutes() + ":" + _time.getSeconds();
-        // },
-        // formatterStart: function (row, column) {
-        //     var _time = new Date(row.startTime);
-        //     return _time.getFullYear() + "/" + (_time.getMonth() + 1) + "/" + _time.getDate() + " " + _time.getHours() + ":" + _time.getMinutes() + ":" + _time.getSeconds();
-        // },
+        verifyTime :function(startTime,endTime){
+            var flag = new Date(Date.parse(startTime.replace(/-/g,  "/"))).getTime() <= new Date().getTime()&&new Date(Date.parse(endTime.replace(/-/g,  "/"))).getTime() >= new Date().getTime();
+            return flag;
+        },
         toHome: function () {
             parent.location.reload()
         }

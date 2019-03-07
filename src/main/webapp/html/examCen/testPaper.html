@@ -15,7 +15,7 @@
     <div class="container">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
             <el-breadcrumb-item :to ="{ path: '/' }"><span>首页</span></el-breadcrumb-item>
-            <el-breadcrumb-item>考试中心</el-breadcrumb-item>
+            <el-breadcrumb-item :to ="{ path: '/' }"><span @click="goBack">考试中心</span></el-breadcrumb-item>
             <el-breadcrumb-item>{{ paperName }}</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="content">
@@ -33,7 +33,7 @@
             <article class="main">
                 <el-form :model="testForm">
                     <div class="one-option">
-                        <div class="description"><a name="oneOption"></a>一. 单选题。每题所设选项中只有一个正确答案，多选，错选或不选均不得分。本部分含{{ sinChoicList.length }}题，每题1分，共{{ sinChoicList.length*1 }}分。</div>
+                        <div class="description"><a name="oneOption"></a>一. 单选题。每题所设选项中只有一个正确答案，多选，错选或不选均不得分。本部分含{{ sinChoicList.length }}题，每题{{sinChoicList[0].score}}分，共{{ sinChoicList.length*sinChoicList[0].score }}分。</div>
                         <div class="question daliy" v-for="(question, index) in sinChoicList" :class="{'question-background': (index%2 == 0)&&(!isSubmit)}">
                             <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
                             <el-radio-group v-model="sinChoicCheck[index]" :disabled="isSubmit" @change="update">
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div class="multi-options">
-                        <div class="description"><a name="multiOptions"></a>二. 多选题。每题所设选项中有多个答案。本部分含{{ mulChoicList.length }}题，每题2分，共{{ mulChoicList.length*2 }}分。</div>
+                        <div class="description"><a name="multiOptions"></a>二. 多选题。每题所设选项中有多个答案。本部分含{{ mulChoicList.length }}题，每题{{mulChoicList[0].score}}分，共{{ mulChoicList.length*mulChoicList[0].score }}分。</div>
                         <div class="question" v-for="(question, index) in mulChoicList" :class="{'question-background': (index%2 == 0)&&(!isSubmit)}">
                             <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
                             <el-checkbox-group v-model="mulChoicCheck[index]" :disabled="isSubmit"  @change="update">
@@ -104,7 +104,7 @@
                         </div>
                     </div>
                     <div class="checking">
-                        <div class="description"><a name="checking"></a>三. 判断题。本部分含{{ judgeList.length }}题，每题2分，共{{ judgeList.length*2 }}分。</div>
+                        <div class="description"><a name="checking"></a>三. 判断题。本部分含{{ judgeList.length }}题，每题{{judgeList[0].score}}分，共{{ judgeList.length*judgeList[0].score }}分。</div>
                         <div class="question daliy" v-for="(question, index) in judgeList" :class="{'question-background': (index%2 == 0)&&(!isSubmit)}">
                             <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
                             <el-radio-group v-model="judge[index]" :disabled="isSubmit"  @change="update">
@@ -140,9 +140,9 @@
                         </div>
                     </div>
                     <div class="expressing">
-                        <div class="description"><a name="expressing"></a>四. 主观题。本部分含{{ subjectList.length }}题，每题10分，共{{ subjectList.length*10 }}分。</div>
+                        <div class="description"><a name="expressing"></a>四. 主观题。本部分含{{ subjectList.length }}题。</div>
                         <div class="question daliy clearfix" v-for="(question, index) in subjectList">
-                        <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
+                        <p class="title">{{ index+1 }}.{{ question.comContent }} &nbsp;&nbsp;&nbsp;&nbsp;本题{{ question.score }}分</p>
                         <el-input
                                 type="textarea"
                                 autosize
@@ -152,7 +152,9 @@
                                 @change="update"
                         >
                         </el-input>
+<!--
                         <el-button class="button" @click="submitSubject" type="primary" size="mini">提交</el-button>
+-->
                         <div class="answer-area" v-show="isSubmit">
                             <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
                             <p :class="1==1 ? 'right' : 'err'">

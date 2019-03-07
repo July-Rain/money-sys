@@ -371,6 +371,8 @@
                                   clearable></el-input>
                     </el-form-item>
                     <el-form-item label="任务内容：" prop="taskContent">
+                        <el-input v-model="learnTasks.taskContent" readonly @focus="chooseTaskContent" placeholder="请选择任务内容"
+                                  clearable></el-input>
                         <!--<el-input type="textarea" maxlength="200" v-model="learnTasks.taskContent" placeholder="请输入任务内容" clearable></el-input>-->
                         <!--<el-tree
                                 ref="classTree"
@@ -384,9 +386,9 @@
                         >
                         </el-tree>-->
                         <!-- 选择任务 -->
-                        <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
-                            <ul id="classTree" class="ztree"></ul>
-                        </el-scrollbar>
+                        <!--<el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">-->
+                            <!--<ul id="classTree" class="ztree"></ul>-->
+                        <!--</el-scrollbar>-->
                     </el-form-item>
                 </el-col>
             </el-form>
@@ -501,6 +503,83 @@
             </div>
         </el-dialog>
 
+        <el-dialog title="选择学习任务内容" :visible.sync="dialogLearnConTask">
+            <!--对于同一级的节点，每次只能展开一个-->
+            <div>
+                <el-col :span="6">
+                    <el-scrollbar wrap-class="depList" wrap-style="color: red;" view-style="font-weight: bold;"
+                                  view-class="view-box" :native="false">
+                        <el-tree
+
+                                :data="classData"
+                                :props="defaultLearnTaskProps"
+                                accordion
+                                node-key="id"
+                                @node-click="handleTaskNodeClick">
+                        </el-tree>
+                    </el-scrollbar>
+                </el-col>
+
+                <el-col :span="18" class="paddingLeft20">
+                    <el-form :inline="true" :model="taskForm" ref="taskForm" class="demo-form-inline">
+                        <el-form-item prop="infoName" label="标题">
+                            <el-input v-model="taskForm.infoName" placeholder="标题" size="mini"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="searchContent" size="mini">查询</el-button>
+                            <el-button @click="resetForm('taskForm')" size="mini">重置</el-button>
+                        </el-form-item>
+                    </el-form>
+                    <div>
+                        <el-table
+                                ref="learnTaskTable"
+                                :data="learnTaskData"
+                                border
+                                height="529"
+                                stripe
+                                @selection-change="handleLearnTaskChange"
+                                style="width: 100%">
+                            <el-table-column
+                                    type="selection"
+                                    width="55">
+                            </el-table-column>
+                            <el-table-column
+                                    label="序号"
+                                    type="index"
+                                    header-align="center"
+                                    align="center"
+                                    :index="indexComMethod"
+                                    width="50">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="infoName"
+                                    label="标题"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="infoTime"
+                                    label="时间"
+                            >
+                            </el-table-column>
+
+                        </el-table>
+                        <el-pagination
+                                @size-change="learnTaskSizeChange"
+                                @current-change="learnTaskCurrentChange"
+                                :current-page="userForm.currPage"
+                                :page-sizes="[10, 20, 30, 40]"
+                                :page-size="taskForm.pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="taskForm.totalCount">
+                        </el-pagination>
+                    </div>
+                </el-col>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="cancelTaskCom">取消</el-button>
+                <el-button type="primary" size="mini" @click="confimTaskCom">保存</el-button>
+            </div>
+        </el-dialog>
         <!--<el-dialog title="选择法律法规" :visible.sync="dialogClass" >
             &lt;!&ndash;对于同一级的节点，每次只能展开一个&ndash;&gt;
             <el-tree

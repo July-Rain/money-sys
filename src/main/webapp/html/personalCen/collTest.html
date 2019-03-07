@@ -109,6 +109,48 @@
             text-align: center;
             font-size: 16px;
         }
+
+        /* 弹框样式 */
+        .task-confirmation .el-dialog__header {
+            display: none;
+        }
+        .task-confirmation .el-dialog__body {
+            text-align: center;
+        }
+        .task-confirmation .el-dialog {
+            width: 22vw;
+        }
+        .task-confirmation .check-mark {
+            width: 79px;
+            height: 79px;
+            margin: 30px auto
+        }
+        .task-confirmation .icon-dui1 {
+            display: block;
+            font-size: 40px;
+            line-height: 79px;
+            border-radius: 50%;
+            color: white;
+            background: #6ff29d;
+        }
+        .task-confirmation .note {
+            margin: 40px auto;
+            font-size: 16px;
+            color: #00a93b;
+        }
+        .task-confirmation .info {
+            font-size: 17px;
+            margin-bottom: 70px;
+            color: #333333;
+        }
+        .task-confirmation .el-button {
+            margin-bottom: 30px;
+        }
+        .task-confirmation .closure {
+            margin-bottom: 50px;
+            color: #1381e3;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -211,7 +253,8 @@
                                         label="专项知识"
                                         header-align="center"
                                         align="center"
-                                        width="100">
+                                        width="100"
+                                        show-overflow-tooltip>
                                 </el-table-column>
 
                                 <el-table-column
@@ -309,11 +352,12 @@
             </el-row>
         </el-dialog>
 
-       <el-dialog title="提示" :visible.sync="genTaskByQue" :before-close="closeGenDia">
-            <h3>练习卷《{{taskName}}》已经生成，<a style="color: #666"  @click="jumpTask">点此跳转</a></h3>
-           <div slot="footer" class="dialog-footer">
-               <el-button @click="closeGenDia">关闭</el-button>
-           </div>
+        <el-dialog class="task-confirmation" :visible.sync="genTaskByQue" :before-close="closeGenDia">
+            <div class="check-mark"><i class="iconfont icon-dui1"></i></div>
+            <p class="note">组卷完成！</p>
+            <p class="info">{{ taskName }}，共{{ params.num }}题</p>
+            <el-button type="primary" @click="jumpTask">立即前往 >></el-button>
+            <p class="closure" @click="closeGenDia">关闭</p>
         </el-dialog>
     </div>
 </div>

@@ -24,7 +24,7 @@ var vm = new Vue({
         visible: false,
         stuMedia: {
             id: "",
-            stuType: "1",
+            stuType: "pic",
             stuTitle: "",
             comContent: "",
             deptIds: "",
@@ -243,7 +243,7 @@ var vm = new Vue({
             // }
             this.stuMedia = {
                 id: "",
-                stuType: "1",
+                stuType: "pic",
                 stuTitle: "",
                 comContent: "",
                 deptIds: "",
@@ -264,7 +264,7 @@ var vm = new Vue({
             this.lawCheckData = [];
         },
         handleEdit: function (index, row) {
-            this.title = "修改";
+            this.title = "编辑";
 
             this.deptCheckData = [];
             this.lawCheckData = [];
@@ -280,7 +280,7 @@ var vm = new Vue({
                         vm.deptCheckData = result.data.deptArr;
                         vm.lawCheckData = result.data.stuLawid.split(",");
                         editor.txt.html(vm.stuMedia.comContent);
-                        if (vm.stuMedia.stuType != '1' && vm.stuMedia.comContent) {
+                        if (vm.stuMedia.stuType != 'pic' && vm.stuMedia.comContent) {
                             vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.comContent;
                             if (vm.stuMedia.videoPicAcc) {
                                 vm.stuMedia.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.videoPicAcc;
@@ -571,7 +571,7 @@ var vm = new Vue({
             vm.stuMedia.contentUrl = "";
             vm.stuMedia.videoPicAcc = "";
             vm.stuMedia.videoPicAccUrl = "";
-            if (vm.stuMedia.stuType == '1') {
+            if (vm.stuMedia.stuType == 'pic') {
                 loadEditor();
             }
         },
