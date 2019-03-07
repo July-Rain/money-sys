@@ -249,10 +249,6 @@ var vm = new Vue({
                 }
             });
         },
-        // 提交主观题答案
-        submitSubject: function () {
-
-        },
         // 保存
         save: function () {
             // 展示使用时间

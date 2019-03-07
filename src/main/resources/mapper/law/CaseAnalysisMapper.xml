@@ -71,4 +71,73 @@
         INNER JOIN LAW_CASE_ANALYSIS c ON M .DATA_ID = c. ID
       LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
   </select>
+
+    <select id="listCaseAnaByUser" resultType="com.lawschool.beans.law.TaskDesicEntity" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+        SELECT
+        A .ID  AS dataId,
+        'case_'||A.case_type||'_'||A.ID AS infoId,
+        A .CASE_CODE AS infoCode,
+        A .CASE_TITLE AS infoName,
+        'case_'||A.case_type||'_'||A.caseLawid AS infoParentId,
+        'case_'||A.case_type||'_data' AS infoType
+        FROM
+        (
+        SELECT
+        REGEXP_SUBSTR (
+        T .CASE_LAWID,
+        '[^,]+',
+        1,
+        ROWNUM
+        ) AS caseLawid,
+        T .*
+        FROM
+        LAW_CASE_ANALYSIS T
+        <![CDATA[CONNECT BY ROWNUM <= LENGTH (T .CASE_LAWID) - LENGTH (REGEXP_REPLACE (T .CASE_LAWID, ',', '')) + 1 ]]>
+        ) A
+        WHERE A.del_status = 0
+        <if test="dataId != null and dataId!=''">
+            AND A .caseLawid = #{dataId}
+        </if>
+        <if test="infoType != null and infoType!=''">
+            AND A .case_type = #{infoType}
+        </if>
+        <if test="createUser != null and createUser!=''">
+            AND A.CREATE_user = #{createUser}
+        </if>
+        <if test="infoName != null and infoName!=''">
+            and A .case_title  like '%'||#{infoName}||'%'
+        </if>
+    </select>
+    <select id="countListCaseAnaByUser" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+        SELECT
+       count(1)
+        FROM
+        (
+        SELECT
+        REGEXP_SUBSTR (
+        T .CASE_LAWID,
+        '[^,]+',
+        1,
+        ROWNUM
+        ) AS caseLawid,
+        T .*
+        FROM
+        LAW_CASE_ANALYSIS T
+        <![CDATA[CONNECT BY ROWNUM <= LENGTH (T .CASE_LAWID) - LENGTH (REGEXP_REPLACE (T .CASE_LAWID, ',', '')) + 1 ]]>
+        ) A
+        WHERE A.del_status = 0
+        <if test="dataId != null and dataId!=''">
+            AND A .caseLawid = #{dataId}
+        </if>
+        <if test="infoType != null and infoType!=''">
+            AND A .case_type = #{infoType}
+        </if>
+        <if test="userId != null and userId!=''">
+            AND A.CREATE_user = #{userId}
+        </if>
+        <if test="infoName != null and infoName!=''">
+            and A .case_title  like '%'||#{infoName}||'%'
+        </if>
+    </select>
+
 </mapper>

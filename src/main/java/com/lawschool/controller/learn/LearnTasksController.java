@@ -199,7 +199,22 @@ public class LearnTasksController extends AbstractController {
         PageUtils page = tasksService.queryContentByTask(params);
         return Result.ok().put("page", page);
     }
+    /**
+     * @Author MengyuWu
+     * @Description 制作学习任务页面  选择学习内容数据
+     * @Date 16:53 2018-12-26
+     * @Param [params]
+     * @return com.lawschool.util.Result
+     **/
 
+    @RequestMapping("/allComInfo")
+    public Result allComInfo(@RequestParam Map<String, Object> params){
+        //获取当前登陆人
+        User user=  getUser();
+        params.put("userId",user.getId());
+        PageUtils page = tasksService.queryContentByUser(params);
+        return Result.ok().put("page", page);
+    }
     /*@RequestMapping("/insertRecord")
     public Result insertRecord(String stuId,String stuType,String stuFrom,String taskId){
         //获取当前登陆人

@@ -138,7 +138,7 @@ var vm = new Vue({
         },
         //用户修改vm.
         handleUpt: function (index, row) {
-            vm.title="修改";
+            vm.title="编辑";
             vm.teacher = row;
             console.log("teacher1",row);
             vm.teacher = {
@@ -154,6 +154,7 @@ var vm = new Vue({
                 roles: row.roles,//角色
                 tmroles: row.tmroles,
                 policeclass: row.policeclass,
+                isAdmin:row.isAdmin,
                 sort:row.sort
             };
             console.log("teacher",vm.teacher);
@@ -209,6 +210,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         alert("操作成功");
+                        vm.reload();
                     } else {
                         alert(result.msg);
                     }

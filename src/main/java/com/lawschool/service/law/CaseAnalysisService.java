@@ -70,6 +70,16 @@ public interface CaseAnalysisService extends IService<CaseAnalysisEntity> {
      **/
 
     PageUtils listCaseAnaByTask(Map<String, Object> params);
+
+    /**
+     * @Author MengyuWu
+     * @Description 根据任务信息查询相关的图文 视频 音频信息 --制定学习任务需要
+     * @Date 10:19 2018-12-27
+     * @Param [params]
+     * @return com.lawschool.util.PageUtils
+     **/
+
+    PageUtils listCaseAnaByUser(Map<String, Object> params);
     /**
      * @Author MengyuWu
      * @Description 根据id更新对应的数据

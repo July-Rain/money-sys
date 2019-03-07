@@ -90,6 +90,18 @@ public interface LearnTasksService extends AbstractService<LearnTasksEntity> {
 
     /**
      * @Author MengyuWu
+     * @Description  
+     * @Date 11:39 2019-3-6
+     * @Param [params]
+     * @return com.lawschool.util.PageUtils
+     **/
+    
+
+    PageUtils queryContentByUser(@RequestParam Map<String, Object> params);
+
+
+    /**
+     * @Author MengyuWu
      * @Description 统计学习任务个数
      * @Date 17:36 2019-1-7
      * @Param [params]

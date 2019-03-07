@@ -835,7 +835,7 @@ var vm = new Vue({
         },
         loadVideo: function () {//加载视频课程
             var loadInline={
-                stuType:"3",
+                stuType:"video",
                 currPage: 1,
                 pageSize: 2,
                 totalCount:0,

@@ -37,4 +37,22 @@ public interface ClassifyDesicDao extends BaseMapper<ClassifyDesicEntity> {
      **/
     
     int countListByTask(TaskDesicEntity desicEntity);
+    /**
+     * @Author MengyuWu
+     * @Description 根据当前用户  查询对应的学习内容信息（管理员维护学习任务时）
+     * @Date 10:14 2018-12-27
+     * @Param [page, desicEntity]
+     * @return java.util.List<com.lawschool.beans.law.ClassifyDesicEntity>
+     **/
+
+    List<TaskDesicEntity> queryListByUser(Page page,TaskDesicEntity desicEntity);
+    /**
+     * @Author MengyuWu
+     * @Description 根据当前用户  查询对应的学习内容信息（管理员维护学习任务时）
+     * @Date 10:14 2018-12-27
+     * @Param [desicEntity]
+     * @return int
+     **/
+
+    int countListByUser(TaskDesicEntity desicEntity);
 }

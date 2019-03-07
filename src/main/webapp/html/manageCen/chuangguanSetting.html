@@ -86,11 +86,11 @@
         border-bottom: 1px solid #ddd;
     }
 
-    .dialog_inner > ul{
+    .dialog_inner .el-form > ul{
         float: left;
         width: 94px;
     }
-    .dialog_inner > ul li{
+    .dialog_inner .el-form > ul li{
         width: 100%;
         color: #333;
         font-size: 16px;
@@ -100,7 +100,7 @@
         border-right: 6px solid transparent;
         cursor: hand;
     }
-    .dialog_inner > ul li.active{
+    .dialog_inner .el-form > ul li.active{
         border-right: 6px solid #1381e3;
         color: #1381e3;
     }
@@ -301,37 +301,50 @@
 
         <el-dialog class="special_dialog" :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
             <div class="dialog_inner clearfix">
-                <ul>
-                    <li @click="checkLevel(count)" :class="count===nowLevel?'active':''" v-for="count in levelSum">第 {{count}} 关</li>
-                </ul>
-                <div class="form_area">
+                <el-form label-width="100px">
+                    <el-form-item label="设置大关" prop="xiala">
+                        <el-select @change="onselect" v-model="daguannum"
+                                   size="mini"
+                                   style="margin-left: 20px;"
+                                   placeholder="大关数量">
+                            <el-option
+                                    v-for="item in bigcheckNum"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
 
-                    <el-form label-width="100px" class="demo-msg"
-                             size="mini">
-                        <div class="gray_area">
-                            <el-row>
-                                <el-col :span="12">
-                                    <el-form-item label="总题数量">
-                                        <el-input></el-input>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :span="6">
-                                    <el-form-item label="统一配置">
-                                        <el-switch></el-switch>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :span="6">
-                                    <el-form-item label="大关奖励">
-                                        <el-switch></el-switch>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :span="24">
-                                    <el-form-item label="大关奖励积分">
-                                        <el-input-number :min="1" :max="10"></el-input-number>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-                        </div>
+                    <ul>
+                        <li @click="checkLevel(count)" :class="count===nowLevel?'active':''" v-for="count in levelSum">第 {{count}} 关</li>
+                    </ul>
+                    <div class="form_area">
+
+                            <div class="gray_area">
+                                <el-row>
+                                    <el-col :span="12">
+                                        <el-form-item label="总题数量">
+                                            <el-input></el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="6">
+                                        <el-form-item label="统一配置">
+                                            <el-switch></el-switch>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="6">
+                                        <el-form-item label="大关奖励">
+                                            <el-switch></el-switch>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="24">
+                                        <el-form-item label="大关奖励积分">
+                                            <el-input-number :min="1" :max="10"></el-input-number>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                            </div>
                             <el-row>
                                 <el-col :span="5"><h4>第一题</h4></el-col>
                                 <el-col :span="9">
@@ -371,8 +384,9 @@
                                     </el-form-item>
                                 </el-col>
                             </el-row>
-                    </el-form>
-                </div>
+
+                    </div>
+                </el-form>
             </div>
             <div style="background-color: blue;color: #fff;text-align: center">---------- ↓ 以下是原来的表单，逻辑还没有迁移上来 ↓ ----------</div>
             <el-row>
