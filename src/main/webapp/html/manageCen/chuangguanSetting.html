@@ -232,25 +232,25 @@
                             align="center"
                     >
                     </el-table-column>
-                    <el-table-column
-                            prop="markReward"
-                            label="大关是否奖励"
-                            width="280"
-                            header-align="center"
-                            align="center"
-                    >
-                        <template slot-scope="scope">
-                            {{scope.row.markReward==1?"是":"否"}}
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="rewardScore"
-                            label="大关奖励分值"
-                            width="280"
-                            header-align="center"
-                            align="center"
-                    >
-                    </el-table-column>
+                    <!--<el-table-column-->
+                            <!--prop="markReward"-->
+                            <!--label="大关是否奖励"-->
+                            <!--width="280"-->
+                            <!--header-align="center"-->
+                            <!--align="center"-->
+                    <!--&gt;-->
+                        <!--<template slot-scope="scope">-->
+                            <!--{{scope.row.markReward==1?"是":"否"}}-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column-->
+                            <!--prop="rewardScore"-->
+                            <!--label="大关奖励分值"-->
+                            <!--width="280"-->
+                            <!--header-align="center"-->
+                            <!--align="center"-->
+                    <!--&gt;-->
+                    <!--</el-table-column>-->
                     <el-table-column
                             prop="unifyConfiguration"
                             label="是否统一配置"
@@ -301,8 +301,8 @@
 
         <el-dialog class="special_dialog" :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
             <div class="dialog_inner clearfix">
-                <el-form label-width="100px">
-                    <el-form-item label="设置大关" prop="xiala">
+                <el-form label-width="100px" :model="daguanArray" ref="daguanArray">
+                    <el-form-item label="设置大关">
                         <el-select @change="onselect" v-model="daguannum"
                                    size="mini"
                                    style="margin-left: 20px;"
@@ -317,109 +317,19 @@
                     </el-form-item>
 
                     <ul>
-                        <li @click="checkLevel(count)" :class="count===nowLevel?'active':''" v-for="count in levelSum">第 {{count}} 关</li>
+                        <li @click="checkLevel(count)" :class="count===nowLevel?'active':''" v-for="count in daguannum">第 {{count}} 大关</li>
                     </ul>
-                    <div class="form_area">
+                    <div class="form_area" v-for="(item,index) in daguanArray" v-show="index+1==nowLevel">
 
                             <div class="gray_area">
                                 <el-row>
                                     <el-col :span="12">
                                         <el-form-item label="总题数量">
-                                            <el-input></el-input>
+                                            <el-input v-model="item.smallNum" placeholder="小关数量" clearable></el-input>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="6">
                                         <el-form-item label="统一配置">
-                                            <el-switch></el-switch>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="6">
-                                        <el-form-item label="大关奖励">
-                                            <el-switch></el-switch>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="24">
-                                        <el-form-item label="大关奖励积分">
-                                            <el-input-number :min="1" :max="10"></el-input-number>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                            </div>
-                            <el-row>
-                                <el-col :span="5"><h4>第一题</h4></el-col>
-                                <el-col :span="9">
-                                    <el-form-item label="此题积分">
-                                        <el-input-number :min="1" :max="10"></el-input-number>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-                            <el-row>
-                                <el-col :span="9" :offset="5">
-                                    <el-form-item label="试题难度">
-                                        <el-checkbox-group>
-                                            <el-checkbox label="初级"></el-checkbox>
-                                            <el-checkbox label="中级"></el-checkbox>
-                                            <el-checkbox label="高级"></el-checkbox>
-                                        </el-checkbox-group>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-                            <el-row>
-                                <el-col :span="9" :offset="5">
-                                    <el-form-item label="专项知识">
-
-                                        <el-select placeholder="请选择">
-                                            <el-option label="区域一" value="shanghai"></el-option>
-                                            <el-option label="区域二" value="beijing"></el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :span="9" :offset="5">
-                                    <el-form-item label="试题类型">
-
-                                        <el-select placeholder="请选择">
-                                            <el-option label="区域一" value="shanghai"></el-option>
-                                            <el-option label="区域二" value="beijing"></el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-
-                    </div>
-                </el-form>
-            </div>
-            <div style="background-color: blue;color: #fff;text-align: center">---------- ↓ 以下是原来的表单，逻辑还没有迁移上来 ↓ ----------</div>
-            <el-row>
-                <el-col :span="12">
-                    <el-form :model="daguanArray" :rules="rules" ref="daguanArray" label-width="100px"
-                             class="demo-daguanArray" size="mini">
-                        <el-form-item label="设置大关" prop="xiala">
-                            <el-select @change="onselect" v-model="daguannum"
-                                       size="mini"
-                                       style="margin-left: 20px;"
-                                       placeholder="大关数量">
-                                <el-option
-                                        v-for="item in bigcheckNum"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-
-                        <div v-for="item in daguanArray" class="swiper-slide"
-                             style="border: solid 1px #f00;width: 200%;">
-                            第{{item.markNumOrder}}大关
-                            <table style="border: solid 2px black;width: 100%">
-                                <tr>
-                                    <th>
-                                        <el-form-item label="小关数量" prop="smallNum">
-                                            <el-input v-model="item.smallNum" placeholder="小关数量" clearable></el-input>
-                                        </el-form-item>
-                                    </th>
-                                    <th>
-                                        <el-form-item label="是否统一配置" prop="xiala">
-                                            <!--<el-input v-model="item.smallNum" placeholder="是否统一配置" clearable></el-input>-->
                                             <el-select v-model="item.unifyConfiguration"
                                                        @change="onselectunifyConfiguration(item)" placeholder="是否统一配置"
                                                        clearable>
@@ -427,54 +337,45 @@
                                                 <el-option label="否" value="0"></el-option>
                                             </el-select>
                                         </el-form-item>
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        <el-form-item label="大关是否奖励" prop="markReward">
-                                            <el-switch v-model="item.markReward" active-text="是" inactive-text="否"
-                                                       active-value="1" inactive-value="0"></el-switch>
-                                        </el-form-item>
-                                    </th>
-                                    <th>
-                                        <el-form-item label="大关奖励分值 " prop="smallNum">
-                                            <el-input v-model="item.rewardScore" placeholder="大关奖励分值"
-                                                      clearable></el-input>
-                                        </el-form-item>
-                                    </th>
-                                </tr>
-                            </table>
-                            <div v-for="item2 in item.recruitCheckpointConfigurationList" class="swiper-slide">
+                                    </el-col>
+                                    <!--<el-col :span="6">-->
+                                        <!--<el-form-item label="大关奖励">-->
+                                            <!--<el-switch></el-switch>-->
+                                        <!--</el-form-item>-->
+                                    <!--</el-col>-->
+                                    <!--<el-col :span="24">-->
+                                        <!--<el-form-item label="大关奖励积分">-->
+                                            <!--<el-input-number :min="1" :max="10"></el-input-number>-->
+                                        <!--</el-form-item>-->
+                                    <!--</el-col>-->
+                                </el-row>
 
-                                <table style="border: solid 2px black;width: 100%">
-                                    <tr>
-                                        <th colspan="2">
-                                            <el-form-item label="" v-if="item2.unifyConfiguration==0"
-                                                          prop="crossingPoints">
-                                                第{{item2.howManySmall}}小关
-                                            </el-form-item>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <el-form-item label="小关积分" prop="smallNum">
-                                                <el-input v-model="item2.crossingPoints" placeholder="小关积分"
-                                                          clearable></el-input>
-                                            </el-form-item>
-                                        </th>
-                                        <th>
-                                            <el-form-item label="试题难度" prop="itemDifficulty">
+                                <div v-for="item2 in item.recruitCheckpointConfigurationList">
+
+                                    <el-row>
+
+                                        <el-col :span="5" v-if="item2.unifyConfiguration==0"><h4>第{{item2.howManySmall}}小关</h4></el-col>
+                                        <!--<el-col :span="9">-->
+                                            <!--<el-form-item label="此题积分">-->
+                                                <!--<el-input-number :min="1" :max="10"></el-input-number>-->
+                                            <!--</el-form-item>-->
+                                        <!--</el-col>-->
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="9" :offset="5">
+                                            <el-form-item label="试题难度">
                                                 <el-radio-group v-model="item2.itemDifficulty">
                                                     <el-radio :label="item.key" v-for="item in itemjibie">
                                                         {{item.value}}
                                                     </el-radio>
                                                 </el-radio-group>
                                             </el-form-item>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <el-form-item label="专项知识" prop="xiala">
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="9" :offset="5">
+                                            <el-form-item label="专项知识">
+
                                                 <el-select v-model="item2.specialKnowledgeId"
                                                            size="mini"
                                                            style="margin-left: 20px;"
@@ -487,9 +388,10 @@
                                                     </el-option>
                                                 </el-select>
                                             </el-form-item>
-                                        </th>
-                                        <th>
-                                            <el-form-item label="试题类型" prop="xiala">
+                                        </el-col>
+                                        <el-col :span="9" :offset="5">
+                                            <el-form-item label="试题类型">
+
                                                 <el-select v-model="item2.itemType"
                                                            size="mini"
                                                            style="margin-left: 20px;"
@@ -502,15 +404,142 @@
                                                     </el-option>
                                                 </el-select>
                                             </el-form-item>
-                                        </th>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
+                                        </el-col>
+                                    </el-row>
 
-                    </el-form>
-                </el-col>
-            </el-row>
+                                </div>
+                            </div>
+
+                    </div>
+                </el-form>
+                <!--<span slot="footer" class="dialog-footer">-->
+                    <!--<el-button type="primary" @click="saveOrUpdate('daguanArray')">保存</el-button>-->
+                    <!--<el-button @click="closeDia">取消</el-button>-->
+                <!--</span>-->
+            </div>
+            <!--<div style="background-color: blue;color: #fff;text-align: center">&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; ↓ 以下是原来的表单，逻辑还没有迁移上来 ↓ &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</div>-->
+            <!--<el-row>-->
+                <!--<el-col :span="12">-->
+                    <!--<el-form :model="daguanArray" :rules="rules" ref="daguanArray" label-width="100px"-->
+                             <!--class="demo-daguanArray" size="mini">-->
+                        <!--<el-form-item label="设置大关" prop="xiala">-->
+                            <!--<el-select @change="onselect" v-model="daguannum"-->
+                                       <!--size="mini"-->
+                                       <!--style="margin-left: 20px;"-->
+                                       <!--placeholder="大关数量">-->
+                                <!--<el-option-->
+                                        <!--v-for="item in bigcheckNum"-->
+                                        <!--:key="item.value"-->
+                                        <!--:label="item.label"-->
+                                        <!--:value="item.value">-->
+                                <!--</el-option>-->
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+
+                        <!--<div v-for="item in daguanArray" class="swiper-slide"-->
+                             <!--style="border: solid 1px #f00;width: 200%;">-->
+                            <!--第{{item.markNumOrder}}大关-->
+                            <!--<table style="border: solid 2px black;width: 100%">-->
+                                <!--<tr>-->
+                                    <!--<th>-->
+                                        <!--<el-form-item label="小关数量" prop="smallNum">-->
+                                            <!--<el-input v-model="item.smallNum" placeholder="小关数量" clearable></el-input>-->
+                                        <!--</el-form-item>-->
+                                    <!--</th>-->
+                                    <!--<th>-->
+                                        <!--<el-form-item label="是否统一配置" prop="xiala">-->
+                                            <!--&lt;!&ndash;<el-input v-model="item.smallNum" placeholder="是否统一配置" clearable></el-input>&ndash;&gt;-->
+                                            <!--<el-select v-model="item.unifyConfiguration"-->
+                                                       <!--@change="onselectunifyConfiguration(item)" placeholder="是否统一配置"-->
+                                                       <!--clearable>-->
+                                                <!--<el-option label="是" value="1"></el-option>-->
+                                                <!--<el-option label="否" value="0"></el-option>-->
+                                            <!--</el-select>-->
+                                        <!--</el-form-item>-->
+                                    <!--</th>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<th>-->
+                                        <!--<el-form-item label="大关是否奖励" prop="markReward">-->
+                                            <!--<el-switch v-model="item.markReward" active-text="是" inactive-text="否"-->
+                                                       <!--active-value="1" inactive-value="0"></el-switch>-->
+                                        <!--</el-form-item>-->
+                                    <!--</th>-->
+                                    <!--<th>-->
+                                        <!--<el-form-item label="大关奖励分值 " prop="smallNum">-->
+                                            <!--<el-input v-model="item.rewardScore" placeholder="大关奖励分值"-->
+                                                      <!--clearable></el-input>-->
+                                        <!--</el-form-item>-->
+                                    <!--</th>-->
+                                <!--</tr>-->
+                            <!--</table>-->
+                            <!--<div v-for="item2 in item.recruitCheckpointConfigurationList" class="swiper-slide">-->
+
+                                <!--<table style="border: solid 2px black;width: 100%">-->
+                                    <!--<tr>-->
+                                        <!--<th colspan="2">-->
+                                            <!--<el-form-item label="" v-if="item2.unifyConfiguration==0"-->
+                                                          <!--prop="crossingPoints">-->
+                                                <!--第{{item2.howManySmall}}小关-->
+                                            <!--</el-form-item>-->
+                                        <!--</th>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                        <!--<th>-->
+                                            <!--<el-form-item label="小关积分" prop="smallNum">-->
+                                                <!--<el-input v-model="item2.crossingPoints" placeholder="小关积分"-->
+                                                          <!--clearable></el-input>-->
+                                            <!--</el-form-item>-->
+                                        <!--</th>-->
+                                        <!--<th>-->
+                                            <!--<el-form-item label="试题难度" prop="itemDifficulty">-->
+                                                <!--<el-radio-group v-model="item2.itemDifficulty">-->
+                                                    <!--<el-radio :label="item.key" v-for="item in itemjibie">-->
+                                                        <!--{{item.value}}-->
+                                                    <!--</el-radio>-->
+                                                <!--</el-radio-group>-->
+                                            <!--</el-form-item>-->
+                                        <!--</th>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                        <!--<th>-->
+                                            <!--<el-form-item label="专项知识" prop="xiala">-->
+                                                <!--<el-select v-model="item2.specialKnowledgeId"-->
+                                                           <!--size="mini"-->
+                                                           <!--style="margin-left: 20px;"-->
+                                                           <!--placeholder="专项知识">-->
+                                                    <!--<el-option-->
+                                                            <!--v-for="item in zhuanxiangzhishiList"-->
+                                                            <!--:key="item.key"-->
+                                                            <!--:label="item.value"-->
+                                                            <!--:value="item.key">-->
+                                                    <!--</el-option>-->
+                                                <!--</el-select>-->
+                                            <!--</el-form-item>-->
+                                        <!--</th>-->
+                                        <!--<th>-->
+                                            <!--<el-form-item label="试题类型" prop="xiala">-->
+                                                <!--<el-select v-model="item2.itemType"-->
+                                                           <!--size="mini"-->
+                                                           <!--style="margin-left: 20px;"-->
+                                                           <!--placeholder="试题类型">-->
+                                                    <!--<el-option-->
+                                                            <!--v-for="item in itemtype"-->
+                                                            <!--:key="item.key"-->
+                                                            <!--:label="item.value"-->
+                                                            <!--:value="item.key">-->
+                                                    <!--</el-option>-->
+                                                <!--</el-select>-->
+                                            <!--</el-form-item>-->
+                                        <!--</th>-->
+                                    <!--</tr>-->
+                                <!--</table>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                    <!--</el-form>-->
+                <!--</el-col>-->
+            <!--</el-row>-->
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="saveOrUpdate('daguanArray')">保存</el-button>
                 <el-button @click="closeDia">取消</el-button>
@@ -535,9 +564,9 @@
                                     <i :class="item.itemDifficultyName==='高级'?'light':''" class="iconfont icon-shoucang1"></i>
                                     <span class="diff">{{item.itemDifficultyName}}</span>
                                 </li>
-                                <li><span>关卡积分：</span>{{item.crossingPoints}}</li>
-                                <li><span>是否奖励：</span>{{item.markRewardName}}</li>
-                                <li><span>奖励分值：</span>{{item.rewardScore}}</li>
+                                <!--<li><span>关卡积分：</span>{{item.crossingPoints}}</li>-->
+                                <!--<li><span>是否奖励：</span>{{item.markRewardName}}</li>-->
+                                <!--<li><span>奖励分值：</span>{{item.rewardScore}}</li>-->
                                 <li><span>试题类型：</span>{{item.itemTypeName}}</li>
                             </ul>
                             <!--<el-form-item label="第几小关">-->
