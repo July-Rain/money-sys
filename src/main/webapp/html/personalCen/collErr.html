@@ -338,7 +338,7 @@
         <el-dialog class="task-confirmation" :visible.sync="genTaskByQue" :before-close="closeGenDia">
             <div class="check-mark"><i class="iconfont icon-dui1"></i></div>
             <p class="note">组卷完成！</p>
-            <p class="info">{{ taskName }}，共{{ params.num }}题</p>
+            <p class="info">{{ params.pname }}，共{{ params.num }}题</p>
             <el-button type="primary" @click="jumpTask">立即前往 >></el-button>
             <p class="closure" @click="closeGenDia">关闭</p>
         </el-dialog>
