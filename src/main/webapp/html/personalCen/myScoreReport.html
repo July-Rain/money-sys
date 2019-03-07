@@ -47,8 +47,8 @@
                             </el-radio-group>
                             <div class="answer-area" v-show="isSubmit">
                                 <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
-                                <p :class="1==1 ? 'right' : 'err'">
-                                    你的答案：<span>AB</span>，正确答案：<span>AB</span>
+                                <p :class="question.userScore ? 'right' : 'err'">
+                                    你的答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>，正确答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>
                                 <p class="collection" @click="favor" :class="{'favorite':isFavored}"><i class="iconfont icon-shoucang" :class="{'favorite':isFavored}"></i>{{ favoriteText }}</p>
                                 </p>
                                 <p class="text">
@@ -83,8 +83,8 @@
                             </el-checkbox-group>
                             <div class="answer-area" v-show="isSubmit">
                                 <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
-                                <p :class="1==1 ? 'right' : 'err'">
-                                    你的答案：<span>AB</span>，正确答案：<span>AB</span>
+                                <p :class="question.userScore ? 'right' : 'err'">
+                                    你的答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>，正确答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
                                 <p class="collection" @click="favor" :class="{'favorite':isFavored}"><i class="iconfont icon-shoucang" :class="{'favorite':isFavored}"></i>{{ favoriteText }}</p>
                                 </p>
                                 <p class="text">
@@ -119,8 +119,8 @@
                             </el-radio-group>
                             <div class="answer-area" v-show="isSubmit">
                                 <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
-                                <p :class="1==1 ? 'right' : 'err'">
-                                    你的答案：<span>AB</span>，正确答案：<span>AB</span>
+                                <p :class="question.userScore ? 'right' : 'err'">
+                                    你的答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>，正确答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
                                 <p class="collection" @click="favor" :class="{'favorite':isFavored}"><i class="iconfont icon-shoucang" :class="{'favorite':isFavored}"></i>{{ favoriteText }}</p>
                                 </p>
                                 <p class="text">
@@ -142,21 +142,20 @@
                     <div class="expressing">
                         <div class="description"><a name="expressing"></a>四. 主观题。本部分含{{ subjectList.length }}题，每题10分，共{{ subjectList.length*10 }}分。</div>
                         <div class="question daliy clearfix" v-for="(question, index) in subjectList">
-                            <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
+                            <p class="title">{{ index+1 }}.{{ question.comContent }}<span class="title">({{ question.score }})分</span></p>
                             <el-input
                                     type="textarea"
                                     autosize
-                                    placeholder="请输入内容…"
+                                    :placeholder="question.checkList[0]"
                                     v-model="subject[index]"
                                     :disabled="isSubmit"
                                     @change="update"
                             >
                             </el-input>
-                            <el-button class="button" @click="submitSubject" type="primary" size="mini">提交</el-button>
                             <div class="answer-area" v-show="isSubmit">
                                 <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
-                                <p :class="1==1 ? 'right' : 'err'">
-                                    此题得分：<span class="right">6</span>
+                                <p :class="question.userScore ? 'right' : 'err'">
+                                    此题得分：<span class="right">{{ question.userScore }}</span>
                                 <p class="collection" @click="favor" :class="{'favorite':isFavored}"><i class="iconfont icon-shoucang" :class="{'favorite':isFavored}"></i>{{ favoriteText }}</p>
                                 </p>
                                 <p class="text">
@@ -194,19 +193,19 @@
                     <div><span :class="{'done-something': item.currentFinishedNum}">{{ item.currentFinishedNum }}</span>/<span>{{ item.totalNum }}</span></div>
                 </li>
             </ul>
-            <div class="buttons" v-if="!isSubmit">
+            <!--<div class="buttons" v-if="!isSubmit">
                 <el-button type="primary" @click="submit" size="small">交卷</el-button>
                 <el-button @click="save" type="primary" plain class="save" size="small">保存</el-button>
                 <el-button @click="save" type="primary" plain class="save" size="small">返回</el-button>
-            </div>
+            </div>-->
             <div class="display" v-if="isSubmit">
                 <div class="number">
                     <div class="right-num">
-                        <span class="num">63</span>
+                        <span class="num">{{ rightNum }}</span>
                         <span class="green">对</span>
                     </div>
                     <div class="error-num">
-                        <span class="num">4</span>
+                        <span class="num">{{ wrongNum }}</span>
                         <span class="red">错</span>
                     </div>
                 </div>
