@@ -38,6 +38,8 @@ var vm = new Vue({
         nameList: ["美丽的四茹姐", "李坤宇", "卜楠", "孙小康", "李信融", "乔杰", "美丽的四茹姐", "李坤宇", "卜楠", "孙小康", "李信融", "乔杰"],
         play1: "",
         play2: "",
+        timing: 10,
+        saveTiming: 10
     },
     created: function () {
         this.$nextTick(function () {
@@ -102,6 +104,8 @@ var vm = new Vue({
     }
 });
 
+
+var timingTimeout = null;
 
 var uid = null;
 //发送人编号
@@ -201,13 +205,23 @@ websocket.onmessage = function (event) {
                         vm.play1 = this.fullName;
                     }
                 });
-                vm.dialogQuestion = true,
-                    vm.radio_disabled = false;
+                    vm.dialogQuestion = true;
+                vm.radio_disabled = false;
                 vm.allnum = data.tqList.length;
                 vm.nownum = Number(nowtimu) + 1;
                 vm.nowQscore = data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
                 vm.nowbattleTopicSetting = data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
                 vm.Question = data.tqList[Number(nowtimu)];
+
+                timingTimeout = setInterval(function () {
+                    console.log(111)
+                    if(vm.timing === 0){
+                        sendMsg();
+                        clearInterval(timingTimeout);
+                        vm.timing = vm.saveTiming;
+                    }
+                    vm.timing --
+                },1000)
             }, 1000);
 
         }
@@ -268,14 +282,22 @@ websocket.onmessage = function (event) {
                     // alert("全部题目答完");
                     closeWebsocket();
                 } else {
-                    vm.dialogQuestion = true,
-                        vm.radio_disabled = false;
+                    vm.dialogQuestion = true;
+                    vm.radio_disabled = false;
                     vm.allnum = data.tqList.length;
                     vm.nownum = Number(nowtimu) + 1;
                     vm.nowQscore = data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
                     vm.nowbattleTopicSetting = data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
                     vm.Question = data.tqList[Number(nowtimu)];
                     vm.yesOrNoAnswer = "未答题";
+                    timingTimeout = setInterval(function () {
+                        if(vm.timing === 0){
+                            sendMsg();
+                            clearInterval(timingTimeout);
+                            vm.timing = vm.saveTiming;
+                        }
+                        vm.timing --
+                    },1000)
                 }
 
             }, 3000);
