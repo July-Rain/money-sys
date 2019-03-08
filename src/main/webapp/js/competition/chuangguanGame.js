@@ -276,26 +276,14 @@ var vm = new Vue({
                 if ((Number(vm.nowBignum) + 1) <= Number(vm.allBignum)) {
                     //xian提示他这一大关成功闯过
                     //获得多少积分  并且有无大关奖励  是否进入下一个大关
-
-
                     vm.rushSuccess = true;
-
                     //如果当前大关 没有大关通关奖励
-                    if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "0") {
-
+                    // if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "0") {
                         // vm.$alert("恭喜你，通过第" + vm.nowBignum + "大关，该大关没有大关通关奖励分值,当前奖励积分" + vm.Score)
-
-                    } else if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "1") {
+                    // } else if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "1") {
                         vm.Score = Number(vm.Score) + Number(vm.BigGuanList[Number(vm.nowBignum) - 1].rewardScore);  //下表原因  要减一
                         // vm.$alert("恭喜你，通过第" + vm.nowBignum + "大关，并获得大关通关奖励" + vm.BigGuanList[Number(vm.nowBignum) - 1].rewardScore + ",当前奖励积分" + vm.Score);
-                    }
-
-
-
-
-
-
-
+                    // }
                 } else if ((Number(vm.nowBignum) + 1) > Number(vm.allBignum)) {
 
                     vm.rushSuccess = true;

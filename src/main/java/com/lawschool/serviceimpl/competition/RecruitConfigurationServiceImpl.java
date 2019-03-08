@@ -149,6 +149,9 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 //		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 //		User u= (User) request.getSession().getAttribute("user");
 		User u = (User) SecurityUtils.getSubject().getPrincipal();
+		//到表中找积分规则
+		Result result=fractionService.getFractionByType("1", Source.RECRUIT);
+		Fraction fraction=(Fraction)result.get("fraction");
 		for(int i=0;i<list.size();i++)
 		{
 			RecruitConfiguration reConfation=list.get(i);
@@ -156,7 +159,7 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 			reConfation.setCreatePeople(u.getId());     //创建人id
 			reConfation.setCreateTime(new Date());   	//创建时间
 			reConfation.setCreateDept(u.getOrgCode());  //所属部门code
-
+			reConfation.setRewardScore(String.valueOf(fraction.getMaxScore()));//大关奖励
 //			reConfation.setMarkNumOrder(i+1);
 
 			this.insert(reConfation);
@@ -166,9 +169,7 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 			int smallNum= Integer.parseInt(reConfation.getSmallNum());
 
 
-			//到表中找积分规则
-	        Result result=fractionService.getFractionByType("1", Source.RECRUIT);
-			Fraction fraction=(Fraction)result.get("fraction");
+
 
 			if(reConfation.getUnifyConfiguration().equals("1"))
 			{
