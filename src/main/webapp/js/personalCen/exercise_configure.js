@@ -11,7 +11,8 @@ var vm = new Vue({
             list: [],
             rangeType: 0,
             deptIds: [],
-            userIds: []
+            userIds: [],
+            sourceFrom:"1"
         },
         rangeType: [
             {key:0, value:'个人'},

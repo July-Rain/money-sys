@@ -218,19 +218,14 @@
                         </el-table-column>
                     </el-table>
 
-                    <el-form-item label="使用分类：">
-                        <el-radio v-for="item in rangeType" v-model="exerciseConfigure.rangeType" :label="item.key">
-                            {{item.value}}
-                        </el-radio>
-                    </el-form-item>
 
-                    <el-form-item label="使用部门：" v-show="exerciseConfigure.rangeType == 2">
+                    <el-form-item label="使用部门：">
                         <el-input v-model="exerciseConfigure.deptNames"
                                   readonly @focus="deptShow" placeholder="请选择使用部门" clearable>
                         </el-input>
                     </el-form-item>
 
-                    <el-form-item label="使用人员：" v-show="exerciseConfigure.rangeType == 2">
+                    <el-form-item label="使用人员：">
                         <el-input v-model="exerciseConfigure.userNames" readonly
                                   @focus="chooseUser" placeholder="请选择使用人员" clearable></el-input>
                     </el-form-item>

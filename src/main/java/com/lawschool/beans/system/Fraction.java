@@ -25,15 +25,15 @@ public class Fraction extends DataEntity<Fraction> {
 
     private Integer queNum;//题目数量要求  大于多少题  or   守擂成功次数
 
-    private Double dailyLimit;  //每日上限
+    private Float dailyLimit;  //每日上限
 
-    private Double score ;  //分数  or  额外奖励分数
+    private Float score ;  //分数  or  额外奖励分数
 
-    private Double minScore;  //小关分数 or 失败分数
+    private Float minScore;  //小关分数 or 失败分数
 
-    private Double  maxScore;   //大关分数 or 胜利分数
+    private Float  maxScore;   //大关分数 or 胜利分数
 
-    private Double minDemand; //最低要求  考试学分、练习中心时为正确率  学习中心收听收看时长
+    private Float minDemand; //最低要求  考试学分、练习中心时为正确率  学习中心收听收看时长
 
     @TableField(exist = false)
     private List<FractionRules> fractionRulesList;
@@ -62,43 +62,43 @@ public class Fraction extends DataEntity<Fraction> {
         this.queNum = queNum;
     }
 
-    public Double getDailyLimit() {
+    public Float getDailyLimit() {
         return dailyLimit;
     }
 
-    public void setDailyLimit(Double dailyLimit) {
+    public void setDailyLimit(Float dailyLimit) {
         this.dailyLimit = dailyLimit;
     }
 
-    public Double getScore() {
+    public Float getScore() {
         return score;
     }
 
-    public void setScore(Double score) {
+    public void setScore(Float score) {
         this.score = score;
     }
 
-    public Double getMinScore() {
+    public Float getMinScore() {
         return minScore;
     }
 
-    public void setMinScore(Double minScore) {
+    public void setMinScore(Float minScore) {
         this.minScore = minScore;
     }
 
-    public Double getMaxScore() {
+    public Float getMaxScore() {
         return maxScore;
     }
 
-    public void setMaxScore(Double maxScore) {
+    public void setMaxScore(Float maxScore) {
         this.maxScore = maxScore;
     }
 
-    public Double getMinDemand() {
+    public Float getMinDemand() {
         return minDemand;
     }
 
-    public void setMinDemand(Double minDemand) {
+    public void setMinDemand(Float minDemand) {
         this.minDemand = minDemand;
     }
 

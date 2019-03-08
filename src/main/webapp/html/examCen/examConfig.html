@@ -4,83 +4,241 @@
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
     <style>
-        .preview h2{
+        .container {
+            padding: 0;
+        }
+
+        .preview h2 {
             text-align: center;
             font-size: 20px;
             line-height: 40px;
         }
-        .part{
+
+        .part {
             padding: 0 20px;
 
         }
-        .part h4{
+
+        .part h4 {
             line-height: 30px;
         }
-        .part p{
+
+        .part p {
             line-height: 20px;
         }
-        .part .left{
+
+        .part .left {
             float: left;
             width: 80%;
         }
-        .part .right{
+
+        .part .right {
             float: right;
             width: 20%;
             padding: 50px 0 0 30px;
         }
-        .hide{
+
+        .hide {
             /*visibility: hidden;*/
         }
-        .configure{
+
+        .configure {
             padding-bottom: 0;
             min-height: 100vh;
+            border: solid 1px #dddddd;
+            border-radius: 4px;
         }
-        .configure .el-select>.el-input{
+
+        .configure .el-select > .el-input {
             width: 220px;
         }
-        .el-pagination__sizes .el-select>.el-input{
+
+        .el-pagination__sizes .el-select > .el-input {
             width: 100px;
         }
-        .configure .text-right{
+
+        .configure .text-right {
             text-align: right;
         }
-        .configure .el-form-item{
+
+        .configure .el-form-item {
             margin-bottom: 15px;
         }
-        .configure .el-form-item--mini .el-form-item__content{
+
+        .configure .el-form-item--mini .el-form-item__content {
             height: 30px;
             line-height: 30px;
         }
-        .dialog_minW750>.el-dialog{
+
+        .dialog_minW750 > .el-dialog {
             min-width: 900px;
         }
 
-        .subTitle .el-input{
+        .subTitle .el-input {
             display: inline-block;
             width: 75px;
         }
-        .contain_title{
+
+        .contain_title {
             height: 46px;
             background-color: #edf5fc;
             padding: 14px 44px;
         }
-        .contain_title h2{
+
+        .contain_title h2 {
             font-weight: normal;
             padding-left: 8px;
             border-left: 6px solid #1381e3;
             font-size: 14px;
             color: #333;
         }
+
+        .form_box {
+            padding: 13px 40px 0;
+        }
+
+        .random_area {
+            background-color: #fff;
+        }
+
+        .random_area .random_box {
+            border: solid 1px #dddddd;
+            border-radius: 4px;
+        }
+
+        .random_area .random_box:first-child {
+            float: left;
+            width: calc(100% - 318px);
+        }
+
+        .random_area .random_box:last-child {
+            float: right;
+            width: 300px;
+        }
+
+        .random_box .el-form {
+            padding: 17px 44px;
+        }
+
+        .random_box .el-form h3 {
+            line-height: 25px;
+            color: #2a2a2a;
+            font-size: 20px;
+            padding-bottom: 16px;
+        }
+
+        .random_box .el-form h3 span {
+            padding-left: 19px;
+            color: #ff6000;
+            font-size: 14px;
+            padding-top: 10px;
+            line-height: 15px;
+        }
+
+        .random_box .el-form > div > p {
+            line-height: 30px;
+            padding-bottom: 25px;
+            color: #333;
+        }
+
+        .random_box .el-form > div > p > * {
+            margin-left: 14px;
+            margin-right: 9px;
+        }
+
+        .random_box .el-form > div > p > span {
+            padding-left: 20px;
+        }
+
+        .box_right {
+            padding: 23px 26px;
+        }
+
+        .box_right .exam_title {
+            color: #333;
+            font-size: 24px;
+            font-weight: bolder;
+            padding-bottom: 28px;
+        }
+
+        .box_right ul li {
+            padding-bottom: 18px;
+            line-height: 14px;
+            color: #333333;
+        }
+
+        .preview_area .el-form h3 span:last-child {
+            color: #666;
+            float: right;
+            font-weight: normal;
+        }
+
+        .preview_area .config_box > p {
+            float: right;
+        }
+
+        .preview_area .question_box {
+            border: 1px solid #cccccc;
+            padding: 14px 20px;
+            margin-top: 6px;
+            position: relative;
+        }
+
+        .preview_area .question_box .title span {
+            float: left;
+            width: 35px;
+            height: 20px;
+            line-height: 20px;
+            background-color: #36aafd;
+            color: #fff;
+            display: block;
+            margin-right: 8px;
+            text-align: center;
+        }
+
+        .preview_area .question_box .title .p {
+            font-size: 16px;
+            color: #333;
+            line-height: 22px;
+            margin-bottom: 19px;
+        }
+
+        .preview_area .question_box > ul {
+            padding-left: 64px;
+            padding-bottom: 21px;
+        }
+
+        .preview_area .question_box > ul li {
+            float: left;
+            padding-right: 33px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .preview_area .question_box .msg {
+            font-size: 14px;
+            color: #999;
+            line-height: 14px;
+        }
+
+        .preview_area .question_box .change {
+            position: absolute;
+            right: 17px;
+            bottom: 9px;
+            color: #999999;
+        }
     </style>
 </head>
 <body>
 <div id="app" v-cloak style="width: 100%;min-width: 0;">
-    <!--固定头部-->
-    <div class="contain_title">
-        <h2>考试配置</h2>
-    </div>
-    <div class="container configure">
-        <el-form :model="examConfig" :rules="rules" ref="examConfig" label-width="100px" class="demo-examConfig"
+
+
+    <div class="container configure" v-show="!randomQuesModal">
+        <div class="contain_title">
+            <h2>考试配置</h2>
+        </div>
+        <div class="form_box">
+            <el-form :model="examConfig" :rules="rules" ref="examConfig" label-width="100px" class="demo-examConfig"
                      size="mini">
                 <el-row>
                     <el-col :span="24">
@@ -93,7 +251,7 @@
                         <el-form-item label="考试类型：" prop="examType">
                             <el-select v-model="examConfig.examType"
                                        collapse-tags
-                                        style="width: auto"
+                                       style="width: auto"
                                        placeholder="请选择考试类型" size="mini" :disabled="view">
                                 <el-option v-for="item in etOption"
                                            :key="item.key"
@@ -119,13 +277,15 @@
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="是否必考：" prop="isMustTest">
-                                <el-radio v-for="item in imtOption" v-model="examConfig.isMustTest" :label="item.key" :disabled="view">{{item.value}}</el-radio>
+                            <el-radio v-for="item in imtOption" v-model="examConfig.isMustTest" :label="item.key"
+                                      :disabled="view">{{item.value}}
+                            </el-radio>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="出题方式：" prop="questionWay">
                             <el-select v-model="examConfig.questionWay"
-                                       placeholder="请选择出題方式" size="mini"  :disabled="view">
+                                       placeholder="请选择出題方式" size="mini" :disabled="view">
                                 <el-option v-for="item in qwOption"
                                            :key="item.key"
                                            :label="item.value"
@@ -137,12 +297,16 @@
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="题目顺序：" prop="topicOrderType">
-                            <el-radio v-for="item in otOption" v-model="examConfig.topicOrderType" :label="item.key" :disabled="view">{{item.value}}</el-radio>
+                            <el-radio v-for="item in otOption" v-model="examConfig.topicOrderType" :label="item.key"
+                                      :disabled="view">{{item.value}}
+                            </el-radio>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="选项顺序：" prop="optionOrderType">
-                            <el-radio v-for="item in otOption" v-model="examConfig.optionOrderType" :label="item.key" :disabled="view">{{item.value}}</el-radio>
+                            <el-radio v-for="item in otOption" v-model="examConfig.optionOrderType" :label="item.key"
+                                      :disabled="view">{{item.value}}
+                            </el-radio>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -151,7 +315,7 @@
                                     v-model="examConfig.startTime"
                                     type="datetime"
                                     placeholder="选择考试开始时间"
-                                    value-format = "yyyy-MM-dd HH:mm:ss"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
                                     :disabled="view">
                             </el-date-picker>
                         </el-form-item>
@@ -161,7 +325,7 @@
                             <el-date-picker
                                     v-model="examConfig.endTime"
                                     type="datetime"
-                                    value-format = "yyyy-MM-dd HH:mm:ss"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
                                     placeholder="选择考试结束时间"
                                     :disabled="view">
                             </el-date-picker>
@@ -170,9 +334,10 @@
                     <el-col :span="12">
                         <el-form-item label="考试时长：" prop="examTime">
                             <template>
-                                <el-input-number v-model="examConfig.examTime"  :min="1" :max="1000"
+                                <el-input-number v-model="examConfig.examTime" :min="1" :max="1000"
                                                  label="请输入考试时长" :disabled="view">
-                                </el-input-number>分钟
+                                </el-input-number>
+                                分钟
                             </template>
                         </el-form-item>
                     </el-col>
@@ -182,7 +347,8 @@
                                 <el-input-number v-model="examConfig.examScore"
                                                  :min="1" :max="1000"
                                                  label="请输入考试总分" @change="getPassPnt()" :disabled="view">
-                                </el-input-number>分
+                                </el-input-number>
+                                分
                             </template>
                         </el-form-item>
                     </el-col>
@@ -191,7 +357,8 @@
                             <template>
                                 <el-input-number v-model="examConfig.passPnt" :min="1"
                                                  :max="1000" label="请输入达标线" :disabled="view">
-                                </el-input-number>分
+                                </el-input-number>
+                                分
                             </template>
                         </el-form-item>
                     </el-col>
@@ -209,28 +376,29 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col v-if="examConfig.reachRewardType!='10038'&&examConfig.reachRewardType!=''" :span="12" >
+                    <el-col v-if="examConfig.reachRewardType!='10038'&&examConfig.reachRewardType!=''" :span="12">
                         <el-form-item label="奖励分数：" prop="reachReward"
                                       :class="examConfig.reachRewardType!='10038'&&examConfig.reachRewardType!=''?'':'hide'">
                             <template>
-                                <el-input-number v-model="examConfig.reachReward"  :min="0"
+                                <el-input-number v-model="examConfig.reachReward" :min="0"
                                                  :max="1000" label="请输入" :disabled="view">
-                                </el-input-number>分
+                                </el-input-number>
+                                分
                             </template>
                         </el-form-item>
                     </el-col>
 
                     <el-col :span="24">
-                    <el-form-item label="使用部门：" prop="deptName">
-                        <el-input v-model="examConfig.deptName" readonly
-                                  @focus="chooseDept" placeholder="请选择使用部门" :disabled="view" clearable></el-input>
-                    </el-form-item>
+                        <el-form-item label="使用部门：" prop="deptName">
+                            <el-input v-model="examConfig.deptName" readonly
+                                      @focus="chooseDept" placeholder="请选择使用部门" :disabled="view" clearable></el-input>
+                        </el-form-item>
                     </el-col>
                     <el-col :span="24">
-                    <el-form-item label="使用人员：" prop="userName">
-                        <el-input v-model="examConfig.userName" readonly
-                                  @focus="chooseUser" placeholder="请选择使用人员" :disabled="view" clearable></el-input>
-                    </el-form-item>
+                        <el-form-item label="使用人员：" prop="userName">
+                            <el-input v-model="examConfig.userName" readonly
+                                      @focus="chooseUser" placeholder="请选择使用人员" :disabled="view" clearable></el-input>
+                        </el-form-item>
                     </el-col>
                     <el-col :span="24">
                         <el-form-item label="是否启用：" prop="enabled">
@@ -239,631 +407,758 @@
                         </el-form-item>
                     </el-col>
 
-                    <el-col :span="24" class="text-right">
+                    <el-col :span="24" style="padding-left: 400px">
                         <el-form-item>
-
-                            <el-button @click="cancel('examConfig')">取消</el-button>
-                            <el-button v-if="handleType!='view'"  type="primary" @click="save('examConfig')">下一步</el-button>
-                            <el-button v-if="handleType=='view'" type="primary" @click="open('examConfig')">下一步</el-button>
-                            <!--<el-button v-if="handleType=='edit'" type="primary" @click="editExam('examConfig')">下一步</el-button>-->
+                            <el-button type="primary" plain @click="cancel('examConfig')">返回</el-button>
+                            <el-button v-if="handleType!='view'" type="primary" @click="save('examConfig')">下一步
+                            </el-button>
+                            <el-button v-if="handleType=='view'" type="primary" @click="open('examConfig')">下一步
+                            </el-button>
                         </el-form-item>
                     </el-col>
                 </el-row>
             </el-form>
-        <el-dialog title="选择部门" :visible.sync="dialogDept" >
-            <!--对于同一级的节点，每次只能展开一个-->
-            <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box" :native="false">
-                <el-tree
-                        ref="deptTree"
-                        :data="deptData"
-                        :props="defaultDeptProps"
-                        accordion
-                        show-checkbox
-                        @check-change="handleCheckChange"
-                        node-key="id"
-                        :default-expanded-keys="idArr"
-                        :default-checked-keys="deptCheckData"
-                >
-                </el-tree>
-            </el-scrollbar>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="mini" @click="cancelDept">取消</el-button>
-                <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+        </div>
+
+    </div>
+
+    <!--随机出题页面-->
+    <div class="random_area clearfix" v-if="randomQuesModal">
+        <div class="random_box">
+            <div class="contain_title" v-show="!previewExam">
+                <h2>随机出题</h2>
             </div>
-        </el-dialog>
-        <el-dialog title="选择人员" :visible.sync="dialogUser" width="90%" class="dialog_minW750">
-            <!--对于同一级的节点，每次只能展开一个-->
-            <div>
-                <el-col :span="6">
-                    <el-scrollbar wrap-class="depList" wrap-style="color: red;" view-style="font-weight: bold;"
-                                  view-class="view-box" :native="false">
-                        <el-tree
-                                ref="userTable"
-                                :data="userData"
-                                :props="defaultUserProps"
-                                node-key="id"
-                                :default-expanded-keys="idArr"
-                                accordion
-                                @node-click="handleDeptNodeClick">
-                        </el-tree>
-                    </el-scrollbar>
-                </el-col>
-
-                <el-col :span="18" class="paddingLeft20">
-                    <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
-
-                        <el-form-item prop="userCode">
-                            <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
-                        </el-form-item>
-                        <el-form-item prop="userName">
-                            <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
-                        </el-form-item>
-
-                        <el-form-item>
-                            <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
-                            <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
-
-                        </el-form-item>
-                    </el-form>
-                    <div>
-                        <el-table
-                                ref="userTable"
-                                :data="userTableData"
-                                border
-                                stripe
-                                height="529"
-                                @selection-change="handleSelectionChange"
-                                style="width: 100%">
-                            <el-table-column
-                                    type="selection"
-                                    width="55">
-                            </el-table-column>
-                            <el-table-column
-                                    label="序号"
-                                    type="index"
-                                    header-align="center"
-                                    align="center"
-                                    :index="indexUserMethod"
-                                    width="50">
-                            </el-table-column>
-                            <el-table-column
-                                    prop="userCode"
-                                    label="身份证号"
-                            >
-                            </el-table-column>
-                            <el-table-column
-                                    prop="userName"
-                                    label="姓名"
-                                    width="280"
-                            >
-                            </el-table-column>
-
-                        </el-table>
-                        <el-pagination
-                                @size-change="userHandleSizeChange"
-                                @current-change="userHandleCurrentChange"
-                                :current-page="userForm.currPage"
-                                :page-sizes="[10, 20, 30, 40]"
-                                :page-size="userForm.pageSize"
-                                layout="total, sizes, prev, pager, next, jumper"
-                                :total="userForm.totalCount">
-                        </el-pagination>
-                    </div>
-                </el-col>
-            </div>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="mini" @click="cancelUser">取消</el-button>
-                <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
-            </div>
-        </el-dialog>
-        <!--自主出题开始-->
-        <el-dialog class="set_exam" title="设置考试信息" :visible.sync="setExam" width="1000px">
-            <div id="paper">
-                <h2>{{examConfig.examName}}</h2>
-                <h3>总分 ： {{examConfig.examScore}}</h3>
-                <div class="subTitle clearfix">
-                    <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。
-                        本部分含{{sinMultipleSelection.length}}题，每题
-                        <el-input v-model="sinMultScore" type="number" placeholder="请输入分值" :min="1"></el-input>
-                        分，共{{sinMultipleSelection.length | sinMultScoreFn}}分。
-                        <el-button type="primary" size="mini" @click="addQuestion('10004')">
-                            <i class="iconfont icon-htmal5icon18"></i>
-                            设置题目
-                        </el-button>
-                    </p>
-
-                </div>
-                <div class="question_area" v-for="(multiple,index) in sinMultipleSelection" :key="index">
-                    <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                        <el-button type="danger" icon="el-icon-delete" @click="delSinMul(index)" circle></el-button>
-                    </p>
-                    <el-radio-group>
-                        <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
-                            {{item2.questionContent}}
-                        </el-radio>
-                    </el-radio-group>
-                </div>
-                <div class="subTitle clearfix">
-                    <p>二、多选题。本部分含{{mulMultipleSelection.length}}题，每题
-                        <el-input type="number" v-model="mulMultScore" value="1" placeholder="请输入分值" :min="1"></el-input>
-                        分，共{{mulMultipleSelection.length | mulMultScoreFn}}分。
-                        <el-button type="primary" size="mini" @click="addQuestion('10005')">
-                            <i class="iconfont icon-htmal5icon18"></i>
-                            设置题目
-                        </el-button>
-                    </p>
-                </div>
-                <div class="question_area" v-for="(multiple,index) in mulMultipleSelection" :key="index">
-                    <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                        <el-button type="danger" icon="el-icon-delete" @click="delMulMul(index)" circle></el-button>
-                    </p>
-                    <el-radio-group>
-                        <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
-                            {{item2.questionContent}}
-                        </el-radio>
-                    </el-radio-group>
-                </div>
-
-                <div class="subTitle clearfix">
-                    <p>三、判断题。本部分含{{judgeMultipleSelection.length}}题，每题
-                        <el-input type="number" v-model="judgeMultScore" value="1" placeholder="请输入分值" :min="1"></el-input>
-                        分,共{{judgeMultipleSelection.length | judgeMultScoreFn}}分
-                        <el-button type="primary" size="mini" @click="addQuestion('10006')">
-                            <i class="iconfont icon-htmal5icon18"></i>
-                            设置题目
-                        </el-button>
-                    </p>
-
-                </div>
-                <div class="question_area" v-for="(multiple,index) in judgeMultipleSelection" :key="index">
-                    <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                        <el-button type="danger" icon="el-icon-delete" @click="delJudMul(index)" circle></el-button>
-                    </p>
-                    <el-radio-group>
-                        <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
-                            {{item2.questionContent}}
-                        </el-radio>
-                    </el-radio-group>
-                </div>
-                <div class="subTitle clearfix">
-                    <p>四、主观题
-                        <el-button type="primary" size="mini" @click="addQuestion('10007')">
-                            <i class="iconfont icon-htmal5icon18"></i>
-                            设置题目
-                        </el-button>
-                    </p>
-                </div>
-                <div class="question_area" v-for="(multiple,index) in subMultipleSelection" :key="index">
-                    <p class="ques_name">{{index+1}}.{{multiple.comContent}}。分值：
-                        <el-input type="number" v-model="subMultipleSelection[index].perScore" value="1"
-                                  placeholder="请输入分值"></el-input>
-                        <el-button type="danger" icon="el-icon-delete" @click="delSubMul(index)" circle></el-button>
-
+            <!--随机出题左边开始显示部分-->
+            <el-form v-show="!previewExam">
+                <div>
+                    <p>知识点：
+                        <el-select placeholder="请选择" size="mini">
+                        </el-select>
+                        <span class="label">试题数量：</span>
+                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        道 <span class="label">每题</span>
+                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        分
                     </p>
                 </div>
                 <div>
-                    <el-button type="primary" @click="genAutoQue">生成试卷</el-button>
-
-                    <el-button type="primary" @click="closeAutoQue">取消</el-button>
+                    <h3>二、多选题<span>随机出题20题共20分</span></h3>
+                    <p>知识点：
+                        <el-select placeholder="请选择" size="mini">
+                        </el-select>
+                        <span class="label">试题数量：</span>
+                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        道 <span class="label">每题</span>
+                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        分
+                    </p>
                 </div>
-            </div>
-        </el-dialog>
-        <el-dialog class="set_question" title="设置题目" :visible.sync="setQuestion" width="1200px">
-            <div class="info_card">
-                <div class="card_title"></div>
-                <div class="card_contain">
-                    <el-form :inline="true" :model="queformInline" ref="queformInline" class="demo-form-inline">
+                <div>
+                    <h3>三、判断题<span>随机出题20题共20分</span></h3>
+                    <p>知识点：
+                        <el-select placeholder="请选择" size="mini">
+                        </el-select>
+                        <span class="label">试题数量：</span>
+                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        道 <span class="label">每题</span>
+                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        分
+                    </p>
+                </div>
+                <div>
+                    <h3>四、主观题<span>随机出题20题共20分</span></h3>
+                    <p>知识点：
+                        <el-select placeholder="请选择" size="mini">
+                        </el-select>
+                        <span class="label">试题数量：</span>
+                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        道 <span class="label">每题</span>
+                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        分
+                    </p>
+                </div>
 
-                        <el-form-item label="题目内容：">
-                            <el-input placeholder="请输入题目内容" size="mini" v-model="queformInline.queContent"></el-input>
-                        </el-form-item>
-                        <el-form-item label="专项知识：" prop="typeId">
-                            <el-select v-model="queformInline.typeId" size="mini"
-                                       collapse-tags style="width: auto" placeholder="请选择知识点" clearable>
+            </el-form>
+            <!---->
+            <!--预览试卷-->
+            <div class="preview_area" v-if="previewExam">
+                <div class="contain_title">
+                    <h2>预览试卷</h2>
+                </div>
+
+                <el-form>
+                    <div>
+                        <h3>一、单选题<span>随机出题20题共40分</span><span>收起</span></h3>
+                        <div class="config_box clearfix">
+                            <p>每题：
+                                <el-input-number size="mini" :disabled="true"></el-input-number>
+                                分
+                            </p>
+                        </div>
+                        <div class="question_box">
+                            <div class="title clearfix">
+                                <span>1</span>
+                                <div class="p">已满__________不满十六周岁的人，犯故意杀人、故意伤害致人重伤或者死亡、强奸、抢劫、贩卖毒品、放火、
+                                    爆炸、投毒罪的，应当负刑事责任
+                                </div>
+                            </div>
+
+                            <ul class="clearfix">
+                                <li>A、十二周岁</li>
+                                <li>B、十二周岁</li>
+                                <li>C、十二周岁</li>
+                            </ul>
+                            <div class="msg">
+                                知识点：刑法
+                            </div>
+                            <button class="change"><i class="iconfont icon-genghuan"></i></button>
+                        </div>
+                    </div>
+
+                </el-form>
+
+                <div>
+
+                    <h3>注：更换的题目将会作为必考题</h3>
+                    <div class="subTitle clearfix">
+                        <p>一、单项选择题。</p>
+                    </div>
+                    <div class="question_area" v-for="(multiple,index) in sinMultipleSelection" :key="index">
+                        <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
+                            <el-button type="primary" size="mini" @click="changeQuestion('10004',index)"
+                                       v-if="handleType!='view'">
+                                <i class="iconfont icon-htmal5icon18"></i>
+                                更换题目
+                            </el-button>
+                        </p>
+                        <el-radio-group>
+                            <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
+                                {{item2.questionContent}}
+                            </el-radio>
+                        </el-radio-group>
+                    </div>
+                    <div class="subTitle clearfix">
+                        <p>二、多选题。</p>
+                    </div>
+                    <div class="question_area" v-for="(multiple,index) in mulMultipleSelection" :key="index">
+                        <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
+                            <el-button type="primary" size="mini" @click="changeQuestion('10005',index)"
+                                       v-if="handleType!='view'">
+                                <i class="iconfont icon-htmal5icon18"></i>
+                                更换题目
+                            </el-button>
+                        </p>
+                        <el-radio-group>
+                            <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
+                                {{item2.questionContent}}
+                            </el-radio>
+                        </el-radio-group>
+                    </div>
+
+                    <div class="subTitle clearfix">
+                        <p>三、判断题。</p>
+                    </div>
+                    <div class="question_area" v-for="(multiple,index) in judgeMultipleSelection" :key="index">
+                        <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
+                            <el-button type="primary" size="mini" @click="changeQuestion('10006',index)"
+                                       v-if="handleType!='view'">
+                                <i class="iconfont icon-htmal5icon18"></i>
+                                更换题目
+                            </el-button>
+                        </p>
+                        <el-radio-group>
+                            <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
+                                {{item2.questionContent}}
+                            </el-radio>
+                        </el-radio-group>
+                    </div>
+                    <div class="subTitle clearfix">
+                        <p>四、主观题
+                        </p>
+                    </div>
+                    <div class="question_area" v-for="(multiple,index) in subMultipleSelection" :key="index">
+                        <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
+                            <el-button type="primary" size="mini" @click="changeQuestion('10007',index)"
+                                       v-if="handleType!='view'">
+                                <i class="iconfont icon-htmal5icon18"></i>
+                                更换题目
+                            </el-button>
+                        </p>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            <div>
+                <el-table
+                        :data="randomQuesData"
+                        border
+                        height="324"
+                        style="width: 100%"
+                        show-summary
+                        stripe
+                        :summary-method="getSummaries"
+                >
+                    <el-table-column
+                            align="center"
+                            prop="questionType"
+                            label="题型">
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.questionType" placeholder="请选择" size="mini" :disabled="true">
+                                <el-option
+                                        v-for="item in qtOption"
+                                        :key="item.key"
+                                        :label="item.value"
+                                        :value="item.key">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="specialKnowledgeArr"
+                            align="center"
+                            label="知识点"
+                    >
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.specialKnowledgeArr" size="mini"
+                                       multiple collapse-tags style="width: auto" placeholder="多选" :disabled="view">
                                 <el-option v-for="item in skOption" :key="item.key"
                                            :label="item.value" :value="item.key"></el-option>
                             </el-select>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" size="mini" @click="onQueSubmit">
-                                <i class="iconfont icon-sousuo1"></i>
-                                查询
-                            </el-button>
-                            <el-button @click="resetQueForm('formInline')">
-                                <i class="iconfont icon-tableresetpassword"></i>
-                                重置
-                            </el-button>
-
-                        </el-form-item>
-                    </el-form>
-
-                </div>
-            </div>
-            <div style="border: 1px solid #dddddd">
-                <el-table
-                        ref="multipleTable"
-                        :data="tableData3"
-                        tooltip-effect="dark"
-                        height="530"
-                        stripe
-                        style="width: 100%"
-                        @selection-change="handleQueSelectionChange"
-                >
-                    <el-table-column
-                            type="selection"
-                            width="60">
-                    </el-table-column>
-
-                    <el-table-column
-                            label="序号"
-                            type="index"
-                            width="55">
-                    </el-table-column>
-                    <el-table-column type="expand" width="60">
-                        <template slot-scope="props">
-                            <el-form label-position="left" inline class="demo-table-expand">
-                                <el-form-item label="答案内容：">
-                                    <el-radio-group>
-                                        <el-radio :label="item2.id" v-for="item2 in props.row.answerList">
-                                            {{item2.questionContent}}
-                                        </el-radio>
-                                    </el-radio-group>
-                                </el-form-item>
-                            </el-form>
                         </template>
                     </el-table-column>
+
                     <el-table-column
-                            prop="comContent"
-                            label="试题内容"
-                            show-overflow-tooltip>
-                    </el-table-column>
-                    <el-table-column
-                            prop="questionType"
-                            label="类型"
-                            width="120">
+                            align="center"
+                            prop="questionNumber"
+                            width="150"
+                            label="数量"
+                    >
                         <template slot-scope="scope">
-                            {{scope.row.questionType == '10004' ?
-                            '单选' : scope.row.questionType == '10005' ?
-                            '多选' :scope.row.questionType == '10006'? '判断':'主观'}}
+                            <el-input-number size="mini" v-model="scope.row.questionNumber"
+                                             :min="0" placeholder="请输入本题型总题数" :disabled="view"></el-input-number>
                         </template>
                     </el-table-column>
                     <el-table-column
-                            prop="questionDifficulty"
-                            label="难度"
-                            width="120">
+                            align="center"
+                            width="150"
+                            prop="everyQuestionScore"
+                            label="每题分值"
+                            :disabled="view">
                         <template slot-scope="scope">
-                            {{scope.row.questionDifficulty == '10001' ?
-                            '初级' : scope.row.questionDifficulty == '10002' ?
-                            '中级' : '高级'}}
+                            <el-input-number size="mini" v-model="scope.row.everyQuestionScore"
+                                             :min="0" placeholder="请输入本题型总分值" :disabled="view"></el-input-number>
                         </template>
                     </el-table-column>
                     <el-table-column
-                            prop="answerChoiceNumber"
-                            label="选项数"
-                            width="120">
+                            align="center"
+                            width="150"
+                            prop="questionScore"
+                            label="总分值"
+                            :disabled="view">
+                        <template scope="scope">
+                            {{scope.row.questionNumber * scope.row.everyQuestionScore}}
+                        </template>
+
+                        <!--<template slot-scope="scope">
+                            <el-input size="mini"
+                                             :min="0" placeholder="请输入本题型总分值" :disabled = "false"></el-input>
+                        </template>-->
+                    </el-table-column>
+                    <el-table-column
+                            label="操作"
+                            header-align="center"
+                            align="center"
+                            width="100"
+                            v-if="!view">
+                        <template slot-scope="scope">
+                            <el-popover
+                                    placement="right"
+                                    trigger="hover"
+                                    content="清空"
+                            >
+                                <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                                   slot="reference"
+                                   @click="handleDel(scope.$index)"
+                                   style="color: #e31313;"
+                                >
+                                </i>
+                            </el-popover>
+                        </template>
                     </el-table-column>
                 </el-table>
+            </div>
+
+            <div slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="closeRanDia">取消</el-button>
+
+                <el-button type="primary" @click="handleSave(randomQuesData)" v-if="handleType!='view'" size="mini">保存
+                </el-button>
+            </div>
+        </div>
+        <div class="random_box box_right">
+            <div class="exam_title">试卷名：{{examConfig.examName}}</div>
+            <ul>
+                <li>预定总分值：100分</li>
+                <li>预定总分值：100分</li>
+                <li>单选题：20题</li>
+                <li>多选题：15题</li>
+                <li>判读题：5题</li>
+                <li>主观题：2题</li>
+            </ul>
+            <div class="tit">
+                <p><span>总分：</span>{{examConfig.examScore}}</p>
+            </div>
+            <!--随机出题时的按钮-->
+            <el-button type="primary" v-if="handleType=='add'&&!previewExam" @click="preview(randomQuesData)"
+                       size="mini">预览
+            </el-button>
+            <el-button type="primary" v-if="handleType!='add'&&!previewExam" @click="openView()" size="mini">预览
+            </el-button>
+            <!--随机改题时的按钮-->
+            <el-button type="primary" @click="closePreview" v-if="previewExam">上一步</el-button>
+            <el-button type="primary" @click="genRandQueAfterPreview" v-if="handleType!='view'&&previewExam">保存并生成试卷</el-button>
+            <el-button type="primary" @click="closeViewWindow" v-if="handleType=='view'&&previewExam">确定</el-button>
+
+
+
+        </div>
+    </div>
+
+
+    <el-dialog title="选择部门" :visible.sync="dialogDept">
+        <!--对于同一级的节点，每次只能展开一个-->
+        <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;" view-class="view-box"
+                      :native="false">
+            <el-tree
+                    ref="deptTree"
+                    :data="deptData"
+                    :props="defaultDeptProps"
+                    accordion
+                    show-checkbox
+                    @check-change="handleCheckChange"
+                    node-key="id"
+                    :default-expanded-keys="idArr"
+                    :default-checked-keys="deptCheckData"
+            >
+            </el-tree>
+        </el-scrollbar>
+        <div slot="footer" class="dialog-footer">
+            <el-button size="mini" @click="cancelDept">取消</el-button>
+            <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
+        </div>
+    </el-dialog>
+    <el-dialog title="选择人员" :visible.sync="dialogUser" class="dialog_minW750">
+        <!--对于同一级的节点，每次只能展开一个-->
+        <div>
+            <el-col :span="6">
+                <el-scrollbar wrap-class="depList" wrap-style="color: red;" view-style="font-weight: bold;"
+                              view-class="view-box" :native="false">
+                    <el-tree
+                            ref="userTable"
+                            :data="userData"
+                            :props="defaultUserProps"
+                            node-key="id"
+                            :default-expanded-keys="idArr"
+                            accordion
+                            @node-click="handleDeptNodeClick">
+                    </el-tree>
+                </el-scrollbar>
+            </el-col>
+
+            <el-col :span="18" class="paddingLeft20">
+                <el-form :inline="true" :model="userForm" ref="userForm" class="demo-form-inline">
+
+                    <el-form-item prop="userCode">
+                        <el-input v-model="userForm.userCode" placeholder="身份证号" size="mini"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="userName">
+                        <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
+                    </el-form-item>
+
+                    <el-form-item>
+                        <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
+                        <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
+
+                    </el-form-item>
+                </el-form>
+                <div>
+                    <el-table
+                            ref="userTable"
+                            :data="userTableData"
+                            border
+                            stripe
+                            height="529"
+                            @selection-change="handleSelectionChange"
+                            style="width: 100%">
+                        <el-table-column
+                                type="selection"
+                                width="55">
+                        </el-table-column>
+                        <el-table-column
+                                label="序号"
+                                type="index"
+                                header-align="center"
+                                align="center"
+                                :index="indexUserMethod"
+                                width="50">
+                        </el-table-column>
+                        <el-table-column
+                                prop="userCode"
+                                label="身份证号"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="userName"
+                                label="姓名"
+                                width="280"
+                        >
+                        </el-table-column>
+
+                    </el-table>
+                    <el-pagination
+                            @size-change="userHandleSizeChange"
+                            @current-change="userHandleCurrentChange"
+                            :current-page="userForm.currPage"
+                            :page-sizes="[10, 20, 30, 40]"
+                            :page-size="userForm.pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="userForm.totalCount">
+                    </el-pagination>
+                </div>
+            </el-col>
+        </div>
+        <div slot="footer" class="dialog-footer">
+            <el-button size="mini" @click="cancelUser">取消</el-button>
+            <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
+        </div>
+    </el-dialog>
+    <!--自主出题开始-->
+    <el-dialog class="set_exam" title="设置考试信息" :visible.sync="setExam" width="1000px">
+        <div id="paper">
+            <h2>{{examConfig.examName}}</h2>
+            <h3>总分 ： {{examConfig.examScore}}</h3>
+            <div class="subTitle clearfix">
+                <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。
+                    本部分含{{sinMultipleSelection.length}}题，每题
+                    <el-input v-model="sinMultScore" type="number" placeholder="请输入分值" :min="1"></el-input>
+                    分，共{{sinMultipleSelection.length | sinMultScoreFn}}分。
+                    <el-button type="primary" size="mini" @click="addQuestion('10004')">
+                        <i class="iconfont icon-htmal5icon18"></i>
+                        设置题目
+                    </el-button>
+                </p>
 
             </div>
-            <el-pagination
-                    @size-change="quehandleSizeChange"
-                    @current-change="quehandleCurrentChange"
-                    :current-page="queformInline.currPage"
-                    :page-sizes="[10, 20, 30, 40]"
-                    :page-size="queformInline.pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="queformInline.count">
-            </el-pagination>
-            <span slot="footer" class="dialog-footer">
+            <div class="question_area" v-for="(multiple,index) in sinMultipleSelection" :key="index">
+                <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
+                    <el-button type="danger" icon="el-icon-delete" @click="delSinMul(index)" circle></el-button>
+                </p>
+                <el-radio-group>
+                    <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
+                        {{item2.questionContent}}
+                    </el-radio>
+                </el-radio-group>
+            </div>
+            <div class="subTitle clearfix">
+                <p>二、多选题。本部分含{{mulMultipleSelection.length}}题，每题
+                    <el-input type="number" v-model="mulMultScore" value="1" placeholder="请输入分值" :min="1"></el-input>
+                    分，共{{mulMultipleSelection.length | mulMultScoreFn}}分。
+                    <el-button type="primary" size="mini" @click="addQuestion('10005')">
+                        <i class="iconfont icon-htmal5icon18"></i>
+                        设置题目
+                    </el-button>
+                </p>
+            </div>
+            <div class="question_area" v-for="(multiple,index) in mulMultipleSelection" :key="index">
+                <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
+                    <el-button type="danger" icon="el-icon-delete" @click="delMulMul(index)" circle></el-button>
+                </p>
+                <el-radio-group>
+                    <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
+                        {{item2.questionContent}}
+                    </el-radio>
+                </el-radio-group>
+            </div>
+
+            <div class="subTitle clearfix">
+                <p>三、判断题。本部分含{{judgeMultipleSelection.length}}题，每题
+                    <el-input type="number" v-model="judgeMultScore" value="1" placeholder="请输入分值" :min="1"></el-input>
+                    分,共{{judgeMultipleSelection.length | judgeMultScoreFn}}分
+                    <el-button type="primary" size="mini" @click="addQuestion('10006')">
+                        <i class="iconfont icon-htmal5icon18"></i>
+                        设置题目
+                    </el-button>
+                </p>
+
+            </div>
+            <div class="question_area" v-for="(multiple,index) in judgeMultipleSelection" :key="index">
+                <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
+                    <el-button type="danger" icon="el-icon-delete" @click="delJudMul(index)" circle></el-button>
+                </p>
+                <el-radio-group>
+                    <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
+                        {{item2.questionContent}}
+                    </el-radio>
+                </el-radio-group>
+            </div>
+            <div class="subTitle clearfix">
+                <p>四、主观题
+                    <el-button type="primary" size="mini" @click="addQuestion('10007')">
+                        <i class="iconfont icon-htmal5icon18"></i>
+                        设置题目
+                    </el-button>
+                </p>
+            </div>
+            <div class="question_area" v-for="(multiple,index) in subMultipleSelection" :key="index">
+                <p class="ques_name">{{index+1}}.{{multiple.comContent}}。分值：
+                    <el-input type="number" v-model="subMultipleSelection[index].perScore" value="1"
+                              placeholder="请输入分值"></el-input>
+                    <el-button type="danger" icon="el-icon-delete" @click="delSubMul(index)" circle></el-button>
+
+                </p>
+            </div>
+            <div>
+                <el-button type="primary" @click="genAutoQue">生成试卷</el-button>
+
+                <el-button type="primary" @click="closeAutoQue">取消</el-button>
+            </div>
+        </div>
+    </el-dialog>
+    <el-dialog class="set_question" title="设置题目" :visible.sync="setQuestion" width="1200px">
+        <div class="info_card">
+            <div class="card_title"></div>
+            <div class="card_contain">
+                <el-form :inline="true" :model="queformInline" ref="queformInline" class="demo-form-inline">
+
+                    <el-form-item label="题目内容：">
+                        <el-input placeholder="请输入题目内容" size="mini" v-model="queformInline.queContent"></el-input>
+                    </el-form-item>
+                    <el-form-item label="专项知识：" prop="typeId">
+                        <el-select v-model="queformInline.typeId" size="mini"
+                                   collapse-tags style="width: auto" placeholder="请选择知识点" clearable>
+                            <el-option v-for="item in skOption" :key="item.key"
+                                       :label="item.value" :value="item.key"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" size="mini" @click="onQueSubmit">
+                            <i class="iconfont icon-sousuo1"></i>
+                            查询
+                        </el-button>
+                        <el-button @click="resetQueForm('formInline')">
+                            <i class="iconfont icon-tableresetpassword"></i>
+                            重置
+                        </el-button>
+
+                    </el-form-item>
+                </el-form>
+
+            </div>
+        </div>
+        <div style="border: 1px solid #dddddd">
+            <el-table
+                    ref="multipleTable"
+                    :data="tableData3"
+                    tooltip-effect="dark"
+                    height="530"
+                    stripe
+                    style="width: 100%"
+                    @selection-change="handleQueSelectionChange"
+            >
+                <el-table-column
+                        type="selection"
+                        width="60">
+                </el-table-column>
+
+                <el-table-column
+                        label="序号"
+                        type="index"
+                        width="55">
+                </el-table-column>
+                <el-table-column type="expand" width="60">
+                    <template slot-scope="props">
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="答案内容：">
+                                <el-radio-group>
+                                    <el-radio :label="item2.id" v-for="item2 in props.row.answerList">
+                                        {{item2.questionContent}}
+                                    </el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                        </el-form>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="comContent"
+                        label="试题内容"
+                        show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column
+                        prop="questionType"
+                        label="类型"
+                        width="120">
+                    <template slot-scope="scope">
+                        {{scope.row.questionType == '10004' ?
+                        '单选' : scope.row.questionType == '10005' ?
+                        '多选' :scope.row.questionType == '10006'? '判断':'主观'}}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="questionDifficulty"
+                        label="难度"
+                        width="120">
+                    <template slot-scope="scope">
+                        {{scope.row.questionDifficulty == '10001' ?
+                        '初级' : scope.row.questionDifficulty == '10002' ?
+                        '中级' : '高级'}}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="answerChoiceNumber"
+                        label="选项数"
+                        width="120">
+                </el-table-column>
+            </el-table>
+
+        </div>
+        <el-pagination
+                @size-change="quehandleSizeChange"
+                @current-change="quehandleCurrentChange"
+                :current-page="queformInline.currPage"
+                :page-sizes="[10, 20, 30, 40]"
+                :page-size="queformInline.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="queformInline.count">
+        </el-pagination>
+        <span slot="footer" class="dialog-footer">
                 <el-button>取 消</el-button>
                 <el-button type="primary" @click='getQue'>确 定</el-button>
         </span>
-        </el-dialog>
-        <!--自主出题结束-->
+    </el-dialog>
+    <!--自主出题结束-->
 
-        <!--随机出题开始-->
-        <el-dialog class="random-topic" title="随机出题" width="80%" :visible.sync="randomQuesModal"
-                   :before-close="closeRanDia">
-            <div>
-                <div class="tit">
-                    <p><span>试卷名称：</span>{{examConfig.examName}}</p>
-                    <p><span>总分：</span>{{examConfig.examScore}}</p>
-                </div>
-                <div>
-                    <el-table
-                            :data="randomQuesData"
-                            border
-                            height="324"
-                            style="width: 100%"
-                            show-summary
-                            stripe
-                            :summary-method="getSummaries"
-                        >
-                        <el-table-column
-                                align="center"
-                                prop="questionType"
-                                label="题型">
-                            <template slot-scope="scope" >
-                                <el-select v-model="scope.row.questionType" placeholder="请选择" size="mini" :disabled="true">
-                                    <el-option
-                                            v-for="item in qtOption"
-                                            :key="item.key"
-                                            :label="item.value"
-                                            :value="item.key">
-                                    </el-option>
-                                </el-select>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                prop="specialKnowledgeArr"
-                                align="center"
-                                label="知识点"
-                                >
-                            <template slot-scope="scope">
-                                    <el-select v-model="scope.row.specialKnowledgeArr" size="mini"
-                                               multiple collapse-tags style="width: auto" placeholder="多选" :disabled = "view">
-                                        <el-option v-for="item in skOption" :key="item.key"
-                                                   :label="item.value" :value="item.key"></el-option>
-                                    </el-select>
-                            </template>
-                        </el-table-column>
 
-                        <el-table-column
-                                align="center"
-                                prop="questionNumber"
-                                width="150"
-                                label="数量"
-                        >
-                            <template slot-scope="scope">
-                                <el-input-number size="mini" v-model="scope.row.questionNumber"
-                                                 :min="0" placeholder="请输入本题型总题数" :disabled = "view"></el-input-number>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                align="center"
-                                width="150"
-                                prop="everyQuestionScore"
-                                label="每题分值"
-                                :disabled = "view">
-                            <template slot-scope="scope">
-                                <el-input-number size="mini" v-model="scope.row.everyQuestionScore"
-                                                 :min="0" placeholder="请输入本题型总分值" :disabled = "view"></el-input-number>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                align="center"
-                                width="150"
-                                prop="questionScore"
-                                label="总分值"
-                                :disabled = "view">
-                            <template scope="scope">
-                                {{scope.row.questionNumber * scope.row.everyQuestionScore}}
-                            </template>
+    <el-dialog class="set_question" title="更换题目" :visible.sync="changeQuestionModal" width="1200px">
+        <div class="info_card">
+            <div class="card_title"></div>
+            <div class="card_contain">
+                <el-form :inline="true" :model="queformInline" ref="queformInline" class="demo-form-inline">
 
-                            <!--<template slot-scope="scope">
-                                <el-input size="mini"
-                                                 :min="0" placeholder="请输入本题型总分值" :disabled = "false"></el-input>
-                            </template>-->
-                        </el-table-column>
-                        <el-table-column
-                                label="操作"
-                                header-align="center"
-                                align="center"
-                                width="100"
-                                v-if="!view">
-                            <template slot-scope="scope">
-                                <el-popover
-                                        placement="right"
-                                        trigger="hover"
-                                        content="清空"
-                                >
-                                    <i class="iconfont icon-tubiaozhizuo- tabIcon"
-                                       slot="reference"
-                                       @click="handleDel(scope.$index)"
-                                       style="color: #e31313;"
-                                      >
-                                    </i>
-                                </el-popover>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
-            </div>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="mini" @click="closeRanDia">取消</el-button>
-                <el-button type="primary"  v-if="handleType=='add'" @click="preview(randomQuesData)" size="mini">预览</el-button>
-                <el-button type="primary" v-if="handleType!='add'" @click="openView()" size="mini">预览</el-button>
-                <el-button type="primary" @click="handleSave(randomQuesData)" v-if="handleType!='view'"  size="mini">保存</el-button>
-            </div>
-        </el-dialog>
-        <el-dialog class="set_exam" title="预览试卷" :visible.sync="previewExam" width="1000px">
-            <div>
-                <h2>{{examConfig.examName}}</h2>
-                <h3>总分 ： {{examConfig.examScore}}</h3>
-                <h3>注：更换的题目将会作为必考题</h3>
-                <div class="subTitle clearfix">
-                    <p>一、单项选择题。</p>
-                </div>
-                <div class="question_area" v-for="(multiple,index) in sinMultipleSelection" :key="index">
-                    <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                        <el-button type="primary" size="mini" @click="changeQuestion('10004',index)" v-if="handleType!='view'">
-                            <i class="iconfont icon-htmal5icon18"></i>
-                            更换题目
+                    <el-form-item label="题目内容：">
+                        <el-input placeholder="请输入题目内容" size="mini" v-model="queformInline.queContent"></el-input>
+                    </el-form-item>
+                    <el-form-item label="专项知识：" prop="typeId">
+                        <el-select v-model="queformInline.typeId" size="mini"
+                                   collapse-tags style="width: auto" placeholder="请选择知识点" clearable>
+                            <el-option v-for="item in skOption" :key="item.key"
+                                       :label="item.value" :value="item.key"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" size="mini" @click="onQueSubmit">
+                            <i class="iconfont icon-sousuo1"></i>
+                            查询
                         </el-button>
-                    </p>
-                    <el-radio-group>
-                        <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
-                            {{item2.questionContent}}
-                        </el-radio>
-                    </el-radio-group>
-                </div>
-                <div class="subTitle clearfix">
-                    <p>二、多选题。</p>
-                </div>
-                <div class="question_area" v-for="(multiple,index) in mulMultipleSelection" :key="index">
-                    <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                        <el-button type="primary" size="mini" @click="changeQuestion('10005',index)" v-if="handleType!='view'">
-                            <i class="iconfont icon-htmal5icon18"></i>
-                            更换题目
-                        </el-button>                    </p>
-                    <el-radio-group>
-                        <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
-                            {{item2.questionContent}}
-                        </el-radio>
-                    </el-radio-group>
-                </div>
-
-                <div class="subTitle clearfix">
-                    <p>三、判断题。</p>
-                </div>
-                <div class="question_area" v-for="(multiple,index) in judgeMultipleSelection" :key="index">
-                    <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                        <el-button type="primary" size="mini" @click="changeQuestion('10006',index)" v-if="handleType!='view'">
-                            <i class="iconfont icon-htmal5icon18"></i>
-                            更换题目
+                        <el-button @click="resetQueForm('formInline')">
+                            <i class="iconfont icon-tableresetpassword"></i>
+                            重置
                         </el-button>
-                    </p>
-                    <el-radio-group>
-                        <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
-                            {{item2.questionContent}}
+
+                    </el-form-item>
+                </el-form>
+
+            </div>
+        </div>
+        <div style="border: 1px solid #dddddd">
+            <el-table
+                    ref="multipleTable"
+                    :data="tableData3"
+                    tooltip-effect="dark"
+                    height="530"
+                    stripe
+                    style="width: 100%"
+                    @selection-change="handleQueSelectionChange"
+            >
+                <el-table-column
+                        width="60">
+                    <template scope="scope">
+                        <el-radio :label="scope.row.id" v-model="changeQues"
+                                  @change="getTemplateRow(scope.$index,scope.row)">&nbsp
                         </el-radio>
-                    </el-radio-group>
-                </div>
-                <div class="subTitle clearfix">
-                    <p>四、主观题
-                    </p>
-                </div>
-                <div class="question_area" v-for="(multiple,index) in subMultipleSelection" :key="index">
-                    <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                        <el-button type="primary" size="mini" @click="changeQuestion('10007',index)" v-if="handleType!='view'">
-                            <i class="iconfont icon-htmal5icon18"></i>
-                            更换题目
-                        </el-button>
-                    </p>
-                </div>
+                    </template>
+                </el-table-column>
 
-                <div>
-                    <el-button type="primary" @click="genRandQueAfterPreview" v-if="handleType!='view'" >生成试卷</el-button>
-                    <el-button type="primary" @click="closeViewWindow" v-if="handleType=='view'" >确定</el-button>
-                    <el-button type="primary" @click="closePreview">取消</el-button>
-                </div>
-            </div>
-        </el-dialog>
-        <el-dialog class="set_question" title="更换题目" :visible.sync="changeQuestionModal" width="1200px">
-            <div class="info_card">
-                <div class="card_title"></div>
-                <div class="card_contain">
-                    <el-form :inline="true" :model="queformInline" ref="queformInline" class="demo-form-inline">
+                <el-table-column
+                        label="序号"
+                        type="index"
+                        width="55">
+                </el-table-column>
+                <el-table-column type="expand" width="60">
+                    <template slot-scope="props">
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="答案内容：">
+                                <el-radio-group>
+                                    <el-radio :label="item2.id" v-for="item2 in props.row.answerList">
+                                        {{item2.questionContent}}
+                                    </el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                        </el-form>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="comContent"
+                        label="试题内容"
+                        show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column
+                        prop="questionType"
+                        label="类型"
+                        width="120">
+                    <template slot-scope="scope">
+                        {{scope.row.questionType == '10004' ?
+                        '单选' : scope.row.questionType == '10005' ?
+                        '多选' :scope.row.questionType == '10006'? '判断':'主观'}}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="questionDifficulty"
+                        label="难度"
+                        width="120">
+                    <template slot-scope="scope">
+                        {{scope.row.questionDifficulty == '10001' ?
+                        '初级' : scope.row.questionDifficulty == '10002' ?
+                        '中级' : '高级'}}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="answerChoiceNumber"
+                        label="选项数"
+                        width="120">
+                </el-table-column>
+            </el-table>
 
-                        <el-form-item label="题目内容：">
-                            <el-input placeholder="请输入题目内容" size="mini" v-model="queformInline.queContent"></el-input>
-                        </el-form-item>
-                        <el-form-item label="专项知识：" prop="typeId">
-                            <el-select v-model="queformInline.typeId" size="mini"
-                                       collapse-tags style="width: auto" placeholder="请选择知识点" clearable>
-                                <el-option v-for="item in skOption" :key="item.key"
-                                           :label="item.value" :value="item.key"></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" size="mini" @click="onQueSubmit">
-                                <i class="iconfont icon-sousuo1"></i>
-                                查询
-                            </el-button>
-                            <el-button @click="resetQueForm('formInline')">
-                                <i class="iconfont icon-tableresetpassword"></i>
-                                重置
-                            </el-button>
-
-                        </el-form-item>
-                    </el-form>
-
-                </div>
-            </div>
-            <div style="border: 1px solid #dddddd">
-                <el-table
-                        ref="multipleTable"
-                        :data="tableData3"
-                        tooltip-effect="dark"
-                        height="530"
-                        stripe
-                        style="width: 100%"
-                        @selection-change="handleQueSelectionChange"
-                >
-                    <el-table-column
-                            width="60">
-                        <template scope="scope">
-                            <el-radio :label="scope.row.id" v-model="changeQues" @change="getTemplateRow(scope.$index,scope.row)">&nbsp</el-radio>
-                        </template>
-                    </el-table-column>
-
-                    <el-table-column
-                            label="序号"
-                            type="index"
-                            width="55">
-                    </el-table-column>
-                    <el-table-column type="expand" width="60">
-                        <template slot-scope="props">
-                            <el-form label-position="left" inline class="demo-table-expand">
-                                <el-form-item label="答案内容：">
-                                    <el-radio-group>
-                                        <el-radio :label="item2.id" v-for="item2 in props.row.answerList">
-                                            {{item2.questionContent}}
-                                        </el-radio>
-                                    </el-radio-group>
-                                </el-form-item>
-                            </el-form>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="comContent"
-                            label="试题内容"
-                            show-overflow-tooltip>
-                    </el-table-column>
-                    <el-table-column
-                            prop="questionType"
-                            label="类型"
-                            width="120">
-                        <template slot-scope="scope">
-                            {{scope.row.questionType == '10004' ?
-                            '单选' : scope.row.questionType == '10005' ?
-                            '多选' :scope.row.questionType == '10006'? '判断':'主观'}}
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="questionDifficulty"
-                            label="难度"
-                            width="120">
-                        <template slot-scope="scope">
-                            {{scope.row.questionDifficulty == '10001' ?
-                            '初级' : scope.row.questionDifficulty == '10002' ?
-                            '中级' : '高级'}}
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="answerChoiceNumber"
-                            label="选项数"
-                            width="120">
-                    </el-table-column>
-                </el-table>
-
-            </div>
-            <el-pagination
-                    @size-change="quehandleSizeChange"
-                    @current-change="quehandleCurrentChange"
-                    :current-page="queformInline.currPage"
-                    :page-sizes="[10, 20, 30, 40]"
-                    :page-size="queformInline.pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="queformInline.count">
-            </el-pagination>
-            <span slot="footer" class="dialog-footer">
+        </div>
+        <el-pagination
+                @size-change="quehandleSizeChange"
+                @current-change="quehandleCurrentChange"
+                :current-page="queformInline.currPage"
+                :page-sizes="[10, 20, 30, 40]"
+                :page-size="queformInline.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="queformInline.count">
+        </el-pagination>
+        <span slot="footer" class="dialog-footer">
                 <el-button>取 消</el-button>
                 <el-button type="primary" @click='saveChange'>确 定</el-button>
         </span>
-        </el-dialog>
+    </el-dialog>
 
-    </div>
 </div>
 </body>
 

@@ -175,7 +175,7 @@
             <el-breadcrumb-item>管理中心</el-breadcrumb-item>
             <el-breadcrumb-item>考试管理</el-breadcrumb-item>
         </el-breadcrumb>
-        <div v-if="!dialogAdd" class="info_card">
+        <div v-if="!dialogAdd&&!dialogView&&!dialogEdit" class="info_card">
             <div class="card_title"></div>
             <div class="card_contain">
                 <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
@@ -220,7 +220,7 @@
 
             </div>
         </div>
-        <div v-if="!dialogAdd">
+        <div v-if="!dialogAdd&&!dialogView&&!dialogEdit">
             <div class="info_btn">
                 <el-button size="mini" type="primary" @click="addConfig"><i class="iconfont icon-htmal5icon18"></i>新增
                 </el-button>
@@ -358,10 +358,18 @@
         </div>
         <!--新增考试配置-->
         <div v-if="dialogAdd">
-            <iframe id="dialogAdd" src="examConfig.html" frameborder="0" width="100%" height="570px"></iframe>
+            <iframe id="dialogAdd" src="examConfig.html" frameborder="0" width="100%" height="602px"></iframe>
         </div>
-    </div>
+        <!--查看考试配置-->
+        <div v-if="dialogView">
+            <iframe id="dialogView" src="examConfig.html" frameborder="0" width="100%" height="630px"></iframe>
+        </div>
+        <!--修改考试配置-->
+        <div v-if="dialogEdit">
+            <iframe id="dialogEdit" src="examConfig.html" frameborder="0" width="100%" height="630px"></iframe>
+        </div>
 
+    </div>
     <el-dialog title="阅卷设置" :visible.sync="checkSettingDia" :before-close="closeCheckSettingDia">
         <el-form :model="checkSetting" :rules="checkSettingRules" ref="checkSetting" label-width="150px"
                  class="demo-examConfig"
@@ -475,12 +483,7 @@
             </el-row>
         </el-form>
     </el-dialog>
-    <el-dialog class="config" title="查看考试配置" :visible.sync="dialogView" width="918px">
-        <iframe id="dialogView" src="examConfig.html" frameborder="0" width="100%" height="654px"></iframe>
-    </el-dialog>
-    <el-dialog class="config" title="修改考试配置" :visible.sync="dialogEdit" width="918px">
-        <iframe id="dialogEdit" src="examConfig.html" frameborder="0" width="100%" height="654px"></iframe>
-    </el-dialog>
+
 
 </div>
 </div>

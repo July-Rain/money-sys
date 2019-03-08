@@ -35,7 +35,7 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
     private String userNames;
     private String deptNames;
 
-    private String sourceFrom;  //来源 默认 ‘CONFIG’还有‘KEYQUE’--重点试题组卷  ‘WRONGQUE’--错题组卷
+    private String sourceFrom;  //来源
 
     @TableField(exist = false)
     private List<String> deptIds;
