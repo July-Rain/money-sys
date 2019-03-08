@@ -31,10 +31,10 @@ public class FractionController  extends AbstractController {
     @RequestMapping(value = "/save", method = RequestMethod.GET)
     public Result testSave(){
         Fraction fraction = new Fraction();
-        fraction.setSource(Source.AUDIOSTUDY);
-        fraction.setMinDemand(10.0);
-        fraction.setScore(5.0);
-        fraction.setDailyLimit(5.0);
+        fraction.setSource(Source.PICSTUDY);
+        fraction.setMinDemand(10.1F);
+        fraction.setScore(5.0F);
+        fraction.setDailyLimit(5.5F);
         fraction.setFractionType("1");
         List<Fraction> list = new ArrayList<>();
         list.add(fraction);

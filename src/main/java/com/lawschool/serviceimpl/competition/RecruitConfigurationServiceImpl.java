@@ -12,8 +12,10 @@ import com.lawschool.beans.competition.RecruitCheckpointConfiguration;
 import com.lawschool.beans.competition.RecruitConfiguration;
 import com.lawschool.beans.competition.bak.RecruitCheckpointConfigurationBak;
 import com.lawschool.beans.competition.bak.RecruitConfigurationBak;
+import com.lawschool.beans.system.Fraction;
 import com.lawschool.beans.system.TopicTypeEntity;
 import com.lawschool.dao.competition.RecruitConfigurationDao;
+import com.lawschool.enums.Source;
 import com.lawschool.form.CommonForm;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
@@ -23,9 +25,11 @@ import com.lawschool.service.competition.RecruitCheckpointConfigurationService;
 import com.lawschool.service.competition.RecruitConfigurationService;
 import com.lawschool.service.competition.bak.RecruitCheckpointConfigurationBakService;
 import com.lawschool.service.competition.bak.RecruitConfigurationBakService;
+import com.lawschool.service.system.FractionService;
 import com.lawschool.service.system.TopicTypeService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;
+import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
@@ -75,6 +79,8 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 	@Autowired
 	private CompetitionRecordService competitionRecordService;
 
+	@Autowired
+	private FractionService fractionService;
 	@Override
 	@SysLog("查询")
 	@Transactional(rollbackFor = Exception.class)
@@ -158,6 +164,12 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 
 			//得到小关数量
 			int smallNum= Integer.parseInt(reConfation.getSmallNum());
+
+
+			//到表中找积分规则
+	        Result result=fractionService.getFractionByType("1", Source.RECRUIT);
+			Fraction fraction=(Fraction)result.get("fraction");
+
 			if(reConfation.getUnifyConfiguration().equals("1"))
 			{
 				for(int k=0;k<smallNum;k++)
@@ -174,10 +186,12 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 					recruitCheckpointConfiguratio.setSpecialKnowledgeId(reConfation.getRecruitCheckpointConfigurationList().get(0).getSpecialKnowledgeId());//专项知识id
 					recruitCheckpointConfiguratio.setItemType(reConfation.getRecruitCheckpointConfigurationList().get(0).getItemType());//试题类型
 					recruitCheckpointConfiguratio.setItemDifficulty(reConfation.getRecruitCheckpointConfigurationList().get(0).getItemDifficulty());//试题难度
-					recruitCheckpointConfiguratio.setCrossingPoints(reConfation.getRecruitCheckpointConfigurationList().get(0).getCrossingPoints());//关卡积分
-					recruitCheckpointConfiguratio.setMarkReward(reConfation.getMarkReward());//大关是否奖励
-					recruitCheckpointConfiguratio.setRewardScore(reConfation.getRewardScore());//大关奖励分值
 
+//					recruitCheckpointConfiguratio.setCrossingPoints(reConfation.getRecruitCheckpointConfigurationList().get(0).getCrossingPoints());//关卡积分
+					recruitCheckpointConfiguratio.setCrossingPoints(String.valueOf(fraction.getMinScore()));//小关关卡积分
+					recruitCheckpointConfiguratio.setMarkReward(reConfation.getMarkReward());//大关是否奖励
+//					recruitCheckpointConfiguratio.setRewardScore(reConfation.getRewardScore());//大关奖励分值
+					recruitCheckpointConfiguratio.setRewardScore(String.valueOf(fraction.getMaxScore()));//大关奖励分值
 //					reConfation.getRecruitCheckpointConfigurationList().get(0);   其他的属性 在这里面取   因为是统一 配置   就一个 默认下标0
 					recruitCheckpointConfigurationService.insert(recruitCheckpointConfiguratio);//存吧
 				}
@@ -200,9 +214,13 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 					recruitCheckpointConfiguratio.setSpecialKnowledgeId(reConfation.getRecruitCheckpointConfigurationList().get(k).getSpecialKnowledgeId());//专项知识id
 					recruitCheckpointConfiguratio.setItemType(reConfation.getRecruitCheckpointConfigurationList().get(k).getItemType());//试题类型
 					recruitCheckpointConfiguratio.setItemDifficulty(reConfation.getRecruitCheckpointConfigurationList().get(k).getItemDifficulty());//试题难度
-					recruitCheckpointConfiguratio.setCrossingPoints(reConfation.getRecruitCheckpointConfigurationList().get(k).getCrossingPoints());//关卡积分
+//					recruitCheckpointConfiguratio.setCrossingPoints(reConfation.getRecruitCheckpointConfigurationList().get(k).getCrossingPoints());//关卡积分
+					recruitCheckpointConfiguratio.setCrossingPoints(String.valueOf(fraction.getMinScore()));//小关关卡积分
+
 					recruitCheckpointConfiguratio.setMarkReward(reConfation.getMarkReward());//大关是否奖励
-					recruitCheckpointConfiguratio.setRewardScore(reConfation.getRewardScore());//大关奖励分值
+//					recruitCheckpointConfiguratio.setRewardScore(reConfation.getRewardScore());//大关奖励分值
+					recruitCheckpointConfiguratio.setRewardScore(String.valueOf(fraction.getMaxScore()));//大关奖励分值
+
 					recruitCheckpointConfigurationService.insert(recruitCheckpointConfiguratio);//存吧
 				}
 			}
