@@ -36,7 +36,7 @@ var vm = new Vue({
         params:{
             pname:"",
             num:"",
-            scourceFrom:"WRONGQUE"
+            sourceFrom:"3"
         },
         taskName:'',
         taskId:'',
