@@ -93,29 +93,22 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
         }
         String isFinsh = scoreForm.getIsFinMark();
         float countScore = 0 ;
+        float endScore = 0;
         if("0".equals(isFinsh)){
             //阅卷完成计算分数
             float firScore = userExamAnswerDao.getScoreByUserExamId(userExamId);
             countScore = firScore + scoreForm.getScore();
 
             if(!"10038".equals(examConfig.getReachRewardType())){
-                Integral integral = new Integral();
-                if ("10039".equals(examConfig.getReachRewardType())){
-                    //学分
-                    integral.setType("0");
-                }else{
-                    integral.setType("1");
-                }
-                integral.setSrc("exam");
-                integral.setPoint(Float.parseFloat(examConfig.getReachReward()));
-                User user = userService.selectUserByUserId(userExam.getUserId());
-                integralService.addIntegralRecord(integral,user);
+                endScore = userExamService.calcGetInt( examConfig, countScore , userExam.getUserId());
             }
         }
         userExam.setIsFinMark(isFinsh);
         userExam.setScore(countScore);
+        userExam.setRewards(endScore);
         CheckExam checkExam = dao.selectById(userAnswerForm.getCheckExamId());
-        checkExam.setCheckStatus("2");  //完成阅卷
+        //完成阅卷
+        checkExam.setCheckStatus("2");
         dao.updateById(checkExam);
         userExamDao.updateById(userExam);
 
@@ -219,6 +212,7 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
         ExamConfig examConfig =examConfigService.selectById(userExam.getExamConfigId());
         List<CheckExamForm> checkExamForms= userAnswerForm.getCheckExamForm();
         float countScore = userExamAnswerDao.getScoreExAudit(userExamId);
+        float endScore = 0 ;
         for(CheckExamForm checkExamForm : checkExamForms){
             UserExamAnswer userExamAnswer = userExamAnswerDao.selectById(checkExamForm.getQueId());
             userExamAnswer.setAudCheckScore(checkExamForm.getScore());
@@ -227,23 +221,13 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
             userExamAnswer.setAudCheckBase(checkExamForm.getCheckBase());
             countScore +=checkExamForm.getScore();
             userExamAnswerDao.updateById(userExamAnswer);
-
-            if(!"10038".equals(examConfig.getReachRewardType())){
-                Integral integral = new Integral();
-                if ("10039".equals(examConfig.getReachRewardType())){
-                    //学分
-                    integral.setType("0");
-                }else{
-                    integral.setType("1");
-                }
-                integral.setSrc("exam");
-                integral.setPoint(Float.parseFloat(examConfig.getReachReward()));
-                User user = userService.selectUserByUserId(userExam.getUserId());
-                integralService.addIntegralRecord(integral,user);
-            }
+        }
+        if(!"10038".equals(examConfig.getReachRewardType())){
+            endScore = userExamService.calcGetInt( examConfig, countScore , userExam.getUserId());
         }
         userExam.setIsFinMark("0");
         userExam.setScore(countScore);
+        userExam.setRewards(endScore);
         userExamDao.updateById(userExam);
 
         return Result.ok();

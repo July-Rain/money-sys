@@ -15,11 +15,11 @@ public class FractionRules extends DataEntity<FractionRules> {
 
     private String fractionId;  //分数规则id
 
-    private Double rightRateMin;    //正确率最小要求 或者浏览最低要求
+    private Float rightRateMin;    //正确率最小要求 或者浏览最低要求
 
-    private Double rightRateMax;    //正确率最大要求
+    private Float rightRateMax;    //正确率最大要求
 
-    private Double intervalScore ;      //此区间获得分数
+    private Float intervalScore ;      //此区间获得分数
 
     public String getFractionId() {
         return fractionId;
@@ -29,27 +29,27 @@ public class FractionRules extends DataEntity<FractionRules> {
         this.fractionId = fractionId;
     }
 
-    public Double getRightRateMin() {
+    public Float getRightRateMin() {
         return rightRateMin;
     }
 
-    public void setRightRateMin(Double rightRateMin) {
+    public void setRightRateMin(Float rightRateMin) {
         this.rightRateMin = rightRateMin;
     }
 
-    public Double getRightRateMax() {
+    public Float getRightRateMax() {
         return rightRateMax;
     }
 
-    public void setRightRateMax(Double rightRateMax) {
+    public void setRightRateMax(Float rightRateMax) {
         this.rightRateMax = rightRateMax;
     }
 
-    public Double getIntervalScore() {
+    public Float getIntervalScore() {
         return intervalScore;
     }
 
-    public void setIntervalScore(Double intervalScore) {
+    public void setIntervalScore(Float intervalScore) {
         this.intervalScore = intervalScore;
     }
 }

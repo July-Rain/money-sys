@@ -8,9 +8,12 @@ import com.lawschool.beans.User;
 import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.beans.exam.UserExam;
 import com.lawschool.beans.exam.UserExamAnswer;
+import com.lawschool.beans.system.Fraction;
+import com.lawschool.beans.system.FractionRules;
 import com.lawschool.dao.TestQuestionsDao;
 import com.lawschool.dao.exam.UserExamAnswerDao;
 import com.lawschool.dao.exam.UserExamDao;
+import com.lawschool.enums.Source;
 import com.lawschool.form.*;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.CollectionService;
@@ -21,10 +24,8 @@ import com.lawschool.service.exam.ExamConfigService;
 import com.lawschool.service.exam.UserExamAnswerService;
 import com.lawschool.service.exam.UserExamFormService;
 import com.lawschool.service.exam.UserExamService;
-import com.lawschool.util.GetUUID;
-import com.lawschool.util.PageUtils;
-import com.lawschool.util.Result;
-import com.lawschool.util.UtilValidate;
+import com.lawschool.service.system.FractionService;
+import com.lawschool.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,6 +77,9 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
     @Autowired
     private CollectionService collectionService;
 
+    @Autowired
+    private FractionService fractionService;
+
     /**
      * 获取试卷
      * @param examConfigId
@@ -126,22 +130,6 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
                 otherList.add(que);
             }
         }
-        /*String key = "";
-        List<QuestForm> diffQueTypeList = new ArrayList<QuestForm>();
-        for(QuestForm que : queList){
-            if(!que.getQuestionType().equals(key)) {
-                if(UtilValidate.isNotEmpty(diffQueTypeList)) {
-                    Collections.shuffle(diffQueTypeList);
-                    queMap.put(key, diffQueTypeList);
-                }
-                key = que.getQuestionType();
-                diffQueTypeList = new ArrayList<QuestForm>();
-                diffQueTypeList.add(que);
-            }else {
-                diffQueTypeList.add(que);
-            }
-        }
-        queMap.put(key, diffQueTypeList);*/
 
         //根据考试配置判断是否乱序
         if ("10031".equals(examConfig.getTopicOrderType())) {
@@ -165,8 +153,9 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         userExam.setId(GetUUID.getUUIDs("UE"));
         userExam.setExamConfigId(examConfigId);
         userExam.setExamDetailId(examDetailId);
+        userExam.setQueNum(Long.valueOf(examConfig.getExamCount()));
         userExam.setExamStatus("1");
-        userExam.setUserId(user.getUserId());
+        userExam.setUserId(user.getId());
         userExam.setOptTime(new Date());
         userExam.setRemainingExamTime(examConfig.getExamTime().doubleValue());
         dao.insert(userExam);
@@ -228,6 +217,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         Double remainingExamTime = userAnswerForm.getRemainingExamTime();
         Boolean isHaveSubject = false;
         double totalScore = 0;
+        float endScore = 0F;
         for (ThemeAnswerForm themeAnswerForm : themeAnswerFormsList) {
             //根据用户考试ID+问题ID查询考题详情
             UserExamAnswer userExamAnswer = userExamAnswerDao.findByuEIdAndQueId(userExamId, themeAnswerForm.getqId());
@@ -256,26 +246,22 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         }else {
             //无主观题  完成阅卷
             isFinMark = "0";
-
-            if(!"10038".equals(examConfig.getReachRewardType())){
-                Integral integral = new Integral();
-                if ("10039".equals(examConfig.getReachRewardType())){
-                    //学分
-                    integral.setType("0");
-                }else{
-                    integral.setType("1");
-                }
-                integral.setSrc("exam");
-                integral.setPoint(Float.parseFloat(examConfig.getReachReward()));
-                User user = userService.selectUserByUserId(userExam.getUserId());
-                integralService.addIntegralRecord(integral,user);
+            if(!"10038".equals(examConfig.getReachRewardType())&&totalScore >= examConfig.getPassPnt()) {
+                endScore = calcGetInt(examConfig,totalScore,userExam.getUserId());
             }
         }
         //提交试卷设置考试状态为完成
         String examStatus = "2";
-        userExamDao.updateFinMarkAndScoreById(isFinMark, totalScore, examStatus, remainingExamTime, userExamId);
+        userExamDao.updateFinMarkAndScoreById(isFinMark, totalScore, examStatus,endScore, remainingExamTime, userExamId);
     }
 
+    /**
+     * 获取考试列表
+     * @param params
+     * @param user
+     * @return
+     * @throws ParseException
+     */
     @Override
     public Result getList(Map<String, Object> params, User user) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -310,6 +296,10 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         return Result.ok().put("page",userExamFormPage);
     }
 
+    /**
+     * 保存考试
+     * @param userAnswerForm
+     */
     @Override
     public void saveExam(UserAnswerForm userAnswerForm) {
         String userExamId = userAnswerForm.getUserExamId();
@@ -327,6 +317,12 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
 
     }
 
+    /**
+     * 继续考试
+     * @param userExamId
+     * @param user
+     * @return
+     */
     @Override
     public Result continueExam(String userExamId,User user) {
 
@@ -358,6 +354,11 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
                 .put("judgeList", judgeList).put("subjectList", subjectList).put("examConfig", examConfig).put("userExam", userExam).put("user", user);
     }
 
+    /**
+     * 组装试卷
+     * @param list
+     * @return
+     */
     @Override
     public List<QuestForm> buildExam(List<UserExamAnswer> list) {
 
@@ -405,6 +406,11 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
 
     }
 
+    /**
+     *
+     * @param ids
+     * @return
+     */
     @Override
     public List<UserExamForm> getListByIds(List<String> ids) {
         return dao.getListByIds(ids);
@@ -451,4 +457,63 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
 
         return true;
     }
+
+    @Override
+    public float calcGetInt(ExamConfig examConfig,double totalScore,String userId){
+        //计算获得奖励
+        //获取当前考生当前时间范围内积分并比较是否超出范围
+        //未超出 奖励分数
+        Integral integral = new Integral();
+        Fraction fraction = new Fraction();
+        Result result ;
+        float endScore=0F;
+        User user = userService.selectUserByUserId(userId);
+        //判断奖励类型
+        //获取奖励规则
+        if ("10039".equals(examConfig.getReachRewardType())){
+            //学分
+            result = fractionService.getFractionByType("0", Source.EXAM);
+            fraction = (Fraction) result.get("fraction");
+            if(fraction.getQueNum()<=examConfig.getExamCount()&& totalScore>=(examConfig.getPassPnt()*fraction.getMinDemand())){
+                //本次奖励分数
+                endScore =Float.parseFloat( examConfig.getReachReward());
+                endScore = svaeIntegral(DateTimeUtils.getCurrentQuarterStartTime(), DateTimeUtils.getCurrentQuarterEndTime(),
+                        examConfig.getReachRewardType(),user,fraction.getDailyLimit(),endScore,"0");
+            }
+        }else{
+            result = fractionService.getFractionByType("1", Source.EXAM);
+            fraction = (Fraction) result.get("fraction");
+            List<FractionRules> fractionRulesList = fraction.getFractionRulesList();
+            if (fraction.getQueNum()<=examConfig.getExamCount()) {
+                for (FractionRules fractionRules : fractionRulesList) {
+                    if (totalScore >= examConfig.getExamScore() * fractionRules.getRightRateMin() && totalScore < examConfig.getExamScore() * fractionRules.getRightRateMax()) {
+                        endScore = fractionRules.getIntervalScore();
+                        endScore = svaeIntegral(DateTimeUtils.getCurrentMonthStartTime(), DateTimeUtils.getCurrentMonthEndTime(),
+                                examConfig.getReachRewardType(),user,fraction.getDailyLimit(),endScore,"1");
+                    }
+                }
+            }
+        }
+        return endScore;
+    }
+
+    private float svaeIntegral(Date startTime,Date endTime,String reachRewardType,
+                              User user,float limit,float endScore, String type ){
+        //获取本季度已经获得分数
+        Integral integral = new Integral();
+        float getScoreCount = dao.getSubScoreByTimes(startTime, endTime,reachRewardType ,user.getId());
+        if (getScoreCount< limit) {
+            //获得的总分数小于限制分数
+            if ( (getScoreCount + endScore )> limit) {
+                endScore = limit - getScoreCount;
+            }
+            integral.setType(type);
+            integral.setSrc("exam");
+            integralService.addIntegralRecord(integral,user);
+        }else {
+            endScore = 0f;
+        }
+        return endScore;
+    }
+
 }

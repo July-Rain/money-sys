@@ -43,4 +43,6 @@ public interface UserExamService  extends AbstractService<UserExam> {
     Result viewExam(String userExamId,User user);
 
     boolean doCollect(String id, String recordId, Integer type);
+
+    float calcGetInt(ExamConfig examConfig,double totalScore,String userId);
 }

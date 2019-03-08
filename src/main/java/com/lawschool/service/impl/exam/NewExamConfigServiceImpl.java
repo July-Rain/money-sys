@@ -119,10 +119,12 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
         if (judgeMultipleSelection.size() > 0) {
             saveExamQueByComm(judgeMultipleSelection, id, examDetail.getId(), examConfigForm.getJudgeMultScore());
         }
-        List<TestQuestions> subMultipleSelection = examConfigForm.getSubMultipleSelection();   //自主
+        //自主
+        List<TestQuestions> subMultipleSelection = examConfigForm.getSubMultipleSelection();
         if (subMultipleSelection.size() > 0) {
             saveExamQueByComm(subMultipleSelection, id, examDetail.getId(), 0);
         }
+        examConfig.setExamCount(sinMultipleSelection.size()+mulMultipleSelection.size()+judgeMultipleSelection.size()+subMultipleSelection.size());
         examConfig.setStatus("1");
         dao.updateById(examConfig);
         return Result.ok();
@@ -132,7 +134,11 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
     public Result genRandomQue(ExamConfigForm examConfigForm) {
         String id = examConfigForm.getId();
         ExamConfig examConfig = dao.selectById(id);
+        int examNum = 0;
         List<ExamQueConfig> examQueList = examConfigForm.getExamQueConfigList();
+        for (ExamQueConfig examQueConfig : examQueList){
+            examNum += examQueConfig.getQuestionNumber();
+        }
         if ("10027".equals(examConfig.getGroupForm())) {
             //统一组卷，生成一套试卷
             ExamDetail examDetail = saveExamDetail(examConfig.getId());
@@ -140,10 +146,11 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
             for (ExamQueConfig examQueConfig : examQueList) {
                 // 根据配置从题库中获取
                 //保存考试题目配置表
+                examNum += examQueConfig.getQuestionNumber();
                 saveExamQueConfig(examConfig.getId(), examQueConfig);
                 //根据考试配置获取题目ID
                 List<String> idLists = getIdList(examQueConfig, examQueConfig.getQuestionNumber());
-                saveExamQueByIdList(idLists, examConfig.getId(), examDetail.getId(), examQueConfig.getQuestionScore() / examQueList.size());
+                saveExamQueByIdList(idLists, examConfig.getId(), examDetail.getId(), examQueConfig.getQuestionScore() / examQueConfig.getQuestionNumber());
             }
         } else {
             //生成50套
@@ -151,6 +158,7 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
             generateNumExam(num, examConfig.getId(), examQueList);
         }
         examConfig.setStatus("1");
+        examConfig.setExamCount(examNum);
         dao.updateById(examConfig);
         return Result.ok();
     }
@@ -278,14 +286,28 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
      */
     @Override
     public Result genRanQueAfterPreview(ExamConfigForm examConfigForm) {
-        String id = examConfigForm.getId();  //考试配置ID
-        ExamConfig examConfig = dao.selectById(id); //获取考试配置详情
-        List<String> mustQueIdList = examConfigForm.getMustQueList();   //获取必考题目列表
-        List<TestQuestions> mustQueList = getList(mustQueIdList);   //获取所有必考题目详情
-        List<String> sinIdList = new ArrayList<>();  //单选列表
-        List<String> mulIdList = new ArrayList<>(); //多选列表
-        List<String> judIdList = new ArrayList<>();    //判断
-        List<String> subIdList = new ArrayList<>();    //主观
+        //考试配置ID
+        String id = examConfigForm.getId();
+        //获取考试配置详情
+        ExamConfig examConfig = dao.selectById(id);
+        //获取必考题目列表
+        List<String> mustQueIdList = examConfigForm.getMustQueList();
+        //获取所有必考题目详情
+        List<TestQuestions> mustQueList = getList(mustQueIdList);
+        //单选列表
+        List<String> sinIdList = new ArrayList<>();
+        //多选列表
+        List<String> mulIdList = new ArrayList<>();
+        //判断
+        List<String> judIdList = new ArrayList<>();
+        //主观
+        List<String> subIdList = new ArrayList<>();
+        int examNum = 0 ;
+        //获取考试题目设置
+        List<ExamQueConfig> examQueList = examConfigForm.getExamQueConfigList();
+        for (ExamQueConfig examQueConfig : examQueList){
+            examNum += examQueConfig.getQuestionNumber();
+        }
         for(TestQuestions tes : mustQueList){
             if("10004".equals(tes.getQuestionType())){
                 sinIdList.add(tes.getId());
@@ -297,7 +319,6 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
                 subIdList.add(tes.getId());
             }
         }
-        List<ExamQueConfig> examQueList = examConfigForm.getExamQueConfigList();    //获取考试题目设置
         if ("10027".equals(examConfig.getGroupForm())) {
             //统一组卷，生成一套试卷
             generateNumExamAfterPreview(1,examConfig.getId(),examQueList,sinIdList,mulIdList,judIdList,subIdList);
@@ -307,6 +328,7 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
             generateNumExamAfterPreview(50,examConfig.getId(),examQueList,sinIdList,mulIdList,judIdList,subIdList);
         }
         examConfig.setStatus("1");
+        examConfig.setExamCount(examNum);
         dao.updateById(examConfig);
         return Result.ok();
     }
@@ -364,7 +386,7 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
                 // 根据配置从题库中获取
                 //根据考试配置获取题目ID
                 List<String> idLists = getIdList(examQueConfig, examQueConfig.getQuestionNumber());
-                saveExamQueByIdList(idLists, examConfigId, ed.getId(), examQueConfig.getQuestionScore() / examQueList.size());
+                saveExamQueByIdList(idLists, examConfigId, ed.getId(), examQueConfig.getQuestionScore() / examQueConfig.getQuestionNumber());
             }
         }
     }

@@ -34,6 +34,16 @@ public class UserExam extends DataEntity<UserExam> {
 
     private String checkStatus; //阅卷状态  0 未开始  1 未完成  2 已完成
 
+    private Float rewards; //奖励
+
+    public Float getRewards() {
+        return rewards;
+    }
+
+    public void setRewards(Float rewards) {
+        this.rewards = rewards;
+    }
+
     public String getCheckStatus() {
         return this.checkStatus;
     }
