@@ -6,7 +6,6 @@ var vm = new Vue({
     el: '#app',
     data: {
         isSubmit: true, // 是否提交 待
-        isFavored: false, // 是否收藏
         // 答题数据
         testForm: {
             sinChoic: [],
@@ -65,7 +64,7 @@ var vm = new Vue({
         lefttime: 0,
         consumedMinutes: '00', // 所用分钟
         consumedSeconds: '00', // 所用秒
-        totalScore: 87,
+        totalScore: 0,
 
         favoriteText: '收藏此题',
         paperName: '',
@@ -86,6 +85,7 @@ var vm = new Vue({
         })
     },
     methods: {
+        // created钩子中执行获取数据
         viewExam: function () {
             $.ajax({
                 type: "POST",
@@ -194,15 +194,6 @@ var vm = new Vue({
                 }
             });
         },
-        // 收藏
-        favor: function () {
-            this.isFavored = !this.isFavored;
-            if (this.isFavored) {
-                this.favoriteText = '已收藏';
-            } else {
-                this.favoriteText = '收藏此题';
-            }
-        },
         // bar栏完成题数实时更新
         updateCommon: function (index, arr) {
             vm.barData[index].currentFinishedNum = 0;
@@ -253,6 +244,7 @@ var vm = new Vue({
                 }
             });
         },
+        // 答案区域
         answerDisplay: function (list, id, answer) {
             // 用户答案对应的数字数组
             var checkIndex = [];
@@ -266,11 +258,12 @@ var vm = new Vue({
             list.forEach(val => checkIndex.push(answerIdList.indexOf(val)+1));
             rightIdList.forEach(val => rightIndex.push(answerIdList.indexOf(val)+1));
             return {
-                checkIndex: checkIndex.join(),
-                rightIndex: rightIndex.join()
+                checkIndex: checkIndex.sort((a,b) => a-b).join(' '),
+                rightIndex: rightIndex.sort((a,b) => a-b).join(' ')
             }
         },
-        /*doCollect :function(index,type){
+        // 收藏
+        doCollect :function(index,type){
             var obj ={};
             var type;
             if(type==='10004'){
@@ -281,11 +274,9 @@ var vm = new Vue({
                 if(vm.sinChoicList[index].isCollect == 1){
                     type = 0;
                     vm.sinChoicList[index].isCollect = 0;
-                    vm.sinStarIcon[index] = 'el-icon-star-off';
                 } else {
                     type = 1;
                     vm.sinChoicList[index].isCollect = 1;
-                    vm.sinStarIcon [index]= 'el-icon-star-on';
                 }
             }else if (type ==='10005'){
                 obj={
@@ -295,11 +286,9 @@ var vm = new Vue({
                 if(vm.mulChoicList[index].isCollect == 1){
                     type = 0;
                     vm.mulChoicList[index].isCollect = 0;
-                    vm.mulStarIcon[index] = 'el-icon-star-off';
                 } else {
                     type = 1;
                     vm.mulChoicList[index].isCollect = 1;
-                    vm.mulStarIcon[index] = 'el-icon-star-on';
                 }
             }else if(type==='10006'){
                 obj={
@@ -309,11 +298,9 @@ var vm = new Vue({
                 if(vm.judgeList[index].isCollect == 1){
                     type = 0;
                     vm.judgeList[index].isCollect = 0;
-                    vm.judStarIcon[index] = 'el-icon-star-off';
                 } else {
                     type = 1;
                     vm.judgeList[index].isCollect = 1;
-                    vm.judStarIcon[index] = 'el-icon-star-on';
                 }
             }else if(type==='10007'){
                 obj={
@@ -323,11 +310,9 @@ var vm = new Vue({
                 if(vm.subjectList[index].isCollect == 1){
                     type = 0;
                     vm.subjectList[index].isCollect = 0;
-                    vm.subStarIcon[index] = 'el-icon-star-off';
                 } else {
                     type = 1;
                     vm.subjectList[index].isCollect = 1;
-                    vm.subStarIcon[index] = 'el-icon-star-on';
                 }
             }
 
@@ -344,7 +329,7 @@ var vm = new Vue({
                     }
                 }
             });
-        },*/
+        },
         // 路径方法
         goBack: function () {
             var parentWin = window.parent;
@@ -360,9 +345,9 @@ var vm = new Vue({
             if (e.target.innerHTML === '小') {
                 html.style.fontSize = '9px';
             } else if (e.target.innerHTML === '中') {
-                html.style.fontSize = '12px';
-            } else if (e.target.innerHTML === '大') {
                 html.style.fontSize = '13px';
+            } else if (e.target.innerHTML === '大') {
+                html.style.fontSize = '14px';
             } else {
                 return;
             }

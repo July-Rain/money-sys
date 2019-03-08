@@ -190,6 +190,8 @@ var vm = new Vue({
             chuangguan:"",
             onlPkSum:"",
             leitaiCount:"",
+            leitaibaifengbi:"",
+            onlPkSumbaifengbi:"",
             everyDay:"",
             rules: {//表单验证规则
                 name: [
@@ -976,7 +978,10 @@ var vm = new Vue({
                 async:false,
                 success: function (data) {
                     if(data.competitionRecord){
-                        vm.chuangguan="第"+data.competitionRecord.howBig+"大关，第"+data.competitionRecord.howLit+"小关";
+                        vm.chuangguan="第"+data.competitionRecord.howBig+"大关，第"+data.competitionRecord.howLit+"小关"+",击败了"+data.baifengbi+"%同学";
+                    }
+                    else {
+                            vm.chuangguan="第0关,击败了0%同学";
                     }
 
                 }
@@ -990,6 +995,7 @@ var vm = new Vue({
                 async:false,
                 success: function (data) {
                     vm.onlPkSum=data.pkSum;
+                    vm.onlPkSumbaifengbi=data.onlPkSumbaifengbi+"%";
                 }
             });
         },
@@ -1001,6 +1007,7 @@ var vm = new Vue({
                 async:false,
                 success: function (data) {
                     vm.leitaiCount=data.leitaiWinCount;
+                    vm.leitaibaifengbi=data.leitaibaifengbi+"%";
                 }
             });
         },

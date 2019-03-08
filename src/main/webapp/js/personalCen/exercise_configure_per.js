@@ -12,7 +12,7 @@ var vm = new Vue({
             rangeType: 0,
             deptIds: [],
             userIds: [],
-            sourceFrom:"1"
+            sourceFrom:"0"
         },
         rangeType: [
             {key:0, value:'个人'},
