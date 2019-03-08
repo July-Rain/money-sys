@@ -72,19 +72,11 @@ public class ExerciseConfigureController extends AbstractController{
         entity.setDelFlag(0);
         entity.setUserName(user.getUserName());
 
-        if("0".equals(entity.getRangeType())){
-            // 个人
-            entity.setUsers(user.getId());
-            entity.setDepts(null);
-        } else if("1".equals(entity.getRangeType())){
-            // 公开
-            entity.setUsers("-1");
-            entity.setDepts("-1");
-        } else if("2".equals(entity.getRangeType())){
+        if(ExerciseConfigureEntity.FROM_MANGE_TASK.equals(entity.getSourceFrom())){
             // 部门
-            if(CollectionUtils.isEmpty(entity.getDeptIds()) && CollectionUtils.isEmpty(entity.getUserIds())){
+           /* if(CollectionUtils.isEmpty(entity.getDeptIds()) && CollectionUtils.isEmpty(entity.getUserIds())){
                 return Result.error("请设置使用部门或使用人员信息...");
-            }
+            }*/
 
             if(CollectionUtils.isNotEmpty(entity.getDeptIds())){
                 entity.setDepts(String.join(",", entity.getDeptIds()));
