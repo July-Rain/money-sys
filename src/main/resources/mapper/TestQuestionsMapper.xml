@@ -681,8 +681,7 @@
             LEFT JOIN LAW_SYS_TOPIC c ON t.special_Knowledge_Id = c.id
             <where>
                 t.IS_ENBLE = 0
-                AND a.STATUS='1'
-                AND  a.RELEASE_STATUS='1'
+                AND t.STATUS='1'
                 AND t.RELEASE_STATUS = 1
                 AND t.QUESTION_TYPE <![CDATA[ <> ]]> '10007'
                 <if test="topics != null and topics != ''">

@@ -210,22 +210,22 @@
                             align="center"
                     >
                     </el-table-column>
-                    <el-table-column
-                            prop="winReward"
-                            label="获胜者奖励积分"
-                            width="280"
-                            header-align="center"
-                            align="center"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            prop="loserReward"
-                            label="失败者奖励积分"
-                            width="280"
-                            header-align="center"
-                            align="center"
-                    >
-                    </el-table-column>
+                    <!--<el-table-column-->
+                            <!--prop="winReward"-->
+                            <!--label="获胜者奖励积分"-->
+                            <!--width="280"-->
+                            <!--header-align="center"-->
+                            <!--align="center"-->
+                    <!--&gt;-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column-->
+                            <!--prop="loserReward"-->
+                            <!--label="失败者奖励积分"-->
+                            <!--width="280"-->
+                            <!--header-align="center"-->
+                            <!--align="center"-->
+                    <!--&gt;-->
+                    <!--</el-table-column>-->
                     <el-table-column
                             prop="answerTime"
                             label="答题时间"
@@ -264,15 +264,15 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <el-pagination
-                        @size-change="handleSizeChange"
-                        @current-change="handleCurrentChange"
-                        :current-page="formInline.currPage"
-                        :page-sizes="[10, 20, 30, 40]"
-                        :page-size="formInline.pageSize"
-                        layout="total, sizes, prev, pager, next, jumper"
-                        :total="formInline.totalCount">
-                </el-pagination>
+                <!--<el-pagination-->
+                        <!--@size-change="handleSizeChange"-->
+                        <!--@current-change="handleCurrentChange"-->
+                        <!--:current-page="formInline.currPage"-->
+                        <!--:page-sizes="[10, 20, 30, 40]"-->
+                        <!--:page-size="formInline.pageSize"-->
+                        <!--layout="total, sizes, prev, pager, next, jumper"-->
+                        <!--:total="formInline.totalCount">-->
+                <!--</el-pagination>-->
 
             </el-col>
         </el-row>
@@ -282,38 +282,53 @@
 
             <div class="form_area">
 
-                <el-form label-width="100px" class="demo-msg"
+                <el-form label-width="100px" class="demo-msg" :model="competitionOnline" ref="competitionOnline"
                          size="mini">
                     <div class="gray_area">
                         <el-row>
                             <el-col :span="12">
                                 <el-form-item label="总题数量">
-                                    <el-input></el-input>
+                                    <el-select @change="onselect" v-model="competitionOnline.topicNum"
+                                               size="mini"
+                                               style="margin-left: 20px;" clearable
+                                               placeholder="设置题量">
+                                        <el-option
+                                                v-for="item in checkNum"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                        </el-option>
+                                    </el-select>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
                                 <el-form-item label="统一配置">
-                                    <el-switch></el-switch>
+                                    <el-select v-model="competitionOnline.uniformRules"
+                                               @change="onselectuniformRules(competitionOnline)"
+                                               placeholder="是否统一配置" clearable>
+                                        <el-option label="是" value="1"></el-option>
+                                        <el-option label="否" value="0"></el-option>
+                                    </el-select>
                                 </el-form-item>
                             </el-col>
 
                         </el-row>
-                        <el-row>
-                            <el-col :span="12">
-                                <el-form-item label="胜者奖励积分">
-                                    <el-input-number :min="1" :max="10"></el-input-number>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="12">
-                                <el-form-item label="败者奖励积分">
-                                    <el-input-number :min="1" :max="10"></el-input-number>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
+                        <!--<el-row>-->
+                            <!--<el-col :span="12">-->
+                                <!--<el-form-item label="胜者奖励积分">-->
+                                    <!--<el-input-number :min="1" :max="10"></el-input-number>-->
+                                <!--</el-form-item>-->
+                            <!--</el-col>-->
+                            <!--<el-col :span="12">-->
+                                <!--<el-form-item label="败者奖励积分">-->
+                                    <!--<el-input-number :min="1" :max="10"></el-input-number>-->
+                                <!--</el-form-item>-->
+                            <!--</el-col>-->
+                        <!--</el-row>-->
                         <el-row>
                             <el-col :span="12">
                                 <el-form-item label="答题时间">
-                                    <el-time-select
+                                    <el-time-select v-model="competitionOnline.answerTime"
                                             :picker-options="{
                                         start: '00:05',
                                         step: '00:01',
@@ -327,201 +342,228 @@
 
                         </el-row>
                     </div>
-                    <el-row>
-                        <el-col :span="5"><h4>第一题</h4></el-col>
-                        <el-col :span="9">
-                            <el-form-item label="此题积分">
-                                <el-input-number :min="1" :max="10"></el-input-number>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="9" :offset="5">
-                            <el-form-item label="题目分值">
-                                <el-input-number :min="1" :max="10"></el-input-number>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="9" :offset="5">
-                            <el-form-item label="试题难度">
-                                <el-checkbox-group>
-                                    <el-checkbox label="初级"></el-checkbox>
-                                    <el-checkbox label="中级"></el-checkbox>
-                                    <el-checkbox label="高级"></el-checkbox>
-                                </el-checkbox-group>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="9" :offset="5">
-                            <el-form-item label="专项知识">
 
-                                <el-select placeholder="请选择">
-                                    <el-option label="区域一" value="shanghai"></el-option>
-                                    <el-option label="区域二" value="beijing"></el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="9" :offset="5">
-                            <el-form-item label="试题类型">
+                    <div v-for="item in competitionOnline.battleTopicSettingList">
 
-                                <el-select placeholder="请选择">
-                                    <el-option label="区域一" value="shanghai"></el-option>
-                                    <el-option label="区域二" value="beijing"></el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
+                        <el-row>
+                            <el-col :span="5" v-if="competitionOnline.uniformRules==0"><h4> 第{{item.howManySmall}}题</h4></el-col>
+                            <!--<el-col :span="9">-->
+                                <!--<el-form-item label="此题积分">-->
+                                    <!--<el-input-number :min="1" :max="10"></el-input-number>-->
+                                <!--</el-form-item>-->
+                            <!--</el-col>-->
+                            <!--<el-col :span="9" :offset="5">-->
+                                <!--<el-form-item label="题目分值">-->
+                                    <!--<el-input-number :min="1" :max="10"></el-input-number>-->
+                                <!--</el-form-item>-->
+                            <!--</el-col>-->
+                        </el-row>
+                        <el-row>
+                            <el-col :span="9" :offset="5">
+                                <el-form-item label="试题难度">
+                                    <el-radio-group v-model="item.questionDifficulty">
+                                        <el-radio :label="item.key" v-for="item in itemjibie">
+                                            {{item.value}}
+                                        </el-radio>
+                                    </el-radio-group>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="9" :offset="5">
+                                <el-form-item label="专项知识">
+
+                                    <el-select v-model="item.knowledgeId"
+                                               size="mini"
+                                               style="margin-left: 20px;"
+                                               placeholder="专项知识">
+                                        <el-option
+                                                v-for="item2 in zhuanxiangzhishiList"
+                                                :key="item2.key"
+                                                :label="item2.value"
+                                                :value="item2.key">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="9" :offset="5">
+                                <el-form-item label="试题类型">
+
+                                    <el-select v-model="item.questionType"
+                                               size="mini"
+                                               style="margin-left: 20px;"
+                                               placeholder="试题类型">
+                                        <el-option
+                                                v-for="item2 in itemtype"
+                                                :key="item2.key"
+                                                :label="item2.value"
+                                                :value="item2.key">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                    </div>
+
+                    <el-form-item>
+                        <el-button type="primary" @click="saveOrUpdate()">保存</el-button>
+                        <el-button @click="closeDia">取消</el-button>
+                    </el-form-item>
                 </el-form>
+
+
+
             </div>
-            <div style="background-color: blue;color: #fff;text-align: center">---------- ↓ 以下是原来的表单，逻辑还没有迁移上来 ↓
-                ----------
-            </div>
-            <el-row>
-                <el-col :span="12">
-                    <el-form :model="competitionOnline" :rules="rules" ref="competitionOnline" label-width="100px"
-                             class="demo-competitionOnline" size="mini">
-                        <table style="border: solid 2px black;width: 200%">
+            <!--<div style="background-color: blue;color: #fff;text-align: center">&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; ↓ 以下是原来的表单，逻辑还没有迁移上来 ↓-->
+                <!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+            <!--</div>-->
+            <!--<el-row>-->
+                <!--<el-col :span="12">-->
+                    <!--<el-form :model="competitionOnline" :rules="rules" ref="competitionOnline" label-width="100px"-->
+                             <!--class="demo-competitionOnline" size="mini">-->
+                        <!--<table style="border: solid 2px black;width: 200%">-->
 
-                            <tr>
-                                <th>
-                                    <el-form-item label="设置题量" prop="topicNum">
-                                        <el-select @change="onselect" v-model="competitionOnline.topicNum"
-                                                   size="mini"
-                                                   style="margin-left: 20px;" clearable
-                                                   placeholder="设置题量">
-                                            <el-option
-                                                    v-for="item in checkNum"
-                                                    :key="item.value"
-                                                    :label="item.label"
-                                                    :value="item.value">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                </th>
-                                <th>
-                                    <el-form-item label="是否统一配置" prop="uniformRules">
-                                        <el-select v-model="competitionOnline.uniformRules"
-                                                   @change="onselectuniformRules(competitionOnline)"
-                                                   placeholder="是否统一配置" clearable>
-                                            <el-option label="是" value="1"></el-option>
-                                            <el-option label="否" value="0"></el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                </th>
-                            </tr>
-                            <tr>
-
-                                <th>
-                                    <el-form-item label="获胜者奖励积分" prop="winReward">
-                                        <el-input type="number" v-model="competitionOnline.winReward"
-                                                  placeholder="获胜者奖励" clearable></el-input>
-                                    </el-form-item>
-                                </th>
-                                <th>
-                                    <el-form-item label="失败者奖励积分" prop="loserReward">
-                                        <el-input type="number" v-model="competitionOnline.loserReward"
-                                                  placeholder="失败者奖励" clearable></el-input>
-                                    </el-form-item>
-                                </th>
-                            </tr>
-                            <tr>
-                                <th colspan="2">
-                                    <el-form-item label="答题时间" prop="answerTime">
-                                        <el-time-picker
-                                                v-model="competitionOnline.answerTime"
-                                                type="date"
-                                                value-format="HH:mm:ss"
-                                                format="HH:mm:ss"
-                                                :picker-options="{
-
-                                                selectableRange:'00:00:00 - 23:59:00'
-
-                                                    }"
-                                                placeholder="任意时间点">
-                                        </el-time-picker>
-
-                                    </el-form-item>
-
-                                </th>
-                            </tr>
-                        </table>
-                        <div v-for="item in competitionOnline.battleTopicSettingList" class="swiper-slide"
-                             style="border: solid 1px #f00;width: 200%;">
-                            <table style="border: solid 2px black;width: 100%">
-                                <tr>
-                                    <th colspan="2">
-                                        <el-form-item label="" v-if="competitionOnline.uniformRules==0"
-                                                      prop="crossingPoints">
-                                            第{{item.howManySmall}}题
-                                        </el-form-item>
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">
-                                        <el-form-item label="试题难度" prop="questionDifficulty">
-                                            <el-radio-group v-model="item.questionDifficulty">
-                                                <el-radio :label="item.key" v-for="item in itemjibie">
-                                                    {{item.value}}
-                                                </el-radio>
-                                            </el-radio-group>
-                                        </el-form-item>
-                                    </th>
-
-                                </tr>
-                                <tr>
-                                    <!--<th>-->
-                                    <!--<el-form-item label="是否获得积分" prop="whetherGetIntegral">-->
-                                    <!--<el-switch v-model="item.whetherGetIntegral" active-text="是"  inactive-text="否" active-value="1"  inactive-value="0" ></el-switch>-->
+                            <!--<tr>-->
+                                <!--<th>-->
+                                    <!--<el-form-item label="设置题量" prop="topicNum">-->
+                                        <!--<el-select @change="onselect" v-model="competitionOnline.topicNum"-->
+                                                   <!--size="mini"-->
+                                                   <!--style="margin-left: 20px;" clearable-->
+                                                   <!--placeholder="设置题量">-->
+                                            <!--<el-option-->
+                                                    <!--v-for="item in checkNum"-->
+                                                    <!--:key="item.value"-->
+                                                    <!--:label="item.label"-->
+                                                    <!--:value="item.value">-->
+                                            <!--</el-option>-->
+                                        <!--</el-select>-->
                                     <!--</el-form-item>-->
-                                    <!--</th>-->
-                                    <th colspan="2">
-                                        <el-form-item label="题目分值 " prop="score">
-                                            <el-input v-model="item.score" placeholder="题目分值" clearable></el-input>
-                                        </el-form-item>
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        <el-form-item label="试题类型" prop="itemType">
-                                            <el-select v-model="item.questionType"
-                                                       size="mini"
-                                                       style="margin-left: 20px;"
-                                                       placeholder="试题类型">
-                                                <el-option
-                                                        v-for="item2 in itemtype"
-                                                        :key="item2.key"
-                                                        :label="item2.value"
-                                                        :value="item2.key">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </th>
-                                    <th>
-                                        <el-form-item label="专项知识" prop="knowledgeId">
-                                            <el-select v-model="item.knowledgeId"
-                                                       size="mini"
-                                                       style="margin-left: 20px;"
-                                                       placeholder="专项知识">
-                                                <el-option
-                                                        v-for="item2 in zhuanxiangzhishiList"
-                                                        :key="item2.key"
-                                                        :label="item2.value"
-                                                        :value="item2.key">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </th>
-                                </tr>
-                            </table>
-                        </div>
+                                <!--</th>-->
+                                <!--<th>-->
+                                    <!--<el-form-item label="是否统一配置" prop="uniformRules">-->
+                                        <!--<el-select v-model="competitionOnline.uniformRules"-->
+                                                   <!--@change="onselectuniformRules(competitionOnline)"-->
+                                                   <!--placeholder="是否统一配置" clearable>-->
+                                            <!--<el-option label="是" value="1"></el-option>-->
+                                            <!--<el-option label="否" value="0"></el-option>-->
+                                        <!--</el-select>-->
+                                    <!--</el-form-item>-->
+                                <!--</th>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
 
-                        <el-form-item>
-                            <el-button type="primary" @click="saveOrUpdate()">保存</el-button>
-                            <el-button @click="closeDia">取消</el-button>
-                        </el-form-item>
-                    </el-form>
-                </el-col>
-            </el-row>
+                                <!--<th>-->
+                                    <!--<el-form-item label="获胜者奖励积分" prop="winReward">-->
+                                        <!--<el-input type="number" v-model="competitionOnline.winReward"-->
+                                                  <!--placeholder="获胜者奖励" clearable></el-input>-->
+                                    <!--</el-form-item>-->
+                                <!--</th>-->
+                                <!--<th>-->
+                                    <!--<el-form-item label="失败者奖励积分" prop="loserReward">-->
+                                        <!--<el-input type="number" v-model="competitionOnline.loserReward"-->
+                                                  <!--placeholder="失败者奖励" clearable></el-input>-->
+                                    <!--</el-form-item>-->
+                                <!--</th>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                                <!--<th colspan="2">-->
+                                    <!--<el-form-item label="答题时间" prop="answerTime">-->
+                                        <!--<el-time-picker-->
+                                                <!--v-model="competitionOnline.answerTime"-->
+                                                <!--type="date"-->
+                                                <!--value-format="HH:mm:ss"-->
+                                                <!--format="HH:mm:ss"-->
+                                                <!--:picker-options="{-->
+
+                                                <!--selectableRange:'00:00:00 - 23:59:00'-->
+
+                                                    <!--}"-->
+                                                <!--placeholder="任意时间点">-->
+                                        <!--</el-time-picker>-->
+
+                                    <!--</el-form-item>-->
+
+                                <!--</th>-->
+                            <!--</tr>-->
+                        <!--</table>-->
+                        <!--<div v-for="item in competitionOnline.battleTopicSettingList" class="swiper-slide"-->
+                             <!--style="border: solid 1px #f00;width: 200%;">-->
+                            <!--<table style="border: solid 2px black;width: 100%">-->
+                                <!--<tr>-->
+                                    <!--<th colspan="2">-->
+                                        <!--<el-form-item label="" v-if="competitionOnline.uniformRules==0"-->
+                                                      <!--prop="crossingPoints">-->
+                                            <!--第{{item.howManySmall}}题-->
+                                        <!--</el-form-item>-->
+                                    <!--</th>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<th colspan="2">-->
+                                        <!--<el-form-item label="试题难度" prop="questionDifficulty">-->
+                                            <!--<el-radio-group v-model="item.questionDifficulty">-->
+                                                <!--<el-radio :label="item.key" v-for="item in itemjibie">-->
+                                                    <!--{{item.value}}-->
+                                                <!--</el-radio>-->
+                                            <!--</el-radio-group>-->
+                                        <!--</el-form-item>-->
+                                    <!--</th>-->
+
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--&lt;!&ndash;<th>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<el-form-item label="是否获得积分" prop="whetherGetIntegral">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<el-switch v-model="item.whetherGetIntegral" active-text="是"  inactive-text="否" active-value="1"  inactive-value="0" ></el-switch>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</el-form-item>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</th>&ndash;&gt;-->
+                                    <!--<th colspan="2">-->
+                                        <!--<el-form-item label="题目分值 " prop="score">-->
+                                            <!--<el-input v-model="item.score" placeholder="题目分值" clearable></el-input>-->
+                                        <!--</el-form-item>-->
+                                    <!--</th>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<th>-->
+                                        <!--<el-form-item label="试题类型" prop="itemType">-->
+                                            <!--<el-select v-model="item.questionType"-->
+                                                       <!--size="mini"-->
+                                                       <!--style="margin-left: 20px;"-->
+                                                       <!--placeholder="试题类型">-->
+                                                <!--<el-option-->
+                                                        <!--v-for="item2 in itemtype"-->
+                                                        <!--:key="item2.key"-->
+                                                        <!--:label="item2.value"-->
+                                                        <!--:value="item2.key">-->
+                                                <!--</el-option>-->
+                                            <!--</el-select>-->
+                                        <!--</el-form-item>-->
+                                    <!--</th>-->
+                                    <!--<th>-->
+                                        <!--<el-form-item label="专项知识" prop="knowledgeId">-->
+                                            <!--<el-select v-model="item.knowledgeId"-->
+                                                       <!--size="mini"-->
+                                                       <!--style="margin-left: 20px;"-->
+                                                       <!--placeholder="专项知识">-->
+                                                <!--<el-option-->
+                                                        <!--v-for="item2 in zhuanxiangzhishiList"-->
+                                                        <!--:key="item2.key"-->
+                                                        <!--:label="item2.value"-->
+                                                        <!--:value="item2.key">-->
+                                                <!--</el-option>-->
+                                            <!--</el-select>-->
+                                        <!--</el-form-item>-->
+                                    <!--</th>-->
+                                <!--</tr>-->
+                            <!--</table>-->
+                        <!--</div>-->
+
+                        <!--<el-form-item>-->
+                            <!--<el-button type="primary" @click="saveOrUpdate()">保存</el-button>-->
+                            <!--<el-button @click="closeDia">取消</el-button>-->
+                        <!--</el-form-item>-->
+                    <!--</el-form>-->
+                <!--</el-col>-->
+            <!--</el-row>-->
+
         </el-dialog>
 
 
@@ -539,7 +581,7 @@
                         <i :class="item.questionDifficultyName==='高级'?'light':''" class="iconfont icon-shoucang1"></i>
                         <span class="diff">{{item.questionDifficultyName}}</span>
                     </li>
-                    <li><span>奖励分值：</span>{{item.score}}</li>
+                    <!--<li><span>奖励分值：</span>{{item.score}}</li>-->
                     <li><span>试题类型：</span>{{item.questionTypeName}}</li>
                 </ul>
 
