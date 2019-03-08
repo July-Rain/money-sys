@@ -209,7 +209,7 @@ var vm = new Vue({
                 vm.recordScore(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowLitnum) - 1].id, vm.nowBignum, vm.nowLitnum, vm.Score);
 
                 // vm.textmag = "您已主动放弃！闯关结束，成绩为第" + vm.nowBignum + "大关的第" + vm.nowLitnum + "小关，获得积分为" + vm.Score ;
-
+                vm.btnName = '闯关结束';
                 vm.rushSuccess = true;
             }
 
@@ -381,10 +381,15 @@ var vm = new Vue({
             window.location.href = baseURL + 'modules/competition/rushLevel.html?index=1'
         },
         jumpNextLevel: function(){
-            if(this.btnName==='闯关成功'){
+
+            if(vm.btnName==='闯关成功' ||vm.btnName==='闯关结束'){
                 window.location.href = baseURL + 'modules/competition/competeCenter.html';
             }
-            window.location.href = baseURL+"modules/competition/rushLevel.html?coinNum="+vm.Score+"&index="+(Number(vm.nowBignum)+Number(1));
+            else {
+
+                window.location.href = baseURL+"modules/competition/rushLevel.html?coinNum="+vm.Score+"&index="+(Number(vm.nowBignum)+Number(1));
+
+            }
 
             //把分数和第几关传过去
         }

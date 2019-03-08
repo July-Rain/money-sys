@@ -133,7 +133,6 @@ public class CompetitionRecordServiceImpl extends ServiceImpl<CompetitionRecordD
 				integral.setPoint((f-f3));
 				integral.setSrc("Checkpoint");
 				integralService.addIntegralRecord(integral,u);
-
 				s="超过上限，获得"+(f-f3)+"积分";
 			}
 		}
