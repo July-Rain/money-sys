@@ -77,5 +77,5 @@ public interface UserIntegralService {
      **/
      PageUtils list(Map<String,Object> map);
 
-     int getJifenByUserId(String userid);
+     Float getJifenByUserId(String userid);
 }

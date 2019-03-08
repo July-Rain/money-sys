@@ -152,7 +152,7 @@ public class BattleRecordController {
     public Result winLeiTaiCountByUserId(String winId){
         int i= battleRecordService.winLeiTaiCountByUserId(winId);
 
-        int t=   userIntegralService.getJifenByUserId(winId);
+        Float t=   userIntegralService.getJifenByUserId(winId);
         return Result.ok().put("winLeiTai",i).put("jifen",t);
     }
 }

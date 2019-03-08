@@ -183,7 +183,7 @@ websocket.onmessage = function (event) {
         //刷新在线用户列表
         $("#chatOnline").html("在线用户(" + data.userList.length + ")人");
         var str = data.text
-        console.info("11", str)
+
         if (str === '请等待 玩家加入' || str.indexOf("加入,欢迎") != -1) {
 
         } else {
@@ -227,7 +227,9 @@ websocket.onmessage = function (event) {
         //当收到消息的时候 给人赋值
         // console.info(" 收到系统消息，是给"+data.to);
         to = data.to;
-    } else {
+    }
+
+    else {
         // console.info("人发的消息");
         // console.info(data);
         //===普通消息
@@ -269,7 +271,7 @@ websocket.onmessage = function (event) {
                     closeWebsocket();
                 } else {
                     vm.dialogQuestion = true,
-                        vm.radio_disabled = false;
+                    vm.radio_disabled = false;
                     vm.allnum = data.tqList.length;
                     vm.nownum = Number(nowtimu) + 1;
                     vm.nowQscore = data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;

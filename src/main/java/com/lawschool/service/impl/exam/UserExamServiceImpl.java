@@ -266,7 +266,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
                     integral.setType("1");
                 }
                 integral.setSrc("exam");
-                integral.setPoint(Integer.parseInt(examConfig.getReachReward()));
+                integral.setPoint(Float.parseFloat(examConfig.getReachReward()));
                 User user = userService.selectUserByUserId(userExam.getUserId());
                 integralService.addIntegralRecord(integral,user);
             }

@@ -107,7 +107,7 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
                     integral.setType("1");
                 }
                 integral.setSrc("exam");
-                integral.setPoint(Integer.parseInt(examConfig.getReachReward()));
+                integral.setPoint(Float.parseFloat(examConfig.getReachReward()));
                 User user = userService.selectUserByUserId(userExam.getUserId());
                 integralService.addIntegralRecord(integral,user);
             }
@@ -237,7 +237,7 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
                     integral.setType("1");
                 }
                 integral.setSrc("exam");
-                integral.setPoint(Integer.parseInt(examConfig.getReachReward()));
+                integral.setPoint(Float.parseFloat(examConfig.getReachReward()));
                 User user = userService.selectUserByUserId(userExam.getUserId());
                 integralService.addIntegralRecord(integral,user);
             }

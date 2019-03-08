@@ -82,7 +82,7 @@ public class IntegralServiceImpl extends AbstractServiceImpl<IntegralDao, Integr
     public int addIntegralRecord(Integral integral, User user) {
         String userId=user.getId();
         String type=integral.getType();
-        int point=integral.getPoint();
+        Float point=integral.getPoint();
         //1.添加积分学分记录
 
         integral.setUserId(userId);
