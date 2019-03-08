@@ -27,6 +27,7 @@ var vm = new Vue({
                     // data:{"id": row.id},
                     success: function (result) {
                         if (result.code === 0) {
+
                             //第一次进来 我给你的 一些数据
                             vm.BigGuanList = result.data;
                             vm.getLevel(Number(getUrlParam('index')), result.data.length);

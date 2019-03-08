@@ -16,7 +16,7 @@ public class Integral  extends DataEntity<Integral> {
 
     private String type;//类型  0 -学分  1-积分
 
-    private Integer point;//分数
+    private Float point;//分数
 
     private String src;//来源    闯关：Checkpoint    在线比武：onlinPk     擂台：leitai
 
@@ -42,11 +42,19 @@ public class Integral  extends DataEntity<Integral> {
         this.type = type == null ? null : type.trim();
     }
 
-    public Integer getPoint() {
+//    public Integer getPoint() {
+//        return point;
+//    }
+//
+//    public void setPoint(Integer point) {
+//        this.point = point;
+//    }
+
+    public Float getPoint() {
         return point;
     }
 
-    public void setPoint(Integer point) {
+    public void setPoint(Float point) {
         this.point = point;
     }
 

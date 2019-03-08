@@ -45,8 +45,8 @@ public class UserIntegralController extends AbstractController {
         UserIntegral userIntegral =userIntegralService.getInfo(getUser());
         if(userIntegral == null){
             userIntegral = new UserIntegral();
-            userIntegral.setCreditPoint(0);
-            userIntegral.setIntegralPoint(0);
+            userIntegral.setCreditPoint(0f);
+            userIntegral.setIntegralPoint(0f);
         }
         return Result.ok().put("info", userIntegral);
     }

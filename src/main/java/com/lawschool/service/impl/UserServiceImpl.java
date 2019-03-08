@@ -316,4 +316,11 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         }
         return userMapper.updateById(user);
     }
+
+    @Override
+    public int getAllusesCount() {
+         int i=  userMapper.selectCount(new EntityWrapper<User>().ge("USER_STATUS",2000));
+
+        return i;
+    }
 }

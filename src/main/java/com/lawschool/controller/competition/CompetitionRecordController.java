@@ -3,6 +3,7 @@ package com.lawschool.controller.competition;
 import com.lawschool.base.AbstractController;
 import com.lawschool.beans.User;
 import com.lawschool.beans.competition.CompetitionRecord;
+import com.lawschool.service.UserService;
 import com.lawschool.service.accessory.AccessoryService;
 import com.lawschool.service.competition.CompetitionRecordService;
 import com.lawschool.util.PageUtils;
@@ -30,7 +31,8 @@ public class CompetitionRecordController extends AbstractController {
 
     @Autowired
     private CompetitionRecordService competitionRecordService;
-
+    @Autowired
+    private UserService userServiceService;
 
 
 
@@ -78,8 +80,8 @@ public class CompetitionRecordController extends AbstractController {
     @RequestMapping("/recordScore")
     public Result recordScore( String foreignKeyId, String nowbig, String nowlit, String sorce){
         User u = (User) SecurityUtils.getSubject().getPrincipal();
-        competitionRecordService.recordScore(foreignKeyId,nowbig,nowlit,u,sorce);//这边到时候和前端商量  传个json串
-        return Result.ok();
+      String s=  competitionRecordService.recordScore(foreignKeyId,nowbig,nowlit,u,sorce);//这边到时候和前端商量  传个json串
+        return Result.ok().put("s",s);
     }
 
 
@@ -134,6 +136,26 @@ public class CompetitionRecordController extends AbstractController {
     @RequestMapping("/chuangGuanRankingByUser")
     public Result chuangGuanRankingByUser(){
         CompetitionRecord competitionRecord= competitionRecordService.chuangGuanRankingByUser();
-        return Result.ok().put("competitionRecord",competitionRecord);
+        User u = (User) SecurityUtils.getSubject().getPrincipal();
+        int t=0;
+        int baifengbi=0;
+        if(competitionRecord!=null)
+        {
+            List<CompetitionRecord> competitionRecordList= competitionRecordService.chuangGuanRanking();
+            int userscount= userServiceService.getAllusesCount();
+            for(int i=0;i<competitionRecordList.size();i++)
+            {
+                if(competitionRecordList.get(i).getUserId().equals(u.getId()))
+                {
+                    t=i;
+                    break;
+                }
+            }
+               baifengbi=(userscount-(t+1))*100/userscount;
+
+
+        }
+
+        return Result.ok().put("competitionRecord",competitionRecord).put("baifengbi",baifengbi);
     }
 }

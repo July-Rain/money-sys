@@ -106,6 +106,7 @@ var vm = new Vue({
         lawCheckData:[],//法律法规回显表格数据
         multipleLawSelection: [],//选中法律法规信息
         lawData: [],//法律知识库分类树 --去除全部的
+        uploadedPlayer: null // videojs实例
     },
     created: function () {
 
@@ -210,6 +211,13 @@ var vm = new Vue({
 
     },
     methods: {
+        // 初始化videojs // videojs
+        initPlayer: function () {
+            var options = {
+                bigPlayButton: false,
+            };
+            vm.uploadedPlayer = videojs('video-uploaded', options);
+        },
         //序列号计算
         indexMethod:function (index) {
             return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
@@ -403,11 +411,15 @@ var vm = new Vue({
 
         },
         uploadSuccess: function (response, file, fileList) {
+            var that = this;
             this.videoFlag = false;
             this.videoUploadPercent = 0;
             if(response.code == 0){
                 vm.caseAna.caseContent=response.accessoryId;
                 vm.caseAna.caseContentUrl=baseURL+"sys/download?accessoryId="+response.accessoryId;
+                setTimeout(function () {
+                    that.initPlayer();
+                }, 800);
             }else{
                 this.$message.error('视频上传失败，请重新上传！');
             }

@@ -17,7 +17,6 @@ html {
     top: 56px;
     right: 1vw;
     width: 18vw;
-    height: 505px;
     background: white;
 }
 
@@ -37,7 +36,6 @@ html {
     position: absolute;
     top: 25px;
     right: 50px;
-    width: 88px;
     height: 88px;
     line-height: 88px;
     padding: -1px 4px;
@@ -194,6 +192,9 @@ html {
     min-height: 100px !important;
     background: #fbfcfe;
 }
+.main .expressing .title .title {
+    padding-left: 15px;
+}
 /* bar 样式 */
 .bar .category {
     width: 50%;
@@ -248,7 +249,7 @@ html {
 .bar .buttons {
     width: 100%;
     padding-top: 21px;
-    padding-left: 75px;
+    padding-left: 90px;
     border-top: 1px solid #dddddd;
 }
 .bar .buttons .el-button {

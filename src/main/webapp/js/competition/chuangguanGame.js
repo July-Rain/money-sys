@@ -193,37 +193,41 @@ var vm = new Vue({
 
         //答错事件
         questionError: function (type) {
+            vm.dialogyes=false;
             // type有error和over  error是答错 走这个方法  over是主动放弃不答了 走这个方法   因为主动不答还要涉及到积分获取
-
+            vm.dialogQuestion = false;
             if (type == "error") {
                 vm.oryesorno();//答完题目入库保存记录
 
                 //分数记录下去//答错了 也说明他进来过了  要有记录  分数只是 都是0   所得的关卡要减1才是 他实际答对的 关卡
                 vm.recordScore(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowLitnum) - 1].id, vm.nowBignum, vm.nowLitnum, '0');
                 vm.textmag = "很遗憾！答错了,闯关结束！";
+                vm.dialogerror = true;
             } else if (type == "over") {
-                console.info(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowLitnum) - 1].id);
+                // console.info(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowLitnum) - 1].id);
                 //分数记录下去
                 vm.recordScore(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowLitnum) - 1].id, vm.nowBignum, vm.nowLitnum, vm.Score);
 
-                vm.textmag = "您已主动放弃！闯关结束，成绩为第" + vm.nowBignum + "大关的第" + vm.nowLitnum + "小关，获得积分为" + vm.Score ;
+                // vm.textmag = "您已主动放弃！闯关结束，成绩为第" + vm.nowBignum + "大关的第" + vm.nowLitnum + "小关，获得积分为" + vm.Score ;
+                vm.btnName = '闯关结束';
+                vm.rushSuccess = true;
             }
 
-            vm.dialogQuestion = false;
-            vm.dialogerror = true;
+
+
         },
 
         //答对事件
         questionYes: function () {
 
             vm.getScore();//每次答完题后会有个分数累加   当然只限于答对
-            this.$message({
-                message: "恭喜你，回答正确,当前奖励积分" + vm.Score,
-                type: 'success'
-            });
+            // this.$message({
+            //     message: "恭喜你，回答正确,当前奖励积分" + vm.Score,
+            //     type: 'success'
+            // });
             vm.oryesorno();//答完题目入库保存记录
-
-            this.goon()
+            vm.textmag="恭喜你，回答正确,当前奖励积分" + vm.Score,
+            vm.dialogyes=true;//答题正确后
         },
 
 
@@ -272,43 +276,31 @@ var vm = new Vue({
                 if ((Number(vm.nowBignum) + 1) <= Number(vm.allBignum)) {
                     //xian提示他这一大关成功闯过
                     //获得多少积分  并且有无大关奖励  是否进入下一个大关
-
-
                     vm.rushSuccess = true;
-
                     //如果当前大关 没有大关通关奖励
-                    if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "0") {
-
+                    // if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "0") {
                         // vm.$alert("恭喜你，通过第" + vm.nowBignum + "大关，该大关没有大关通关奖励分值,当前奖励积分" + vm.Score)
-
-                    } else if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "1") {
+                    // } else if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "1") {
                         vm.Score = Number(vm.Score) + Number(vm.BigGuanList[Number(vm.nowBignum) - 1].rewardScore);  //下表原因  要减一
                         // vm.$alert("恭喜你，通过第" + vm.nowBignum + "大关，并获得大关通关奖励" + vm.BigGuanList[Number(vm.nowBignum) - 1].rewardScore + ",当前奖励积分" + vm.Score);
-                    }
-
-
-
-
-
-
-
+                    // }
                 } else if ((Number(vm.nowBignum) + 1) > Number(vm.allBignum)) {
 
                     vm.rushSuccess = true;
                     vm.btnName = '闯关成功';
                     // alert("闯关结束，你赢了");
-                    if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "0") {
-                        console.info(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowBignum) - 1]);
-                        vm.recordScore(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowLitnum) - 1].id, vm.nowBignum, vm.nowLitnum, vm.Score);
+                    // if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "0") {
+                    //     console.info(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowBignum) - 1]);
+                    //     vm.recordScore(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowLitnum) - 1].id, vm.nowBignum, vm.nowLitnum, vm.Score);
                         // vm.$alert("恭喜你，通过所有大关，当前大关没有大关通关奖励分值,当前奖励积分" + vm.Score)
-                    } else if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "1") {
+                    // } else if (vm.BigGuanList[Number(vm.nowBignum) - 1].markReward == "1") {
 
                         vm.Score = Number(vm.Score) + Number(vm.BigGuanList[Number(vm.nowBignum) - 1].rewardScore);  //下表原因  要减一
                         vm.recordScore(vm.BigGuanList[Number(vm.nowBignum) - 1].recruitCheckpointConfigurationList[Number(vm.nowLitnum) - 1].id, vm.nowBignum, vm.nowLitnum, vm.Score);
                         // vm.$alert("恭喜你，通过所有大关，并获得当前大关通关奖励" + vm.BigGuanList[Number(vm.nowBignum) - 1].rewardScore + ",当前奖励积分" + vm.Score);
-                    }
+                    // }
 
-                    vm.dialogQuestion = false;//关闭答题框
+                        vm.dialogQuestion = false;//关闭答题框
 
 
                 }
@@ -336,7 +328,7 @@ var vm = new Vue({
                 async: false,
                 data: {"foreignKeyId": foreignKeyId, "nowbig": nowbig, "nowlit": nowlit, "sorce": sorce},
                 success: function (result) {
-
+                    alert(result.s);
                 }
             });
         },
@@ -377,10 +369,15 @@ var vm = new Vue({
             window.location.href = baseURL + 'modules/competition/rushLevel.html?index=1'
         },
         jumpNextLevel: function(){
-            if(this.btnName==='闯关成功'){
+
+            if(vm.btnName==='闯关成功' ||vm.btnName==='闯关结束'){
                 window.location.href = baseURL + 'modules/competition/competeCenter.html';
             }
-            window.location.href = baseURL+"modules/competition/rushLevel.html?coinNum="+vm.Score+"&index="+(Number(vm.nowBignum)+Number(1));
+            else {
+
+                window.location.href = baseURL+"modules/competition/rushLevel.html?coinNum="+vm.Score+"&index="+(Number(vm.nowBignum)+Number(1));
+
+            }
 
             //把分数和第几关传过去
         }

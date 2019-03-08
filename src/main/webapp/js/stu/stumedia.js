@@ -173,9 +173,8 @@ var vm = new Vue({
             var options = {
                 bigPlayButton: false,
             };
-            this.uploadedPlayer = videojs('video-uploaded', options);
+            vm.uploadedPlayer = videojs('video-uploaded', options);
         },
-        // videojs
         //序列号计算
         indexMethod: function (index) {
             return index + 1 + (vm.formInline.currPage - 1) * vm.formInline.pageSize;

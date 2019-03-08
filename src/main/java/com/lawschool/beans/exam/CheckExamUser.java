@@ -5,7 +5,7 @@ import com.lawschool.base.DataEntity;
 
 /**
  * ClassName: CheckExamUser
- * Description: TODO
+ * Description: 阅卷人员信息表
  * date: 2019/1/2315:42
  *
  * @author 王帅奇

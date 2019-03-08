@@ -1,95 +1,225 @@
 <!DOCTYPE html>
+<html lang="en" id="html">
+<head>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
+    <#include "/header.html">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/testPaper.css">
+    <style>
+        .container .bar {
+            height: 483px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 修改后的html -->
+<div id="app" v-cloak>
+    <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to ="{ path: '/' }"><span>首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item><span>个人中心</span></el-breadcrumb-item>
+            <el-breadcrumb-item :to ="{ path: '/' }"><span @click="goBack">成绩报告</span></el-breadcrumb-item>
+            <el-breadcrumb-item>{{ paperName }}</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="content">
+            <header>
+                <div class="title">{{ paperName }}</div>
+                <div class="tips">
+                    <span class="username">姓名：<span>{{ username }}</span></span>
+                    <span class="font-size" @click="changeFontSize($event)">字体：
+                        (<span class="font-size-span">小</span>
+                        <span class="font-size-span">中</span>
+                        <span class="font-size-span">大</span>)
+                    </span>
+                </div>
+            </header>
+            <article class="main">
+                <el-form :model="testForm">
+                    <div class="one-option">
+                        <div class="description"><a name="oneOption"></a>一. 单选题。每题所设选项中只有一个正确答案，多选，错选或不选均不得分。本部分含{{ sinChoicList.length }}题，每题1分，共{{ sinChoicList.length*1 }}分。</div>
+                        <div class="question daliy" v-for="(question, index) in sinChoicList" :class="{'question-background': (index%2 == 0)&&(!isSubmit)}">
+                            <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
+                            <el-radio-group v-model="sinChoicCheck[index]" :disabled="isSubmit" @change="update">
+                                <el-radio :label="answer.id"
+                                          v-for="(answer, index) in question.answer"
+                                          :class="{'right-answer': isSubmit&&(answer.id===question.answerId)}"
+                                >
+                                    {{ answer.questionContent }}
+                                    <i class="iconfont icon-dui1" v-if="isSubmit&&(answer.id===question.answerId)"></i>
+                                </el-radio>
+                            </el-radio-group>
+                            <div class="answer-area" v-show="isSubmit">
+                                <p :class="question.userScore ? 'right' : 'err'">
+                                    你的答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>，正确答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>
+                                <p class="collection" @click="doCollect(index, '10004')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{question.isCollect == 1 ? '已收藏' : '收藏本题'}}</p>
+                                </p>
+                                <p class="text">
+                                    <span class="answer-text">试题难度：</span>
+                                    <i class="iconfont icon-shoucang1 light"></i>
+                                    <i :class="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <span class="diff" v-if="question.questionDifficulty==='10001'">初级</span>
+                                    <span class="diff" v-if="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'">{{ question.questionDifficulty==='10002'?'中级':'高级' }}</span>
+                                </p>
+                                <p class="answer-text">答案描述：<span>{{ question.answerDescrible }}</span></p>
+                            </div>
+                            <div class="gray" v-if="isSubmit"></div>
+                        </div>
+                    </div>
+                    <div class="multi-options">
+                        <div class="description"><a name="multiOptions"></a>二. 多选题。每题所设选项中有多个答案。本部分含{{ mulChoicList.length }}题，每题2分，共{{ mulChoicList.length*2 }}分。</div>
+                        <div class="question" v-for="(question, index) in mulChoicList" :class="{'question-background': (index%2 == 0)&&(!isSubmit)}">
+                            <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
+                            <el-checkbox-group v-model="mulChoicCheck[index]" :disabled="isSubmit"  @change="update">
+                                <el-checkbox
+                                        v-for="(answer, index) in question.answer"
+                                        :label="answer.id"
+                                        :class="{'right-answer': question.answerId.indexOf(answer.id)>=0}"
+                                >
+                                    {{ answer.questionContent }}
+                                    <i class="iconfont icon-dui1" v-if="question.answerId.indexOf(answer.id)>=0"></i>
+                                </el-checkbox>
+                            </el-checkbox-group>
+                            <div class="answer-area" v-show="isSubmit">
+                                <p :class="question.userScore ? 'right' : 'err'">
+                                    你的答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>，正确答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
+                                <p class="collection" @click="doCollect(index,'10005')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{ question.isCollect == 1 ? '已收藏' : '收藏本题' }}</p>
+                                </p>
+                                <p class="text">
+                                    <span class="answer-text">试题难度：</span>
+                                    <i class="iconfont icon-shoucang1 light"></i>
+                                    <i :class="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <span class="diff" v-if="question.questionDifficulty==='10001'">初级</span>
+                                    <span class="diff" v-if="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'">{{ question.questionDifficulty==='10002'?'中级':'高级' }}</span>
+                                </p>
+                                <p class="answer-text">答案描述：<span>{{ question.answerDescrible }}</span></p>
+                            </div>
+                            <div class="gray" v-if="isSubmit"></div>
+                        </div>
+                    </div>
+                    <div class="checking">
+                        <div class="description"><a name="checking"></a>三. 判断题。本部分含{{ judgeList.length }}题，每题2分，共{{ judgeList.length*2 }}分。</div>
+                        <div class="question daliy" v-for="(question, index) in judgeList" :class="{'question-background': (index%2 == 0)&&(!isSubmit)}">
+                            <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
+                            <el-radio-group v-model="judge[index]" :disabled="isSubmit"  @change="update">
+                                <el-radio
+                                        :label="answer.id"
+                                        v-for="(answer, index) in question.answer"
+                                        :class="{'right-answer': isSubmit&&(answer.id===question.answerId)}"
+                                >
+                                    {{ answer.questionContent }}
+                                    <i class="iconfont icon-dui1" v-if="isSubmit&&(answer.id===question.answerId)"></i>
+                                </el-radio>
+                            </el-radio-group>
+                            <div class="answer-area" v-show="isSubmit">
+                                <p :class="question.userScore ? 'right' : 'err'">
+                                    你的答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>，正确答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
+                                <p class="collection" @click="doCollect(index,'10006')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{ question.isCollect == 1 ? '已收藏' : '收藏本题' }}</p>
+                                </p>
+                                <p class="text">
+                                    <span class="answer-text">试题难度：</span>
+                                    <i class="iconfont icon-shoucang1 light"></i>
+                                    <i :class="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <span class="diff" v-if="question.questionDifficulty==='10001'">初级</span>
+                                    <span class="diff" v-if="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'">{{ question.questionDifficulty==='10002'?'中级':'高级' }}</span>
+                                </p>
+                                <p class="answer-text">答案描述：<span>{{ question.answerDescrible }}</span></p>
+                            </div>
+                            <div class="gray" v-if="isSubmit"></div>
+                        </div>
+                    </div>
+                    <div class="expressing">
+                        <div class="description"><a name="expressing"></a>四. 主观题。本部分含{{ subjectList.length }}题，每题10分，共{{ subjectList.length*10 }}分。</div>
+                        <div class="question daliy clearfix" v-for="(question, index) in subjectList">
+                            <p class="title">{{ index+1 }}.{{ question.comContent }}<span class="title">({{ question.score }})分</span></p>
+                            <el-input
+                                    type="textarea"
+                                    autosize
+                                    :placeholder="question.checkList[0]"
+                                    v-model="subject[index]"
+                                    :disabled="isSubmit"
+                                    @change="update"
+                            >
+                            </el-input>
+                            <div class="answer-area" v-show="isSubmit">
+                                <p :class="question.userScore ? 'right' : 'err'">
+                                    此题得分：<span class="right">{{ question.userScore }}</span>
+                                <p class="collection" @click="doCollect(index,'10007')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{ question.isCollect == 1 ? '已收藏' : '收藏本题' }}</p>
+                                </p>
+                                <p class="text">
+                                    <span class="answer-text">试题难度：</span>
+                                    <i class="iconfont icon-shoucang1 light"></i>
+                                    <i :class="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                    <span class="diff" v-if="question.questionDifficulty==='10001'">初级</span>
+                                    <span class="diff" v-if="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'">{{ question.questionDifficulty==='10002'?'中级':'高级' }}</span>
+                                </p>
+                                <p class="answer-text">答案描述：<span>{{ question.answerDescrible }}</span></p>
+                            </div>
+                            <div class="gray" v-if="isSubmit"></div>
+                        </div>
+                    </div>
+                </el-form>
+            </article>
+            <div class="score" v-if="isSubmit">{{ totalScore }}</div>
+        </div>
+        <div class="bar">
+            <div class="time">
+                <span class="duration" v-if="!isSubmit">本卷计时{{ displayTime }}分钟，还剩:<span style="font-weight: 900">
+                    <span>{{ leftHours }}</span>:
+                    <span>{{ leftMinutes }}</span>:
+                    <span>{{ leftSeconds }}</span>
+                </span></span>
+                <span class="duration" v-if="isSubmit">本卷计时{{ displayTime }}分钟，<span class="consumed-time" style="font-weight: 900">用时{{ consumedMinutes }}分钟{{ consumedSeconds }}秒</span></span>
+            </div>
+            <ul class="category">
+                <li v-for="item in barData">
+                    <a class="type" :href="item.href" @click="pickArea($event)"><i class="iconfont icon-biaodiandidian"></i>{{ item.questionType }}</a>
+                    <div><span :class="{'done-something': item.currentFinishedNum}">{{ item.currentFinishedNum }}</span>/<span>{{ item.totalNum }}</span></div>
+                </li>
+            </ul>
+            <!--<div class="buttons" v-if="!isSubmit">
+                <el-button type="primary" @click="submit" size="small">交卷</el-button>
+                <el-button @click="save" type="primary" plain class="save" size="small">保存</el-button>
+                <el-button @click="save" type="primary" plain class="save" size="small">返回</el-button>
+            </div>-->
+            <div class="display" v-if="isSubmit">
+                <div class="number">
+                    <div class="right-num">
+                        <span class="num">{{ rightNum }}</span>
+                        <span class="green">对</span>
+                    </div>
+                    <div class="error-num">
+                        <span class="num">{{ wrongNum }}</span>
+                        <span class="red">错</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/personalCen/myScoreReport.js"></script>
+</html>
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
-<style>
-#app{
-    background-color:#efefef;
-    width: 100vw;
-    height: 100vh;
-}
-#paper{
-    width: 1180px;
-    background: #fff;
-    margin: 54px auto 47px;
-    padding: 165px 0 90px;
-}
-#paper h2{
-    height: 48px;
-    line-height: 48px;
-    font-family: MicrosoftYaHei;
-    font-size: 48px;
-    font-weight: normal;
-    font-stretch: normal;
-    letter-spacing: 0px;
-    color: #2a2a2a;
-    text-align: center;
-    margin-bottom: 70px;
-}
-#paper .smg{
-    height: 30px;
-    line-height: 30px;
-    margin-bottom: 19px;
 
-}
-p,span{
-    font-size: 24px;
-    color: #2a2a2a;
-}
-#paper .smg .name{
-    float: left;
-    padding-left: 149px;
-}
-#paper .smg .set{
-    float: right;
-    padding-right: 164px;
-}
-.text_s{
-    cursor:pointer;
-    font-size: 16px;
-}
-.text_m{
-    cursor:pointer;
-    font-size: 18px;
-}
-.text_l{
-    cursor:pointer;
-    font-size: 24px;
-    font-weight: bolder;
-}
-.subTitle{
-    padding: 20px 90px 0;
-}
-.question_area{
-    padding-top: 47px;
-    width: 935px;
-    margin: 0 auto;
-}
-.ques_name{
-
-}
-.el-form-item__content{
-    line-height: 25px;
-
-}
-.el-radio,.el-radio__label,.el-checkbox,.el-checkbox__label{
-    font-size: 24px;
-    margin: 0!important;
-}
-.el-radio,.el-checkbox{
-    margin-top: 29px!important;
-}
-.el-radio-group label,.el-checkbox-group label{
-    display: block;
-}
-.timing{
-    position: fixed;
-    left: 10px;
-    top: 10px;
-}
-</style>
 <body>
 <div id="app" v-cloak>
     <div id="paper">
@@ -176,8 +306,5 @@ p,span{
     </el-form>
     </div>
 </div>
-</body>
-
-<!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/personalCen/myScoreReport.js"></script>
-</html>
+</body
+</html>-->

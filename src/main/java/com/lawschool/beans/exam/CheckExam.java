@@ -5,7 +5,7 @@ import com.lawschool.base.DataEntity;
 
 /**
  * ClassName: CheckExam
- * Description: TODO
+ * Description: 阅卷列表
  * date: 2019/1/2814:56
  *
  * @author 王帅奇
@@ -13,13 +13,13 @@ import com.lawschool.base.DataEntity;
 @TableName("LAW_CHECK_EXAM")
 public class CheckExam extends DataEntity<CheckExam> {
 
-    private String examConfigId;
+    private String examConfigId;    //考试配置ID
 
-    private String userExamId;
+    private String userExamId;      //用户试卷ID
 
-    private String checkPassword;
+    private String checkPassword;   //阅卷口令
 
-    private String checkUserCode;
+    private String checkUserCode;   //阅卷人
 
     private String checkStatus; //阅卷状态  0 未开始  1 未完成  2 已完成
 

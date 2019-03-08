@@ -33,6 +33,10 @@ public class MatchSetting implements Serializable {
 	private String winName;
 
 
+	//擂主连胜次数
+	private String winCount;
+
+
 	//擂主最后登陆 时间
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date lastTime;
@@ -85,6 +89,15 @@ public class MatchSetting implements Serializable {
 	@TableField(exist = false)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date delTime;
+
+
+	public String getWinCount() {
+		return winCount;
+	}
+
+	public void setWinCount(String winCount) {
+		this.winCount = winCount;
+	}
 
 	public String getCreatePeople() {
 		return createPeople;

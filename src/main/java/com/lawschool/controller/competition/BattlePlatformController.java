@@ -28,6 +28,7 @@ public class BattlePlatformController {
     //查询
     @RequestMapping("/PkCountByUser")
     public Result PkCountByUser(String uid){
+
          int i =battlePlatformService.PkCountByUser(uid);
 
         return Result.ok().put("count",i);

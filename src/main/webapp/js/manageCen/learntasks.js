@@ -19,7 +19,6 @@ var setting = {
             url:"nourl",
             name:"infoName"
         }
-
     },
     check:{
         enable:true,
@@ -508,7 +507,6 @@ var vm = new Vue({
             });
         },
         huixian: function (ids) {
-            debugger
             // saveUserTableData    --回显需加
             if(!ids){
                 return

@@ -98,9 +98,9 @@ var vm = new Vue({
                             // 判断题
                             case '10006':
                                 vm.checkingList.push(val);
-                            // 主观题
+                            /*// 主观题
                             case '10007':
-                                vm.expressingList.push(val);
+                                vm.expressingList.push(val);*/
                             default:
                                 return;
                         }
@@ -117,6 +117,14 @@ var vm = new Vue({
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
                 = 'modules/exerciseCenter/paper_index.html';
+        },
+
+        select: function (e) {
+            var anchors = document.getElementsByClassName('anchor');
+            for (var i=0;i<anchors.length;i++) {
+                anchors[i].style.background = '#dddddd';
+            }
+            e.target.style.background = '#1381e3';
         },
 
         // 提交试卷

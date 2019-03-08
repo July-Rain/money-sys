@@ -52,7 +52,7 @@
             #{type},
             #{deptNames},
             #{userNames},
-            #{scouceFrom}
+            #{sourceFrom}
         )
     </insert>
 

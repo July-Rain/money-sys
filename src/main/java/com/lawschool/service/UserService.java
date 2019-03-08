@@ -99,4 +99,10 @@ public interface UserService  extends AbstractService<User> {
       **/
      
      int changeIdentify(String id,String identify);
+
+
+
+
+
+      int  getAllusesCount();
 }

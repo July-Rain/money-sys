@@ -36,7 +36,7 @@ var vm = new Vue({
         params:{
             pname:"",
             num:"",
-            scourceFrom:"KEYQUE"
+            sourceFrom:"2"
         },
         taskName:'',
         taskId:'',

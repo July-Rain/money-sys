@@ -3,6 +3,7 @@ package com.lawschool.controller.competition;
 import com.lawschool.beans.User;
 import com.lawschool.beans.competition.CompetitionRecord;
 import com.lawschool.service.UserIntegralService;
+import com.lawschool.service.UserService;
 import com.lawschool.service.competition.BattleRecordService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
@@ -32,6 +33,10 @@ public class BattleRecordController {
     private BattleRecordService battleRecordService;
     @Autowired
     private UserIntegralService userIntegralService;
+    @Autowired
+    private UserService userServiceService;
+
+
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String,Object> params,String userid){
 //        User u = (User) SecurityUtils.getSubject().getPrincipal();
@@ -89,15 +94,57 @@ public class BattleRecordController {
     //获取擂台赛擂主次数
     @RequestMapping("/leitaiWinCount")
     public Result leitaiWinCount(){
+        User u = (User) SecurityUtils.getSubject().getPrincipal();
+        int leitaibaifengbi=0;
+        int t=0;
         int i= battleRecordService.leitaiWinCount();
+        if(i!=0)
+        {
+            int userscount= userServiceService.getAllusesCount();
+            List<Map> firstListByleitai= battleRecordService.firstListByleitai();
+            //遍历 list
+            for(int k=0;k<firstListByleitai.size();k++)
+            {
+                if(firstListByleitai.get(k).get("userid").equals(u.getId()))
+                {
+                    t=k;
+                    break;
+                }
+            }
 
-        return Result.ok().put("leitaiWinCount",i);
+            leitaibaifengbi=(userscount-(t+1))*100/userscount;
+        }
+
+        return Result.ok().put("leitaiWinCount",i).put("leitaibaifengbi",leitaibaifengbi);
     }
     //获取pk总分
     @RequestMapping("/pkSum")
     public Result pkSum(){
+        User u = (User) SecurityUtils.getSubject().getPrincipal();
+        int onlPkSumbaifengbi=0;
+        int t=0;
         int i= battleRecordService.pkSum();
-        return Result.ok().put("pkSum",i);
+        if(i!=0)
+        {
+            int userscount= userServiceService.getAllusesCount();
+            List<Map> firstListByPk= battleRecordService.firstListByPk();
+
+            //遍历 list
+            for(int k=0;k<firstListByPk.size();k++)
+            {
+                if(firstListByPk.get(k).get("userid").equals(u.getId()))
+                {
+                    t=k;
+                    break;
+                }
+            }
+
+            onlPkSumbaifengbi=(userscount-(t+1))*100/userscount;
+        }
+
+
+
+        return Result.ok().put("pkSum",i).put("onlPkSumbaifengbi",onlPkSumbaifengbi);
     }
 
     //根据id 获取擂台获胜总次数与总积分
@@ -105,7 +152,7 @@ public class BattleRecordController {
     public Result winLeiTaiCountByUserId(String winId){
         int i= battleRecordService.winLeiTaiCountByUserId(winId);
 
-        int t=   userIntegralService.getJifenByUserId(winId);
+        Float t=   userIntegralService.getJifenByUserId(winId);
         return Result.ok().put("winLeiTai",i).put("jifen",t);
     }
 }
