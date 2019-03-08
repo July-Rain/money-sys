@@ -37,7 +37,6 @@ html {
     position: absolute;
     top: 25px;
     right: 50px;
-    width: 88px;
     height: 88px;
     line-height: 88px;
     padding: -1px 4px;
@@ -193,6 +192,9 @@ html {
 .main .expressing textarea {
     min-height: 100px !important;
     background: #fbfcfe;
+}
+.main .expressing .title .title {
+    padding-left: 15px;
 }
 /* bar 样式 */
 .bar .category {

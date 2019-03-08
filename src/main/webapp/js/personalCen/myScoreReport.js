@@ -6,7 +6,6 @@ var vm = new Vue({
     el: '#app',
     data: {
         isSubmit: true, // 是否提交 待
-        isFavored: false, // 是否收藏
         // 答题数据
         testForm: {
             sinChoic: [],
@@ -30,6 +29,7 @@ var vm = new Vue({
         subjectList: [],
         otherList: [],
         questionList: [],
+        arrTotal:[],
         // bar
         barData: [
             {
@@ -52,16 +52,19 @@ var vm = new Vue({
             },
             {
                 href: "#expressing",
-                questionType: '论述题',
+                questionType: '主观题',
                 currentFinishedNum: 0,
                 totalNum: 0
             }
         ],
+        rightNum:0,
+        wrongNum:0,
 
         displayTime: 0,
+        lefttime: 0,
         consumedMinutes: '00', // 所用分钟
         consumedSeconds: '00', // 所用秒
-        totalScore: 87,
+        totalScore: 0,
 
         favoriteText: '收藏此题',
         paperName: '',
@@ -78,16 +81,11 @@ var vm = new Vue({
     created: function () {
         this.$nextTick(function () {
             vm.viewExam();
+            vm.consumedTime();
         })
-
     },
     methods: {
-        // 路径方法
-        goBack: function () {
-            var parentWin = window.parent;
-            parentWin.document.getElementById("container").src
-                = 'modules/personalCen/myExamScore.html';
-        },
+        // created钩子中执行获取数据
         viewExam: function () {
             $.ajax({
                 type: "POST",
@@ -98,10 +96,17 @@ var vm = new Vue({
                 success: function (result) {
                     console.log(result)
                     if (result.code === 0) {
-
+                        // 配置试卷
                         vm.examConfig = result.examConfig;
+                        vm.paperName = vm.examConfig.examName;
+                        vm.displayTime= vm.examConfig.examTime;
+                        // 考试人员
                         vm.userExam = result.userExam;
+                        vm.totalScore = vm.userExam.score;
                         vm.userAnswerForm.userExamId = result.userExam.id;
+                        vm.username = result.user.userName;
+                        vm.lefttime = vm.userExam.remainingExamTime*60000;
+
                         var _mul = result.mulChoicList;
                         if(_mul){
                             for (var i = 0; i < _mul.length; i++) {
@@ -110,6 +115,7 @@ var vm = new Vue({
                                 if(_mul[i].userAnswer){
                                     var _arr = _mul[i].userAnswer.split(",");
                                     vm.mulChoicCheck.push(_arr)
+                                    vm.barData[1].currentFinishedNum ++;
                                 }else {
                                     vm.mulChoicCheck.push([])
                                 }
@@ -122,11 +128,12 @@ var vm = new Vue({
                         }
                         //单选
                         vm.sinChoicList = result.sinChoicList;
-                        console.info("vm.sinChoicList: "+vm.sinChoicList )
+                        vm.barData[0].totalNum = vm.sinChoicList.length;
                         if(vm.sinChoicList){
                             for(var i=0;i<vm.sinChoicList.length;i++){
                                 if(vm.sinChoicList[i].userAnswer){
                                     vm.sinChoicCheck.push(vm.sinChoicList[i].userAnswer);
+                                    vm.barData[0].currentFinishedNum ++;
                                 }else{
                                     vm.sinChoicCheck.push('');
                                 }
@@ -139,12 +146,15 @@ var vm = new Vue({
                         }
                         //多选
                         vm.mulChoicList = result.mulChoicList;
+                        vm.barData[1].totalNum = vm.mulChoicList.length;
                         //判断
                         vm.judgeList = result.judgeList;
+                        vm.barData[2].totalNum = vm.judgeList.length;
                         if(vm.judgeList){
                             for(var i=0;i<vm.judgeList.length;i++){
                                 if(vm.judgeList[i].userAnswer){
                                     vm.judge.push(vm.judgeList[i].userAnswer);
+                                    vm.barData[2].currentFinishedNum ++;
                                 }else{
                                     vm.judge.push('');
                                 }
@@ -157,10 +167,12 @@ var vm = new Vue({
                         }
                         //主观
                         vm.subjectList = result.subjectList;
+                        vm.barData[3].totalNum = vm.subjectList.length;
                         if(vm.subjectList){
                             for(var i=0;i<vm.subjectList.length;i++){
                                 if(vm.subjectList[i].userAnswer){
                                     vm.subject.push(vm.subjectList[i].userAnswer);
+                                    vm.barData[3].currentFinishedNum ++;
                                 }else{
                                     vm.subject.push('');
                                 }
@@ -171,7 +183,8 @@ var vm = new Vue({
                                 }
                             }
                         }
-
+                        vm.arrTotal = vm.sinChoicList.concat(vm.mulChoicList, vm.judgeList, vm.subjectList);
+                        vm.answerNumber();
                     } else {
                         alert(result.msg);
                         var parentWin = window.parent;
@@ -181,7 +194,76 @@ var vm = new Vue({
                 }
             });
         },
-        /*doCollect :function(index,type){
+        // bar栏完成题数实时更新
+        updateCommon: function (index, arr) {
+            vm.barData[index].currentFinishedNum = 0;
+            if (index!=1) {
+                arr.forEach(function (val) {
+                    if (val) {
+                        vm.barData[index].currentFinishedNum ++;
+                    }
+                })
+            } else {
+                arr.forEach(function (val) {
+                    if (val.length) {
+                        vm.barData[index].currentFinishedNum ++;
+                    }
+                })
+            }
+        },
+        update: function () {
+            this.updateCommon(0, vm.sinChoicCheck);
+            this.updateCommon(1, vm.mulChoicCheck);
+            this.updateCommon(2, vm.judge);
+            this.updateCommon(3, vm.subject);
+        },
+        // 使用时间
+        consumedTime: function () {
+            var consumed =  this.displayTime*60000 - this.lefttime;
+            var results = this.figureTime(consumed);
+            [this.consumedHours, this.consumedMinutes, this.consumedSeconds] = [...results];
+            this.consumedMinutes = Number(this.consumedHours)*60 + Number(this.consumedMinutes);
+        },
+        // 计算时间
+        figureTime: function (time) {
+            var hours = Math.floor(time/3600000); // 时
+            var minutes = Math.floor((time-hours*3600000)/60000); // 分
+            var seconds = Math.floor((time-hours*3600000-minutes*60000)/1000); // 秒
+            hours<10?hours='0'+hours:hours;
+            minutes<10?minutes='0'+minutes:minutes;
+            seconds<10?seconds='0'+seconds:seconds;
+            return [hours, minutes, seconds];
+        },
+        // 答题对错个数
+        answerNumber: function () {
+            vm.arrTotal.forEach(function (val) {
+                if (val.userScore) {
+                    vm.rightNum ++;
+                } else {
+                    vm.wrongNum ++;
+                }
+            });
+        },
+        // 答案区域
+        answerDisplay: function (list, id, answer) {
+            // 用户答案对应的数字数组
+            var checkIndex = [];
+            // 正确答案对应的数字数组
+            var rightIndex = [];
+            // 选项id的数组
+            var answerIdList =[];
+            // 答案id字符串分解而得的数组
+            var rightIdList = id.split(',');
+            answer.forEach(val => answerIdList.push(val.id));
+            list.forEach(val => checkIndex.push(answerIdList.indexOf(val)+1));
+            rightIdList.forEach(val => rightIndex.push(answerIdList.indexOf(val)+1));
+            return {
+                checkIndex: checkIndex.sort((a,b) => a-b).join(' '),
+                rightIndex: rightIndex.sort((a,b) => a-b).join(' ')
+            }
+        },
+        // 收藏
+        doCollect :function(index,type){
             var obj ={};
             var type;
             if(type==='10004'){
@@ -192,11 +274,9 @@ var vm = new Vue({
                 if(vm.sinChoicList[index].isCollect == 1){
                     type = 0;
                     vm.sinChoicList[index].isCollect = 0;
-                    vm.sinStarIcon[index] = 'el-icon-star-off';
                 } else {
                     type = 1;
                     vm.sinChoicList[index].isCollect = 1;
-                    vm.sinStarIcon [index]= 'el-icon-star-on';
                 }
             }else if (type ==='10005'){
                 obj={
@@ -206,11 +286,9 @@ var vm = new Vue({
                 if(vm.mulChoicList[index].isCollect == 1){
                     type = 0;
                     vm.mulChoicList[index].isCollect = 0;
-                    vm.mulStarIcon[index] = 'el-icon-star-off';
                 } else {
                     type = 1;
                     vm.mulChoicList[index].isCollect = 1;
-                    vm.mulStarIcon[index] = 'el-icon-star-on';
                 }
             }else if(type==='10006'){
                 obj={
@@ -220,11 +298,9 @@ var vm = new Vue({
                 if(vm.judgeList[index].isCollect == 1){
                     type = 0;
                     vm.judgeList[index].isCollect = 0;
-                    vm.judStarIcon[index] = 'el-icon-star-off';
                 } else {
                     type = 1;
                     vm.judgeList[index].isCollect = 1;
-                    vm.judStarIcon[index] = 'el-icon-star-on';
                 }
             }else if(type==='10007'){
                 obj={
@@ -234,11 +310,9 @@ var vm = new Vue({
                 if(vm.subjectList[index].isCollect == 1){
                     type = 0;
                     vm.subjectList[index].isCollect = 0;
-                    vm.subStarIcon[index] = 'el-icon-star-off';
                 } else {
                     type = 1;
                     vm.subjectList[index].isCollect = 1;
-                    vm.subStarIcon[index] = 'el-icon-star-on';
                 }
             }
 
@@ -255,37 +329,48 @@ var vm = new Vue({
                     }
                 }
             });
-        },*/
-        /*fontS: function () {
-            console.log(2)
-            $("p,span").css("font-size", "16px");
-            $(".text_s").css({"font-size": "16px", "font-weight": "bolder"});
-            $(".text_m").css({"font-size": "18px", "font-weight": "normal"});
-            $(".text_l").css({"font-size": "24px", "font-weight": "normal"})
         },
-        fontM: function () {
-            console.log(3)
-            $("p,span").css("font-size", "18px");
-            $(".text_s").css({"font-size": "16px", "font-weight": "normal"});
-            $(".text_m").css({"font-size": "18px", "font-weight": "bolder"});
-            $(".text_l").css({"font-size": "24px", "font-weight": "normal"})
+        // 路径方法
+        goBack: function () {
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/personalCen/myExamScore.html';
         },
-        fontL: function () {
-            console.log(4)
-            $("p,span").css("font-size", "24px");
-            $(".text_s").css({"font-size": "16px", "font-weight": "normal"});
-            $(".text_m").css({"font-size": "18px", "font-weight": "normal"});
-            $(".text_l").css({"font-size": "24px", "font-weight": "bolder"})
-        },
-        shuffle: function (a) {
-            var j, x, i;
-            for (i = a.length; i; i--) {
-                j = Math.floor(Math.random() * i);
-                x = a[i - 1];
-                a[i - 1] = a[j];
-                a[j] = x;
+        // 样式方法
+        // 改变字体大小
+        changeFontSize: function (e) {
+            var fontSpans = document.getElementsByClassName('font-size-span');
+            var html = document.getElementById('html');
+
+            if (e.target.innerHTML === '小') {
+                html.style.fontSize = '9px';
+            } else if (e.target.innerHTML === '中') {
+                html.style.fontSize = '13px';
+            } else if (e.target.innerHTML === '大') {
+                html.style.fontSize = '14px';
+            } else {
+                return;
             }
-            return a;
-        }*/
+            for (var i = 0; i < fontSpans.length; i++) {
+                fontSpans[i].style.fontWeight = '300';
+                fontSpans[i].style.background = 'white';
+            }
+            e.target.style.fontWeight = '600';
+            e.target.style.background = '#eff8ff';
+        },
+        // 改变 bar 中元素被选择时的字体颜色 & 定位字体图标
+        pickArea: function (e) {
+            var aTags = document.getElementsByClassName('type');
+            var icons = document.getElementsByClassName('icon-biaodiandidian');
+            var icon = e.target.getElementsByClassName('iconfont')[0];
+            for (var i = 0; i < aTags.length; i++) {
+                aTags[i].style.color = 'black';
+            }
+            for (var i = 0; i < icons.length; i++) {
+                icons[i].style.display = 'none';
+            }
+            e.target.style.color = '#1381e3';
+            icon.style.display = 'inline-block';
+        },
     }
 });
