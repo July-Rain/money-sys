@@ -46,10 +46,9 @@
                                 </el-radio>
                             </el-radio-group>
                             <div class="answer-area" v-show="isSubmit">
-                                <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
                                 <p :class="question.userScore ? 'right' : 'err'">
                                     你的答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>，正确答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>
-                                <p class="collection" @click="favor" :class="{'favorite':isFavored}"><i class="iconfont icon-shoucang" :class="{'favorite':isFavored}"></i>{{ favoriteText }}</p>
+                                <p class="collection" @click="doCollect(index, '10004')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{question.isCollect == 1 ? '已收藏' : '收藏本题'}}</p>
                                 </p>
                                 <p class="text">
                                     <span class="answer-text">试题难度：</span>
@@ -59,10 +58,9 @@
                                     <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
                                     <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
                                     <span class="diff" v-if="question.questionDifficulty==='10001'">初级</span>
-                                    <span class="diff" v-if="question.questionDifficulty!=='10001'">{{ question.questionDifficulty==='10002'||question.questionDifficulty==='10003'?'中级':'高级' }}</span>
+                                    <span class="diff" v-if="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'">{{ question.questionDifficulty==='10002'?'中级':'高级' }}</span>
                                 </p>
                                 <p class="answer-text">答案描述：<span>{{ question.answerDescrible }}</span></p>
-                                <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
                             </div>
                             <div class="gray" v-if="isSubmit"></div>
                         </div>
@@ -82,10 +80,9 @@
                                 </el-checkbox>
                             </el-checkbox-group>
                             <div class="answer-area" v-show="isSubmit">
-                                <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
                                 <p :class="question.userScore ? 'right' : 'err'">
                                     你的答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>，正确答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
-                                <p class="collection" @click="favor" :class="{'favorite':isFavored}"><i class="iconfont icon-shoucang" :class="{'favorite':isFavored}"></i>{{ favoriteText }}</p>
+                                <p class="collection" @click="doCollect(index,'10005')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{ question.isCollect == 1 ? '已收藏' : '收藏本题' }}</p>
                                 </p>
                                 <p class="text">
                                     <span class="answer-text">试题难度：</span>
@@ -95,10 +92,9 @@
                                     <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
                                     <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
                                     <span class="diff" v-if="question.questionDifficulty==='10001'">初级</span>
-                                    <span class="diff" v-if="question.questionDifficulty!=='10001'">{{ question.questionDifficulty==='10002'||question.questionDifficulty==='10003'?'中级':'高级' }}</span>
+                                    <span class="diff" v-if="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'">{{ question.questionDifficulty==='10002'?'中级':'高级' }}</span>
                                 </p>
                                 <p class="answer-text">答案描述：<span>{{ question.answerDescrible }}</span></p>
-                                <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
                             </div>
                             <div class="gray" v-if="isSubmit"></div>
                         </div>
@@ -118,10 +114,9 @@
                                 </el-radio>
                             </el-radio-group>
                             <div class="answer-area" v-show="isSubmit">
-                                <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
                                 <p :class="question.userScore ? 'right' : 'err'">
                                     你的答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>，正确答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
-                                <p class="collection" @click="favor" :class="{'favorite':isFavored}"><i class="iconfont icon-shoucang" :class="{'favorite':isFavored}"></i>{{ favoriteText }}</p>
+                                <p class="collection" @click="doCollect(index,'10006')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{ question.isCollect == 1 ? '已收藏' : '收藏本题' }}</p>
                                 </p>
                                 <p class="text">
                                     <span class="answer-text">试题难度：</span>
@@ -131,10 +126,9 @@
                                     <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
                                     <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
                                     <span class="diff" v-if="question.questionDifficulty==='10001'">初级</span>
-                                    <span class="diff" v-if="question.questionDifficulty!=='10001'">{{ question.questionDifficulty==='10002'||question.questionDifficulty==='10003'?'中级':'高级' }}</span>
+                                    <span class="diff" v-if="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'">{{ question.questionDifficulty==='10002'?'中级':'高级' }}</span>
                                 </p>
                                 <p class="answer-text">答案描述：<span>{{ question.answerDescrible }}</span></p>
-                                <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
                             </div>
                             <div class="gray" v-if="isSubmit"></div>
                         </div>
@@ -153,10 +147,9 @@
                             >
                             </el-input>
                             <div class="answer-area" v-show="isSubmit">
-                                <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
                                 <p :class="question.userScore ? 'right' : 'err'">
                                     此题得分：<span class="right">{{ question.userScore }}</span>
-                                <p class="collection" @click="favor" :class="{'favorite':isFavored}"><i class="iconfont icon-shoucang" :class="{'favorite':isFavored}"></i>{{ favoriteText }}</p>
+                                <p class="collection" @click="doCollect(index,'10007')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{ question.isCollect == 1 ? '已收藏' : '收藏本题' }}</p>
                                 </p>
                                 <p class="text">
                                     <span class="answer-text">试题难度：</span>
@@ -166,10 +159,9 @@
                                     <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
                                     <i :class="question.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
                                     <span class="diff" v-if="question.questionDifficulty==='10001'">初级</span>
-                                    <span class="diff" v-if="question.questionDifficulty!=='10001'">{{ question.questionDifficulty==='10002'||question.questionDifficulty==='10003'?'中级':'高级' }}</span>
+                                    <span class="diff" v-if="question.questionDifficulty==='10002'||question.questionDifficulty==='10003'">{{ question.questionDifficulty==='10002'?'中级':'高级' }}</span>
                                 </p>
                                 <p class="answer-text">答案描述：<span>{{ question.answerDescrible }}</span></p>
-                                <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
                             </div>
                             <div class="gray" v-if="isSubmit"></div>
                         </div>
@@ -224,92 +216,7 @@
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
 </head>
-<style>
-#app{
-    background-color:#efefef;
-    width: 100vw;
-    height: 100vh;
-}
-#paper{
-    width: 1180px;
-    background: #fff;
-    margin: 54px auto 47px;
-    padding: 165px 0 90px;
-}
-#paper h2{
-    height: 48px;
-    line-height: 48px;
-    font-family: MicrosoftYaHei;
-    font-size: 48px;
-    font-weight: normal;
-    font-stretch: normal;
-    letter-spacing: 0px;
-    color: #2a2a2a;
-    text-align: center;
-    margin-bottom: 70px;
-}
-#paper .smg{
-    height: 30px;
-    line-height: 30px;
-    margin-bottom: 19px;
 
-}
-p,span{
-    font-size: 24px;
-    color: #2a2a2a;
-}
-#paper .smg .name{
-    float: left;
-    padding-left: 149px;
-}
-#paper .smg .set{
-    float: right;
-    padding-right: 164px;
-}
-.text_s{
-    cursor:pointer;
-    font-size: 16px;
-}
-.text_m{
-    cursor:pointer;
-    font-size: 18px;
-}
-.text_l{
-    cursor:pointer;
-    font-size: 24px;
-    font-weight: bolder;
-}
-.subTitle{
-    padding: 20px 90px 0;
-}
-.question_area{
-    padding-top: 47px;
-    width: 935px;
-    margin: 0 auto;
-}
-.ques_name{
-
-}
-.el-form-item__content{
-    line-height: 25px;
-
-}
-.el-radio,.el-radio__label,.el-checkbox,.el-checkbox__label{
-    font-size: 24px;
-    margin: 0!important;
-}
-.el-radio,.el-checkbox{
-    margin-top: 29px!important;
-}
-.el-radio-group label,.el-checkbox-group label{
-    display: block;
-}
-.timing{
-    position: fixed;
-    left: 10px;
-    top: 10px;
-}
-</style>
 <body>
 <div id="app" v-cloak>
     <div id="paper">
@@ -396,8 +303,5 @@ p,span{
     </el-form>
     </div>
 </div>
-</body>
-
-&lt;!&ndash; import [current] JavaScript &ndash;&gt;
-<script src="${rc.contextPath}/js/personalCen/myScoreReport.js"></script>
+</body
 </html>-->
