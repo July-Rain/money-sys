@@ -38,6 +38,8 @@ var vm = new Vue({
         nameList: ["美丽的四茹姐", "李坤宇", "卜楠", "孙小康", "李信融", "乔杰", "美丽的四茹姐", "李坤宇", "卜楠", "孙小康", "李信融", "乔杰"],
         play1: "",
         play2: "",
+        timing: 10,
+        saveTiming: 10
     },
     created: function () {
         this.$nextTick(function () {
@@ -102,6 +104,8 @@ var vm = new Vue({
     }
 });
 
+
+var timingTimeout = null;
 
 var uid = null;
 //发送人编号
@@ -183,7 +187,7 @@ websocket.onmessage = function (event) {
         //刷新在线用户列表
         $("#chatOnline").html("在线用户(" + data.userList.length + ")人");
         var str = data.text
-
+        console.info("11", str)
         if (str === '请等待 玩家加入' || str.indexOf("加入,欢迎") != -1) {
 
         } else {
@@ -201,13 +205,23 @@ websocket.onmessage = function (event) {
                         vm.play1 = this.fullName;
                     }
                 });
-                vm.dialogQuestion = true,
-                    vm.radio_disabled = false;
+                    vm.dialogQuestion = true;
+                vm.radio_disabled = false;
                 vm.allnum = data.tqList.length;
                 vm.nownum = Number(nowtimu) + 1;
                 vm.nowQscore = data.competitionOnline.battleTopicSettingList[Number(nowtimu)].score;
                 vm.nowbattleTopicSetting = data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
                 vm.Question = data.tqList[Number(nowtimu)];
+
+                timingTimeout = setInterval(function () {
+                    console.log(111)
+                    if(vm.timing === 0){
+                        sendMsg();
+                        clearInterval(timingTimeout);
+                        vm.timing = vm.saveTiming;
+                    }
+                    vm.timing --
+                },1000)
             }, 1000);
 
         }
@@ -227,9 +241,7 @@ websocket.onmessage = function (event) {
         //当收到消息的时候 给人赋值
         // console.info(" 收到系统消息，是给"+data.to);
         to = data.to;
-    }
-
-    else {
+    } else {
         // console.info("人发的消息");
         // console.info(data);
         //===普通消息
@@ -270,7 +282,7 @@ websocket.onmessage = function (event) {
                     // alert("全部题目答完");
                     closeWebsocket();
                 } else {
-                    vm.dialogQuestion = true,
+                    vm.dialogQuestion = true;
                     vm.radio_disabled = false;
                     vm.allnum = data.tqList.length;
                     vm.nownum = Number(nowtimu) + 1;
@@ -278,6 +290,14 @@ websocket.onmessage = function (event) {
                     vm.nowbattleTopicSetting = data.competitionOnline.battleTopicSettingList[Number(nowtimu)];
                     vm.Question = data.tqList[Number(nowtimu)];
                     vm.yesOrNoAnswer = "未答题";
+                    timingTimeout = setInterval(function () {
+                        if(vm.timing === 0){
+                            sendMsg();
+                            clearInterval(timingTimeout);
+                            vm.timing = vm.saveTiming;
+                        }
+                        vm.timing --
+                    },1000)
                 }
 
             }, 3000);

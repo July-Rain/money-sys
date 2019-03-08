@@ -17,7 +17,7 @@
             <img src="${rc.contextPath}/statics/img/competeCenter/btn_return.png" alt="">
         </button>
         <div class="timing">
-            本题倒计时：<span>30</span>秒
+            本题倒计时：<span>{{timing}}</span>秒
         </div>
         <div class="questionArea">
             <div class="title">{{nownum}}/{{allnum}}题</div>
@@ -61,16 +61,6 @@
                 </div>
             </div>
             <el-form :class="Question.questionType==10004?'radioStyle':''" :model="Question" v-show="dialogQuestion" ref="Question" label-width="100px" class="demo-Question" size="mini">
-                <!--<el-checkbox-group v-model="answers" v-if="Question.questionType==10005">-->
-                <!--<el-checkbox :label="answer.id" v-for="answer in Question.answerList">-->
-                <!--{{answer.questionContent}}-->
-                <!--</el-checkbox>-->
-                <!--<br/>-->
-                <!--</el-checkbox-group>-->
-
-                <!--<el-button type="primary" v-if="Question.questionType==10005"-->
-                <!--@click="thisSubmit(Question.answerId)">提交-->
-                <!--</el-button>-->
 
 
                 <el-radio-group v-model="answers"
