@@ -890,7 +890,10 @@ var vm = new Vue({
                 contentType: "application/json",
                 success :function (result) {
                     if (result.code === 0){
-                        alert('试题配置完成');
+                        vm.$message({
+                            message: '试题配置完成',
+                            type: 'success'
+                        });
                         vm.randomQuesModal = false;
                         if (operate==0){
                             window.parent.vm.dialogAdd = false;

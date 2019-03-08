@@ -5,8 +5,8 @@
     <#include "/header.html">
     <link rel="stylesheet" href="${rc.contextPath}/statics/css/testPaper.css">
     <style>
-        .bar {
-            height: 400px !important;
+        .main {
+            width: 90%;
         }
         /* 进度条 */
         .info_list {
@@ -14,7 +14,7 @@
             padding-bottom: 5px;
             margin-bottom: 8px;
         }
-        .info_list .el-progress {
+        /*.info_list .el-progress {
             border: none;
             margin: 0 auto;
         }
@@ -25,7 +25,7 @@
         .info_list > .progress_area {
             width: 88px;
             margin: 15px auto 25px;
-        }
+        }*/
         .info_list .info {
             width: 90%;
             margin: 15px auto;
@@ -33,12 +33,30 @@
         .info_list .info p {
             padding:8px;
         }
+        .bar .buttons {
+            padding-bottom: 10px;
+        }
         .bar .buttons .el-button span {
             display: block;
             width: 100px !important;
+            margin:0 auto;
         }
-        .bar .buttons {
-            padding-left: 81px !important;
+        .bar .items {
+            width: 100%;
+            margin: 0 auto 10px;
+            padding-top: 10px;
+            border-top: 1px solid #dddddd;
+            text-align: center;
+        }
+        .bar .anchor {
+            display: inline-block;
+            width: 30px;
+            padding: 5px;
+            margin:5px;
+            border-radius: 2px;
+            background: #dddddd;
+            color: white;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -54,8 +72,9 @@
         <div class="content">
             <article class="main">
                 <div class="one-option">
+                    <div class="description" v-if="oneOptionList.length">一. 单选题。</div>
                     <div class="question daliy" v-for="(question, index) in oneOptionList" :class="{'question-background': (index%2 == 0)}">
-                        <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
+                        <p class="title"><a :name="index+1"></a>{{ index+1 }}.{{ question.comContent }}</p>
                         <el-radio-group v-model="answers" :disabled="isSubmit">
                             <el-radio :label="answer.id" v-for="(answer, index) in question.answer">
                                 {{ answer.questionContent }}
@@ -70,8 +89,9 @@
                     </div>
                 </div>
                 <div class="multi-options">
+                    <div class="description" v-if="multiOptionsList.length">二. 多选题。</div>
                     <div class="question" v-for="(question, index) in multiOptionsList" :class="{'question-background': (index%2 == 0)}">
-                        <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
+                        <p class="title"><a :name="oneOptionList.length+index+1"></a>{{ oneOptionList.length+index+1 }}.{{ question.comContent }}</p>
                         <el-checkbox-group v-model="answersList" :disabled="isSubmit">
                             <el-checkbox :label="answer.id" v-for="(answer, index) in question.answer">
                                 {{ answer.questionContent }}
@@ -86,8 +106,9 @@
                     </div>
                 </div>
                 <div class="checking">
+                    <div class="description" v-if="checkingList.length">三. 判断题。</div>
                     <div class="question daliy" v-for="(question, index) in checkingList" :class="{'question-background': (index%2 == 0)}">
-                        <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
+                        <p class="title"><a :name="oneOptionList.length+multiOptionsList.length+index+1"></a>{{ oneOptionList.length+multiOptionsList.length+index+1 }}.{{ question.comContent }}</p>
                         <el-radio-group v-model="answers" :disabled="isSubmit">
                             <el-radio :label="answer.id" v-for="(answer, index) in question.answer">
                                 {{ answer.questionContent }}
@@ -105,17 +126,20 @@
         </div>
         <div class="bar">
             <div class="info_list">
-                <div class="progress_area">
+                <!--<div class="progress_area">
                     <el-progress type="circle"
                                  :percentage="2/5*100"
                                  :width="88"
                                  color="#1381e3"></el-progress>
-                </div>
+                </div>-->
                 <div class="info">
                     <p>创建人：{{ creator }}</p>
                     <p>类型： {{ type }}</p>
                     <p>创建时间： {{ createdTime }}</p>
                 </div>
+            </div>
+            <div class="items">
+                <a class="anchor" v-for="(item, index) in questionList" :href="'#'+(index+1)" @click="select($event)">{{ index+1 }}</a>
             </div>
             <div class="buttons">
                 <el-button type="primary" @click="submit">提交</el-button><el-button type="primary" plain class="save">保存，下次继续</el-button>
