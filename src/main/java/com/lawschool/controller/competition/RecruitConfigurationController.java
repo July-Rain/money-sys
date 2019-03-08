@@ -67,6 +67,10 @@ public class RecruitConfigurationController{
     @RequestMapping("/save")
     public Result save(@RequestBody List<RecruitConfiguration> list){
 
+        //去配置表里 找 对应的  积分   写在了servce层了
+
+
+
         //前提 要前端 传过来  (看 是不是统一配置)  先不考虑统一配置
         recruitConfigurationService.save(list);//这边到时候和前端商量  传个json串
         return Result.ok();

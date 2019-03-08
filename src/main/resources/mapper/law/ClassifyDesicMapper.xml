@@ -60,10 +60,10 @@
     <select id="queryListByUser" resultType="com.lawschool.beans.law.TaskDesicEntity" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
             id as dataId,
-           'law_'||ID AS infoId,
+            ID AS infoId,
             LAW_CODE AS infoCode,
             LAW_TITLE AS infoName,
-            'law_'||CLASSIFY_ID AS infoParentId,
+            CLASSIFY_ID AS infoParentId,
             'law_data' AS infoType,
             ISSUE_TIME AS createTime
         FROM

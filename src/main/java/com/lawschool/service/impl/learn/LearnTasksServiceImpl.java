@@ -345,16 +345,8 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
                 params.put("infoType","law_data");
                 page=classifyDesicService.queryListByTask(params);
             }
-            else if("pic".equals(infoType)){
-                params.put("infoType","pic_data");
-                page= mediaService.listStuByTask(params);
-            }
-            else if("video".equals(infoType)){
-                params.put("infoType","video_data");
-                page= mediaService.listStuByTask(params);
-            }
-            else if("audio".equals(infoType)){
-                params.put("infoType","audio_data");
+            else{
+                params.put("infoType",infoType+"_data");
                 page= mediaService.listStuByTask(params);
             }
             /*if (("sham".equals(infoType) && "law_90001".equals(infoId))||"law".equals(infoType)||"law_data".equals(infoType)) {
@@ -417,64 +409,16 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         PageUtils page= null;
         if(UtilValidate.isNotEmpty(params)) {
             String infoType = (String) params.get("infoType");
-            String infoId = (String) params.get("infoId");
-            String taskId = (String) params.get("taskId");
-            if("sham".equals(infoType)){
-                params.put("dataId","");
-            }
-            if (("sham".equals(infoType) && "law_90001".equals(infoId))||"law".equals(infoType)||"law_data".equals(infoType)) {
-                //点击的是虚拟节点数据 并且是法律法规数据 应该查询该节点下所有的法律法规文件
-                //点击的是法律法规分类 并且是法律法规数据 应该查询该节点下所有的法律法规文件
 
-                params.put("infoType","law_data");
+            if ("law".equals(infoType)){
+                //查询法律法规相关数据
                 page=classifyDesicService.queryListByUser(params);
-                page.setRemarks("law");
-
             }
-            else if (("sham".equals(infoType) && "stu_90004".equals(infoId))||"stu_pic".equals(infoType)||"stu_pic_data".equals(infoType)) {
-                //点击的是学习管理虚拟节点图文 或者点击图文下的分类
-                params.put("infoType","stu_pic_data");
+            else  {
+                //点击的是学习管理和案例分析模块
                 page= mediaService.listStuByUser(params);
-                page.setRemarks("stu_pic");
             }
-            else if (("sham".equals(infoType) && "stu_90003".equals(infoId))||"stu_audio".equals(infoType)||"stu_audio_data".equals(infoType)) {
-                //点击的是学习管理虚拟节点音频 或者点击音频下的分类
-                params.put("infoType","stu_audio_data");
-                page= mediaService.listStuByUser(params);
-                page.setRemarks("stu_audio");
-            }
-            else if (("sham".equals(infoType) && "stu_90002".equals(infoId))||"stu_video".equals(infoType)||"stu_video_data".equals(infoType)) {
-                //点击的是学习管理虚拟节点视频 或者点击视频下的分类
-                params.put("infoType","stu_video_data");
-                page= mediaService.listStuByUser(params);
-                page.setRemarks("stu_video");
-            }else if (("sham".equals(infoType) && "case_90008".equals(infoId))||"case_pic".equals(infoType)||"case_pic_data".equals(infoType)) {
-                //点击的是案例分析虚拟节点图文 或者点击图文下的分类
-                params.put("infoType","case_pic_data");
-                page= analysisService.listCaseAnaByTask(params);
-                page.setRemarks("case_pic");
-            }
-            else if (("sham".equals(infoType) && "case_90007".equals(infoId))||"case_audio".equals(infoType)||"case_audio_data".equals(infoType)) {
-                //点击的是案例分析虚拟节点音频 或者点击音频下的分类
-                params.put("infoType","case_audio_data");
-                page= analysisService.listCaseAnaByTask(params);
-                page.setRemarks("case_audio");
-            }
-            else if (("sham".equals(infoType) && "case_90006".equals(infoId))||"case_video".equals(infoType)||"case_video_data".equals(infoType)) {
-                //点击的是案例分析虚拟节点视频 或者点击视频下的分类
-                params.put("infoType","case_video_data");
-                page= analysisService.listCaseAnaByTask(params);
-                page.setRemarks("case_video");
-            }
-            else if (("sham".equals(infoType) && "case_90005".equals(infoId))) {
-                //点击的是案例分析虚拟节点
-                params.put("infoType","");
-                page= analysisService.listCaseAnaByTask(params);
-                page.setRemarks("case_sham");
-            }
-
         }
-
         return page;
     }
 

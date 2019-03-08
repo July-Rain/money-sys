@@ -143,8 +143,8 @@ public class UserIntegralServiceImpl extends AbstractServiceImpl<UserIntegralDao
 
 
     @Override
-    public int getJifenByUserId(String userid) {
-        int i=0;
+    public Float getJifenByUserId(String userid) {
+        Float i=0f;
         UserIntegral userIntegral=    this.selectOne(new EntityWrapper<UserIntegral>().eq("USER_ID",userid));
         if(userIntegral!=null)
         {

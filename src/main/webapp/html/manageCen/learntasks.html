@@ -515,6 +515,7 @@
                                 :props="defaultLearnTaskProps"
                                 accordion
                                 node-key="id"
+                                current-node-key="all"
                                 @node-click="handleTaskNodeClick">
                         </el-tree>
                     </el-scrollbar>
@@ -524,6 +525,14 @@
                     <el-form :inline="true" :model="taskForm" ref="taskForm" class="demo-form-inline">
                         <el-form-item prop="infoName" label="标题">
                             <el-input v-model="taskForm.infoName" placeholder="标题" size="mini"></el-input>
+                        </el-form-item>
+                        <el-form-item prop="infoType" label="来源：">
+                            <el-select v-model="taskForm.infoType" placeholder="类型" size="mini" >
+                                <el-option label="法律法规" value="law"></el-option>
+                                <el-option label="视频" value="video"></el-option>
+                                <el-option label="音频" value="audio"></el-option>
+                                <el-option label="图文" value="pic"></el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="searchContent" size="mini">查询</el-button>
@@ -557,10 +566,21 @@
                             >
                             </el-table-column>
                             <el-table-column
-                                    prop="infoTime"
-                                    label="时间"
+                                    prop="infoType"
+                                    label="类型"
+                                    width="100"
                             >
+                                <template slot-scope="scope">
+                                    <el-tag v-if="scope.row.infoType === 'law_data'" size="small" >法律法规</el-tag>
+                                    <el-tag v-if="scope.row.infoType === 'stu_pic_data'" size="small" type="info">学习图文</el-tag>
+                                    <el-tag v-if="scope.row.infoType === 'stu_audio_data'" size="small" type="warning">学习音频</el-tag>
+                                    <el-tag v-if="scope.row.infoType === 'stu_video_data'" size="small" type="warning">学习视频</el-tag>
+                                    <el-tag v-if="scope.row.infoType === 'case_pic_data'" size="small" type="warning">案例图文</el-tag>
+                                    <el-tag v-if="scope.row.infoType === 'case_audio_data'" size="small" type="warning">案例音频</el-tag>
+                                    <el-tag v-if="scope.row.infoType === 'case_video_data'" size="small" type="warning">案例视频</el-tag>
+                                </template>
                             </el-table-column>
+
 
                         </el-table>
                         <el-pagination

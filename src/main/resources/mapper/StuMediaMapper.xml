@@ -414,39 +414,41 @@
 
     <select id="listStuByUser" resultType="com.lawschool.beans.law.TaskDesicEntity" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
-        A . ID as dataId,
-        'stu_'||A.stu_type||'_'||A.ID AS infoId,
-        A.STU_CODE AS infoCode,
-        A.STU_TITLE AS infoName,
-        'stu_'||A.stu_type||'_'||A.stuLawId AS infoParentId,
-        'stu_'||A.stu_type||'_data' AS infoType
+        A . ID AS dataId,
+        A . ID AS infoId,
+        A .STU_CODE AS infoCode,
+        A .STU_TITLE AS infoName,
+        A .STU_LAWID AS infoParentId,
+        'stu_' || A .stu_type || '_data' AS infoType
         FROM
-        (
-        SELECT
-        REGEXP_SUBSTR (
-        T .STU_LAWID,
-        '[^,]+',
-        1,
-        ROWNUM
-        ) AS stuLawId,
-        T .*
-        FROM
-        LAW_STU_MEDIA T
-        <![CDATA[CONNECT BY ROWNUM <= LENGTH (T .STU_LAWID) - LENGTH (REGEXP_REPLACE (T .STU_LAWID, ',', '')) + 1 ]]>
-        ) A
-        WHERE A.del_status = 0
+        LAW_STU_MEDIA A
+
+        where A.DEL_STATUS = 0
         <if test="dataId != null and dataId!=''">
-            AND A .stuLawId = #{dataId}
+            AND FIND_IN_SET(#{dataId},A .STU_LAWID) > 0
         </if>
         <if test="infoType != null and infoType!=''">
             AND A .stu_type = #{infoType}
         </if>
-        <if test="userId != null and userId!=''">
-            AND CREATE_user = #{userId}
+        union ALL
+
+        SELECT
+        A .ID  AS dataId,
+        'case_'||A.case_type||'_'||A.ID AS infoId,
+        A .CASE_CODE AS infoCode,
+        A .CASE_TITLE AS infoName,
+        A.case_Lawid,
+        'case_'||A.content_type||'_data' AS infoType
+        FROM
+        LAW_CASE_ANALYSIS A
+        where A.DEL_STATUS = 0
+        <if test="dataId != null and dataId!=''">
+            AND FIND_IN_SET(#{dataId},A .case_Lawid) > 0
         </if>
-        <if test="infoName != null and infoName!=''">
-            and A .stu_title  like '%'||#{infoName}||'%'
+        <if test="infoType != null and infoType!=''">
+            AND A .content_type = #{infoType}
         </if>
+
 
   </select>
     <select id="countListStuByUser" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">
@@ -455,30 +457,42 @@
         FROM
         (
         SELECT
-        REGEXP_SUBSTR (
-        T .STU_LAWID,
-        '[^,]+',
-        1,
-        ROWNUM
-        ) AS stuLawId,
-        T .*
+        A . ID AS dataId,
+        A . ID AS infoId,
+        A .STU_CODE AS infoCode,
+        A .STU_TITLE AS infoName,
+        A .STU_LAWID AS infoParentId,
+        'stu_' || A .stu_type || '_data' AS infoType
         FROM
-        LAW_STU_MEDIA T
-        <![CDATA[CONNECT BY ROWNUM <= LENGTH (T .STU_LAWID) - LENGTH (REGEXP_REPLACE (T .STU_LAWID, ',', '')) + 1 ]]>
-        ) A
-        WHERE A.del_status = 0
+        LAW_STU_MEDIA A
+
+        where A.DEL_STATUS = 0
         <if test="dataId != null and dataId!=''">
-            AND A .stuLawId = #{dataId}
+            AND FIND_IN_SET(#{dataId},A .STU_LAWID) > 0
         </if>
         <if test="infoType != null and infoType!=''">
             AND A .stu_type = #{infoType}
         </if>
-        <if test="userId != null and userId!=''">
-            AND CREATE_user = #{userId}
+        union ALL
+
+        SELECT
+        A .ID  AS dataId,
+        'case_'||A.case_type||'_'||A.ID AS infoId,
+        A .CASE_CODE AS infoCode,
+        A .CASE_TITLE AS infoName,
+        A.case_Lawid,
+        'case_'||A.content_type||'_data' AS infoType
+        FROM
+        LAW_CASE_ANALYSIS A
+        where A.DEL_STATUS = 0
+        <if test="dataId != null and dataId!=''">
+            AND FIND_IN_SET(#{dataId},A .case_Lawid) > 0
         </if>
-        <if test="infoName != null and infoName!=''">
-            and A .stu_title  like '%'||#{infoName}||'%'
+        <if test="infoType != null and infoType!=''">
+            AND A .content_type = #{infoType}
         </if>
+        )
+
   </select>
 
 </mapper>

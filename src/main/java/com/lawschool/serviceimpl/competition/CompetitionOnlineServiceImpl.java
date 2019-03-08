@@ -387,7 +387,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 		//加完后在添加 另外的积分表
 		Integral integral=new Integral();
 		integral.setType("0");
-		integral.setPoint(Integer.parseInt(score));
+		integral.setPoint(Float.parseFloat(score));
 		integral.setSrc(type);
 
 

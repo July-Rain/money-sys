@@ -80,8 +80,8 @@ public class CompetitionRecordController extends AbstractController {
     @RequestMapping("/recordScore")
     public Result recordScore( String foreignKeyId, String nowbig, String nowlit, String sorce){
         User u = (User) SecurityUtils.getSubject().getPrincipal();
-        competitionRecordService.recordScore(foreignKeyId,nowbig,nowlit,u,sorce);//这边到时候和前端商量  传个json串
-        return Result.ok();
+      String s=  competitionRecordService.recordScore(foreignKeyId,nowbig,nowlit,u,sorce);//这边到时候和前端商量  传个json串
+        return Result.ok().put("s",s);
     }
 
 

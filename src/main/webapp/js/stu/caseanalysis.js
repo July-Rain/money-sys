@@ -27,7 +27,7 @@ var vm = new Vue({
         visible: false,
         caseAna: {
             id:"",
-            contentType: "1",//资料类型
+            contentType: "pic",//资料类型
             caseTitle: "",//案例标题
             caseContent: "",//案例内容
             caseContentUrl: "",//案例内容的url
@@ -284,7 +284,7 @@ var vm = new Vue({
             // }
             this.caseAna= {
                 id:"",
-                contentType: "1",//资料类型
+                contentType: "pic",//资料类型
                 caseTitle: "",//案例标题
                 caseContent: "",//案例内容
                 caseContentUrl: "",//案例内容的url
@@ -329,7 +329,7 @@ var vm = new Vue({
                             loadEditor();
                         }*/
                         editor.txt.html(vm.caseAna.caseContent);
-                        if(vm.caseAna.contentType!='1'&&vm.caseAna.caseContent){
+                        if(vm.caseAna.contentType!='pic'&&vm.caseAna.caseContent){
                             vm.caseAna.caseContentUrl=baseURL+"sys/download?accessoryId="+vm.caseAna.caseContent;
                             if(vm.caseAna.videoPicAcc){
                                 vm.caseAna.videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.caseAna.videoPicAcc;
@@ -574,7 +574,7 @@ var vm = new Vue({
             vm.caseAna.caseContentUrl="";
             vm.caseAna.videoPicAcc="";
             vm.caseAna.videoPicAccUrl="";
-            if(vm.caseAna.contentType=='1'){
+            if(vm.caseAna.contentType=='pic'){
                 loadEditor();
             }
         },

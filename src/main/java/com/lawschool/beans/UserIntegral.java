@@ -10,9 +10,9 @@ public class UserIntegral extends DataEntity<UserIntegral> {
 
     private String userId;
 
-    private int integralPoint;//积分
+    private Float integralPoint;//积分
 
-    private int creditPoint;//学分
+    private Float creditPoint;//学分
 
     private String orgCode;//部门code
 
@@ -68,19 +68,36 @@ public class UserIntegral extends DataEntity<UserIntegral> {
         this.orgCode = orgCode;
     }
 
-    public int getIntegralPoint() {
+//    public int getIntegralPoint() {
+//        return integralPoint;
+//    }
+//
+//    public void setIntegralPoint(int integralPoint) {
+//        this.integralPoint = integralPoint;
+//    }
+//
+//    public int getCreditPoint() {
+//        return creditPoint;
+//    }
+//
+//    public void setCreditPoint(int creditPoint) {
+//        this.creditPoint = creditPoint;
+//    }
+
+
+    public Float getIntegralPoint() {
         return integralPoint;
     }
 
-    public void setIntegralPoint(int integralPoint) {
+    public void setIntegralPoint(Float integralPoint) {
         this.integralPoint = integralPoint;
     }
 
-    public int getCreditPoint() {
+    public Float getCreditPoint() {
         return creditPoint;
     }
 
-    public void setCreditPoint(int creditPoint) {
+    public void setCreditPoint(Float creditPoint) {
         this.creditPoint = creditPoint;
     }
 

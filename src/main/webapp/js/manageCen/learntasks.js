@@ -123,12 +123,12 @@ var vm = new Vue({
         learnTaskTreeData:[],//学习内容树数据
         learnTaskData:[],//学习内容数据
         defaultLearnTaskProps:{
-            children: 'child',
-            label: 'infoName'
+            children: 'list',
+            label: 'classifyName'
         },//学习内容默认数据
         taskForm:{
             title:"",
-            infoType:"",
+            infoType:"law",
             infoId:"",
             currPage: 1,
             pageSize: 10,
@@ -159,7 +159,7 @@ var vm = new Vue({
             //加载法律法规数据
             $.ajax({
                 type: "POST",
-                url: baseURL + "law/classTree",
+                url: baseURL + "law/alltree",
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -293,7 +293,7 @@ var vm = new Vue({
             };
             this.title = "新增学习任务";
             this.dialogLearnTask = true;
-            //this.getDept();
+            this.reloadTask();
         },
         handleEdit: function (index, row) {
             //判断是否发布
@@ -572,7 +572,7 @@ var vm = new Vue({
         handleTaskNodeClick:function(data){
             this.taskForm.infoId=data.infoId;
             this.taskForm.dataId=data.dataId;
-            this.taskForm.infoType=data.infoType;
+           // this.taskForm.infoType=data.infoType;
             this.reloadTask();
 
         },//点击事件
@@ -598,7 +598,7 @@ var vm = new Vue({
             //加载学习任务数据
             $.ajax({
                 type: "POST",
-                url: baseURL + "learntasks/allComInfo",
+                url: baseURL + "learntasks/allComInfo?isMp=true",
                 dataType: "json",
                 data: vm.taskForm,
                 success: function (result) {
