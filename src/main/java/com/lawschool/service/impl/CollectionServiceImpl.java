@@ -204,7 +204,7 @@ public class CollectionServiceImpl  extends ServiceImpl<CollectionDao,Collection
         entity.setTotal(parseInt(params.get("num").toString()));
         entity.setName(name);
         entity.setPrefix(params.get("pname").toString());
-        entity.setScouceFrom(params.get("scourceFrom").toString());
+        entity.setSourceFrom(params.get("sourceFrom").toString());
         exerciseConfigureService.insert(entity);
         return Result.ok().put("id", entity.getId()).put("name",entity.getName());
     }
