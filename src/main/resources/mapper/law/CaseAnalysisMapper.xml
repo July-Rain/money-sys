@@ -99,10 +99,10 @@
             AND A .caseLawid = #{dataId}
         </if>
         <if test="infoType != null and infoType!=''">
-            AND A .case_type = #{infoType}
+            AND A .content_type = #{infoType}
         </if>
-        <if test="createUser != null and createUser!=''">
-            AND A.CREATE_user = #{createUser}
+        <if test="userId != null and userId!=''">
+            AND A.CREATE_user = #{userId}
         </if>
         <if test="infoName != null and infoName!=''">
             and A .case_title  like '%'||#{infoName}||'%'
@@ -130,7 +130,7 @@
             AND A .caseLawid = #{dataId}
         </if>
         <if test="infoType != null and infoType!=''">
-            AND A .case_type = #{infoType}
+            AND A .content_type = #{infoType}
         </if>
         <if test="userId != null and userId!=''">
             AND A.CREATE_user = #{userId}

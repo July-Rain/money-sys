@@ -147,6 +147,7 @@ var vm = new Vue({
                 data: vm.queryCond,
                 success: function (result) {
                     if (result.code == 0) {
+                        debugger
                         vm.infoData=result.page.list;
                         vm.infoFlag=result.page.remarks;
                         if(vm.infoFlag=='stu_video'||vm.infoFlag=='stu_audio'){
@@ -351,7 +352,6 @@ var vm = new Vue({
             });
         },
         handleTaskNodeClick:function(data){
-            vm.queryCond.infoType= data.infoType;
             vm.queryCond.taskId= data.taskId;
             vm.queryCond.infoId= data.infoId;
             vm.reload();

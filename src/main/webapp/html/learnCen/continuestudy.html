@@ -40,10 +40,11 @@
                             </el-form-item>
                         </el-form>
                         <div >
-                            <div v-if="queryCond.stuType=='law'" class="content lesson">
+                            <div v-if="queryCond.infoType=='law'" class="content lesson">
                                 <el-table
                                         key="lawtableData"
                                         :data="infoData"
+                                        empty-text="暂无数据"
                                         border
                                         stripe
                                         style="width: 100%">
@@ -105,7 +106,7 @@
                                     </el-table-column>
                                 </el-table>
                             </div>
-                            <div v-if="queryCond.stuType=='pic'" class="content lesson">
+                            <div v-if="queryCond.infoType=='pic'" class="content lesson">
                                 <el-table
                                         key="stupictableData"
                                         :data="infoData"
@@ -172,7 +173,7 @@
 
                                 </el-table>
                             </div>
-                            <div v-if="queryCond.stuType=='video'" class="content lesson">
+                            <div v-if="queryCond.infoType=='video'" class="content lesson">
                                 <el-row>
                                     <el-col :span="6" v-for="(item, index) in infoData">
                                         <el-card :body-style="{ padding: '4px' }">
@@ -197,7 +198,7 @@
                                     </el-col>
                                 </el-row>
                             </div>
-                            <div v-if="queryCond.stuType=='audio'" class="content lesson">
+                            <div v-if="queryCond.infoType=='audio'" class="content lesson">
                                 <el-row :gutter="66">
                                     <el-col :span="12" v-for="(item, index) in infoData">
                                         <el-card :body-style="{ padding: '0px' }">
