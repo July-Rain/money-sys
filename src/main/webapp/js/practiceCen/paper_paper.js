@@ -60,6 +60,10 @@ var vm = new Vue({
         limit: 5,
         count: 0,
         preserved: [],
+
+        oneOptionCheck:[],
+        multiOptionsCheck: [],
+        checkingCheck: []
     },
     methods: {
         // created中执行以获取数据
@@ -94,6 +98,7 @@ var vm = new Vue({
                             // 多选题
                             case '10005':
                                 vm.multiOptionsList.push(val);
+                                vm.multiOptionsCheck.push([])
                                 break;
                             // 判断题
                             case '10006':
@@ -114,6 +119,7 @@ var vm = new Vue({
             parent.location.reload()
         },
         goBack: function () {
+            console.info('goback')
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
                 = 'modules/exerciseCenter/paper_index.html';
