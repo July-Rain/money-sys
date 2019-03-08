@@ -258,8 +258,8 @@ var vm = new Vue({
             list.forEach(val => checkIndex.push(answerIdList.indexOf(val)+1));
             rightIdList.forEach(val => rightIndex.push(answerIdList.indexOf(val)+1));
             return {
-                checkIndex: checkIndex.join(),
-                rightIndex: rightIndex.join()
+                checkIndex: checkIndex.sort((a,b) => a-b).join(' '),
+                rightIndex: rightIndex.sort((a,b) => a-b).join(' ')
             }
         },
         // 收藏
@@ -274,11 +274,9 @@ var vm = new Vue({
                 if(vm.sinChoicList[index].isCollect == 1){
                     type = 0;
                     vm.sinChoicList[index].isCollect = 0;
-                    // vm.sinStarIcon[index] = 'el-icon-star-off';
                 } else {
                     type = 1;
                     vm.sinChoicList[index].isCollect = 1;
-                    // vm.sinStarIcon [index]= 'el-icon-star-on';
                 }
             }else if (type ==='10005'){
                 obj={
@@ -288,11 +286,9 @@ var vm = new Vue({
                 if(vm.mulChoicList[index].isCollect == 1){
                     type = 0;
                     vm.mulChoicList[index].isCollect = 0;
-                    // vm.mulStarIcon[index] = 'el-icon-star-off';
                 } else {
                     type = 1;
                     vm.mulChoicList[index].isCollect = 1;
-                    // vm.mulStarIcon[index] = 'el-icon-star-on';
                 }
             }else if(type==='10006'){
                 obj={
@@ -302,11 +298,9 @@ var vm = new Vue({
                 if(vm.judgeList[index].isCollect == 1){
                     type = 0;
                     vm.judgeList[index].isCollect = 0;
-                    vm.judStarIcon[index] = 'el-icon-star-off';
                 } else {
                     type = 1;
                     vm.judgeList[index].isCollect = 1;
-                    vm.judStarIcon[index] = 'el-icon-star-on';
                 }
             }else if(type==='10007'){
                 obj={
@@ -319,7 +313,6 @@ var vm = new Vue({
                 } else {
                     type = 1;
                     vm.subjectList[index].isCollect = 1;
-                    // vm.subStarIcon[index] = 'el-icon-star-on';
                 }
             }
 
@@ -352,9 +345,9 @@ var vm = new Vue({
             if (e.target.innerHTML === '小') {
                 html.style.fontSize = '9px';
             } else if (e.target.innerHTML === '中') {
-                html.style.fontSize = '12px';
-            } else if (e.target.innerHTML === '大') {
                 html.style.fontSize = '13px';
+            } else if (e.target.innerHTML === '大') {
+                html.style.fontSize = '14px';
             } else {
                 return;
             }
