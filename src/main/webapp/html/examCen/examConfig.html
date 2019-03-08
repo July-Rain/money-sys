@@ -166,6 +166,67 @@
             line-height: 14px;
             color: #333333;
         }
+
+        .preview_area .el-form h3 span:last-child {
+            color: #666;
+            float: right;
+            font-weight: normal;
+        }
+
+        .preview_area .config_box > p {
+            float: right;
+        }
+
+        .preview_area .question_box {
+            border: 1px solid #cccccc;
+            padding: 14px 20px;
+            margin-top: 6px;
+            position: relative;
+        }
+
+        .preview_area .question_box .title span {
+            float: left;
+            width: 35px;
+            height: 20px;
+            line-height: 20px;
+            background-color: #36aafd;
+            color: #fff;
+            display: block;
+            margin-right: 8px;
+            text-align: center;
+        }
+
+        .preview_area .question_box .title .p {
+            font-size: 16px;
+            color: #333;
+            line-height: 22px;
+            margin-bottom: 19px;
+        }
+
+        .preview_area .question_box > ul {
+            padding-left: 64px;
+            padding-bottom: 21px;
+        }
+
+        .preview_area .question_box > ul li {
+            float: left;
+            padding-right: 33px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .preview_area .question_box .msg {
+            font-size: 14px;
+            color: #999;
+            line-height: 14px;
+        }
+
+        .preview_area .question_box .change {
+            position: absolute;
+            right: 17px;
+            bottom: 9px;
+            color: #999999;
+        }
     </style>
 </head>
 <body>
@@ -370,7 +431,6 @@
             <!--随机出题左边开始显示部分-->
             <el-form v-show="!previewExam">
                 <div>
-
                     <p>知识点：
                         <el-select placeholder="请选择" size="mini">
                         </el-select>
@@ -428,8 +488,31 @@
 
                 <el-form>
                     <div>
-                        <h3>一、单选题<span>随机出题20题共20分</span><span>收起</span></h3>
+                        <h3>一、单选题<span>随机出题20题共40分</span><span>收起</span></h3>
+                        <div class="config_box clearfix">
+                            <p>每题：
+                                <el-input-number size="mini" :disabled="true"></el-input-number>
+                                分
+                            </p>
+                        </div>
+                        <div class="question_box">
+                            <div class="title clearfix">
+                                <span>1</span>
+                                <div class="p">已满__________不满十六周岁的人，犯故意杀人、故意伤害致人重伤或者死亡、强奸、抢劫、贩卖毒品、放火、
+                                    爆炸、投毒罪的，应当负刑事责任
+                                </div>
+                            </div>
 
+                            <ul class="clearfix">
+                                <li>A、十二周岁</li>
+                                <li>B、十二周岁</li>
+                                <li>C、十二周岁</li>
+                            </ul>
+                            <div class="msg">
+                                知识点：刑法
+                            </div>
+                            <button class="change"><i class="iconfont icon-genghuan"></i></button>
+                        </div>
                     </div>
 
                 </el-form>
@@ -503,18 +586,11 @@
                         </p>
                     </div>
 
-                    <div>
-                        <el-button type="primary" @click="genRandQueAfterPreview" v-if="handleType!='view'">生成试卷</el-button>
-                        <el-button type="primary" @click="closeViewWindow" v-if="handleType=='view'">确定</el-button>
-                        <el-button type="primary" @click="closePreview">取消</el-button>
-                    </div>
+
                 </div>
 
 
             </div>
-
-
-
 
 
             <div>
@@ -637,14 +713,21 @@
             <div class="tit">
                 <p><span>总分：</span>{{examConfig.examScore}}</p>
             </div>
-            <el-button type="primary" v-if="handleType=='add'" @click="preview(randomQuesData)" size="mini">预览
+            <!--随机出题时的按钮-->
+            <el-button type="primary" v-if="handleType=='add'&&!previewExam" @click="preview(randomQuesData)"
+                       size="mini">预览
             </el-button>
-            <el-button type="primary" v-if="handleType!='add'" @click="openView()" size="mini">预览</el-button>
+            <el-button type="primary" v-if="handleType!='add'&&!previewExam" @click="openView()" size="mini">预览
+            </el-button>
+            <!--随机改题时的按钮-->
+            <el-button type="primary" @click="closePreview" v-if="previewExam">上一步</el-button>
+            <el-button type="primary" @click="genRandQueAfterPreview" v-if="handleType!='view'&&previewExam">保存并生成试卷</el-button>
+            <el-button type="primary" @click="closeViewWindow" v-if="handleType=='view'&&previewExam">确定</el-button>
+
+
+
         </div>
     </div>
-
-
-
 
 
     <el-dialog title="选择部门" :visible.sync="dialogDept">
