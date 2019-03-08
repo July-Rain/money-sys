@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * ClassName: UserExam
- * Description: TODO
+ * Description: 用户试卷总表
  * date: 2018/12/299:44
  *
  * @author 王帅奇

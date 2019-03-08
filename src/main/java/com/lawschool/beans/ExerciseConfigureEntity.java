@@ -15,6 +15,11 @@ import java.util.List;
 @TableName("LAW_EXERCISE_CONFIGURE")
 public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity> {
 
+    public static final String FROM_PER_TASK="0";
+    public static final String FROM_MANGE_TASK="1";
+    public static final String FROM_KEY_QUE="2";
+    public static final String FROM_WRONG_QUE="3";
+
     private String prefix;// 前缀
     private String name;// 练习卷名称,自动生成
     private String rangeType;// 使用范围
@@ -30,7 +35,7 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
     private String userNames;
     private String deptNames;
 
-    private String scouceFrom;  //来源 默认 ‘TASKCONFIG’还有‘KEYQUE’--重点试题组卷  ‘WRONGQUE’--错题组卷
+    private String sourceFrom;  //来源 默认 ‘CONFIG’还有‘KEYQUE’--重点试题组卷  ‘WRONGQUE’--错题组卷
 
     @TableField(exist = false)
     private List<String> deptIds;
@@ -190,11 +195,11 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
         this.deptNames = deptNames;
     }
 
-    public String getScouceFrom() {
-        return this.scouceFrom;
+    public String getSourceFrom() {
+        return sourceFrom;
     }
 
-    public void setScouceFrom(final String scouceFrom) {
-        this.scouceFrom = scouceFrom;
+    public void setSourceFrom(String sourceFrom) {
+        this.sourceFrom = sourceFrom;
     }
 }

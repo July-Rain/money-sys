@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>个人中心</el-breadcrumb-item>
+            <el-breadcrumb-item>我的练习</el-breadcrumb-item>
+            <el-breadcrumb-item>组卷练习</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="info_card">
+            <div class="card_title">
+            </div>
+            <div class="card_contain">
+                <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+
+                    <el-form-item label="任务名称" prop="taskName">
+                        <el-input v-model="formInline.taskName" placeholder="任务名称" size="mini" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="开始日期" prop="startTime">
+                        <el-date-picker
+                                v-model="formInline.startTime"
+                                type="date"
+                                format="yyyy年MM月dd日"
+                                value-format="yyyy-MM-dd"
+                                placeholder="开始时间"
+                                size="mini"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="结束日期" prop="endTime">
+                        <el-date-picker
+                                v-model="formInline.endTime"
+                                type="date"
+                                format="yyyy年MM月dd日"
+                                value-format="yyyy-MM-dd"
+                                placeholder="结束时间"
+                                size="mini"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit" size="mini">
+                            <i class="iconfont icon-sousuo1"></i>
+                            查询
+                        </el-button>
+                        <el-button class="reset_btn" size="mini" @click="resetForm('formInline')">
+                            <i class="iconfont icon-tableresetpassword"></i>
+                            重置
+                        </el-button>
+
+                    </el-form-item>
+                </el-form>
+            </div>
+        </div>
+        <div class="info_btn">
+            <el-button size="mini" type="primary" @click="addConfig"><i class="iconfont icon-htmal5icon18"></i>新增组卷练习</el-button>
+        </div>
+
+        <el-table
+                :data="tableData"
+                style="width: 100%"
+                stripe
+                border>
+            <el-table-column
+                    type="index"
+                    width="50"
+                    label="序号"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="练习卷名称"
+                    header-align="center"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="type"
+                    label="练习卷类型"
+                    header-align="center"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="total"
+                    label="总题量"
+                    header-align="center"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="userName"
+                    label="创建人"
+                    header-align="center"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="createTime"
+                    label="创建时间"
+                    width="200"
+                    header-align="center"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    label="操作"
+                    header-align="center"
+                    align="center"
+                    width="150">
+                <template slot-scope="scope">
+                    <el-popover
+                            placement="right"
+                            trigger="hover"
+                            content="查看">
+                        <i class="iconfont icon-chakan"
+                           @click="showPaper(scope.row.id)"
+                           slot="reference"
+                           style="color: #1381e3;cursor: pointer;padding: 0 20px;font-size: 12px"
+                        >
+                        </i>
+                    </el-popover>
+                    <el-popover
+                            placement="right"
+                            trigger="hover"
+                            content="删除">
+                        <i class="iconfont icon-tubiaozhizuo-"
+                           slot="reference"
+                           @click="dele(scope.row.id)"
+                           style="color: #e31313;cursor: pointer;padding: 0 20px;font-size: 18px"
+                        >
+                        </i>
+                    </el-popover>
+
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurChange"
+                :current-page="formInline.page"
+                :page-sizes="[10, 20, 30, 40]"
+                :page-size="formInline.limit"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="formInline.count">
+        </el-pagination>
+
+        <el-dialog :title="title" :visible.sync="dialogConfig">
+            <el-col :span="24">
+                <el-form :model="exerciseConfigure" :rules="rules" ref="exerciseConfigure" label-width="100px"  size="mini">
+                    <el-form-item label="名称前缀：" prop="prefix">
+                        <el-input v-model="exerciseConfigure.prefix" placeholder="请输入名称前缀" clearable>
+                            <el-button slot="append" @click="createName"><i class="iconfont icon-shengchengshijuanming"></i> 生成试卷名称</el-button>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item label="试卷名称：" prop="name">
+                        <el-input v-model="exerciseConfigure.name" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="练习卷配置：">
+                        <el-button size="mini" type="primary" @click="add">添加配置</el-button>
+                    </el-form-item>
+                    <el-table
+                            :data="exerciseConfigure.list"
+                            style="width: 100%"
+                            stripe>
+                        <el-table-column
+                                type="index"
+                                label="序号">
+                        </el-table-column>
+                        <el-table-column
+                                label="题目类型"
+                                header-align="center"
+                                align="center"
+                                prop="topicName">
+                        </el-table-column>
+
+                        <el-table-column
+                                label="初级题量"
+                                header-align="center"
+                                align="center"
+                                prop="primaryNum">
+                        </el-table-column>
+
+                        <el-table-column
+                                label="中级题量"
+                                header-align="center"
+                                align="center"
+                                prop="middleNum">
+                        </el-table-column>
+
+                        <el-table-column
+                                label="高级题量"
+                                header-align="center"
+                                align="center"
+                                prop="seniorNum">
+                        </el-table-column>
+
+                        <el-table-column
+                                label="操作"
+                                header-align="center"
+                                align="center"
+                                prop="status">
+                            <template slot-scope="scope">
+                                <el-popover
+                                        placement="right"
+                                        trigger="hover"
+                                        content="删除">
+                                    <i class="iconfont icon-tubiaozhizuo- tabIcon"
+                                       slot="reference"
+                                       @click="deleteOne(scope.$index)"
+                                       style="color: #e31313;">
+                                    </i>
+                                </el-popover>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+
+                </el-form>
+            </el-col>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogConfig = false">取 消</el-button>
+                <el-button type="primary" @click="save('exerciseConfigure')">生成试卷</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog title="添加练习配置" :visible.sync="addConfigFlag" :before-close="closeConfig" >
+            <el-row>
+                <el-col :span="12">
+                    <el-form :model="config" :rules="configRules" ref="config" label-width="100px" class="demo-sysMenu" size="mini">
+                        <el-form-item label="主题类型：" prop="topic">
+                            <el-select v-model="config.topic" placeholder="请选择">
+                                <el-option
+                                        v-for="item in topicList"
+                                        :key="item.key"
+                                        :label="item.value"
+                                        :value="item">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item label="初级题量：" prop="primaryNum">
+                            <el-input-number v-model="config.primaryNum" controls-position="right" :min="0"></el-input-number>
+                        </el-form-item>
+
+                        <el-form-item label="中级题量：" prop="middleNum">
+                            <el-input-number v-model="config.middleNum" controls-position="right" :min="0"></el-input-number>
+                        </el-form-item>
+
+                        <el-form-item label="高级题量：" prop="seniorNum">
+                            <el-input-number v-model="config.seniorNum" controls-position="right" :min="0"></el-input-number>
+                        </el-form-item>
+
+                        <el-form-item>
+                            <el-button type="primary" @click="sure('config')">确定</el-button>
+                        </el-form-item>
+
+                    </el-form>
+                </el-col>
+            </el-row>
+        </el-dialog>
+
+        <el-dialog title="试卷详情" :visible.sync="paperDialog" width="800px" height="800px">
+            <div v-for="(item,index) in questionList" class="swiper-slide">
+                {{index+1}}. [{{item.questionType=='10004'?'单选题':item.questionType=='10005'?'多选题':'判断题'}}]
+                {{item.comContent}}
+                ( )。
+                <br/>
+                <br/>
+                <el-checkbox-group v-model="answers" v-if="item.questionType==5">
+                    <el-checkbox :label="item2.id" v-for="item2 in item.answer">{{item2.questionContent}}</el-checkbox>
+                    <br/>
+                </el-checkbox-group>
+                <el-radio-group
+                        v-if="item.questionType==10004 || item.questionType==10006"
+                        disabled>
+                    <el-radio :label="item2.id" v-for="item2 in item.answer">
+                        {{item2.questionContent}}
+                    </el-radio>
+                    <br/>
+                </el-radio-group>
+                <el-checkbox-group disabled v-if="item.questionType==10005">
+                    <el-checkbox :label="item2.id" v-for="item2 in item.answer">
+                        {{item2.questionContent}}
+                    </el-checkbox>
+                    <br/>
+                </el-checkbox-group>
+
+                <br/>
+            </div>
+        </el-dialog>
+    </div>
+</div>
+</body>
+
+<script src="${rc.contextPath}/js/personalCen/exercise_configure_per.js?_${.now?long}"></script>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.system.FractionDao">
+
+    <sql id="fractionColumns">
+        ID AS "id",
+        FRACTION_TYPE AS "fractionType",
+        SOURCE AS "source",
+        QUE_NUM AS "queNum",
+        DAILY_LIMIT AS "dailyLimit",
+        SCORE AS "score",
+        MIN_SCORE AS "minScore",
+        MAX_SCORE AS "maxScore",
+        MIN_DEMAND AS "minDemand"
+     </sql>
+
+    <select id="findList" resultType="com.lawschool.beans.system.Fraction">
+        SELECT
+          <include refid="fractionColumns"/>
+        FROM LAW_FRACTION
+    </select>
+
+    <select id="findByTypeAndSource" resultType="com.lawschool.beans.system.Fraction">
+        select
+        <include refid="fractionColumns"/>
+        from LAW_FRACTION WHERE
+      fraction_type = #{fractionType} and source = #{source}
+    </select>
+
+</mapper>
