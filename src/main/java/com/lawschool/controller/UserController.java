@@ -244,7 +244,7 @@ public class UserController extends AbstractController {
         return rst==SUCCESS?Result.ok():Result.error("修改用户失败");
     }
     /**
-     * @Author zjw
+     * @Author
      * @Description 修改用户信息----勋章
      * @Date 15:46 2018/12/24
      * @Param [user]
