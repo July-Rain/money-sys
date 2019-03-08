@@ -5,7 +5,7 @@ var userExamId = getUrlParam("userExamId");
 var vm = new Vue({
     el: '#app',
     data: {
-        isSubmit: true, // 是否提交 待
+        isSubmit: true, // 是否提交
         // 答题数据
         testForm: {
             sinChoic: [],

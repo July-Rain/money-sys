@@ -17,7 +17,6 @@ html {
     top: 56px;
     right: 1vw;
     width: 18vw;
-    height: 505px;
     background: white;
 }
 
@@ -250,7 +249,7 @@ html {
 .bar .buttons {
     width: 100%;
     padding-top: 21px;
-    padding-left: 75px;
+    padding-left: 90px;
     border-top: 1px solid #dddddd;
 }
 .bar .buttons .el-button {
