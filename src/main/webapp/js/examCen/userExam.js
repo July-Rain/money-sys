@@ -31,7 +31,7 @@ var vm = new Vue({
         },
         //序列号计算
         indexMethod: function (index) {
-            return index + 1 + (vm.formInline.currPage - 1) * vm.formInline.pageSize;
+            return index + 1 + (vm.formInline.page - 1) * vm.formInline.limit;
         },
         onSubmit: function () {
             this.reload();
