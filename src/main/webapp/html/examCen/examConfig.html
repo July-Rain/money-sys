@@ -423,7 +423,7 @@
     </div>
 
     <!--随机出题页面-->
-    <div class="random_area clearfix" v-if="randomQuesModal">
+    <div class="random_area clearfix" v-if="randomQuesModal" >
         <div class="random_box">
             <div class="contain_title" v-show="!previewExam">
                 <h2>随机出题</h2>
@@ -431,49 +431,66 @@
             <!--随机出题左边开始显示部分-->
             <el-form v-show="!previewExam">
                 <div>
+                    <h3>一、单选题<span>随机出题{{randomQuesData[0].questionNumber}}题
+                        共{{randomQuesData[0].questionNumber*randomQuesData[0].everyQuestionScore}}分</span></h3>
                     <p>知识点：
-                        <el-select placeholder="请选择" size="mini">
+                        <el-select v-model="randomQuesData[0].specialKnowledgeArr" size="mini"
+                                   multiple collapse-tags style="width: auto" placeholder="多选" :disabled="view">
+                            <el-option v-for="item in skOption" :key="item.key"
+                                       :label="item.value" :value="item.key"></el-option>
                         </el-select>
-                        <span class="label">试题数量：</span>
-                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        <span class="label" >试题数量：</span>
+                        <el-input-number size="mini" :min="0" placeholder="0" v-model="randomQuesData[0].questionNumber"></el-input-number>
                         道 <span class="label">每题</span>
-                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        <el-input-number size="mini" :min="0" placeholder="0"  v-model="randomQuesData[0].everyQuestionScore"></el-input-number>
                         分
                     </p>
                 </div>
                 <div>
-                    <h3>二、多选题<span>随机出题20题共20分</span></h3>
+                    <h3>二、多选题<span>随机出题{{randomQuesData[1].questionNumber}}题
+                        共{{randomQuesData[1].questionNumber*randomQuesData[1].everyQuestionScore}}分</span></h3>
                     <p>知识点：
-                        <el-select placeholder="请选择" size="mini">
+                        <el-select v-model="randomQuesData[1].specialKnowledgeArr" size="mini"
+                                   multiple collapse-tags style="width: auto" placeholder="多选" :disabled="view">
+                            <el-option v-for="item in skOption" :key="item.key"
+                                       :label="item.value" :value="item.key"></el-option>
                         </el-select>
                         <span class="label">试题数量：</span>
-                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        <el-input-number size="mini" :min="0" placeholder="0" v-model="randomQuesData[1].questionNumber"></el-input-number>
                         道 <span class="label">每题</span>
-                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        <el-input-number size="mini" :min="0" placeholder="0" v-model="randomQuesData[1].everyQuestionScore"></el-input-number>
                         分
                     </p>
                 </div>
                 <div>
-                    <h3>三、判断题<span>随机出题20题共20分</span></h3>
+                    <h3>三、判断题<span>随机出题{{randomQuesData[2].questionNumber}}题
+                        共{{randomQuesData[2].questionNumber*randomQuesData[2].everyQuestionScore}}分</span></h3>
                     <p>知识点：
-                        <el-select placeholder="请选择" size="mini">
+                        <el-select v-model="randomQuesData[2].specialKnowledgeArr" size="mini"
+                                   multiple collapse-tags style="width: auto" placeholder="多选" :disabled="view">
+                            <el-option v-for="item in skOption" :key="item.key"
+                                       :label="item.value" :value="item.key"></el-option>
                         </el-select>
                         <span class="label">试题数量：</span>
-                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        <el-input-number size="mini" :min="0" placeholder="0" v-model="randomQuesData[2].questionNumber"></el-input-number>
                         道 <span class="label">每题</span>
-                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        <el-input-number size="mini" :min="0" placeholder="0" v-model="randomQuesData[2].everyQuestionScore" ></el-input-number>
                         分
                     </p>
                 </div>
                 <div>
-                    <h3>四、主观题<span>随机出题20题共20分</span></h3>
+                    <h3>四、主观题<span>随机出题{{randomQuesData[3].questionNumber}}题
+                        共{{randomQuesData[3].questionNumber*randomQuesData[3].everyQuestionScore}}分</span></h3>
                     <p>知识点：
-                        <el-select placeholder="请选择" size="mini">
+                        <el-select v-model="randomQuesData[3].specialKnowledgeArr" size="mini"
+                                   multiple collapse-tags style="width: auto" placeholder="多选" :disabled="view">
+                            <el-option v-for="item in skOption" :key="item.key"
+                                       :label="item.value" :value="item.key"></el-option>
                         </el-select>
                         <span class="label">试题数量：</span>
-                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        <el-input-number size="mini" :min="0" placeholder="0"  v-model="randomQuesData[3].questionNumber"></el-input-number>
                         道 <span class="label">每题</span>
-                        <el-input-number size="mini" :min="0" placeholder="0"></el-input-number>
+                        <el-input-number size="mini" :min="0" placeholder="0"  v-model="randomQuesData[3].everyQuestionScore"></el-input-number>
                         分
                     </p>
                 </div>
@@ -488,36 +505,116 @@
 
                 <el-form>
                     <div>
-                        <h3>一、单选题<span>随机出题20题共40分</span><span>收起</span></h3>
+                        <h3>一、单选题<span>随机出题{{randomQuesData[0].questionNumber}}题
+                        共{{randomQuesData[0].questionNumber*randomQuesData[0].everyQuestionScore}}分</span><span>收起</span></h3>
                         <div class="config_box clearfix">
                             <p>每题：
-                                <el-input-number size="mini" :disabled="true"></el-input-number>
+                                <el-input-number size="mini" :disabled="true" v-model="randomQuesData[0].everyQuestionScore"></el-input-number>
                                 分
                             </p>
                         </div>
-                        <div class="question_box">
+                        <div class="question_box" v-for="(multiple,index) in sinMultipleSelection" :key="index">
                             <div class="title clearfix">
-                                <span>1</span>
-                                <div class="p">已满__________不满十六周岁的人，犯故意杀人、故意伤害致人重伤或者死亡、强奸、抢劫、贩卖毒品、放火、
-                                    爆炸、投毒罪的，应当负刑事责任
+                                <span>{{index+1}}</span>
+                                <div class="p">{{multiple.comContent}}
                                 </div>
                             </div>
 
-                            <ul class="clearfix">
-                                <li>A、十二周岁</li>
-                                <li>B、十二周岁</li>
-                                <li>C、十二周岁</li>
+                            <ul class="clearfix" >
+                                <li v-for="(item2,index1)  in multiple.answerList" :key="index1">{{optionIndex[index1]}}、{{item2.questionContent}}</li>
                             </ul>
                             <div class="msg">
-                                知识点：刑法
+                                知识点：{{multiple.specialknowledgeValue}}
                             </div>
-                            <button class="change"><i class="iconfont icon-genghuan"></i></button>
+                            <button class="change" @click="changeQuestion('10004',index)"
+                                    v-if="handleType!='view'"><i class="iconfont icon-genghuan"></i></button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3>二、多选题<span>随机出题{{randomQuesData[1].questionNumber}}题
+                        共{{randomQuesData[1].questionNumber*randomQuesData[1].everyQuestionScore}}分</span><span>收起</span></h3>
+                        <div class="config_box clearfix">
+                            <p>每题：
+                                <el-input-number size="mini" :disabled="true" v-model="randomQuesData[1].everyQuestionScore"></el-input-number>
+                                分
+                            </p>
+                        </div>
+                        <div class="question_box" v-for="(multiple,index) in mulMultipleSelection" :key="index">
+                            <div class="title clearfix">
+                                <span>{{index+1}}</span>
+                                <div class="p">{{multiple.comContent}}
+                                </div>
+                            </div>
+
+                            <ul class="clearfix" >
+                                <li v-for="(item2,index1)  in multiple.answerList" :key="index1">{{optionIndex[index1]}}、{{item2.questionContent}}</li>
+                            </ul>
+                            <div class="msg">
+                                知识点：{{multiple.specialknowledgeValue}}
+                            </div>
+                            <button class="change" @click="changeQuestion('10005',index)"
+                                    v-if="handleType!='view'"><i class="iconfont icon-genghuan"></i></button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3>三、判断题<span>随机出题{{randomQuesData[2].questionNumber}}题
+                        共{{randomQuesData[2].questionNumber*randomQuesData[2].everyQuestionScore}}分</span><span>收起</span></h3>
+                        <div class="config_box clearfix">
+                            <p>每题：
+                                <el-input-number size="mini" :disabled="true" v-model="randomQuesData[2].everyQuestionScore"></el-input-number>
+                                分
+                            </p>
+                        </div>
+                        <div class="question_box" v-for="(multiple,index) in judgeMultipleSelection" :key="index">
+                            <div class="title clearfix">
+                                <span>{{index+1}}</span>
+                                <div class="p">{{multiple.comContent}}
+                                </div>
+                            </div>
+
+                            <ul class="clearfix" >
+                                <li v-for="(item2,index1)  in multiple.answerList" :key="index1">{{optionIndex[index1]}}、{{item2.questionContent}}</li>
+                            </ul>
+                            <div class="msg">
+                                知识点：{{multiple.specialknowledgeValue}}
+                            </div>
+                            <button class="change" @click="changeQuestion('10006',index)"
+                                    v-if="handleType!='view'"><i class="iconfont icon-genghuan"></i></button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3>四、主观题<span>随机出题{{randomQuesData[3].questionNumber}}题
+                        共{{randomQuesData[3].questionNumber*randomQuesData[3].everyQuestionScore}}分</span><span>收起</span></h3>
+                        <div class="config_box clearfix">
+                            <p>每题：
+                                <el-input-number size="mini" :disabled="true" v-model="randomQuesData[3].everyQuestionScore"></el-input-number>
+                                分
+                            </p>
+                        </div>
+                        <div class="question_box" v-for="(multiple,index) in subMultipleSelection" :key="index">
+                            <div class="title clearfix">
+                                <span>{{index+1}}</span>
+                                <div class="p">{{multiple.comContent}}
+                                </div>
+                            </div>
+
+                            <ul class="clearfix" >
+                                <li v-for="(item2,index1)  in multiple.answerList" :key="index1">{{optionIndex[index1]}}、{{item2.questionContent}}</li>
+                            </ul>
+                            <div class="msg">
+                                知识点：{{multiple.specialknowledgeValue}}
+                            </div>
+                            <button class="change" @click="changeQuestion('10004',index)"
+                                    v-if="handleType!='view'"><i class="iconfont icon-genghuan"></i></button>
                         </div>
                     </div>
 
                 </el-form>
 
-                <div>
+                <!--<div>
 
                     <h3>注：更换的题目将会作为必考题</h3>
                     <div class="subTitle clearfix">
@@ -587,13 +684,13 @@
                     </div>
 
 
-                </div>
+                </div>-->
 
 
             </div>
 
 
-            <div>
+            <!--<div>
                 <el-table
                         :data="randomQuesData"
                         border
@@ -664,10 +761,10 @@
                             {{scope.row.questionNumber * scope.row.everyQuestionScore}}
                         </template>
 
-                        <!--<template slot-scope="scope">
+                        &lt;!&ndash;<template slot-scope="scope">
                             <el-input size="mini"
                                              :min="0" placeholder="请输入本题型总分值" :disabled = "false"></el-input>
-                        </template>-->
+                        </template>&ndash;&gt;
                     </el-table-column>
                     <el-table-column
                             label="操作"
@@ -698,21 +795,24 @@
 
                 <el-button type="primary" @click="handleSave(randomQuesData)" v-if="handleType!='view'" size="mini">保存
                 </el-button>
-            </div>
+            </div>-->
         </div>
         <div class="random_box box_right">
             <div class="exam_title">试卷名：{{examConfig.examName}}</div>
             <ul>
-                <li>预定总分值：100分</li>
-                <li>预定总分值：100分</li>
-                <li>单选题：20题</li>
-                <li>多选题：15题</li>
-                <li>判读题：5题</li>
-                <li>主观题：2题</li>
+                <li>预定总分值：{{examConfig.examScore}}分</li>
+                <li>当前总分值：{{randomQuesData[0].questionNumber*randomQuesData[0].everyQuestionScore+
+                    randomQuesData[1].questionNumber*randomQuesData[1].everyQuestionScore+
+                    randomQuesData[2].questionNumber*randomQuesData[2].everyQuestionScore+
+                    randomQuesData[3].questionNumber*randomQuesData[3].everyQuestionScore}}分</li>
+                <li>单选题：{{randomQuesData[0].questionNumber}}题</li>
+                <li>多选题：{{randomQuesData[1].questionNumber}}题</li>
+                <li>判读题：{{randomQuesData[2].questionNumber}}题</li>
+                <li>主观题：{{randomQuesData[3].questionNumber}}题</li>
             </ul>
-            <div class="tit">
+           <!-- <div class="tit">
                 <p><span>总分：</span>{{examConfig.examScore}}</p>
-            </div>
+            </div>-->
             <!--随机出题时的按钮-->
             <el-button type="primary" v-if="handleType=='add'&&!previewExam" @click="preview(randomQuesData)"
                        size="mini">预览
