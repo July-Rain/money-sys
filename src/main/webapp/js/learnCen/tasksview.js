@@ -4,26 +4,26 @@
  * Description:学习任务管理
  */
 var ztree = null;
-var setting = {
-    data: {
-        simpleData: {
-            enable: true,
-            idKey: "infoId",
-            pIdKey: "infoParentId",
-            rootPId: -1,
-
-        },
-        key: {
-            url:"nourl",
-            name:"infoName"
-        }
-
-    },
-    check:{
-        enable:true,
-        nocheckInherit:true
-    }
-};
+// var setting = {
+//     data: {
+//         simpleData: {
+//             enable: true,
+//             idKey: "infoId",
+//             pIdKey: "infoParentId",
+//             rootPId: -1,
+//
+//         },
+//         key: {
+//             url:"nourl",
+//             name:"infoName"
+//         }
+//
+//     },
+//     check:{
+//         enable:true,
+//         nocheckInherit:true
+//     }
+// };
 var menuId = getUrlParam('id');
 var vm = new Vue({
     el: '#app',
@@ -257,7 +257,7 @@ var vm = new Vue({
             };
             this.title = "新增学习任务";
             this.dialogLearnTask = true;
-            this.getDept();
+            //this.getDept();
         },
         handleEdit: function (index, row) {
             this.title = "查看学习任务";
@@ -274,7 +274,7 @@ var vm = new Vue({
                     }
                 }
             });
-            this.getDept();
+            //this.getDept();
         },
         handleDel: function (index, row) {
             vm.delIdArr.push(row.id);
@@ -425,12 +425,12 @@ var vm = new Vue({
             vm.learnTasks.taskContentList=this.multipleClassSelection;
             console.log(vm.learnTasks.taskContentList);
         },
-        getDept: function(){
-            //加载部门树
-            $.get(baseURL + "law/zTree", function(r){
-                ztree = $.fn.zTree.init($("#classTree"), setting, r.classifyList);
-            })
-        },
+        // getDept: function(){
+        //     //加载部门树
+        //     $.get(baseURL + "law/zTree", function(r){
+        //         ztree = $.fn.zTree.init($("#classTree"), setting, r.classifyList);
+        //     })
+        // },
         continueStudy: function (index, row) {
             //继续学习
             window.location.href = baseURL + "learntasks/continueStudy?id=" + row.id;

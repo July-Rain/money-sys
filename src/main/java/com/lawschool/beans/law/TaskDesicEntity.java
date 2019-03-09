@@ -26,6 +26,14 @@ public class TaskDesicEntity implements Serializable {
     private Date createTime;//创建时间
     private String infoType;//类型标记
     private String dataId;//数据原先的id
+    @TableField(exist = false)
+    private String recordId;//学习记录id
+
+    //视频和音频相关的字段展示
+    @TableField(exist = false)
+    private String accId;//视频字段id
+    @TableField(exist = false)
+    private String videoPicId;//视频封面id
 
 
     @TableField(exist = false)
@@ -121,5 +129,27 @@ public class TaskDesicEntity implements Serializable {
         this.infoType = infoType;
     }
 
+    public String getRecordId() {
+        return recordId;
+    }
 
+    public void setRecordId(String recordId) {
+        this.recordId = recordId;
+    }
+
+    public String getAccId() {
+        return accId;
+    }
+
+    public void setAccId(String accId) {
+        this.accId = accId;
+    }
+
+    public String getVideoPicId() {
+        return videoPicId;
+    }
+
+    public void setVideoPicId(String videoPicId) {
+        this.videoPicId = videoPicId;
+    }
 }

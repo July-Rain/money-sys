@@ -33,7 +33,7 @@ public interface StuMediaDao extends AbstractDao<StuMedia> {
      **/
     
 
-    List<StuMedia> listStuByTask(Page page, TaskDesicEntity desicEntity);
+    List<TaskDesicEntity> listStuByTask(Page page, TaskDesicEntity desicEntity);
     /**
      * @Author MengyuWu
      * @Description 统计条数

@@ -41,7 +41,7 @@ var vm = new Vue({
         },
         queryCond:{
             infoType:"law",
-            taskId:"",
+            taskId:taskId,
             infoId:"",
             currPage: 1,
             pageSize: 10,
@@ -77,6 +77,9 @@ var vm = new Vue({
             label: 'classifyName'
         },//学习内容默认数据
         classData:[],//树形数据
+        dialogLaw:false,//查看详情页面
+        lawDesic:{},//法律法规实体信息
+        title:"",//法律法规查看详情标题
     },
     created: function () {
 
@@ -150,24 +153,19 @@ var vm = new Vue({
                         debugger
                         vm.infoData=result.page.list;
                         vm.infoFlag=result.page.remarks;
-                        if(vm.infoFlag=='stu_video'||vm.infoFlag=='stu_audio'){
+                        if(vm.queryCond.infoType=='video'){
                             for(var i=0;i<vm.infoData.length;i++){
-                                vm.infoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.infoData[i].comContent;
+                                vm.infoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.infoData[i].accId;
                                 if(vm.infoData[i].videoPicAcc){
-                                    vm.infoData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.infoData[i].videoPicAcc;
+                                    vm.infoData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.infoData[i].videoPicId;
                                 }else{
                                     vm.infoData[i].videoPicAccUrl="http://temp.im/640x260";
                                 }
                             }
                         }
-                        else if(vm.infoFlag=='stu_video'||vm.infoFlag=='stu_audio') {
-                            for (var i = 0; i < vm.caseData.length; i++) {
-                                vm.caseData[i].caseContentUrl = baseURL + "sys/download?accessoryId=" + vm.caseData[i].comContent;
-                                if (vm.caseData[i].videoPicAcc) {
-                                    vm.caseData[i].videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.caseData[i].videoPicAcc;
-                                } else {
-                                    vm.caseData[i].videoPicAccUrl = "http://temp.im/640x260";
-                                }
+                        else if(vm.queryCond.infoType=='audio') {
+                            for (var i = 0; i < vm.infoData.length; i++) {
+                                vm.infoData[i].contentUrl = baseURL + "sys/download?accessoryId=" + vm.infoData[i].accId;
                             }
                         }
                         vm.queryCond.currPage = result.page.currPage;
@@ -225,7 +223,26 @@ var vm = new Vue({
         handleDetail: function (index , row) {
             //查看详情信息
             //1.记录学习记录
-            if(vm.infoFlag=='law'){
+            if(row.infoType=='law_data'){
+                vm.title=row.infoName;
+                //查看详情
+                $.ajax({
+                    type: "POST",
+                    url: baseURL +  "synlaw/lawDetail?lawid="+row.dataId,
+                    contentType: "application/json",
+                    success: function(result){
+                        if(result.code === 0){
+                            vm.dialogLaw=true;
+                            if(result.info.list[0]){
+                                vm.lawDesic=result.info.list[0];
+                            }
+                            console.log(result);
+                            //vm.treeData = result.classifyList;
+                        }else{
+                            alert(result.msg);
+                        }
+                    }
+                });
                 this.insertStuRecord(row.id);
             }else if(vm.infoFlag=='stu_pic'){
 
@@ -352,11 +369,14 @@ var vm = new Vue({
             });
         },
         handleTaskNodeClick:function(data){
-            vm.queryCond.taskId= data.taskId;
-            vm.queryCond.infoId= data.infoId;
+            debugger
+            vm.queryCond.infoId= data.classifyCode;
             vm.reload();
 
         },//点击事件
+        changeType:function () {
+            this.reload();
+        }
     }
 });
 

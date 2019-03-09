@@ -6,6 +6,7 @@ import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
 import com.lawschool.beans.auth.AuthRelationBean;
+import com.lawschool.beans.law.CaseAnalysisEntity;
 import com.lawschool.beans.law.ClassifyDesicEntity;
 import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.beans.learn.LearnTasksEntity;
@@ -74,6 +75,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
 
     @Autowired
     private UserService userService;
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -336,8 +338,8 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         PageUtils page= null;
         if(UtilValidate.isNotEmpty(params)) {
             String infoType = (String) params.get("infoType");
-            String infoId = (String) params.get("infoId");
-            String taskId = (String) params.get("taskId");
+            //String infoId = (String) params.get("infoId");
+            //String taskId = (String) params.get("taskId");
             //判断来源选择的是什么
 
             if("law".equals(infoType)){
@@ -348,6 +350,27 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
             else{
                 params.put("infoType",infoType+"_data");
                 page= mediaService.listStuByTask(params);
+                //设置当前数据的视频或者音频地址信息
+                List<TaskDesicEntity> tasksEntities=(List<TaskDesicEntity> )page.getList();
+                tasksEntities.stream().forEach(e->{
+                    if(e.getInfoType().contains("stu_")){
+                        //学习管理内容
+                        StuMedia stu =mediaService.selectById(e.getDataId());
+                        if(UtilValidate.isNotEmpty(stu)){
+                            e.setAccId(stu.getComContent());
+                            e.setVideoPicId(stu.getVideoPicAcc());
+                        }
+                    }else{
+                        //案例分析内容
+                        CaseAnalysisEntity ana= analysisService.selectById(e.getDataId());
+                        if(UtilValidate.isNotEmpty(ana)){
+                            e.setAccId(ana.getCaseContent());
+                            e.setVideoPicId(ana.getVideoPicAcc());
+                        }
+
+                    }
+                });
+                page.setList(tasksEntities);
             }
             /*if (("sham".equals(infoType) && "law_90001".equals(infoId))||"law".equals(infoType)||"law_data".equals(infoType)) {
                 //点击的是虚拟节点数据 并且是法律法规数据 应该查询该节点下所有的法律法规文件
