@@ -55,20 +55,8 @@ var vm = new Vue({
                 callback();
             }
         };
-        var generateData = function () {
-            for (var i = 1; i <= 15; i++) {
-                data.push({
-                    key: i,
-                    label: '备选项'+i,
-                    disabled: i % 4 === 0
-                });
-            }
-            return data
-
-        };
         return {
             idArr:[],// 部门Tree默认展开数据
-            data2: generateData(),
             value2: [],
             navData: [],//导航
             details: [],
@@ -199,29 +187,29 @@ var vm = new Vue({
             randomQuesData:[{
                 questionType: '10004',
                 specialKnowledgeArr: [],
-                questionNumber:0,
-                everyQuestionScore:0,
+                questionNumber:2,
+                everyQuestionScore:10,
                 questionScore:0
             },
                 {
                     questionType: '10005',
                     specialKnowledgeArr: [],
-                    questionNumber:0,
-                    everyQuestionScore:0,
+                    questionNumber:2,
+                    everyQuestionScore:20,
                     questionScore:0
                 },
                 {
                     questionType: '10006',
                     specialKnowledgeArr: [],
-                    questionNumber:0,
-                    everyQuestionScore:0,
+                    questionNumber:2,
+                    everyQuestionScore:10,
                     questionScore:0
                 },
                 {
                     questionType: '10007',
                     specialKnowledgeArr: [],
-                    questionNumber:0,
-                    everyQuestionScore:0,
+                    questionNumber:2,
+                    everyQuestionScore:10,
                     questionScore:0
                 },
             ],
@@ -251,7 +239,8 @@ var vm = new Vue({
                 type:''
             },
             handleType :'',
-            saveUserTableData: []//用于人员回显表格的对象  --回显需加
+            saveUserTableData: [],//用于人员回显表格的对象  --回显需加
+            optionIndex:['A','B','C','D','E','F']
         };
     },
 
@@ -804,6 +793,7 @@ var vm = new Vue({
             return sums;
         },
         preview : function(randomQuesData){
+            console.info(randomQuesData);
             for(i=0;i<randomQuesData.length;i++){
                 randomQuesData[i].questionScore = randomQuesData[i].questionNumber*randomQuesData[i].everyQuestionScore;
             }
@@ -820,7 +810,7 @@ var vm = new Vue({
                 var msg ='';
                 var subScore=0;
                 for(var i= 0;i<randomQuesData.length;i++){
-                    if(randomQuesData[i].questionNumber==null||randomQuesData[i].questionNumber==''){
+                   /* if(randomQuesData[i].questionNumber==null||randomQuesData[i].questionNumber==''){
                         isRight = false;
                         msg = '题目数量不能为空';
                         break;
@@ -832,7 +822,7 @@ var vm = new Vue({
                         isRight = false;
                         msg = '题目类型不能为空';
                         break;
-                    }
+                    }*/
                     subScore +=parseFloat(randomQuesData[i].questionScore);
                 }
                 if(!isRight){

@@ -491,7 +491,7 @@
             AND a.STATUS='1'
             AND  a.RELEASE_STATUS='1'
             <if test="specialKnowledgeArr != null and specialKnowledgeArr.length > 0">
-                and a.specialKnowledgeId in
+                and a.special_Knowledge_Id in
                 <foreach collection="specialKnowledgeArr" index="index" item="item" open="(" separator="," close=")">
                     '${item}'
                 </foreach>
@@ -654,7 +654,8 @@
     <!--查询所需要的问题字段-->
     <select id="listByIds" resultType="com.lawschool.beans.TestQuestions">
         SELECT
-        <include refid="questionColumn"/>
+        <include refid="questionColumn"/>,
+        (	SELECT name  FROM LAW_SYS_TOPIC WHERE id = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue
         FROM law_testquestions a
         <where>
            a.id IN
