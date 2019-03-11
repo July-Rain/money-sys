@@ -200,11 +200,11 @@
 .answer_area .basis p:first-child{
     padding-right: 5px;
     color: #999;
-    width: 4.75841874084919vw;
+    width: 80px;
 }
 .answer_area .basis p:last-child{
     color: #333;
-    width: 73vw;
+    width: calc(100% - 85px)
 }
 .answer_area .diff1 > span > i:nth-child(1){
     color: #ff6600;
