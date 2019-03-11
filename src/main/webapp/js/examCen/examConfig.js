@@ -217,7 +217,7 @@ var vm = new Vue({
             view:false,
             setExam: false,//设置考试弹框
             setQuestion: false,// 设置题目弹框
-            changeQuestionModal :false,
+            changeQuestionDialog :false,
             tableData3: [],
             queformInline:{
                 pageNo: 1,
@@ -729,15 +729,15 @@ var vm = new Vue({
             vm.randomQuesData[index].everyQuestionScore = 0;
             vm.randomQuesData[index].questionScore = 0;
         },
-        changeQuestion:function (type,index){
-            this.changeIndex = {
+        changeQuestionFn:function (type,index){
+            vm.changeIndex = {
                 index: index,
                 type: type
             };
-            this.changeQuestionModal = true;
+            vm.changeQuestionDialog = true;
             vm.queformInline.questionType = type;
-            this.queReload();
-            this.getDict();
+            vm.queReload();
+            vm.getDict();
         },
         getTemplateRow:function(index,row){
             this.saveChangeQues = row;
@@ -978,7 +978,7 @@ var vm = new Vue({
                         vm.subMultipleSelection[_index] = _saveQuse;
                         break;
                 }
-                this.changeQuestionModal = false;
+                vm.changeQuestionDialog = false;
             }else {
                 alert("请你选择一下")
             }

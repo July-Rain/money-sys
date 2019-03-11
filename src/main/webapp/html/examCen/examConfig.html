@@ -232,7 +232,7 @@
 <body>
 <div id="app" v-cloak style="width: 100%;min-width: 0;">
 
-
+    <!--考试配置-->
     <div class="container configure" v-show="!randomQuesModal">
         <div class="contain_title">
             <h2>考试配置</h2>
@@ -526,8 +526,7 @@
                             <div class="msg">
                                 知识点：{{multiple.specialknowledgeValue}}
                             </div>
-                            <button class="change" @click="changeQuestion('10004',index)"
-                                    v-if="handleType!='view'"><i class="iconfont icon-genghuan"></i></button>
+                            <el-button class="change" @click="changeQuestionFn('10004',index)" v-if="handleType!='view'"><i class="iconfont icon-genghuan"></i></el-button>
                         </div>
                     </div>
 
@@ -553,8 +552,8 @@
                             <div class="msg">
                                 知识点：{{multiple.specialknowledgeValue}}
                             </div>
-                            <button class="change" @click="changeQuestion('10005',index)"
-                                    v-if="handleType!='view'"><i class="iconfont icon-genghuan"></i></button>
+                            <el-button class="change" @click="changeQuestionFn('10005',index)"
+                                    v-if="handleType!='view'"><i class="iconfont icon-genghuan"></i></el-button>
                         </div>
                     </div>
 
@@ -580,8 +579,8 @@
                             <div class="msg">
                                 知识点：{{multiple.specialknowledgeValue}}
                             </div>
-                            <button class="change" @click="changeQuestion('10006',index)"
-                                    v-if="handleType!='view'"><i class="iconfont icon-genghuan"></i></button>
+                            <el-button class="change" @click="changeQuestionFn('10006',index)"
+                                    v-if="handleType!='view'"><i class="iconfont icon-genghuan"></i></el-button>
                         </div>
                     </div>
 
@@ -607,8 +606,8 @@
                             <div class="msg">
                                 知识点：{{multiple.specialknowledgeValue}}
                             </div>
-                            <button class="change" @click="changeQuestion('10004',index)"
-                                    v-if="handleType!='view'"><i class="iconfont icon-genghuan"></i></button>
+                            <el-button class="change" @click="changeQuestionFn('10004',index)"
+                                    v-if="handleType!='view'"><i class="iconfont icon-genghuan"></i></el-button>
                         </div>
                     </div>
 
@@ -1143,7 +1142,7 @@
     <!--自主出题结束-->
 
 
-    <el-dialog class="set_question" title="更换题目" :visible.sync="changeQuestionModal" width="1200px">
+    <el-dialog class="set_question" title="更换题目" :visible.sync="changeQuestionDialog" width="1200px">
         <div class="info_card">
             <div class="card_title"></div>
             <div class="card_contain">
