@@ -232,6 +232,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         String endTime = (String)params.get("endTime");
         String orgCode = (String)params.get("orgCode");
         String isUse = (String)params.get("isUse");
+        String isSelf = (String)params.get("isSelf");
         EntityWrapper<LearnTasksEntity> ew = new EntityWrapper<>();
         ew.setSqlSelect("ID,TASK_NAME,START_TIME,END_TIME,TASK_CONTENT,CREATE_USER,DEPT_CODE,DICTCODE2VALE(POLICECLASS) as policeclassName,DICTCODE2VALE(TASK_CLASS) as taskClassName,is_use,count_user");
         if(UtilValidate.isNotEmpty(taskName)){
@@ -242,6 +243,11 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         }
         if(UtilValidate.isNotEmpty(policeclass)){
             ew.eq("policeclass",policeclass);
+        }
+        if(UtilValidate.isNotEmpty(isSelf)){
+            ew.eq("is_self",isSelf);
+        }else{
+            ew.eq("is_self","0");
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if(UtilValidate.isNotEmpty(startTime)){

@@ -72,6 +72,8 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
 
     private String isUse;//是否使用
 
+    private String isSelf;//是否是个人添加
+
     @TableField(exist = false)
     private List<TaskDesicEntity> taskContentList=new ArrayList<TaskDesicEntity>();//法律法规内容arr
 
@@ -248,5 +250,13 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
 
     public void setOverCount(int overCount) {
         this.overCount = overCount;
+    }
+
+    public String getIsSelf() {
+        return isSelf;
+    }
+
+    public void setIsSelf(String isSelf) {
+        this.isSelf = isSelf;
     }
 }
