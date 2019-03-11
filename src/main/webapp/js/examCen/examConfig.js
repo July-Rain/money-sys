@@ -215,7 +215,7 @@ var vm = new Vue({
             ],
             dataListSelections: [],//选中行
             view:false,
-            setExam: false,//设置考试弹框
+            setExam: false,//自主出题设置考试弹框
             setQuestion: false,// 设置题目弹框
             changeQuestionDialog :false,
             tableData3: [],
