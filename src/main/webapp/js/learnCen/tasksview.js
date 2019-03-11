@@ -109,10 +109,17 @@ var vm = new Vue({
     },
     filters: {
         timeout: function (time) {
+            debugger
             if(time === null){
                 return true
             }else {
-                return new Date(Date.parse(time.replace(/-/g,  "/"))).getTime() > new Date().getTime()
+                var mydate = new Date();
+                var str = "" + mydate.getFullYear() + "-";
+                str += (mydate.getMonth()+1) + "-";
+                str += mydate.getDate();
+                var tady=new Date(str.replace("-", "/").replace("-", "/"));
+                var t2 = new Date(time.replace("-", "/").replace("-", "/"));
+                return t2<tady;
             }
         }
     },

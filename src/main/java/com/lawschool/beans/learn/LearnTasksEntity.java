@@ -74,6 +74,8 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
 
     private String isSelf;//是否是个人添加
 
+    private String isOver;//是否过期
+
     @TableField(exist = false)
     private List<TaskDesicEntity> taskContentList=new ArrayList<TaskDesicEntity>();//法律法规内容arr
 
@@ -258,5 +260,13 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
 
     public void setIsSelf(String isSelf) {
         this.isSelf = isSelf;
+    }
+
+    public String getIsOver() {
+        return isOver;
+    }
+
+    public void setIsOver(String isOver) {
+        this.isOver = isOver;
     }
 }

@@ -184,6 +184,15 @@ public class StuMediaTchServiceImpl extends AbstractServiceImpl<StuMediaTchDao,S
 
     @Override
     public PageUtils queryPage(Map<String, Object> params,User user) {
+        String fromFlag = (String)params.get("from");
+        String createUser="";
+        if("perman".equals(fromFlag)){
+            //个人中心教官课程
+            createUser=user.getId();
+        }else if("tchman".equals(fromFlag)&&UtilValidate.isNotEmpty(params.get("createUser"))){
+            //教官展示点进查询某个教官
+            createUser=(String)params.get("createUser");//创建人
+        }
         String stuTitle = (String)params.get("stuTitle");
         String comContent = (String)params.get("comContent");
         String stuPoliceclass = (String)params.get("stuPoliceclass");
@@ -192,7 +201,7 @@ public class StuMediaTchServiceImpl extends AbstractServiceImpl<StuMediaTchDao,S
         String stuIssuer = (String)params.get("stuIssuer");
         String startTime = (String)params.get("startTime");
         String endTime = (String)params.get("endTime");
-        String createUser=(String)params.get("createUser");//创建人
+        //String createUser=(String)params.get("createUser");//创建人
         String addsrc=(String)params.get("addsrc");//添加来源  0-其他  1-教官中心
         EntityWrapper<StuMediaTch> ew = new EntityWrapper<>();
         ew.setSqlSelect("ID,STU_CODE,STU_TITLE,COM_CONTENT,STU_TYPE,STU_COUNT,STU_ISSUER,STU_ISSTIME,STU_POLICECLASS,DICTCODE2VALE(STU_POLICECLASS) as stuPoliceclassName,VIDEO_PIC_ACC");

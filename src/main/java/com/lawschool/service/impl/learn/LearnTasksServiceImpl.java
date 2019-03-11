@@ -161,7 +161,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         String endTime = (String)params.get("endTime");
         String createUser=(String)params.get("createUser");//创建人
         EntityWrapper<LearnTasksEntity> ew = new EntityWrapper<>();
-        ew.setSqlSelect("ID,TASK_NAME,START_TIME,END_TIME,TASK_CONTENT,CREATE_USER,DEPT_CODE,DICTCODE2VALE(POLICECLASS) as policeclassName,DICTCODE2VALE(TASK_CLASS) as taskClassName");
+        ew.setSqlSelect("ID,TASK_NAME,START_TIME,END_TIME,TASK_CONTENT,CREATE_USER,DEPT_CODE,DICTCODE2VALE(POLICECLASS) as policeclassName,DICTCODE2VALE(TASK_CLASS) as taskClassName,is_over");
         ew.eq("is_use","1");
         if(UtilValidate.isNotEmpty(taskName)){
             ew.like("TASK_NAME",taskName);
