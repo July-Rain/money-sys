@@ -465,17 +465,17 @@ var vm = new Vue({
         confimUser: function () {
             this.dialogUser=false;
             //遍历最终的人员信息
-            if(val.length==0){
+            if(this.multipleSelection.length==0){
                 vm.learnTasks.userIds = "";
                 vm.learnTasks.userName = "";
             }
-            for (var i=0;i<val.length;i++){
+            for (var i=0;i<this.multipleSelection.length;i++){
                 if (this.learnTasks.userIds == "") {
-                    this.learnTasks.userIds=val[i].id;
-                    this.learnTasks.userName=val[i].userName;
+                    this.learnTasks.userIds=this.multipleSelection[i].id;
+                    this.learnTasks.userName=this.multipleSelection[i].userName;
                 }else{
-                    this.learnTasks.userIds+=","+val[i].id;
-                    this.learnTasks.userName+=","+val[i].userName;
+                    this.learnTasks.userIds+=","+this.multipleSelection[i].id;
+                    this.learnTasks.userName+=","+this.multipleSelection[i].userName;
                 }
             }
         },

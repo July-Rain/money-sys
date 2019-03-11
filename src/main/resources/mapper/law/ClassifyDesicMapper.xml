@@ -15,46 +15,49 @@
     <result column="ISSUE_ORG" jdbcType="NVARCHAR" property="issueOrg" />
       <result column="recordId" jdbcType="NVARCHAR" property="recordId" />
   </resultMap>
-    <select id="queryListByTask" resultMap="BaseResultMap" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+    <select id="queryListByTask" resultType="com.lawschool.beans.law.TaskDesicEntity" parameterType="com.lawschool.beans.law.TaskDesicEntity">
+
         SELECT
-            c. ID,
-            c.LAW_CODE,
-            c.LAW_TITLE,
-            c.ISSUE_ORG,
-            c.ISSUE_TIME,
-            c.LIB_ID,
-            c.status,
-			r.id as recordId
+            la.ID,
+            la.info_id AS infoId,
+            la.info_name AS infoName,
+            la.info_parent_id AS infoParentId,
+            la.task_id AS taskId,
+            la.info_code AS infoCode,
+            la.create_time AS createTime,
+            la.info_type AS infoType,
+            la.data_id AS dataId,
+            r.id as recordId
         FROM
-            (
-                SELECT
-                DISTINCT(T.id),
-                    T .DATA_ID
-                FROM
-                    LAW_TASKS_DESIC T
-                WHERE
-                    T .TASK_ID = #{taskId}
-                AND T .INFO_TYPE = #{infoType} START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
-            ) M
-        INNER JOIN LAW_CLASSIFY_DESIC c ON M .DATA_ID = c. ID
-        LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
+            law_tasks_desic la
+        LEFT JOIN LAW_STU_RECORD r ON la.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
+        WHERE 1=1
+        <if test="infoType != null and infoType!=''">
+            AND la.INFO_TYPE = #{infoType}
+        </if>
+        <if test="taskId != null and taskId!=''">
+            AND la.TASK_ID = #{taskId}
+        </if>
+        <if test="infoId != null and infoId!=''">
+           and la.info_parent_id in (select CLASSIFY_CODE FROM LAW_CLASSIFY T START WITH T .id = #{infoId} CONNECT BY PRIOR T .id = T .PARENT_ID)
+        </if>
+
   </select>
     <select id="countListByTask" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
             count(1)
         FROM
-            (
-                SELECT
-                DISTINCT(T.id),
-                    T .DATA_ID
-                FROM
-                    LAW_TASKS_DESIC T
-                WHERE
-                    T .TASK_ID = #{taskId}
-                AND T .INFO_TYPE = #{infoType} START WITH T .INFO_ID = #{infoId} CONNECT BY PRIOR T .INFO_ID = T .INFO_PARENT_ID
-            ) M
-        INNER JOIN LAW_CLASSIFY_DESIC c ON M .DATA_ID = c. ID
-        LEFT JOIN LAW_STU_RECORD r ON m.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
+        law_tasks_desic
+        WHERE 1=1
+        <if test="infoType != null and infoType!=''">
+            AND INFO_TYPE = #{infoType}
+        </if>
+        <if test="taskId != null and taskId!=''">
+            AND TASK_ID = #{taskId}
+        </if>
+        <if test="infoId != null and infoId!=''">
+            and info_parent_id in (select CLASSIFY_CODE FROM LAW_CLASSIFY T START WITH T .id = #{infoId} CONNECT BY PRIOR T .id = T .PARENT_ID)
+        </if>
   </select>
 
     <select id="queryListByUser" resultType="com.lawschool.beans.law.TaskDesicEntity" parameterType="com.lawschool.beans.law.TaskDesicEntity">
