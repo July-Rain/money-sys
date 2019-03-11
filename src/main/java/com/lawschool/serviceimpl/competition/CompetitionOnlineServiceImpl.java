@@ -495,7 +495,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 			//这时候 要去看看连胜
 				Boolean boo=false;
 				MatchSetting matchSetting=	matchSettingService.selectOne(new EntityWrapper<MatchSetting>());
-				if(Integer.parseInt(matchSetting.getWinCount())>=fraction.getQueNum() && win.equals("1"))
+				if( win.equals("1") && Integer.parseInt(matchSetting.getWinCount())>=fraction.getQueNum())
 				{
 					//完成连胜的 任务
 					boo=true;

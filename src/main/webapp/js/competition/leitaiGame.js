@@ -385,23 +385,7 @@ websocket.onmessage = function(event) {
                     vm.jifen=Number(data.matchSetting.winReward);
                     // recordScore(datamag.battlePlatform.id,'1',vm.jifen,'leitai',vm.u.id);
 
-                    $.ajax({
-                        type: "POST",
-                        url: baseURL + 'competitionOnline/recordScore',
-                        dataType: "json",
-                        async: false,
-                        data: {"battlePlatformId":datamag.battlePlatform.id,"win":'1',"score":vm.jifen,"type":'leitai',"uid":vm.u.id},
-                        success: function (result) {
 
-                            vm.$message({
-                                message:result.s,
-                                type: 'success'
-                            });
-                            vm.successShow = true;
-                            // vm.winCoin = data.matchSetting.winReward;
-                            vm.winCoin = result.s;
-                        }
-                    });
                     if(vm.leizhu==uid)
                     {
                         // alert("全部题目答完");
@@ -440,7 +424,23 @@ websocket.onmessage = function(event) {
                         // vm.winCoin = data.matchSetting.winReward;
                     }
 
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + 'competitionOnline/recordScore',
+                        dataType: "json",
+                        async: false,
+                        data: {"battlePlatformId":datamag.battlePlatform.id,"win":'1',"score":vm.jifen,"type":'leitai',"uid":vm.u.id},
+                        success: function (result) {
 
+                            vm.$message({
+                                message:result.s,
+                                type: 'success'
+                            });
+                            vm.successShow = true;
+                            // vm.winCoin = data.matchSetting.winReward;
+                            vm.winCoin = result.s;
+                        }
+                    });
 
                 }
 
