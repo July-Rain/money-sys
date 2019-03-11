@@ -12,7 +12,9 @@ import com.lawschool.beans.competition.MatchSetting;
 import com.lawschool.beans.competition.bak.BattleTopicSettingBak;
 import com.lawschool.beans.competition.bak.CompetitionOnlineBak;
 import com.lawschool.beans.competition.bak.MatchSettingBak;
+import com.lawschool.beans.system.Fraction;
 import com.lawschool.dao.competition.MatchSettingDao;
+import com.lawschool.enums.Source;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.UserQuestRecordService;
@@ -21,6 +23,8 @@ import com.lawschool.service.competition.MatchSettingService;
 import com.lawschool.service.competition.bak.BattleTopicSettingBakService;
 import com.lawschool.service.competition.bak.CompetitionOnlineBakService;
 import com.lawschool.service.competition.bak.MatchSettingBakService;
+import com.lawschool.service.system.FractionService;
+import com.lawschool.util.Result;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +66,9 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 	private AnswerService answerService;
 	@Autowired
 	private UserQuestRecordService userQuestRecordService;
+
+	@Autowired
+	private FractionService fractionService;
 	@Override
 	public List<MatchSetting> list() {
 
@@ -139,14 +146,23 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 //		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 //		User u= (User) request.getSession().getAttribute("user");
 		User u = (User) SecurityUtils.getSubject().getPrincipal();
+
+		//到表中找积分规则
+		Result result=fractionService.getFractionByType("1", Source.MATCH);
+		Fraction fraction=(Fraction)result.get("fraction");
+
+
+
+
 		matchSetting.setId(IdWorker.getIdStr());
 
 		matchSetting.setCreatePeople(u.getId());     //创建人id
 		matchSetting.setCreateTime(new Date());   	//创建时间
 		matchSetting.setCreateDept(u.getOrgCode());  //所属部门code
 
-
-
+		matchSetting.setWinCount(null);   //连胜次数；
+		matchSetting.setWinReward(String.valueOf(fraction.getMinScore()));//胜利者  得分
+		matchSetting.setLoserReward(String.valueOf(fraction.getMaxScore())); //失败者 得分
 		this.insert(matchSetting);
 
 		//加完之后  还要循环加对战题目配置
@@ -170,8 +186,10 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 
 				battleTopicSetting.setKnowledgeId(matchSetting.getBattleTopicSettingList().get(i).getKnowledgeId());   //知识点 //像这种的数据来源 就是在之前实体里面的取   不一样的配置  所以下标要一致
 				battleTopicSetting.setQuestionDifficulty(matchSetting.getBattleTopicSettingList().get(i).getQuestionDifficulty());//试题难度
-				battleTopicSetting.setWhetherGetIntegral(matchSetting.getBattleTopicSettingList().get(i).getWhetherGetIntegral());//是否获得积分
-				battleTopicSetting.setScore(matchSetting.getBattleTopicSettingList().get(i).getScore());//获得分值
+//				battleTopicSetting.setWhetherGetIntegral(matchSetting.getBattleTopicSettingList().get(i).getWhetherGetIntegral());//是否获得积分
+//				battleTopicSetting.setScore(matchSetting.getBattleTopicSettingList().get(i).getScore());//获得分值
+				battleTopicSetting.setWhetherGetIntegral("1");//是否获得积分
+				battleTopicSetting.setScore("1");//获得分值
 				battleTopicSetting.setQuestionType(matchSetting.getBattleTopicSettingList().get(i).getQuestionType());//获得分值
 
 				battleTopicSettingService.insert(battleTopicSetting);
@@ -190,8 +208,12 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 
 				battleTopicSetting.setKnowledgeId(matchSetting.getBattleTopicSettingList().get(0).getKnowledgeId());//像这种的数据来源 就是在之前实体里面的取   一样的配置  所以下标就找第一个  也就只有一个数据
 				battleTopicSetting.setQuestionDifficulty(matchSetting.getBattleTopicSettingList().get(0).getQuestionDifficulty());//试题难度
-				battleTopicSetting.setWhetherGetIntegral(matchSetting.getBattleTopicSettingList().get(0).getWhetherGetIntegral());//是否获得积分
-				battleTopicSetting.setScore(matchSetting.getBattleTopicSettingList().get(0).getScore());//获得分值
+//				battleTopicSetting.setWhetherGetIntegral(matchSetting.getBattleTopicSettingList().get(0).getWhetherGetIntegral());//是否获得积分
+//				battleTopicSetting.setScore(matchSetting.getBattleTopicSettingList().get(0).getScore());//获得分值
+
+
+				battleTopicSetting.setWhetherGetIntegral("1");//是否获得积分
+				battleTopicSetting.setScore("1");//获得分值
 				battleTopicSetting.setQuestionType(matchSetting.getBattleTopicSettingList().get(0).getQuestionType());//获得分值
 				battleTopicSettingService.insert(battleTopicSetting);
 			}
@@ -294,8 +316,24 @@ public class MatchSettingServiceImpl  extends ServiceImpl<MatchSettingDao, Match
 
 	@Override
 	public void updateWin(MatchSetting matchSetting, String uid) {
+		if(uid.equals(matchSetting.getWinId())){
+			matchSetting.setWinCount((Integer.parseInt(matchSetting.getWinCount())+1)+"");
+		}
+		else
+		{
+			matchSetting.setWinCount("0");
+		}
 		matchSetting.setWinId(uid);
 		matchSetting.setLastTime(new Date());
+
+
+
+		this.updateById(matchSetting);
+	}
+
+	@Override
+	public void wincountjia(MatchSetting matchSetting, String uid) {
+		matchSetting.setWinCount((Integer.parseInt(matchSetting.getWinCount())+1)+"");
 		this.updateById(matchSetting);
 	}
 
