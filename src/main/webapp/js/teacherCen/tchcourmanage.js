@@ -328,7 +328,6 @@ var vm = new Vue({
             return this.$confirm("确定移除 ${ file.name }？");
         },
         handleAssSuccess: function (response, file, fileList) {
-            debugger
             if (response.code == 0) {
                 vm.stuMediaTch.accessoryId = response.accessoryId;
                 fileList[fileList.length-1].url = baseURL + "sys/download?accessoryId=" + response.accessoryId;
