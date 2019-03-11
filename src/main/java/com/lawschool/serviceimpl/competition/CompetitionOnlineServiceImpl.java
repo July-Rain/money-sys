@@ -483,98 +483,107 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 			battleRecord.setCreateTime(new Date());
 			battleRecord.setStatus("1");
 			battleRecord.setType(type);
-			battleRecord.setScore(score);
+
 			battleRecord.setWhetherWin(win);
 			battleRecord.setUserId(uid);
 
-			battleRecordService.insert(battleRecord);
 
 			//得到了我记录表里 有多少分了   与  上限 对比
 
 			//如果 记录里的分数 大于了上限   ，，保存 记录 但是不添加积分
 
 			//这时候 要去看看连胜
-			Boolean boo=false;
-			MatchSetting matchSetting=	matchSettingService.selectOne(new EntityWrapper<MatchSetting>());
-			if(Integer.parseInt(matchSetting.getWinCount())>=fraction.getQueNum())
-			{
-				//完成连胜的 任务
-				boo=true;
-			}
-
-			if(f3>=f){
-				if(boo){
-					//加完后在添加 另外的积分表
-					Integral integral=new Integral();
-					integral.setType("0");
-					integral.setPoint(fraction.getScore());
-					integral.setSrc(type);
-					integralService.addIntegralRecord(integral,u);
-
-					s="已达到今日上限,获得连胜奖励"+fraction.getScore()+"积分";
-				}
-				else{
-					s="已达到今日上限";
+				Boolean boo=false;
+				MatchSetting matchSetting=	matchSettingService.selectOne(new EntityWrapper<MatchSetting>());
+				if(Integer.parseInt(matchSetting.getWinCount())>=fraction.getQueNum() && win.equals("1"))
+				{
+					//完成连胜的 任务
+					boo=true;
 				}
 
-			}
-			//如果记录里的分数 不大于上限
-			else if(f3<f){
-				//(f-f3)//只能再加上这么多分
-				//如果这次的分数小于 还能加的分数  ，那太好了 直接加
-				if(f2<=(f-f3)){
+				if(f3>=f){
 					if(boo){
 						//加完后在添加 另外的积分表
 						Integral integral=new Integral();
 						integral.setType("0");
-						integral.setPoint(Float.parseFloat(score)+fraction.getScore());
+						integral.setPoint(fraction.getScore());
 						integral.setSrc(type);
 						integralService.addIntegralRecord(integral,u);
 
-						s="获得"+Float.parseFloat(score)+"积分,获得连胜奖励"+fraction.getScore()+"积分";
+						battleRecord.setScore((Float.parseFloat(score)+fraction.getScore())+"");
+						battleRecordService.insert(battleRecord);
+
+						s="已达到今日上限,获得连胜奖励"+fraction.getScore()+"积分";
 					}
 					else{
-						//加完后在添加 另外的积分表
-						Integral integral=new Integral();
-						integral.setType("0");
-						integral.setPoint(Float.parseFloat(score));
-						integral.setSrc(type);
-						integralService.addIntegralRecord(integral,u);
 
-						s="获得"+score+"积分";
+						battleRecord.setScore(score);
+						battleRecordService.insert(battleRecord);
+						s="已达到今日上限";
 					}
 
 				}
-				//如果这次的分数大于还能加的分数  ，那就只能 加 能加的分数  多了 加不了，但是记录 还是 没关系的 只是积分表
-				else if(f2>(f-f3)){
-					if(boo){
-						//加完后在添加 另外的积分表
-						Integral integral=new Integral();
-						integral.setType("0");
-						integral.setPoint((f-f3)+fraction.getScore());
-						integral.setSrc(type);
-						integralService.addIntegralRecord(integral,u);
+				//如果记录里的分数 不大于上限
+				else if(f3<f){
+					//(f-f3)//只能再加上这么多分
+					//如果这次的分数小于 还能加的分数  ，那太好了 直接加
+					if(f2<=(f-f3)){
+						if(boo){
+							//加完后在添加 另外的积分表
+							Integral integral=new Integral();
+							integral.setType("0");
+							integral.setPoint(Float.parseFloat(score)+fraction.getScore());
+							integral.setSrc(type);
+							integralService.addIntegralRecord(integral,u);
 
-						s="超过上限，获得"+(f-f3)+"积分,获得连胜奖励"+fraction.getScore()+"积分";
+
+							battleRecord.setScore((Float.parseFloat(score)+fraction.getScore())+"");
+							battleRecordService.insert(battleRecord);
+							s="获得"+Float.parseFloat(score)+"积分,获得连胜奖励"+fraction.getScore()+"积分";
+						}
+						else{
+							//加完后在添加 另外的积分表
+							Integral integral=new Integral();
+							integral.setType("0");
+							integral.setPoint(Float.parseFloat(score));
+							integral.setSrc(type);
+							integralService.addIntegralRecord(integral,u);
+
+							battleRecord.setScore(score);
+							battleRecordService.insert(battleRecord);
+							s="获得"+score+"积分";
+						}
+
 					}
-					else{
-						//加完后在添加 另外的积分表
-						Integral integral=new Integral();
-						integral.setType("0");
-						integral.setPoint((f-f3));
-						integral.setSrc(type);
-						integralService.addIntegralRecord(integral,u);
+					//如果这次的分数大于还能加的分数  ，那就只能 加 能加的分数  多了 加不了，但是记录 还是 没关系的 只是积分表
+					else if(f2>(f-f3)){
+						if(boo){
+							//加完后在添加 另外的积分表
+							Integral integral=new Integral();
+							integral.setType("0");
+							integral.setPoint((f-f3)+fraction.getScore());
+							integral.setSrc(type);
+							integralService.addIntegralRecord(integral,u);
 
-						s="超过上限，获得"+(f-f3)+"积分";
+							battleRecord.setScore((Float.parseFloat(score)+fraction.getScore())+"");
+							battleRecordService.insert(battleRecord);
+							s="超过上限，获得"+(f-f3)+"积分,获得连胜奖励"+fraction.getScore()+"积分";
+						}
+						else{
+							//加完后在添加 另外的积分表
+							Integral integral=new Integral();
+							integral.setType("0");
+							integral.setPoint((f-f3));
+							integral.setSrc(type);
+							integralService.addIntegralRecord(integral,u);
+
+							battleRecord.setScore(score);
+							battleRecordService.insert(battleRecord);
+							s="超过上限，获得"+(f-f3)+"积分";
+						}
+
 					}
-
 				}
-			}
-
-
-
-
-
 
 
 		}
