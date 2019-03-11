@@ -153,9 +153,9 @@ var vm = new Vue({
             if (e.target.innerHTML === '小') {
                 html.style.fontSize = '9px';
             } else if (e.target.innerHTML === '中') {
-                html.style.fontSize = '12px';
-            } else if (e.target.innerHTML === '大') {
                 html.style.fontSize = '13px';
+            } else if (e.target.innerHTML === '大') {
+                html.style.fontSize = '14px';
             } else {
                 return;
             }

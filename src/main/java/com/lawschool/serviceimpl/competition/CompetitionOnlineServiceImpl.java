@@ -12,15 +12,20 @@ import com.lawschool.beans.competition.*;
 import com.lawschool.beans.competition.bak.BattleTopicSettingBak;
 import com.lawschool.beans.competition.bak.CompetitionOnlineBak;
 import com.lawschool.beans.competition.bak.RecruitConfigurationBak;
+import com.lawschool.beans.system.Fraction;
 import com.lawschool.dao.competition.CompetitionOnlineDao;
+import com.lawschool.enums.Source;
 import com.lawschool.service.*;
 import com.lawschool.service.competition.BattleRecordService;
 import com.lawschool.service.competition.BattleTopicSettingService;
 import com.lawschool.service.competition.CompetitionOnlineService;
+import com.lawschool.service.competition.MatchSettingService;
 import com.lawschool.service.competition.bak.BattleTopicSettingBakService;
 import com.lawschool.service.competition.bak.CompetitionOnlineBakService;
+import com.lawschool.service.system.FractionService;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;
+import com.lawschool.util.Result;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +72,10 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	@Autowired
 	private UserService userService;
 
-
+	@Autowired
+	private MatchSettingService matchSettingService;
+	@Autowired
+	private FractionService fractionService;
 
 
 
@@ -119,8 +127,16 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 //		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 //		User u= (User) request.getSession().getAttribute("user");
 		User u = (User) SecurityUtils.getSubject().getPrincipal();
-		competitionOnline.setId(IdWorker.getIdStr());
 
+		//到表中找积分规则
+		Result result=fractionService.getFractionByType("1", Source.COMPEITIONONLINE);
+		Fraction fraction=(Fraction)result.get("fraction");
+
+
+
+		competitionOnline.setId(IdWorker.getIdStr());
+		competitionOnline.setWinReward(String.valueOf(fraction.getMinScore()));//胜利者  得分
+		competitionOnline.setLoserReward(String.valueOf(fraction.getMaxScore())); //失败者 得分
 		competitionOnline.setCreatePeople(u.getId());     //创建人id
 		competitionOnline.setCreateTime(new Date());   	//创建时间
 		competitionOnline.setCreateDept(u.getOrgCode());  //所属部门code
@@ -149,9 +165,10 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 
 				battleTopicSetting.setKnowledgeId(competitionOnline.getBattleTopicSettingList().get(i).getKnowledgeId());   //知识点 //像这种的数据来源 就是在之前实体里面的取   不一样的配置  所以下标要一致
 				battleTopicSetting.setQuestionDifficulty(competitionOnline.getBattleTopicSettingList().get(i).getQuestionDifficulty());//试题难度
-				battleTopicSetting.setWhetherGetIntegral(competitionOnline.getBattleTopicSettingList().get(i).getWhetherGetIntegral());//是否获得积分
-				battleTopicSetting.setScore(competitionOnline.getBattleTopicSettingList().get(i).getScore());//获得分值
-				battleTopicSetting.setQuestionType(competitionOnline.getBattleTopicSettingList().get(i).getQuestionType());//获得分值
+//				battleTopicSetting.setWhetherGetIntegral(competitionOnline.getBattleTopicSettingList().get(i).getWhetherGetIntegral());//是否获得积分
+				battleTopicSetting.setWhetherGetIntegral("1");//是否获得积分
+				battleTopicSetting.setScore("1");//获得分值
+				battleTopicSetting.setQuestionType(competitionOnline.getBattleTopicSettingList().get(i).getQuestionType());//试题类型
 
 				battleTopicSettingService.insert(battleTopicSetting);
 			}
@@ -170,9 +187,11 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 
 				battleTopicSetting.setKnowledgeId(competitionOnline.getBattleTopicSettingList().get(0).getKnowledgeId());//像这种的数据来源 就是在之前实体里面的取   一样的配置  所以下标就找第一个  也就只有一个数据
 				battleTopicSetting.setQuestionDifficulty(competitionOnline.getBattleTopicSettingList().get(0).getQuestionDifficulty());//试题难度
-				battleTopicSetting.setWhetherGetIntegral(competitionOnline.getBattleTopicSettingList().get(0).getWhetherGetIntegral());//是否获得积分
-				battleTopicSetting.setScore(competitionOnline.getBattleTopicSettingList().get(0).getScore());//获得分值
-				battleTopicSetting.setQuestionType(competitionOnline.getBattleTopicSettingList().get(0).getQuestionType());//获得分值
+//				battleTopicSetting.setWhetherGetIntegral(competitionOnline.getBattleTopicSettingList().get(0).getWhetherGetIntegral());//是否获得积分
+				battleTopicSetting.setWhetherGetIntegral("1");//是否获得积分
+
+				battleTopicSetting.setScore("1");//获得分值
+				battleTopicSetting.setQuestionType(competitionOnline.getBattleTopicSettingList().get(0).getQuestionType());//试题类型
 				battleTopicSettingService.insert(battleTopicSetting);
 			}
 		}
@@ -369,32 +388,229 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 	//保存分数记录
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void recordScore(String battlePlatformId,String win,String score,String type,String uid) {
+	public String recordScore(String battlePlatformId,String win,String score,String type,String uid) {
 
-		User u= userService.selectById(uid);
-		BattleRecord battleRecord=new BattleRecord();
-		battleRecord.setId(IdWorker.getIdStr());
-		battleRecord.setBattlePlatformId(battlePlatformId);
-		battleRecord.setCreateTime(new Date());
-		battleRecord.setStatus("1");
-		battleRecord.setType(type);
-		battleRecord.setScore(score);
-		battleRecord.setWhetherWin(win);
-		battleRecord.setUserId(uid);
-
-		battleRecordService.insert(battleRecord);
-
-		//加完后在添加 另外的积分表
-		Integral integral=new Integral();
-		integral.setType("0");
-		integral.setPoint(Float.parseFloat(score));
-		integral.setSrc(type);
+		//判断   这边 他妈的 又4种 类型     1对1  OnlinPk  ;  1对1code码 OnlinPkByCode ;    组队 teamOnline   ;擂台    leitai （擂台还要考虑擂主 连胜）;
+		String s="";
 
 
+		if(type.equals("OnlinPk") || type.equals("OnlinPkByCode") || type.equals("teamOnline")){
+			//去己领表中 找当天的 这个人这个 闯关 所有数据  积分看看有没有 超过了上限
+			//得到 上限
+			Result result=fractionService.getFractionByType("1", Source.COMPEITIONONLINE);
+			Fraction fraction=(Fraction)result.get("fraction");
 
-		integralService.addIntegralRecord(integral,u);
+			Float f=  fraction.getDailyLimit();//上限
+			Float f2=Float.parseFloat(score); //现在的 得分
+			Float f3=0f; //零时的
+//			List<BattleRecord> list=battleRecordService.selectList(new EntityWrapper<BattleRecord>().eq("USER_ID",uid).eq("STATUS",1).eq("TYPE","OnlinPk").addFilter( "to_char(CREATE_TIME,'dd')=to_char(sysdate,'dd')"));
+			List<BattleRecord> list=battleRecordService.selectList(new EntityWrapper<BattleRecord>().eq("USER_ID",uid).ne("TYPE","leitai").eq("STATUS",1).addFilter( "to_char(CREATE_TIME,'dd')=to_char(sysdate,'dd')"));
 
 
+			for(BattleRecord battleRecord:list)
+			{
+				f3=f3+Float.parseFloat(battleRecord.getScore());
+			}
+
+			User u= userService.selectById(uid);
+			BattleRecord battleRecord=new BattleRecord();
+			battleRecord.setId(IdWorker.getIdStr());
+			battleRecord.setBattlePlatformId(battlePlatformId);
+			battleRecord.setCreateTime(new Date());
+			battleRecord.setStatus("1");
+			battleRecord.setType(type);
+			battleRecord.setScore(score);
+			battleRecord.setWhetherWin(win);
+			battleRecord.setUserId(uid);
+
+			battleRecordService.insert(battleRecord);
+
+			//得到了我记录表里 有多少分了   与  上限 对比
+
+			//如果 记录里的分数 大于了上限   ，，保存 记录 但是不添加积分
+			if(f3>=f){
+				s="已达到今日上限";
+			}
+			//如果记录里的分数 不大于上限
+			else if(f3<f){
+				//(f-f3)//只能再加上这么多分
+				//如果这次的分数小于 还能加的分数  ，那太好了 直接加
+				if(f2<=(f-f3)){
+
+					//加完后在添加 另外的积分表
+					Integral integral=new Integral();
+					integral.setType("0");
+					integral.setPoint(Float.parseFloat(score));
+					integral.setSrc(type);
+					integralService.addIntegralRecord(integral,u);
+
+					s="获得"+score+"积分";
+				}
+				//如果这次的分数大于还能加的分数  ，那就只能 加 能加的分数  多了 加不了，但是记录 还是 没关系的 只是积分表
+				else if(f2>(f-f3)){
+					//加完后在添加 另外的积分表
+					Integral integral=new Integral();
+					integral.setType("0");
+					integral.setPoint((f-f3));
+					integral.setSrc(type);
+					integralService.addIntegralRecord(integral,u);
+
+					s="超过上限，获得"+(f-f3)+"积分";
+				}
+			}
+		}
+
+		if(type.equals("leitai")){
+			//去己领表中 找当天的 这个人这个 闯关 所有数据  积分看看有没有 超过了上限
+			//得到 上限
+			Result result=fractionService.getFractionByType("1", Source.MATCH);
+			Fraction fraction=(Fraction)result.get("fraction");
+			Float f=  fraction.getDailyLimit();//上限
+			Float f2=Float.parseFloat(score); //现在的 得分
+			Float f3=0f; //零时的
+			List<BattleRecord> list=battleRecordService.selectList(new EntityWrapper<BattleRecord>().eq("USER_ID",uid).eq("TYPE","leitai").eq("STATUS",1).addFilter( "to_char(CREATE_TIME,'dd')=to_char(sysdate,'dd')"));
+
+
+			for(BattleRecord battleRecord:list)
+			{
+				f3=f3+Float.parseFloat(battleRecord.getScore());
+			}
+
+			User u= userService.selectById(uid);
+			BattleRecord battleRecord=new BattleRecord();
+			battleRecord.setId(IdWorker.getIdStr());
+			battleRecord.setBattlePlatformId(battlePlatformId);
+			battleRecord.setCreateTime(new Date());
+			battleRecord.setStatus("1");
+			battleRecord.setType(type);
+
+			battleRecord.setWhetherWin(win);
+			battleRecord.setUserId(uid);
+
+
+			//得到了我记录表里 有多少分了   与  上限 对比
+
+			//如果 记录里的分数 大于了上限   ，，保存 记录 但是不添加积分
+
+			//这时候 要去看看连胜
+				Boolean boo=false;
+				MatchSetting matchSetting=	matchSettingService.selectOne(new EntityWrapper<MatchSetting>());
+				if( win.equals("1") && Integer.parseInt(matchSetting.getWinCount())>=fraction.getQueNum())
+				{
+					//完成连胜的 任务
+					boo=true;
+				}
+
+				if(f3>=f){
+					if(boo){
+						//加完后在添加 另外的积分表
+						Integral integral=new Integral();
+						integral.setType("0");
+						integral.setPoint(fraction.getScore());
+						integral.setSrc(type);
+						integralService.addIntegralRecord(integral,u);
+
+						battleRecord.setScore((Float.parseFloat(score)+fraction.getScore())+"");
+						battleRecordService.insert(battleRecord);
+
+						s="已达到今日上限,获得连胜奖励"+fraction.getScore()+"积分";
+					}
+					else{
+
+						battleRecord.setScore(score);
+						battleRecordService.insert(battleRecord);
+						s="已达到今日上限";
+					}
+
+				}
+				//如果记录里的分数 不大于上限
+				else if(f3<f){
+					//(f-f3)//只能再加上这么多分
+					//如果这次的分数小于 还能加的分数  ，那太好了 直接加
+					if(f2<=(f-f3)){
+						if(boo){
+							//加完后在添加 另外的积分表
+							Integral integral=new Integral();
+							integral.setType("0");
+							integral.setPoint(Float.parseFloat(score)+fraction.getScore());
+							integral.setSrc(type);
+							integralService.addIntegralRecord(integral,u);
+
+
+							battleRecord.setScore((Float.parseFloat(score)+fraction.getScore())+"");
+							battleRecordService.insert(battleRecord);
+							s="获得"+Float.parseFloat(score)+"积分,获得连胜奖励"+fraction.getScore()+"积分";
+						}
+						else{
+							//加完后在添加 另外的积分表
+							Integral integral=new Integral();
+							integral.setType("0");
+							integral.setPoint(Float.parseFloat(score));
+							integral.setSrc(type);
+							integralService.addIntegralRecord(integral,u);
+
+							battleRecord.setScore(score);
+							battleRecordService.insert(battleRecord);
+							s="获得"+score+"积分";
+						}
+
+					}
+					//如果这次的分数大于还能加的分数  ，那就只能 加 能加的分数  多了 加不了，但是记录 还是 没关系的 只是积分表
+					else if(f2>(f-f3)){
+						if(boo){
+							//加完后在添加 另外的积分表
+							Integral integral=new Integral();
+							integral.setType("0");
+							integral.setPoint((f-f3)+fraction.getScore());
+							integral.setSrc(type);
+							integralService.addIntegralRecord(integral,u);
+
+							battleRecord.setScore((Float.parseFloat(score)+fraction.getScore())+"");
+							battleRecordService.insert(battleRecord);
+							s="超过上限，获得"+(f-f3)+"积分,获得连胜奖励"+fraction.getScore()+"积分";
+						}
+						else{
+							//加完后在添加 另外的积分表
+							Integral integral=new Integral();
+							integral.setType("0");
+							integral.setPoint((f-f3));
+							integral.setSrc(type);
+							integralService.addIntegralRecord(integral,u);
+
+							battleRecord.setScore(score);
+							battleRecordService.insert(battleRecord);
+							s="超过上限，获得"+(f-f3)+"积分";
+						}
+
+					}
+				}
+
+
+		}
+//		User u= userService.selectById(uid);
+//		BattleRecord battleRecord=new BattleRecord();
+//		battleRecord.setId(IdWorker.getIdStr());
+//		battleRecord.setBattlePlatformId(battlePlatformId);
+//		battleRecord.setCreateTime(new Date());
+//		battleRecord.setStatus("1");
+//		battleRecord.setType(type);
+//		battleRecord.setScore(score);
+//		battleRecord.setWhetherWin(win);
+//		battleRecord.setUserId(uid);
+//
+//		battleRecordService.insert(battleRecord);
+//
+//		//加完后在添加 另外的积分表
+//		Integral integral=new Integral();
+//		integral.setType("0");
+//		integral.setPoint(Float.parseFloat(score));
+//		integral.setSrc(type);
+//
+
+
+//		integralService.addIntegralRecord(integral,u);
+
+		return s;
 
 	}
 

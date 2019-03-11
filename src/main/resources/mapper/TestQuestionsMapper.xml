@@ -415,7 +415,7 @@
 
 
     <!--查询某类型的试题-->
-    <select id="findByEntity" resultType="com.lawschool.beans.TestQuestions">
+    <select id="findByEntity" flushCache="true" resultType="com.lawschool.beans.TestQuestions">
         SELECT
           *
         FROM

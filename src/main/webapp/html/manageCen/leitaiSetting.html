@@ -220,6 +220,20 @@
                 </template>
             </el-table-column>
 
+
+
+            <el-table-column
+                    prop="winName"
+                    label="擂主连胜次数"
+                    width="280"
+                    header-align="center"
+                    align="center"
+            >
+                <template slot-scope="scope">
+                    {{scope.row.winCount==null ?"占无擂主":scope.row.winCount == "" ?"占无擂主":scope.row.winCount}}
+                </template>
+            </el-table-column>
+
             <el-table-column
                     prop="lastTime"
                     label="擂主最后登陆时间"

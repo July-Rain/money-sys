@@ -124,10 +124,10 @@ public class CompetitionOnlineController {
 
     //胜利者入库成绩
     @RequestMapping("/recordScore")
-    public void recordScore(String battlePlatformId,String win,String score,String type,String uid){
+    public Result recordScore(String battlePlatformId,String win,String score,String type,String uid){
 
-        competitionOnlineService.recordScore(battlePlatformId,win,score,type,uid);
-
+         String ssss=   competitionOnlineService.recordScore(battlePlatformId,win,score,type,uid);
+        return Result.ok().put("s", ssss);
     }
 
 }
