@@ -126,7 +126,7 @@ $.ajax({
     dataType: "json",
     async:false,
     success: function (result) {
-        debugger;
+
         vm.u=result.user;
         uid=result.user.id;
 //发送人编号
@@ -301,7 +301,7 @@ websocket.onmessage = function(event) {
             {
                 // 改变擂主   在Handler里改
                 vm.$message({
-                    message: '对手弃权，恭喜成为新擂主',
+                    message: '对手弃权，恭喜成为擂主',
                     type: 'success'
                 });
             }
@@ -321,6 +321,8 @@ websocket.onmessage = function(event) {
         // console.info(" 收到系统消息，是给"+data.to);
         to=data.to;
     }else{
+
+
         // console.info("人发的消息");
         // console.info(data);
         //===普通消息
@@ -356,23 +358,67 @@ websocket.onmessage = function(event) {
                 else if(Number(vm.myscore)<Number(vm.youscore))
                 {
                     vm.jifen=Number(data.matchSetting.loserReward);
-                    recordScore(datamag.battlePlatform.id,'0',vm.jifen,'leitai',vm.u.id);
+                    // recordScore(datamag.battlePlatform.id,'0',vm.jifen,'leitai',vm.u.id);
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + 'competitionOnline/recordScore',
+                        dataType: "json",
+                        async: false,
+                        data: {"battlePlatformId":datamag.battlePlatform.id,"win":'0',"score":vm.jifen,"type":'leitai',"uid":vm.u.id},
+                        success: function (result) {
+
+                            vm.$message({
+                                message:result.s,
+                                type: 'success'
+                            });
+                            vm.failShow = true;
+                            // vm.winCoin = data.matchSetting.loserReward;
+                            vm.winCoin = result.s
+                        }
+                    });
                     // alert("全部题目答完");
                     closeWebsocket();
-                    vm.failShow = true;
-                    vm.winCoin = data.matchSetting.loserReward;
+
                 }
                 else if(Number(vm.myscore)>Number(vm.youscore))
                 {
                     vm.jifen=Number(data.matchSetting.winReward);
-                    recordScore(datamag.battlePlatform.id,'1',vm.jifen,'leitai',vm.u.id);
+                    // recordScore(datamag.battlePlatform.id,'1',vm.jifen,'leitai',vm.u.id);
+
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + 'competitionOnline/recordScore',
+                        dataType: "json",
+                        async: false,
+                        data: {"battlePlatformId":datamag.battlePlatform.id,"win":'1',"score":vm.jifen,"type":'leitai',"uid":vm.u.id},
+                        success: function (result) {
+
+                            vm.$message({
+                                message:result.s,
+                                type: 'success'
+                            });
+                            vm.successShow = true;
+                            // vm.winCoin = data.matchSetting.winReward;
+                            vm.winCoin = result.s;
+                        }
+                    });
                     if(vm.leizhu==uid)
                     {
                         // alert("全部题目答完");
+                        // 擂主  获胜次数  累加
+                        $.ajax({
+                            type: "POST",
+                            url: baseURL + "matchSetting/wincountjia?uid="+uid,
+                            contentType: "application/json",
+                            data: JSON.stringify(data.matchSetting),
+                            async: false,
+                            success: function (result) {
+
+                            }
+                        });
                         closeWebsocket();
                         //擂主不变
-                        vm.successShow = true;
-                        vm.winCoin = data.matchSetting.winReward;
+
                     }
                     else
                     {
@@ -390,8 +436,8 @@ websocket.onmessage = function(event) {
                         // alert("全部题目答完");
                         closeWebsocket();
                         //擂主不变
-                        vm.successShow = true;
-                        vm.winCoin = data.matchSetting.winReward;
+                        // vm.successShow = true;
+                        // vm.winCoin = data.matchSetting.winReward;
                     }
 
 
@@ -531,6 +577,8 @@ function recordScore(battlePlatformId,win,score,type,uid)
 
         data: {"battlePlatformId":battlePlatformId,"win":win,"score":score,"type":type,"uid":uid},
         success: function (result) {
+
+            alert(result.s);
         }
     });
 }

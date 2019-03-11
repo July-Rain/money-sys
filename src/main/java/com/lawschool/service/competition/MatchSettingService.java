@@ -28,7 +28,7 @@ public interface MatchSettingService extends IService<MatchSetting> {
     public List<TestQuestions> getQuest();
     public MatchSetting findAll2();
     public void updateWin(MatchSetting matchSetting,String uid);
-
+    public void wincountjia(MatchSetting matchSetting,String uid);
     public void saveQuestion(TestQuestions testQuestions,String myanswer,String userid);
 
 }
