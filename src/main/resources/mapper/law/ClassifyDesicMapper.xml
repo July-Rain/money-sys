@@ -30,7 +30,7 @@
             r.id as recordId
         FROM
             law_tasks_desic la
-        LEFT JOIN LAW_STU_RECORD r ON la.DATA_ID=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
+        LEFT JOIN LAW_STU_RECORD r ON la.id=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
         WHERE 1=1
         <if test="infoType != null and infoType!=''">
             AND la.INFO_TYPE = #{infoType}
@@ -89,5 +89,65 @@
             AND CLASSIFY_ID = #{dataId}
         </if>
   </select>
+    
+    
+    <select id="listAllDesc" resultMap="BaseResultMap" parameterType="map">
+         SELECT
+            ID,
+            LAW_CODE,
+            LAW_TITLE,
+            ISSUE_TIME,
+            LIB_ID,
+            CLASSIFY_ID,
+            ISSUE_ORG,
+            STATUS
+        FROM
+            LAW_CLASSIFY_DESIC
+        WHERE 1=1
+        <if test="classifyId != null and classifyId!=''">
+            AND  CLASSIFY_ID IN (
+            SELECT
+            CLASSIFY_CODE
+            FROM
+            LAW_CLASSIFY T START WITH T . ID = #{classifyId} CONNECT BY PRIOR T . ID = T .PARENT_ID
+            )
+        </if>
+        <if test="libId != null and libId!=''">
+            AND lib_id = #{libId}
+        </if>
+        <if test="lawTitle != null and lawTitle!=''">
+            AND law_title like '%'||#{lawTitle}||'%'
+        </if>
+        <if test="issueOrg != null and issueOrg!=''">
+            AND issue_org like '%'||#{issueOrg}||'%'
+        </if>
+        order  by ISSUE_TIME desc
 
+    </select>
+
+    <select id="countAllDesc" resultType="int" parameterType="map">
+        SELECT
+        count(1)
+        FROM
+        LAW_CLASSIFY_DESIC
+        WHERE 1=1
+        <if test="classifyId != null and classifyId!=''">
+            AND  CLASSIFY_ID IN (
+            SELECT
+            CLASSIFY_CODE
+            FROM
+            LAW_CLASSIFY T START WITH T . ID = #{classifyId} CONNECT BY PRIOR T . ID = T .PARENT_ID
+            )
+        </if>
+        <if test="libId != null and libId!=''">
+            AND lib_id = #{libId}
+        </if>
+        <if test="lawTitle != null and lawTitle!=''">
+            AND law_title like '%'||#{lawTitle}||'%'
+        </if>
+        <if test="issueOrg != null and issueOrg!=''">
+            AND issue_org like '%'||#{issueOrg}||'%'
+        </if>
+
+    </select>
 </mapper>

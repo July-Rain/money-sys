@@ -25,7 +25,7 @@ public class ClassifyDesicController extends AbstractController {
     @Autowired
     private ClassifyDesicService desicService;
     @RequestMapping("/list")
-    public Result list(@RequestParam Map<String, Object> params){
+    public Result list(@RequestParam Map<String, String> params){
         PageUtils page = desicService.queryPage(params);
         return Result.ok().put("page", page);
     }
