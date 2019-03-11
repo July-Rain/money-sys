@@ -56,13 +56,13 @@ public class DictController extends AbstractController{
         }
 
         // 判断是否重名
-        boolean duplicate = dictService.checkDuplicate(entity.getId(), entity.getName(), "name");
+        boolean duplicate = dictService.checkDuplicate(entity.getId(), entity.getName(), "name", entity.getParentCode());
         if(!duplicate){
 
             return Result.error("该名称：" + entity.getName() + " 重名，请重新设置");
         } else {
 
-            duplicate = dictService.checkDuplicate(entity.getId(), entity.getCode(), "code");
+            duplicate = dictService.checkDuplicate(entity.getId(), entity.getCode(), "code", entity.getParentCode());
             if(!duplicate){
 
                 return Result.error("该编码：" + entity.getCode() + " 重复，请重新设置");

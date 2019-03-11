@@ -36,5 +36,5 @@ public interface DictionService extends AbstractService<DictEntity> {
      * @param type
      * @return
      */
-    boolean checkDuplicate(String id, String str, String type);
+    boolean checkDuplicate(String id, String str, String type, String parentCode);
 }

@@ -37,9 +37,11 @@ public interface DictionDao extends AbstractDao<DictEntity> {
      * @param id
      * @param str
      * @param type
+     * @param parentCode
      * @return
      */
     Integer checkDuplicate(@Param("id") String id,
                            @Param("str") String str,
-                           @Param("type") String type);
+                           @Param("type") String type,
+                           @Param("parentCode") String parentCode);
 }
