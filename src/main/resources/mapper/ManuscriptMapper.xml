@@ -46,7 +46,7 @@
         )
     </insert>
 
-    <select id="findList" resultType="com.lawschool.beans.ManuscriptEntity">
+    <select id="findList" resultType="com.lawschool.beans.ManuscriptEntity" >
         SELECT
             id AS "id",
             type AS "type",
@@ -58,12 +58,12 @@
             author AS "author",
             create_time AS "createTime"
         FROM LAW_MANUSCRIPT
-        <where>
+        where
             1 = 1
             <if test="createUser != null and createUser != ''">
-                create_user = #{createUser}
+                and create_user = #{createUser}
             </if>
-        </where>
+
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">
                 ORDER BY ${page.orderBy}

@@ -246,6 +246,9 @@ var vm = new Vue({
             vm.refresh();
         },
         refresh: function () {
+
+            vm.formInline.createUser=jsgetUser().id;
+
             $.ajax({
                 type: "GET",
                 url: baseURL + "manuscript/list",
