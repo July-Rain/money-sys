@@ -338,51 +338,15 @@
                                             </el-form-item>
                                         </div>
                                         <span class="and-text">并且</span>
-                                        <el-button class="limit" size="mini" type="primary" plain @click="addIfs($event)"></el-button>
+                                        <el-button class="limit" size="mini" type="primary" plain onclick="addIfs(event)"></el-button>
                                         <div class="tail">
                                             <el-form-item label="获得：" prop="number">
                                                 <el-input size="small" type="number"><template slot="append">分</template></el-input>
                                             </el-form-item>
-                                            <i class="iconfont icon-tianjia" @click="addLimitations($event)"></i>
-                                            <i class="iconfont icon-shanchu"></i>
+                                            <i class="iconfont icon-tianjia" onclick="addLimitations(event)"></i>
+                                            <i class="iconfont icon-shanchu" onclick="removeLimitations(event)"></i>
                                         </div>
                                     </div>
-                                    <!--<div class="exam-data">
-                                        <el-form-item label="正确率：">
-                                            <el-dropdown split-button size="mini" placement="bottom-start">
-                                                等于
-                                                <el-dropdown-menu slot="dropdown" divided="true">
-                                                    <el-dropdown-item>大于</el-dropdown-item>
-                                                    <el-dropdown-item>大于等于</el-dropdown-item>
-                                                    <el-dropdown-item>小于</el-dropdown-item>
-                                                    <el-dropdown-item>小于等于</el-dropdown-item>
-                                                </el-dropdown-menu>
-                                            </el-dropdown>
-                                        </el-form-item>
-                                        <el-form-item label-width="10px">
-                                            <el-input size="small" type="number"><template slot="append">%</template></el-input>
-                                        </el-form-item>
-                                        <span class="and-text">并且</span>
-                                            <el-dropdown class="dropdown" split-button size="small" placement="bottom-start">
-                                                等于
-                                                <el-dropdown-menu slot="dropdown" divided="true">
-                                                    <el-dropdown-item>大于</el-dropdown-item>
-                                                    <el-dropdown-item>大于等于</el-dropdown-item>
-                                                    <el-dropdown-item>小于</el-dropdown-item>
-                                                    <el-dropdown-item>小于等于</el-dropdown-item>
-                                                </el-dropdown-menu>
-                                            </el-dropdown>
-                                        <el-form-item label-width="10px">
-                                            <el-input size="small" type="number"><template slot="append">%</template></el-input>
-                                        </el-form-item>
-                                        <div class="tail">
-                                            <el-form-item label="获得：">
-                                                <el-input size="small" type="number"><template slot="append">分</template></el-input>
-                                            </el-form-item>
-                                            <i class="iconfont icon-tianjia"></i>
-                                            <i class="iconfont icon-shanchu"></i>
-                                        </div>
-                                    </div>-->
                                 </div>
                             </li>
                         </ul>
@@ -462,7 +426,23 @@
     </div>
 </div>
 </body>
-
 <!-- import [current] JavaScript -->
 <script src="${rc.contextPath}/js/sys/credits.js?_${.now?long}"></script>
+<script>
+    var addIfs = function (e) {
+        var parent = e.target.parentNode;
+        var dropdownGro = parent.firstChild.cloneNode(true);
+        parent.insertBefore(dropdownGro, e.target);
+        e.target.remove();
+    }
+    var addLimitations = function (e) {
+        var parent = e.target.parentNode.parentNode.parentNode;
+        var examData = e.target.parentNode.parentNode.cloneNode(true);
+        parent.appendChild(examData);
+    }
+    var removeLimitations = function (e) {
+        var parent = e.target.parentNode.parentNode;
+        parent.remove();
+    }
+</script>
 </html>

@@ -156,8 +156,8 @@
                                             </div>
                                             <div>
                                                 <p>
-                                                    <span v-if="!item.isColl" @click="collect(item.id)"><i class="iconfont icon-shoucang"></i></span>
-                                                    <span v-if="item.isColl" @click="cancelCollect(item.id)"><i class="iconfont icon-shoucang1" style="color:#ff6600"></i></span>
+                                                    <span v-if="!item.isColl" @click="collect(item.id)"><i class="iconfont icon-shoucang1"></i></span>
+                                                    <span v-if="item.isColl" @click="cancelCollect(item.id)"><i class="iconfont icon-quxiaoshoucang" style="color:#ff6600"></i></span>
                                                     <a href="javascript:;" class="title">{{item.stuTitle}}</a>
                                                 </p>
                                                 <p>
