@@ -12,14 +12,18 @@ var vm = new Vue({
         tableData: [],//表格数据
 
         rules: {//表单验证规则
-            // smallNum: [
-            //     {required: true, message: '请输入参数名', trigger: 'blur'},
-            //     {max: 3, message: '最大长度3', trigger: 'blur'}
-            // ],
-            // code: [
-            //     {required: true, message: '请输入参数值', trigger: 'blur'},
-            //     {max: 50, message: '最大长度50', trigger: 'blur'}
-            // ]
+            topicNum: [
+                {required: true, message: '请选择', trigger: 'blur'},
+
+            ],
+            uniformRules: [
+                {required: true, message: '请选择', trigger: 'blur'},
+
+            ],
+            answerTime: [
+                {required: true, message: '请选择', trigger: 'blur'},
+
+            ]
         },
         dialogConfig: false,//table弹出框可见性
         dialog2:false,//查看小关详情弹出框
@@ -57,37 +61,46 @@ var vm = new Vue({
             this.reload();
         },
         // 保存和修改
-        saveOrUpdate: function () {
+        saveOrUpdate: function (formName) {
 
-            //保存前默认先删除一波
-            $.ajax({
-                type: "POST",
-                url: baseURL + 'matchSetting/deleteAll',
-                async:false,
-                dataType: "json",
-                success: function (result) {
-                    var url ="matchSetting/save";
-                    $.ajax({
-                        type: "POST",
-                        url: baseURL + url,
-                        contentType: "application/json",
-                        data: JSON.stringify(vm.matchSetting),
-                        success: function (result) {
-                            if (result.code === 0) {
-                                vm.$alert('操作成功', '提示', {
-                                    confirmButtonText: '确定',
-                                    callback: function () {
-                                        vm.dialogConfig = false;
-                                        vm.reload();
+            this.$refs[formName].validate(function (valid) {
+                    if (valid) {
+                        //保存前默认先删除一波
+                        $.ajax({
+                            type: "POST",
+                            url: baseURL + 'matchSetting/deleteAll',
+                            async:false,
+                            dataType: "json",
+                            success: function (result) {
+                                var url ="matchSetting/save";
+                                $.ajax({
+                                    type: "POST",
+                                    url: baseURL + url,
+                                    contentType: "application/json",
+                                    data: JSON.stringify(vm.matchSetting),
+                                    success: function (result) {
+                                        if (result.code === 0) {
+                                            vm.$alert('操作成功', '提示', {
+                                                confirmButtonText: '确定',
+                                                callback: function () {
+                                                    vm.dialogConfig = false;
+                                                    vm.reload();
+                                                }
+                                            });
+                                        } else {
+                                            alert(result.msg);
+                                        }
                                     }
                                 });
-                            } else {
-                                alert(result.msg);
                             }
-                        }
-                    });
-                }
+                        });
+                    }
+                    else {
+                        return false;
+                    }
+
             });
+
 
 
         },
@@ -148,7 +161,7 @@ var vm = new Vue({
                 async:false,
                 data: {type:"QUESTION_TYPE",Parentcode:"0"},
                 success: function (result) {
-
+                    vm.itemtype=[];
                     // vm.itemtype=result.dictlist;
                     for(var tt=0;tt<result.dictlist.length;tt++)
                     {
@@ -206,38 +219,39 @@ var vm = new Vue({
         },
         onselectuniformRules:function (num) {//点完是否统一配置触发事件
 
-          var topicnum=  Number(num.topicNum);  //题目数量
+                      var topicnum=  Number(num.topicNum);  //题目数量
 
-          var uniformRules=num.uniformRules  //是否统一配置
+                      var uniformRules=num.uniformRules  //是否统一配置
 
-          if(!topicnum)
-          {
-              vm.$message({
-                  type: 'info',
-                  message: '请先设置题目数量!'
-              });
-              return;
-          }
-          //不管选的是是还是否  都先清除一遍  在加
-            num.battleTopicSettingList=[];
-          if(uniformRules=="0")//0不是统一配置
-          {
-                for(var p=0;p<topicnum;p++)
-                {
-                    num.battleTopicSettingList.push
-                    (
-                        {id:'',howManySmall:p+1,}
-                    )
-                }
+                      if(!topicnum)
+                      {
+                          vm.matchSetting.uniformRules='';
+                          vm.$message({
+                              type: 'info',
+                              message: '请先设置题目数量!'
+                          });
+                          return;
+                      }
+                      //不管选的是是还是否  都先清除一遍  在加
+                        num.battleTopicSettingList=[];
+                      if(uniformRules=="0")//0不是统一配置
+                      {
+                            for(var p=0;p<topicnum;p++)
+                            {
+                                num.battleTopicSettingList.push
+                                (
+                                    {id:'',howManySmall:p+1,questionDifficulty:'10001',knowledgeId:'1072387696247562241',questionType:'10004'}
+                                )
+                            }
 
-          }
-          else if(uniformRules=="1")//1是  是统一
-          {
-              num.battleTopicSettingList.push
-              (
-                  {id:'',}
-              )
-          }
+                      }
+                      else if(uniformRules=="1")//1是  是统一
+                      {
+                          num.battleTopicSettingList.push
+                          (
+                              {id:'',questionDifficulty:'10001',knowledgeId:'1072387696247562241',questionType:'10004'}
+                          )
+                      }
 
         },
         look: function (index, row) {
@@ -263,7 +277,13 @@ var vm = new Vue({
             });
         },
         del: function () {
-
+            if(vm.tableData.length=='0'){
+                vm.$message({
+                    type: 'info',
+                    message: '占无数据!'
+                });
+                return;
+            }
             this.$confirm('此操作将永久删除擂台比武配置, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -292,6 +312,14 @@ var vm = new Vue({
 
         },
         update: function () {
+            if(vm.tableData.length=='0'){
+                vm.$message({
+                    type: 'info',
+                    message: '占无数据!'
+                });
+                return;
+            }
+
             // 每次进来先制空
             vm.checkNum=[];
             vm.matchSetting=[];

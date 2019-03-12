@@ -17,7 +17,7 @@ var vm = new Vue({
             }
         };
        return {
-           labelPosition: 'left',
+           labelPosition: 'right',
            navData: [],//导航
            formInline: { // 搜索表单
                examName: '',

@@ -142,17 +142,17 @@ public class UserRealm extends AuthorizingRealm {
                 List<String> userDeptIdList = sysRoleOrgDao.selectList(new EntityWrapper<SysRoleOrg>().in("ROLE_ID", roleIdList)).stream().map(r -> r.getOrgId()).collect(Collectors.toList());
 
 
-                for (String deptId : userDeptIdList) {
+                /*for (String deptId : userDeptIdList) {
                     //角色关联的部门下的子部门ID列表
                     List<String> subDeptIdList = orgDao.getSubDeptIdList(deptId);
                     deptIdList.addAll(subDeptIdList);
-                }
+                }*/
                 deptIdList.addAll(userDeptIdList);
             }
 
             //用户对应的部门以及子部门org_id列表
-            List<String> subDeptIdList = orgDao.getSubDeptIdList(user.getOrgId());
-            deptIdList.addAll(subDeptIdList);
+          //  List<String> subDeptIdList = orgDao.getSubDeptIdList(user.getOrgId());
+            deptIdList.add(user.getOrgId());
         }
 
         user.setOrgIdList(deptIdList);
