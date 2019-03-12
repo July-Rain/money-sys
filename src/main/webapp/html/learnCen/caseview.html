@@ -172,7 +172,7 @@
                             </el-table-column>
                             <el-table-column
                                     prop="caseType"
-                                    label="案例类型"
+                                    label="案件类型"
                                     width="280"
                                     header-align="center"
                                     align="center"
@@ -203,9 +203,9 @@
                                     align="center"
                             >
                                 <template slot-scope="scope">
-                                    <el-tag v-if="scope.row.contentType === '1'" size="small" type="success">图文</el-tag>
-                                    <el-tag v-if="scope.row.contentType === '2'" size="small" type="info">音频</el-tag>
-                                    <el-tag v-if="scope.row.contentType === '3'" size="small" type="warning">视频</el-tag>
+                                    <el-tag v-if="scope.row.contentType === 'pic'" size="small" type="success">图文</el-tag>
+                                    <el-tag v-if="scope.row.contentType === 'audio'" size="small" type="info">音频</el-tag>
+                                    <el-tag v-if="scope.row.contentType === 'video'" size="small" type="warning">视频</el-tag>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="180" header-align="center"

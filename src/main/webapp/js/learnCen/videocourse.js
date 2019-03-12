@@ -257,7 +257,7 @@ var vm = new Vue({
             //请求后台记录观看时长
             $.ajax({
                 type: "POST",
-                url: baseURL + "stumedia/countTime?stuId="+id+"&stuFrom=videocen&playTime="+temp+"&finishFlag="+finishFlag,
+                url: baseURL + "stumedia/countTime?stuId="+id+"&stuFrom=videocen&type=video&playTime="+temp+"&finishFlag="+finishFlag,
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){

@@ -67,6 +67,10 @@ var vm = new Vue({
         this.$nextTick(function () {
             this.reload();
             this.breadArr = getBreadcrumb(menuId);
+            if(this.breadArr.length==0){
+                this.breadArr=[{name:"教官中心"},{name:"教官课程"}]
+
+            }
         })
     },
     methods: {
@@ -168,7 +172,6 @@ var vm = new Vue({
                 url: baseURL + 'stumediatch/info?id=' + row.id,
                 contentType: "application/json",
                 success: function (result) {
-                    debugger
                     if (result.code === 0) {
                         vm.stuMediaTch = result.data;
                         if(vm.stuMediaTch.accessoryInfoList){

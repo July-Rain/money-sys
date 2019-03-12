@@ -195,8 +195,8 @@ public class StuMediaTchController extends AbstractController {
      * @return com.lawschool.util.Result
      **/
     @RequestMapping("/countTime")
-    public Result countTime(String stuId,String stuFrom,BigDecimal playTime,Boolean finishFlag){
-        recordService.countTime(stuId,stuFrom,playTime,finishFlag );
+    public Result countTime(String stuId,String stuFrom,BigDecimal playTime,Boolean finishFlag,String taskId,String type){
+        recordService.countTime(stuId,stuFrom,playTime,finishFlag,getUser(),taskId,type);
         return Result.ok();
     }
 }

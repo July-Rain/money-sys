@@ -109,7 +109,6 @@ var vm = new Vue({
     },
     filters: {
         timeout: function (time) {
-            debugger
             if(time === null){
                 return true
             }else {

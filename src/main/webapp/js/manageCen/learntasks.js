@@ -136,6 +136,7 @@ var vm = new Vue({
             pageSize: 10,
             totalCount:0,
         },//学习任务内容管理
+        isEdit:true,//是否可修改
 
     },
     created: function () {
@@ -293,8 +294,9 @@ var vm = new Vue({
                 policeclassOption:"",
                 isSelf:menu
             };
-            this.title = "新增学习任务";
+            this.title = "新增";
             this.dialogLearnTask = true;
+            this.isEdit=true;
             this.reloadTask();
         },
         handleEdit: function (index, row) {
@@ -306,8 +308,9 @@ var vm = new Vue({
                 });
                 return;
             }
-            this.title = "修改学习任务";
+            this.title = "修改";
             this.dialogLearnTask = true;
+            this.isEdit=true;
             this.deptCheckData=[];
             $.ajax({
                 type: "POST",
@@ -323,6 +326,26 @@ var vm = new Vue({
                 }
             });
             //this.getDept();
+        },
+        handleDetail: function (index, row) {
+            //判断是否发布
+            this.title = "查看";
+            this.dialogLearnTask = true;
+            this.isEdit=false;
+            this.deptCheckData=[];
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'learntasks/info?id=' + row.id,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.learnTasks = result.data;
+                        vm.deptCheckData=result.data.deptArr;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         },
         handleDel: function (index, row) {
             //判断是否发布

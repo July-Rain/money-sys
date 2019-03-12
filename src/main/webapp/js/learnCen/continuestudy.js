@@ -372,7 +372,7 @@ var vm = new Vue({
             //请求后台记录观看时长
             $.ajax({
                 type: "POST",
-                url: baseURL + "stumedia/countTime?stuId="+id+"&stuFrom=learntask&playTime="+temp+"&finishFlag="+finishFlag,
+                url: baseURL + "stumedia/countTime?stuId="+id+"&stuFrom=learntask&type="+vm.queryCond.infoType+"&playTime="+temp+"&finishFlag="+finishFlag+"&taskId="+vm.queryCond.taskId,
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -384,7 +384,6 @@ var vm = new Vue({
             });
         },
         handleTaskNodeClick:function(data){
-            debugger
             vm.queryCond.infoId= data.classifyCode;
             vm.reload();
 

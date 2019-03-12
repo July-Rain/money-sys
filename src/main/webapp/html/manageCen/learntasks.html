@@ -252,10 +252,16 @@
                                     align="center"
                                     >
                                 <template slot-scope="scope">
-                                    <!--<el-button v-if="scope.row.isUse=='0'"
-                                               size="mini"
-                                               @click="handleStart(scope.$index, scope.row)">启用
-                                    </el-button>-->
+                                    <el-popover
+                                            placement="right"
+                                            trigger="hover"
+                                            content="查看">
+                                        <i class="iconfont icon-chakan tabIcon"
+                                           slot="reference"
+                                           @click="handleDetail(scope.$index, scope.row)"
+                                           style="color: #1381e3;font-size: 12px;">
+                                        </i>
+                                    </el-popover>
                                     <el-popover
                                             placement="top-start"
                                             trigger="hover"
@@ -318,7 +324,7 @@
                      class="demo-learnTasks" size="mini">
                 <el-col :span="24">
                     <el-form-item label="任务名称：" prop="taskName">
-                        <el-input v-model="learnTasks.taskName" placeholder="请输入任务名称" clearable></el-input>
+                        <el-input v-model="learnTasks.taskName" :disabled="!isEdit" placeholder="请输入任务名称" clearable></el-input>
                     </el-form-item>
 
                     <!--<el-form-item label="所属警种：" prop="policeclass">-->
@@ -333,7 +339,7 @@
                         <!--</el-select>-->
                     <!--</el-form-item>-->
                     <el-form-item label="所属分类：" prop="taskClass">
-                        <el-select v-model="learnTasks.taskClass" placeholder="所属分类" clearable>
+                        <el-select v-model="learnTasks.taskClass" :disabled="!isEdit" placeholder="所属分类" clearable>
                             <el-option
                                     v-for="item in taskClassOption"
                                     :key="item.key"
@@ -345,6 +351,7 @@
                     </el-form-item>
                     <el-form-item label="开始日期：" prop="startTime">
                         <el-date-picker
+                                :disabled="!isEdit"
                                 v-model="learnTasks.startTime"
                                 type="date"
                                 size="mini"
@@ -353,6 +360,7 @@
                     </el-form-item>
                     <el-form-item label="结束日期：" prop="endTime">
                         <el-date-picker
+                                :disabled="!isEdit"
                                 v-model="learnTasks.endTime"
                                 type="date"
                                 size="mini"
@@ -363,15 +371,15 @@
                         <el-input v-model="learnTasks.taskExecute" placeholder="请输入任务执行者" clearable></el-input>
                     </el-form-item>-->
                     <el-form-item label="使用部门：" prop="deptName" v-if="menuForm!='person'">
-                        <el-input type="textarea" :rows="2" v-model="learnTasks.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门"
+                        <el-input type="textarea" :rows="2" v-model="learnTasks.deptName" :disabled="!isEdit" readonly @focus="chooseDept" placeholder="请选择使用部门"
                                   clearable></el-input>
                     </el-form-item>
                     <el-form-item label="使用人员：" prop="userName" v-if="menuForm!='person'">
-                        <el-input type="textarea" :rows="2" v-model="learnTasks.userName" readonly @focus="chooseUser" placeholder="请选择使用人员"
+                        <el-input type="textarea" :rows="2" v-model="learnTasks.userName" :disabled="!isEdit" readonly @focus="chooseUser" placeholder="请选择使用人员"
                                   clearable></el-input>
                     </el-form-item>
                     <el-form-item label="任务内容：" prop="taskContent">
-                        <el-input type="textarea" :rows="2" v-model="learnTasks.taskContent" readonly @focus="chooseTaskContent" placeholder="请选择任务内容"
+                        <el-input type="textarea" :rows="2" v-model="learnTasks.taskContent" :disabled="!isEdit" readonly @focus="chooseTaskContent" placeholder="请选择任务内容"
                                   clearable></el-input>
                         <!--<el-input type="textarea" maxlength="200" v-model="learnTasks.taskContent" placeholder="请输入任务内容" clearable></el-input>-->
                         <!--<el-tree
@@ -394,7 +402,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogLearnTask = false">取消</el-button>
-                <el-button type="primary" @click="saveOrUpdate('learnTasks')">保存</el-button>
+                <el-button v-if="isEdit" type="primary" @click="saveOrUpdate('learnTasks')">保存</el-button>
             </div>
         </el-dialog>
 

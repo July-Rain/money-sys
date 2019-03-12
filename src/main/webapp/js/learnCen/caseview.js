@@ -46,7 +46,9 @@ var vm = new Vue({
         }],
         dialogCaseAna:false,
         caseContent:"",
-        title:"查看"
+        title:"查看",
+        startTime:"",//开始时间
+        endTime:""//结束时间
     },
     created: function () {
 
@@ -221,7 +223,7 @@ var vm = new Vue({
             //请求后台记录观看时长
             $.ajax({
                 type: "POST",
-                url: baseURL + "caseana/countTime?stuId="+id+"&stuFrom=caseana&playTime="+temp+"&finishFlag="+finishFlag,
+                url: baseURL + "caseana/countTime?stuId="+id+"&stuFrom=caseana&type="+vm.formInline.contentType+"&playTime="+temp+"&finishFlag="+finishFlag,
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -233,11 +235,25 @@ var vm = new Vue({
             });
         },
         closeDia:function(){
+            //结束时间
+            vm.endTime = new Date();
+            var time = (vm.endTime - vm.startTime )/1000;
             vm.dialogCaseAna=false;
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'caseana/countTime?stuId=' + row.id+'&stuFrom=pic'+'&playTime='+time+'&type=pic',
+                contentType: "application/json",
+                success: function (result) {
+                    if(result.code === 0){
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
         },
         handleDetail:function (index, row) {
 
-
+            vm.startTime = new Date();
             $.ajax({
                 type: "POST",
                 url: baseURL + 'caseana/info?id=' + row.id,

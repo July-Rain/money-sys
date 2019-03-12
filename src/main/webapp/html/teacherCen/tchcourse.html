@@ -199,7 +199,7 @@
                                 <P class="text">请保证图片格式正确，作为视频封面</P>
                             </el-form-item>
                             <el-form-item label="视频上传：" prop="comContent">
-                                <video v-show="stuMediaTch.comContent !='' && videoFlag == false" autoplay
+                                <video v-show="stuMediaTch.comContent !='' && videoFlag == false"
                                        :src="stuMediaTch.contentUrl" id="video-uploaded" class="avatar video-js" controls="controls">您的浏览器不支持视频播放
                                 </video>
                                 <i v-if="stuMediaTch.comContent =='' && videoFlag == false"

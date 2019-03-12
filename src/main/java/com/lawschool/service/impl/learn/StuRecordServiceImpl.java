@@ -2,11 +2,16 @@ package com.lawschool.service.impl.learn;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.lawschool.beans.Integral;
 import com.lawschool.beans.User;
 import com.lawschool.beans.law.TaskDesicEntity;
 import com.lawschool.beans.learn.StuRecordEntity;
 import com.lawschool.beans.learn.TasksUserEntity;
+import com.lawschool.beans.system.Fraction;
 import com.lawschool.dao.learn.StuRecordDao;
+import com.lawschool.dao.system.FractionDao;
+import com.lawschool.enums.Source;
+import com.lawschool.service.IntegralService;
 import com.lawschool.service.law.TaskDesicService;
 import com.lawschool.service.learn.StuRecordService;
 import com.lawschool.service.learn.TasksUserService;
@@ -32,6 +37,13 @@ public class StuRecordServiceImpl extends ServiceImpl<StuRecordDao,StuRecordEnti
     private TaskDesicService desicService;
     @Autowired
     private TasksUserService tasksUserService;
+
+    @Autowired
+    private IntegralService integralService;
+
+    @Autowired
+    private FractionDao dao;
+
     @Override
     public int insertStuRecord(User user, String stuId, String stuType,String stuFrom,String taskId) {
         //判断是否有学习记录   没有的话新增
@@ -111,7 +123,7 @@ public class StuRecordServiceImpl extends ServiceImpl<StuRecordDao,StuRecordEnti
     }
 
     @Override
-    public int countTime(String stuId, String stuFrom, BigDecimal playTime,Boolean finishFlag) {
+    public int countTime(String stuId, String stuFrom, BigDecimal playTime,Boolean finishFlag,User user,String taskId,String type) {
         StuRecordEntity recordEntity= this.selectOne(new EntityWrapper<StuRecordEntity>().eq("stu_id",stuId).eq("stu_from",stuFrom));
         if(UtilValidate.isNotEmpty(recordEntity)){
             if(finishFlag){
@@ -122,6 +134,18 @@ public class StuRecordServiceImpl extends ServiceImpl<StuRecordDao,StuRecordEnti
             time = time.add(playTime);
             recordEntity.setStuCountTime(time);
             baseMapper.updateById(recordEntity);
+            Source source = null;
+            if("audio".equals(type)){
+                //音频课堂
+                source=Source.AUDIOSTUDY;
+            }else if("video".equals(type)){
+                //音频课堂
+                source=Source.VIDEOSTUDY;
+            }else if("pic".equals(type)){
+                //音频课堂
+                source=Source.PICSTUDY;
+            }
+            updateUserIntegral(stuFrom,taskId,playTime.divide(new BigDecimal(60)),user,source);
         }
 
         return 0;
@@ -139,8 +163,51 @@ public class StuRecordServiceImpl extends ServiceImpl<StuRecordDao,StuRecordEnti
                 userEntity.setIsFinish("1");
                 userEntity.setFinishTime(new Date());
                 tasksUserService.updateById(userEntity);
+                //完成后添加学分积分 -- 2019 03 12  学完所有任务内容后+4分，其中视频、音频需至少完整播放一遍，图文类型任务浏览相关界面不少于4分钟。每个任务不重复加分。
+                Fraction fraction = dao.findByTypeAndSource("1", Source.STUTASK);
+                Integral integral = new Integral();
+
+                integral.setSrc("learntask");
+                integral.setType("1");
+                integral.setPoint(fraction.getScore());
+                integralService.addIntegralRecord(integral,user );
 
             }
+        }
+        return 0;
+    }
+
+    @Override
+    public int updateUserIntegral(String stuFrom, String taskId, BigDecimal playTime, User user, Source source) {
+        if(UtilValidate.isNotEmpty(taskId)){
+            //如果任务id不为空，则说明是学习任务中的学习记录  则不计入积分
+           return  0;
+        }
+        //查询各个模块的积分情况
+        Fraction fraction = dao.findByTypeAndSource("1", source);
+        Float minDemand=fraction.getMinDemand();//最小时长
+        if(playTime.compareTo(new BigDecimal(minDemand))>1){
+            //如果播放时间大于最小时长则可以计入积分
+            Float point = fraction.getScore();//获取分数
+            Float dailyLimit = fraction.getDailyLimit();//每日上线
+            Integral integral = new Integral();
+            integral.setUserId(user.getId());
+            integral.setSrc("stu");
+            integral.setType("1");
+            Float nowPoint = integralService.sumPointByUser(integral);
+            Integral newIntegral = new Integral();
+            //如果当天已经添加了积分大于上限则取上限减当前积分
+            if(point+nowPoint>dailyLimit){
+                newIntegral.setPoint(dailyLimit-nowPoint>=0?dailyLimit-nowPoint:0);
+            }else{
+                newIntegral.setPoint(point);
+            }
+            if(newIntegral.getPoint()>0){
+                newIntegral.setType("1");
+                newIntegral.setSrc("src");
+                integralService.addIntegralRecord(newIntegral,user);
+            }
+
         }
         return 0;
     }

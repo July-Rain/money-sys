@@ -539,4 +539,21 @@
             AND AAA.ORG_ID = EEE.ORG_ID
             AND AAA.ORG_ID = FFF.ORG_ID
     </select>
+
+    <select id="sumPointByUser" resultType="java.lang.Float" parameterType="com.lawschool.beans.Integral">
+        SELECT
+            SUM (POINT)
+        FROM
+            LAW_INTEGRAL
+        WHERE 1=1
+        <if test="type != null and type!=''">
+            AND TYPE = #{type}
+        </if>
+        <if test="src != null and src!=''">
+            AND src = #{src}
+        </if>
+        <if test="userId != null and userId!=''">
+            AND USER_ID = #{userId}
+        </if>
+    </select>
 </mapper>

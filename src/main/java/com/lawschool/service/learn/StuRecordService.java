@@ -3,6 +3,7 @@ package com.lawschool.service.learn;
 import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.User;
 import com.lawschool.beans.learn.StuRecordEntity;
+import com.lawschool.enums.Source;
 
 import java.math.BigDecimal;
 
@@ -39,13 +40,14 @@ public interface StuRecordService extends IService<StuRecordEntity> {
     /**
      * @Author MengyuWu
      * @Description 叠加时长
-     * @Date 14:10 2019-1-10
-     * @Param [stuId, stuFrom, playTime, finishFlag]
+     * @Date 11:31 2019-3-12
+     * @Param [stuId, stuFrom, playTime, finishFlag, user, taskId, type]
      * @return int
      **/
+
     
 
-    int countTime(String stuId,String stuFrom, BigDecimal playTime,Boolean finishFlag);
+    int countTime(String stuId,String stuFrom, BigDecimal playTime,Boolean finishFlag,User user,String taskId,String type);
 
     /**
      * @Author MengyuWu
@@ -56,5 +58,15 @@ public interface StuRecordService extends IService<StuRecordEntity> {
      **/
     
     int updateUseFinish(User user,String taskId);
+
+    /**
+     * @Author MengyuWu
+     * @Description 根据学习记录添加积分来源分析
+     * @Date 9:59 2019-3-12
+     * @Param [stuFrom, taskId, playTime, user]
+     * @return int
+     **/
+    
+    int updateUserIntegral(String stuFrom,String taskId,BigDecimal playTime,User user, Source source);
 
 }

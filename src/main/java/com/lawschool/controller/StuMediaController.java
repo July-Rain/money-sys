@@ -5,6 +5,7 @@ import com.lawschool.base.AbstractController;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
 import com.lawschool.beans.learn.StuRecordEntity;
+import com.lawschool.service.IntegralService;
 import com.lawschool.service.StuMediaService;
 import com.lawschool.service.learn.StuRecordService;
 import com.lawschool.util.GetUUID;
@@ -33,6 +34,8 @@ public class StuMediaController extends AbstractController {
 
     @Autowired
     private StuRecordService recordService;
+
+
 
     /**
      * @Author zjw
@@ -202,8 +205,8 @@ public class StuMediaController extends AbstractController {
      * @return com.lawschool.util.Result
      **/
     @RequestMapping("/countTime")
-    public Result countTime(String stuId,String stuFrom,BigDecimal playTime,Boolean finishFlag){
-        recordService.countTime(stuId,stuFrom,playTime,finishFlag );
+    public Result countTime(String stuId,String stuFrom,BigDecimal playTime,Boolean finishFlag,String taskId,String type){
+        recordService.countTime(stuId,stuFrom,playTime,finishFlag,getUser(),taskId,type);
         return Result.ok();
     }
 }
