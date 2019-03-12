@@ -38,14 +38,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
+import com.baomidou.mybatisplus.plugins.Page;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
+import com.lawschool.util.PageUtils;
 @Service
 public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigurationDao, RecruitConfiguration> implements RecruitConfigurationService {
 	
@@ -287,13 +287,20 @@ public class RecruitConfigurationServiceImpl  extends ServiceImpl<RecruitConfigu
 	@SysLog("查询")
 	@Transactional(rollbackFor = Exception.class)
 	public PageUtils queryPage(Map<String, Object> params) {
-		EntityWrapper<RecruitConfiguration> ew = new EntityWrapper<>();
-		ew.orderBy("MARK_NUM_ORDER",true);
-
-		Page<RecruitConfiguration> page = this.selectPage(
-				new Query<RecruitConfiguration>(params).getPage(),ew);
-
+//		EntityWrapper<RecruitConfiguration> ew = new EntityWrapper<>();
+//		ew.orderBy("MARK_NUM_ORDER",true);
+//
+//		Page<RecruitConfiguration> page = this.selectPage(
+//				new Query<RecruitConfiguration>(params).getPage(),ew);
+//
+//		return new PageUtils(page);
+		Page<RecruitConfiguration> page = new Page<RecruitConfiguration>(Integer.parseInt((String)params.get("currPage")),Integer.parseInt((String)params.get("pageSize")));
+		page.setRecords(recruitconfigurationDao.selectAll(params,page));
+		int count=recruitconfigurationDao.selectAllCont(params);
+		page.setTotal(count);
 		return new PageUtils(page);
+
+
 	}
 
 
