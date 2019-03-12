@@ -80,13 +80,14 @@
                                 prop="userPoliceId"
                                 label="警号"
                                 align="center"
-                                width="180"
+                                width="130"
                         >
                         </el-table-column>
                         <el-table-column
                                 prop="userCode"
                                 label="身份证号"
                                 align="center"
+                                width="180"
                         >
                         </el-table-column>
 
@@ -94,7 +95,7 @@
                                 prop="orgName"
                                 label="部门名称"
                                 align="center"
-                                width="180"
+                                width="120"
                         >
                         </el-table-column>
                         <el-table-column
@@ -102,7 +103,7 @@
                                 label="是否是教官"
                                 header-align="center"
                                 align="center"
-                                width="80">
+                                width="120">
                             <template slot-scope="scope">
                                 <el-tag v-if="scope.row.identify === '0'" size="small" type="danger">否</el-tag>
                                 <el-tag v-else size="small" type="success">是</el-tag>
