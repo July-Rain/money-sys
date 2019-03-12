@@ -240,8 +240,8 @@ var vm = new Vue({
         },
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
-            this.learnTasks.deptIds = [];
-            this.learnTasks.deptName = [];
+            this.learnTasks.deptIds = '';
+            this.learnTasks.deptName = '';
             for(var i=0;i<this.multipleDeptSelection.length;i++){
                 if (this.learnTasks.deptIds == "") {
                     this.learnTasks.deptIds=this.multipleDeptSelection[i].id;

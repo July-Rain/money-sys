@@ -252,8 +252,8 @@ var vm = new Vue({
         },
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
-            this.sysMsg.deptIds = [];
-            this.sysMsg.deptName = [];
+            this.sysMsg.deptIds = '';
+            this.sysMsg.deptName = '';
             for(var i=0;i<this.multipleDeptSelection.length;i++){
                 if (this.sysMsg.recievePeople == "") {
                     this.sysMsg.recieveDept=this.multipleDeptSelection[i].id;
