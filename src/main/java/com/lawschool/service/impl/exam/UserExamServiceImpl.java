@@ -270,7 +270,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         if(authArr.length>0){
             userExamForm.setAuthArr(authArr);
         }
-        userExamForm.setUserId(user.getUserId());
+        userExamForm.setUserId(user.getId());
         if(UtilValidate.isNotEmpty(params.get("status"))){
             userExamForm.setExamStatus(params.get("status").toString());
         }
@@ -289,7 +289,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         if (UtilValidate.isEmpty(params.get("limit"))){
             params.put("limit","10");
         }
-        String orderBy = " exam_status,IS_MUST_TEST, start_time ";
+        String orderBy = " exam_status ('1','0','2'),IS_MUST_TEST, start_time desc ";
         params.put("orderBy",orderBy);
         Page<UserExamForm> userExamFormPage = userExamFormService.findPage(new Page<UserExamForm>(params),userExamForm);
 
@@ -313,7 +313,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
             userExamAnswerDao.updateByIds(userExamAnswer.getUserAnsId(), userExamAnswer.getUserScore(), userExamAnswer.getId());
         }
         //更新考试剩余时间
-        userExamDao.updateRemainTimeById(remainingExamTime, userExamId);
+        userExamDao.updateRemainTimeById(remainingExamTime, "1",userExamId);
 
     }
 

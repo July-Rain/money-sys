@@ -25,7 +25,7 @@
 
     <update id="updateRemainTimeById">
         update
-        law_user_exam set REMAINING_EXAM_TIME = #{remainingExamTime}
+        law_user_exam set REMAINING_EXAM_TIME = #{remainingExamTime},exam_Status = #{examStatus}
         <where>
             id = #{id}
         </where>

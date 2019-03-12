@@ -29,6 +29,14 @@ var vm = new Vue({
             var flag = new Date(Date.parse(startTime.replace(/-/g,  "/"))).getTime() <= new Date().getTime()&&new Date(Date.parse(endTime.replace(/-/g,  "/"))).getTime() >= new Date().getTime();
             return flag;
         },
+        verifyStartTime :function(startTime){
+            var flag = new Date(Date.parse(startTime.replace(/-/g,  "/"))).getTime() >= new Date().getTime();
+            return flag;
+        },
+        verifyEndTime :function(endTime){
+            var flag = new Date(Date.parse(endTime.replace(/-/g,  "/"))).getTime() <= new Date().getTime();
+            return flag;
+        },
         //序列号计算
         indexMethod: function (index) {
             return index + 1 + (vm.formInline.page - 1) * vm.formInline.limit;

@@ -69,6 +69,17 @@ public class TestQuestions extends DataEntity<TestQuestions> {
     @TableField(exist = false)
     private float  perScore;
 
+    @TableField(exist = false)
+    private List<String> ids;   //题目ID集合  目前给考试配置更换题目时不出现相同题目使用
+
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
+    }
+
     public float getPerScore() {
         return this.perScore;
     }
