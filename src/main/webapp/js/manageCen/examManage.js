@@ -74,11 +74,11 @@ var vm = new Vue({
                 {required: true, message: '请输入选项描述', trigger: 'blur'},
                 {max: 200, message: '最大长度200', trigger: 'blur'}
             ],
-            score: [
-                {required: true, message: '请输入分数', trigger: 'blur'},
-                { pattern: regularExp("number"), message: '请输入正整数',trigger: 'blur' },
-                {max: 3, message: '最大长度3', trigger: 'blur'},
-            ],
+            // score: [
+            //     {required: true, message: '请输入分数', trigger: 'blur'},
+            //     { pattern: regularExp("number"), message: '请输入正整数',trigger: 'blur' },
+            //     {max: 3, message: '最大长度3', trigger: 'blur'},
+            // ],
             ordersort: [
                 {required: true, message: '请输入排序', trigger: 'blur'},
                 { pattern: regularExp("number"), message: '请输入正整数' ,trigger: 'blur'},

@@ -36,7 +36,9 @@
 
     <select id="chuangguanSorceBydept" resultType="java.lang.Integer" parameterType="java.lang.String">
         SELECT
-            "SUM" (score)
+            ASE
+            WHEN "SUM" ("SCORE") IS null THEN 0
+            ELSE "SUM" ("SCORE")  END sorce
         FROM
             (
                 SELECT

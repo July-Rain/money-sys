@@ -252,15 +252,21 @@ var vm = new Vue({
         },
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
+            this.sysMsg.deptIds = '';
+            this.sysMsg.deptName = '';
             for(var i=0;i<this.multipleDeptSelection.length;i++){
                 if (this.sysMsg.recievePeople == "") {
                     this.sysMsg.recieveDept=this.multipleDeptSelection[i].id;
                     this.sysMsg.deptName=this.multipleDeptSelection[i].orgName;
                 }else{
-                    this.sysMsg.recieveDept+=","+this.multipleDeptSelection[i].id;
-                    this.sysMsg.deptName+=","+this.multipleDeptSelection[i].orgName;
+                    if(this.sysMsg.deptIds.indexOf(this.multipleDeptSelection[i].id)!==-1){
+                        this.sysMsg.recieveDept+=","+this.multipleDeptSelection[i].id;
+                        this.sysMsg.deptName+=","+this.multipleDeptSelection[i].orgName;
+                    }
                 }
             }
+            this.sysMsg.deptIds = delFirstStr(this.sysMsg.deptIds,',');
+            this.sysMsg.deptName = delFirstStr(this.sysMsg.deptName,',');
             this.dialogDept=false;
         },
         cancelDept: function () {

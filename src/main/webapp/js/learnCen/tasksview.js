@@ -362,15 +362,22 @@ var vm = new Vue({
         },
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
+            this.learnTasks.deptIds = '';
+            this.learnTasks.deptName = '';
             for(var i=0;i<this.multipleDeptSelection.length;i++){
                 if (this.learnTasks.deptIds == "") {
                     this.learnTasks.deptIds=this.multipleDeptSelection[i].id;
                     this.learnTasks.deptName=this.multipleDeptSelection[i].orgName;
                 }else{
-                    this.learnTasks.deptIds+=","+this.multipleDeptSelection[i].id;
-                    this.learnTasks.deptName+=","+this.multipleDeptSelection[i].orgName;
+                    if(this.learnTasks.deptIds.indexOf(this.multipleDeptSelection[i].id)!==-1){
+                        this.learnTasks.deptIds+=","+this.multipleDeptSelection[i].id;
+                        this.learnTasks.deptName+=","+this.multipleDeptSelection[i].orgName;
+                    }
                 }
             }
+            this.learnTasks.deptIds = delFirstStr(this.learnTasks.deptIds,',');
+            this.learnTasks.deptName = delFirstStr(this.learnTasks.deptName,',');
+
             this.dialogDept=false;
         },
         cancelDept: function () {

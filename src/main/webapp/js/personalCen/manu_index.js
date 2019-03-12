@@ -94,18 +94,18 @@ var vm = new Vue({
 
             comContent: [
                 {required: true, message: '请输入试题描述', trigger: 'blur'},
-                {max: 2000, message: '最大长度2000', trigger: 'blur'}
+                {max: 100, message: '最大长度100', trigger: 'blur'}
             ],
 
             answerDescrible: [
                 {required: true, message: '答案描述', trigger: 'blur'},
-                {max: 2000, message: '最大长度2000', trigger: 'blur'}
+                {max: 100, message: '最大长度100', trigger: 'blur'}
             ]
         },
         rules2: {//表单验证规则
             stuTitle: [
                 {required: true, message: '请输入标题', trigger: 'blur'},
-                {max: 200, message: '最大长度200', trigger: 'blur'}
+                {max: 100, message: '最大长度100', trigger: 'blur'}
             ],
             stuPoliceclass: [
                 {required: true, message: '请选择所属警种', trigger: 'blur'},
@@ -119,7 +119,7 @@ var vm = new Vue({
             // ],
             stuDescribe: [
                 {required: true, message: '请输入描述', trigger: 'blur'},
-                {max: 200, message: '最大长度200', trigger: 'blur'}
+                {max: 100, message: '最大长度100', trigger: 'blur'}
             ],
         },
         rules3: {//表单验证规则
@@ -127,11 +127,11 @@ var vm = new Vue({
                 {required: true, message: '请输入选项描述', trigger: 'blur'},
                 {max: 200, message: '最大长度200', trigger: 'blur'}
             ],
-            score: [
-                {required: true, message: '请输入分数', trigger: 'blur'},
-                { pattern: regularExp("number"), message: '请输入正整数',trigger: 'blur' },
-                {max: 3, message: '最大长度3', trigger: 'blur'},
-            ],
+            // score: [
+            //     {required: true, message: '请输入分数', trigger: 'blur'},
+            //     { pattern: regularExp("number"), message: '请输入正整数',trigger: 'blur' },
+            //     {max: 3, message: '最大长度3', trigger: 'blur'},
+            // ],
             ordersort: [
                 {required: true, message: '请输入排序', trigger: 'blur'},
                 { pattern: regularExp("number"), message: '请输入正整数' ,trigger: 'blur'},
@@ -211,15 +211,21 @@ var vm = new Vue({
         },
         confimDept: function () {
             this.multipleDeptSelection = this.$refs.deptTree.getCheckedNodes();
+            this.stuMedia.deptIds = '';
+            this.stuMedia.deptName = '';
             for (var i = 0; i < this.multipleDeptSelection.length; i++) {
                 if (!this.stuMedia.deptIds) {
                     this.stuMedia.deptIds = this.multipleDeptSelection[i].id;
                     this.stuMedia.deptName = this.multipleDeptSelection[i].orgName;
                 } else {
-                    this.stuMedia.deptIds += "," + this.multipleDeptSelection[i].id;
-                    this.stuMedia.deptName += "," + this.multipleDeptSelection[i].orgName;
+                    if(this.stuMedia.deptIds.indexOf(this.multipleDeptSelection[i].id) === -1){
+                        this.stuMedia.deptIds += "," + this.multipleDeptSelection[i].id;
+                        this.stuMedia.deptName += "," + this.multipleDeptSelection[i].orgName;
+                    }
                 }
             }
+            this.stuMedia.deptIds = delFirstStr(this.stuMedia.deptIds,',');
+            this.stuMedia.deptName = delFirstStr(this.stuMedia.deptName,',');
             this.dialogDept = false;
         },
         cancelDept: function () {

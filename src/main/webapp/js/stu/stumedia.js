@@ -471,25 +471,27 @@ var vm = new Vue({
         chooseUser: function () {
             //选择人员
             this.dialogUser = true;
-            // this.stuMedia.userName;
-            // console.info("stu",this.saveUserTableData)
-            // console.info("let me see see",this.stuMedia.userArr);
-            // this.stuMedia.userArr = ['U20190222151053715155'];
             this.huixian(this.stuMedia.userArr) //  --回显需加
 
 
         },
         confimDept: function () {
             this.multipleDeptSelection = this.$refs.deptTree.getCheckedNodes();
+            this.stuMedia.deptIds = '';
+            this.stuMedia.deptName = '';
             for (var i = 0; i < this.multipleDeptSelection.length; i++) {
                 if (!this.stuMedia.deptIds) {
                     this.stuMedia.deptIds = this.multipleDeptSelection[i].id;
                     this.stuMedia.deptName = this.multipleDeptSelection[i].orgName;
                 } else {
-                    this.stuMedia.deptIds += "," + this.multipleDeptSelection[i].id;
-                    this.stuMedia.deptName += "," + this.multipleDeptSelection[i].orgName;
+                    if(this.stuMedia.deptIds.indexOf(this.multipleDeptSelection[i].id)!==-1){
+                        this.stuMedia.deptIds += "," + this.multipleDeptSelection[i].id;
+                        this.stuMedia.deptName += "," + this.multipleDeptSelection[i].orgName;
+                    }
                 }
             }
+            this.stuMedia.deptIds = delFirstStr(this.stuMedia.deptIds,',');
+            this.stuMedia.deptName = delFirstStr(this.stuMedia.deptName,',');
             this.dialogDept = false;
         },
         cancelDept: function () {

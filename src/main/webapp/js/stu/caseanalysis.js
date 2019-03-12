@@ -520,15 +520,21 @@ var vm = new Vue({
         },
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
+            this.caseAna.deptIds = '';
+            this.caseAna.deptName = '';
             for(var i=0;i<this.multipleDeptSelection.length;i++){
                 if (!this.caseAna.deptIds) {
                     this.caseAna.deptIds=this.multipleDeptSelection[i].id;
                     this.caseAna.deptName=this.multipleDeptSelection[i].orgName;
                 }else{
-                    this.caseAna.deptIds+=","+this.multipleDeptSelection[i].id;
-                    this.caseAna.deptName+=","+this.multipleDeptSelection[i].orgName;
+                    if(this.caseAna.deptIds.indexOf(this.multipleDeptSelection[i].id)!==-1) {
+                        this.caseAna.deptIds+=","+this.multipleDeptSelection[i].id;
+                        this.caseAna.deptName+=","+this.multipleDeptSelection[i].orgName;
+                    }
                 }
             }
+            this.caseAna.deptIds = delFirstStr(this.caseAna.deptIds,',');
+            this.caseAna.deptName = delFirstStr(this.caseAna.deptName,',');
             this.dialogDept=false;
         },
         cancelDept: function () {

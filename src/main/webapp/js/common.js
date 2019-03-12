@@ -4,7 +4,8 @@
  * Description:公共方法
  */
 var baseURL = contextPath + "/";
-var colorList = ['#52c9e7','#3e98e8','#81bdd8','#5ebd5c','#feae24','#f97a1f','#f26443','#b97deb','#7e72f2','#4f7ee9'];
+var colorList = ['#52c9e7', '#3e98e8', '#81bdd8', '#5ebd5c', '#feae24', '#f97a1f', '#f26443', '#b97deb', '#7e72f2', '#4f7ee9'];
+
 //上传图片和PDF格式、大小验证
 function checkFile(file) {
     var index1 = file.name.lastIndexOf(".");
@@ -111,9 +112,10 @@ function getBreadcrumb(menuId) {
     });
     return breadArr;
 }
+
 function getUser() {
     //获取当前登陆人信息
-    var user ={userName:"",userId:""};
+    var user = {userName: "", userId: ""};
     $.ajax({
         type: "POST",
         url: baseURL + "sys/getuser",
@@ -148,28 +150,68 @@ function ArabiSimplified(Num) {
         tmpnewchar = ""
         perchar = part[0].charAt(i);
         switch (perchar) {
-            case "0":  tmpnewchar = "零" + tmpnewchar;break;
-            case "1": tmpnewchar = "一" + tmpnewchar; break;
-            case "2": tmpnewchar = "二" + tmpnewchar; break;
-            case "3": tmpnewchar = "三" + tmpnewchar; break;
-            case "4": tmpnewchar = "四" + tmpnewchar; break;
-            case "5": tmpnewchar = "五" + tmpnewchar; break;
-            case "6": tmpnewchar = "六" + tmpnewchar; break;
-            case "7": tmpnewchar = "七" + tmpnewchar; break;
-            case "8": tmpnewchar = "八" + tmpnewchar; break;
-            case "9": tmpnewchar = "九" + tmpnewchar; break;
+            case "0":
+                tmpnewchar = "零" + tmpnewchar;
+                break;
+            case "1":
+                tmpnewchar = "一" + tmpnewchar;
+                break;
+            case "2":
+                tmpnewchar = "二" + tmpnewchar;
+                break;
+            case "3":
+                tmpnewchar = "三" + tmpnewchar;
+                break;
+            case "4":
+                tmpnewchar = "四" + tmpnewchar;
+                break;
+            case "5":
+                tmpnewchar = "五" + tmpnewchar;
+                break;
+            case "6":
+                tmpnewchar = "六" + tmpnewchar;
+                break;
+            case "7":
+                tmpnewchar = "七" + tmpnewchar;
+                break;
+            case "8":
+                tmpnewchar = "八" + tmpnewchar;
+                break;
+            case "9":
+                tmpnewchar = "九" + tmpnewchar;
+                break;
         }
         switch (part[0].length - i - 1) {
-            case 0: tmpnewchar = tmpnewchar; break;
-            case 1: if (perchar != 0) tmpnewchar = tmpnewchar + "十"; break;
-            case 2: if (perchar != 0) tmpnewchar = tmpnewchar + "百"; break;
-            case 3: if (perchar != 0) tmpnewchar = tmpnewchar + "千"; break;
-            case 4: tmpnewchar = tmpnewchar + "万"; break;
-            case 5: if (perchar != 0) tmpnewchar = tmpnewchar + "十"; break;
-            case 6: if (perchar != 0) tmpnewchar = tmpnewchar + "百"; break;
-            case 7: if (perchar != 0) tmpnewchar = tmpnewchar + "千"; break;
-            case 8: tmpnewchar = tmpnewchar + "亿"; break;
-            case 9: tmpnewchar = tmpnewchar + "十"; break;
+            case 0:
+                tmpnewchar = tmpnewchar;
+                break;
+            case 1:
+                if (perchar != 0) tmpnewchar = tmpnewchar + "十";
+                break;
+            case 2:
+                if (perchar != 0) tmpnewchar = tmpnewchar + "百";
+                break;
+            case 3:
+                if (perchar != 0) tmpnewchar = tmpnewchar + "千";
+                break;
+            case 4:
+                tmpnewchar = tmpnewchar + "万";
+                break;
+            case 5:
+                if (perchar != 0) tmpnewchar = tmpnewchar + "十";
+                break;
+            case 6:
+                if (perchar != 0) tmpnewchar = tmpnewchar + "百";
+                break;
+            case 7:
+                if (perchar != 0) tmpnewchar = tmpnewchar + "千";
+                break;
+            case 8:
+                tmpnewchar = tmpnewchar + "亿";
+                break;
+            case 9:
+                tmpnewchar = tmpnewchar + "十";
+                break;
         }
         newchar = tmpnewchar + newchar;
     }
@@ -190,18 +232,18 @@ function ArabiSimplified(Num) {
     }
     return newchar;
 }
+
 // 兼容ie的动画
-function animation(_function,fps){
+function animation(_function, fps) {
     var now;
     var then = Date.now();
-    var interval = 1000/fps;
+    var interval = 1000 / fps;
     var delta;
     window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
     function tick() {
         console.log("tick")
-        if(window.requestAnimationFrame)
-        {
+        if (window.requestAnimationFrame) {
             requestAnimationFrame(tick);
             now = Date.now();
             delta = now - then;
@@ -210,13 +252,12 @@ function animation(_function,fps){
                 then = now - (delta % interval);
                 _function(); // ... Code for Drawing the Frame ...
             }
-        }
-        else
-        {
+        } else {
             setTimeout(tick, interval);
             _function();
         }
     }
+
     tick()
 }
 
@@ -234,8 +275,7 @@ function animation(_function,fps){
  * 返回值:正则表达式
  */
 function regularExp(type) {
-    switch(type)
-    {
+    switch (type) {
         case "phone":
             return "^1[345789]\\d{9}$";
             break;
@@ -260,6 +300,7 @@ function regularExp(type) {
         default:
     }
 }
+
 // ECharts - 绘制图表
 function echartsOption(myChart, option) {
     // this[chartName].clear()
@@ -269,22 +310,24 @@ function echartsOption(myChart, option) {
     })
     // this[chartName].hideLoading() // Chart提示关闭
 }
+
 // 到首页
 function toHome() {
     parent.location.reload()
 }
+
 // 数组去重
-function unique(arr){
+function unique(arr) {
 
     var res = [arr[0]];
 
-    for(var i=1;i<arr.length;i++){
+    for (var i = 1; i < arr.length; i++) {
 
         var repeat = false;
 
-        for(var j=0;j<res.length;j++){
+        for (var j = 0; j < res.length; j++) {
 
-            if(arr[i] == res[j]){
+            if (arr[i] == res[j]) {
 
                 repeat = true;
 
@@ -294,7 +337,7 @@ function unique(arr){
 
         }
 
-        if(!repeat){
+        if (!repeat) {
 
             res.push(arr[i]);
 
@@ -305,29 +348,40 @@ function unique(arr){
     return res;
 
 }
+
 // 冒泡排序
 function arrSort(arr) {
     var t;
-    for(var i=0;i<arr.length;i++){
-        for(var j=i+1;j<arr.length;j++){
-            if(arr[i]>arr[j]){
-                t=arr[i];
-                arr[i]=arr[j];
-                arr[j]=t;
+    for (var i = 0; i < arr.length; i++) {
+        for (var j = i + 1; j < arr.length; j++) {
+            if (arr[i] > arr[j]) {
+                t = arr[i];
+                arr[i] = arr[j];
+                arr[j] = t;
             }
         }
     }
     return arr
 }
 
-Array.prototype.remove = function(val) {
+Array.prototype.remove = function (val) {
     var index = this.indexOf(val);
     if (index > -1) {
         this.splice(index, 1);
     }
 };
+
 // 去除百分比符号
 function clearPercentageSymbol(str) {
     str = str.replace(/%/g, "");//取消字符串中出现的所有逗号
     return str;
+}
+
+//去除头一个字符（如果他是某个字符）
+function delFirstStr(str, del) {
+    console.log(typeof str);
+    if (str.substr(0, 1) == del) {
+        str = str.substr(1)
+    }
+    return str
 }
