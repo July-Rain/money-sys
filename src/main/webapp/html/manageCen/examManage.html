@@ -352,7 +352,7 @@
             </el-form>
 
             <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
-                <el-button @click="closeDia">取 消</el-button>
+                <el-button @click="closeDia">取消</el-button>
                 <el-button v-if="!isEdit" type="primary" @click="save('form')">保存</el-button>
             </div>
         </el-dialog>
@@ -360,7 +360,7 @@
         <el-dialog title="添加选项信息" :visible.sync="addConfigFlag">
             <el-row>
                 <el-col :span="24">
-                    <el-form :model="answer" label-width="100px" class="demo-sysMenu" size="mini" :rules="rules3" ref="answer">
+                    <el-form :model="answer" label-width="120px" class="demo-sysMenu" size="mini" :rules="rules3" ref="answer">
                         <el-form-item label="选项描述：" prop="questionContent">
                             <el-input v-model="answer.questionContent" placeholder="选项描述" type="input"></el-input>
                         </el-form-item>
@@ -380,13 +380,15 @@
                             </el-radio-group>
                         </el-form-item>
 
-                        <el-form-item>
-                            <el-button type="primary" @click="sure('answer')">确定</el-button>
-                        </el-form-item>
+
 
                     </el-form>
                 </el-col>
             </el-row>
+            <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
+                <el-button @click="addConfigFlag = false">取消</el-button>
+                <el-button type="primary" @click="sure('answer')">保存</el-button>
+            </div>
         </el-dialog>
     </div>
 </div>
