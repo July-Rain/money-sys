@@ -63,12 +63,10 @@ var vm = new Vue({
     },
     methods: {
         timeout: function (time) {
-            console.info(time)
             if(time === null){
                 return true
             }else {
                 var flag = new Date(Date.parse(time.replace(/-/g,  "/"))).getTime() > new Date().getTime();
-                console.info(flag)
                 return flag;
             }
         },

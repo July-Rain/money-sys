@@ -6,11 +6,13 @@ import java.util.Map;
 
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
+import com.lawschool.base.Page;
 import com.lawschool.beans.Answer;
 import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.exam.ExamQueConfig;
 import com.lawschool.form.*;
 import com.lawschool.service.AnswerService;
+import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.exam.ExamQueConfigService;
 import com.lawschool.service.exam.NewExamConfigService;
 import com.lawschool.service.system.DictionService;
@@ -49,7 +51,7 @@ public class ExamConfigController extends AbstractController {
     private AnswerService answerService;
 
     @Autowired
-    private ExamQueConfigService examQueConfigService;
+    private TestQuestionService testQuestionService;
 
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params) {
@@ -181,5 +183,32 @@ public class ExamConfigController extends AbstractController {
     public Result info(@PathVariable("id") String id) {
         List<Answer> list = answerService.getAnswerByQid(id);
         return Result.ok().put("data", list);
+    }
+
+    @RequestMapping(value = "/getQueList", method = RequestMethod.GET)
+    public Result getQueList(@RequestParam Map<String, Object> params, @RequestParam("ids[]")List lists) {
+
+        String typeId = (String) params.get("typeId");
+        String questionDifficulty = (String) params.get("questionDifficulty");
+        String questionType = (String) params.get("questionType");
+        String queContent = (String) params.get("comContent");
+        String isEnble = (String) params.get("isEnble");
+        // List<String> ids = (List<String>) params.get("ids");
+
+        TestQuestions testQuestions = new TestQuestions();
+        testQuestions.setTypeId(typeId);
+        testQuestions.setQuestionDifficulty(questionDifficulty);
+        testQuestions.setQuestionType(questionType);
+        testQuestions.setComContent(queContent);
+        testQuestions.setIsEnble(isEnble);
+        testQuestions.setIds(lists);
+
+        Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), testQuestions);
+        List<TestQuestions> list = page.getList();
+        for(TestQuestions tes : list){
+            tes.setAnswerList(answerService.getAnswerByQid(tes.getId()));
+        }
+        page.setList(list);
+        return Result.ok().put("page", page);
     }
 }

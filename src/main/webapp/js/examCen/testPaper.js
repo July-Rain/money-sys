@@ -255,7 +255,6 @@ var vm = new Vue({
             this.consumedTime();
             vm.userAnswerForm.answerForm = [];
             vm.userAnswerForm.remainingExamTime = vm.lefttime/60000;
-
             for (var i = 0; i < vm.sinChoicList.length; i++) {
                 var obj = {
                     qId: vm.sinChoicList[i].id,

@@ -34,7 +34,8 @@ public interface UserExamDao extends AbstractDao<UserExam> {
 
     int getListCount(Map<String, Object> params);
 
-    void updateRemainTimeById(@Param("remainingExamTime") Double remainingExamTime,@Param("id")  String id);
+    void updateRemainTimeById(@Param("remainingExamTime") Double remainingExamTime,
+                              @Param("examStatus") String examStatus,@Param("id")  String id);
 
     CopyOnWriteArrayList<String> getListByExamConId(String examConfigId);
 

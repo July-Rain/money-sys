@@ -225,7 +225,8 @@ var vm = new Vue({
                 limit: 10,
                 count: 0,
                 queContent:'',
-                typeId:''
+                typeId:'',
+                ids:[]
             },
             queNum :0,
             queScore:0,
@@ -240,7 +241,14 @@ var vm = new Vue({
             },
             handleType :'',
             saveUserTableData: [],//用于人员回显表格的对象  --回显需加
-            optionIndex:['A','B','C','D','E','F']
+            optionIndex:['A','B','C','D','E','F'],
+            subAllScore:0,
+            saveButton:false,
+            sinMultIds:[],
+            mulMultIds:[],
+            judgeMultIds:[],
+            subMultIds:[],
+            genRandQue : false,
         };
     },
 
@@ -362,7 +370,7 @@ var vm = new Vue({
             }
        },
         save : function(formName){
-
+                vm.saveButton = true;
                 this.$refs[formName].validate(function (valid) {
                     if (valid) {
                         vm.examConfig.qfList = vm.previewList;
@@ -390,11 +398,7 @@ var vm = new Vue({
                                     }else {
                                         vm.setExam = true;
                                     }
-                                    /*window.parent.vm.dialogAdd = false;*/
-                                   /* if (operate=='2'){
-                                        window.parent.vm.dialogEdit = false;
-                                    }*/
-
+                                    vm.saveButton = false;
                                     window.parent.vm.reload();
                                 } else {
                                     alert(result.msg);
@@ -402,6 +406,7 @@ var vm = new Vue({
                             }
                         });
                     } else {
+                        vm.saveButton = false;
                         return false;
                     }
                 })
@@ -483,12 +488,9 @@ var vm = new Vue({
         },
         CompanyClick: function(data){
             this.examConfig.organizedOrgCode = data.fullName;
-            //data.fullName
-            //data.id
         },
         saveCompany: function(){
             this.dialogCompany = false;
-            
         },
         //部门人员控件中点击事件
         handleDeptNodeClick: function (data) {
@@ -497,7 +499,6 @@ var vm = new Vue({
         },
         handleCheckChange: function (data, checked, indeterminate) {
             console.log(data);
-
         },
         handleSelectionChange(val) {
             //选择人员信息
@@ -571,17 +572,7 @@ var vm = new Vue({
                 this.$refs.userTable.clearSelection();
             }
         },
-        closeDia: function () {
-            this.randomQuesModal = false;
-            // vm.reload();
-        },
-        closeSelf: function() {
-            this.autonomyQuesModal = false;
-        },
-        // 多选
-        selectionChangeHandle: function (val) {
-            this.dataListSelections = val;
-        },
+
         <!-- 自主出题开始-->
         quehandleSizeChange: function (val) {
             this.queformInline.pageSize = val;
@@ -597,22 +588,18 @@ var vm = new Vue({
                 this.randomQuesModal = true
                 this.getDict();
             }else {
-                this.setExam = true
+                this.setExam = true;
+                this.dataListSelections = [];
             }
         },
         handleQueSelectionChange(val) {
-            if(val[0].questionType === '10004'){
-                this.sinMultipleSelection = val;
-            }else if (val[0].questionType === '10005'){
-                this.mulMultipleSelection = val;
-            }else if(val[0].questionType === '10006'){
-                this.judgeMultipleSelection = val;
-            }else {
-                this.subMultipleSelection = val;
-            }
+            this.dataListSelections = val;
         },
         handleChange: function () {
 
+        },
+        cancleSetQue : function(){
+            this.setQuestion = false;
         },
         addQuestion:function (type){
             this.setQuestion = true;
@@ -625,16 +612,21 @@ var vm = new Vue({
         },
         //根据下标删除题目
         delSinMul:function(index){
+            this.sinMultIds.splice(index,1)
             this.sinMultipleSelection.splice(index,1);
         },
         delMulMul:function(index){
+            this.mulMultIds.splice(index,1)
             this.mulMultipleSelection.splice(index,1);
         },
         delJudMul:function(index){
+            this.judgeMultIds.splice(index,1)
             this.judgeMultipleSelection.splice(index,1);
         },
         delSubMul:function(index){
+            this.subMultIds.splice(index,1)
             this.subMultipleSelection.splice(index,1);
+            this.calaSubAllScore();
         },
         getDict : function(){
             $.ajax({
@@ -652,9 +644,25 @@ var vm = new Vue({
             });
         },
         queReload : function () {
+            console.info("vm.mulMultIds=",vm.mulMultIds)
+            var allIds = [];
+            vm.queformInline.ids=[];
+            allIds = allIds.concat(vm.sinMultIds).concat(vm.mulMultIds).concat(vm.judgeMultIds).concat(vm.subMultIds);
+            for (var i =0 ;i< allIds.length; i++){
+                if(vm.queformInline.ids.indexOf(allIds[i])==-1){
+                    vm.queformInline.ids.push(allIds[i]);
+                }
+            }
+            var url = '';
+            if (vm.queformInline.ids.length<=0){
+                url = 'testQuestion/list';
+            }else {
+                url = 'exam/config/getQueList';
+            }
+            console.info(JSON.stringify(vm.queformInline.ids))
             $.ajax({
                 type: "GET",
-                url: baseURL + "testQuestion/list",
+                url: baseURL + url,
                 dataType: "json",
                 data: vm.queformInline,
                 success: function (result) {
@@ -670,8 +678,32 @@ var vm = new Vue({
             });
         },
         getQue : function () {
+            if (this.dataListSelections.length>0){
+                if(this.dataListSelections[0].questionType === '10004'){
+                    this.sinMultipleSelection = this.sinMultipleSelection.concat(this.dataListSelections);
+                    for (var i =0; i<this.dataListSelections.length ; i++){
+                        this.sinMultIds.push(this.dataListSelections[i].id);
+                    }
+                }else if (this.dataListSelections[0].questionType === '10005'){
+                    this.mulMultipleSelection = this.mulMultipleSelection.concat(this.dataListSelections) ;
+                    for (var i =0; i<this.dataListSelections.length ; i++){
+                        this.mulMultIds.push(this.dataListSelections[i].id);
+                    }
+                }else if(this.dataListSelections[0].questionType === '10006'){
+                    this.judgeMultipleSelection = this.judgeMultipleSelection.concat(this.dataListSelections);
+                    for (var i =0; i<this.dataListSelections.length ; i++){
+                        this.judgeMultIds.push(this.dataListSelections[i].id);
+                    }
+                }else {
+                    this.subMultipleSelection = this.subMultipleSelection.concat(this.dataListSelections);
+                    for (var i =0; i<this.dataListSelections.length ; i++){
+                        this.subMultIds.push(this.dataListSelections[i].id);
+                    }
+                }
+
+            }
+            this.calaSubAllScore();
             this.setQuestion = false;
-            console.info(vm.multipleSelection);
         },
         closeAutoQue:function(){
             this.setExam = false;
@@ -853,9 +885,21 @@ var vm = new Vue({
                             if (result.code === 0){
                                 vm.previewExam = true;
                                 vm.sinMultipleSelection = result.sinList;
+                                for (var i = 0 ; i< vm.sinMultipleSelection.length; i++){
+                                    vm.sinMultIds.push(vm.sinMultipleSelection[i].id);
+                                }
                                 vm.mulMultipleSelection = result.mulList;
+                                for (var i = 0 ; i< vm.mulMultipleSelection.length; i++){
+                                    vm.mulMultIds.push(vm.mulMultipleSelection[i].id);
+                                }
                                 vm.judgeMultipleSelection = result.judList;
+                                for (var i = 0 ; i< vm.judgeMultipleSelection.length; i++){
+                                    vm.judgeMultIds.push(vm.judgeMultipleSelection[i].id);
+                                }
                                 vm.subMultipleSelection = result.subList;
+                                for (var i = 0 ; i< vm.subMultipleSelection.length; i++){
+                                    vm.subMultIds.push(vm.subMultipleSelection[i].id);
+                                }
                             }else{
                                 alert(result.msg);
                             }
@@ -868,6 +912,7 @@ var vm = new Vue({
           this.previewExam = false;
         },
         genRandQueAfterPreview : function(){
+            vm.genRandQue = true;
             vm.examConfigForm.id = vm.examConfig.id;
             vm.examConfigForm.examQueConfigList = vm.randomQuesData;
             vm.examConfigForm.mustQueList = vm.saveChangeQuesList;
@@ -885,6 +930,7 @@ var vm = new Vue({
                             type: 'success'
                         });
                         vm.randomQuesModal = false;
+                        vm.genRandQue = false;
                         if (operate==0){
                             window.parent.vm.dialogAdd = false;
                         }
@@ -894,14 +940,18 @@ var vm = new Vue({
             })
         },
         handleSave:function(randomQuesData){
+            vm.genRandQue = true;
+            console.info(randomQuesData);
             for(i=0;i<randomQuesData.length;i++){
                 randomQuesData[i].questionScore = randomQuesData[i].questionNumber*randomQuesData[i].everyQuestionScore;
             }
+            console.info(randomQuesData);
             vm.randomQuesData = randomQuesData;
             if (randomQuesData.length<=0||randomQuesData==''){
                 vm.$alert('请配置随机出题规则', '操作失败', {
                     confirmButtonText: '确定',
                     callback: function () {
+                        vm.genRandQue = false;
                         return false;
                     }
                 });
@@ -916,6 +966,7 @@ var vm = new Vue({
                     vm.$alert( msg, '操作失败', {
                         confirmButtonText: '确定',
                         callback: function () {
+                            vm.genRandQue = false;
                             return false;
                         }
                     });
@@ -923,6 +974,7 @@ var vm = new Vue({
                     vm.$alert( '配置规则总分应与试题总分相等', '操作失败', {
                         confirmButtonText: '确定',
                         callback: function () {
+                            vm.genRandQue = false;
                             return false;
                         }
                     });
@@ -940,6 +992,7 @@ var vm = new Vue({
                             if (result.code === 0){
                                 alert('试题配置完成');
                                 vm.randomQuesModal = false;
+                                vm.genRandQue = false;
                                 if (operate==0){
                                     window.parent.vm.dialogAdd = false;
                                 }
@@ -964,18 +1017,22 @@ var vm = new Vue({
                     case '10004':
                         vm.removeAndReplace(vm.sinMultipleSelection[_index].id,_saveQuse);
                         vm.sinMultipleSelection[_index] = _saveQuse;
+                        vm.sinMultIds[_index] = _saveQuse.id;
                         break;
                     case '10005':
                         vm.removeAndReplace(vm.mulMultipleSelection[_index].id,_saveQuse);
                         vm.mulMultipleSelection[_index] = _saveQuse;
+                        vm.mulMultIds[_index] = _saveQuse.id;
                         break;
                     case '10006':
                         vm.removeAndReplace(vm.judgeMultipleSelection[_index].id,_saveQuse);
                         vm.judgeMultipleSelection[_index] = _saveQuse;
+                        vm.judgeMultIds[_index] = _saveQuse.id;
                         break;
                     case '10007':
                         vm.removeAndReplace(vm.subMultipleSelection[_index].id,_saveQuse);
                         vm.subMultipleSelection[_index] = _saveQuse;
+                        vm.subMultIds[_index] = _saveQuse.id;
                         break;
                 }
                 vm.changeQuestionDialog = false;
@@ -996,29 +1053,13 @@ var vm = new Vue({
             if (handleType=='view'){
                 window.parent.vm.dialogView = false
             }
+        },
+        calaSubAllScore : function () {
+            vm.subAllScore = 0;
+            for( var i=0;i<vm.subMultipleSelection.length;i++){
+                vm.subAllScore += vm.subMultipleSelection[i].perScore;
+            }
         }
 
-    },
-    filters: {
-        sinMultScoreFn: function (_length) {
-            if(vm.sinMultScore ){
-                return _length * vm.sinMultScore
-            }
-        },
-        mulMultScoreFn: function (length) {
-            if(vm.mulMultScore || vm.mulMultScore === 0){
-                return length * vm.mulMultScore
-            }
-        },
-        judgeMultScoreFn: function (_length) {
-            if(vm.judgeMultScore || vm.judgeMultScore ===0){
-                return _length * vm.judgeMultScore
-            }
-        },
-        subMultScoreFn: function (_length) {
-            if(vm.subMultScore || vm.subMultScore ===0){
-                return _length * vm.subMultScore
-            }
-        }
     }
 });
