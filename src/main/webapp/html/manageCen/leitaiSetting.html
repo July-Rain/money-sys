@@ -308,12 +308,12 @@
 
             <div class="form_area">
 
-                <el-form label-width="100px" class="demo-msg" :model="matchSetting"
+                <el-form label-width="100px" class="demo-msg" :model="matchSetting" :rules="rules" ref="matchSetting"
                          size="mini">
                     <div class="gray_area">
                         <el-row>
                             <el-col :span="12">
-                                <el-form-item label="总题数量">
+                                <el-form-item label="总题数量" prop="topicNum">
                                     <el-select @change="onselect" v-model="matchSetting.topicNum"
                                                size="mini"
                                                style="margin-left: 20px;"
@@ -328,10 +328,10 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
-                                <el-form-item label="统一配置">
+                                <el-form-item label="统一配置" prop="uniformRules">
                                     <el-select v-model="matchSetting.uniformRules"
                                                @change="onselectuniformRules(matchSetting)" placeholder="是否统一配置"
-                                               clearable>
+                                               >
                                         <el-option label="是" value="1"></el-option>
                                         <el-option label="否" value="0"></el-option>
                                     </el-select>
@@ -353,7 +353,7 @@
                         <!--</el-row>-->
                         <el-row>
                             <el-col :span="12">
-                                <el-form-item label="答题时间">
+                                <el-form-item label="答题时间"  prop="answerTime">
                                     <el-time-select  v-model="matchSetting.answerTime"
                                             :picker-options="{
                                         start: '00:05',
@@ -429,7 +429,7 @@
 
                     </div>
                     <el-form-item>
-                        <el-button type="primary" @click="saveOrUpdate()">保存</el-button>
+                        <el-button type="primary" @click="saveOrUpdate('matchSetting')">保存</el-button>
                         <el-button @click="closeDia">取消</el-button>
                     </el-form-item>
                 </el-form>
