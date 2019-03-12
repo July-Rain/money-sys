@@ -1,4 +1,4 @@
-var menuId =getUrlParam('id');
+var menuId = getUrlParam('id');
 var vm = new Vue({
     el: '#app',
     data: {
@@ -15,13 +15,12 @@ var vm = new Vue({
             credits: {}, // 获得学分
             recruit: {}, // 闯关竞赛
             competitionOnline: {}, // 在线比武
-            match: {} // 擂台赛
+            match: {}, // 擂台赛
         }
-
     },
     created: function () {
 
-        this.$nextTick(function () {
+        /*this.$nextTick(function () {
             //加载菜单
             $.ajax({
                 type: "POST",
@@ -43,12 +42,34 @@ var vm = new Vue({
         })
         this.$nextTick(function () {
             this.reload();
-        })
-
+        })*/
+    },
+    mounted: function () {
+        /*this.$nextTick(function () {
+            var limitButtons = document.getElementsByClassName('limit');
+            for (var i=0;i<limitButtons.length;i++) {
+                limitButtons[i].onclick = vm.addIfs;
+            }
+        })*/
     },
     methods: {
-
-
+        addIfs: function (e) {
+            var parent = e.target.parentNode;
+            var dropdownGro = parent.firstChild.cloneNode(true);
+            parent.insertBefore(dropdownGro, e.target);
+            parent.getElementsByClassName('icon-tianjia')[0].onclick = vm.addLimitations;
+            e.target.remove();
+        },
+        addLimitations: function (e) {
+            var parent = e.target.parentNode.parentNode.parentNode;
+            var examData = e.target.parentNode.parentNode.cloneNode(true);
+            examData.getElementsByClassName('icon-tianjia')[0].onclick = vm.addLimitations;
+            if (examData.getElementsByClassName('limit')) {
+                console.log(examData.getElementsByClassName('limit'))
+                examData.getElementsByClassName('limit').onclick = vm.addIfs;
+            }
+            parent.appendChild(examData);
+        },
 
         /*reload: function () {
             $.ajax({
