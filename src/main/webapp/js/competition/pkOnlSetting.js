@@ -29,7 +29,6 @@ var vm = new Vue({
                 {required: true, message: '请选择', trigger: 'blur'},
 
             ],
-
         },
         dialogConfig: false,//table弹出框可见性
         dialog2:false,//查看小关详情弹出框
