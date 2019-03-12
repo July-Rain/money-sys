@@ -206,7 +206,7 @@ var vm = new Vue({
         onselect: function (num) {
             //点完选择大关触发事件
             // alert(vId);
-
+            this.nowLevel = 1;
 
             console.info(num);
             vm.daguanArray = [];
