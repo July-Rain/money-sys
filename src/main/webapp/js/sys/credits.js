@@ -68,6 +68,7 @@ var vm = new Vue({
                 console.log(examData.getElementsByClassName('limit'))
                 examData.getElementsByClassName('limit').onclick = vm.addIfs;
             }
+
             parent.appendChild(examData);
         },
 
