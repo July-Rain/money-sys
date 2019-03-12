@@ -484,7 +484,7 @@ var vm = new Vue({
                     this.stuMedia.deptIds = this.multipleDeptSelection[i].id;
                     this.stuMedia.deptName = this.multipleDeptSelection[i].orgName;
                 } else {
-                    if(this.stuMedia.deptIds.indexOf(this.multipleDeptSelection[i].id)!==-1){
+                    if(this.stuMedia.deptIds.indexOf(this.multipleDeptSelection[i].id)===-1){
                         this.stuMedia.deptIds += "," + this.multipleDeptSelection[i].id;
                         this.stuMedia.deptName += "," + this.multipleDeptSelection[i].orgName;
                     }

@@ -457,7 +457,7 @@ var vm = new Vue({
                     this.learnTasks.deptIds=this.multipleDeptSelection[i].id;
                     this.learnTasks.deptName=this.multipleDeptSelection[i].orgName;
                 }else{
-                    if(this.learnTasks.deptIds.indexOf(this.multipleDeptSelection[i].id)!==-1) {
+                    if(this.learnTasks.deptIds.indexOf(this.multipleDeptSelection[i].id)===-1) {
                         this.learnTasks.deptIds+=","+this.multipleDeptSelection[i].id;
                         this.learnTasks.deptName+=","+this.multipleDeptSelection[i].orgName;
                     }
