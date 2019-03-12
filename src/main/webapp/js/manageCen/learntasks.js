@@ -40,7 +40,8 @@ var vm = new Vue({
             taskClass:"",
             policeclass:"",
             startTime:"",
-            endTime:""
+            endTime:"",
+            isSelf:menu
         },
         tableData: [],//表格数据
         visible: false,
@@ -58,7 +59,8 @@ var vm = new Vue({
             endTime:"",
             taskContentList:[],
             taskClass:"",
-            policeclassOption:""
+            policeclassOption:"",
+            isSelf:menu
 
         },
         rules: {//表单验证规则
@@ -230,7 +232,6 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    debugger
                     var url = vm.learnTasks.id ? "learntasks/update?menuFrom="+vm.menuForm : "learntasks/insert?menuFrom="+vm.menuForm;
                     var deptArr = vm.learnTasks.deptIds?vm.learnTasks.deptIds.split(","):[];
                     var userArr = vm.learnTasks.userIds?vm.learnTasks.userIds.split(","):[];
@@ -289,7 +290,8 @@ var vm = new Vue({
                 endTime:"",
                 taskContentList:[],
                 taskClass:"",
-                policeclassOption:""
+                policeclassOption:"",
+                isSelf:menu
             };
             this.title = "新增学习任务";
             this.dialogLearnTask = true;
@@ -620,7 +622,6 @@ var vm = new Vue({
             this.dialogLearnConTask=false;
         },
         confimTaskCom:function(){
-            debugger
             this.learnTasks.taskContent="";
             this.dialogLearnConTask=false;
             //遍历最终的人员信息

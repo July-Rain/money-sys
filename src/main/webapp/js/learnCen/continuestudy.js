@@ -150,13 +150,12 @@ var vm = new Vue({
                 data: vm.queryCond,
                 success: function (result) {
                     if (result.code == 0) {
-                        debugger
                         vm.infoData=result.page.list;
                         vm.infoFlag=result.page.remarks;
                         if(vm.queryCond.infoType=='video'){
                             for(var i=0;i<vm.infoData.length;i++){
                                 vm.infoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.infoData[i].accId;
-                                if(vm.infoData[i].videoPicAcc){
+                                if(vm.infoData[i].videoPicId){
                                     vm.infoData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.infoData[i].videoPicId;
                                 }else{
                                     vm.infoData[i].videoPicAccUrl="http://temp.im/640x260";
@@ -243,7 +242,7 @@ var vm = new Vue({
                         }
                     }
                 });
-                this.insertStuRecord(row.id);
+                this.insertStuRecord(row.id,"law");
             }else if(vm.infoFlag=='stu_pic'){
 
                 this.countStu(row.id);
@@ -252,11 +251,11 @@ var vm = new Vue({
                 this.countCase(row.id);
             }
         },
-        insertStuRecord: function (id) {
+        insertStuRecord: function (id,type) {
             //请求后台修改播放量 记录学习记录
             $.ajax({
                 type: "POST",
-                url: baseURL +  "sturecord/insertRecord?stuId="+id+"&stuType="+vm.infoFlag+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,
+                url: baseURL +  "sturecord/insertRecord?stuId="+id+"&stuType="+type+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -267,7 +266,13 @@ var vm = new Vue({
                 }
             });
         },
-        countStu:function (id) {
+        countStu:function (id,type) {
+            var stuType="";
+            if("stu_pic_data"==type){
+                stuType="stu_pic";
+            }else if("case_pic_data"==flag){
+                stuType="case_pic";
+            }
             $.ajax({
                 type: "POST",
                 url: baseURL + 'stumedia/info?id=' + id,
@@ -284,7 +289,7 @@ var vm = new Vue({
             //请求后台修改播放量 记录学习记录
             $.ajax({
                 type: "POST",
-                url: baseURL +  "stumedia/updateCount?stuId="+id+"&stuType="+vm.infoFlag+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,
+                url: baseURL +  "stumedia/updateCount?stuId="+id+"&stuType="+stuType+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -324,10 +329,20 @@ var vm = new Vue({
             });
         },
         onPlay:function (id,flag) {
+            var stuType="";
+            if("stu_video_data"==flag){
+                stuType="stu_video";
+            }else if("case_video_data"==flag){
+                stuType="case_video";
+            }else if("stu_audio_data"==flag){
+                stuType="stu_audio";
+            }else if("case_audio_data"==flag){
+                stuType="case_audio";
+            }
             //请求后台修改播放量 记录学习记录
             $.ajax({
                 type: "POST",
-                url: baseURL + "caseana/updateCount?stuId="+id+"&stuType="+flag+"&stuFrom=learntask",
+                url: baseURL + "stumedia/updateCount?stuId="+id+"&stuType="+stuType+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -357,7 +372,7 @@ var vm = new Vue({
             //请求后台记录观看时长
             $.ajax({
                 type: "POST",
-                url: baseURL + "caseana/countTime?stuId="+id+"&stuFrom=learntask&playTime="+temp+"&finishFlag="+finishFlag,
+                url: baseURL + "stumedia/countTime?stuId="+id+"&stuFrom=learntask&playTime="+temp+"&finishFlag="+finishFlag,
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -375,6 +390,10 @@ var vm = new Vue({
 
         },//点击事件
         changeType:function () {
+            this.reload();
+        },
+        closeLawDia:function () {
+            this.dialogLaw=false;
             this.reload();
         }
     }

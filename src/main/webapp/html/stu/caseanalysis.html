@@ -267,7 +267,7 @@
                         <template v-if="caseAna.contentType=='audio'">
 
                             <el-form-item label="音频上传：" prop="caseContent">
-                                <audio v-if="caseAna.caseContent !='' && videoFlag == false" :src="caseAna.caseContentUrl" class="avatar" controls="controls" >您的浏览器不支持音频播放</audio>
+                                <audio id="audio" v-if="caseAna.caseContent !='' && videoFlag == false" :src="caseAna.caseContentUrl" class="avatar" controls="controls" >您的浏览器不支持音频播放</audio>
                                 <i v-else-if="caseAna.caseContent =='' && videoFlag == false" class="iconfont icon-yinpin"></i>
                                 <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
 
@@ -297,7 +297,7 @@
                                 </el-upload>
                             </el-form-item>
                             <el-form-item label="视频上传：" prop="caseContent">
-                                <video id="video-uploaded" v-show="caseAna.caseContent !='' && videoFlag == false"
+                                <video  id="video-uploaded" v-show="caseAna.caseContent !='' && videoFlag == false"
                                        :src="caseAna.caseContentUrl" class="avatar video-js"
                                        autoplay controls="controls">您的浏览器不支持视频播放</video>
                                 <i v-if="caseAna.caseContent =='' && videoFlag == false" class="iconfont icon-shipin"></i>

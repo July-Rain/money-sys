@@ -100,7 +100,12 @@
                                         width="180"
                                         header-align="center"
                                         align="center"
+
                                 >
+                                    <template slot-scope="scope">
+                                        <p v-if="scope.row.issueTime" >{{ scope.row.issueTime }}</p>
+                                        <p v-if="!scope.row.issueTime" >暂无</p>
+                                    </template>
                                 </el-table-column>
 
                                 <el-table-column

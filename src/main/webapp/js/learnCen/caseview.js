@@ -9,7 +9,7 @@ var vm = new Vue({
         caseData: [],//视频列表
         navData: [],//导航
         formInline: { // 搜索表单
-            contentType:"1",
+            contentType:"pic",
             currPage: 1,
             pageSize: 10,
             totalCount:0,
@@ -35,13 +35,13 @@ var vm = new Vue({
         lawLevelOption:[],
         caseProcessOption:[],
         contentTypeOption:[{
-            code:'1',
+            code:'pic',
             value:'图文'
         },{
-            code:'2',
+            code:'audio',
             value:'音频'
         },{
-            code:'3',
+            code:'video',
             value:'视频'
         }],
         dialogCaseAna:false,

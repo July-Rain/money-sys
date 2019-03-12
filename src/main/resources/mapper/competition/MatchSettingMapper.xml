@@ -31,7 +31,8 @@
             LAW_MATCH_SETTING.WIN_REWARD as "winReward",
             LAW_MATCH_SETTING.LOSER_REWARD as "loserReward",
             LAW_MATCH_SETTING.ANSWER_TIME as "answerTime",
-            LAW_MATCH_SETTING.LAST_TIME as "lastTime"
+            LAW_MATCH_SETTING.LAST_TIME as "lastTime",
+            LAW_MATCH_SETTING.WIN_COUNT as "winCount"
         FROM
             LAW_MATCH_SETTING
 

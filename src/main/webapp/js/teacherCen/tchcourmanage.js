@@ -5,6 +5,8 @@
  */
 var editor = null;
 var menuId = getUrlParam("id");
+var createUser=getUrlParam("createUser");
+var from=getUrlParam("menu");
 // 视频上传DOM 改为由v-show控制以实现上传视频替换功能后，会有一个warn，于功能无碍。待定。
 var vm = new Vue({
     el: '#app',
@@ -18,7 +20,9 @@ var vm = new Vue({
             currPage: 1,
             pageSize: 10,
             totalCount: 0,
-            stuLawid: ""
+            stuLawid: "",
+            from:from,
+            createUser:createUser
         },
         tableData: [],//表格数据
         visible: false,
@@ -44,6 +48,9 @@ var vm = new Vue({
             ],
             comContent: [
                 {required: true, message: '请添加内容', trigger: 'blur'}
+            ],
+            accessoryId: [
+                {required: true, message: '请选择资料', trigger: 'blur'}
             ]
         },
         dialogStuMediaTch: false,//table弹出框可见性
@@ -53,6 +60,8 @@ var vm = new Vue({
         importFileUrl: baseURL + "sys/upload",//文件上传url
         videoFlag: false,
         videoUploadPercent: 0,
+        isEdit:true,//是否是修改状态
+        fromFlag:from,//来源标记
     },
     created: function () {
         this.$nextTick(function () {
@@ -105,6 +114,7 @@ var vm = new Vue({
                                     confirmButtonText: '确定',
                                     callback: function () {
                                         vm.stuMediaTch.id = result.id;
+                                        vm.closePlay();
                                         vm.dialogStuMediaTch = false;
                                         vm.reload();
                                     }
@@ -139,19 +149,26 @@ var vm = new Vue({
             },
                 //清空editor
                 editor.txt.html("");
+            // 开启编辑功能
+            editor.$textElem.attr('contenteditable', true);
             this.title = "新增";
+            this.isEdit=true;
             this.dialogStuMediaTch = true;
         },
         handleEdit: function (index, row) {
             this.title = "编辑";
             this.dialogStuMediaTch = true;
             this.deptCheckData = [];
+            this.isEdit=true;
             editor.txt.html("");
+            // 开启编辑功能
+            editor.$textElem.attr('contenteditable', true);
             $.ajax({
                 type: "POST",
                 url: baseURL + 'stumediatch/info?id=' + row.id,
                 contentType: "application/json",
                 success: function (result) {
+                    debugger
                     if (result.code === 0) {
                         vm.stuMediaTch = result.data;
                         if(vm.stuMediaTch.accessoryInfoList){
@@ -161,7 +178,47 @@ var vm = new Vue({
                                 vm.fileList[i].url = baseURL + "sys/download?accessoryId=" + vm.fileList[i].id;
                             }
                         }
-                        if (vm.stuMediaTch.stuType != '1' && vm.stuMediaTch.comContent) {
+                        if (vm.stuMediaTch.stuType != 'pic' && vm.stuMediaTch.comContent) {
+                            vm.stuMediaTch.contentUrl = baseURL + "sys/download?accessoryId=" + vm.stuMediaTch.comContent;
+                            if (vm.stuMediaTch.videoPicAcc) {
+                                vm.stuMediaTch.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.stuMediaTch.videoPicAcc;
+                            }
+
+                        }else if(vm.stuMediaTch.comContent){
+                            editor.txt.html(vm.stuMediaTch.comContent);
+                        }
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+
+        //查看详情
+        handleDetail: function (index, row) {
+            this.title = "查看";
+            this.dialogStuMediaTch = true;
+            this.deptCheckData = [];
+            this.isEdit=false;
+            // 禁用编辑功能
+            editor.$textElem.attr('contenteditable', false)
+            editor.txt.html("");
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'stumediatch/info?id=' + row.id,
+                contentType: "application/json",
+                success: function (result) {
+                    debugger
+                    if (result.code === 0) {
+                        vm.stuMediaTch = result.data;
+                        if(vm.stuMediaTch.accessoryInfoList){
+                            vm.fileList=vm.stuMediaTch.accessoryInfoList;
+                            for(var i=0;i<vm.fileList.length;i++){
+                                vm.fileList[i].name = vm.fileList[i].accessoryName;
+                                vm.fileList[i].url = baseURL + "sys/download?accessoryId=" + vm.fileList[i].id;
+                            }
+                        }
+                        if (vm.stuMediaTch.stuType != 'pic' && vm.stuMediaTch.comContent) {
                             vm.stuMediaTch.contentUrl = baseURL + "sys/download?accessoryId=" + vm.stuMediaTch.comContent;
                             if (vm.stuMediaTch.videoPicAcc) {
                                 vm.stuMediaTch.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.stuMediaTch.videoPicAcc;
@@ -208,13 +265,14 @@ var vm = new Vue({
 
         },
         closeDia: function () {
+            this.closePlay();
             this.dialogStuMediaTch = false;
             vm.reload();
         },
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "stumediatch/listICreate?isMp=true",
+                url: baseURL + "stumediatch/listICreate?isMp=true&from="+from,
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
@@ -328,13 +386,30 @@ var vm = new Vue({
             return this.$confirm("确定移除 ${ file.name }？");
         },
         handleAssSuccess: function (response, file, fileList) {
-            debugger
             if (response.code == 0) {
                 vm.stuMediaTch.accessoryId = response.accessoryId;
                 fileList[fileList.length-1].url = baseURL + "sys/download?accessoryId=" + response.accessoryId;
             } else {
                 this.$message.error('图片上传失败，请重新上传！');
             }
+        },
+        closePlay:function(){
+            //关闭播放器
+            //关闭页面时 如果有视频或者音频暂停播放
+            //播放时暂停别的正在播放的音频
+            if(vm.stuMediaTch.stuType=='video'){
+                var  player = document.getElementById("video");
+                if(player!==null){
+                    //检测播放是否已暂停.audio.paused 在播放器播放时返回false.在播放器暂停时返回true
+
+                    if(!player.paused)
+                    {
+                        player.pause();// 这个就是暂停//audio.play();// 这个就是播放
+                    }
+                }
+            }
+
+
         },
         toHome: function () {
             parent.location.reload()

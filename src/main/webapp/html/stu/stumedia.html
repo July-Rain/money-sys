@@ -251,7 +251,7 @@
                         </template>
                         <template v-if="stuMedia.stuType=='audio'">
                             <el-form-item label="音频上传：" prop="comContent">
-                                <audio v-if="stuMedia.comContent !='' && videoFlag == false"
+                                <audio id="audio" v-if="stuMedia.comContent !='' && videoFlag == false"
                                        :src="stuMedia.contentUrl" class="avatar" controls="controls">您的浏览器不支持音频播放
                                 </audio>
                                 <i v-else-if="stuMedia.comContent =='' && videoFlag == false"
@@ -284,7 +284,7 @@
                                 <P class="text">请保证图片格式正确，作为视频封面</P>
                             </el-form-item>
                             <el-form-item label="视频上传：" prop="comContent">
-                                <video v-show="stuMedia.comContent !='' && videoFlag == false" autoplay
+                                <video id="video" v-show="stuMedia.comContent !='' && videoFlag == false" autoplay
                                        :src="stuMedia.contentUrl" id="video-uploaded" class="avatar video-js"
                                        controls="controls">您的浏览器不支持视频播放
                                 </video>

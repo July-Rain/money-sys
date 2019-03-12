@@ -78,4 +78,14 @@ public class MatchSettingController {
 
         return Result.ok();
     }
+
+
+    //擂主次数  加1
+    @RequestMapping("/wincountjia")
+    public Result wincountjia(@RequestBody MatchSetting matchSetting,String uid){
+
+        matchSettingService.wincountjia(matchSetting,uid);
+
+        return Result.ok();
+    }
 }

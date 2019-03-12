@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
+    <#include "/header.html">
+    <style>
+        .content {
+            width: 96vw;
+        }
+        .content .each-center {
+            margin-top: 14px;
+            border: 1px solid #dddddd;
+            border-radius: 3px;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .content .buttons {
+            width: 20%;
+            margin: 20px auto 10px;
+        }
+        /* 标题样式 */
+        .each-center>.title {
+            padding: 15px 19px;
+            background: #edf5fc;
+        }
+        .title .icon .iconfont {
+            margin-right: 15px;
+            color: #1381e3;
+            font-size: 16px;
+        }
+        .title .icon .title-name {
+            margin-right: 19px;
+            font-size: 15px;
+        }
+        .title .description {
+            font-size: 13px;
+            color: #999999;
+        }
+        .detail .info {
+            display: flex;
+            border-top: 1px solid #dddddd;
+            font-size: 13px;
+        }
+        .detail .info .name {
+            width: 133px;
+            line-height: 49px;
+            text-align: center;
+            background: #f9fafc;
+            border-right: 1px solid #dddddd;
+        }
+        .detail .info .data {
+            display: flex;
+            padding-left: 15px;
+        }
+        .detail .exam-info .name {
+            /*line-height: 152px;*/
+        }
+        .detail .exam-info .data {
+            display: block;
+        }
+        .exam-data {
+            display: flex;
+            position: relative;
+        }
+        .exam-data .tail {
+            position: absolute;
+            right: -315px;
+        }
+        .exam-data .iconfont {
+            display: inline-block;
+            top: 13px;
+            width: 22px;
+            line-height: 22px;
+            position: absolute;
+            right: -80px;
+            top: 16px;
+            border-radius: 2px;
+            text-align: center;
+            color: #5ce078;
+            font-size: 14px;
+            font-weight: 300;
+        }
+        .exam-data .iconfont.icon-tianjia:hover {
+            background: #f2faf5;
+        }
+        .exam-data .iconfont.icon-shanchu:hover {
+            background: #f9f2f1;
+        }
+        .exam-data .iconfont.icon-tianjia:active {
+            background: #ebf3ee;
+        }
+        .exam-data .iconfont.icon-shanchu:active {
+            background: #f4e9e9;
+        }
+        .exam-data .iconfont.icon-shanchu {
+            right: -120px;
+            top: 13px;
+            color: #f14940;
+            font-size: 16px;
+            font-weight: 900;
+        }
+        .exam-data .iconfont.icon-tianjia {
+            top: 13px;
+        }
+        .exam-data .el-dropdown .el-button {
+            width: 171px;
+        }
+        .exam-data button.el-dropdown__caret-button {
+            width: 55px !important;
+            border-left: 1px solid #dddddd;
+            background: #f5f7fa;
+        }
+        .exam-data .limit {
+            height: 30px;
+            width: 120px;
+            margin-top: 10px;
+            margin-left: 15px;
+        }
+        .exam-data .and-text {
+            margin-left: 15px;
+            line-height: 40px;
+        }
+        ul.el-popper {
+            display: block;
+            width: 171px;
+            text-align: center;
+        }
+        .detail .contest-info .data {
+            display: block;
+        }
+        .detail .contest-info .contest-data {
+            display: flex;
+        }
+        .detail .contest-info {
+            line-height: 98px;
+        }
+        .dropdown.el-dropdown {
+            margin-top: 7px;
+            margin-left: 15px;
+        }
+        .el-form-item {
+            margin-bottom: 5px;
+            margin-top: 2px;
+        }
+        .el-dropdown-menu {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>系统管理</el-breadcrumb-item>
+            <el-breadcrumb-item>积分学分管理</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="content">
+            <el-form label-position="right" label-width="100px">
+                <div class="each-center">
+                    <div class="title">
+                        <span class="icon">
+                            <i class="iconfont icon-shu"></i>
+                            <span class="title-name">学习中心</span>
+                        </span>
+                        <span class="description">根据用户学习音频、视频、图文来设置积分的数量</span>
+                    </div>
+                    <div class="detail">
+                        <ul class="table">
+                            <li class="info">
+                                <div class="name">音频</div>
+                                <div class="data">
+                                    <el-form-item label="收听不少于：">
+                                        <el-input size="small"><template slot="append">分钟</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="奖励：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="每日上限：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                </div>
+                            </li>
+                            <li class="info">
+                                <div class="name">视频</div>
+                                <div class="data">
+                                    <el-form-item label="收看不少于：">
+                                        <el-input size="small"><template slot="append">分钟</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="奖励：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="每日上限：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                </div>
+                            </li>
+                            <li class="info">
+                                <div class="name">图文</div>
+                                <div class="data">
+                                    <el-form-item label="收看不少于：">
+                                        <el-input size="small"><template slot="append">分钟</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="奖励：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="每日上限：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                </div>
+                            </li>
+                            <li class="info">
+                                <div class="name">任务</div>
+                                <div class="data">
+                                    <el-form-item label="每个任务：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="each-center">
+                    <div class="title">
+                        <span class="icon">
+                            <i class="iconfont icon-lianxi"></i>
+                            <span class="title-name">练习中心</span>
+                        </span>
+                        <span class="description">根据用户练习设置积分的数量</span>
+                    </div>
+                    <div class="detail">
+                        <ul class="table">
+                            <li class="info">
+                                <div class="name">每日一题</div>
+                                <div class="data">
+                                    <el-form-item label="答题：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                </div>
+                            </li>
+                            <li class="info">
+                                <div class="name">组卷练习</div>
+                                <div class="data">
+                                    <el-form-item label="正确率大于：">
+                                        <el-input size="small"><template slot="append">%</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="奖励：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="每日上限：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                </div>
+                            </li>
+                            <li class="info">
+                                <div class="name">非练习卷</div>
+                                <div class="data" >
+                                    <el-form-item label="不少于：">
+                                        <el-input size="small"><template slot="append">题</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="正确率大于：">
+                                        <el-input size="small"><template slot="append">%</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="奖励：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="每日上限：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="each-center">
+                    <div class="title">
+                        <span class="icon">
+                            <i class="iconfont icon-zaixianxuexi"></i>
+                            <span class="title-name">考试中心</span>
+                        </span>
+                        <span class="description">按照题目设置积分和学分的数量</span>
+                    </div>
+                    <div class="detail">
+                        <ul class="table">
+                            <li class="info">
+                                <div class="name">获得学分</div>
+                                <div class="data">
+                                    <el-form-item label="题数不小于：">
+                                        <el-input size="small"><template slot="append">题</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="正确率大于：">
+                                        <el-input size="small"><template slot="append">%</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="每季度考试：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                </div>
+                            </li>
+                            <li class="info exam-info">
+                                <div class="name">获得积分</div>
+                                <div class="data">
+                                    <div class="exam-data">
+                                        <el-form-item label="题数不小于：">
+                                            <el-input size="small"><template slot="append">题</template></el-input>
+                                        </el-form-item>
+                                    </div>
+                                    <div class="exam-data">
+                                        <el-form-item label="正确率：">
+                                            <el-dropdown split-button size="small" placement="bottom-start">
+                                                等于
+                                                <el-dropdown-menu slot="dropdown" divided="true">
+                                                    <el-dropdown-item>大于</el-dropdown-item>
+                                                    <el-dropdown-item>大于等于</el-dropdown-item>
+                                                    <el-dropdown-item>小于</el-dropdown-item>
+                                                    <el-dropdown-item>小于等于</el-dropdown-item>
+                                                </el-dropdown-menu>
+                                            </el-dropdown>
+                                        </el-form-item>
+                                        <el-form-item label-width="10px">
+                                            <el-input size="small"><template slot="append">%</template></el-input>
+                                        </el-form-item>
+                                        <span class="and-text">并且</span>
+                                        <el-button class="limit" size="mini" type="primary" plain>添加条件</el-button>
+                                        <div class="tail">
+                                            <el-form-item label="获得：">
+                                                <el-input size="small"><template slot="append">分</template></el-input>
+                                            </el-form-item>
+                                            <i class="iconfont icon-tianjia"></i>
+                                            <i class="iconfont icon-shanchu"></i>
+                                        </div>
+                                    </div>
+                                    <div class="exam-data">
+                                        <el-form-item label="正确率：">
+                                            <el-dropdown split-button size="small" placement="bottom-start">
+                                                等于
+                                                <el-dropdown-menu slot="dropdown" divided="true">
+                                                    <el-dropdown-item>大于</el-dropdown-item>
+                                                    <el-dropdown-item>大于等于</el-dropdown-item>
+                                                    <el-dropdown-item>小于</el-dropdown-item>
+                                                    <el-dropdown-item>小于等于</el-dropdown-item>
+                                                </el-dropdown-menu>
+                                            </el-dropdown>
+                                        </el-form-item>
+                                        <el-form-item label-width="10px">
+                                            <el-input size="small"><template slot="append">%</template></el-input>
+                                        </el-form-item>
+                                        <span class="and-text">并且</span>
+                                            <el-dropdown class="dropdown" split-button size="small" placement="bottom-start">
+                                                等于
+                                                <el-dropdown-menu slot="dropdown" divided="true">
+                                                    <el-dropdown-item>大于</el-dropdown-item>
+                                                    <el-dropdown-item>大于等于</el-dropdown-item>
+                                                    <el-dropdown-item>小于</el-dropdown-item>
+                                                    <el-dropdown-item>小于等于</el-dropdown-item>
+                                                </el-dropdown-menu>
+                                            </el-dropdown>
+                                        <el-form-item label-width="10px">
+                                            <el-input size="small"><template slot="append">%</template></el-input>
+                                        </el-form-item>
+                                        <div class="tail">
+                                            <el-form-item label="获得：">
+                                                <el-input size="small"><template slot="append">分</template></el-input>
+                                            </el-form-item>
+                                            <i class="iconfont icon-tianjia"></i>
+                                            <i class="iconfont icon-shanchu"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="each-center">
+                    <div class="title">
+                        <span class="icon">
+                            <i class="iconfont icon-icon-bisai"></i>
+                            <span class="title-name">竞赛中心</span>
+                        </span>
+                        <span class="description">根据用户获胜/失败来设置积分的数量</span>
+                    </div>
+                    <div class="detail">
+                        <ul class="table">
+                            <li class="info">
+                                <div class="name">闯关竞赛</div>
+                                <div class="data">
+                                    <el-form-item label="通过一关：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="答对一题：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="每日上限：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                </div>
+                            </li>
+                            <li class="info">
+                                <div class="name">在线比武</div>
+                                <div class="data">
+                                    <el-form-item label="获胜一次：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="失败一次：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="每日上限：">
+                                        <el-input size="small"><template slot="append">分</template></el-input>
+                                    </el-form-item>
+                                </div>
+                            </li>
+                            <li class="info contest-info">
+                                <div class="name">擂台赛</div>
+                                <div class="data" >
+                                    <div class="contest-data">
+                                        <el-form-item label="获胜一次：">
+                                            <el-input size="small"><template slot="append">分</template></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="失败一次：">
+                                            <el-input size="small"><template slot="append">分</template></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="每日上限：">
+                                            <el-input size="small"><template slot="append">分</template></el-input>
+                                        </el-form-item>
+                                    </div>
+                                    <div class="contest-data">
+                                        <el-form-item label="成功守擂：">
+                                            <el-input size="small"><template slot="append">次</template></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="奖励：">
+                                            <el-input size="small"><template slot="append">分</template></el-input>
+                                        </el-form-item>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </el-form>
+            <div class="buttons">
+                <el-button size="mini" type="primary" plain>取消</el-button>
+                <el-button size="mini" type="primary">保存</el-button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/sys/online.js?_${.now?long}"></script>
+</html>

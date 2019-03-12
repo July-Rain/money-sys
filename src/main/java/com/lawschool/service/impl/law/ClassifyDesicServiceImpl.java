@@ -49,8 +49,8 @@ public class ClassifyDesicServiceImpl extends ServiceImpl<ClassifyDesicDao,Class
     }
 
     @Override
-    public PageUtils queryPage(Map<String, Object> param) {
-        String classifyId = (String)param.get("classifyId");
+    public PageUtils queryPage(Map<String, String> param) {
+        /*String classifyId = (String)param.get("classifyId");
         String libId = (String)param.get("libId");
         String status = (String)param.get("status");
         String lawTitle = (String)param.get("lawTitle");
@@ -74,7 +74,10 @@ public class ClassifyDesicServiceImpl extends ServiceImpl<ClassifyDesicDao,Class
 
         ew.orderBy("ISSUE_TIME",false);
         Page<ClassifyDesicEntity> page = this.selectPage(
-                new Query<ClassifyDesicEntity>(param).getPage(),ew);
+                new Query<ClassifyDesicEntity>(param).getPage(),ew);*/
+        Page page = new Page(Integer.parseInt(param.get("currPage")),Integer.parseInt(param.get("pageSize")));
+        page.setRecords(desicDao.listAllDesc(page,param));
+        page.setTotal(desicDao.countAllDesc(param));
         return new PageUtils(page);
     }
 
