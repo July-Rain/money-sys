@@ -132,8 +132,8 @@ public class StuMediaTchController extends AbstractController {
     
     @RequestMapping("/listICreate")
     public Result listICreate(@RequestParam Map<String,Object> params){
-        User user=getUser();
-        params.put("createUser",user.getId());
+        //User user=getUser();
+        //params.put("createUser",user.getId());
         PageUtils page = stuMediaService.queryPage(params,getUser());
         return Result.ok().put("page", page);
     }

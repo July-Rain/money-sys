@@ -62,7 +62,6 @@
                                     align="center"
                                     prop="examName"
                                     label="试卷名称"
-                                    width="210"
                             >
                             </el-table-column>
                             <el-table-column
@@ -76,7 +75,7 @@
                                     align="center"
                                     prop="examTime"
                                     label="考试时长（分钟）"
-                                    width="160"
+                                    width="140"
                             >
                             </el-table-column>
 
@@ -87,21 +86,35 @@
                                     width="210"
                             >
                             </el-table-column>
+
                             <el-table-column
                                     align="center"
                                     prop="startTime"
                                     label="考试开始时间"
-                                    width="260"
+                                    width="240"
                             >
                             </el-table-column>
                             <el-table-column
                                     align="center"
                                     prop="endTime"
                                     label="考试结束时间"
-                                    width="260"
+                                    width="240"
                             >
                             </el-table-column>
-                            <el-table-column label="操作" align="center">
+                            <el-table-column
+                                    label="当前状态"
+                                    align="center"
+                                    width="130"
+                            >
+                                <template slot-scope="scope">
+                                    <el-tag v-if="scope.row.examStatus==0&&verifyTime(scope.row.startTime,scope.row.endTime)" size="small" type="danger">未考试</el-tag>
+                                    <el-tag v-if="scope.row.examStatus==2" size="small" type="danger">已完成</el-tag>
+                                    <el-tag v-if="scope.row.examStatus==1&&verifyTime(scope.row.startTime,scope.row.endTime)" size="small" type="danger">未完成</el-tag>
+                                    <el-tag v-if="verifyStartTime(scope.row.startTime)" type="danger">未开始</el-tag>
+                                    <el-tag v-if="verifyEndTime(scope.row.endTime)&&scope.row.examStatus!=2" type="danger">已过期</el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作" align="center" width="85">
                                 <template slot-scope="scope">
                                     <el-popover
                                             v-if="scope.row.examStatus==2"

@@ -60,8 +60,9 @@ public class DictionServiceImpl extends AbstractServiceImpl<DictionDao, DictEnti
      * @param type 值的类型
      * @return true 不重名
      */
-    public boolean checkDuplicate(String id, String str, String type){
-        Integer result = dao.checkDuplicate(id, str, type);
+    @Override
+    public boolean checkDuplicate(String id, String str, String type,String parentCode){
+        Integer result = dao.checkDuplicate(id, str, type, parentCode);
         if(result > 0){
             return false;
         }

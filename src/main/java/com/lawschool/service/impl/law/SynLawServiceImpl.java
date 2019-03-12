@@ -229,10 +229,14 @@ public class SynLawServiceImpl implements SynLawService {
         //封装请求体
         //调用相关接口
         StringBuffer sb = new StringBuffer();
-        sb.append("?rid=1");
-        sb.append("&lawid=991001");
+
+        sb.append("?lawid="+lawid);
+        if(UtilValidate.isNotEmpty(rid)){
+            sb.append("&rid="+rid);
+        }
+
         //调用相关接口
-        String httpResult = SysHttpClient.doPostRequest("http://e.tbs.com.cn:8191/mapi/lawDetail.cbs"+sb, "");
+        String httpResult = SysHttpClient.doPostRequest(url+"mapi/lawDetail.cbs"+sb, "");
         JSONObject jsonObject=JSONObject.fromObject(httpResult);
         return Result.ok().put("info",jsonObject);
     }

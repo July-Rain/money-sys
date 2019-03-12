@@ -381,7 +381,8 @@
     <!--查询某类型的试题-->
     <select id="findList" resultType="com.lawschool.beans.TestQuestions">
         SELECT
-        <include refid="questionColumn"/>
+        <include refid="questionColumn"/>,
+        (	SELECT name  FROM LAW_SYS_TOPIC WHERE id = SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue
         FROM law_testquestions a
         <where>
             a.is_enble != '2'
@@ -401,7 +402,12 @@
             <if test="comContent != null and comContent != ''">
                 AND a.com_content like concat(concat('%',#{comContent}),'%')
             </if>
-
+            <if test="ids != null and ids.size > 0">
+             and   a.id not in
+            <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                #{ids[${index}]}
+            </foreach>
+            </if>
         </where>
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">

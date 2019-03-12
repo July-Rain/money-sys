@@ -50,7 +50,14 @@ public class DailyQuestionConfigurationServiceImpl extends AbstractServiceImpl<D
 
     @Override
     public DailyQuestionConfiguration selectByDailyId(String id) {
-        return dailyQuestionConfigurationDao.selectByDailyId(id);
+        DailyQuestionConfiguration dailyQuestionConfiguration = dailyQuestionConfigurationDao.selectByDailyId(id);
+        if (UtilValidate.isNotEmpty(dailyQuestionConfiguration.getQuestionDifficulty())){
+            dailyQuestionConfiguration.setDiffcs(dailyQuestionConfiguration.getQuestionDifficulty().split(","));
+        }
+        if (UtilValidate.isNotEmpty(dailyQuestionConfiguration.getSpecialKnowledgeId())){
+            dailyQuestionConfiguration.setTopics(dailyQuestionConfiguration.getSpecialKnowledgeId().split(","));
+        }
+        return dailyQuestionConfiguration;
     }
 
     @Override

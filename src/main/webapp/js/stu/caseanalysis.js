@@ -258,6 +258,7 @@ var vm = new Vue({
                                     confirmButtonText: '确定',
                                     callback: function () {
                                         vm.caseAna.id=result.id;
+                                        vm.closePlay();
                                         vm.dialogCaseAna=false;
                                         vm.reload();
                                     }
@@ -373,8 +374,30 @@ var vm = new Vue({
 
         },
         closeDia : function(){
+            this.closePlay();
             this.dialogCaseAna=false;
             vm.reload();
+        },
+        closePlay:function(){
+            //关闭播放器
+            //关闭页面时 如果有视频或者音频暂停播放
+            //播放时暂停别的正在播放的音频
+            var player;
+            if(vm.caseAna.contentType=='audio'){
+                player = document.getElementById("audio");
+
+            }else if(vm.caseAna.contentType=='video'){
+                player = document.getElementById("video-uploaded");
+            }
+            if(player!==null&&vm.caseAna.contentType!='pic'){
+                //检测播放是否已暂停.audio.paused 在播放器播放时返回false.在播放器暂停时返回true
+
+                if(!player.paused)
+                {
+                    player.pause();// 这个就是暂停//audio.play();// 这个就是播放
+                }
+            }
+
         },
         reload: function () {
             $.ajax({
@@ -497,15 +520,21 @@ var vm = new Vue({
         },
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
+            this.caseAna.deptIds = [];
+            this.caseAna.deptName = [];
             for(var i=0;i<this.multipleDeptSelection.length;i++){
                 if (!this.caseAna.deptIds) {
                     this.caseAna.deptIds=this.multipleDeptSelection[i].id;
                     this.caseAna.deptName=this.multipleDeptSelection[i].orgName;
                 }else{
-                    this.caseAna.deptIds+=","+this.multipleDeptSelection[i].id;
-                    this.caseAna.deptName+=","+this.multipleDeptSelection[i].orgName;
+                    if(this.caseAna.deptIds.indexOf(this.multipleDeptSelection[i].id)!==-1) {
+                        this.caseAna.deptIds+=","+this.multipleDeptSelection[i].id;
+                        this.caseAna.deptName+=","+this.multipleDeptSelection[i].orgName;
+                    }
                 }
             }
+            this.caseAna.deptIds = delFirstStr(this.caseAna.deptIds,',');
+            this.caseAna.deptName = delFirstStr(this.caseAna.deptName,',');
             this.dialogDept=false;
         },
         cancelDept: function () {

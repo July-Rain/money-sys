@@ -34,6 +34,28 @@ public class DailyQuestionConfiguration extends DataEntity<DailyQuestionConfigur
     @TableField(exist = false)
     private String status;// 状态
 
+    @TableField(exist = false)
+    private String[] diffcs; // 试题难度，多选
+
+    @TableField(exist = false)
+    private String[] topics;// 主题，多选
+
+    public String[] getTopics() {
+        return topics;
+    }
+
+    public void setTopics(String[] topics) {
+        this.topics = topics;
+    }
+
+    public String[] getDiffcs() {
+        return diffcs;
+    }
+
+    public void setDiffcs(String[] diffcs) {
+        this.diffcs = diffcs;
+    }
+
     public String getRuleName() {
         return ruleName;
     }

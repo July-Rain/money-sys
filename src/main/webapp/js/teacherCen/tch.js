@@ -54,7 +54,7 @@ var vm = new Vue({
     methods: {
         toTchvedio:function(id){
             vm.tchId=id;
-            window.location="./tchcourse.html?createUser="+id+"&addsrc=1";
+            window.location="./tchcourmanage.html?createUser="+id+"&menu=tchman";
         },
         // 查询
         onSubmit: function () {

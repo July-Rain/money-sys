@@ -384,7 +384,7 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col v-if="examConfig.reachRewardType!='10038'&&examConfig.reachRewardType!=''" :span="12">
+                    <el-col v-if="examConfig.reachRewardType=='10039'&&examConfig.reachRewardType!=''" :span="12">
                         <el-form-item label="奖励分数：" prop="reachReward"
                                       :class="examConfig.reachRewardType!='10038'&&examConfig.reachRewardType!=''?'':'hide'">
                             <template>
@@ -417,8 +417,8 @@
 
                     <el-col :span="24" style="padding-left: 400px">
                         <el-form-item>
-                            <el-button type="primary" plain @click="cancel('examConfig')">返回</el-button>
-                            <el-button v-if="handleType!='view'" type="primary" @click="save('examConfig')">下一步
+                            <el-button type="primary" plain @click="cancel('examConfig')" :disabled="saveButton">返回</el-button>
+                            <el-button v-if="handleType!='view'" type="primary" @click="save('examConfig')" :disabled="saveButton">下一步
                             </el-button>
                             <el-button v-if="handleType=='view'" type="primary" @click="open('examConfig')">下一步
                             </el-button>
@@ -502,7 +502,8 @@
                         分
                     </p>
                 </div>
-
+                <el-button type="primary" size="mini"  @click="closeRanDia" :disabled="genRandQue">上一步</el-button>
+                <el-button type="primary" size="mini" @click="handleSave(randomQuesData)" :disabled="genRandQue">保存并生成试卷</el-button>
             </el-form>
             <!---->
             <!--预览试卷-->
@@ -614,7 +615,7 @@
                             <div class="msg">
                                 知识点：{{multiple.specialknowledgeValue}}
                             </div>
-                            <el-button class="change" @click="changeQuestionFn('10004',index)"
+                            <el-button class="change" @click="changeQuestionFn('10007',index)"
                                     v-if="handleType!='view'"><i class="iconfont icon-genghuan"></i></el-button>
                         </div>
                     </div>
@@ -827,8 +828,8 @@
             <el-button type="primary" v-if="handleType!='add'&&!previewExam" @click="openView()" size="mini">预览
             </el-button>
             <!--随机改题时的按钮-->
-            <el-button type="primary" @click="closePreview" v-if="previewExam">上一步</el-button>
-            <el-button type="primary" @click="genRandQueAfterPreview" v-if="handleType!='view'&&previewExam">保存并生成试卷</el-button>
+            <el-button type="primary" @click="closePreview" v-if="previewExam" :disabled="genRandQue">上一步</el-button>
+            <el-button type="primary" @click="genRandQueAfterPreview" v-if="handleType!='view'&&previewExam" :disabled="genRandQue">保存并生成试卷</el-button>
             <el-button type="primary" @click="closeViewWindow" v-if="handleType=='view'&&previewExam">确定</el-button>
 
 
@@ -845,52 +846,136 @@
 
             <el-form>
                 <div>
-                    <h3>一、单选题<span>已出题111题
-                        共111分</span><span></span></h3>
+                    <h3>一、单选题<span>已出题{{sinMultipleSelection.length}}题
+                        共{{sinMultipleSelection.length*sinMultScore}}分</span><span></span></h3>
                     <div class="config_box clearfix">
                         <el-button size="mini" type="primary" @click="addQuestion('10004')"><i class="iconfont icon-htmal5icon18"></i>添加试题
                         </el-button>
                         <p>每题：
-                            <el-input-number size="mini"></el-input-number>
+                            <el-input-number size="mini"  v-model="sinMultScore" :min="1" ></el-input-number>
                             分
                         </p>
                     </div>
-                    <div class="question_box">
+                    <div class="question_box"  v-for="(multiple,index) in sinMultipleSelection" :key="index">
                         <div class="title clearfix">
-                            <span>1</span>
-                            <div class="p">这是题目的题干
+                            <span>{{index+1}}</span>
+                            <div class="p">{{multiple.comContent}}
                             </div>
                         </div>
 
-                        <ul class="clearfix" >
-                            <li>A、大事发生</li>
-                            <li>A、大事发生</li>
-                            <li>A、大事发生</li>
-                            <li>A、大事发生</li>
+                        <ul class="clearfix"   >
+                            <li v-for="(item2,index2) in multiple.answerList" :key="index2">{{optionIndex[index2]}}、{{item2.questionContent}}</li>
                         </ul>
                         <div class="msg">
-                            知识点：知识点
+                            知识点：{{multiple.specialknowledgeValue}}
                         </div>
-                        <el-button class="change"><i class="iconfont icon-shanchu"></i></el-button>
+                        <el-button class="change"><i class="iconfont icon-shanchu"  @click="delSinMul(index)" ></i></el-button>
                     </div>
                 </div>
 
+                <div>
+                    <h3>二、多选题<span>已出题{{mulMultipleSelection.length}}题
+                        共{{mulMultipleSelection.length*mulMultScore}}分</span><span></span></h3>
+                    <div class="config_box clearfix">
+                        <el-button size="mini" type="primary" @click="addQuestion('10005')"><i class="iconfont icon-htmal5icon18"></i>添加试题
+                        </el-button>
+                        <p>每题：
+                            <el-input-number size="mini"  v-model="mulMultScore" :min="1" ></el-input-number>
+                            分
+                        </p>
+                    </div>
+                    <div class="question_box"  v-for="(multiple,index) in mulMultipleSelection" :key="index">
+                        <div class="title clearfix">
+                            <span>{{index+1}}</span>
+                            <div class="p">{{multiple.comContent}}
+                            </div>
+                        </div>
 
+                        <ul class="clearfix"   >
+                            <li v-for="(item2,index2) in multiple.answerList" :key="index2">{{optionIndex[index2]}}、{{item2.questionContent}}</li>
+                        </ul>
+                        <div class="msg">
+                            知识点：{{multiple.specialknowledgeValue}}
+                        </div>
+                        <el-button class="change"><i class="iconfont icon-shanchu"  @click="delMulMul(index)" ></i></el-button>
+                    </div>
+                </div>
+
+                <div>
+                    <h3>二、判断题<span>已出题{{judgeMultipleSelection.length}}题
+                        共{{judgeMultipleSelection.length*judgeMultScore}}分</span><span></span></h3>
+                    <div class="config_box clearfix">
+                        <el-button size="mini" type="primary" @click="addQuestion('10006')"><i class="iconfont icon-htmal5icon18"></i>添加试题
+                        </el-button>
+                        <p>每题：
+                            <el-input-number size="mini"  v-model="judgeMultScore" :min="1" ></el-input-number>
+                            分
+                        </p>
+                    </div>
+                    <div class="question_box"  v-for="(multiple,index) in judgeMultipleSelection" :key="index">
+                        <div class="title clearfix">
+                            <span>{{index+1}}</span>
+                            <div class="p">{{multiple.comContent}}
+                            </div>
+                        </div>
+
+                        <ul class="clearfix"   >
+                            <li v-for="(item2,index2) in multiple.answerList" :key="index2">{{optionIndex[index2]}}、{{item2.questionContent}}</li>
+                        </ul>
+                        <div class="msg">
+                            知识点：{{multiple.specialknowledgeValue}}
+                        </div>
+                        <el-button class="change"><i class="iconfont icon-shanchu"  @click="delJudMul(index)" ></i></el-button>
+                    </div>
+                </div>
+
+                <div>
+                    <h3>二、主观题<span>已出题{{subMultipleSelection.length}}题
+                        共{{subAllScore}}分</span><span></span></h3>
+                    <div class="config_box clearfix">
+                        <el-button size="mini" type="primary" @click="addQuestion('10007')"><i class="iconfont icon-htmal5icon18"></i>添加试题
+                        </el-button>
+
+                    </div>
+                    <div class="question_box"  v-for="(multiple,index) in subMultipleSelection" :key="index">
+                        <div class="clearfix">
+                            <p style="float: right">此题：
+                                <el-input-number size="mini" @change="calaSubAllScore"  v-model="subMultipleSelection[index].perScore" :min="1" ></el-input-number>
+                                分
+                            </p>
+                        </div>
+
+                        <div class="title clearfix">
+                            <span>{{index+1}}</span>
+                            <div class="p">{{multiple.comContent}}
+                            </div>
+                        </div>
+
+                        <ul class="clearfix">
+                            <li v-for="(item2,index2) in multiple.answerList" :key="index2">{{optionIndex[index2]}}、{{item2.questionContent}}</li>
+                        </ul>
+                        <div class="msg">
+                            知识点：{{multiple.specialknowledgeValue}}
+                        </div>
+                        <el-button class="change"><i class="iconfont icon-shanchu"  @click="delSubMul(index)" ></i></el-button>
+                    </div>
+                </div>
             </el-form>
         </div>
         <div class="random_box box_right">
-            <div class="exam_title">试卷名：啊发大水发射点</div>
+            <div class="exam_title">试卷名：{{examConfig.examName}}</div>
             <ul>
-                <li>预定总分值：2121分</li>
-                <li>当前总分值：121221分</li>
-                <li>单选题：2题</li>
-                <li>多选题：2题</li>
-                <li>判读题：2题</li>
-                <li>主观题：2题</li>
+                <li>预定总分值：{{examConfig.examScore}}分</li>
+                <li>当前总分值：{{sinMultipleSelection.length*sinMultScore+mulMultipleSelection.length*mulMultScore+
+                    judgeMultipleSelection.length*judgeMultScore+subAllScore}}分</li>
+                <li>单选题：{{sinMultipleSelection.length}}题</li>
+                <li>多选题：{{mulMultipleSelection.length}}题</li>
+                <li>判读题：{{judgeMultipleSelection.length}}题</li>
+                <li>主观题：{{subMultipleSelection.length}}题</li>
             </ul>
             <!--随机出题时的按钮-->
-            <el-button type="primary" size="mini">上一步</el-button>
-            <el-button type="primary" size="mini">保存并生成试卷</el-button>
+            <el-button type="primary" size="mini" @click="closeAutoQue">上一步</el-button>
+            <el-button type="primary" size="mini" @click="genAutoQue">保存并生成试卷</el-button>
 
         </div>
 
@@ -1275,7 +1360,7 @@
                 :total="queformInline.count">
         </el-pagination>
         <span slot="footer" class="dialog-footer">
-                <el-button>取 消</el-button>
+                <el-button  @click='cancleSetQue' >取 消</el-button>
                 <el-button type="primary" @click='getQue'>确 定</el-button>
         </span>
     </el-dialog>

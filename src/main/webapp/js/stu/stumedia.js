@@ -215,6 +215,7 @@ var vm = new Vue({
                                     confirmButtonText: '确定',
                                     callback: function () {
                                         vm.stuMedia.id = result.id;
+                                        vm.closePlay();
                                         vm.dialogStuMedia = false;
                                         vm.reload();
                                     }
@@ -324,8 +325,30 @@ var vm = new Vue({
 
         },
         closeDia: function () {
+            this.closePlay();
             this.dialogStuMedia = false;
             vm.reload();
+        },
+        closePlay:function(){
+            //关闭播放器
+            //关闭页面时 如果有视频或者音频暂停播放
+            //播放时暂停别的正在播放的音频
+            var player;
+            if(vm.stuMedia.stuType=='audio'){
+                player = document.getElementById("audio");
+
+            }else if(vm.stuMedia.stuType=='video'){
+                player = document.getElementById("video");
+            }
+            if(player!==null&&vm.stuMedia.stuType!='pic'){
+                //检测播放是否已暂停.audio.paused 在播放器播放时返回false.在播放器暂停时返回true
+
+                if(!player.paused)
+                {
+                    player.pause();// 这个就是暂停//audio.play();// 这个就是播放
+                }
+            }
+
         },
         reload: function () {
             $.ajax({
@@ -448,25 +471,27 @@ var vm = new Vue({
         chooseUser: function () {
             //选择人员
             this.dialogUser = true;
-            // this.stuMedia.userName;
-            // console.info("stu",this.saveUserTableData)
-            // console.info("let me see see",this.stuMedia.userArr);
-            // this.stuMedia.userArr = ['U20190222151053715155'];
             this.huixian(this.stuMedia.userArr) //  --回显需加
 
 
         },
         confimDept: function () {
             this.multipleDeptSelection = this.$refs.deptTree.getCheckedNodes();
+            this.stuMedia.deptIds = [];
+            this.stuMedia.deptName = [];
             for (var i = 0; i < this.multipleDeptSelection.length; i++) {
                 if (!this.stuMedia.deptIds) {
                     this.stuMedia.deptIds = this.multipleDeptSelection[i].id;
                     this.stuMedia.deptName = this.multipleDeptSelection[i].orgName;
                 } else {
-                    this.stuMedia.deptIds += "," + this.multipleDeptSelection[i].id;
-                    this.stuMedia.deptName += "," + this.multipleDeptSelection[i].orgName;
+                    if(this.stuMedia.deptIds.indexOf(this.multipleDeptSelection[i].id)!==-1){
+                        this.stuMedia.deptIds += "," + this.multipleDeptSelection[i].id;
+                        this.stuMedia.deptName += "," + this.multipleDeptSelection[i].orgName;
+                    }
                 }
             }
+            this.stuMedia.deptIds = delFirstStr(this.stuMedia.deptIds,',');
+            this.stuMedia.deptName = delFirstStr(this.stuMedia.deptName,',');
             this.dialogDept = false;
         },
         cancelDept: function () {

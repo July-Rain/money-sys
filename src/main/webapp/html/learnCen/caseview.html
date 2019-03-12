@@ -151,7 +151,7 @@
                     </div>
                 <div>
                     <div class="content lesson">
-                        <template v-if="formInline.contentType=='1'">
+                        <template v-if="formInline.contentType=='pic'">
                             <el-table
                                 :data="caseData"
                                 border
@@ -226,7 +226,7 @@
                         </el-table>
                         </template>
                         <!-- 音频 -->
-                        <template v-if="formInline.contentType=='2'">
+                        <template v-if="formInline.contentType=='audio'">
                             <el-row>
                                 <el-col :span="6" v-for="(item, index) in caseData">
                                     <el-card :body-style="{ padding: '4px' }">
@@ -249,7 +249,7 @@
                             </el-row>
                         </template>
                         <!-- 视频 -->
-                        <template v-if="formInline.contentType=='3'">
+                        <template v-if="formInline.contentType=='video'">
                         <el-row>
                             <el-col :span="6" v-for="(item, index) in caseData">
                                 <el-card :body-style="{ padding: '4px' }">

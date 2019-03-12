@@ -174,7 +174,8 @@ var vm = new Vue({
                     }
                 ]
             };
-            vm.echartsOption(myChart, option2)
+            vm.echartsOption(myChart, option2);
+
         },
         initBar3: function (){
             var myChart = echarts.init(document.getElementById('bar3'));
@@ -246,6 +247,22 @@ var vm = new Vue({
         },
         echartsOption: function (myChart, option) {
             myChart.setOption(option)
+            myChart.dispatchAction({type: 'highlight',seriesIndex: 0,dataIndex: 0})
+
+            myChart.on('mouseover',(v) => {
+                if(v.dataIndex != 0){
+                    myChart.dispatchAction({
+                        type: 'downplay',
+                        seriesIndex: 0,
+                        dataIndex: 0
+                    });
+                }
+            });
+            myChart.on('mouseout',(v) => {
+
+                    myChart.dispatchAction({type: 'highlight',seriesIndex: 0,dataIndex: 0});
+
+            });
             window.addEventListener('resize', function () {
                 myChart.resize()
             })

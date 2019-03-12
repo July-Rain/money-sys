@@ -393,8 +393,11 @@ var vm = new Vue({
                     console.info(result.data.length);
                     if (result.code === 0) {
                         if (result.data.length == "0") {
-                            vm.$alert('暂无数据');
 
+                            vm.$message({
+                                message: '暂无数据',
+                                type: 'warning'
+                            });
                         } else {
                             vm.title = "编辑";
                             vm.dialogConfig = true;

@@ -130,6 +130,14 @@
             <choose>
                 <when test="type == 'name'">
                     AND NAME = #{str}
+                    <choose>
+                        <when test="parentCode !='' and parentCode !=null">
+                            and parent_code = #{parentCode}
+                        </when>
+                        <otherwise>
+                            and parent_code is null
+                        </otherwise>
+                    </choose>
                 </when>
                 <otherwise>
                     AND CODE = #{str}
