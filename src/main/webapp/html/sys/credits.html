@@ -159,7 +159,17 @@
         .el-dropdown-menu {
             display: block;
         }
-
+        /* 下拉框 */
+        .select {
+            width: 150px;
+            height: 32px;
+            margin-top: 6px;
+            padding-left: 36%;
+            border: 1px solid #dddddd;
+            border-radius: 3px;
+            /*appearance: none;
+            -webkit-appearance:none;*/
+        }
     </style>
 </head>
 <body>
@@ -323,15 +333,23 @@
                                     <div class="exam-data dropdowns">
                                         <div class="dropdown-group" style="display: flex;">
                                             <el-form-item label="正确率：">
-                                                <el-dropdown split-button size="mini" placement="bottom-start">
-                                                    等于
-                                                    <el-dropdown-menu slot="dropdown" divided="true">
+                                                <select name="" class="select">
+                                                    <option value="">等于</option>
+                                                    <option value="">大于</option>
+                                                    <option value="">大于等于</option>
+                                                    <option value="">小于</option>
+                                                    <option value="">小于等于</option>
+                                                </select>
+                                                <!--<el-dropdown split-button size="mini" placement="bottom-start">
+                                                    默认
+                                                    <el-dropdown-menu slot="dropdown">
+                                                        <el-dropdown-item>等于</el-dropdown-item>
                                                         <el-dropdown-item>大于</el-dropdown-item>
                                                         <el-dropdown-item>大于等于</el-dropdown-item>
                                                         <el-dropdown-item>小于</el-dropdown-item>
                                                         <el-dropdown-item>小于等于</el-dropdown-item>
                                                     </el-dropdown-menu>
-                                                </el-dropdown>
+                                                </el-dropdown>-->
                                             </el-form-item>
                                             <el-form-item label-width="10px">
                                                 <el-input size="small" type="number"><template slot="append">%</template></el-input>
