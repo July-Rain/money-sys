@@ -450,14 +450,14 @@ var vm = new Vue({
         },
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
-            this.learnTasks.deptIds = [];
-            this.learnTasks.deptName = [];
+            this.learnTasks.deptIds = '';
+            this.learnTasks.deptName = '';
             for(var i=0;i<this.multipleDeptSelection.length;i++){
                 if (this.learnTasks.deptIds == "") {
                     this.learnTasks.deptIds=this.multipleDeptSelection[i].id;
                     this.learnTasks.deptName=this.multipleDeptSelection[i].orgName;
                 }else{
-                    if(this.learnTasks.deptIds.indexOf(this.multipleDeptSelection[i].id)!==-1) {
+                    if(this.learnTasks.deptIds.indexOf(this.multipleDeptSelection[i].id)===-1) {
                         this.learnTasks.deptIds+=","+this.multipleDeptSelection[i].id;
                         this.learnTasks.deptName+=","+this.multipleDeptSelection[i].orgName;
                     }

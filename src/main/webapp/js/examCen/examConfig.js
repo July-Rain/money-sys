@@ -429,8 +429,8 @@ var vm = new Vue({
         confimDept: function () {
 
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
-            this.examConfig.deptIds = [];
-            this.examConfig.deptName = [];
+            this.examConfig.deptIds = '';
+            this.examConfig.deptName = '';
             for(var i=0;i<this.multipleDeptSelection.length;i++){
                 if (!this.examConfig.deptIds) {
                     this.examConfig.deptIds=this.multipleDeptSelection[i].id;
