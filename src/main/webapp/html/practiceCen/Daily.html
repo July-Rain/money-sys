@@ -68,6 +68,10 @@
 
                 <div class="answer_area" v-if="showAnswer">
                     <p :class="userAnswerStr!=rightAnswerStr?'err':''">你的答案：<span>{{userAnswerStr}}</span>，正确答案：<span>{{rightAnswerStr}}</span></p>
+                    <div class="clearfix diff diff5">
+                        <span>试题难度：</span>
+                        <span>{{questionForm.questionDifficulty == '10001' ? '初级' : questionForm.questionDifficulty == '10002' ? '中级' : '高级'}}</span>
+                    </div>
                     <div class="basis clearfix">
                         <p>答案描述：</p>
                         <p>{{questionForm.answerDescrible}}</p>

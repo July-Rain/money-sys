@@ -121,7 +121,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.data.length != "0") {
 
-                        vm.$alert('请先删除原有配置,在添加新的配置');
+                        vm.$alert('请先删除原有配置,再添加新的配置');
                         vm.dialogConfig = false;
                     } else {
                         vm.title = "新增闯关配置";
@@ -215,9 +215,10 @@ var vm = new Vue({
                     {
                         id: '',
                         markNumOrder: k + 1,
-                        smallNum: '',
+                        smallNum: '5',
                         rewardScore: '0',
-                        recruitCheckpointConfigurationList: [{id: '', unifyConfiguration: '1'}]
+                        unifyConfiguration:'1',
+                        recruitCheckpointConfigurationList: [{id: '', unifyConfiguration: '1',itemDifficulty:'10001',specialKnowledgeId:'1072387696247562241',itemType:'10004'}]
                     }
                 )
             }
@@ -229,9 +230,10 @@ var vm = new Vue({
             var unifyConfiguration = num.unifyConfiguration
             var smallNum = Number(num.smallNum);
             if (!smallNum) {
+                vm.daguanArray[Number(vm.nowLevel)-1].unifyConfiguration='';
                 vm.$message({
                     type: 'info',
-                    message: '请先设置小关数量!'
+                    message: '请先设置对应总题数量!'
                 });
                 return;
             }
@@ -242,7 +244,7 @@ var vm = new Vue({
                 for (var p = 0; p < smallNum; p++) {
                     num.recruitCheckpointConfigurationList.push
                     (
-                        {id: '', howManySmall: p + 1, unifyConfiguration: '0'}
+                        {id: '', howManySmall: p + 1, unifyConfiguration: '0',itemDifficulty:'10001',specialKnowledgeId:'1072387696247562241',itemType:'10004'}
                     )
                 }
 
@@ -250,7 +252,7 @@ var vm = new Vue({
             {
                 num.recruitCheckpointConfigurationList.push
                 (
-                    {id: '', unifyConfiguration: '1'}
+                    {id: '', unifyConfiguration: '1',itemDifficulty:'10001',specialKnowledgeId:'1072387696247562241',itemType:'10004'}
                 )
             }
             console.info(num);
@@ -422,15 +424,16 @@ var vm = new Vue({
         reload: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "recruitConfiguration/list",
+                url: baseURL + "recruitConfiguration/list?isMp=true",
                 dataType: "json",
                 async: false,
+                data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
-                        vm.formInline.currPage = result.page.currPage;
-                        vm.formInline.pageSize = result.page.pageSize;
-                        vm.formInline.totalCount = parseInt(result.page.totalCount);
+                        vm.formInline.currPage = Number(result.page.currPage);
+                        vm.formInline.pageSize = Number(result.page.pageSize);
+                        vm.formInline.totalCount = Number(result.page.totalCount);
                     } else {
                         alert(result.msg);
                     }

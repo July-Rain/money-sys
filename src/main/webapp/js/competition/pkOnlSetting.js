@@ -243,7 +243,8 @@ var vm = new Vue({
                         {
                             num.battleTopicSettingList.push
                             (
-                                {id:'',howManySmall:p+1,}
+                                {id:'',howManySmall:p+1,questionDifficulty:'10001',knowledgeId:'1072387696247562241',questionType:'10004'}
+
                             )
                         }
 
@@ -252,7 +253,7 @@ var vm = new Vue({
                   {
                       num.battleTopicSettingList.push
                       (
-                          {id:'',}
+                          {id:'',questionDifficulty:'10001',knowledgeId:'1072387696247562241',questionType:'10004'}
                       )
                   }
 

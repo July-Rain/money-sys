@@ -293,7 +293,10 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
         //获取必考题目列表
         List<String> mustQueIdList = examConfigForm.getMustQueList();
         //获取所有必考题目详情
-        List<TestQuestions> mustQueList = getList(mustQueIdList);
+        List<TestQuestions> mustQueList = new ArrayList<>();
+        if (mustQueIdList.size()>0){
+            mustQueList = getList(mustQueIdList);
+        }
         //单选列表
         List<String> sinIdList = new ArrayList<>();
         //多选列表
