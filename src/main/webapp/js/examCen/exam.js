@@ -17,7 +17,7 @@ var vm = new Vue({
             }
         };
        return {
-           labelPosition: 'left',
+           labelPosition: 'right',
            navData: [],//导航
            formInline: { // 搜索表单
                examName: '',
@@ -47,7 +47,7 @@ var vm = new Vue({
            },
 
            checkSettingDia: false,//阅卷设置弹出框
-           viewCheckSettingDia: false,//查看阅卷信息弹出框
+           viewCheckSettingDia: true,//查看阅卷信息弹出框
            title: "",//弹窗的名称
            delIdArr: [],//删除数据
            dialogAdd: false,
