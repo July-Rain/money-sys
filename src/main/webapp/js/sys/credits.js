@@ -1,4 +1,4 @@
-var menuId =getUrlParam('id');
+var menuId = getUrlParam('id');
 var vm = new Vue({
     el: '#app',
     data: {
@@ -15,13 +15,11 @@ var vm = new Vue({
             credits: {}, // 获得学分
             recruit: {}, // 闯关竞赛
             competitionOnline: {}, // 在线比武
-            match: {} // 擂台赛
-        }
-
+            match: {}, // 擂台赛
+        },
     },
     created: function () {
-
-        this.$nextTick(function () {
+        /*this.$nextTick(function () {
             //加载菜单
             $.ajax({
                 type: "POST",
@@ -43,13 +41,9 @@ var vm = new Vue({
         })
         this.$nextTick(function () {
             this.reload();
-        })
-
+        })*/
     },
     methods: {
-
-
-
         /*reload: function () {
             $.ajax({
                 type: "POST",

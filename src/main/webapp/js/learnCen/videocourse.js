@@ -57,7 +57,7 @@ var vm = new Vue({
                     if(result.code === 0){
                         vm.treeData = result.classifyList;
                     }else{
-                        alert(result.msg);
+                        vm.$message(result.msg);
                     }
                 }
             });
@@ -167,7 +167,7 @@ var vm = new Vue({
                         vm.formInline.pageSize = result.page.pageSize;
                         vm.formInline.totalCount = parseInt(result.page.totalCount);
                     } else {
-                        alert(result.msg);
+                        vm.$message(result.msg);
                     }
                 }
             }).then(
@@ -225,7 +225,7 @@ var vm = new Vue({
                     if(result.code === 0){
                         //vm.treeData = result.classifyList;
                     }else{
-                        alert(result.msg);
+                        vm.$message(result.msg);
                     }
                 }
             });
@@ -263,7 +263,7 @@ var vm = new Vue({
                     if(result.code === 0){
                         //vm.treeData = result.classifyList;
                     }else{
-                        alert(result.msg);
+                        vm.$message(result.msg);
                     }
                 }
             });
@@ -284,10 +284,10 @@ var vm = new Vue({
                 data: JSON.stringify(coll),
                 success: function(result){
                     if(result.code === 0){
-                        this.$message('收藏成功');
+                        vm.$message('收藏成功');
                         vm.reload();
                     }else{
-                        alert(result.msg);
+                        vm.$message(result.msg);
                     }
                 }
             });
@@ -305,10 +305,10 @@ var vm = new Vue({
                 data: JSON.stringify(coll),
                 success: function(result){
                     if(result.code === 0){
-                        this.$message('取消收藏成功');
+                        vm.$message('取消收藏成功');
                         vm.reload();
                     }else{
-                        alert(result.msg);
+                        vm.$message(result.msg);
                     }
                 }
             });

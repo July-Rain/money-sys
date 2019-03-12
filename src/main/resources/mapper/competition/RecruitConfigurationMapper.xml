@@ -26,5 +26,25 @@
 
     </resultMap>
 
+    <select id="selectAll"  parameterType="map" resultType="com.lawschool.beans.competition.RecruitConfiguration">
+        SELECT
+        ID AS "id",
+        MARK_NUM_ORDER AS "markNumOrder",
+        SMALL_NUM AS "smallNum",
+        UNIFY_CONFIGURATION AS "unifyConfiguration",
+        STATUS AS "status"
+        FROM
+        LAW_RECRUIT_CONFIGURATION
 
+        ORDER BY  MARK_NUM_ORDER ASC
+    </select>
+
+
+    <select id="selectAllCont"  parameterType="map" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        LAW_RECRUIT_CONFIGURATION
+
+    </select>
 </mapper>

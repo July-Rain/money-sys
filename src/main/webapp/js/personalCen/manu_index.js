@@ -211,8 +211,8 @@ var vm = new Vue({
         },
         confimDept: function () {
             this.multipleDeptSelection = this.$refs.deptTree.getCheckedNodes();
-            this.stuMedia.deptIds = [];
-            this.stuMedia.deptName = [];
+            this.stuMedia.deptIds = '';
+            this.stuMedia.deptName = '';
             for (var i = 0; i < this.multipleDeptSelection.length; i++) {
                 if (!this.stuMedia.deptIds) {
                     this.stuMedia.deptIds = this.multipleDeptSelection[i].id;
@@ -246,6 +246,9 @@ var vm = new Vue({
             vm.refresh();
         },
         refresh: function () {
+
+            vm.formInline.createUser=jsgetUser().id;
+
             $.ajax({
                 type: "GET",
                 url: baseURL + "manuscript/list",

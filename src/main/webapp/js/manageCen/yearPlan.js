@@ -1,24 +1,60 @@
 var vm = new Vue({
     el: '#app',
-    data: {
+    data: function(){
+        var data=[]
+        var validateDate = function (rule, value, callback) {
+            if (vm.form.endDate === '') {
+                callback(new Error('请输入结束日期'))
+            } else {
+                if (!(new Date(Date.parse(vm.form.startDate(/-/g, "/")))<
+                    new Date(Date.parse( vm.form.endDate.replace(/-/g, "/"))))) {
+                    callback(new Error('结束日期必须大于开始日期'))
+                } else {
+                    callback()
+                }
+            }
+        };
+
+    return {
         tableData: [],//表格数据
         page: 1,//分页：当前页
         dialogFormVisible: false,
         form: {
+            page: 1,
+            limit: 10,
+            count: 0
+        },
+        planForm : {
             planName: '',
             planContent: '',
             startDate: '',
             endDate: '',
             credit: '',
-            integral : '',
+            integral: '',
             remarks: '',
-            page: 1,
-            limit: 10,
-            count: 0
         },
         formLabelWidth: '120px',
         fileList: [],
-        diffList: []
+        diffList: [],
+        formRules: {//表单验证规则
+            planName: [
+                {required: true, message: '请输入计划名称', trigger: 'blur'},
+                {max: 50, message: '最大长度50', trigger: 'blur'}
+            ],
+            startDate: [
+                {required: true, message: '请输入计划开始日期', trigger: 'change'},
+            ],
+            endDate: [
+                { validator: validateDate,required: true, message: '请输入计划结束日期', trigger: 'change'}
+            ],
+            credit: [
+                {message: '请输入计划积分', trigger: 'change', required: true}
+            ],
+            integral: [
+                {required: true, message: '请输入计划学分', trigger: 'change'}
+            ]
+        },
+        };
     },
     mounted: function () {
 
@@ -26,16 +62,6 @@ var vm = new Vue({
     methods: {
         layFn() {
             $(".el-dialog").css("height", "auto")
-        },
-        // 文件上传
-        handleRemove(file, fileList) {
-            console.log(file, fileList);
-        },
-        handlePreview(file) {
-            console.log(file);
-        },
-        handleExceed(files, fileList) {
-            this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
         },
         beforeRemove(file, fileList) {
             return this.$confirm(`确定移除 ${file.name}？`);
@@ -48,7 +74,6 @@ var vm = new Vue({
             console.log('当前页:' + val);
         },
         addPlan: function () {
-            console.log(22)
             vm.dialogFormVisible = true
         },
 
@@ -109,26 +134,31 @@ var vm = new Vue({
             });
         },
 
-        save: function () {
-            $.ajax({
-                type: "POST",
-                url: baseURL + "schoolYearPlan/save",
-                contentType: "application/json",
-                data: JSON.stringify(vm.form),
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.$alert('操作成功', '提示', {
-                            confirmButtonText: '确定',
-                            callback: function () {
-                                vm.dialogFormVisible = false;
-                                vm.reload();
+        save: function (formName) {
+            alert(formName);
+            this.$refs[formName].validate(function (valid) {
+                if (valid) {
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + "schoolYearPlan/save",
+                        contentType: "application/json",
+                        data: JSON.stringify(vm.form),
+                        success: function (result) {
+                            if (result.code === 0) {
+                                vm.$alert('操作成功', '提示', {
+                                    confirmButtonText: '确定',
+                                    callback: function () {
+                                        vm.dialogFormVisible = false;
+                                        vm.reload();
+                                    }
+                                });
+                            } else {
+                                alert(result.msg);
                             }
-                        });
-                    } else {
-                        alert(result.msg);
-                    }
+                        }
+                    });
                 }
-            });
+            })
         },
         reload: function () {
             $.ajax({

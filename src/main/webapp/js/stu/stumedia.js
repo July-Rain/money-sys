@@ -477,14 +477,14 @@ var vm = new Vue({
         },
         confimDept: function () {
             this.multipleDeptSelection = this.$refs.deptTree.getCheckedNodes();
-            this.stuMedia.deptIds = [];
-            this.stuMedia.deptName = [];
+            this.stuMedia.deptIds = '';
+            this.stuMedia.deptName = '';
             for (var i = 0; i < this.multipleDeptSelection.length; i++) {
                 if (!this.stuMedia.deptIds) {
                     this.stuMedia.deptIds = this.multipleDeptSelection[i].id;
                     this.stuMedia.deptName = this.multipleDeptSelection[i].orgName;
                 } else {
-                    if(this.stuMedia.deptIds.indexOf(this.multipleDeptSelection[i].id)!==-1){
+                    if(this.stuMedia.deptIds.indexOf(this.multipleDeptSelection[i].id)===-1){
                         this.stuMedia.deptIds += "," + this.multipleDeptSelection[i].id;
                         this.stuMedia.deptName += "," + this.multipleDeptSelection[i].orgName;
                     }

@@ -10,6 +10,7 @@ import com.lawschool.service.ManuscriptService;
 import com.lawschool.service.StuMediaService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.util.Result;
+import com.lawschool.util.UtilValidate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +43,12 @@ public class ManuscriptController extends AbstractController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result list(@RequestParam Map<String, Object> params){
+        ManuscriptEntity manuscriptEntity=new ManuscriptEntity();
+        if(UtilValidate.isNotEmpty(params.get("createUser"))){
+            manuscriptEntity.setCreateUser((String)params.get("createUser"));
+        }
         Page<ManuscriptEntity> page = manuscriptService.findPage(new Page<ManuscriptEntity>(params),
-                new ManuscriptEntity());
+                manuscriptEntity);
         return Result.ok().put("page", page);
     }
 
