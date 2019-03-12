@@ -95,33 +95,50 @@
 
 
         <el-dialog title="新增计划" :visible.sync="dialogFormVisible">
-
-            <el-form :model="form" size="mini">
-                    <el-form-item label="计划名称：" :label-width="formLabelWidth">
-                        <el-input v-model="form.planName" autocomplete="off" placeholder="计划名称"></el-input>
+            <el-form :model="planForm" size="mini" :rules="formRules" ref="planForm">
+                    <el-form-item label="计划名称：" :label-width="formLabelWidth" prop="planName">
+                        <el-input v-model="planForm.planName"  placeholder="计划名称" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="开始日期：" :label-width="formLabelWidth">
-                        <el-date-picker v-model="form.startDate" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"
-                                        type="date" placeholder="选择日期"></el-date-picker>
+                    <el-form-item label="开始日期：" :label-width="formLabelWidth" prop="startDate">
+                        <el-date-picker
+                                v-model="planForm.startDate"
+                                type="date"
+                                format="yyyy-MM-dd"
+                                value-format="yyyy-MM-dd"
+                                placeholder="选择开始日期"
+                                style="width: auto"
+                                clearable
+                        >
+                        </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="结束日期：" :label-width="formLabelWidth">
-                    <el-date-picker v-model="form.endDate" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"
-                                    type="date" placeholder="选择日期"></el-date-picker>
+                    <el-form-item label="结束日期：" :label-width="formLabelWidth" prop="endDate" >
+                        <el-date-picker
+                                v-model="planForm.endDate"
+                                type="date"
+                                format="yyyy-MM-dd"
+                                value-format="yyyy-MM-dd"
+                                placeholder="选择结束日期"
+                                style="width: auto"
+                                clearable
+                        >
+                        </el-date-picker>
                 </el-form-item>
-                    <el-form-item label="计划积分：" :label-width="formLabelWidth">
-                        <el-input v-model="form.integral" autocomplete="off" placeholder="计划积分"></el-input>
+                    <el-form-item label="计划积分：" :label-width="formLabelWidth" prop="integral">
+                        <el-input-number v-model="planForm.integral" :min="0" placeholder="计划积分">分</el-input-number>
                     </el-form-item>
-                    <el-form-item label="计划学分：" :label-width="formLabelWidth">
-                        <el-input v-model="form.credit" autocomplete="off" placeholder="计划学分"></el-input>
+                    <el-form-item label="计划学分：" :label-width="formLabelWidth" prop="credit">
+                        <el-input-number v-model="planForm.credit" :min="0" placeholder="计划学分">
+                            分
+                        </el-input-number>
                     </el-form-item>
 
                     <el-form-item label="备注：" :label-width="formLabelWidth">
-                        <el-input v-model="form.remarks" autocomplete="off" placeholder="备注"></el-input>
+                        <el-input v-model="planForm.remarks" placeholder="备注"></el-input>
                     </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="save">保存</el-button>
+                <el-button type="primary" @click="save('planForm')">保存</el-button>
             </div>
 
         </el-dialog>
