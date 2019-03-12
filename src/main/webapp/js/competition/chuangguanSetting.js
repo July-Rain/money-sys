@@ -133,6 +133,7 @@ var vm = new Vue({
 
             vm.daguanArray = [];
             vm.bigcheckNum = [];
+            vm.daguannum="";
             //每次打开添加按钮时候 取后台获取 字典表中大关和小关数量的配置
             $.ajax({
                 type: "POST",
@@ -178,7 +179,7 @@ var vm = new Vue({
                 data: {type: "QUESTION_TYPE", Parentcode: "0"},
                 success: function (result) {
 
-
+                    vm.itemtype=[];
                     // vm.itemtype=result.dictlist;
                     for (var tt = 0; tt < result.dictlist.length; tt++) {
                         if ((result.dictlist[tt].value == "单选题") || (result.dictlist[tt].value == "判断题") || (result.dictlist[tt].value == "多选题")) {
@@ -205,6 +206,9 @@ var vm = new Vue({
         onselect: function (num) {
             //点完选择大关触发事件
             // alert(vId);
+
+
+            console.info(num);
             vm.daguanArray = [];
             for (var k = 0; k < num; k++) {
                 vm.daguanArray.push(
@@ -275,6 +279,13 @@ var vm = new Vue({
             });
         },
         del: function () {
+            if(vm.tableData.length=='0'){
+                vm.$message({
+                    type: 'info',
+                    message: '占无数据!'
+                });
+                return;
+            }
 
             this.$confirm('此操作将永久删除竞赛配置, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -350,7 +361,7 @@ var vm = new Vue({
                 data: {type: "QUESTION_TYPE", Parentcode: "0"},
                 success: function (result) {
 
-
+                    vm.itemtype=[];
                     // vm.itemtype=result.dictlist;
                     for (var tt = 0; tt < result.dictlist.length; tt++) {
                         if ((result.dictlist[tt].value == "单选题") || (result.dictlist[tt].value == "判断题") || (result.dictlist[tt].value == "多选题")) {

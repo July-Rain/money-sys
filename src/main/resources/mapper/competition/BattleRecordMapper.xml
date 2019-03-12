@@ -171,7 +171,9 @@
 
     <select id="pkSorceBydept" resultType="java.lang.Integer" parameterType="java.lang.String">
        SELECT
-            "SUM" (score)
+            CASE
+            WHEN "SUM" ("SCORE") IS null THEN 0
+            ELSE "SUM" ("SCORE")  END sorce
         FROM
             (
                 SELECT
@@ -192,7 +194,9 @@
     </select>
     <select id="leitaiSorceBydept" resultType="java.lang.Integer" parameterType="java.lang.String">
         SELECT
-        "SUM" (score)
+        CASE
+            WHEN "SUM" ("SCORE") IS null THEN 0
+            ELSE "SUM" ("SCORE")  END sorce
         FROM
         (
         SELECT
@@ -248,7 +252,9 @@
 
     <select id="pkSum" resultType="java.lang.Integer" parameterType="java.lang.String">
         SELECT
-        "SUM"(SCORE)
+       CASE
+            WHEN "SUM" ("SCORE") IS null THEN 0
+            ELSE "SUM" ("SCORE")  END sorce
         FROM
             LAW_BATTLE_RECORD
         WHERE

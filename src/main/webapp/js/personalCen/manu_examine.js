@@ -65,6 +65,11 @@ var vm = new Vue({
 
     },
     methods: {
+
+        //序列号计算
+        indexMethod: function (index) {
+            return index + 1 + (vm.formInline.page - 1) * vm.formInline.limit;
+        },
         handleSizeChange: function (val) {
             vm.formInline.limit = val;
             vm.refresh();
@@ -81,6 +86,8 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code == 0) {
+
+                        console.info(result);
                         vm.tableData = result.page.list;
                         vm.formInline.count = result.page.count;
                     } else {

@@ -160,7 +160,8 @@
                             :data="form.answerList"
                             style="width: 100%"
                             stripe
-                            v-if="form.answerList.length > 0">
+                            >
+                        <!--v-if="form.answerList.length > 0"-->
                         <el-table-column
                                 type="index"
                                 label="序号">
@@ -172,12 +173,12 @@
                                 prop="questionContent">
                         </el-table-column>
 
-                        <el-table-column
-                                label="分数"
-                                header-align="center"
-                                align="center"
-                                prop="score">
-                        </el-table-column>
+                        <!--<el-table-column-->
+                                <!--label="分数"-->
+                                <!--header-align="center"-->
+                                <!--align="center"-->
+                                <!--prop="score">-->
+                        <!--</el-table-column>-->
 
                         <el-table-column
                                 label="排序"
@@ -251,9 +252,9 @@
                             <el-input v-model="answer.questionContent" placeholder="选项描述" type="input"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="分数：" prop="score">
-                            <el-input v-model="answer.score" placeholder="分数"></el-input>
-                        </el-form-item>
+                        <!--<el-form-item label="分数：" prop="score">-->
+                            <!--<el-input v-model="answer.score" placeholder="分数"></el-input>-->
+                        <!--</el-form-item>-->
 
                         <el-form-item label="排序：" prop="ordersort">
                             <el-input v-model="answer.ordersort" placeholder="排序"></el-input>
