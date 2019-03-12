@@ -325,14 +325,13 @@
                                 <el-row>
                                     <el-col :span="12">
                                         <el-form-item label="总题数量">
-                                            <el-input v-model="item.smallNum" placeholder="小关数量" clearable></el-input>
+                                            <el-input-number v-model="item.smallNum" @change="handleChange" :min="1" :max="999" label="小关数量"></el-input-number>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="6">
                                         <el-form-item label="统一配置">
                                             <el-select v-model="item.unifyConfiguration"
-                                                       @change="onselectunifyConfiguration(item)" placeholder="是否统一配置"
-                                                       clearable>
+                                                       @change="onselectunifyConfiguration(item)" placeholder="是否统一配置">
                                                 <el-option label="是" value="1"></el-option>
                                                 <el-option label="否" value="0"></el-option>
                                             </el-select>
