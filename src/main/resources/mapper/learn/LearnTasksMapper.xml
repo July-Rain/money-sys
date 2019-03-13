@@ -1,4 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lawschool.dao.learn.LearnTasksDao">
+    <resultMap id="BaseResultMap" type="com.lawschool.beans.learn.LearnTasksEntity">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="TASK_NAME" jdbcType="VARCHAR" property="taskName"/>
+        <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="TASK_EXECUTE" jdbcType="VARCHAR" property="taskExecute"/>
+        <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="OPT_USER" jdbcType="VARCHAR" property="optUser"/>
+        <result column="OPT_TIME" jdbcType="TIMESTAMP" property="optTime"/>
+        <result column="POLICECLASS" jdbcType="VARCHAR" property="policeclass"/>
+        <result column="DEPT_CODE" jdbcType="VARCHAR" property="deptCode"/>
+        <result column="TASK_CLASS" jdbcType="VARCHAR" property="taskClass"/>
+        <result column="COUNT_USER" jdbcType="DECIMAL" property="countUser"/>
+        <result column="IS_USE" jdbcType="VARCHAR" property="isUse"/>
+        <result column="IS_SELF" jdbcType="VARCHAR" property="isSelf"/>
+        <result column="IS_OVER" jdbcType="VARCHAR" property="isOver"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.lawschool.beans.learn.LearnTasksEntity">
+        <result column="DEPT_NAME" jdbcType="CLOB" property="deptName"/>
+        <result column="USER_NAME" jdbcType="CLOB" property="userName"/>
+        <result column="TASK_CONTENT" jdbcType="CLOB" property="taskContent"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID, TASK_NAME, START_TIME, END_TIME, TASK_EXECUTE, CREATE_USER, CREATE_TIME, OPT_USER,
+        OPT_TIME, POLICECLASS, DEPT_CODE, TASK_CLASS, COUNT_USER, IS_USE, IS_SELF, IS_OVER
+     </sql>
+    <sql id="Blob_Column_List">
+        DEPT_NAME, USER_NAME, TASK_CONTENT
+     </sql>
+    <insert id="insertWithBLOBs" parameterType="com.lawschool.beans.learn.LearnTasksEntity">
+    insert into LAW_LEARN_TASKS (ID, TASK_NAME, START_TIME,
+      END_TIME, TASK_EXECUTE, CREATE_USER,
+      CREATE_TIME, OPT_USER, OPT_TIME,
+      POLICECLASS, DEPT_CODE, TASK_CLASS,
+      COUNT_USER, IS_USE, IS_SELF,
+      IS_OVER, DEPT_NAME, USER_NAME,
+      TASK_CONTENT)
+    values (#{id,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP},
+      #{endTime,jdbcType=TIMESTAMP}, #{taskExecute,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{optUser,jdbcType=VARCHAR}, #{optTime,jdbcType=TIMESTAMP},
+      #{policeclass,jdbcType=VARCHAR}, #{deptCode,jdbcType=VARCHAR}, #{taskClass,jdbcType=VARCHAR},
+      #{countUser,jdbcType=DECIMAL}, #{isUse,jdbcType=VARCHAR}, #{isSelf,jdbcType=VARCHAR},
+      #{isOver,jdbcType=VARCHAR}, #{deptName,jdbcType=CLOB}, #{userName,jdbcType=CLOB},
+      #{taskContent,jdbcType=CLOB})
+  </insert>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.lawschool.beans.learn.LearnTasksEntity">
+    update LAW_LEARN_TASKS
+    set TASK_NAME = #{taskName,jdbcType=VARCHAR},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      TASK_EXECUTE = #{taskExecute,jdbcType=VARCHAR},
+      CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      OPT_USER = #{optUser,jdbcType=VARCHAR},
+      OPT_TIME = #{optTime,jdbcType=TIMESTAMP},
+      POLICECLASS = #{policeclass,jdbcType=VARCHAR},
+      DEPT_CODE = #{deptCode,jdbcType=VARCHAR},
+      TASK_CLASS = #{taskClass,jdbcType=VARCHAR},
+      COUNT_USER = #{countUser,jdbcType=DECIMAL},
+      IS_USE = #{isUse,jdbcType=VARCHAR},
+      IS_SELF = #{isSelf,jdbcType=VARCHAR},
+      IS_OVER = #{isOver,jdbcType=VARCHAR},
+      DEPT_NAME = #{deptName,jdbcType=CLOB},
+      USER_NAME = #{userName,jdbcType=CLOB},
+      TASK_CONTENT = #{taskContent,jdbcType=CLOB}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
 </mapper>

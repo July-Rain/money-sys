@@ -37,7 +37,7 @@ SELECT
 				FROM
 					LAW_USER_INTEGRAL lui
 				WHERE
-					ORG_CODE = #{orgId}
+					ORG_ID = #{orgId}
 			)
 		WHERE
 			USER_ID = #{id}
