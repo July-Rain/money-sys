@@ -439,7 +439,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 
 					//加完后在添加 另外的积分表
 					Integral integral=new Integral();
-					integral.setType("0");
+					integral.setType("1");
 					integral.setPoint(Float.parseFloat(score));
 					integral.setSrc(type);
 					integralService.addIntegralRecord(integral,u);
@@ -450,7 +450,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 				else if(f2>(f-f3)){
 					//加完后在添加 另外的积分表
 					Integral integral=new Integral();
-					integral.setType("0");
+					integral.setType("1");
 					integral.setPoint((f-f3));
 					integral.setSrc(type);
 					integralService.addIntegralRecord(integral,u);
@@ -505,7 +505,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 					if(boo){
 						//加完后在添加 另外的积分表
 						Integral integral=new Integral();
-						integral.setType("0");
+						integral.setType("1");
 						integral.setPoint(fraction.getScore());
 						integral.setSrc(type);
 						integralService.addIntegralRecord(integral,u);
@@ -531,7 +531,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 						if(boo){
 							//加完后在添加 另外的积分表
 							Integral integral=new Integral();
-							integral.setType("0");
+							integral.setType("1");
 							integral.setPoint(Float.parseFloat(score)+fraction.getScore());
 							integral.setSrc(type);
 							integralService.addIntegralRecord(integral,u);
@@ -544,7 +544,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 						else{
 							//加完后在添加 另外的积分表
 							Integral integral=new Integral();
-							integral.setType("0");
+							integral.setType("1");
 							integral.setPoint(Float.parseFloat(score));
 							integral.setSrc(type);
 							integralService.addIntegralRecord(integral,u);
@@ -560,7 +560,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 						if(boo){
 							//加完后在添加 另外的积分表
 							Integral integral=new Integral();
-							integral.setType("0");
+							integral.setType("1");
 							integral.setPoint((f-f3)+fraction.getScore());
 							integral.setSrc(type);
 							integralService.addIntegralRecord(integral,u);
@@ -572,7 +572,7 @@ public class CompetitionOnlineServiceImpl extends ServiceImpl<CompetitionOnlineD
 						else{
 							//加完后在添加 另外的积分表
 							Integral integral=new Integral();
-							integral.setType("0");
+							integral.setType("1");
 							integral.setPoint((f-f3));
 							integral.setSrc(type);
 							integralService.addIntegralRecord(integral,u);
