@@ -55,7 +55,10 @@ var vm = new Vue({
                     if (result.code === 0) {
                         vm.qds = result.dictlist;
                     } else {
-                        alert(result.msg);
+                        vm.$message({
+                            message: result.msg,
+                            type: 'warning'
+                        });
                     }
                 }
             });
@@ -82,7 +85,10 @@ var vm = new Vue({
                     if (result.code === 0) {
                         vm.sks = result.skOption;
                     } else {
-                        alert(result.msg);
+                        vm.$message({
+                            message: result.msg,
+                            type: 'warning'
+                        });
                     }
                 }
             });
@@ -97,7 +103,10 @@ var vm = new Vue({
                     if (result.code === 0) {
                         vm.qts = result.dictlist;
                     } else {
-                        alert(result.msg);
+                        vm.$message({
+                            message: result.msg,
+                            type: 'warning'
+                        });
                     }
                 }
             });
@@ -124,10 +133,16 @@ var vm = new Vue({
         },
         onCom:function(){
             if (vm.params.num >vm.formInline.totalCount){
-                alert("出题数量不能大于收藏试题总数量");
+                vm.$message({
+                    message: "出题数量不能大于收藏试题总数量",
+                    type: 'warning'
+                });
                 return false;
             }else if (vm.params.num<0|| vm.params.num % 1 != 0){
-                alert("出题数量必须为正整数");
+                vm.$message({
+                    message: "出题数量必须为正整数",
+                    type: 'warning'
+                });
                 return false;
             }
             $.ajax({
@@ -142,7 +157,10 @@ var vm = new Vue({
                         vm.taskId = result.id;
                         vm.genTaskByQue = true;
                     } else {
-                        alert(result.msg);
+                        vm.$message({
+                            message: result.msg,
+                            type: 'warning'
+                        });
                     }
                 }
             });
@@ -151,7 +169,10 @@ var vm = new Vue({
             vm.genTaskByQue = false;
         },
         jumpTask : function(){
-            alert(vm.taskId);
+            vm.$message({
+                message: vm.taskId,
+                type: 'success'
+            });
         },
         handleInfo: function (index, row) {
             this.title = "试题详情";
@@ -168,7 +189,10 @@ var vm = new Vue({
                         questObj=result.qustion;
                         vm.answers=result.answer;
                     } else {
-                        alert(result.msg);
+                        vm.$message({
+                            message: result.msg,
+                            type: 'warning'
+                        });
                     }
                 }
             });
@@ -198,7 +222,10 @@ var vm = new Vue({
                         vm.formInline.pageSize = result.result.pageSize;
                         vm.formInline.totalCount = parseInt(result.result.totalCount);
                     } else {
-                        alert(result.msg);
+                        vm.$message({
+                            message: result.msg,
+                            type: 'warning'
+                        });
                     }
                 }
             });

@@ -190,9 +190,9 @@
 
                     <el-button size="mini" type="primary" @click="add"><i class="iconfont icon-htmal5icon18"></i>新增配置
                     </el-button>
-                    <el-button size="mini" type="primary" @click="update"><i class="iconfont icon-xiugaimima"></i>编辑
+                    <el-button v-if="tableData.length" size="mini" type="primary" @click="update"><i class="iconfont icon-xiugaimima"></i>编辑
                     </el-button>
-                    <el-button size="mini" type="danger" @click="del" plain><i class="iconfont icon-tubiaozhizuo-"></i>删除
+                    <el-button v-if="tableData.length" size="mini" type="danger" @click="del" plain><i class="iconfont icon-tubiaozhizuo-"></i>删除
                     </el-button>
                 </div>
                 <el-table
