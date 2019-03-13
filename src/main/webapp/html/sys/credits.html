@@ -196,13 +196,13 @@
                                 <div class="name">音频</div>
                                 <div class="data">
                                     <el-form-item label="收听不少于：">
-                                        <el-input size="small" type="number"><template slot="append">分钟</template></el-input>
+                                        <el-input size="small" type="number" :min="0" v-model="audioStudy.minDemand"><template slot="append">分钟</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="奖励：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" :min="0" v-model="audioStudy.score"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="每日上限：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" :min="0" v-model="audioStudy.dailyLimit"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                 </div>
                             </li>
@@ -210,13 +210,13 @@
                                 <div class="name">视频</div>
                                 <div class="data">
                                     <el-form-item label="收看不少于：">
-                                        <el-input size="small" type="number"><template slot="append">分钟</template></el-input>
+                                        <el-input size="small" type="number" v-model="videoStudy.minDemand"><template slot="append">分钟</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="奖励：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="videoStudy.score"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="每日上限：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="videoStudy.dailyLimit"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                 </div>
                             </li>
@@ -224,13 +224,13 @@
                                 <div class="name">图文</div>
                                 <div class="data">
                                     <el-form-item label="收看不少于：">
-                                        <el-input size="small" type="number"><template slot="append">分钟</template></el-input>
+                                        <el-input size="small" type="number" v-model="picStudy.minDemand"><template slot="append">分钟</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="奖励：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="picStudy.score"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="每日上限：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="picStudy.dailyLimit"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                 </div>
                             </li>
@@ -238,7 +238,7 @@
                                 <div class="name">任务</div>
                                 <div class="data">
                                     <el-form-item label="每个任务：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="stuTask.score"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                 </div>
                             </li>
@@ -259,7 +259,7 @@
                                 <div class="name">每日一题</div>
                                 <div class="data">
                                     <el-form-item label="答题：">
-                                        <el-input type="number" size="small"><template slot="append">分</template></el-input>
+                                        <el-input type="number" size="small" v-model="dailyQue.score"  ><template slot="append">分</template></el-input>
                                     </el-form-item>
                                 </div>
                             </li>
@@ -267,13 +267,13 @@
                                 <div class="name">组卷练习</div>
                                 <div class="data">
                                     <el-form-item label="正确率大于：">
-                                        <el-input size="small" type="number"><template slot="append">%</template></el-input>
+                                        <el-input size="small" type="number" v-model="groupPrac.minDemand" ><template slot="append">%</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="奖励：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="groupPrac.score"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="每日上限：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="groupPrac.dailyLimit"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                 </div>
                             </li>
@@ -281,16 +281,16 @@
                                 <div class="name">非练习卷</div>
                                 <div class="data" >
                                     <el-form-item label="不少于：">
-                                        <el-input size="small" type="number"><template slot="append">题</template></el-input>
+                                        <el-input size="small" type="number" v-model="otherPrac.queNum" ><template slot="append">题</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="正确率大于：">
-                                        <el-input size="small" type="number"><template slot="append">%</template></el-input>
+                                        <el-input size="small" type="number" v-model="otherPrac.minDemand"><template slot="append">%</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="奖励：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="otherPrac.score"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="每日上限：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="otherPrac.dailyLimit"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                 </div>
                             </li>
@@ -311,13 +311,13 @@
                                 <div class="name">获得学分</div>
                                 <div class="data">
                                     <el-form-item label="题数不小于：">
-                                        <el-input size="small" type="number"><template slot="append">题</template></el-input>
+                                        <el-input size="small" type="number" v-model="examCredits.queNum"><template slot="append">题</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="正确率大于：">
-                                        <el-input size="small" type="number"><template slot="append">%</template></el-input>
+                                        <el-input size="small" type="number" v-model="examCredits.minDemand"><template slot="append">%</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="每季度考试：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="examCredits.score"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                 </div>
                             </li>
@@ -326,19 +326,17 @@
                                 <div class="data">
                                     <div class="exam-data">
                                         <el-form-item label="题数不小于：">
-                                            <el-input type="number" size="small"><template slot="append">题</template></el-input>
+                                            <el-input type="number" size="small" v-model="examIntegral.queNum" ><template slot="append">题</template></el-input>
                                         </el-form-item>
                                         <span class="hint">获得积分的条件在下方编辑</span>
                                     </div>
-                                    <div class="exam-data dropdowns">
+                                    <div class="exam-data dropdowns" v-for="count in sum">
                                         <div class="dropdown-group" style="display: flex;">
                                             <el-form-item label="正确率：">
-                                                <select name="" class="select">
+                                                <select name="" class="select" v-model="demo[count].aaa">
                                                     <option value="">等于</option>
-                                                    <option value="">大于</option>
                                                     <option value="">大于等于</option>
                                                     <option value="">小于</option>
-                                                    <option value="">小于等于</option>
                                                 </select>
                                             </el-form-item>
                                             <el-form-item label-width="10px">
@@ -374,13 +372,13 @@
                                 <div class="name">闯关竞赛</div>
                                 <div class="data">
                                     <el-form-item label="通过一关：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="recruit.maxScore"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="答对一题：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="recruit.minScore"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="每日上限：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="recruit.dailyLimit">><template slot="append">分</template></el-input>
                                     </el-form-item>
                                 </div>
                             </li>
@@ -388,13 +386,13 @@
                                 <div class="name">在线比武</div>
                                 <div class="data">
                                     <el-form-item label="获胜一次：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="competitionOnline.maxScore"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="失败一次：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="competitionOnline.minScore"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                     <el-form-item label="每日上限：">
-                                        <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                        <el-input size="small" type="number" v-model="competitionOnline.dailyLimit"><template slot="append">分</template></el-input>
                                     </el-form-item>
                                 </div>
                             </li>
@@ -403,21 +401,21 @@
                                 <div class="data" >
                                     <div class="contest-data">
                                         <el-form-item label="获胜一次：">
-                                            <el-input size="small"  type="number"><template slot="append">分</template></el-input>
+                                            <el-input size="small"  type="number" v-model="match.maxScore"><template slot="append">分</template></el-input>
                                         </el-form-item>
                                         <el-form-item label="失败一次：">
-                                            <el-input size="small"  type="number"><template slot="append">分</template></el-input>
+                                            <el-input size="small"  type="number" v-model="match.minScore"><template slot="append">分</template></el-input>
                                         </el-form-item>
                                         <el-form-item label="每日上限：">
-                                            <el-input size="small"  type="number"><template slot="append">分</template></el-input>
+                                            <el-input size="small"  type="number" v-model="match.dailyLimit"><template slot="append">分</template></el-input>
                                         </el-form-item>
                                     </div>
                                     <div class="contest-data">
                                         <el-form-item label="成功守擂：">
-                                            <el-input size="small" type="number"><template slot="append">次</template></el-input>
+                                            <el-input size="small" type="number" v-model="match.queNum"><template slot="append">次</template></el-input>
                                         </el-form-item>
                                         <el-form-item label="奖励：">
-                                            <el-input size="small" type="number"><template slot="append">分</template></el-input>
+                                            <el-input size="small" type="number" v-model="match.socre"><template slot="append">分</template></el-input>
                                         </el-form-item>
                                     </div>
                                 </div>
@@ -444,6 +442,9 @@
         e.target.remove();
     }
     var addLimitations = function (e) {
+        vm.sum++;
+        console.info("demo",vm.demo)
+        return;
         var parent = e.target.parentNode.parentNode.parentNode;
         var examData = e.target.parentNode.parentNode.cloneNode(true);
         parent.appendChild(examData);

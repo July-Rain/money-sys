@@ -3,20 +3,57 @@ var vm = new Vue({
     el: '#app',
     data: {
         source: [], // result数据
-        detail: {
-            audioStudy: {}, // 音频
-            videoStudy: {}, // 视频
-            picStudy: {}, // 图文
-            stuTask: {}, // 任务
-            dailyQue: {}, // 每日一题
-            groupPrac: {}, // 组卷练习
-            otherPrac: {}, // 非练习卷
-            integral: {}, // 获得积分
-            credits: {}, // 获得学分
-            recruit: {}, // 闯关竞赛
-            competitionOnline: {}, // 在线比武
-            match: {}, // 擂台赛
-        },
+        audioStudy: {
+            fractionType : '1',
+            source : 'audioStudy'
+
+        }, // 音频
+        videoStudy: {
+            fractionType : '1',
+            source : 'videoStudy'
+        }, // 视频
+        picStudy: {
+            fractionType : '1',
+            source : 'picStudy'
+        }, // 图文
+        stuTask: {
+            fractionType : '1',
+            source : 'stuTask'
+        }, // 任务
+        dailyQue: {
+            fractionType : '1',
+            source : 'dailyQue'
+        }, // 每日一题
+        groupPrac: {
+            fractionType : '1',
+            source : 'groupPrac'
+        }, // 组卷练习
+        otherPrac: {
+            fractionType : '1',
+            source : 'otherPrac'
+        }, // 非练习卷
+        examIntegral: {
+            fractionType : '1',
+            source : 'integral'
+        }, // 获得积分
+        examCredits: {
+            fractionType : '0',
+            source : 'credits'
+        }, // 获得学分
+        recruit: {
+            fractionType : '1',
+            source : 'recruit'
+        }, // 闯关竞赛
+        competitionOnline: {
+            fractionType : '1',
+            source : 'competitionOnline'
+        }, // 在线比武
+        match: {
+            fractionType : '1',
+            source : 'match'
+        }, // 擂台赛
+        sum: 1,
+        demo: [{aaa:''},{aaa:''},{aaa:''},{aaa:''},{aaa:''},{aaa:''}]
     },
     created: function () {
         /*this.$nextTick(function () {
