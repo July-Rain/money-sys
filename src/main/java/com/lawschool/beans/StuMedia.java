@@ -43,7 +43,7 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
     @Version
     @TableField(update = "%s+1")
     private Integer stuCount;//观看次数
-
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date stuCreat;//制作时间
 
     private String stuIssuer;//发布人

@@ -2,6 +2,7 @@ package com.lawschool.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractService;
 import com.lawschool.base.AbstractServiceImpl;
@@ -33,7 +34,7 @@ import static java.lang.Integer.parseInt;
  * @date 2018/12/2019:31
  */
 @Service
-public class IntegralServiceImpl extends AbstractServiceImpl<IntegralDao, Integral> implements IntegralService {
+public class IntegralServiceImpl extends ServiceImpl<IntegralDao, Integral> implements IntegralService {
 
     @Autowired
     private IntegralDao integralDao;
@@ -164,5 +165,10 @@ public class IntegralServiceImpl extends AbstractServiceImpl<IntegralDao, Integr
     @Override
     public List<OrgCompetitionVO> orgDiaStat(Map<String, String> param) {
         return integralDao.orgDiaStat(param);
+    }
+
+    @Override
+    public Float sumPointByUser(Integral integral) {
+        return integralDao.sumPointByUser(integral);
     }
 }

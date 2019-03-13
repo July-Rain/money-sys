@@ -166,7 +166,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="caseType"
-                            label="案例类型"
+                            label="案件类型"
                             width="150"
                             header-align="center"
                             align="center"
@@ -298,8 +298,8 @@
                             </el-form-item>
                             <el-form-item label="视频上传：" prop="caseContent">
                                 <video  id="video-uploaded" v-show="caseAna.caseContent !='' && videoFlag == false"
-                                       :src="caseAna.caseContentUrl" class="avatar video-js"
-                                       autoplay controls="controls">您的浏览器不支持视频播放</video>
+                                       :src="caseAna.caseContentUrl" class="avatar"
+                                        controls="controls">您的浏览器不支持视频播放</video>
                                 <i v-if="caseAna.caseContent =='' && videoFlag == false" class="iconfont icon-shipin"></i>
                                 <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
 
@@ -432,6 +432,7 @@
                     </el-form>
                     <div>
                         <el-table
+                                ref="userTable"
                                 :data="userTableData"
                                 border
                                 height="529"

@@ -86,7 +86,7 @@
                 </div>
                 <div>
                     <div class="info_btn">
-                        <el-button size="mini" type="primary" @click="addStuMedia"><i
+                        <el-button v-if="fromFlag=='perman'" size="mini" type="primary" @click="addStuMedia"><i
                                 class="iconfont icon-htmal5icon18"></i>新增
                         </el-button>
                     </div>
@@ -231,7 +231,7 @@
                                 <P class="text">请保证图片格式正确，作为视频封面</P>
                             </el-form-item>
                             <el-form-item label="视频上传：" prop="comContent">
-                                <video v-show="stuMediaTch.comContent !='' && videoFlag == false" autoplay
+                                <video v-show="stuMediaTch.comContent !='' && videoFlag == false"
                                        :src="stuMediaTch.contentUrl" id="video-uploaded" class="avatar video-js" controls="controls">您的浏览器不支持视频播放
                                 </video>
                                 <i v-if="stuMediaTch.comContent =='' && videoFlag == false"
@@ -256,7 +256,7 @@
             </el-row>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="closeDia">取消</el-button>
-                <el-button type="primary" @click="saveOrUpdate('stuMediaTch')">保存</el-button>
+                <el-button v-if="isEdit" type="primary" @click="saveOrUpdate('stuMediaTch')">保存</el-button>
             </div>
         </el-dialog>
 

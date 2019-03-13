@@ -1,8 +1,10 @@
 package com.lawschool.service;
 
+import com.baomidou.mybatisplus.service.IService;
 import com.lawschool.beans.Integral;
 import com.lawschool.beans.User;
 import com.lawschool.beans.diagnosis.OrgDiagnosisEntity;
+import com.lawschool.beans.learn.StuRecordEntity;
 import com.lawschool.beans.vo.OrgCompetitionVO;
 import com.lawschool.util.PageUtils;
 
@@ -16,7 +18,7 @@ import java.util.Map;
  * @Param 
  * @return 
 **/
-public interface IntegralService {
+public interface IntegralService extends IService<Integral> {
     /**
      * @Author zjw
      * @Description 获取用户的积分学分记录
@@ -45,5 +47,15 @@ public interface IntegralService {
     PageUtils userByDeptList(Map<String, Object> params, String deptcode);
 
     List<OrgCompetitionVO> orgDiaStat(Map<String,String> param);
+
+    /**
+     * @Author MengyuWu
+     * @Description 根据当前登陆人信息 统计当天某个类型下的积分或者学分的总和
+     * @Date 10:13 2019-3-12
+     * @Param [integral]
+     * @return java.lang.Float
+     **/
+    
+    Float sumPointByUser(Integral integral);
 
 }

@@ -106,7 +106,8 @@ var vm = new Vue({
         lawCheckData:[],//法律法规回显表格数据
         multipleLawSelection: [],//选中法律法规信息
         lawData: [],//法律知识库分类树 --去除全部的
-        uploadedPlayer: null // videojs实例
+        uploadedPlayer: null, // videojs实例
+        saveUserTableData: [],//用于人员回显表格的对象  --回显需加
     },
     created: function () {
 
@@ -212,12 +213,12 @@ var vm = new Vue({
     },
     methods: {
         // 初始化videojs // videojs
-        initPlayer: function () {
-            var options = {
-                bigPlayButton: false,
-            };
-            vm.uploadedPlayer = videojs('video-uploaded', options);
-        },
+        // initPlayer: function () {
+        //     var options = {
+        //         bigPlayButton: false,
+        //     };
+        //     vm.uploadedPlayer = videojs('video-uploaded', options);
+        // },
         //序列号计算
         indexMethod:function (index) {
             return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
@@ -440,9 +441,9 @@ var vm = new Vue({
             if(response.code == 0){
                 vm.caseAna.caseContent=response.accessoryId;
                 vm.caseAna.caseContentUrl=baseURL+"sys/download?accessoryId="+response.accessoryId;
-                setTimeout(function () {
-                    that.initPlayer();
-                }, 800);
+                // setTimeout(function () {
+                //     that.initPlayer();
+                // }, 800);
             }else{
                 this.$message.error('视频上传失败，请重新上传！');
             }
@@ -516,7 +517,39 @@ var vm = new Vue({
         chooseUser: function () {
             //选择人员
             this.dialogUser=true;
+            this.huixian(this.caseAna.userArr) //  --回显需加
 
+        },
+        huixian: function (ids) {
+            // saveUserTableData    --回显需加
+            if (!ids) {
+                return
+            }
+            var that = this;
+            ids.map(function (_id) {
+                that.userTableData.map(function (_data) {
+                    if (_id == _data.id) {
+                        that.saveUserTableData.push(_data)
+                    }
+                })
+
+            });
+            console.info("saveUserTableData", that.saveUserTableData);
+            this.$nextTick(function () {
+                // vm.$refs.userTable.toggleRowSelection()
+                vm.userToggleSelection(that.saveUserTableData)
+
+            })
+        },
+        userToggleSelection(rows) {
+            //  --回显需加
+            if (rows) {
+                rows.map(function (row) {
+                    vm.$refs.userTable.toggleRowSelection(row);
+                });
+            } else {
+                this.$refs.userTable.clearSelection();
+            }
         },
         confimDept: function () {
             debugger
@@ -546,6 +579,7 @@ var vm = new Vue({
         },
         confimUser: function () {
             this.dialogUser=false;
+            var val =this.multipleSelection;
             //遍历最终的人员信息
             if(val.length==0){
                 vm.caseAna.userIds = "";
@@ -580,6 +614,8 @@ var vm = new Vue({
                         vm.userForm.currPage = result.page.currPage;
                         vm.userForm.pageSize = result.page.pageSize;
                         vm.userForm.totalCount = parseInt(result.page.totalCount);
+                        // 点击展示回显内容：   --回显需加
+                        vm.huixian(vm.caseAna.userArr)
                     } else {
                         alert(result.msg);
                     }
@@ -619,6 +655,8 @@ var vm = new Vue({
             this.dialogLaw = false;
         },
         confimLaw:function(){
+            vm.caseAna.caseLawid = "";
+            vm.caseAna.caseLawname = "";
             this.multipleLawSelection = this.$refs.lawTree.getCheckedNodes();
             for (var i = 0; i < this.multipleLawSelection.length; i++) {
                 if (!this.caseAna.caseLawid) {

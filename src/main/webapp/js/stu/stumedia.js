@@ -169,12 +169,12 @@ var vm = new Vue({
     },
     methods: {
         // 初始化videojs // videojs
-        initPlayer: function () {
-            var options = {
-                bigPlayButton: false,
-            };
-            vm.uploadedPlayer = videojs('video-uploaded', options);
-        },
+        // initPlayer: function () {
+        //     var options = {
+        //         bigPlayButton: false,
+        //     };
+        //     vm.uploadedPlayer = videojs('video-uploaded', options);
+        // },
         //序列号计算
         indexMethod: function (index) {
             return index + 1 + (vm.formInline.currPage - 1) * vm.formInline.pageSize;
@@ -386,7 +386,7 @@ var vm = new Vue({
 
         },
         uploadSuccess: function (response, file, fileList) {
-            var that = this;  // videojs
+            //var that = this;  // videojs
             this.videoFlag = false;
             this.videoUploadPercent = 0;
             if (response.code == 0) {
@@ -395,7 +395,7 @@ var vm = new Vue({
                 setTimeout(function () {
                     vm.stuMedia.stuTime = document.getElementsByClassName("avatar")[0].duration;
                     vm.stuMedia.stuTime = document.getElementsByClassName("avatar")[0].duration;
-                    that.initPlayer();
+                    //that.initPlayer();
                     //console.info("啊啊啊",document.getElementsByClassName("avatar")[0].currentTime,document.getElementsByClassName("avatar")[0].duration);
                 }, 800)
             } else {
@@ -607,6 +607,8 @@ var vm = new Vue({
             this.dialogLaw = false;
         },
         confimLaw:function(){
+            vm.stuMedia.caseLawid = "";
+            vm.stuMedia.caseLawname = "";
             this.multipleLawSelection = this.$refs.lawTree.getCheckedNodes();
             for (var i = 0; i < this.multipleLawSelection.length; i++) {
                 if (!this.stuMedia.stuLawid) {

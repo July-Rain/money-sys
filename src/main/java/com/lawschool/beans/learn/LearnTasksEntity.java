@@ -74,7 +74,7 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
 
     private String isSelf;//是否是个人添加
 
-    private String isOver;//是否过期
+    private String isOver;//是否过期  0-过期 1-正常  2-未开始
 
     @TableField(exist = false)
     private List<TaskDesicEntity> taskContentList=new ArrayList<TaskDesicEntity>();//法律法规内容arr
