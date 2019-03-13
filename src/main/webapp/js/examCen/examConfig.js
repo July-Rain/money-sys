@@ -20,7 +20,7 @@ var vm = new Vue({
         };
         var validateStartTime = function (rule, value, callback) {
             if (vm.examConfig.startTime === '') {
-                callback(new Error('请输入开始时间'))
+                callback(new Error('开始时间或者结束时间不能为空'))
             } else {
                 if (new Date(Date.parse(vm.examConfig.startTime.replace(/-/g, "/"))).getTime()  < new Date().getTime() ){
                     callback(new Error('开始时间应大于当前时间'))
@@ -72,6 +72,8 @@ var vm = new Vue({
                 topicOrderType:"10032",
                 optionOrderType:"10032",
                 examTime : 120,
+                startTime:'',
+                endTime:'',
                 examScore : 100,
                 passPnt :60,
                 reachRewardType:"10038",
@@ -103,7 +105,7 @@ var vm = new Vue({
                     {required: true, message: '请选择选项顺序', trigger: 'change'}
                 ],
                 startTime:[
-                    {required: true, message: '请输入开始时间', trigger: 'blur'}
+                    {required: true, message: '请输入开始时间', trigger: 'blur',validator : validateStartTime}
                 ],
                 endTime:[
                     {validator: validateDate, trigger: 'blur',required: true}
@@ -224,8 +226,8 @@ var vm = new Vue({
                 pageSize: 1,
                 limit: 10,
                 count: 0,
-                queContent:'',
-                typeId:'',
+                comContent:'',
+                specialKnowledgeId:'',
                 ids:[]
             },
             queNum :0,
@@ -1015,7 +1017,7 @@ var vm = new Vue({
             vm.randomQuesModal = false;
         },
         resetQueForm: function (name) {
-
+            this.$refs[name].resetFields();
         },
         saveChange: function () {
             var _index = this.changeIndex.index;
