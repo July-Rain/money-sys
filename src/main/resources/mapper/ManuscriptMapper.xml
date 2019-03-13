@@ -32,7 +32,8 @@
             create_user,
             create_time,
             opt_user,
-            opt_time
+            opt_time,
+            org_code
         ) VALUES (
             #{id},
             #{type},
@@ -42,11 +43,12 @@
             #{createUser},
             #{createTime},
             #{optUser},
-            #{optTime}
+            #{optTime},
+            #{orgCode}
         )
     </insert>
 
-    <select id="findList" resultType="com.lawschool.beans.ManuscriptEntity" >
+    <select id="findList" resultType="com.lawschool.beans.ManuscriptEntity" parameterType="com.lawschool.beans.ManuscriptEntity">
         SELECT
             id AS "id",
             type AS "type",
@@ -64,6 +66,13 @@
                 and create_user = #{createUser}
             </if>
 
+            <if test="orgidList != null and orgidList.size > 0">
+                and ORG_CODE IN
+                <foreach collection="orgidList" index="index" item="item" open="(" separator="," close=")">
+                    ${item}
+                </foreach>
+
+            </if>
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">
                 ORDER BY ${page.orderBy}

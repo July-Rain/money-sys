@@ -79,6 +79,8 @@ var vm = new Vue({
             vm.refresh();
         },
         refresh: function () {
+
+            vm.formInline.type='shenhe';
             $.ajax({
                 type: "GET",
                 url: baseURL + "manuscript/list",
@@ -87,7 +89,6 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
 
-                        console.info(result);
                         vm.tableData = result.page.list;
                         vm.formInline.count = result.page.count;
                     } else {

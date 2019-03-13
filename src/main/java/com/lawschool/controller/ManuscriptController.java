@@ -43,10 +43,17 @@ public class ManuscriptController extends AbstractController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result list(@RequestParam Map<String, Object> params){
+        User u=getUser();
         ManuscriptEntity manuscriptEntity=new ManuscriptEntity();
         if(UtilValidate.isNotEmpty(params.get("createUser"))){
             manuscriptEntity.setCreateUser((String)params.get("createUser"));
         }
+
+
+        //说明是 试题审核那边过来的
+//        if(UtilValidate.isNotEmpty(params.get("type"))){
+//            manuscriptEntity.setOrgidList(u.getOrgIdList());
+//        }
         Page<ManuscriptEntity> page = manuscriptService.findPage(new Page<ManuscriptEntity>(params),
                 manuscriptEntity);
         return Result.ok().put("page", page);
@@ -98,7 +105,7 @@ public class ManuscriptController extends AbstractController {
 
         String author = user.getUserName();
         entity.setAuthor(author);
-
+        entity.setOrgCode(user.getOrgId());
         boolean result = manuscriptService.mySave(entity);
         if(result){
             return Result.ok();
