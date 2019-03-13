@@ -48,7 +48,7 @@
 
         .configure {
             padding-bottom: 0;
-            min-height: 100vh;
+            /*min-height: 100vh;*/
             border: solid 1px #dddddd;
             border-radius: 4px;
         }
@@ -235,6 +235,16 @@
             padding: 24px 44px;
             background-color: #fff;
         }
+        /*按钮居中*/
+        .btn_mid{
+            text-align: center;
+        }
+        .btn_mid .el-form-item{
+            display: inline-block;
+        }
+        .btn_mid .el-form-item .el-form-item__content{
+            margin-left: 0!important;
+        }
     </style>
 </head>
 <body>
@@ -255,7 +265,7 @@
                                       :disabled="view"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="考试类型：" prop="examType">
                             <el-select v-model="examConfig.examType"
                                        collapse-tags
@@ -269,7 +279,7 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="组卷方式：" prop="groupForm">
                             <el-select v-model="examConfig.groupForm"
                                        collapse-tags
@@ -283,14 +293,14 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="是否必考：" prop="isMustTest">
                             <el-radio v-for="item in imtOption" v-model="examConfig.isMustTest" :label="item.key"
                                       :disabled="view">{{item.value}}
                             </el-radio>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="出题方式：" prop="questionWay">
                             <el-select v-model="examConfig.questionWay"
                                        placeholder="请选择出題方式" size="mini" :disabled="view">
@@ -303,21 +313,21 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="题目顺序：" prop="topicOrderType">
                             <el-radio v-for="item in otOption" v-model="examConfig.topicOrderType" :label="item.key"
                                       :disabled="view">{{item.value}}
                             </el-radio>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="选项顺序：" prop="optionOrderType">
                             <el-radio v-for="item in otOption" v-model="examConfig.optionOrderType" :label="item.key"
                                       :disabled="view">{{item.value}}
                             </el-radio>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="开始时间：" prop="startTime">
                             <el-date-picker
                                     v-model="examConfig.startTime"
@@ -328,7 +338,7 @@
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="结束时间：" prop="endTime">
                             <el-date-picker
                                     v-model="examConfig.endTime"
@@ -339,7 +349,7 @@
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="考试时长：" prop="examTime">
                             <template>
                                 <el-input-number v-model="examConfig.examTime" :min="1" :max="1000"
@@ -349,7 +359,7 @@
                             </template>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="考试总分：" prop="examScore">
                             <template>
                                 <el-input-number v-model="examConfig.examScore"
@@ -360,7 +370,7 @@
                             </template>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="24">
+                    <el-col :span="8">
                         <el-form-item label="达标线：" prop="passPnt">
                             <template>
                                 <el-input-number v-model="examConfig.passPnt" :min="1"
@@ -370,7 +380,7 @@
                             </template>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="达标奖励：" prop="reachRewardType">
                             <el-select v-model="examConfig.reachRewardType"
                                        collapse-tags
@@ -384,7 +394,7 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col v-if="examConfig.reachRewardType=='10039'&&examConfig.reachRewardType!=''" :span="12">
+                    <el-col v-if="examConfig.reachRewardType=='10039'&&examConfig.reachRewardType!=''" :span="8">
                         <el-form-item label="奖励分数：" prop="reachReward"
                                       :class="examConfig.reachRewardType!='10038'&&examConfig.reachRewardType!=''?'':'hide'">
                             <template>
@@ -408,15 +418,15 @@
                                       @focus="chooseUser" placeholder="请选择使用人员" :disabled="view" clearable></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="24">
+                    <el-col :span="8">
                         <el-form-item label="是否启用：" prop="enabled">
                             <el-switch v-model="examConfig.enabled" active-text="是" inactive-text="否" active-value="1"
                                        inactive-value="0" :disabled="view"></el-switch>
                         </el-form-item>
                     </el-col>
 
-                    <el-col :span="24" style="padding-left: 400px">
-                        <el-form-item>
+                    <el-col class="btn_mid" :span="24" style="text-align: center">
+                        <el-form-item style="display: inline-block;">
                             <el-button type="primary" plain @click="cancel('examConfig')" :disabled="saveButton">返回</el-button>
                             <el-button v-if="handleType!='view'" type="primary" @click="save('examConfig')" :disabled="saveButton">下一步
                             </el-button>
