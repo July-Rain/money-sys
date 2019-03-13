@@ -134,7 +134,7 @@
             </div>
             <div class="card_contain">
                 <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-                    <el-form-item prop="status">
+                    <el-form-item prop="checkStatus">
                         <el-select v-model="formInline.checkStatus" placeholder="阅卷状态" size="mini">
                             <el-option label="未阅卷" value="0"></el-option>
                             <el-option label="未完成" value="1"></el-option>
@@ -167,10 +167,11 @@
                         align="center"
                         :index="indexMethod"
                         width="50">
+                </el-table-column>
             <el-table-column
                     prop="examName"
                     label="试卷名称"
-                    width="280"
+                    width="200"
             >
             </el-table-column>
             <el-table-column
@@ -201,7 +202,7 @@
                     label="考试结束时间"
             >
             </el-table-column>
-            <el-table-column label="操作" width="300">
+            <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
@@ -217,16 +218,16 @@
             <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :current-page="formInline.currPage"
+                :current-page="formInline.page"
                 :page-sizes="[10, 20, 30, 40]"
-                :page-size="formInline.pageSize"
+                :page-size="formInline.limit"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="formInline.count">
         </el-pagination>
         </div>
         <el-dialog title="个人信息完善" :visible.sync="checkExamUserDia" :before-close="closeDia"
                    :close-on-click-modal=false :close-on-press-escape=false :show-close=false	>
-            <el-form :model="checkExamUser" ref="checkExamUser" label-width="150px" class="demo-examConfig"
+            <el-form :model="checkExamUser" ref="checkExamUser" :rules="checkExamUserRule" label-width="150px" class="demo-examConfig"
                      size="mini" >
                 <el-row>
                     <el-col :span="24">
