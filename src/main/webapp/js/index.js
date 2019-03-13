@@ -74,6 +74,7 @@ var vm = new Vue({
             console.log(key, keyPath);
         },
         toChild: function (item,event) {
+            console.info(item, baseURL);
             if(item.url === null){
                 return
             }
@@ -131,7 +132,12 @@ var vm = new Vue({
             }
 
         },
-
+        logOut: function () {
+            window.location.href = baseURL + 'logout';
+        },
+        toPersonCenter: function () {
+            // baseURL + modules/personalCen/manu_index.html;
+        },
         // 悬浮头像移动
         // 定义公共方法
         eventTools: function (el, mDown, mMove, mUp) {
