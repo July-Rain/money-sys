@@ -17,6 +17,15 @@ var vm = new Vue({
             page: 1,
             count: 0,
             checkExamUserId:''
+        },
+        checkExamUser :{
+            examUserName :'',
+            examUserSex :'0'
+        },
+        checkExamUserRule:{
+            examUserName: [
+                {required: true, message: '请输入您的姓名', trigger: 'blur'}
+            ]
         }
     },
     created: function () {
@@ -35,9 +44,13 @@ var vm = new Vue({
         onSubmit: function () {
             this.reload();
         },
+        // 表单重置
+        resetForm: function (formName) {
+            this.$refs[formName].resetFields();
+        },
         //序列号计算
         indexMethod: function (index) {
-            return index + 1 + (vm.formInline.currPage - 1) * vm.formInline.pageSize;
+            return index + 1 + (vm.formInline.page - 1) * vm.formInline.limit;
         },
         handleCurrentChange: function (val) {
             this.formInline.page = val;
