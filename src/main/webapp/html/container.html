@@ -127,13 +127,16 @@
         padding-right: 20px !important;
         padding-left: 20px !important;
     }
+    .content5-1.el-row{
+        margin-bottom: 10px;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
     <div class="container">
         <el-row :gutter="20" class="content5-1">
             <el-col :span="12">
-                <el-row :gutter="20">
+                <el-row :gutter="20" style="margin-bottom: 20px">
                     <el-col :span="12">
                         <div class="small-box bg-blue">
                             <div class="inner" @click="everyTi()">

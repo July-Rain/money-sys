@@ -33,9 +33,9 @@ public class SysMenuServiceImpl extends AbstractServiceImpl<SysMenuDao, SysMenuE
     private SysRoleMenuService sysRoleMenuService;
 
     @Override
-    public List<SysMenuEntity> findList(String parentId){
+    public List<SysMenuEntity> findList(String parentId) {
         SysMenuEntity entity = new SysMenuEntity();
-        if(StringUtils.isBlank(parentId)){
+        if (StringUtils.isBlank(parentId)) {
             parentId = "0";
         }
         entity.setParentId(parentId);
@@ -45,24 +45,25 @@ public class SysMenuServiceImpl extends AbstractServiceImpl<SysMenuDao, SysMenuE
 
     /**
      * 此方法只展示2层结构，点第二层目录时需要重新请求
+     *
      * @param userId
      * @return
      */
-    public List<SysMenuEntity> userMenu(String userId, List<String> parentIds){
+    public List<SysMenuEntity> userMenu(String userId, List<String> parentIds) {
         List<SysMenuEntity> resultList = new ArrayList<SysMenuEntity>();
 
         // 存放查询参数，角色IDS
         List<String> params = new ArrayList<String>();
 
         User user = userMapper.findOne(userId);
-        if(user == null){
+        if (user == null) {
             throw new RuntimeException("用户信息获取失败，请重新登录");
         }
 
         // 非超级管理员，关联角色菜单
-        if(user.getIsAdmin() != Constant.SUPER_ADMIN){
+        if (user.getIsAdmin() != Constant.SUPER_ADMIN) {
             String roles = user.getRoles();
-            if(StringUtils.isBlank(roles)){
+            if (StringUtils.isBlank(roles)) {
                 // 没有角色，返回空
                 return resultList;
             } else {
@@ -70,19 +71,29 @@ public class SysMenuServiceImpl extends AbstractServiceImpl<SysMenuDao, SysMenuE
             }
         }
 
-        List<SysMenuEntity> menuList = dao.findUserMenu(params, parentIds);
+        // List<SysMenuEntity> menuList = dao.findUserMenu(params, parentIds);
+        List<SysMenuEntity> menuList = dao.findAllUserMenu(params);
 
+        List<SysMenuEntity> parentList = dao.findByParentId(parentIds);
         // 获取子集
-        menuList = this.handleList(menuList, params);
+        List<SysMenuEntity> handleList = this.newHandleList(menuList, parentList);
 
-        return menuList;
+        List<SysMenuEntity> returnList = new ArrayList<>();
+        for (SysMenuEntity sysMenuEntity : handleList) {
+            boolean a = menuList.contains(sysMenuEntity);
+            if (sysMenuEntity.getList().size() > 0 || menuList.contains(sysMenuEntity)) {
+                returnList.add(sysMenuEntity);
+            }
+        }
+
+        return returnList;
     }
 
-    private List<SysMenuEntity> handleList(List<SysMenuEntity> list, List<String> roleList){
+    private List<SysMenuEntity> handleList(List<SysMenuEntity> list, List<String> roleList) {
 
         List<String> idList = new ArrayList<String>(list.size());
 
-        for(SysMenuEntity entity : list){
+        for (SysMenuEntity entity : list) {
             idList.add(entity.getId());
         }
 
@@ -92,14 +103,14 @@ public class SysMenuServiceImpl extends AbstractServiceImpl<SysMenuDao, SysMenuE
         // 用于递归
         List<SysMenuEntity> listForRecursion = new ArrayList<>();
 
-        for(SysMenuEntity entity : list){
+        for (SysMenuEntity entity : list) {
 
             List<SysMenuEntity> tempList = new ArrayList<SysMenuEntity>();
             String parentId = entity.getId();
 
-            for(SysMenuEntity child : childList){
+            for (SysMenuEntity child : childList) {
                 String key = child.getParentId();
-                if(parentId.equals(key)){
+                if (parentId.equals(key)) {
                     tempList.add(child);
                 }
             }
@@ -109,19 +120,43 @@ public class SysMenuServiceImpl extends AbstractServiceImpl<SysMenuDao, SysMenuE
             listForRecursion.addAll(tempList);
         }
 
-        if(CollectionUtils.isNotEmpty(listForRecursion)){
+        if (CollectionUtils.isNotEmpty(listForRecursion)) {
             this.handleList(listForRecursion, roleList);
         }
 
         return list;
     }
 
+    private List<SysMenuEntity> newHandleList(List<SysMenuEntity> list, List<SysMenuEntity> parentList) {
+
+        for (SysMenuEntity sysMenuEntity : list) {
+            List<SysMenuEntity> tempList = new ArrayList<SysMenuEntity>();
+            String parentId = sysMenuEntity.getId();
+            for (SysMenuEntity child : list) {
+                String key = child.getParentId();
+                if (parentId.equals(key)) {
+                    tempList.add(child);
+                }
+            }
+            sysMenuEntity.setList(tempList);
+            for (SysMenuEntity sysMenu : parentList) {
+                if (sysMenu.getId().equals(sysMenuEntity.getId())) {
+                    sysMenu.setList(sysMenuEntity.getList());
+                }
+            }
+        }
+
+
+        return parentList;
+    }
+
     /**
      * 获取所有目录
+     *
      * @return
      */
     @Override
-    public List<TreeForm> getAllCatalog(List<Integer> typeList){
+    public List<TreeForm> getAllCatalog(List<Integer> typeList) {
         List<TreeForm> resultList = new ArrayList<TreeForm>();
 
         // 此list是按照parentId 升序排序的
@@ -130,13 +165,13 @@ public class SysMenuServiceImpl extends AbstractServiceImpl<SysMenuDao, SysMenuE
         Map<String, TreeForm> formMap = new HashMap<String, TreeForm>();// 存放Form
 
         Map<String, List<TreeForm>> tempMap = new HashMap<String, List<TreeForm>>();
-        for(TreeForm form : list){
+        for (TreeForm form : list) {
             String pid = form.getParentId();// 上级ID
-            if("0".equals(pid)){// 一级目录
+            if ("0".equals(pid)) {// 一级目录
                 resultList.add(form);
             } else {
                 List<TreeForm> sets = null;
-                if(tempMap.get(pid) != null){
+                if (tempMap.get(pid) != null) {
                     sets = tempMap.get(pid);
                 } else {
                     sets = new ArrayList<TreeForm>();
@@ -150,14 +185,14 @@ public class SysMenuServiceImpl extends AbstractServiceImpl<SysMenuDao, SysMenuE
         }
 
         Set<String> keySet = tempMap.keySet();
-        for(String str : keySet){
+        for (String str : keySet) {
             TreeForm form = formMap.get(str);
-            if(form != null){
+            if (form != null) {
                 form.setChildren(tempMap.get(str));
             }
         }
 
-        for(TreeForm form : resultList){
+        for (TreeForm form : resultList) {
             String key = form.getId();
             List<TreeForm> tempList = tempMap.get(key);
             form.setChildren(tempList);
@@ -167,18 +202,19 @@ public class SysMenuServiceImpl extends AbstractServiceImpl<SysMenuDao, SysMenuE
     }
 
     @Override
-    public List<SysMenuEntity> queryParentById(String id){
+    public List<SysMenuEntity> queryParentById(String id) {
 
         return dao.queryParentById(id);
     }
 
     /**
      * 获取角色对应的菜单和目录
+     *
      * @param roleId
      * @return
      */
     @Override
-    public List<SysMenuEntity> findAllByRole(String roleId){
+    public List<SysMenuEntity> findAllByRole(String roleId) {
         List<String> roleIds = new ArrayList<>(1);
         roleIds.add(roleId);
 
@@ -189,9 +225,9 @@ public class SysMenuServiceImpl extends AbstractServiceImpl<SysMenuDao, SysMenuE
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean remove(List<String> ids){
+    public boolean remove(List<String> ids) {
         // 批量删除，并且删除下级目录
-        if(CollectionUtils.isEmpty(ids)){
+        if (CollectionUtils.isEmpty(ids)) {
             return true;
         }
 

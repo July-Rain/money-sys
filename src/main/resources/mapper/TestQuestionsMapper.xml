@@ -390,6 +390,9 @@
             <if test="typeId != null and typeId != ''">
                 AND a.type_id = #{typeId}
             </if>
+            <if test="specialKnowledgeId != null and specialKnowledgeId!=''">
+                and a.special_knowledge_id = #{specialKnowledgeId}
+            </if>
             <if test="questionDifficulty != null and questionDifficulty != ''">
                 AND a.question_difficulty = #{questionDifficulty}
             </if>

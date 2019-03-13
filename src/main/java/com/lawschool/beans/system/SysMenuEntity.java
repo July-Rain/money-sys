@@ -5,6 +5,7 @@ import com.lawschool.base.DataEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Auther: Moon
@@ -107,5 +108,17 @@ public class SysMenuEntity extends DataEntity<SysMenuEntity> {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        SysMenuEntity sysMenuEntity = (SysMenuEntity) obj;
+        return Objects.equals(id, sysMenuEntity.id);
     }
 }

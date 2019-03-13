@@ -328,7 +328,10 @@ var vm = new Vue({
                 async: false,
                 data: {"foreignKeyId": foreignKeyId, "nowbig": nowbig, "nowlit": nowlit, "sorce": sorce},
                 success: function (result) {
-                    alert(result.s);
+                    vm.$message({
+                        message: result.s,
+                        type: 'warning'
+                    });
                 }
             });
         },
