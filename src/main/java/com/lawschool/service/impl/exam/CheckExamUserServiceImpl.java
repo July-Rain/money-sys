@@ -181,7 +181,7 @@ public class CheckExamUserServiceImpl extends AbstractServiceImpl<CheckExamUserD
             //只需要一个人阅卷
             //判断能否整除
             int yushu = list.size() % checkNum;
-            int perNum = allList.size() / checkNum;
+            int perNum = list.size() / checkNum;
             if (yushu != 0) {
                 yuList =(CopyOnWriteArrayList) list.subList(list.size() - yushu, list.size());
                 if(list.size()>0) {

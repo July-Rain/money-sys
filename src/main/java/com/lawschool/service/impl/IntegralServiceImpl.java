@@ -102,18 +102,24 @@ public class IntegralServiceImpl extends ServiceImpl<IntegralDao, Integral> impl
         //原来就有
         if(userIntegral.size()>0){
             if("0".equalsIgnoreCase(type)){
-                userIntegral.get(0).setIntegralPoint(userIntegral.get(0).getIntegralPoint()+point);
-            }else if("1".equalsIgnoreCase(type)){
+                //设置学分
                 userIntegral.get(0).setCreditPoint(userIntegral.get(0).getCreditPoint()+point);
+
+            }else if("1".equalsIgnoreCase(type)){
+                //设置积分
+                userIntegral.get(0).setIntegralPoint(userIntegral.get(0).getIntegralPoint()+point);
             }
 
             userIntegralDao.update(userIntegral.get(0),new EntityWrapper<UserIntegral>().eq("USER_ID", userId));
         }else{
             UserIntegral userIntegral2=new UserIntegral();
             if("0".equalsIgnoreCase(type)){
-                userIntegral2.setIntegralPoint(point);
-            }else if("1".equalsIgnoreCase(type)){
+                //设置学分
                 userIntegral2.setCreditPoint(point);
+            }else if("1".equalsIgnoreCase(type)){
+                //设置积分
+                userIntegral2.setIntegralPoint(point);
+
             }
             userIntegral2.setOrgCode(user.getOrgCode());
             userIntegral2.setOrgId(user.getOrgId());

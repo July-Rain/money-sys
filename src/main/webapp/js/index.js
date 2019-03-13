@@ -13,11 +13,15 @@ var vm = new Vue({
         backShow: true,
         loginType: 0,// 登陆方式
         headerHide: false,
-        showThis: false
+        showThis: false,
+        isMouseDown: false,
+        individual: null
     },
     created: function () {
         this.$nextTick(function () {
+            // vm.individual = document.getElementById('individual');
             vm.loadNav();
+            // vm.eventTools(vm.individual, vm.mDown, vm.mMove, vm.mUp);
         })
     },
 
@@ -70,6 +74,7 @@ var vm = new Vue({
             console.log(key, keyPath);
         },
         toChild: function (item,event) {
+            console.info(item, baseURL);
             if(item.url === null){
                 return
             }
@@ -126,6 +131,58 @@ var vm = new Vue({
                 this.headerHide = false
             }
 
+        },
+        logOut: function () {
+            window.location.href = baseURL + 'logout';
+        },
+        toPersonCenter: function () {
+            // baseURL + modules/personalCen/manu_index.html;
+        },
+        // 悬浮头像移动
+        // 定义公共方法
+        eventTools: function (el, mDown, mMove, mUp) {
+            var that = this;
+            el.addEventListener('mousedown', function (e) {
+                console.log(e)
+                // e.points = that.getPoint(e, el);
+                mDown && mDown(e);
+            })
+            el.addEventListener('mousemove', function (e) {
+                // e.points = that.getPoint(e, el);
+                mDown && mMove(e);
+            })
+            el.addEventListener('mouseup', function (e) {
+                console.log(e)
+                // e.points = that.getPoint(e, el);
+                mDown && mUp(e);
+            })
+        },
+        getPoint: function (e, el) {
+            var x = e.pageX - el.offsetLeft;
+            var y = e.pageY - el.offsetTop;
+            return {
+                dx: x,
+                dy: y
+            }
+        },
+        mDown: function (e) {
+            vm.isMouseDown = true;
+            e.preventDefault();
+        },
+        mMove: function (e) {
+            e.preventDefault();
+            if (!vm.isMouseDown) {
+                return
+            }
+            var x = e.pageX,
+                y = e.pageY;
+            console.log(x, y)
+            vm.individual.style.left = x + 'px';
+            vm.individual.style.top = y + 'px';
+        },
+        mUp: function (e) {
+            e.preventDefault();
+            vm.isMouseDown = false;
         }
     }
 });
