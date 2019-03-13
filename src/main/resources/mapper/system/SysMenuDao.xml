@@ -50,6 +50,63 @@
         ORDER BY m.parent_id, m.ORDER_NUM
     </select>
 
+    <select id="findAllUserMenu"  resultType="com.lawschool.beans.system.SysMenuEntity">
+            SELECT DISTINCT m.id AS "id",
+            m.name AS "name",
+            m.parent_id AS "parentId",
+            m.url AS "url",
+            m.PERMS AS "PERMS",
+            m.TYPE AS "type",
+            m.ICON AS "icon",
+            m.ORDER_NUM as "orderNum"
+            FROM
+                LAW_SYS_MENU m
+            WHERE
+                m. TYPE != '2'
+            AND m.is_show = '1'
+            AND m. TYPE IN (0, 1)
+        <if test="list != null and list.size > 0">
+            START WITH m.ID IN (
+                SELECT
+                    MENU_ID
+                FROM
+                    LAW_SYS_ROLE_MENU
+                WHERE 1=1 and
+                    ROLE_ID IN
+                   <foreach collection="list" item="item" open="(" close=")" separator=",">
+                        #{item}
+                   </foreach>
+            ) CONNECT BY PRIOR PARENT_ID = ID
+        </if>
+            ORDER BY
+               m.parent_id, m.ORDER_NUM
+    </select>
+
+    <select id="findByParentId"  resultType="com.lawschool.beans.system.SysMenuEntity">
+        SELECT DISTINCT m.id AS "id",
+        m.name AS "name",
+        m.parent_id AS "parentId",
+        m.url AS "url",
+        m.PERMS AS "PERMS",
+        m.TYPE AS "type",
+        m.ICON AS "icon",
+        m.ORDER_NUM as "orderNum"
+        FROM
+        LAW_SYS_MENU m
+        WHERE
+        m. TYPE != '2'
+        AND m.is_show = '1'
+        AND m. TYPE IN (0, 1)
+        <if test="list != null and list.size > 0">
+            and m.parent_id in
+            <foreach collection="list" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY
+        m.parent_id, m.ORDER_NUM
+    </select>
+
     <select id="getAllCatalog" resultType="com.lawschool.form.TreeForm">
         SELECT
             id AS "id",
