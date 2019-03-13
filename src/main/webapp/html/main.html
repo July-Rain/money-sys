@@ -136,6 +136,86 @@
         .el-menu.el-menu--horizontal{
             border: none;
         }
+
+        /* 悬浮按钮 */
+        .individual {
+            position: absolute;
+            display: flex;
+            right: 80px;
+            top: 100px;
+        }
+        .individual .avatar {
+            z-index: 100;
+            width: 58px;
+            height: 58px;
+            border: 4px solid white;
+            border-radius: 50%;
+        }
+        .individual .info {
+            z-index: 10;
+            height: 42px;
+            line-height: 42px;
+            margin-top: 8px;
+            margin-left: -10px;
+            padding-left: 20px;
+            padding-right: 30px;
+            background: #e8e8ea;
+            opacity: 0.65;
+            border-top-right-radius: 21px;
+            border-bottom-right-radius: 21px;
+            box-shadow: 0px 2px 4px 0px #9ea3a7;
+            font-size: 16px;
+        }
+        .individual .center {
+            position: absolute;
+            top: 65px;
+            left: -27px;
+        }
+        .individual .center .con-ret {
+            position: absolute;
+            top: -5px;
+            left: 55px;
+            margin-left: -5px;
+            width: 10px;
+            height: 10px;
+            border-top: 5px solid transparent;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid rgba(0, 0, 0, 0.65);
+        }
+        .individual .center .con {
+            position: absolute;
+            top: 5px;
+            width: 120px;
+            height: 100px;
+            background: rgba(0, 0, 0, 0.65);
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px 0px #9ea3a7;
+        }
+        .individual .center .person-info {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            border-bottom: 1px solid #919191;
+            font-size: 14px;
+            color: white;
+        }
+        .individual .center .log-out {
+            line-height: 50px;
+            text-align: center;
+            font-size: 14px;
+            color: white;
+        }
+        .individual .info, .individual .center {
+            opacity: 0;
+            -webkit-transition: opacity 500ms 100ms ease-in, display 500ms 100ms ease-in;
+            -moz-transition: opacity 500ms 100ms ease-in, display 500ms 100ms ease-in;
+            transition: opacity 500ms 100ms ease-in, display 500ms 100ms ease-in;
+        }
+        .individual:hover .info, .individual:hover .center {
+            display: block;
+            opacity: 0.65;
+        }
     </style>
 </head>
 <body>
@@ -145,8 +225,21 @@
             <img src="${rc.contextPath}/statics/img/logo.png">
             <a href="javascript:;">江苏省公安机关网上法律学校</a>
         </div>
+        <div class="individual" id="individual">
+            <img class="avatar" src="${rc.contextPath}/statics/img/dog.jpg" alt="用户头像">
+            <div class="info">
+                <span class="name">陈梅梅</span>
+                <span class="badge">勋章</span>
+            </div>
+            <div class="center">
+                <div class="con-ret"></div>
+                <div class="con">
+                    <p class="person-info">个人中心</p>
+                    <p class="log-out">退出登录</p>
+                </div>
+            </div>
+        </div>
         <div class="header-right">
-
             <ul>
                 <li v-for="(item,index) in navData" :class="index===0&&showThis&&navData.length>1?'this':''" @click="toChild(item,$event)" :data-id="item.id" :data-url="item.url">
                     <div class="spel" v-if="item.url">
