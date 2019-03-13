@@ -193,6 +193,7 @@ public class ExamConfigController extends AbstractController {
         String questionType = (String) params.get("questionType");
         String queContent = (String) params.get("comContent");
         String isEnble = (String) params.get("isEnble");
+        String specialKnowledgeId = (String) params.get("specialKnowledgeId");
         // List<String> ids = (List<String>) params.get("ids");
 
         TestQuestions testQuestions = new TestQuestions();
@@ -202,6 +203,7 @@ public class ExamConfigController extends AbstractController {
         testQuestions.setComContent(queContent);
         testQuestions.setIsEnble(isEnble);
         testQuestions.setIds(lists);
+        testQuestions.setSpecialKnowledgeId(specialKnowledgeId);
 
         Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), testQuestions);
         List<TestQuestions> list = page.getList();

@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @ClassName ManuscriptDao
  * @Author wangtongye
@@ -39,6 +42,11 @@ public class ManuscriptEntity extends DataEntity<ManuscriptEntity> {
     private TestQuestions test;
     @TableField(exist = false)
     private StuMedia stu;
+
+
+    @TableField(exist = false)
+    private List<String> orgidList=new ArrayList<String>();//部门 id  List
+
 
     public Integer getType() {
         return type;
@@ -118,5 +126,13 @@ public class ManuscriptEntity extends DataEntity<ManuscriptEntity> {
 
     public void setAuditorName(String auditorName) {
         this.auditorName = auditorName;
+    }
+
+    public List<String> getOrgidList() {
+        return orgidList;
+    }
+
+    public void setOrgidList(List<String> orgidList) {
+        this.orgidList = orgidList;
     }
 }

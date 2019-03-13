@@ -53,7 +53,8 @@ var vm = new Vue({
         submitForm: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    console.log(valid)
+                    console.log(valid);
+
                     var url = "sys/udtPsw";
                     $.ajax({
                         type: "POST",
@@ -62,12 +63,18 @@ var vm = new Vue({
                         data: vm.password,
                         success: function (result) {
                             if (result.code === 0) {
+
                                 vm.$message({
-                                    message: '密码修改成功',
+                                    message: '密码修改成功,请重新登陆',
                                     type: 'success'
                                 });
-
                                 vm.isVisible = false;
+
+                                setTimeout(function () {
+                                    window.location.href = baseURL + 'logout';
+                                }, 2000);
+
+
                             } else {
                                 vm.$message.error('原密码错误,修改密码失败');
                             }

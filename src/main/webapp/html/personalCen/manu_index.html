@@ -79,10 +79,10 @@
                             placement="right"
                             trigger="hover"
                             content="查看">
-                        <i class="iconfont icon-xiugaimima tabIcon"
+                        <i class="iconfont icon-chakan tabIcon"
                            slot="reference"
                            @click="look(scope.row.id)"
-                           style="color: #119e0a;"
+                           style="color: rgb(19, 129, 227);font-size: 12px;"
                         >
                         </i>
                     </el-popover>
@@ -247,7 +247,7 @@
         <el-dialog title="添加选项信息" :visible.sync="addConfigFlag">
             <el-row>
                 <el-col :span="24">
-                    <el-form :model="answer" label-width="100px" class="demo-sysMenu" size="mini" :rules="rules3" ref="answer">
+                    <el-form :model="answer" label-width="120px" class="demo-sysMenu" size="mini" :rules="rules3" ref="answer">
                         <el-form-item label="选项描述：" prop="questionContent">
                             <el-input v-model="answer.questionContent" placeholder="选项描述" type="input"></el-input>
                         </el-form-item>
@@ -266,13 +266,13 @@
                                 <el-radio :label="0">否</el-radio>
                             </el-radio-group>
                         </el-form-item>
-
-                        <el-form-item>
-                            <el-button type="primary" @click="sure('answer')">确定</el-button>
-                        </el-form-item>
                     </el-form>
                 </el-col>
             </el-row>
+            <div slot="footer" class="dialog-footer" :label-width="formLabelWidth" v-if="lookType">
+                <el-button @click="addConfigFlag=false">取消</el-button>
+                <el-button type="primary" @click="sure('answer')">保存</el-button>
+            </div>
         </el-dialog>
 
         <el-dialog title="学习出题" :visible.sync="dialogStuMedia" ref="stuDialog">

@@ -53,9 +53,6 @@
             display: flex;
             padding-left: 15px;
         }
-        .detail .exam-info .name {
-            /*line-height: 152px;*/
-        }
         .detail .exam-info .data {
             display: block;
         }
@@ -158,6 +155,9 @@
         }
         .el-dropdown-menu {
             display: block;
+        }
+        input.el-input__inner {
+            width: 140px;
         }
         /* 下拉框 */
         .select {
@@ -340,16 +340,6 @@
                                                     <option value="">小于</option>
                                                     <option value="">小于等于</option>
                                                 </select>
-                                                <!--<el-dropdown split-button size="mini" placement="bottom-start">
-                                                    默认
-                                                    <el-dropdown-menu slot="dropdown">
-                                                        <el-dropdown-item>等于</el-dropdown-item>
-                                                        <el-dropdown-item>大于</el-dropdown-item>
-                                                        <el-dropdown-item>大于等于</el-dropdown-item>
-                                                        <el-dropdown-item>小于</el-dropdown-item>
-                                                        <el-dropdown-item>小于等于</el-dropdown-item>
-                                                    </el-dropdown-menu>
-                                                </el-dropdown>-->
                                             </el-form-item>
                                             <el-form-item label-width="10px">
                                                 <el-input size="small" type="number"><template slot="append">%</template></el-input>
@@ -361,7 +351,7 @@
                                             <el-form-item label="获得：" prop="number">
                                                 <el-input size="small" type="number"><template slot="append">分</template></el-input>
                                             </el-form-item>
-                                            <i class="iconfont icon-tianjia" onclick="addLimitations(event)"></i>
+                                            <i class="iconfont icon-tianjia" onclick="addLimitations(event)" disabled="true"></i>
                                             <i class="iconfont icon-shanchu" onclick="removeLimitations(event)"></i>
                                         </div>
                                     </div>
@@ -459,6 +449,9 @@
         parent.appendChild(examData);
     }
     var removeLimitations = function (e) {
+        if ($('.icon-shanchu').length===1) {
+            return
+        }
         var parent = e.target.parentNode.parentNode;
         parent.remove();
     }

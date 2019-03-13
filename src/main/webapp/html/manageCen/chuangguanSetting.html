@@ -205,9 +205,9 @@
 
                     <el-button size="mini" type="primary" @click="add"><i class="iconfont icon-htmal5icon18"></i>新增配置
                     </el-button>
-                    <el-button size="mini" type="primary" @click="update"><i class="iconfont icon-xiugaimima"></i>编辑
+                    <el-button v-if="tableData.length" size="mini" type="primary" @click="update"><i class="iconfont icon-xiugaimima"></i>编辑
                     </el-button>
-                    <el-button size="mini" type="danger" @click="del" plain><i class="iconfont icon-tubiaozhizuo-"></i>删除
+                    <el-button v-if="tableData.length" size="mini" type="danger" @click="del" plain><i class="iconfont icon-tubiaozhizuo-"></i>删除
                     </el-button>
                 </div>
 
@@ -361,7 +361,7 @@
                                         <!--</el-col>-->
                                     </el-row>
                                     <el-row>
-                                        <el-col :span="9" :offset="5">
+                                        <el-col :span="10" :offset="5">
                                             <el-form-item label="试题难度">
                                                 <el-radio-group v-model="item2.itemDifficulty">
                                                     <el-radio :label="item.key" v-for="item in itemjibie">

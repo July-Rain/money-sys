@@ -94,7 +94,7 @@
                 <div class="info_list">
                     <div class="progress_area">
                         <el-progress type="circle"
-                                     :percentage="data.answerNum/data.total*100"
+                                     :percentage="Math.round(data.answerNum/data.total*100)"
                                      :width="88"
                                      color="#1381e3"></el-progress>
                     </div>
