@@ -48,7 +48,8 @@ var vm = new Vue({
         caseContent:"",
         title:"查看",
         startTime:"",//开始时间
-        endTime:""//结束时间
+        endTime:"",//结束时间
+        caseAna:{},//实体
     },
     created: function () {
 
@@ -127,6 +128,7 @@ var vm = new Vue({
         resetForm: function (formName) {
             this.formInline.caseLawid="";
             this.$refs[formName].resetFields();
+            this.reload();
         },
         reload: function () {
             $.ajax({
@@ -241,7 +243,7 @@ var vm = new Vue({
             vm.dialogCaseAna=false;
             $.ajax({
                 type: "POST",
-                url: baseURL + 'caseana/countTime?stuId=' + row.id+'&stuFrom=pic'+'&playTime='+time+'&type=pic',
+                url: baseURL + 'caseana/countTime?stuId=' + vm.caseAna.id+'&stuFrom=pic'+'&playTime='+time+'&type=pic',
                 contentType: "application/json",
                 success: function (result) {
                     if(result.code === 0){
@@ -260,6 +262,7 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if(result.code === 0){
+                        vm.caseAna=result.data;
                         vm.caseContent=result.data.caseContent;
                         vm.dialogCaseAna=true;
                     }else{

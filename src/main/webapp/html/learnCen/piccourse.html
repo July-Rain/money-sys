@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
+    <#include "/header.html">
+    <style>
+        .content_audio{
+            text-align: center;
+            margin-top: 14px;
+            padding: 0 14px ;
+        }
+        .content_audio audio{
+            width: 100%;
+        }
+        .title{
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="container">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
+            <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>学习中心</el-breadcrumb-item>
+            <el-breadcrumb-item>图文资料</el-breadcrumb-item>
+        </el-breadcrumb>
+        <el-row :gutter="24">
+            <!--<el-col :span="4">
+                &lt;!&ndash;对于同一级的节点，每次只能展开一个&ndash;&gt;
+                <el-tree
+                        :data="treeData"
+                        :props="defaultProps"
+                        accordion
+                        @node-click="handleNodeClick">
+                </el-tree>
+            </el-col>-->
+            <el-col :span="24">
+                <el-tabs type="border-card">
+                    <div class="info_card">
+                        <div class="card_title"></div>
+                        <div class="card_contain">
+                            <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+
+                                <el-form-item label="资料标题" prop="stuTitle">
+                                    <el-input v-model="formInline.stuTitle" placeholder="资料标题" size="mini"></el-input>
+                                </el-form-item>
+                                <el-form-item label="发布人" prop="stuIssuer">
+                                    <el-input v-model="formInline.stuIssuer" placeholder="发布人" size="mini"></el-input>
+                                </el-form-item>
+                                <el-form-item label="法律分类" prop="stuLawName">
+                                    <el-input v-model="formInline.stuLawName" placeholder="法律分类" @focus="chooseLaw" clearable
+                                              size="mini"></el-input>
+                                </el-form-item>
+                                <el-form-item label="开始时间" prop="startTime">
+                                    <el-date-picker
+                                            v-model="formInline.startTime"
+                                            type="date"
+                                            format="yyyy年MM月dd日"
+                                            value-format="yyyy-MM-dd"
+                                            placeholder="选择开始时间"
+                                            size="mini"
+                                    >
+                                    </el-date-picker>
+                                </el-form-item>
+                                <el-form-item label="结束时间" prop="endTime">
+                                    <el-date-picker
+                                            v-model="formInline.endTime"
+                                            type="date"
+                                            format="yyyy年MM月dd日"
+                                            value-format="yyyy-MM-dd"
+                                            placeholder="选择结束时间"
+                                            size="mini"
+                                    >
+                                    </el-date-picker>
+                                </el-form-item>
+                                <!--<el-form-item prop="status">
+                                    <el-select v-model="formInline.status" placeholder="状态" size="mini">
+                                        <el-option label="有效" value="1"></el-option>
+                                        <el-option label="无效" value="0"></el-option>
+                                    </el-select>
+                                </el-form-item>-->
+                                <el-form-item>
+                                    <el-button type="primary" @click="onSubmit" size="mini">
+                                        <i class="iconfont icon-sousuo1"></i>
+                                        查询
+                                    </el-button>
+                                    <el-button class="reset_btn" @click="resetForm('formInline')" size="mini">
+                                        <i class="iconfont icon-tableresetpassword"></i>
+                                        重置
+                                    </el-button>
+
+                                </el-form-item>
+                            </el-form>
+                        </div>
+                    </div>
+                    <div>
+                        <el-table
+                                :data="videoData"
+                                border
+                                stripe
+                                height="539"
+                                style="width: 100%">
+                            <el-table-column
+                                    label="序号"
+                                    type="index"
+                                    header-align="center"
+                                    align="center"
+                                    :index="indexMethod"
+                                    width="50">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="stuTitle"
+                                    label="标题"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="stuCount"
+                                    label="观看次数"
+                                    width="100"
+                                    header-align="center"
+                                    align="center"
+                            >
+                            </el-table-column>
+
+                            <el-table-column
+                                    prop="stuIssuer"
+                                    label="发布人"
+                                    width="150"
+                                    header-align="center"
+                                    align="center"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="stuPoliceclassName"
+                                    label="警种"
+                                    width="100"
+                                    header-align="center"
+                                    align="center"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="stuType"
+                                    label="课件类型"
+                                    width="100"
+                                    header-align="center"
+                                    align="center"
+                            >
+                                <template slot-scope="scope">
+                                    <el-tag v-if="scope.row.stuType === 'pic'" size="small" type="success">图文</el-tag>
+                                    <el-tag v-if="scope.row.stuType === 'audio'" size="small" type="info">音频</el-tag>
+                                    <el-tag v-if="scope.row.stuType === 'video'" size="small" type="warning">视频</el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作"
+                                             header-align="center"
+                                             align="center">
+                                <template slot-scope="scope">
+                                    <el-popover
+                                            placement="right"
+                                            trigger="hover"
+                                            content="查看">
+                                        <i class="iconfont icon-chakan tabIcon"
+                                           slot="reference"
+                                           @click="handleDetail(scope.$index, scope.row)"
+                                           style="color: #1381e3;font-size: 12px;">
+                                        </i>
+                                    </el-popover>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <el-pagination
+                                @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange"
+                                :current-page="formInline.currPage"
+                                :page-sizes="[10, 20, 30, 40]"
+                                :page-size="formInline.pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="formInline.totalCount">
+                        </el-pagination>
+                    </div>
+                </el-tabs>
+            </el-col>
+        </el-row>
+
+    </div>
+    <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogPic" :before-close="closeDia"  ref="picDialog">
+        <div>
+            <el-col :span="24">
+                <el-input type="textarea" v-html="caseContent"></el-input>
+            </el-col>
+        </div>
+    </el-dialog>
+
+    <el-dialog title="选择法律分类" :visible.sync="dialogLaw" >
+        <!--对于同一级的节点，每次只能展开一个-->
+        <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;"
+                      view-class="view-box" :native="false">
+            <el-tree
+                    ref="lawtree"
+                    :data="treeData"
+                    :props="defaultProps"
+                    accordion
+                    node-key="id"
+                    show-checkbox
+                    @check-change="handleCheckChange">
+            </el-tree>
+        </el-scrollbar>
+        <div slot="footer" class="dialog-footer">
+            <el-button size="mini" @click="cancelLaw">取消</el-button>
+            <el-button type="primary" size="mini" @click="confimLaw">保存</el-button>
+        </div>
+    </el-dialog>
+
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/learnCen/piccourse.js?_${.now?long}"></script>
+</html>

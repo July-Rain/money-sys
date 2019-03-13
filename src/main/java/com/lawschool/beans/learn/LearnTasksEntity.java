@@ -18,7 +18,7 @@ import java.util.List;
  * @author MengyuWu
  * @since JDK 1.8
  */
-@TableName("law_learn_tasks")
+@TableName(value = "law_learn_tasks",resultMap = "ResultMapWithBLOBs")
 public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
     private static final long serialVersionUID = 1L;
 

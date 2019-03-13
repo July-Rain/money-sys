@@ -312,6 +312,7 @@ var vm = new Vue({
             this.dialogLearnTask = true;
             this.isEdit=true;
             this.deptCheckData=[];
+            this.reloadTask();
             $.ajax({
                 type: "POST",
                 url: baseURL + 'learntasks/info?id=' + row.id,
@@ -601,8 +602,9 @@ var vm = new Vue({
             //选择学习内容数据
         },
         handleTaskNodeClick:function(data){
-            this.taskForm.infoId=data.infoId;
-            this.taskForm.dataId=data.dataId;
+            debugger
+            this.taskForm.infoId=data.id;
+            this.taskForm.dataId=data.classifyCode;
            // this.taskForm.infoType=data.infoType;
             this.reloadTask();
 

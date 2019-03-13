@@ -81,8 +81,14 @@ public class GetUUID
 
 		String randomNum = "";
 
+		String preNum="";
+		// 取6位随机数
+		for (int k = 0; k < 6; k++)
+		{
+			preNum = preNum + new Random().nextInt(9);
+		}
 		// 获取当前时间
-		SimpleDateFormat formatter = new SimpleDateFormat("YYYYMMddHHmmss");
+		SimpleDateFormat formatter = new SimpleDateFormat("YYYYMMddHHmmssSSS");
 		String dateString = formatter.format(currentTime);
 
 		// 取6位随机数
@@ -91,6 +97,6 @@ public class GetUUID
 			randomNum = randomNum + jjj.nextInt(9);
 		}
 
-		return dateString + randomNum;
+		return preNum + dateString + randomNum;
 	}
 }
