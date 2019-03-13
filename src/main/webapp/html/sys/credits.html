@@ -128,9 +128,9 @@
             font-size: 14px;
             color: #999999;
         }
-        .exam-data.dropdowns .el-input__inner{
+        /*.exam-data.dropdowns .el-input__inner{
             width: 80px;
-        }
+        }*/
         ul.el-popper {
             display: block;
             width: 184px !important;
@@ -167,8 +167,8 @@
             padding-left: 36%;
             border: 1px solid #dddddd;
             border-radius: 3px;
-            /*appearance: none;
-            -webkit-appearance:none;*/
+            appearance: none;
+            -webkit-appearance:none;
         }
     </style>
 </head>
@@ -181,7 +181,7 @@
             <el-breadcrumb-item>积分学分管理</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="content">
-            <el-form label-position="right" label-width="100px" v-model="detail">
+            <el-form label-position="right" label-width="100px">
                 <div class="each-center">
                     <div class="title">
                         <span class="icon">
@@ -333,24 +333,20 @@
                                     <div class="exam-data dropdowns" v-for="count in sum">
                                         <div class="dropdown-group" style="display: flex;">
                                             <el-form-item label="正确率：">
-                                                <select name="" class="select" v-model="demo[count].aaa">
-                                                    <option value="">等于</option>
-                                                    <option value="">大于等于</option>
-                                                    <option value="">小于</option>
-                                                </select>
+                                                <el-button size="small" disabled>大于等于</el-button>
                                             </el-form-item>
                                             <el-form-item label-width="10px">
-                                                <el-input size="small" type="number"><template slot="append">%</template></el-input>
+                                                <el-input size="small" type="number" v-model="demo[count]"><template slot="append">%</template></el-input>
                                             </el-form-item>
                                         </div>
-                                        <span class="and-text">并且</span>
-                                        <el-button class="limit" size="mini" type="primary" plain onclick="addIfs(event)"></el-button>
+                                        <!--<span class="and-text">并且</span>
+                                        <el-button class="limit" size="mini" type="primary" plain onclick="addIfs(event)"></el-button>-->
                                         <div class="tail">
                                             <el-form-item label="获得：" prop="number">
                                                 <el-input size="small" type="number"><template slot="append">分</template></el-input>
                                             </el-form-item>
-                                            <i class="iconfont icon-tianjia" onclick="addLimitations(event)" disabled="true"></i>
-                                            <i class="iconfont icon-shanchu" onclick="removeLimitations(event)"></i>
+                                            <i class="iconfont icon-tianjia" @click="addLimitations"></i>
+                                            <i class="iconfont icon-shanchu" @click="removeLimitations"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -434,27 +430,4 @@
 </body>
 <!-- import [current] JavaScript -->
 <script src="${rc.contextPath}/js/sys/credits.js?_${.now?long}"></script>
-<script>
-    var addIfs = function (e) {
-        var parent = e.target.parentNode;
-        var dropdownGro = parent.firstChild.cloneNode(true);
-        parent.insertBefore(dropdownGro, e.target);
-        e.target.remove();
-    }
-    var addLimitations = function (e) {
-        vm.sum++;
-        console.info("demo",vm.demo)
-        return;
-        var parent = e.target.parentNode.parentNode.parentNode;
-        var examData = e.target.parentNode.parentNode.cloneNode(true);
-        parent.appendChild(examData);
-    }
-    var removeLimitations = function (e) {
-        if ($('.icon-shanchu').length===1) {
-            return
-        }
-        var parent = e.target.parentNode.parentNode;
-        parent.remove();
-    }
-</script>
 </html>

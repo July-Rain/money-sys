@@ -53,7 +53,7 @@ var vm = new Vue({
             source : 'match'
         }, // 擂台赛
         sum: 1,
-        demo: [{aaa:''},{aaa:''},{aaa:''},{aaa:''},{aaa:''},{aaa:''}]
+        demo: []
     },
     created: function () {
         /*this.$nextTick(function () {
@@ -99,7 +99,15 @@ var vm = new Vue({
                 }
             });
         },*/
-
+        addLimitations: function () {
+            vm.sum++;
+        },
+        removeLimitations: function () {
+            if (vm.sum===1) {
+                return;
+            }
+            vm.sum--;
+        },
         toHome: function () {
             parent.location.reload()
         }
