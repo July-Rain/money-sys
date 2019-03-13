@@ -22,6 +22,9 @@ public interface SysMenuDao extends AbstractDao<SysMenuEntity> {
      */
     List<SysMenuEntity> findUserMenu(@Param("list") List<String> list, @Param("idList") List<String> idList);
 
+    List<SysMenuEntity> findAllUserMenu(@Param("list") List<String> list);
+
+    List<SysMenuEntity> findByParentId(@Param("list") List<String> list);
     /**
      * 获取所有目录
      * @return

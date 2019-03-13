@@ -74,6 +74,7 @@
                     prop="numbers"
                     label="任务编号"
                     header-align="center"
+                    width="250"
                     align="center">
             </el-table-column>
             <el-table-column
@@ -86,12 +87,14 @@
                     prop="themeName"
                     label="专题类型"
                     header-align="center"
+                    width="120"
                     align="center">
             </el-table-column>
             <el-table-column
                     label="已答题/总题量"
                     header-align="center"
                     align="center"
+                    width="80"
             >
                 <template slot-scope="scope">
                     {{scope.row.answerNum==null?0:scope.row.answerNum}} / {{scope.row.total}}
@@ -101,12 +104,14 @@
                     label="正确率"
                     header-align="center"
                     align="center"
+                    width="80"
                     :formatter="getRate">
             </el-table-column>
             <el-table-column
                     prop="createName"
                     label="创建人"
                     header-align="center"
+                    width="120"
                     align="center">
             </el-table-column>
             <el-table-column
@@ -119,6 +124,7 @@
             <el-table-column
                     label="任务状态"
                     header-align="center"
+                    width="100"
                     align="center">
                 <template slot-scope="scope">
                     {{scope.row.status == 0 ? '练习中' : scope.row.status == 1 ? '已完结' : '待开始'}}

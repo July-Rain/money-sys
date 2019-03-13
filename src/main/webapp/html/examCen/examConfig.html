@@ -48,7 +48,7 @@
 
         .configure {
             padding-bottom: 0;
-            min-height: 100vh;
+            /*min-height: 100vh;*/
             border: solid 1px #dddddd;
             border-radius: 4px;
         }
@@ -123,12 +123,12 @@
         .random_box .el-form {
             padding: 17px 44px;
         }
-
         .random_box .el-form h3,.self_area .el-form h3{
             line-height: 25px;
             color: #2a2a2a;
             font-size: 20px;
             padding-bottom: 16px;
+            padding-top: 16px;
         }
 
         .random_box .el-form h3 span,.self_area .el-form h3 span{
@@ -230,11 +230,27 @@
             right: 17px;
             bottom: 9px;
             color: #999999;
+            padding: 0;
+            border: none;
+        }
+        .preview_area .question_box .change span i{
+            font-size: 27px;
         }
         .self_area .el-form{
             padding: 24px 44px;
             background-color: #fff;
         }
+        /*按钮居中*/
+        .btn_mid{
+            text-align: center;
+        }
+        .btn_mid .el-form-item{
+            display: inline-block;
+        }
+        .btn_mid .el-form-item .el-form-item__content{
+            margin-left: 0!important;
+        }
+
     </style>
 </head>
 <body>
@@ -255,7 +271,7 @@
                                       :disabled="view"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="考试类型：" prop="examType">
                             <el-select v-model="examConfig.examType"
                                        collapse-tags
@@ -269,7 +285,7 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="组卷方式：" prop="groupForm">
                             <el-select v-model="examConfig.groupForm"
                                        collapse-tags
@@ -283,14 +299,14 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="是否必考：" prop="isMustTest">
                             <el-radio v-for="item in imtOption" v-model="examConfig.isMustTest" :label="item.key"
                                       :disabled="view">{{item.value}}
                             </el-radio>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="出题方式：" prop="questionWay">
                             <el-select v-model="examConfig.questionWay"
                                        placeholder="请选择出題方式" size="mini" :disabled="view">
@@ -303,21 +319,21 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="题目顺序：" prop="topicOrderType">
                             <el-radio v-for="item in otOption" v-model="examConfig.topicOrderType" :label="item.key"
                                       :disabled="view">{{item.value}}
                             </el-radio>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="选项顺序：" prop="optionOrderType">
                             <el-radio v-for="item in otOption" v-model="examConfig.optionOrderType" :label="item.key"
                                       :disabled="view">{{item.value}}
                             </el-radio>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="开始时间：" prop="startTime">
                             <el-date-picker
                                     v-model="examConfig.startTime"
@@ -328,7 +344,7 @@
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="结束时间：" prop="endTime">
                             <el-date-picker
                                     v-model="examConfig.endTime"
@@ -339,7 +355,7 @@
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="考试时长：" prop="examTime">
                             <template>
                                 <el-input-number v-model="examConfig.examTime" :min="1" :max="1000"
@@ -349,7 +365,7 @@
                             </template>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="考试总分：" prop="examScore">
                             <template>
                                 <el-input-number v-model="examConfig.examScore"
@@ -360,7 +376,7 @@
                             </template>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="24">
+                    <el-col :span="8">
                         <el-form-item label="达标线：" prop="passPnt">
                             <template>
                                 <el-input-number v-model="examConfig.passPnt" :min="1"
@@ -370,7 +386,7 @@
                             </template>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="8">
                         <el-form-item label="达标奖励：" prop="reachRewardType">
                             <el-select v-model="examConfig.reachRewardType"
                                        collapse-tags
@@ -384,7 +400,7 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col v-if="examConfig.reachRewardType=='10039'&&examConfig.reachRewardType!=''" :span="12">
+                    <el-col v-if="examConfig.reachRewardType=='10039'&&examConfig.reachRewardType!=''" :span="8">
                         <el-form-item label="奖励分数：" prop="reachReward"
                                       :class="examConfig.reachRewardType!='10038'&&examConfig.reachRewardType!=''?'':'hide'">
                             <template>
@@ -408,14 +424,14 @@
                                       @focus="chooseUser" placeholder="请选择使用人员" :disabled="view" clearable></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="24">
+                    <el-col :span="8">
                         <el-form-item label="是否启用：" prop="enabled">
                             <el-switch v-model="examConfig.enabled" active-text="是" inactive-text="否" active-value="1"
                                        inactive-value="0" :disabled="view"></el-switch>
                         </el-form-item>
                     </el-col>
 
-                    <el-col :span="24" style="padding-left: 400px">
+                    <el-col class="btn_mid" :span="24" style="text-align: center">
                         <el-form-item>
                             <el-button type="primary" plain @click="cancel('examConfig')" :disabled="saveButton">返回</el-button>
                             <el-button v-if="handleType!='view'" type="primary" @click="save('examConfig')" :disabled="saveButton">下一步
@@ -502,8 +518,12 @@
                         分
                     </p>
                 </div>
-                <el-button type="primary" size="mini"  @click="closeRanDia" :disabled="genRandQue">上一步</el-button>
-                <el-button type="primary" size="mini" @click="handleSave(randomQuesData)" :disabled="genRandQue">保存并生成试卷</el-button>
+                <div class="btn_mid">
+                    <el-form-item>
+                        <el-button size="mini"  @click="closeRanDia" :disabled="genRandQue">上一步</el-button>
+                        <el-button type="primary" size="mini" @click="handleSave(randomQuesData)" :disabled="genRandQue">保存并生成试卷</el-button>
+                    </el-form-item>
+                </div>
             </el-form>
             <!---->
             <!--预览试卷-->
@@ -807,7 +827,7 @@
         </div>
         <div class="random_box box_right">
             <div class="exam_title">试卷名：{{examConfig.examName}}</div>
-            <ul>
+            <ul style="margin-button:100px">
                 <li>预定总分值：{{examConfig.examScore}}分</li>
                 <li>当前总分值：{{randomQuesData[0].questionNumber*randomQuesData[0].everyQuestionScore+
                     randomQuesData[1].questionNumber*randomQuesData[1].everyQuestionScore+
@@ -821,17 +841,21 @@
            <!-- <div class="tit">
                 <p><span>总分：</span>{{examConfig.examScore}}</p>
             </div>-->
-            <!--随机出题时的按钮-->
-            <el-button type="primary" v-if="handleType=='add'&&!previewExam" @click="preview(randomQuesData)"
-                       size="mini">预览
-            </el-button>
-            <el-button type="primary" v-if="handleType!='add'&&!previewExam" @click="openView()" size="mini">预览
-            </el-button>
-            <!--随机改题时的按钮-->
-            <el-button type="primary" @click="closePreview" v-if="previewExam" :disabled="genRandQue">上一步</el-button>
-            <el-button type="primary" @click="genRandQueAfterPreview" v-if="handleType!='view'&&previewExam" :disabled="genRandQue">保存并生成试卷</el-button>
-            <el-button type="primary" @click="closeViewWindow" v-if="handleType=='view'&&previewExam">确定</el-button>
+            <div class="btn_mid">
+                <div class="el-form-item">
+                    <!--随机出题时的按钮-->
+                    <el-button type="primary" v-if="handleType=='add'&&!previewExam" @click="preview(randomQuesData)"
+                               size="mini">预览
+                    </el-button>
+                    <el-button type="primary" v-if="handleType!='add'&&!previewExam" @click="openView()" size="mini">预览
+                    </el-button>
+                    <!--随机改题时的按钮-->
+                    <el-button size="mini" @click="closePreview" v-if="previewExam" :disabled="genRandQue">上一步</el-button>
+                    <el-button size="mini" type="primary" @click="genRandQueAfterPreview" v-if="handleType!='view'&&previewExam" :disabled="genRandQue">保存并生成试卷</el-button>
+                    <el-button size="mini" type="primary" @click="closeViewWindow" v-if="handleType=='view'&&previewExam">确定</el-button>
 
+                </div>
+            </div>
 
 
         </div>
@@ -869,7 +893,7 @@
                         <div class="msg">
                             知识点：{{multiple.specialknowledgeValue}}
                         </div>
-                        <el-button class="change"><i class="iconfont icon-shanchu"  @click="delSinMul(index)" ></i></el-button>
+                        <el-button class="change"><i style="display: block;border-radius: 50%;font-size: 17px;padding: 4px;color: #fff;background: #999;" class="iconfont icon-shanchu"  @click="delSinMul(index)" ></i></el-button>
                     </div>
                 </div>
 
@@ -974,82 +998,10 @@
                 <li>主观题：{{subMultipleSelection.length}}题</li>
             </ul>
             <!--随机出题时的按钮-->
-            <el-button type="primary" size="mini" @click="closeAutoQue">上一步</el-button>
+            <el-button size="mini" @click="closeAutoQue">上一步</el-button>
             <el-button type="primary" size="mini" @click="genAutoQue">保存并生成试卷</el-button>
 
         </div>
-
-        <!--<div>
-
-            <h3>注：更换的题目将会作为必考题</h3>
-            <div class="subTitle clearfix">
-                <p>一、单项选择题。</p>
-            </div>
-            <div class="question_area" v-for="(multiple,index) in sinMultipleSelection" :key="index">
-                <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                    <el-button type="primary" size="mini" @click="changeQuestion('10004',index)"
-                               v-if="handleType!='view'">
-                        <i class="iconfont icon-htmal5icon18"></i>
-                        更换题目
-                    </el-button>
-                </p>
-                <el-radio-group>
-                    <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
-                        {{item2.questionContent}}
-                    </el-radio>
-                </el-radio-group>
-            </div>
-            <div class="subTitle clearfix">
-                <p>二、多选题。</p>
-            </div>
-            <div class="question_area" v-for="(multiple,index) in mulMultipleSelection" :key="index">
-                <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                    <el-button type="primary" size="mini" @click="changeQuestion('10005',index)"
-                               v-if="handleType!='view'">
-                        <i class="iconfont icon-htmal5icon18"></i>
-                        更换题目
-                    </el-button>
-                </p>
-                <el-radio-group>
-                    <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
-                        {{item2.questionContent}}
-                    </el-radio>
-                </el-radio-group>
-            </div>
-
-            <div class="subTitle clearfix">
-                <p>三、判断题。</p>
-            </div>
-            <div class="question_area" v-for="(multiple,index) in judgeMultipleSelection" :key="index">
-                <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                    <el-button type="primary" size="mini" @click="changeQuestion('10006',index)"
-                               v-if="handleType!='view'">
-                        <i class="iconfont icon-htmal5icon18"></i>
-                        更换题目
-                    </el-button>
-                </p>
-                <el-radio-group>
-                    <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
-                        {{item2.questionContent}}
-                    </el-radio>
-                </el-radio-group>
-            </div>
-            <div class="subTitle clearfix">
-                <p>四、主观题
-                </p>
-            </div>
-            <div class="question_area" v-for="(multiple,index) in subMultipleSelection" :key="index">
-                <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                    <el-button type="primary" size="mini" @click="changeQuestion('10007',index)"
-                               v-if="handleType!='view'">
-                        <i class="iconfont icon-htmal5icon18"></i>
-                        更换题目
-                    </el-button>
-                </p>
-            </div>
-
-
-        </div>-->
 
 
     </div>
@@ -1259,11 +1211,11 @@
             <div class="card_contain">
                 <el-form :inline="true" :model="queformInline" ref="queformInline" class="demo-form-inline">
 
-                    <el-form-item label="题目内容：">
-                        <el-input placeholder="请输入题目内容" size="mini" v-model="queformInline.queContent"></el-input>
+                    <el-form-item label="题目内容：" prop="comContent">
+                        <el-input placeholder="请输入题目内容" size="mini" v-model="queformInline.comContent"></el-input>
                     </el-form-item>
-                    <el-form-item label="专项知识：" prop="typeId">
-                        <el-select v-model="queformInline.typeId" size="mini"
+                    <el-form-item label="专项知识：" prop="specialKnowledgeId">
+                        <el-select v-model="queformInline.specialKnowledgeId" size="mini"
                                    collapse-tags style="width: auto" placeholder="请选择知识点" clearable>
                             <el-option v-for="item in skOption" :key="item.key"
                                        :label="item.value" :value="item.key"></el-option>
@@ -1274,7 +1226,7 @@
                             <i class="iconfont icon-sousuo1"></i>
                             查询
                         </el-button>
-                        <el-button @click="resetQueForm('formInline')">
+                        <el-button @click="resetQueForm('queformInline')">
                             <i class="iconfont icon-tableresetpassword"></i>
                             重置
                         </el-button>
@@ -1373,11 +1325,11 @@
             <div class="card_contain">
                 <el-form :inline="true" :model="queformInline" ref="queformInline" class="demo-form-inline">
 
-                    <el-form-item label="题目内容：">
-                        <el-input placeholder="请输入题目内容" size="mini" v-model="queformInline.queContent"></el-input>
+                    <el-form-item label="题目内容：" prop="comContent">
+                        <el-input placeholder="请输入题目内容" size="mini" v-model="queformInline.comContent" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="专项知识：" prop="typeId">
-                        <el-select v-model="queformInline.typeId" size="mini"
+                    <el-form-item label="专项知识：" prop="specialKnowledgeId">
+                        <el-select v-model="queformInline.specialKnowledgeId" size="mini"
                                    collapse-tags style="width: auto" placeholder="请选择知识点" clearable>
                             <el-option v-for="item in skOption" :key="item.key"
                                        :label="item.value" :value="item.key"></el-option>
@@ -1388,7 +1340,7 @@
                             <i class="iconfont icon-sousuo1"></i>
                             查询
                         </el-button>
-                        <el-button @click="resetQueForm('formInline')">
+                        <el-button @click="resetQueForm('queformInline')">
                             <i class="iconfont icon-tableresetpassword"></i>
                             重置
                         </el-button>
