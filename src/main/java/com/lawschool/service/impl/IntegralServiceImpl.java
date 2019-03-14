@@ -82,6 +82,7 @@ public class IntegralServiceImpl extends ServiceImpl<IntegralDao, Integral> impl
     @Transactional(rollbackFor = Exception.class)
     public int addIntegralRecord(Integral integral, User user) {
         String userId=user.getId();
+
         String type=integral.getType();
         Float point=integral.getPoint();
         //1.添加积分学分记录
