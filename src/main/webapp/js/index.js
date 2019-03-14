@@ -14,13 +14,11 @@ var vm = new Vue({
         loginType: 0,// 登陆方式
         headerHide: false,
         showThis: false,
-        isMouseDown: false,
+        iconString:'icon-xunzhang',
         individual: null,
-        iconString:'icon-xunzhang'
     },
     created: function () {
         this.$nextTick(function () {
-            // vm.individual = document.getElementById('individual');
             vm.loadNav();
 
             //关于勋章
@@ -128,6 +126,7 @@ var vm = new Vue({
                     parentId: menuId
                 },
                 success: function (result) {
+                    console.log(result)
                     if (result.code === 0) {
                         vm.navData = result.menuList;
                         console.log("indexjs 51",vm.navData)
@@ -177,11 +176,7 @@ var vm = new Vue({
                         }else{
                             vm.childUrl = item.url + "?id=" + item.id;
                         }
-
-
                     }
-
-
                 }else{
                     vm.childUrl = item.url + "&id=" + item.id;
                 }
@@ -198,9 +193,10 @@ var vm = new Vue({
                     }
                 }
 
+
             } else {
                 if (item.list.length == 0) {
-                    alert("暂无链接")
+                    vm.$message("暂无链接")
                 }
             }
             if(item.url.indexOf("competition")>=0) {
@@ -214,53 +210,7 @@ var vm = new Vue({
             window.location.href = baseURL + 'logout';
         },
         toPersonCenter: function () {
-            // baseURL + modules/personalCen/manu_index.html;
+            document.getElementById('container').src = baseURL + "modules/personalCen/messageRemind.html?id=1072374227602251777";
         },
-        // 悬浮头像移动
-        // 定义公共方法
-        eventTools: function (el, mDown, mMove, mUp) {
-            var that = this;
-            el.addEventListener('mousedown', function (e) {
-                console.log(e)
-                // e.points = that.getPoint(e, el);
-                mDown && mDown(e);
-            })
-            el.addEventListener('mousemove', function (e) {
-                // e.points = that.getPoint(e, el);
-                mDown && mMove(e);
-            })
-            el.addEventListener('mouseup', function (e) {
-                console.log(e)
-                // e.points = that.getPoint(e, el);
-                mDown && mUp(e);
-            })
-        },
-        getPoint: function (e, el) {
-            var x = e.pageX - el.offsetLeft;
-            var y = e.pageY - el.offsetTop;
-            return {
-                dx: x,
-                dy: y
-            }
-        },
-        mDown: function (e) {
-            vm.isMouseDown = true;
-            e.preventDefault();
-        },
-        mMove: function (e) {
-            e.preventDefault();
-            if (!vm.isMouseDown) {
-                return
-            }
-            var x = e.pageX,
-                y = e.pageY;
-            console.log(x, y)
-            vm.individual.style.left = x + 'px';
-            vm.individual.style.top = y + 'px';
-        },
-        mUp: function (e) {
-            e.preventDefault();
-            vm.isMouseDown = false;
-        }
     }
 });

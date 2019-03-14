@@ -245,7 +245,7 @@ var vm = new Vue({
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
-                        async: false,
+                        async: true,
                         contentType: "application/json",
                         data: JSON.stringify(vm.learnTasks),
                         success: function (result) {
