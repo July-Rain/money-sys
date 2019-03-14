@@ -14,18 +14,107 @@ var vm = new Vue({
         loginType: 0,// 登陆方式
         headerHide: false,
         showThis: false,
-        isMouseDown: false,
-        individual: null
+        iconString:'icon-xunzhang',
+        individual: null,
+        srcphoto: baseURL+"/statics/img/police_head.png",
+
     },
     created: function () {
         this.$nextTick(function () {
-            // vm.individual = document.getElementById('individual');
             vm.loadNav();
+
+
+            vm.getsrcphoto();
+
+
+            //关于勋章
+            vm.BymyMedal();
+
             // vm.eventTools(vm.individual, vm.mDown, vm.mMove, vm.mUp);
         })
     },
 
     methods: {
+        getsrcphoto: function () {
+            if(jsgetUser().photo){
+
+                vm.srcphoto=baseURL+'/sys/download?accessoryId='+jsgetUser().photo;
+
+            }
+        },
+        BymyMedal: function () {
+
+            //进来 先看 这个人身上有没有 背着勋章的id  要根据勋章id反查勋章的字符串   (怕管理员修改了勋章的条件，每次进来在判断下 还符不符合勋章的条件)
+
+            var u=jsgetUser();//user
+            if(u.myMedal==null||u.myMedal==""){
+                //身上没有勋章，已经设置了没勋章的样式  什么都不做
+            }else {
+                // 根据勋章id去反查
+                $.ajax({
+                    type: "GET",
+                    url: baseURL + "medal/info/" + u.myMedal,
+                    contentType: "application/json",
+                    async: false,
+                    success: function (result) {
+
+                        //没找到 对应的 勋章 信息  说明被删了  我要把 勋章这一栏 制空
+                        if(result.data==null){
+                            //修改这个人身上背的勋章
+                            $.ajax({
+                                type: "GET",
+                                // url: baseURL + "sys/updateBymyMedal?myMedal="+row.badge,
+                                url: baseURL + "sys/updateBymyMedal?myMedal="+"",
+                                dataType: "json",
+                                async:false,
+                                success: function (result1) {
+
+                                }
+                            });
+                        }
+                        //找到了 我们来看下他的 获取条件  还和自己的 符合不
+                        else {
+                            //查询这个人的 积分 学分情况
+                            $.ajax({
+                                type: "POST",
+                                url: baseURL + "userIntegral/info",
+                                dataType: "json",
+                                async:false,
+                                success: function (result2) {
+
+                                     var integral= result2.info.integralPoint;//积分
+                                     var credit= result2.info.creditPoint;//学分
+
+                                        if(integral>=result.data.integral   && credit>=result.data.credit){
+                                           vm.iconString=result.data.badge;// 将徽章给这个人
+                                        }
+                                        else {
+                                            //不满足， 说明勋章条件 被改了
+
+                                            $.ajax({
+                                                type: "GET",
+                                                // url: baseURL + "sys/updateBymyMedal?myMedal="+row.badge,
+                                                url: baseURL + "sys/updateBymyMedal?myMedal="+"",
+                                                dataType: "json",
+                                                async:false,
+                                                success: function (result1) {
+
+                                                }
+                                            });
+                                        }
+
+
+                                }
+                            });
+                        }
+
+
+                    }
+                });
+            }
+
+
+        },
         loadFrame: function (obj) {
             var _src = $("#container").attr("src");
 
@@ -50,6 +139,7 @@ var vm = new Vue({
                     parentId: menuId
                 },
                 success: function (result) {
+                    console.log(result)
                     if (result.code === 0) {
                         vm.navData = result.menuList;
                         console.log("indexjs 51",vm.navData)
@@ -99,11 +189,7 @@ var vm = new Vue({
                         }else{
                             vm.childUrl = item.url + "?id=" + item.id;
                         }
-
-
                     }
-
-
                 }else{
                     vm.childUrl = item.url + "&id=" + item.id;
                 }
@@ -120,9 +206,10 @@ var vm = new Vue({
                     }
                 }
 
+
             } else {
                 if (item.list.length == 0) {
-                    alert("暂无链接")
+                    vm.$message("暂无链接")
                 }
             }
             if(item.url.indexOf("competition")>=0) {
@@ -136,53 +223,7 @@ var vm = new Vue({
             window.location.href = baseURL + 'logout';
         },
         toPersonCenter: function () {
-            // baseURL + modules/personalCen/manu_index.html;
+            document.getElementById('container').src = baseURL + "modules/personalCen/messageRemind.html?id=1072374227602251777";
         },
-        // 悬浮头像移动
-        // 定义公共方法
-        eventTools: function (el, mDown, mMove, mUp) {
-            var that = this;
-            el.addEventListener('mousedown', function (e) {
-                console.log(e)
-                // e.points = that.getPoint(e, el);
-                mDown && mDown(e);
-            })
-            el.addEventListener('mousemove', function (e) {
-                // e.points = that.getPoint(e, el);
-                mDown && mMove(e);
-            })
-            el.addEventListener('mouseup', function (e) {
-                console.log(e)
-                // e.points = that.getPoint(e, el);
-                mDown && mUp(e);
-            })
-        },
-        getPoint: function (e, el) {
-            var x = e.pageX - el.offsetLeft;
-            var y = e.pageY - el.offsetTop;
-            return {
-                dx: x,
-                dy: y
-            }
-        },
-        mDown: function (e) {
-            vm.isMouseDown = true;
-            e.preventDefault();
-        },
-        mMove: function (e) {
-            e.preventDefault();
-            if (!vm.isMouseDown) {
-                return
-            }
-            var x = e.pageX,
-                y = e.pageY;
-            console.log(x, y)
-            vm.individual.style.left = x + 'px';
-            vm.individual.style.top = y + 'px';
-        },
-        mUp: function (e) {
-            e.preventDefault();
-            vm.isMouseDown = false;
-        }
     }
 });

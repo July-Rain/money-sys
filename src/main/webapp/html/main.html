@@ -251,15 +251,18 @@
             <a href="javascript:;">江苏省公安机关网上法律学校</a>
         </div>
         <div class="individual" id="individual">
-            <img class="avatar" src="${rc.contextPath}/statics/img/dog.jpg" alt="用户头像">
+
+            <!--<img class="avatar" src="${rc.contextPath}/statics/img/dog.jpg" alt="用户头像">-->
+            <img class="avatar" :src="srcphoto" alt="用户头像">
+
             <div class="info">
                 <span class="name">陈梅梅</span>
-                <span class="badge"><i class="iconfont icon-xunzhang"></i></span>
+                <span class="badge"><i class="iconfont" :class="iconString"></i></span>
             </div>
             <div class="center">
                 <div class="con-ret"></div>
                 <div class="con">
-                    <p class="person-info">个人中心</p>
+                    <p class="person-info" @click="toPersonCenter">个人中心</p>
                     <p class="log-out" @click="logOut">退出登录</p>
                 </div>
             </div>

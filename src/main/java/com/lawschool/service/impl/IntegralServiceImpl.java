@@ -117,10 +117,11 @@ public class IntegralServiceImpl extends ServiceImpl<IntegralDao, Integral> impl
             if("0".equalsIgnoreCase(type)){
                 //设置学分
                 userIntegral2.setCreditPoint(point);
+                userIntegral2.setIntegralPoint(0f);
             }else if("1".equalsIgnoreCase(type)){
                 //设置积分
                 userIntegral2.setIntegralPoint(point);
-
+                userIntegral2.setCreditPoint(0f);
             }
             userIntegral2.setOrgCode(user.getOrgCode());
             userIntegral2.setOrgId(user.getOrgId());

@@ -6,8 +6,7 @@ var vm = new Vue({
         page: 1,//分页：当前页
         dialogFormVisible: false,
         form: {
-            integral: '',
-            credit: '',
+
             limit: 10,
             page: 1,
             count: 0,
