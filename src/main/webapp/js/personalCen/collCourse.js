@@ -10,7 +10,7 @@ var vm = new Vue({
         videoDataId: [],
         navData: [],//导航
         formInline: { // 搜索表单
-            stuType:"video",
+            stuType:"pic",
             currPage: 1,
             pageSize: 10,
             totalCount:0,
@@ -22,7 +22,7 @@ var vm = new Vue({
         visible: false,
         stuMedia: {
             id:"",
-            stuType: "video",
+            stuType: "pic",
             stuTitle: "",
             comContent: "",
             deptIds: "",
@@ -40,7 +40,11 @@ var vm = new Vue({
         multipleSelection:[],//法律分类弹窗
         delIdArr: {
             id:""
-        }//删除数据
+        },//删除数据
+        dialogPic:false,
+        title:"",
+        caseContent:""
+
     },
     created: function () {
         this.$nextTick(function () {
@@ -68,6 +72,10 @@ var vm = new Vue({
       this.initPlayer();
     },
     methods: {
+        //序列号计算
+        indexMethod:function (index) {
+            return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
+        },
         initPlayer: function () {
             window.onload = function () {
                 var options = {
@@ -206,5 +214,26 @@ var vm = new Vue({
         changeType: function () {
             this.reload();
         },
+        handleDetail :function (id,row) {
+            this.title='查看';
+
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'stumedia/info?id=' + row.id,
+                contentType: "application/json",
+                success: function (result) {
+                    if(result.code === 0){
+                        vm.stuMedia=result.data;
+                        vm.caseContent=result.data.comContent;
+                        vm.dialogPic=true;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        closeDia:function () {
+            this.dialogPic=false;
+        }
     }
 });
