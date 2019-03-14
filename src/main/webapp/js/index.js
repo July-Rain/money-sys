@@ -14,9 +14,7 @@ var vm = new Vue({
         loginType: 0,// 登陆方式
         headerHide: false,
         showThis: false,
-        isMouseDown: false,
-        individual: null,
-        iconString:'icon-xunzhang'
+        iconString:'icon-xunzhang',
         individual: null,
     },
     created: function () {
