@@ -18,6 +18,8 @@ import java.util.List;
 @TableName("LAW_FRACTION")
 public class Fraction extends DataEntity<Fraction> {
 
+    public static final String EXAM_INTEGRAL = "1"; //积分
+    public static final String EXAM_CREDITS = "0"; //学分
 
     private String fractionType;    //分数类型  积分1  学分0
 

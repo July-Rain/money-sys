@@ -27,14 +27,7 @@ public interface FractionService extends AbstractService<Fraction> {
      * @param fractionList
      * @throws Exception
      */
-    void saveFraction(List<Fraction> fractionList) throws Exception;
-
-    /**
-     * 更新
-     * @param fractionList
-     * @throws Exception
-     */
-    void updateFraction(List<Fraction> fractionList) throws Exception;
+    void saveFraction(List<Fraction> fractionList) ;
 
     /**
      *根据类型和数据源查询
