@@ -10,6 +10,7 @@ import com.lawschool.service.medal.MedalService;
 import com.lawschool.service.medal.UserMedalService;
 import com.lawschool.util.GeneralRuntimeException;
 import com.lawschool.util.Result;
+import com.lawschool.util.UtilValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +34,17 @@ public class MedalController extends AbstractController {
 
         MedalEntity medalEntity = new MedalEntity();
         medalEntity.setTitleName(titleName);
-        medalEntity.setIntegral((String) params.get("jifen"));//积分
-        medalEntity.setCredit((String) params.get("xuefen"));//学分
+
+
+        if(UtilValidate.isNotEmpty(params.get("jifen"))){
+            medalEntity.setIntegral((String) params.get("jifen"));//积分
+        }
+        if(UtilValidate.isNotEmpty(params.get("xuefen"))){
+            medalEntity.setCredit((String) params.get("xuefen"));//学分
+        }
+
+
+
         Page<MedalEntity> page = medalService.findPage(new Page<MedalEntity>(params), medalEntity);
         return Result.ok().put("page", page);
     }
