@@ -82,7 +82,8 @@ var vm = new Vue({
         count: 0,
         preserved: [],
         examConfig: [],
-        goHomeButton: null
+        goHomeButton: null,
+        floatIcon: null
         // 修改前的数据
         /*,
         otherList: [],
@@ -467,6 +468,10 @@ var vm = new Vue({
             // 隐藏 返回首页 按钮
             vm.goHomeButton = window.parent.document.getElementsByClassName('header-right')[0];
             vm.goHomeButton.style.display = 'none';
+            // 隐藏悬浮图标 (没有数据，尚未自测)
+            vm.floatIcon = window.parent.document.getElementById('individual')[0];
+            vm.floatIcon.style.display = 'none';
+            console.log(vm.floatIcon);
             // vm.refresh();
             if (examStatus == '0') {
                 //开始考试
