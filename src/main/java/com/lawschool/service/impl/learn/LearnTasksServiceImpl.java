@@ -112,7 +112,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         }
         learnTask.setCountUser(countUser);
 
-        mapper.insert(learnTask);
+        mapper.insertWithBLOBs(learnTask);
         //保存任务节点
         insertBathTaskDesic(learnTask.getTaskContentList(),learnTask.getId());
 
@@ -304,7 +304,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
     public void updateLearnTask(LearnTasksEntity learnTask, User user,String menuForm) {
         learnTask.setCreateUser(user.getId());
         learnTask.setCreateTime(new Date());
-        mapper.updateById(learnTask);
+        mapper.updateByPrimaryKeyWithBLOBs(learnTask);
         //删除权限表
         authService.delete(new EntityWrapper<AuthRelationBean>().eq("function_flag","LEARNTASK").eq("function_Id",learnTask.getId()));
         //删除任务表

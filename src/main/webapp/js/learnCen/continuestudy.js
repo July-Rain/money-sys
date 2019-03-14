@@ -141,6 +141,7 @@ var vm = new Vue({
         resetForm: function (formName) {
             this.formInline.stuLawid="";
             this.$refs[formName].resetFields();
+            this.reload();
         },
         reload: function () {
             $.ajax({

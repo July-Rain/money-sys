@@ -38,6 +38,10 @@ var vm = new Vue({
             vm.formInline.page = event;
             this.reload();
         },
+        //序列号计算
+        indexMethod:function (index) {
+            return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
+        },
         reload: function () {
             vm.formInline.source = 1;
             $.ajax({

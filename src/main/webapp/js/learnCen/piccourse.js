@@ -9,7 +9,7 @@ var vm = new Vue({
         videoData: [],//视频列表
         navData: [],//导航
         formInline: { // 搜索表单
-            stuType:"audio",
+            stuType:"pic",
             currPage: 1,
             pageSize: 10,
             totalCount:0,
@@ -21,7 +21,7 @@ var vm = new Vue({
         visible: false,
         stuMedia: {
             id:"",
-            stuType: "audio",
+            stuType: "pic",
             stuTitle: "",
             comContent: "",
             deptIds: "",
@@ -39,6 +39,11 @@ var vm = new Vue({
         multipleSelection:[],//法律分类弹窗
         playTime:0,//播放时间
         oldTime:0,//原播放时间
+        dialogPic:false,
+        caseContent:"",//图文资料数据
+        title:"",
+        startTime:"",//开始时间
+        endTime:""//结束时间
     },
     created: function () {
 
@@ -78,6 +83,10 @@ var vm = new Vue({
 
     },
     methods: {
+        //序列号计算
+        indexMethod:function (index) {
+            return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
+        },
         // 查询
         onSubmit: function () {
             this.reload();
@@ -105,9 +114,9 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.videoData = result.page.list;
-                        for(var i=0;i<vm.videoData.length;i++){
-                            vm.videoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
-                        }
+                        // for(var i=0;i<vm.videoData.length;i++){
+                        //     vm.videoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
+                        // }
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
                         vm.formInline.totalCount = parseInt(result.page.totalCount);
@@ -255,5 +264,55 @@ var vm = new Vue({
                 }
             });
         },
+        handleDetail :function (id,row) {
+            this.title='查看';
+
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'stumedia/info?id=' + row.id,
+                contentType: "application/json",
+                success: function (result) {
+                    if(result.code === 0){
+                        vm.startTime = new Date();
+                        vm.stuMedia=result.data;
+                        vm.caseContent=result.data.comContent;
+                        vm.dialogPic=true;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+            //请求后台修改播放量 记录学习记录
+            $.ajax({
+                type: "POST",
+                url: baseURL +  "stumedia/updateCount?stuId="+row.id+"&stuType=pic&stuFrom=piccen",
+                contentType: "application/json",
+                success: function(result){
+                    if(result.code === 0){
+                        //vm.treeData = result.classifyList;
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        closeDia:function () {
+            this.dialogPic=false;
+            //结束时间
+            vm.endTime = new Date();
+            var time = (vm.endTime - vm.startTime )/1000;
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'stumedia/countTime?stuId=' + vm.stuMedia.id+'&stuFrom=pic'+'&playTime='+time+'&type=pic',
+                contentType: "application/json",
+                success: function (result) {
+                    if(result.code === 0){
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+            this.reload();
+        }
     }
 });

@@ -189,29 +189,29 @@ var vm = new Vue({
             randomQuesData:[{
                 questionType: '10004',
                 specialKnowledgeArr: [],
-                questionNumber:2,
-                everyQuestionScore:10,
+                questionNumber:'',
+                everyQuestionScore:'',
                 questionScore:0
             },
                 {
                     questionType: '10005',
                     specialKnowledgeArr: [],
-                    questionNumber:2,
-                    everyQuestionScore:20,
+                    questionNumber:'',
+                    everyQuestionScore:'',
                     questionScore:0
                 },
                 {
                     questionType: '10006',
                     specialKnowledgeArr: [],
-                    questionNumber:2,
-                    everyQuestionScore:10,
+                    questionNumber:'',
+                    everyQuestionScore:'',
                     questionScore:0
                 },
                 {
                     questionType: '10007',
                     specialKnowledgeArr: [],
-                    questionNumber:2,
-                    everyQuestionScore:10,
+                    questionNumber:'',
+                    everyQuestionScore:'',
                     questionScore:0
                 },
             ],
@@ -336,8 +336,10 @@ var vm = new Vue({
                 success:function (result) {
                     if (result.code === 0) {
                         vm.examConfig = result.examConfig;
-                        vm.randomQuesData = result.examQueConfiglist;
-                        console.info(vm.randomQuesData );
+                        if (result.examQueConfiglist.length>0) {
+                            vm.randomQuesData = result.examQueConfiglist;
+                            console.info(vm.randomQuesData);
+                        }
                         vm.sinMultipleSelection = result.sinChoicList;
                         vm.mulMultipleSelection = result.mulChoicList;
                         vm.judgeMultipleSelection = result.judgeList;
@@ -415,6 +417,7 @@ var vm = new Vue({
 
         },
         open :function(){
+
           if (vm.examConfig.questionWay =="10033"){
               this.randomQuesModal = true ;
           }else {
@@ -495,9 +498,6 @@ var vm = new Vue({
             console.log(vm.deptData);
             this.dialogDept=true;
 
-        },
-        CompanyClick: function(data){
-            this.examConfig.organizedOrgCode = data.fullName;
         },
         saveCompany: function(){
             this.dialogCompany = false;
@@ -785,7 +785,7 @@ var vm = new Vue({
             this.saveChangeQues = row;
         },
         openView : function(){
-            this.previewExam = true;
+            this.setExam = true;
         },
         getSummaries(param) {
             const { columns, data } = param;

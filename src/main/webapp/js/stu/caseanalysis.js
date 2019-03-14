@@ -278,6 +278,7 @@ var vm = new Vue({
         // 表单重置
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
+            this.reload();
         },
         addCaseAna: function () {
             // if(!vm.caseAna.caseLawid){
@@ -643,9 +644,9 @@ var vm = new Vue({
             vm.caseAna.caseContentUrl="";
             vm.caseAna.videoPicAcc="";
             vm.caseAna.videoPicAccUrl="";
-            if(vm.caseAna.contentType=='pic'){
-                loadEditor();
-            }
+            // if(vm.caseAna.contentType=='pic'){
+            //     loadEditor();
+            // }
         },
         chooseLaw:function(){
             //选择法律法规主题分类
@@ -655,9 +656,14 @@ var vm = new Vue({
             this.dialogLaw = false;
         },
         confimLaw:function(){
+
+            this.multipleLawSelection = this.$refs.lawTree.getCheckedNodes();
+            if(this.multipleLawSelection.length>5){
+                alert("最多只能选择5个法律法规分类");
+                return;
+            }
             vm.caseAna.caseLawid = "";
             vm.caseAna.caseLawname = "";
-            this.multipleLawSelection = this.$refs.lawTree.getCheckedNodes();
             for (var i = 0; i < this.multipleLawSelection.length; i++) {
                 if (!this.caseAna.caseLawid) {
                     this.caseAna.caseLawid = this.multipleLawSelection[i].classifyId;

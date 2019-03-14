@@ -191,7 +191,7 @@
                             </el-table-column>
                             <el-table-column
                                     prop="taskClassName"
-                                    label="任务类型"
+                                    label="所属分类"
                                     width="100"
                                     header-align="center"
                                     align="center">
@@ -531,16 +531,20 @@
 
                 <el-col :span="18" class="paddingLeft20">
                     <el-form :inline="true" :model="taskForm" ref="taskForm" class="demo-form-inline">
-                        <el-form-item prop="infoName" label="标题">
+                        <el-form-item prop="infoName" label="标题：">
                             <el-input v-model="taskForm.infoName" placeholder="标题" size="mini"></el-input>
                         </el-form-item>
                         <el-form-item prop="infoType" label="来源：">
-                            <el-select v-model="taskForm.infoType" placeholder="类型" size="mini" >
-                                <el-option label="法律法规" value="law"></el-option>
-                                <el-option label="视频" value="video"></el-option>
-                                <el-option label="音频" value="audio"></el-option>
-                                <el-option label="图文" value="pic"></el-option>
-                            </el-select>
+                            <!--<el-select v-model="taskForm.infoType" placeholder="类型" size="mini" >-->
+                                <!--<el-option label="法律法规" value="law"></el-option>-->
+                                <!--<el-option label="视频" value="video"></el-option>-->
+                                <!--<el-option label="音频" value="audio"></el-option>-->
+                                <!--<el-option label="图文" value="pic"></el-option>-->
+                            <!--</el-select>-->
+                            <el-radio v-model="taskForm.infoType" label="law" @change="reloadTask">法律法规</el-radio>
+                            <el-radio v-model="taskForm.infoType" label="video" @change="reloadTask">视频</el-radio>
+                            <el-radio v-model="taskForm.infoType" label="audio" @change="reloadTask">音频</el-radio>
+                            <el-radio v-model="taskForm.infoType" label="pic" @change="reloadTask">图文</el-radio>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="searchContent" size="mini">查询</el-button>

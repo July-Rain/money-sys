@@ -464,9 +464,9 @@
                                        :label="item.value" :value="item.key"></el-option>
                         </el-select>
                         <span class="label" >试题数量：</span>
-                        <el-input-number size="mini" :min="0" placeholder="0" v-model="randomQuesData[0].questionNumber"></el-input-number>
+                        <el-input-number size="mini" :disabled="handleType=='view'" :min="0" placeholder="0" v-model="randomQuesData[0].questionNumber"></el-input-number>
                         道 <span class="label">每题</span>
-                        <el-input-number size="mini" :min="0" placeholder="0"  v-model="randomQuesData[0].everyQuestionScore"></el-input-number>
+                        <el-input-number size="mini" :disabled="handleType=='view'" :min="0" placeholder="0"  v-model="randomQuesData[0].everyQuestionScore"></el-input-number>
                         分
                     </p>
                 </div>
@@ -480,9 +480,9 @@
                                        :label="item.value" :value="item.key"></el-option>
                         </el-select>
                         <span class="label">试题数量：</span>
-                        <el-input-number size="mini" :min="0" placeholder="0" v-model="randomQuesData[1].questionNumber"></el-input-number>
+                        <el-input-number size="mini" :disabled="handleType=='view'" :min="0" placeholder="0" v-model="randomQuesData[1].questionNumber"></el-input-number>
                         道 <span class="label">每题</span>
-                        <el-input-number size="mini" :min="0" placeholder="0" v-model="randomQuesData[1].everyQuestionScore"></el-input-number>
+                        <el-input-number size="mini" :disabled="handleType=='view'" :min="0" placeholder="0" v-model="randomQuesData[1].everyQuestionScore"></el-input-number>
                         分
                     </p>
                 </div>
@@ -496,9 +496,9 @@
                                        :label="item.value" :value="item.key"></el-option>
                         </el-select>
                         <span class="label">试题数量：</span>
-                        <el-input-number size="mini" :min="0" placeholder="0" v-model="randomQuesData[2].questionNumber"></el-input-number>
+                        <el-input-number size="mini" :disabled="handleType=='view'" :min="0" placeholder="0" v-model="randomQuesData[2].questionNumber"></el-input-number>
                         道 <span class="label">每题</span>
-                        <el-input-number size="mini" :min="0" placeholder="0" v-model="randomQuesData[2].everyQuestionScore" ></el-input-number>
+                        <el-input-number size="mini" :disabled="handleType=='view'" :min="0" placeholder="0" v-model="randomQuesData[2].everyQuestionScore" ></el-input-number>
                         分
                     </p>
                 </div>
@@ -512,16 +512,16 @@
                                        :label="item.value" :value="item.key"></el-option>
                         </el-select>
                         <span class="label">试题数量：</span>
-                        <el-input-number size="mini" :min="0" placeholder="0"  v-model="randomQuesData[3].questionNumber"></el-input-number>
+                        <el-input-number size="mini" :disabled="handleType=='view'" :min="0" placeholder="0"  v-model="randomQuesData[3].questionNumber"></el-input-number>
                         道 <span class="label">每题</span>
-                        <el-input-number size="mini" :min="0" placeholder="0"  v-model="randomQuesData[3].everyQuestionScore"></el-input-number>
+                        <el-input-number size="mini" :disabled="handleType=='view'" :min="0" placeholder="0"  v-model="randomQuesData[3].everyQuestionScore"></el-input-number>
                         分
                     </p>
                 </div>
                 <div class="btn_mid">
                     <el-form-item>
                         <el-button size="mini"  @click="closeRanDia" :disabled="genRandQue">上一步</el-button>
-                        <el-button type="primary" size="mini" @click="handleSave(randomQuesData)" :disabled="genRandQue">保存并生成试卷</el-button>
+                        <el-button type="primary" v-if="!handleType=='view'" size="mini" @click="handleSave(randomQuesData)" :disabled="genRandQue">保存并生成试卷</el-button>
                     </el-form-item>
                 </div>
             </el-form>
@@ -847,8 +847,8 @@
                     <el-button type="primary" v-if="handleType=='add'&&!previewExam" @click="preview(randomQuesData)"
                                size="mini">预览
                     </el-button>
-                    <el-button type="primary" v-if="handleType!='add'&&!previewExam" @click="openView()" size="mini">预览
-                    </el-button>
+                    <!--<el-button type="primary" v-if="handleType!='add'&&!previewExam" @click="openView()" size="mini">预览
+                    </el-button>-->
                     <!--随机改题时的按钮-->
                     <el-button size="mini" @click="closePreview" v-if="previewExam" :disabled="genRandQue">上一步</el-button>
                     <el-button size="mini" type="primary" @click="genRandQueAfterPreview" v-if="handleType!='view'&&previewExam" :disabled="genRandQue">保存并生成试卷</el-button>
@@ -873,10 +873,10 @@
                     <h3>一、单选题<span>已出题{{sinMultipleSelection.length}}题
                         共{{sinMultipleSelection.length*sinMultScore}}分</span><span></span></h3>
                     <div class="config_box clearfix">
-                        <el-button size="mini" type="primary" @click="addQuestion('10004')"><i class="iconfont icon-htmal5icon18"></i>添加试题
+                        <el-button size="mini" type="primary" :disabled="handleType=='view'"  @click="addQuestion('10004')"><i class="iconfont icon-htmal5icon18"></i>添加试题
                         </el-button>
                         <p>每题：
-                            <el-input-number size="mini"  v-model="sinMultScore" :min="1" ></el-input-number>
+                            <el-input-number size="mini"  :disabled="handleType=='view'"  v-model="sinMultScore" :min="1" ></el-input-number>
                             分
                         </p>
                     </div>
@@ -893,7 +893,7 @@
                         <div class="msg">
                             知识点：{{multiple.specialknowledgeValue}}
                         </div>
-                        <el-button class="change"><i style="display: block;border-radius: 50%;font-size: 17px;padding: 4px;color: #fff;background: #999;" class="iconfont icon-shanchu"  @click="delSinMul(index)" ></i></el-button>
+                        <el-button class="change"><i style="display: block;border-radius: 50%;font-size: 17px;padding: 4px;color: #fff;background: #999;" class="iconfont icon-shanchu" :disabled="handleType=='view'" @click="delSinMul(index)" ></i></el-button>
                     </div>
                 </div>
 
@@ -901,10 +901,10 @@
                     <h3>二、多选题<span>已出题{{mulMultipleSelection.length}}题
                         共{{mulMultipleSelection.length*mulMultScore}}分</span><span></span></h3>
                     <div class="config_box clearfix">
-                        <el-button size="mini" type="primary" @click="addQuestion('10005')"><i class="iconfont icon-htmal5icon18"></i>添加试题
+                        <el-button size="mini" :disabled="handleType=='view'"  type="primary" @click="addQuestion('10005')"><i class="iconfont icon-htmal5icon18"></i>添加试题
                         </el-button>
                         <p>每题：
-                            <el-input-number size="mini"  v-model="mulMultScore" :min="1" ></el-input-number>
+                            <el-input-number size="mini"  :disabled="handleType=='view'"  v-model="mulMultScore" :min="1" ></el-input-number>
                             分
                         </p>
                     </div>
@@ -921,7 +921,7 @@
                         <div class="msg">
                             知识点：{{multiple.specialknowledgeValue}}
                         </div>
-                        <el-button class="change"><i class="iconfont icon-shanchu"  @click="delMulMul(index)" ></i></el-button>
+                        <el-button class="change"><i class="iconfont icon-shanchu" :disabled="handleType=='view'" @click="delMulMul(index)" ></i></el-button>
                     </div>
                 </div>
 
@@ -929,10 +929,10 @@
                     <h3>二、判断题<span>已出题{{judgeMultipleSelection.length}}题
                         共{{judgeMultipleSelection.length*judgeMultScore}}分</span><span></span></h3>
                     <div class="config_box clearfix">
-                        <el-button size="mini" type="primary" @click="addQuestion('10006')"><i class="iconfont icon-htmal5icon18"></i>添加试题
+                        <el-button size="mini" type="primary" :disabled="handleType=='view'"  @click="addQuestion('10006')"><i class="iconfont icon-htmal5icon18"></i>添加试题
                         </el-button>
                         <p>每题：
-                            <el-input-number size="mini"  v-model="judgeMultScore" :min="1" ></el-input-number>
+                            <el-input-number size="mini" :disabled="handleType=='view'"  v-model="judgeMultScore" :min="1" ></el-input-number>
                             分
                         </p>
                     </div>
@@ -949,7 +949,7 @@
                         <div class="msg">
                             知识点：{{multiple.specialknowledgeValue}}
                         </div>
-                        <el-button class="change"><i class="iconfont icon-shanchu"  @click="delJudMul(index)" ></i></el-button>
+                        <el-button class="change"><i class="iconfont icon-shanchu" :disabled="handleType=='view'"  @click="delJudMul(index)" ></i></el-button>
                     </div>
                 </div>
 
@@ -957,14 +957,14 @@
                     <h3>二、主观题<span>已出题{{subMultipleSelection.length}}题
                         共{{subAllScore}}分</span><span></span></h3>
                     <div class="config_box clearfix">
-                        <el-button size="mini" type="primary" @click="addQuestion('10007')"><i class="iconfont icon-htmal5icon18"></i>添加试题
+                        <el-button size="mini" :disabled="handleType=='view'"  type="primary" @click="addQuestion('10007')"><i class="iconfont icon-htmal5icon18"></i>添加试题
                         </el-button>
 
                     </div>
                     <div class="question_box"  v-for="(multiple,index) in subMultipleSelection" :key="index">
                         <div class="clearfix">
                             <p style="float: right">此题：
-                                <el-input-number size="mini" @change="calaSubAllScore"  v-model="subMultipleSelection[index].perScore" :min="1" ></el-input-number>
+                                <el-input-number :disabled="handleType=='view'"  size="mini" @change="calaSubAllScore"  v-model="subMultipleSelection[index].perScore" :min="1" ></el-input-number>
                                 分
                             </p>
                         </div>
@@ -981,7 +981,7 @@
                         <div class="msg">
                             知识点：{{multiple.specialknowledgeValue}}
                         </div>
-                        <el-button class="change"><i class="iconfont icon-shanchu"  @click="delSubMul(index)" ></i></el-button>
+                        <el-button class="change"><i class="iconfont icon-shanchu" :disabled="handleType=='view'" @click="delSubMul(index)" ></i></el-button>
                     </div>
                 </div>
             </el-form>
@@ -999,7 +999,7 @@
             </ul>
             <!--随机出题时的按钮-->
             <el-button size="mini" @click="closeAutoQue">上一步</el-button>
-            <el-button type="primary" size="mini" @click="genAutoQue">保存并生成试卷</el-button>
+            <el-button type="primary" size="mini" :disabled="handleType=='view'"  @click="genAutoQue">保存并生成试卷</el-button>
 
         </div>
 
