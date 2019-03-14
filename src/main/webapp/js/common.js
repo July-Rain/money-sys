@@ -89,11 +89,11 @@ function jsgetUser() {
     var u = null;
     $.ajax({
         type: "POST",
-        url: baseURL + "sys/jsGetUser",
+        url: baseURL + "sys/getuser",
         dataType: "json",
         async: false,
         success: function (result) {
-            u = result.u;
+            u = result.user;
         }
     });
     return u;
