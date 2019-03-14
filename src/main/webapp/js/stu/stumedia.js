@@ -200,7 +200,7 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    debugger
+                    // debugger
                     vm.loading=true;
                     var url = vm.stuMedia.id ? "stumedia/updateStuMedia" : "stumedia/insertStuMedia";
                     var deptArr = vm.stuMedia.deptIds ? vm.stuMedia.deptIds.split(",") : [];
