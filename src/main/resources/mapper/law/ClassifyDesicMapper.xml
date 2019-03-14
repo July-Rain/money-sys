@@ -73,7 +73,12 @@
             LAW_CLASSIFY_DESIC
         WHERE DEL_FLAG = '0'
         <if test="dataId != null and dataId!=''">
-            AND CLASSIFY_ID = #{dataId}
+            AND  CLASSIFY_ID IN (
+            SELECT
+            CLASSIFY_CODE
+            FROM
+            LAW_CLASSIFY T START WITH T . CLASSIFY_CODE = #{dataId} CONNECT BY PRIOR T . ID = T .PARENT_ID
+            )
         </if>
         <if test="infoName != null and infoName!=''">
             and LAW_TITLE  like '%'||#{infoName}||'%'
@@ -86,7 +91,12 @@
         LAW_CLASSIFY_DESIC
         WHERE 1=1
         <if test="dataId != null and dataId!=''">
-            AND CLASSIFY_ID = #{dataId}
+            AND  CLASSIFY_ID IN (
+            SELECT
+            CLASSIFY_CODE
+            FROM
+            LAW_CLASSIFY T START WITH T . CLASSIFY_CODE = #{dataId} CONNECT BY PRIOR T . ID = T .PARENT_ID
+            )
         </if>
   </select>
     

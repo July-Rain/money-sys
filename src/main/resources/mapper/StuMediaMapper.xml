@@ -261,7 +261,7 @@
   </select>
 
   <select id="listStuByTask" resultType="com.lawschool.beans.law.TaskDesicEntity" parameterType="com.lawschool.beans.law.TaskDesicEntity">
-      select DISTINCT id,info_id,info_name,info_parent_id,task_id,CREATE_time,info_code,info_type,data_id,recordId from (
+      select DISTINCT id,info_id,to_char(info_name) as infoName,info_parent_id,task_id,CREATE_time,info_code,info_type,data_id,recordId from (
       select  aa.*,
       r.id as recordId
       FROM(
@@ -427,39 +427,70 @@
 
     <select id="listStuByUser" resultType="com.lawschool.beans.law.TaskDesicEntity" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
+        dataId,infoId,infoCode,TO_CHAR(infoName) as infoName,infoParentId,infoType
+        FROM
+        (
+        SELECT
         A . ID AS dataId,
         A . ID AS infoId,
         A .STU_CODE AS infoCode,
         A .STU_TITLE AS infoName,
         A .STU_LAWID AS infoParentId,
-        'stu_' || A .stu_type || '_data' AS infoType
+        A.DEL_STATUS,
+        'stu_' || A .stu_type || '_data' AS infoType,
+        REGEXP_SUBSTR (
+        A.STU_LAWID,
+        '[^,]+',
+        1,
+        ROWNUM
+        ) AS PARENT_ID
         FROM
         LAW_STU_MEDIA A
 
-        where A.DEL_STATUS = 0
+        <![CDATA[CONNECT BY ROWNUM <= LENGTH (A .STU_LAWID) - LENGTH (
+        REGEXP_REPLACE (A .STU_LAWID, ',', '')
+        ) + 1 ]]>
+        )aa
+        where AA.DEL_STATUS = 0
         <if test="dataId != null and dataId!=''">
-            AND FIND_IN_SET(#{dataId},A .STU_LAWID) > 0
+           and to_char(aa.PARENT_ID) in (select "ID" FROM LAW_CLASSIFY T START WITH T .CLASSIFY_CODE =#{dataId} CONNECT BY PRIOR T .id = T .PARENT_ID)
         </if>
         <if test="infoType != null and infoType!=''">
-            AND A .stu_type = #{infoType}
+            AND AA.infoType = 'stu_'||#{infoType}||'_data'
         </if>
+
         union ALL
 
+        SELECT
+        dataId,infoId,infoCode,TO_CHAR(infoName)as infoName,infoParentId,infoType
+        FROM
+        (
         SELECT
         A .ID  AS dataId,
         'case_'||A.case_type||'_'||A.ID AS infoId,
         A .CASE_CODE AS infoCode,
         A .CASE_TITLE AS infoName,
+        A.case_Lawid AS infoParentId,
+        a.DEL_STATUS,
+        'case_'||A.content_type||'_data' AS infoType,
+        REGEXP_SUBSTR (
         A.case_Lawid,
-        'case_'||A.content_type||'_data' AS infoType
+        '[^,]+',
+        1,
+        ROWNUM
+        ) AS PARENT_ID
         FROM
         LAW_CASE_ANALYSIS A
-        where A.DEL_STATUS = 0
+
+        <![CDATA[CONNECT BY ROWNUM <= LENGTH (A .case_Lawid) - LENGTH (
+        REGEXP_REPLACE (A .case_Lawid, ',', '')
+        ) + 1]]>
+        )aa where AA.DEL_STATUS = 0
         <if test="dataId != null and dataId!=''">
-            AND FIND_IN_SET(#{dataId},A .case_Lawid) > 0
+            and to_char(aa.PARENT_ID) in (select "ID" FROM LAW_CLASSIFY T START WITH T .CLASSIFY_CODE =#{dataId} CONNECT BY PRIOR T .id = T .PARENT_ID)
         </if>
         <if test="infoType != null and infoType!=''">
-            AND A .content_type = #{infoType}
+            AND AA.infoType = 'case_'||#{infoType}||'_data'
         </if>
 
 
@@ -470,39 +501,70 @@
         FROM
         (
         SELECT
+        dataId,infoId,infoCode,TO_CHAR(infoName)as infoName,infoParentId,infoType
+        FROM
+        (
+        SELECT
         A . ID AS dataId,
         A . ID AS infoId,
         A .STU_CODE AS infoCode,
         A .STU_TITLE AS infoName,
         A .STU_LAWID AS infoParentId,
-        'stu_' || A .stu_type || '_data' AS infoType
+        A.DEL_STATUS,
+        'stu_' || A .stu_type || '_data' AS infoType,
+        REGEXP_SUBSTR (
+        A.STU_LAWID,
+        '[^,]+',
+        1,
+        ROWNUM
+        ) AS PARENT_ID
         FROM
         LAW_STU_MEDIA A
 
-        where A.DEL_STATUS = 0
+        <![CDATA[CONNECT BY ROWNUM <= LENGTH (A .STU_LAWID) - LENGTH (
+        REGEXP_REPLACE (A .STU_LAWID, ',', '')
+        ) + 1 ]]>
+        )aa
+        where AA.DEL_STATUS = 0
         <if test="dataId != null and dataId!=''">
-            AND FIND_IN_SET(#{dataId},A .STU_LAWID) > 0
+            and to_char(aa.PARENT_ID) in (select "ID" FROM LAW_CLASSIFY T START WITH T .CLASSIFY_CODE =#{dataId} CONNECT BY PRIOR T .id = T .PARENT_ID)
         </if>
         <if test="infoType != null and infoType!=''">
-            AND A .stu_type = #{infoType}
+            AND AA.infoType = 'stu_'||#{infoType}||'_data'
         </if>
+
         union ALL
 
+        SELECT
+        dataId,infoId,infoCode,TO_CHAR(infoName)as infoName,infoParentId,infoType
+        FROM
+        (
         SELECT
         A .ID  AS dataId,
         'case_'||A.case_type||'_'||A.ID AS infoId,
         A .CASE_CODE AS infoCode,
         A .CASE_TITLE AS infoName,
+        A.case_Lawid AS infoParentId,
+        a.DEL_STATUS,
+        'case_'||A.content_type||'_data' AS infoType,
+        REGEXP_SUBSTR (
         A.case_Lawid,
-        'case_'||A.content_type||'_data' AS infoType
+        '[^,]+',
+        1,
+        ROWNUM
+        ) AS PARENT_ID
         FROM
         LAW_CASE_ANALYSIS A
-        where A.DEL_STATUS = 0
+
+        <![CDATA[CONNECT BY ROWNUM <= LENGTH (A .case_Lawid) - LENGTH (
+        REGEXP_REPLACE (A .case_Lawid, ',', '')
+        ) + 1]]>
+        )aa where AA.DEL_STATUS = 0
         <if test="dataId != null and dataId!=''">
-            AND FIND_IN_SET(#{dataId},A .case_Lawid) > 0
+            and to_char(aa.PARENT_ID) in (select "ID" FROM LAW_CLASSIFY T START WITH T .CLASSIFY_CODE =#{dataId} CONNECT BY PRIOR T .id = T .PARENT_ID)
         </if>
         <if test="infoType != null and infoType!=''">
-            AND A .content_type = #{infoType}
+            AND AA.infoType = 'case_'||#{infoType}||'_data'
         </if>
         )
 

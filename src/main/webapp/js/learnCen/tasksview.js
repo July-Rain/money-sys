@@ -245,6 +245,7 @@ var vm = new Vue({
         // 表单重置
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
+            this.reload();
         },
         addLearnTask: function () {
             this.learnTasks = {

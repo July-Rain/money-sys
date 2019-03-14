@@ -595,9 +595,9 @@ var vm = new Vue({
             vm.stuMedia.contentUrl = "";
             vm.stuMedia.videoPicAcc = "";
             vm.stuMedia.videoPicAccUrl = "";
-            if (vm.stuMedia.stuType == 'pic') {
-                loadEditor();
-            }
+            // if (vm.stuMedia.stuType == 'pic') {
+            //     loadEditor();
+            // }
         },
         chooseLaw:function(){
             //选择法律法规主题分类
@@ -607,9 +607,14 @@ var vm = new Vue({
             this.dialogLaw = false;
         },
         confimLaw:function(){
+
+            this.multipleLawSelection = this.$refs.lawTree.getCheckedNodes();
+            if(this.multipleLawSelection.length>5){
+                alert("最多只能选择5个法律法规分类");
+                return;
+            }
             vm.stuMedia.caseLawid = "";
             vm.stuMedia.caseLawname = "";
-            this.multipleLawSelection = this.$refs.lawTree.getCheckedNodes();
             for (var i = 0; i < this.multipleLawSelection.length; i++) {
                 if (!this.stuMedia.stuLawid) {
                     this.stuMedia.stuLawid = this.multipleLawSelection[i].classifyId;
