@@ -8,7 +8,9 @@ import com.lawschool.service.system.TopicTypeService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @version V1.0
@@ -29,6 +31,7 @@ public class TopicTypeServiceImpl extends AbstractServiceImpl<TopicTypeDao, Topi
         return dao.updateDelFlag(id);
     }
 
+    @Override
     public List<CommonForm> findAll(List<String> list){
         List<CommonForm> resultList = new ArrayList<>();
 

@@ -110,6 +110,7 @@ var vm = new Vue({
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
+                        async: false,
                         contentType: "application/json",
                         data: JSON.stringify(vm.stuMediaTch),
                         success: function (result) {

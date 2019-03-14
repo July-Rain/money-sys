@@ -50,6 +50,24 @@ public class ExerciseConfigureController extends AbstractController{
         entity.setCreateUser(user.getId());
         entity.setDelFlag(0);
 
+        if(params.get("taskName") != null){
+            entity.setName(String.valueOf(params.get("taskName")));
+        }
+
+        if(params.get("startTime") != null){
+            entity.setKssj(String.valueOf(params.get("startTime")));
+        }
+
+        if(params.get("endTime") != null){
+            entity.setJssj(String.valueOf(params.get("endTime")));
+        }
+
+        if(params.get("source") != null){
+            entity.setSource(Integer.parseInt(String.valueOf(params.get("source"))));
+        } else {
+            entity.setSource(0);
+        }
+
         Page<ExerciseConfigureEntity> page = exerciseConfigureService.findPage(
             new Page<ExerciseConfigureEntity>(params), entity
         );
@@ -72,12 +90,12 @@ public class ExerciseConfigureController extends AbstractController{
         entity.setDelFlag(0);
         entity.setUserName(user.getUserName());
 
-        if(ExerciseConfigureEntity.FROM_MANGE_TASK.equals(entity.getSourceFrom())){
-            // 部门
-           /* if(CollectionUtils.isEmpty(entity.getDeptIds()) && CollectionUtils.isEmpty(entity.getUserIds())){
-                return Result.error("请设置使用部门或使用人员信息...");
-            }*/
+        if(ExerciseConfigureEntity.SOURCE_PERSON_SET == entity.getSource()){
+            // 个人
+            entity.setUsers(user.getId());
 
+        } else if(ExerciseConfigureEntity.SOURCE_DEPART_SET == entity.getSource()){
+            // 部门
             if(CollectionUtils.isNotEmpty(entity.getDeptIds())){
                 entity.setDepts(String.join(",", entity.getDeptIds()));
             }

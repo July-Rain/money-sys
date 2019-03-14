@@ -108,6 +108,7 @@ var vm = new Vue({
         lawData: [],//法律知识库分类树 --去除全部的
         uploadedPlayer: null, // videojs实例
         saveUserTableData: [],//用于人员回显表格的对象  --回显需加
+        loading:false,//加载中
     },
     created: function () {
 
@@ -243,6 +244,7 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
+                    vm.loading=true;
                     var url = vm.caseAna.id?"caseana/updateCaseAna": "caseana/insertCaseAna";
                     var deptArr = vm.caseAna.deptIds?vm.caseAna.deptIds.split(","):[];
                     var userArr = vm.caseAna.userIds?vm.caseAna.userIds.split(","):[];
@@ -251,10 +253,12 @@ var vm = new Vue({
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
+                        async: false,
                         contentType: "application/json",
                         data: JSON.stringify(vm.caseAna),
                         success: function(result){
                             if(result.code === 0){
+                                vm.loading=false;
                                 vm.$alert('操作成功', '提示', {
                                     confirmButtonText: '确定',
                                     callback: function () {
@@ -265,6 +269,7 @@ var vm = new Vue({
                                     }
                                 });
                             }else{
+                                vm.loading=false;
                                 alert(result.msg);
                             }
                         }
@@ -582,10 +587,8 @@ var vm = new Vue({
             this.dialogUser=false;
             var val =this.multipleSelection;
             //遍历最终的人员信息
-            if(val.length==0){
-                vm.caseAna.userIds = "";
-                vm.caseAna.userName = "";
-            }
+            vm.caseAna.userIds = "";
+            vm.caseAna.userName = "";
             for (var i=0;i<val.length;i++){
                 if (!this.caseAna.userIds ) {
                     this.caseAna.userIds=val[i].id;

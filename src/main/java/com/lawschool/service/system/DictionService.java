@@ -5,6 +5,7 @@ import com.lawschool.beans.system.DictEntity;
 import com.lawschool.form.CommonForm;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: Moon
@@ -37,4 +38,18 @@ public interface DictionService extends AbstractService<DictEntity> {
      * @return
      */
     boolean checkDuplicate(String id, String str, String type, String parentCode);
+
+    Map<String, List<CommonForm>> getDictByParentCode(List<String> codes);
+
+
+    /**
+     * @Author MengyuWu
+     * @Description 根据名称查code  --系统默认密码使用
+     * @Date 10:07 2019-3-14
+     * @Param [name]
+     * @return String
+     **/
+
+    String selectOneByName(String name);
+
 }

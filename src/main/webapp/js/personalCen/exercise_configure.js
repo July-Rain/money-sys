@@ -9,10 +9,9 @@ var vm = new Vue({
             name: '',
             prefix: '',
             list: [],
-            rangeType: 0,
             deptIds: [],
             userIds: [],
-            sourceFrom:"1"
+            source: 1
         },
         rangeType: [
             {key:0, value:'个人'},
@@ -36,7 +35,8 @@ var vm = new Vue({
             count: 0,
             taskName: '',//筛选条件
             startTime: '',
-            endTime: ''
+            endTime: '',
+            source: 1
         },
         deptData: [],
         userData: [],
@@ -85,6 +85,10 @@ var vm = new Vue({
 
         },//人员查询
         userTableData: [],//人员表格信息
+        midMax: 9999,
+        priMax: 9999,
+        senMax: 9999,
+        obj: {}
     },
     methods: {
         //序列号计算
@@ -373,11 +377,44 @@ var vm = new Vue({
         // 表单重置
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
+            vm.refresh();
         },
         // 查询
         onSubmit: function () {
-
+            vm.refresh();
         },
+        topicNums: function () {
+            $.ajax({
+                type: "GET",
+                url: baseURL + "common/topicNums",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.obj = result.numArr;
+
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        change: function (param) {
+            if(param == null || param == ''){
+                vm.senMax = 9999;
+                vm.priMax = 9999;
+                vm.midMax = 9999;
+                vm.config.primaryNum = 0;
+                vm.config.primaryNum = 0;
+                vm.config.primaryNum = 0;
+
+            } else {
+                var arr = new Array();
+                arr = vm.obj[param.key];
+                vm.senMax = arr[2];
+                vm.priMax = arr[0];
+                vm.midMax = arr[1];
+            }
+        }
     },
     created: function () {
         this.$nextTick(function () {
@@ -412,7 +449,7 @@ var vm = new Vue({
                     }
                 }
             });
-
+            this.topicNums();
             this.reloadUser();
      });
     }

@@ -313,6 +313,48 @@ var vm = new Vue({
                 }
             });
             this.reload();
-        }
+        },
+        collect:function (id,row) {
+            var coll={
+                comStucode:row.id,
+                type:'10'
+            };
+            //收藏课程
+            $.ajax({
+                type: "POST",
+                url: baseURL + "coll/addColl?comStucode="+row.id+"&type=10",
+                contentType: "application/json",
+                data: JSON.stringify(coll),
+                success: function(result){
+                    if(result.code === 0){
+                        vm.$message('收藏成功');
+                        vm.reload();
+                    }else{
+                        vm.$message(result.msg);
+                    }
+                }
+            });
+        },
+        cancelCollect:function (id,row) {
+            var coll={
+                comStucode:row.id,
+                type:'10'
+            };
+            // 取消收藏课程
+            $.ajax({
+                type: "POST",
+                url: baseURL + "coll/delColl?comStucode="+row.id+"&type=10",
+                contentType: "application/json",
+                data: JSON.stringify(coll),
+                success: function(result){
+                    if(result.code === 0){
+                        vm.$message('取消收藏成功');
+                        vm.reload();
+                    }else{
+                        vm.$message(result.msg);
+                    }
+                }
+            });
+        },
     }
 });

@@ -3,18 +3,13 @@ package com.lawschool.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.Collection;
 import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
 import com.lawschool.beans.auth.AuthRelationBean;
-import com.lawschool.beans.law.ClassifyDesicEntity;
 import com.lawschool.beans.law.TaskDesicEntity;
-import com.lawschool.dao.CollectionDao;
 import com.lawschool.dao.StuMediaDao;
-import com.lawschool.dao.UserMapper;
-import com.lawschool.service.CollectionService;
 import com.lawschool.service.StuMediaService;
 import com.lawschool.service.auth.AuthRelationService;
 import com.lawschool.util.GetUUID;
@@ -42,8 +37,8 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
     @Autowired
     private AuthRelationService authService;
 
-    @Autowired
-    private CollectionService collectionService;
+//    @Autowired
+//    private CollectionService collectionService;
 
     /**
      * @Author zjw
@@ -365,10 +360,10 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         boolean isColl = false;
         EntityWrapper<Collection> ew=new EntityWrapper();
         ew.eq("COM_USERID",userId).eq("COM_STUCODE",id);
-        Collection collection = collectionService.selectOne(ew);
-        if(UtilValidate.isNotEmpty(collection) && collection.getDelStatus()==0){
-            isColl=true;
-        }
+//        Collection collection = collectionService.selectOne(ew);
+//        if(UtilValidate.isNotEmpty(collection) && collection.getDelStatus()==0){
+//            isColl=true;
+//        }
         return  isColl;
     }
 }

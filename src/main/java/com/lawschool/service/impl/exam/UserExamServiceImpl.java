@@ -16,7 +16,6 @@ import com.lawschool.dao.exam.UserExamDao;
 import com.lawschool.enums.Source;
 import com.lawschool.form.*;
 import com.lawschool.service.AnswerService;
-import com.lawschool.service.CollectionService;
 import com.lawschool.service.IntegralService;
 import com.lawschool.service.UserService;
 import com.lawschool.service.auth.AuthRelationService;
@@ -74,8 +73,8 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
     @Autowired
     private IntegralService integralService;
 
-    @Autowired
-    private CollectionService collectionService;
+//    @Autowired
+//    private CollectionService collectionService;
 
     @Autowired
     private FractionService fractionService;
@@ -449,8 +448,8 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
 
     @Override
     public boolean doCollect(String id, String recordId, Integer type) {
-        boolean result = collectionService.doCollection("20", id, type==1 ? false : true);
-
+        // boolean result = collectionService.doCollection("20", id, type==1 ? false : true);
+        boolean result = true;
         if(result){
             dao.updateCollect(recordId, type);
         }

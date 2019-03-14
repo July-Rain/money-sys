@@ -82,8 +82,8 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
     }
 
     @Override
-    public List<CommonForm> selectByTopicAndNum(String topic, Integer num){
-        List<CommonForm> list = dao.selectByTopicAndNum(topic, num);
+    public List<CommonForm> selectByTopicAndNum(List<String> topics, Integer num){
+        List<CommonForm> list = dao.selectByTopicAndNum(topics, num);
 
         return list;
     }
@@ -265,5 +265,15 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
     public QuestForm obtainByRandom(Map<String, String> params){
 
         return dao.obtainByRandom(params);
+    }
+
+    /**
+     * 统计主题、难度对应的题数，除主观题
+     * @return
+     */
+    @Override
+    public List<CommonForm> countTopicNum(){
+
+        return dao.countTopicNum();
     }
 }

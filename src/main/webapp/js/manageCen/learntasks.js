@@ -137,6 +137,7 @@ var vm = new Vue({
             totalCount:0,
         },//学习任务内容管理
         isEdit:true,//是否可修改
+        loading:false,//加载中
 
     },
     created: function () {
@@ -233,6 +234,7 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
+                    vm.loading=true;
                     var url = vm.learnTasks.id ? "learntasks/update?menuFrom="+vm.menuForm : "learntasks/insert?menuFrom="+vm.menuForm;
                     var deptArr = vm.learnTasks.deptIds?vm.learnTasks.deptIds.split(","):[];
                     var userArr = vm.learnTasks.userIds?vm.learnTasks.userIds.split(","):[];
@@ -243,10 +245,12 @@ var vm = new Vue({
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
+                        async: false,
                         contentType: "application/json",
                         data: JSON.stringify(vm.learnTasks),
                         success: function (result) {
                             if (result.code === 0) {
+                                vm.loading=false;
                                 vm.$alert('操作成功', '提示', {
                                     confirmButtonText: '确定',
                                     callback: function () {
@@ -255,6 +259,7 @@ var vm = new Vue({
                                     }
                                 });
                             } else {
+                                vm.loading=false;
                                 alert(result.msg);
                             }
                         }
@@ -497,10 +502,8 @@ var vm = new Vue({
         confimUser: function () {
             this.dialogUser=false;
             //遍历最终的人员信息
-            if(this.multipleSelection.length==0){
-                vm.learnTasks.userIds = "";
-                vm.learnTasks.userName = "";
-            }
+            vm.learnTasks.userIds = "";
+            vm.learnTasks.userName = "";
             for (var i=0;i<this.multipleSelection.length;i++){
                 if (this.learnTasks.userIds == "") {
                     this.learnTasks.userIds=this.multipleSelection[i].id;
