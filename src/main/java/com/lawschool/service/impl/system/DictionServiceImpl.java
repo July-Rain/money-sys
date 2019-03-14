@@ -5,6 +5,8 @@ import com.lawschool.beans.system.DictEntity;
 import com.lawschool.dao.system.DictionDao;
 import com.lawschool.form.CommonForm;
 import com.lawschool.service.system.DictionService;
+import com.lawschool.util.UtilMisc;
+import com.lawschool.util.UtilValidate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,5 +69,14 @@ public class DictionServiceImpl extends AbstractServiceImpl<DictionDao, DictEnti
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String selectOneByName(String name) {
+        DictEntity dictEntity = baseMapper.selectOneByName(name);
+        if(UtilValidate.isNotEmpty(dictEntity)){
+            return dictEntity.getCode();
+        }
+        return "";
     }
 }
