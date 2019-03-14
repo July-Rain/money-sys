@@ -70,4 +70,37 @@
       TASK_CONTENT = #{taskContent,jdbcType=CLOB}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+    
+    <select id="listTypeByTaskId" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+            CASE
+        WHEN INSTR (INFO_TYPE, 'audio') > 0 THEN
+            '音频'
+        WHEN INSTR (INFO_TYPE, 'video') > 0 THEN
+            '视频'
+        WHEN INSTR (INFO_TYPE, 'law') > 0 THEN
+            '法律法规'
+        WHEN INSTR (INFO_TYPE, 'pic') > 0 THEN
+            '图文'
+        END
+
+        FROM
+            LAW_TASKS_DESIC
+        WHERE
+            TASK_ID = #{taskId}
+        GROUP BY
+            CASE
+        WHEN INSTR (INFO_TYPE, 'audio') > 0 THEN
+            '音频'
+        WHEN INSTR (INFO_TYPE, 'video') > 0 THEN
+            '视频'
+        WHEN INSTR (INFO_TYPE, 'law') > 0 THEN
+            '法律法规'
+        WHEN INSTR (INFO_TYPE, 'pic') > 0 THEN
+            '图文'
+        END
+
+
+
+    </select>
 </mapper>
