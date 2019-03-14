@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lawschool.dao.system.FractionDao">
+<mapper namespace="com.lawschool.dao.system.FractionRulesDao">
 
 
     <select id="findListByFracId" resultType="com.lawschool.beans.system.FractionRules">
@@ -9,5 +9,9 @@
         FROM law_Fraction_Rules
         where fraction_id = #{fractionId}
     </select>
+    
+    <delete id="deleteByFractionId" >
+        delete law_Fraction_Rules where fraction_id = #{fractionId}
+    </delete>
 
 </mapper>

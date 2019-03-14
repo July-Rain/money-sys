@@ -460,8 +460,9 @@
     <!-- 取某种主题题目，按题目难度分组取前N条 -->
     <select id="selectByTopicAndNum" resultType="com.lawschool.form.CommonForm">
         SELECT
-          T .diff AS KEY,
-          listagg (T .qid, ',') WITHIN GROUP (ORDER BY T .QID) AS VALUE
+            T.topic AS opinion,
+            T .diff AS KEY,
+            listagg (T .qid, ',') WITHIN GROUP (ORDER BY T .QID) AS VALUE
         FROM
         (
           SELECT
@@ -471,21 +472,25 @@
               SYS_GUID ()
             ) rn,
             QUESTION_DIFFICULTY AS diff,
+            SPECIAL_KNOWLEDGE_ID AS topic,
             ID AS qid
           FROM
             LAW_TESTQUESTIONS
           WHERE
-            is_enble = '0'
-             AND STATUS='1'
-
-            AND RELEASE_STATUS = 1
-            AND SPECIAL_KNOWLEDGE_ID = #{topicId}
-            AND QUESTION_TYPE <![CDATA[ <> ]]> '10007'
+              is_enble = '0'
+              AND STATUS='1'
+              AND RELEASE_STATUS = 1
+              AND QUESTION_TYPE <![CDATA[ <> ]]> '10007'
+              AND SPECIAL_KNOWLEDGE_ID IN
+              <foreach collection="topics" open="(" close=")" separator="," item="item">
+                  #{item}
+              </foreach>
         ) T
         WHERE
         <![CDATA[ T .rn <= #{num} ]]>
         GROUP BY
-        T .diff
+            T.topic,
+            T .diff
     </select>
 
     <select id="findByNum" parameterType="map" resultType="string">
@@ -710,5 +715,22 @@
             ORDER BY dbms_random.value()
         )
         WHERE ROWNUM = 1
+    </select>
+
+    <!-- 统计各主题、难度题目数量 -->
+    <select id="countTopicNum" resultType="com.lawschool.form.CommonForm">
+        SELECT
+            Q.SPECIAL_KNOWLEDGE_ID AS key,
+            Q.QUESTION_DIFFICULTY AS opinion,
+            COUNT(Q.QUESTION_DIFFICULTY) AS value
+        FROM
+            LAW_TESTQUESTIONS Q
+        WHERE
+            Q.IS_ENBLE = '0'
+            AND Q.RELEASE_STATUS = 1
+            AND Q.STATUS = '1'
+            AND Q.QUESTION_TYPE <![CDATA[ <> ]]> '10007'
+        GROUP BY Q.SPECIAL_KNOWLEDGE_ID, Q.QUESTION_DIFFICULTY
+        ORDER BY Q.SPECIAL_KNOWLEDGE_ID, Q.QUESTION_DIFFICULTY
     </select>
 </mapper>

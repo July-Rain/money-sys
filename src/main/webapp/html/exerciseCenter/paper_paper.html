@@ -72,11 +72,11 @@
         <div class="content">
             <article class="main">
                 <div class="one-option">
-                    <div class="description" v-if="oneOptionList.length">一. 单选题。</div>
-                    <div class="question daliy" v-for="(question, index) in oneOptionList" :class="{'question-background': (index%2 == 0)}">
-                        <p class="title"><a :name="index+1"></a>{{ index+1 }}.{{ question.comContent }}</p>
-                        <el-radio-group v-model="oneOptionCheck[index]" :disabled="isSubmit">
-                            <el-radio :label="answer.id" v-for="(answer, index) in question.answer">
+                    <div class="description" v-if="singleList.length">单选题 </div>
+                    <div class="question daliy" v-for="(question, index) in singleList" :class="{'question-background': (index%2 == 0)}">
+                        <p class="title"><a :name="index+1"></a>{{ index+1 }}.{{ question.content }}</p>
+                        <el-radio-group v-model="singleList[index]" :disabled="isSubmit">
+                            <el-radio :label="answer.id" v-for="(answer, index) in question.options">
                                 {{ answer.questionContent }}
                             </el-radio>
                         </el-radio-group>
@@ -89,11 +89,11 @@
                     </div>
                 </div>
                 <div class="multi-options">
-                    <div class="description" v-if="multiOptionsList.length">二. 多选题。</div>
-                    <div class="question" v-for="(question, index) in multiOptionsList" :class="{'question-background': (index%2 == 0)}">
-                        <p class="title"><a :name="oneOptionList.length+index+1"></a>{{ oneOptionList.length+index+1 }}.{{ question.comContent }}</p>
-                        <el-checkbox-group v-model="multiOptionsCheck[index]" :disabled="isSubmit">
-                            <el-checkbox :label="answer.id" v-for="(answer, index) in question.answer">
+                    <div class="description" v-if="multiList.length">多选题 </div>
+                    <div class="question" v-for="(question, index) in multiList" :class="{'question-background': (index%2 == 0)}">
+                        <p class="title"><a :name="singleList.length+index+1"></a>{{ singleList.length+index+1 }}.{{ question.content }}</p>
+                        <el-checkbox-group v-model="multiList[index]" :disabled="isSubmit">
+                            <el-checkbox :label="answer.id" v-for="(answer, index) in question.options">
                                 {{ answer.questionContent }}
                             </el-checkbox>
                         </el-checkbox-group>
@@ -106,11 +106,11 @@
                     </div>
                 </div>
                 <div class="checking">
-                    <div class="description" v-if="checkingList.length">三. 判断题。</div>
-                    <div class="question daliy" v-for="(question, index) in checkingList" :class="{'question-background': (index%2 == 0)}">
-                        <p class="title"><a :name="oneOptionList.length+multiOptionsList.length+index+1"></a>{{ oneOptionList.length+multiOptionsList.length+index+1 }}.{{ question.comContent }}</p>
-                        <el-radio-group v-model="checkingCheck[index]" :disabled="isSubmit">
-                            <el-radio :label="answer.id" v-for="(answer, index) in question.answer">
+                    <div class="description" v-if="pdList.length">判断题 </div>
+                    <div class="question daliy" v-for="(question, index) in pdList" :class="{'question-background': (index%2 == 0)}">
+                        <p class="title"><a :name="singleList.length+multiList.length+index+1"></a>{{ singleList.length+multiList.length+index+1 }}.{{ question.content }}</p>
+                        <el-radio-group v-model="pdList[index]" :disabled="isSubmit">
+                            <el-radio :label="answer.id" v-for="(answer, index) in question.options">
                                 {{ answer.questionContent }}
                             </el-radio>
                         </el-radio-group>
@@ -126,12 +126,6 @@
         </div>
         <div class="bar">
             <div class="info_list">
-                <!--<div class="progress_area">
-                    <el-progress type="circle"
-                                 :percentage="2/5*100"
-                                 :width="88"
-                                 color="#1381e3"></el-progress>
-                </div>-->
                 <div class="info">
                     <p>创建人：{{ creator }}</p>
                     <p>类型： {{ type }}</p>

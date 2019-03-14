@@ -7,6 +7,7 @@ import com.lawschool.base.Page;
 import com.lawschool.beans.ExerciseConfigureEntity;
 import com.lawschool.beans.User;
 import com.lawschool.beans.practicecenter.PaperExerciseEntity;
+import com.lawschool.form.QuestionForm;
 import com.lawschool.form.ThemeAnswerForm;
 import com.lawschool.service.ExerciseConfigureService;
 import com.lawschool.service.practicecenter.PaperExerciseService;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,11 +31,9 @@ import java.util.Map;
 @RequestMapping("/exercise/paper")
 public class PaperExerciseController extends AbstractController {
 
-    @Autowired
-    private ExerciseConfigureService exerciseConfigureService;
+    @Autowired private ExerciseConfigureService exerciseConfigureService;
 
-    @Autowired
-    private PaperExerciseService paperExerciseService;
+    @Autowired private PaperExerciseService paperExerciseService;
 
     /**
      * 分页列表
@@ -62,71 +62,46 @@ public class PaperExerciseController extends AbstractController {
      *
      * @param configureId 配置ID
      * @param id 练习ID
-     * @param limit 每页数量
-     * @param page 当前页
      * @return
      */
     @RequestMapping(value = "/paper", method = RequestMethod.GET)
-        public Result showPaper(@RequestParam String configureId,
-                                @RequestParam(required = false) String id,
-                                @RequestParam Integer limit,
-                                @RequestParam Integer page){
+    public Result showPaper(@RequestParam String configureId,
+                            @RequestParam(required = false) String id){
 
-        // 标识是否需要创建个人练习任务，默认为false
-        Boolean isNew = false;
+        // 标识是否为新的练习，默认否
+        boolean isNew= false;
 
         if(StringUtils.isBlank(id) || "null".equals(id)){
-            // 生成ID
-            id = IdWorker.getIdStr();
+            // 新的练习，尚无任务记录
             isNew = true;
+            id = IdWorker.getIdStr();
         }
 
-        User user = getUser();
-        Map<String, Object> resultMap = paperExerciseService.showPaper(configureId, id,
-                                                                   user.getId(), isNew,
-                                                                   limit, page);
+        List<QuestionForm> list = paperExerciseService.showQuestions(configureId, id, isNew);
 
-        resultMap.put("id", id);
+        // 定义返回结果集
+        List<QuestionForm> pdList = new ArrayList<>();// 判断list
+        List<QuestionForm> singleList = new ArrayList<>();// 单选list
+        List<QuestionForm> multiList = new ArrayList<>();// 多选list
 
-        return Result.ok().put("page", resultMap);
-    }
+        // 根据题目类型分组
+        for(QuestionForm form : list){
+            String type = form.getType();
 
-    /**
-     * 保存答题情况
-     * @param formList
-     * @return
-     */
-    @SysLog("保存答题情况")
-    @Transactional(rollbackFor = Exception.class)
-    @RequestMapping(value = "/preserve/{type}", method = RequestMethod.POST)
-    public Result preserve(@RequestBody List<ThemeAnswerForm> formList,
-                           @PathVariable("type") Integer type){
-        User user = getUser();
+            if("10004".equals(type)){
+                // 单选
+                singleList.add(form);
 
-        if(CollectionUtils.isNotEmpty(formList)){
-            paperExerciseService.preserve(formList, user.getId());
-            if(type == 1){
-                // 提交，更新任务状态
-                paperExerciseService.updateStatus(formList.get(0).getTaskId(), PaperExerciseEntity.STATUS_OFF);
+            } else if("10005".equals(type)){
+                // 多选
+                multiList.add(form);
+            } else {
+                pdList.add(form);
             }
         }
 
-        return Result.ok();
-    }
-
-    /**
-     * 提交
-     * @param id
-     * @return
-     */
-    @SysLog("提交答题情况")
-    @RequestMapping(value = "/commit/{id}", method = RequestMethod.POST)
-    public Result commit(@PathVariable("id") String id){
-        User user = getUser();
-
-        // 提交，更新任务状态
-        paperExerciseService.updateStatus(id, PaperExerciseEntity.STATUS_OFF);
-
-        return Result.ok();
+        return Result.ok().put("pdList", pdList)
+                .put("singleList", singleList)
+                .put("multiList", multiList).put("id", id).put("total", list.size());
     }
 }

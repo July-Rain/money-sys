@@ -1,9 +1,3 @@
-/**
- * Author: zhujunwen
- * Date: 2018/12/14
- * Description:重点试题
- */
-
 var vm = new Vue({
     el: '#app',
     data: {
@@ -44,6 +38,8 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
+            this.reload();
+
             //加载选项数据
             $.ajax({
                 type: "POST",
@@ -63,20 +59,6 @@ var vm = new Vue({
                 }
             });
 
-            // $.ajax({
-            //     type: "POST",
-            //     url: baseURL + "dict/getByTypeAndParentcode",
-            //     dataType: "json",
-            //     async: false,
-            //     data: {type: "SPECIALKNOWLEDGE", Parentcode: "0"},
-            //     success: function (result) {
-            //         if (result.code === 0) {
-            //             vm.sks = result.dictlist;
-            //         } else {
-            //             alert(result.msg);
-            //         }
-            //     }
-            // });
             $.ajax({
                 type: "GET",
                 url: baseURL + "exam/config/dict",
@@ -110,9 +92,8 @@ var vm = new Vue({
                     }
                 }
             });
-            this.reload();
+
         })
-       // this.answers.set("1","B")
     },
     methods: {
         // 查询

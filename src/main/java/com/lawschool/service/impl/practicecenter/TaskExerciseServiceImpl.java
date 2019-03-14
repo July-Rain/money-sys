@@ -1,9 +1,6 @@
 package com.lawschool.service.impl.practicecenter;
 
-import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
-import com.lawschool.beans.Collection;
-import com.lawschool.beans.User;
 import com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity;
 import com.lawschool.beans.practicecenter.TaskExerciseEntity;
 import com.lawschool.dao.practicecenter.TaskExerciseDao;
@@ -12,15 +9,12 @@ import com.lawschool.form.AnswerForm;
 import com.lawschool.form.QuestForm;
 import com.lawschool.form.ThemeAnswerForm;
 import com.lawschool.service.AnswerService;
-import com.lawschool.service.CollectionService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.practicecenter.TaskAnswerRecordService;
 import com.lawschool.service.practicecenter.TaskExerciseConfigureService;
 import com.lawschool.service.practicecenter.TaskExerciseService;
-import com.lawschool.util.Result;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,8 +41,8 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
     @Autowired
     private TaskAnswerRecordService taskAnswerRecordService;
 
-    @Autowired
-    private CollectionService collectionService;
+//    @Autowired
+//    private CollectionService collectionService;
 
     /**
      * 题目展示
@@ -133,7 +127,7 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
 
         // 答错的情况下，直接收藏到我的错题集
         if(form.getRight() != 1){
-            boolean collectResult = collectionService.doCollection("30", form.getqId(), false);
+            // boolean collectResult = collectionService.doCollection("30", form.getqId(), false);
         }
 
         // 更新整体练习答题情况
@@ -199,8 +193,8 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
     @Transactional(rollbackFor = Exception.class)
     public boolean doCollect(String id, String recordId, Integer type){
 
-        boolean result = collectionService.doCollection("20", id, type==1 ? false : true);
-
+        // boolean result = collectionService.doCollection("20", id, type==1 ? false : true);
+        boolean result = true;
         if(result){
             dao.updateCollect(recordId, type);
         }

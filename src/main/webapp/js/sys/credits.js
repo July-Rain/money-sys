@@ -3,113 +3,134 @@ var vm = new Vue({
     el: '#app',
     data: {
         source: [], // result数据
-        audioStudy: {
-            fractionType : '1',
-            source : 'audioStudy'
+        fractionList: {
+            audioStudy: {
+                fractionType: '1',
+                source: 'AUDIOSTUDY'
 
-        }, // 音频
-        videoStudy: {
-            fractionType : '1',
-            source : 'videoStudy'
-        }, // 视频
-        picStudy: {
-            fractionType : '1',
-            source : 'picStudy'
-        }, // 图文
-        stuTask: {
-            fractionType : '1',
-            source : 'stuTask'
-        }, // 任务
-        dailyQue: {
-            fractionType : '1',
-            source : 'dailyQue'
-        }, // 每日一题
-        groupPrac: {
-            fractionType : '1',
-            source : 'groupPrac'
-        }, // 组卷练习
-        otherPrac: {
-            fractionType : '1',
-            source : 'otherPrac'
-        }, // 非练习卷
-        examIntegral: {
-            fractionType : '1',
-            source : 'integral'
-        }, // 获得积分
-        examCredits: {
-            fractionType : '0',
-            source : 'credits'
-        }, // 获得学分
-        recruit: {
-            fractionType : '1',
-            source : 'recruit'
-        }, // 闯关竞赛
-        competitionOnline: {
-            fractionType : '1',
-            source : 'competitionOnline'
-        }, // 在线比武
-        match: {
-            fractionType : '1',
-            source : 'match'
-        }, // 擂台赛
-        sum: 1,
-        demo: []
+            }, // 音频
+            videoStudy: {
+                fractionType: '1',
+                source: 'VIDEOSTUDY'
+            }, // 视频
+            picStudy: {
+                fractionType: '1',
+                source: 'PICSTUDY'
+            }, // 图文
+            stuTask: {
+                fractionType: '1',
+                source: 'STUTASK'
+            }, // 任务
+            dailyQue: {
+                fractionType: '1',
+                source: 'DAILYQUE'
+            }, // 每日一题
+            groupPrac: {
+                fractionType: '1',
+                source: 'GROUPPRAC'
+            }, // 组卷练习
+            otherPrac: {
+                fractionType: '1',
+                source: 'OTHERPRAC'
+            }, // 非练习卷
+            examIntegral: {
+                fractionType: '1',
+                source: 'EXAM',
+                fractionRulesList:[{
+                    rightRateMin:'',
+                    intervalScore:''
+                }]
+            }, // 获得积分
+            examCredits: {
+                fractionType: '0',
+                source: 'EXAM',
+
+            }, // 获得学分
+            recruit: {
+                fractionType: '1',
+                source: 'RECRUIT'
+            }, // 闯关竞赛
+            competitionOnline: {
+                fractionType: '1',
+                source: 'COMPEITIONONLINE'
+            }, // 在线比武
+            match: {
+                fractionType: '1',
+                source: 'MATCH'
+            }, // 擂台赛
+        },
+       sum: 1,
+       handleType:'add'
     },
     created: function () {
-        /*this.$nextTick(function () {
-            //加载菜单
-            $.ajax({
-                type: "POST",
-                url: baseURL + "org/tree",
-                contentType: "application/json",
-                success: function(result){
-
-                    if(result.code === 0){
-                        vm.treeData = result.orgList;
-                        // 默认展开第一级
-                        vm.treeData.map(function (m) {
-                            vm.idArr.push(m.id)
-                        });
-                    }else{
-                        alert(result.msg);
-                    }
-                }
-            });
-        })
-        this.$nextTick(function () {
-            this.reload();
-        })*/
+        this.reload();
     },
     methods: {
-        /*reload: function () {
+        addLimitations: function () {
+            vm.fractionList.examIntegral.fractionRulesList.push({
+                rightRateMin:'',
+                intervalScore:''
+            })
+            vm.sum++;
+
+        },
+        removeLimitations: function (index) {
+            if (vm.sum===1) {
+                return;
+            }
+            vm.fractionList.examIntegral.fractionRulesList.splice(index-1,1)
+            console.log(vm.fractionList.examCredits.fractionRulesList)
+            vm.sum--;
+        },
+        toHome: function () {
+            parent.location.reload()
+        },
+        save: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sys/getUorT?isMp=true",
-                dataType: "json",
-                data: vm.formInline,
+                url: baseURL + "fraction/save",
+                contentType: "application/json",
+                data: JSON.stringify(vm.fractionList),
                 success: function (result) {
-                    if (result.code == 0) {
-                        vm.tableData = result.page.list;
-                        vm.formInline.currPage = result.page.currPage;
-                        vm.formInline.pageSize = result.page.pageSize;
-                        vm.formInline.totalCount = parseInt(result.page.totalCount);
+                    if (result.code === 0) {
+                        vm.$alert('操作成功', '提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                                vm.handleType = 'view';
+                                vm.reload();
+                            }
+                        });
                     } else {
                         alert(result.msg);
                     }
                 }
             });
-        },*/
-        addLimitations: function () {
-            vm.sum++;
         },
-        removeLimitations: function () {
-            if (vm.sum===1) {
-                return;
-            }
-            vm.sum--;
+        reload:function () {
+            $.ajax({
+                type: "GET",
+                url: baseURL + "fraction/list",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        if (JSON.stringify(result.fractionMap)!='{}') {
+                            vm.fractionList = result.fractionMap;
+                            if (vm.fractionList.examIntegral.fractionRulesList.length > 0) {
+                                vm.sum = vm.fractionList.examIntegral.fractionRulesList.length;
+                            }
+                            if (JSON.stringify(vm.fractionList)!='{}') {
+                                vm.handleType = 'view';
+                            }
+                        }
+                    }else {
+                        alert(result.msg);
+                    }
+                }
+            })
+
         },
-        toHome: function () {
-            parent.location.reload()
+        edit : function () {
+            vm.handleType = 'add';
         }
     }
 });

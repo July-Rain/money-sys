@@ -12,7 +12,7 @@ var vm = new Vue({
             rangeType: 0,
             deptIds: [],
             userIds: [],
-            sourceFrom:"0"
+            source: 0
         },
         rangeType: [
             {key:0, value:'个人'},
@@ -36,7 +36,8 @@ var vm = new Vue({
             count: 0,
             taskName: '',//筛选条件
             startTime: '',
-            endTime: ''
+            endTime: '',
+            source: 0
         },
         deptData: [],
         userData: [],
@@ -61,7 +62,7 @@ var vm = new Vue({
             ],
             seniorNum: [
                 {required: true, message: '请设置高级题量', trigger: 'blur'}
-            ]
+            ],
         },
         rules: {
             prefix: [
@@ -85,6 +86,10 @@ var vm = new Vue({
 
         },//人员查询
         userTableData: [],//人员表格信息
+        midMax: 9999,
+        priMax: 9999,
+        senMax: 9999,
+        obj: {}
     },
     methods: {
         //序列号计算
@@ -189,7 +194,7 @@ var vm = new Vue({
                                         name: '',
                                         prefix: '',
                                         list: [],
-                                        rangeType: 0
+                                        source: 0
                                     };
                                     vm.refresh();
                                 } else {
@@ -256,7 +261,6 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.questionList = result.list;
-                        console.log(vm.questionList)
                     } else {
                         alert(result.msg);
                     }
@@ -295,6 +299,9 @@ var vm = new Vue({
                 total: 0
             };
             vm.addConfigFlag = false;
+            vm.senMax = 9999;
+            vm.priMax = 9999;
+            vm.midMax = 9999;
         },
         chooseUser: function () {
             //选择人员
@@ -365,7 +372,7 @@ var vm = new Vue({
             //遍历最终的人员信息
             for (var i = 0; i < val.length; i++) {
                 this.exerciseConfigure.userIds.push(val[i].id);
-                userNames.push(val[i].userName)
+                userNames.push(val[i].userName);
             }
             this.exerciseConfigure.userNames = userNames.join();
 
@@ -373,47 +380,81 @@ var vm = new Vue({
         // 表单重置
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
+            vm.refresh();
         },
         // 查询
         onSubmit: function () {
-
+            vm.refresh();
         },
+        topicNums: function () {
+            $.ajax({
+                type: "GET",
+                url: baseURL + "common/topicNums",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.obj = result.numArr;
+
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        change: function (param) {
+            if(param == null || param == ''){
+                vm.senMax = 9999;
+                vm.priMax = 9999;
+                vm.midMax = 9999;
+                vm.config.primaryNum = 0;
+                vm.config.primaryNum = 0;
+                vm.config.primaryNum = 0;
+
+            } else {
+                var arr = new Array();
+                arr = vm.obj[param.key];
+                vm.senMax = arr[2];
+                vm.priMax = arr[0];
+                vm.midMax = arr[1];
+            }
+        }
     },
     created: function () {
         this.$nextTick(function () {
         this.refresh();
-            $.ajax({
-                type: "GET",
-                url: baseURL + "exercise/random/dict",
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.topicList = result.topicList;
-                    } else {
-                        alert(result.msg);
-                    }
+        $.ajax({
+            type: "GET",
+            url: baseURL + "exercise/random/dict",
+            contentType: "application/json",
+            success: function (result) {
+                if (result.code === 0) {
+                    vm.topicList = result.topicList;
+                } else {
+                    alert(result.msg);
                 }
-            });
+            }
+        });
 
-            $.ajax({
-                type: "POST",
-                url: baseURL + "org/tree",
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.deptData = result.orgList;
-                        vm.userData = result.orgList;
-                        // 默认展开第一级
-                        vm.userData.map(function (m) {
-                            vm.idArr.push(m.id)
-                        });
-                    } else {
-                        alert(result.msg);
-                    }
+        $.ajax({
+            type: "POST",
+            url: baseURL + "org/tree",
+            contentType: "application/json",
+            success: function (result) {
+                if (result.code === 0) {
+                    vm.deptData = result.orgList;
+                    vm.userData = result.orgList;
+                    // 默认展开第一级
+                    vm.userData.map(function (m) {
+                        vm.idArr.push(m.id)
+                    });
+                } else {
+                    alert(result.msg);
                 }
-            });
+            }
+        });
 
-            this.reloadUser();
+        this.topicNums();
+        this.reloadUser();
      });
     }
 });

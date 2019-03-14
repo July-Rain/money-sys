@@ -14,7 +14,7 @@
         MIN_DEMAND AS "minDemand"
      </sql>
 
-    <select id="findList" resultType="com.lawschool.beans.system.Fraction">
+    <select id="findAll" resultType="com.lawschool.beans.system.Fraction">
         SELECT
           <include refid="fractionColumns"/>
         FROM LAW_FRACTION

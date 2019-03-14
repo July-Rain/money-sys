@@ -49,7 +49,7 @@ public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
      */
     List<QuestForm> findByIds(List<String> list);
 
-    List<CommonForm> selectByTopicAndNum(@Param("topicId") String topicId,
+    List<CommonForm> selectByTopicAndNum(@Param("topics") List<String> topics,
                                          @Param("num") Integer num);
 
     /**
@@ -93,4 +93,6 @@ public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
      * @return
      */
     QuestForm obtainByRandom(Map<String, String> params);
+
+    List<CommonForm> countTopicNum();
 }

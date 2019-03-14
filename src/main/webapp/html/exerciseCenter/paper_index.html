@@ -31,9 +31,19 @@
                     align="center">
             </el-table-column>
             <el-table-column
+                    prop="source"
+                    label="来源"
+                    header-align="center"
+                    align="center">
+                <template slot-scope="scope">
+                    {{scope.row.source == 0 ? '自定义组卷'
+                        : scope.row.source == 1 ? '部门任务'
+                        : scope.row.source == 2 ? '我的错题' : '重点试题'}}
+                </template>
+            </el-table-column>
+            <el-table-column
                     prop="type"
                     label="练习卷类型"
-                    width="200"
                     header-align="center"
                     align="center">
             </el-table-column>
@@ -49,14 +59,12 @@
             <el-table-column
                     prop="userName"
                     label="创建人"
-                    width="200"
                     header-align="center"
                     align="center">
             </el-table-column>
             <el-table-column
                     prop="createTime"
                     label="创建时间"
-                    width="200"
                     header-align="center"
                     align="center">
             </el-table-column>

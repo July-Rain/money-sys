@@ -153,4 +153,22 @@
         WHERE
         name = #{name}
     </select>
+
+    <select id="getDictByParentCode" resultType="com.lawschool.form.CommonForm">
+        SELECT
+            d.CODE AS "key",
+            d.NAME AS "value",
+            p.CODE AS "opinion"
+        FROM LAW_SYS_DICTION d
+        LEFT JOIN LAW_SYS_DICTION p ON d.PARENT_CODE = p.ID
+        <where>
+            d.DEL_FLAG = 0
+            AND d.IS_USE = 1
+            AND p.CODE IN
+            <foreach collection="list" open="(" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </where>
+        ORDER BY d.PARENT_CODE, d.SORT
+    </select>
 </mapper>
