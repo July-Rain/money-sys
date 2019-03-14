@@ -10,10 +10,10 @@ var vm = new Vue({
         isSubmit: false,
         // 题目数据
         questionList: [],
-        oneOptionList: [],
-        multiOptionsList: [],
+        pdList: [],
+        singleList: [],
         fillingList: [],
-        checkingList: [],
+        multiList: [],
         expressingList: [],
         // bar
         barData: [
@@ -63,16 +63,15 @@ var vm = new Vue({
 
         oneOptionCheck:[],
         multiOptionsCheck: [],
-        checkingCheck: []
+        checkingCheck: [],
+        questionList: []
     },
     methods: {
         // created中执行以获取数据
         refresh: function () {
             var obj = {
                 configureId: configureId,
-                id: id,
-                limit: vm.limit,
-                page: vm.page
+                id: id
             };
             $.ajax({
                 type: "GET",
@@ -81,39 +80,16 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.questionList = result.page.list;
-                        console.log(vm.questionList);
-                        vm.count = result.page.count;
-                        id = result.page.id;
-                        vm.preserved = [];
+                        vm.oneOptionList = result.pdList;
+                        vm.singleList = result.singleList;
+                        vm.multiList = result.multiList;
+                        id = result.id;
                     } else {
                         alert(result.msg);
                     }
-                    vm.questionList.forEach(function (val) {
-                        switch (val.questionType) {
-                            // 单选题
-                            case '10004':
-                                vm.oneOptionList.push(val);
-                                break;
-                            // 多选题
-                            case '10005':
-                                vm.multiOptionsList.push(val);
-                                vm.multiOptionsCheck.push([])
-                                break;
-                            // 判断题
-                            case '10006':
-                                vm.checkingList.push(val);
-                            /*// 主观题
-                            case '10007':
-                                vm.expressingList.push(val);*/
-                            default:
-                                return;
-                        }
-                    })
                 }
             });
         },
-
         // 路径方法
         toHome: function () {
             parent.location.reload()
@@ -264,7 +240,6 @@ var vm = new Vue({
         },
     },
     created: function () {
-        setInterval(this.computeTime,1000);
         this.$nextTick(function () {
             vm.refresh();
         });

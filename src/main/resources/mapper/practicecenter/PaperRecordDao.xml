@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lawschool.dao.practicecenter.PaperRecordDao">
+
+    <!-- 批量新增 -->
+    <insert id="saveBatch" parameterType="list" useGeneratedKeys="false">
+        INSERT INTO LAW_PAPER_PAPER
+        (
+            ID,
+            CONFIGURE_ID,
+            QUEST_ID
+        )
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+            (
+            select
+                #{item.key},
+                #{item.opinion},
+                #{item.value}
+            from dual
+            )
+        </foreach>
+    </insert>
+
+    <select id="getQuestions" resultType="string">
+        SELECT
+            QUEST_ID
+        FROM LAW_PAPER_PAPER
+        WHERE
+            CONFIGURE_ID = #{taskId}
+    </select>
+</mapper>

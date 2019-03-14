@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.lawschool.dao.personalCenter.CollectionDao">
+
+    <!-- 分页查询，错题或重点试题 -->
+    <select id="findList" resultType="com.lawschool.form.CollectionForm">
+        SELECT
+            c.ID AS "id",
+            t.COM_CONTENT AS "contant",
+            d.NAME AS "diff",
+            a.NAME AS "type",
+            b.NAME AS "classify",
+            c.NAME AS "topic",
+            t.ID AS "sourceId",
+            c.ANSWERS AS "answers"
+        FROM LAW_PERSONAL_COLLECTION c
+        LEFT JOIN LAW_TESTQUESTIONS t ON c.SOURCE_ID = t.ID
+        LEFT JOIN LAW_SYS_DICTION d ON d.CODE = t.QUESTION_DIFFICULTY
+        LEFT JOIN LAW_SYS_DICTION a ON a.CODE = t.QUESTION_TYPE
+        LEFT JOIN LAW_SYS_DICTION b ON b.CODE = t.TYPE_ID
+        LEFT JOIN LAW_SYS_TOPIC c ON c.ID = t.SPECIAL_KNOWLEDGE_ID
+        <where>
+            t.IS_ENBLE = 0
+            AND t.STATUS = 1
+            AND c.CREATE_USER = #{createUser}
+            <if test="specialKnowledgeId != null and specialKnowledgeId != ''">
+                AND t.SPECIAL_KNOWLEDGE_ID = #{specialKnowledgeId}
+            </if>
+            <if test="questionDifficulty != null and questionDifficulty != ''">
+                AND t.QUESTION_DIFFICULTY = #{questionDifficulty}
+            </if>
+            <if test="questionType != null and questionType != ''">
+                AND t.QUESTION_TYPE = #{questionType}
+            </if>
+        </where>
+
+    </select>
+
+    <delete id="delete">
+        DELETE FROM LAW_PERSONAL_COLLECTION
+        WHERE
+        ID IN
+        <foreach collection="list" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="getTotalQuestion" resultType="int">
+        SELECT COUNT(c.*) AS count
+        FROM LAW_PERSONAL_COLLECTION c
+        LEFT JOIN LAW_TESTQUESTIONS t ON t.ID = c.SOURCE_ID
+        WHERE
+            c.CREATE_USER = #{userId}
+            AND t.IS_ENBLE = 0
+            AND t.STATUS = 1
+            AND c.TYPE = #{type}
+    </select>
+</mapper>

@@ -3,19 +3,14 @@ package com.lawschool.service.impl.practicecenter;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.Collection;
-import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.User;
-import com.lawschool.beans.practicecenter.ExerciseAnswerRecordEntity;
 import com.lawschool.beans.practicecenter.ExerciseEntity;
-import com.lawschool.beans.practicecenter.ThemeExerciseEntity;
 import com.lawschool.dao.practicecenter.ExerciseDao;
 import com.lawschool.form.*;
 import com.lawschool.service.AnswerService;
-import com.lawschool.service.CollectionService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.practicecenter.ExerciseAnswerRecordService;
 import com.lawschool.service.practicecenter.ExerciseService;
-import com.lawschool.util.RedisUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -43,8 +38,8 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
     @Autowired
     private AnswerService answerService;
 
-    @Autowired
-    private CollectionService collectionService;
+//    @Autowired
+//    private CollectionService collectionService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -299,10 +294,10 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
             collect.setComStucode(id);
 
             // 0成功，1失败
-            int result = collectionService.addCollection(collect, user);
+            // int result = collectionService.addCollection(collect, user);
         } else {
             // 取消收藏
-            boolean result = collectionService.cancle(id, user.getId());
+            // boolean result = collectionService.cancle(id, user.getId());
         }
 
         dao.updateCollect(recordId, type);

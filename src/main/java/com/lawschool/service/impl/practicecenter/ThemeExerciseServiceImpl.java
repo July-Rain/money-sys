@@ -9,10 +9,8 @@ import com.lawschool.beans.User;
 import com.lawschool.form.*;
 
 import com.lawschool.service.AnswerService;
-import com.lawschool.service.CollectionService;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.practicecenter.ThemeAnswerRecordService;
-import com.lawschool.service.system.TopicTypeService;
 import com.lawschool.util.RedisUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -46,8 +44,8 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 	@Autowired
 	private AnswerService answerService;
 
-	@Autowired
-	private CollectionService collectionService;
+//	@Autowired
+//	private CollectionService collectionService;
 
 	/**
 	 * 主题练习首页列表数据
@@ -305,10 +303,10 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 			collect.setComStucode(id);
 
 			// 0成功，1失败
-			int result = collectionService.addCollection(collect, user);
+			// int result = collectionService.addCollection(collect, user);
 		} else {
 			// 取消收藏
-			boolean result = collectionService.cancle(id, user.getId());
+			// boolean result = collectionService.cancle(id, user.getId());
 		}
 
 		dao.updateCollect(recordId, type);

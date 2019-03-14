@@ -15,27 +15,24 @@ import java.util.List;
 @TableName("LAW_EXERCISE_CONFIGURE")
 public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity> {
 
-    public static final String FROM_PER_TASK="0";
-    public static final String FROM_MANGE_TASK="1";
-    public static final String FROM_KEY_QUE="2";
-    public static final String FROM_WRONG_QUE="3";
+    public static final Integer SOURCE_PERSON_SET = 0;// 自定义组卷
+    public static final Integer SOURCE_DEPART_SET = 1;// 部门任务
+    public static final Integer SOURCE_COLLECT_ERROR = 2;// 错题组卷
+    public static final Integer SOURCE_COLLECT_KEY = 3;// 重点试题
 
     private String prefix;// 前缀
     private String name;// 练习卷名称,自动生成
-    private String rangeType;// 使用范围
     private Integer total;// 总题目数
     private String depts;// 使用部门
-
     private String users;// 使用人员
+
     private String type;// 练习卷类型
-    private String questions;// 生成题目IDs
     private String userName;// 创建人员，冗余便于展示
     private Integer delFlag;// 0未删除、1删除
-
     private String userNames;
     private String deptNames;
 
-    private String sourceFrom;  //来源
+    private Integer source;  //来源
 
     @TableField(exist = false)
     private List<String> deptIds;
@@ -51,6 +48,11 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
     @TableField(exist = false)
     private Integer answerNum;// 答题数
 
+    @TableField(exist = false)
+    private String kssj;
+    @TableField(exist = false)
+    private String jssj;
+
     public String getPrefix() {
         return prefix;
     }
@@ -65,14 +67,6 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getRangeType() {
-        return rangeType;
-    }
-
-    public void setRangeType(String rangeType) {
-        this.rangeType = rangeType;
     }
 
     public Integer getTotal() {
@@ -121,14 +115,6 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
 
     public void setDelFlag(Integer delFlag) {
         this.delFlag = delFlag;
-    }
-
-    public String getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(String questions) {
-        this.questions = questions;
     }
 
     public String getType() {
@@ -195,11 +181,27 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
         this.deptNames = deptNames;
     }
 
-    public String getSourceFrom() {
-        return sourceFrom;
+    public Integer getSource() {
+        return source;
     }
 
-    public void setSourceFrom(String sourceFrom) {
-        this.sourceFrom = sourceFrom;
+    public void setSource(Integer source) {
+        this.source = source;
+    }
+
+    public String getKssj() {
+        return kssj;
+    }
+
+    public void setKssj(String kssj) {
+        this.kssj = kssj;
+    }
+
+    public String getJssj() {
+        return jssj;
+    }
+
+    public void setJssj(String jssj) {
+        this.jssj = jssj;
     }
 }
