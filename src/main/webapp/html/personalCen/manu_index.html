@@ -288,13 +288,13 @@
                     <el-form-item label="标题" prop="stuTitle" >
                         <el-input v-model="stuMedia.stuTitle" placeholder="请输入标题" clearable></el-input>
                     </el-form-item>
-                    <template v-if="stuMedia.stuType=='1'">
+                    <template v-if="stuMedia.stuType=='pic'">
                         <el-form-item label="内容" prop="comContent">
                             <div id="editor" style="width:100%;">
                             </div>
                         </el-form-item>
                     </template>
-                    <template v-if="stuMedia.stuType=='2'">
+                    <template v-if="stuMedia.stuType=='audio'">
 
                         <el-form-item label="音频上传" prop="comContent">
                             <!-- action必选参数, 上传的地址 -->
@@ -306,7 +306,7 @@
                             <P class="text">请保证音频格式正确，且不超过100M</P>
                         </el-form-item>
                     </template>
-                    <template v-if="stuMedia.stuType=='3'">
+                    <template v-if="stuMedia.stuType=='video'">
                         <el-form-item label="视频封面上传" prop="videoPicAcc">
                             <el-upload
                                     class="avatar-uploader"
