@@ -99,6 +99,7 @@ var vm = new Vue({
         lawCheckData:[],//法律法规回显表格数据
         multipleLawSelection: [],//选中法律法规信息
         lawData: [],//法律知识库分类树 --去除全部的
+        loading:false,//加载层
 
     },
     created: function () {
@@ -199,6 +200,7 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
+                    vm.loading=true;
                     var url = vm.stuMedia.id ? "stumedia/updateStuMedia" : "stumedia/insertStuMedia";
                     var deptArr = vm.stuMedia.deptIds ? vm.stuMedia.deptIds.split(",") : [];
                     var userArr = vm.stuMedia.userIds ? vm.stuMedia.userIds.split(",") : [];
@@ -207,10 +209,12 @@ var vm = new Vue({
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
+                        async: false,
                         contentType: "application/json",
                         data: JSON.stringify(vm.stuMedia),
                         success: function (result) {
                             if (result.code === 0) {
+                                vm.loading=false;
                                 vm.$alert('操作成功', '提示', {
                                     confirmButtonText: '确定',
                                     callback: function () {
@@ -221,6 +225,7 @@ var vm = new Vue({
                                     }
                                 });
                             } else {
+                                vm.loading=false;
                                 alert(result.msg);
                             }
                         }

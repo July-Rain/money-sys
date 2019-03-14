@@ -395,7 +395,13 @@ var vm = new Vue({
         closeLawDia:function () {
             this.dialogLaw=false;
             this.reload();
-        }
+        },
+        toHome: function () {
+            parent.location.reload()
+        },
+        toMain: function () {
+            window.location.href = baseURL + 'modules/learnCen/tasksview.html'
+        },
     }
 });
 

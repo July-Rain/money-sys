@@ -242,7 +242,8 @@
             </el-col>
         </el-row>
 
-        <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogCaseAna" :before-close="closeDia"  ref="caseAnaDialog">
+        <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogCaseAna" :before-close="closeDia"  ref="caseAnaDialog" v-loading="loading"
+                   element-loading-text="保存中">
             <div>
                 <el-col :span="24">
                     <el-form :model="caseAna" :rules="rules" ref="caseAna" label-width="115px" class="demo-caseAna" size="mini">
