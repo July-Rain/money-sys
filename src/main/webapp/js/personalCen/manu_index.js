@@ -358,8 +358,10 @@ var vm = new Vue({
                 stuKnowledge: '',//专项知识
                 videoPicAcc: "",//视频首页
             };
+            loadEditor();
             //清空editor
             editor.txt.html("");
+
         },
         save: function (formName) {
 

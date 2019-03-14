@@ -16,14 +16,94 @@ var vm = new Vue({
         showThis: false,
         isMouseDown: false,
         individual: null,
+        iconString:'icon-xunzhang'
+        individual: null,
     },
     created: function () {
         this.$nextTick(function () {
             vm.loadNav();
+
+            //关于勋章
+            vm.BymyMedal();
+
+            // vm.eventTools(vm.individual, vm.mDown, vm.mMove, vm.mUp);
         })
     },
 
     methods: {
+        BymyMedal: function (obj) {
+
+            //进来 先看 这个人身上有没有 背着勋章的id  要根据勋章id反查勋章的字符串   (怕管理员修改了勋章的条件，每次进来在判断下 还符不符合勋章的条件)
+            debugger;
+            var u=jsgetUser();//user
+            if(u.myMedal==null||u.myMedal==""){
+                //身上没有勋章，已经设置了没勋章的样式  什么都不做
+            }else {
+                // 根据勋章id去反查
+                $.ajax({
+                    type: "GET",
+                    url: baseURL + "medal/info/" + u.myMedal,
+                    contentType: "application/json",
+                    async: false,
+                    success: function (result) {
+                        debugger;
+                        //没找到 对应的 勋章 信息  说明被删了  我要把 勋章这一栏 制空
+                        if(result.data==null){
+                            //修改这个人身上背的勋章
+                            $.ajax({
+                                type: "GET",
+                                // url: baseURL + "sys/updateBymyMedal?myMedal="+row.badge,
+                                url: baseURL + "sys/updateBymyMedal?myMedal="+"",
+                                dataType: "json",
+                                async:false,
+                                success: function (result1) {
+
+                                }
+                            });
+                        }
+                        //找到了 我们来看下他的 获取条件  还和自己的 符合不
+                        else {
+                            //查询这个人的 积分 学分情况
+                            $.ajax({
+                                type: "POST",
+                                url: baseURL + "userIntegral/info",
+                                dataType: "json",
+                                async:false,
+                                success: function (result2) {
+                                    debugger;
+                                     var integral= result2.info.integralPoint;//积分
+                                     var credit= result2.info.creditPoint;//学分
+
+                                        if(integral>=result.data.integral   && credit>=result.data.credit){
+                                           vm.iconString=result.data.badge;// 将徽章给这个人
+                                        }
+                                        else {
+                                            //不满足， 说明勋章条件 被改了
+
+                                            $.ajax({
+                                                type: "GET",
+                                                // url: baseURL + "sys/updateBymyMedal?myMedal="+row.badge,
+                                                url: baseURL + "sys/updateBymyMedal?myMedal="+"",
+                                                dataType: "json",
+                                                async:false,
+                                                success: function (result1) {
+
+                                                }
+                                            });
+                                        }
+
+
+                                }
+                            });
+                        }
+
+
+                    }
+                });
+            }
+
+
+        },
         loadFrame: function (obj) {
             var _src = $("#container").attr("src");
 

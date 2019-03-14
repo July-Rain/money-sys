@@ -93,8 +93,7 @@ var vm = new Vue({
         wear: function (index,row) {
 
 
-            console.info("@@@@@");
-            console.info(row);
+
             vm.user.myMedal=row.badge;
 
             //修改这个人身上背的勋章
