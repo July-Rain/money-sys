@@ -168,3 +168,6 @@ ul li{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.el-loading-mask{
+    z-index: 2500;
+}

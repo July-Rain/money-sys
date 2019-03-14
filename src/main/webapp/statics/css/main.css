@@ -2,6 +2,9 @@
 /*.el-form {*/
     /*min-width: 400px;*/
 /*}*/
+html{
+    background-color: #fff;
+}
 /*页面头部*/
 .header{
     width: 100%;
