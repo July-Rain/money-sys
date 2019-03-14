@@ -1,6 +1,7 @@
 package com.lawschool.beans;
 
 import com.baomidou.mybatisplus.annotations.TableName;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 
 import java.util.Date;
 

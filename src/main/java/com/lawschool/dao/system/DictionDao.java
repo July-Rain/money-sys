@@ -43,5 +43,22 @@ public interface DictionDao extends AbstractDao<DictEntity> {
     Integer checkDuplicate(@Param("id") String id,
                            @Param("str") String str,
                            @Param("type") String type,
-                           @Param("parentCode") String parentCode);
+                            @Param("parentCode") String parentCode);
+
+    /**
+     * 批量根据父类CODE查询字典信息
+     * @param list
+     * @return
+     */
+    List<CommonForm> getDictByParentCode(@Param("list") List<String> list);
+
+    /**
+     * @Author MengyuWu
+     * @Description 根据名称查code  --系统默认密码使用
+     * @Date 10:07 2019-3-14
+     * @Param [name]
+     * @return String
+     **/
+
+    DictEntity selectOneByName(String name);
 }

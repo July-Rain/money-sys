@@ -11,13 +11,17 @@ import com.lawschool.service.system.FractionService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Case;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Security;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName: FractionServiceImpl
@@ -34,72 +38,102 @@ public class FractionServiceImpl extends AbstractServiceImpl<FractionDao, Fracti
 
     @Override
     public Result getFraction() {
+        Result result = Result.ok();
         List<Fraction> fractionList = dao.findAll();
-        for (Fraction fraction :fractionList){
-            if (Source.EXAM.equals(fraction.getSource())&&"1".equals(fraction.getFractionType())) {
+        Map<String, Object> fractionMap = new HashMap<>();
+        for (Fraction fraction : fractionList) {
+            if (Source.EXAM.equals(fraction.getSource()) && "1".equals(fraction.getFractionType())) {
                 fraction.setFractionRulesList(fractionRulesSerivce.findListByFracId(fraction.getId()));
             }
-        }
-        return Result.ok().put("fractionList",fractionList);
-    }
-
-    @Override
-    public void saveFraction(List<Fraction> fractionList) throws Exception {
-        for ( Fraction fraction : fractionList){
-            fraction.setId(GetUUID.getUUIDs("FT"));
-           if (Source.EXAM.equals(fraction.getSource())&&"1".equals(fraction.getFractionType())){
-                saveExamFraction(fraction);
-           }
-           setDataEntity(fraction);
-           dao.insert(fraction);
-        }
-    }
-
-    @Override
-    public void updateFraction(List<Fraction> fractionList) throws Exception {
-        for ( Fraction fraction : fractionList){
-            if (Source.EXAM.equals(fraction.getSource())&&"1".equals(fraction.getFractionType())){
-                fractionRulesSerivce.deleteByFractionId(fraction.getId());
-                saveExamFraction(fraction);
+            switch (fraction.getSource()) {
+                case AUDIOSTUDY:
+                    fractionMap.put("audioStudy", fraction);
+                    break;
+                case VIDEOSTUDY:
+                    fractionMap.put("videoStudy", fraction);
+                    break;
+                case PICSTUDY:
+                    fractionMap.put("picStudy", fraction);
+                    break;
+                case STUTASK:
+                    fractionMap.put("stuTask", fraction);
+                    break;
+                case DAILYQUE:
+                    fractionMap.put("dailyQue", fraction);
+                    break;
+                case GROUPPRAC:
+                    fractionMap.put("groupPrac", fraction);
+                    break;
+                case OTHERPRAC:
+                    fractionMap.put("otherPrac", fraction);
+                    break;
+                case EXAM:
+                    if (Fraction.EXAM_INTEGRAL.equals(fraction.getFractionType())) {
+                        fractionMap.put("examIntegral", fraction);
+                    } else {
+                        fractionMap.put("examCredits", fraction);
+                    }
+                    break;
+                case RECRUIT:
+                    fractionMap.put("recruit", fraction);
+                    break;
+                case COMPEITIONONLINE:
+                    fractionMap.put("competitionOnline", fraction);
+                    break;
+                case MATCH:
+                    fractionMap.put("match", fraction);
+                    break;
+                default:
+                    break;
             }
-            setDataEntity(fraction);
-            dao.updateById(fraction);
         }
+        return result.put("fractionMap", fractionMap);
+    }
 
+    @Override
+    public void saveFraction(List<Fraction> fractionList) {
+        for (Fraction fraction : fractionList) {
+            if (StringUtils.isNotEmpty(fraction.getId())) {
+                if (Source.EXAM.equals(fraction.getSource()) && "1".equals(fraction.getFractionType())) {
+                    fractionRulesSerivce.deleteByFractionId(fraction.getId());
+                    saveExamFraction(fraction);
+                }
+                setDataEntity(fraction);
+                dao.updateById(fraction);
+            } else {
+                fraction.setId(GetUUID.getUUIDs("FT"));
+                if (Source.EXAM.equals(fraction.getSource()) && "1".equals(fraction.getFractionType())) {
+                    saveExamFraction(fraction);
+                }
+                setDataEntity(fraction);
+                dao.insert(fraction);
+            }
+        }
     }
 
     @Override
     public Result getFractionByType(String fractionType, Source source) {
-        if (UtilValidate.isEmpty(fractionType) ||UtilValidate.isEmpty(source) ){
+        if (UtilValidate.isEmpty(fractionType) || UtilValidate.isEmpty(source)) {
             return Result.error("类型和来源都不能为空");
         }
-        Fraction fraction = dao.findByTypeAndSource(fractionType,source);
-        if(Source.EXAM.equals(fraction.getSource())&&"1".equals(fraction.getFractionType())){
+        Fraction fraction = dao.findByTypeAndSource(fractionType, source);
+        if (Source.EXAM.equals(fraction.getSource()) && "1".equals(fraction.getFractionType())) {
             fraction.setFractionRulesList(fractionRulesSerivce.findListByFracId(fraction.getId()));
         }
-        return Result.ok().put("fraction",fraction);
+        return Result.ok().put("fraction", fraction);
     }
 
-    private void saveExamFraction(Fraction fraction) throws Exception{
+    private void saveExamFraction(Fraction fraction) {
         List<FractionRules> fractionRulesList = fraction.getFractionRulesList();
-        double[] minArr = new double[fractionRulesList.size()];
-        double[] maxArr = new double[fractionRulesList.size()];
-        if (UtilValidate.isNotEmpty(fractionRulesList)){
-            for ( int i=0;i<fractionRulesList.size();i++ ){
-                minArr[i] = fractionRulesList.get(i).getRightRateMin();
-                maxArr[i] = fractionRulesList.get(i).getRightRateMax();
-                fractionRulesList.get(i).setId(GetUUID.getUUIDs("FTR"));
-                fractionRulesList.get(i).setFractionId(fraction.getId());
+
+        if (UtilValidate.isNotEmpty(fractionRulesList)) {
+            for (FractionRules fractionRules : fractionRulesList) {
+                fractionRules.setId(GetUUID.getUUIDs("FTR"));
+                fractionRules.setFractionId(fraction.getId());
             }
-            Arrays.sort(minArr);
-            Arrays.sort(maxArr);
-            for (int i=0; i<minArr.length-1;i++ ){
-                if (maxArr[i]>minArr[i+1]){
-                    throw new Exception("错错错");
-                }
-            }
+            fractionRulesSerivce.insertBatch(fractionRulesList);
         }
-        fractionRulesSerivce.insertBatch(fractionRulesList);
+
     }
 
 }

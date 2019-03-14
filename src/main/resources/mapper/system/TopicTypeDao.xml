@@ -43,15 +43,15 @@
 		 	opt_time,
 		 	del_flag
 		)VALUES (
-				 #{id},
-		         #{name},
-		         #{sort},
-		         #{enable},
-		         #{createUser},
-		         #{createTime},
-		         #{optUser},
-		         #{optTime},
-		         #{delFlag}
+			 #{id},
+			 #{name},
+			 #{sort},
+			 #{enable},
+			 #{createUser},
+			 #{createTime},
+			 #{optUser},
+			 #{optTime},
+			 #{delFlag}
 		)
 	</insert>
 

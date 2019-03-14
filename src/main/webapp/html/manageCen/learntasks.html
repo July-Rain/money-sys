@@ -314,7 +314,8 @@
         </el-row>
 
 
-        <el-dialog :title="title" :visible.sync="dialogLearnTask" :before-close="closeDia">
+        <el-dialog :title="title" :visible.sync="dialogLearnTask" :before-close="closeDia" v-loading="loading"
+                   element-loading-text="保存中">
             <!--<el-row>-->
                 <!--<el-col :span="12">-->
 

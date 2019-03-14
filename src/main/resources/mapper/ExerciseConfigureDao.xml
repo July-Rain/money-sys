@@ -6,7 +6,6 @@
         o.id AS "id",
         o.prefix AS "prefix",
         o.name AS "name",
-        o.range_type AS "rangeType",
         o.total AS "total",
         o.depts AS "depts",
         o.users AS "users",
@@ -21,7 +20,6 @@
             id,
             prefix,
             name,
-            range_type,
             total,
             depts,
             users,
@@ -34,12 +32,11 @@
             type,
             dept_names,
             user_names,
-            source_from
+            source
         ) VALUES (
             #{id},
             #{prefix},
             #{name},
-            #{rangeType},
             #{total},
             #{depts},
             #{users},
@@ -52,7 +49,7 @@
             #{type},
             #{deptNames},
             #{userNames},
-            #{sourceFrom}
+            #{source}
         )
     </insert>
 
@@ -92,11 +89,21 @@
         FROM LAW_EXERCISE_CONFIGURE o
         <where>
             o.del_flag = #{delFlag}
+            AND o.SOURCE = #{source}
             <if test="createUser != null and createUser != ''">
                 AND o.create_user = #{createUser}
             </if>
             <if test="users != null and users != ''">
                 AND (o.users LIKE '%'||#{users}||'%' OR o.depts LIKE '%'||#{depts}||'%')
+            </if>
+            <if test="name != null and name != ''">
+                AND o.Name LIKE '%'||#{name}||'%'
+            </if>
+            <if test="kssj != null and kssj != ''">
+                AND TO_CHAR(CREATE_TIME, 'yyyyMMdd') <![CDATA[ >= ]]> #{kssj}
+            </if>
+            <if test="jssj != null and jssj != ''">
+                AND TO_CHAR(CREATE_TIME, 'yyyyMMdd') <![CDATA[ <= ]]> #{jssj}
             </if>
         </where>
         <choose>
@@ -115,7 +122,8 @@
         <include refid="ecColumns"/>,
         t.answer_num AS "answerNum",
         t.status AS "status",
-        t.id AS "taskId"
+        t.id AS "taskId",
+        o.SOURCE AS "source"
         FROM LAW_EXERCISE_CONFIGURE o
         LEFT JOIN LAW_EXERCISE_PAPER t ON o.id = t.configure_id
         AND t.user_id = #{createUser}

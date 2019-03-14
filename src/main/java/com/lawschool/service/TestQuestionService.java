@@ -53,7 +53,7 @@ public interface TestQuestionService extends AbstractService<TestQuestions> {
 
     TestQuestions findByEntity(TestQuestions t);
 
-    List<CommonForm> selectByTopicAndNum(String topic, Integer num);
+    List<CommonForm> selectByTopicAndNum(List<String> topics, Integer num);
 
     /**
      * 根据题目的多个id查询题目（包含题目选项）
@@ -104,4 +104,10 @@ public interface TestQuestionService extends AbstractService<TestQuestions> {
      * @return
      */
     QuestForm obtainByRandom(Map<String, String> params);
+
+    /**
+     * 统计主题、难度对应的题目数量，除主观题
+     * @return
+     */
+    List<CommonForm> countTopicNum();
 }

@@ -21,4 +21,11 @@ public interface FractionRulesDao extends AbstractDao<FractionRules> {
      * @return
      */
     List<FractionRules> findListByFracId(@Param("fractionId") String fractionId);
+
+    /**
+     * 根据分值设置主表ID查
+     * @param fractionId
+     * @return
+     */
+    void deleteByFractionId(@Param("fractionId") String fractionId);
 }

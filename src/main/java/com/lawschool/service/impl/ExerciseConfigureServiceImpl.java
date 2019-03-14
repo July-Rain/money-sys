@@ -2,6 +2,7 @@ package com.lawschool.service.impl;
 
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.base.Page;
+import com.lawschool.beans.Collection;
 import com.lawschool.beans.ExerciseConditionEntity;
 import com.lawschool.beans.ExerciseConfigureEntity;
 import com.lawschool.dao.ExerciseConfigureDao;
@@ -12,6 +13,7 @@ import com.lawschool.service.AnswerService;
 import com.lawschool.service.ExerciseConditionService;
 import com.lawschool.service.ExerciseConfigureService;
 import com.lawschool.service.TestQuestionService;
+import com.lawschool.service.practicecenter.PaperRecordService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,86 +33,135 @@ public class ExerciseConfigureServiceImpl
         extends AbstractServiceImpl<ExerciseConfigureDao, ExerciseConfigureEntity>
         implements ExerciseConfigureService {
 
-    @Autowired
-    private ExerciseConditionService exerciseConditionService;
+    @Autowired private ExerciseConditionService exerciseConditionService;
 
-    @Autowired
-    private TestQuestionService testQuestionService;
+    @Autowired private TestQuestionService testQuestionService;
 
-    @Autowired
-    private AnswerService answerService;
+    @Autowired private AnswerService answerService;
 
+    @Autowired private PaperRecordService paperRecordService;
+
+    /**
+     * 保存组卷配置并生成试卷信息
+     * @param entity
+     */
     @Transactional(rollbackFor = Exception.class)
     public void saveConfigure(ExerciseConfigureEntity entity){
 
-        // 保存配置，并保存配置条件
+        int total = 0;
+
+        // 2.根据设置来源生成对应试卷
+        Integer source = entity.getSource();
+
+        if(source == ExerciseConfigureEntity.SOURCE_PERSON_SET
+                || source == ExerciseConfigureEntity.SOURCE_DEPART_SET){
+            // 3.个人组卷或部门组卷，保存条件信息
+            List<ExerciseConditionEntity> list = entity.getList();
+
+            if(CollectionUtils.isEmpty(list)){
+                throw new RuntimeException("请设置配置条件");
+            }
+            exerciseConditionService.saveBatch(list, entity.getId());
+
+            //生成试卷
+            List<String> questList = this.doPaperForSet(list);
+
+            total = questList.size();
+            boolean result = paperRecordService.saveBatch(entity.getId(), questList);
+
+        } else {
+
+            // 错题组卷或重点试题组卷，生成试卷
+
+            total = entity.getTotal();
+        }
+
+        // 1.保存组卷练习设置
+        entity.setTotal(total);
         dao.insert(entity);
 
-        // 保存条件信息
-        List<ExerciseConditionEntity> list = entity.getList();
+    }
 
-        if(CollectionUtils.isEmpty(list)){
-            throw new RuntimeException("请设置配置条件");
+    /**
+     * 根据设置生成试卷
+     * @return
+     */
+    public List<String> doPaperForSet(List<ExerciseConditionEntity> list){
+        // 用于返回的结果集，题目IDs
+        List<String> result = new ArrayList<String>();
+
+        // 封装各主题、难度对应的数量
+        Map<String, Map<String, Integer>> numMap = new HashMap<String, Map<String, Integer>>();
+
+        // 难度对应的最大数量
+        int max = 0;
+        // 存放主题类型
+        List<String> topics = new ArrayList<String>();
+
+        for(ExerciseConditionEntity entity : list){
+            String key = entity.getTopicId();
+            Map<String, Integer> tempMap = new HashMap<String, Integer>(3);
+            tempMap.put("10001", entity.getPrimaryNum());
+            tempMap.put("10002", entity.getMiddleNum());
+            tempMap.put("10003", entity.getSeniorNum());
+            numMap.put(key, tempMap);
+
+            topics.add(key);
+
+            // 获取数据库查询最大值
+            int tempMax = getMax(entity.getPrimaryNum(), entity.getMiddleNum(), entity.getSeniorNum());
+            if(max < tempMax){
+                max = tempMax;
+            }
         }
-        exerciseConditionService.saveBatch(list, entity.getId());
 
-        // 获取满足条件的题目IDS，更新配置表
-        String ids = "";
-        int total = 0;
-        for(ExerciseConditionEntity ent : list){
-            int max = 0;
+        // 查询各主题、难度对应的题目IDs
+        List<CommonForm> questList = testQuestionService.selectByTopicAndNum(topics, max);
 
-            int pri = ent.getPrimaryNum()==null?0:ent.getPrimaryNum();
-            int mid = ent.getMiddleNum()==null?0:ent.getMiddleNum();
-            int sen = ent.getSeniorNum()==null?0:ent.getSeniorNum();
+        for(CommonForm form : questList){
 
-            if(pri > mid){
-                max = pri;
+            String topic = form.getOpinion(); // 主题
+            String diff = form.getKey();// 难度
+            String ids = form.getValue();// 题目IDs
+
+            Map<String, Integer> tempMap = numMap.get(topic);
+            int numForSet = tempMap.get(diff);// 前端设置的难度题数
+
+            // 若无对应题目信息，直接跳过此循环
+            if(StringUtils.isBlank(ids)){ continue; }
+
+            // 不直接用Arrays.asList得到的集合，因为Arrays.asList得到的是Arrays的内部类，没有相应的操作方法
+            List<String> tempList = new ArrayList<String>(Arrays.asList(ids.split(",")));
+
+            if(numForSet >= tempList.size()){
+                // 题目不够或正好，直接添加到结果集，不用处理
+                result.addAll(tempList);
             } else {
-                max = mid;
+
+                result.addAll(tempList.subList(0, numForSet));
             }
 
-            if(sen > max){
-                max = sen;
-            }
-
-            List<CommonForm> listTemp = testQuestionService.selectByTopicAndNum(ent.getTopicId(), max);
-
-            for(CommonForm form : listTemp){
-                String diff = form.getKey();// 题目难度
-                String value = form.getValue();
-                if(StringUtils.isNotBlank(value)){
-                    String[] arr = value.split(",");
-
-                    int currentSize = 0;
-                    if("10001".equals(diff)){// 初级难度
-                        currentSize = pri;
-                    } else if("10002".equals(diff)){// 中级难度
-                        currentSize = mid;
-                    } else {// 高级难度
-                        currentSize = sen;
-                    }
-
-                    if(currentSize < arr.length){// 截取list
-                        total += currentSize;
-                        List<String> tempList = Arrays.asList(arr).subList(0, currentSize+1);
-                        ids += tempList.stream().collect(Collectors.joining(",")) + ",";
-                    } else {
-                        total += arr.length;
-                        ids += value + ",";
-                    }
-                }
-            }
         }
 
-        if(StringUtils.isNotBlank(ids)){
-            if(ids.endsWith(",")){
-                ids = ids.substring(0, ids.length()-1);
-            }
+        return result;
+    }
 
-            dao.updateQuestions(entity.getId(), ids, total);
+    /**
+     * 获取最大值
+     * @param param1
+     * @param param2
+     * @param param3
+     * @return
+     */
+    protected Integer getMax(Integer param1, Integer param2, Integer param3){
+        if(null == param1 || null == param2 || null == param3){
+            throw new RuntimeException("getMax方法，参数错误...");
         }
+        int result = param1 > param2 ? param1 : param2;
 
+        result = result > param3 ? result : param3;
+
+        return result;
     }
 
     /**
@@ -123,17 +174,12 @@ public class ExerciseConfigureServiceImpl
 
         List<QuestForm> list = new ArrayList<>();
 
-        // 1、根据ID 获取题目ids
-        String questions = dao.findQuestionsById(id);
+        // 根据组卷ID查询所有试题
+        List<String> quests = paperRecordService.getQuestions(id);
 
-        if(StringUtils.isBlank(questions)){
-            return list;
-        }
+        if(CollectionUtils.isNotEmpty(quests)){
 
-        // 2、根据题目ids获取题目信息
-        if(StringUtils.isNotBlank(questions)){
-            List<String> ids = Arrays.asList(questions.split(","));
-            list = testQuestionService.getQuestions(ids);
+            list = testQuestionService.getQuestions(quests);
         }
 
         return list;

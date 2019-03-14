@@ -25,6 +25,6 @@ public class FractionRulesSerivceImpl extends AbstractServiceImpl<FractionRulesD
 
     @Override
     public void deleteByFractionId(String fractionId) {
-
+         dao.deleteByFractionId(fractionId);
     }
 }
