@@ -200,6 +200,7 @@ var vm = new Vue({
         saveOrUpdate: function (formName) {
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
+                    debugger
                     vm.loading=true;
                     var url = vm.stuMedia.id ? "stumedia/updateStuMedia" : "stumedia/insertStuMedia";
                     var deptArr = vm.stuMedia.deptIds ? vm.stuMedia.deptIds.split(",") : [];
@@ -209,7 +210,7 @@ var vm = new Vue({
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
-                        async: false,
+                        async: true,
                         contentType: "application/json",
                         data: JSON.stringify(vm.stuMedia),
                         success: function (result) {

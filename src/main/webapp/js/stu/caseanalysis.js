@@ -253,7 +253,7 @@ var vm = new Vue({
                     $.ajax({
                         type: "POST",
                         url: baseURL + url,
-                        async: false,
+                        async: true,
                         contentType: "application/json",
                         data: JSON.stringify(vm.caseAna),
                         success: function(result){
@@ -567,8 +567,8 @@ var vm = new Vue({
                     this.caseAna.deptIds=this.multipleDeptSelection[i].id;
                     this.caseAna.deptName=this.multipleDeptSelection[i].orgName;
                 }else{
-                    console.info("SHOW:",this.caseAna.deptIds,"<<>>",this.multipleDeptSelection[i].id);
-                    console.log(this.caseAna.deptIds.indexOf(this.multipleDeptSelection[i].id))
+                    //console.info("SHOW:",this.caseAna.deptIds,"<<>>",this.multipleDeptSelection[i].id);
+                    //console.log(this.caseAna.deptIds.indexOf(this.multipleDeptSelection[i].id))
                     if(this.caseAna.deptIds.indexOf(this.multipleDeptSelection[i].id)===-1) {
                         this.caseAna.deptIds+=","+this.multipleDeptSelection[i].id;
                         this.caseAna.deptName+=","+this.multipleDeptSelection[i].orgName;
