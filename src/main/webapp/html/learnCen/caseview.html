@@ -247,10 +247,11 @@
                                     </el-card>
                                 </el-col>
                             </el-row>
+                            <p class="no_data" v-if="caseData.length==0"><i class="iconfont icon-xiaoxi"></i> 暂无数据</p>
                         </template>
                         <!-- 视频 -->
                         <template v-if="formInline.contentType=='video'">
-                        <el-row>
+                            <el-row>
                             <el-col :span="6" v-for="(item, index) in caseData">
                                 <el-card :body-style="{ padding: '4px' }">
 
@@ -271,6 +272,7 @@
                                 </el-card>
                             </el-col>
                         </el-row>
+                            <p class="no_data" v-if="caseData.length==0"><i class="iconfont icon-xiaoxi"></i> 暂无数据</p>
                         </template>
                     </div>
                     <el-pagination

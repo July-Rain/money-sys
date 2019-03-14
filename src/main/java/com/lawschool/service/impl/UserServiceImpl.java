@@ -7,10 +7,13 @@ import com.lawschool.beans.SysUserRole;
 import com.lawschool.beans.User;
 import com.lawschool.beans.UserExample;
 import com.lawschool.beans.diagnosis.StuDiagnosisEntity;
+import com.lawschool.beans.system.DictEntity;
 import com.lawschool.config.ShiroUtils;
+import com.lawschool.controller.system.DictController;
 import com.lawschool.dao.SysUserRoleDao;
 import com.lawschool.dao.UserMapper;
 import com.lawschool.service.UserService;
+import com.lawschool.service.system.DictionService;
 import com.lawschool.util.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -38,6 +41,10 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
 
     @Autowired
     SysUserRoleDao sysUserRoleDao;
+
+    @Autowired
+    private DictionService dictService;
+
 
 
 
@@ -225,8 +232,14 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
         User user = dao.selectById(id);
         int result = 0;
         if(UtilValidate.isNotEmpty(user)){
+            String password = dictService.selectOneByName("DEFAULTPASSWORD");
+            if(UtilValidate.isNotEmpty(password)){
+                user.setPassword(password);
+            }else{
+                user.setPassword("123456");
+            }
             String salt = RandomStringUtils.randomAlphanumeric(20);//生成盐
-            String pass2=MD5Util.Md5Hex("123456"+salt);//数据库中新密码
+            String pass2=MD5Util.Md5Hex(user.getPassword()+salt);//数据库中新密码
             user.setSalt(salt);
             user.setPassword(pass2);
             result = userMapper.updateById(user);
@@ -245,6 +258,12 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result addUser(User user) {
+        String password = dictService.selectOneByName("DEFAULTPASSWORD");
+        if(UtilValidate.isNotEmpty(password)){
+            user.setPassword(password);
+        }else{
+            user.setPassword("123456");
+        }
         String salt = RandomStringUtils.randomAlphanumeric(20);//生成盐
         String pass2=MD5Util.Md5Hex(user.getPassword()+salt);//数据库中新密码
         user.setSalt(salt);

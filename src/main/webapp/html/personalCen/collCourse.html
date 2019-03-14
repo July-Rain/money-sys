@@ -69,7 +69,7 @@
                                 </el-form-item>
 
                                 <el-form-item  label="类型" prop="stuType">
-                                    <el-select v-model="formInline.stuType" placeholder="类型" size="mini">
+                                    <el-select v-model="formInline.stuType" placeholder="类型" size="mini" @change="changeType">
                                         <el-option label="图文" value="pic"></el-option>
                                         <el-option label="音频" value="audio"></el-option>
                                         <el-option label="视频" value="video"></el-option>
@@ -96,7 +96,7 @@
                     </div>
                     <div>
                         <div class="content lesson">
-                            <el-row>
+                            <!--<el-row>
                                 <el-col :span="6" v-for="(item, index) in videoData">
                                     <el-card :body-style="{ padding: '4px' }">
                                         <video :id="item.id" class="video-js" width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl"  v-if="item.stuType=='视频'">
@@ -120,12 +120,144 @@
                                             </p>
                                             <p>
                                                 <span @click="handleDel(item.collectionId)">取消收藏</span>
-                                               <!-- <span>收藏于{{item.collecttime}}</span>-->
+                                               &lt;!&ndash; <span>收藏于{{item.collecttime}}</span>&ndash;&gt;
                                             </p>
                                         </div>
                                     </el-card>
                                 </el-col>
-                            </el-row>
+                            </el-row>-->
+                            <template  v-if="formInline.stuType=='pic'">
+                                <el-table
+                                        :data="videoData"
+                                        border
+                                        stripe
+                                        height="539"
+                                        style="width: 100%">
+                                    <el-table-column
+                                            label="序号"
+                                            type="index"
+                                            header-align="center"
+                                            align="center"
+                                            :index="indexMethod"
+                                            width="50">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="stuTitle"
+                                            label="标题"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="stuIssuer"
+                                            label="发布人"
+                                            width="150"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="stuIsstime"
+                                            label="发布时间"
+                                            width="150"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="collecttime"
+                                            label="收藏时间"
+                                            width="150"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column label="操作"
+                                                     header-align="center"
+                                                     width="150"
+                                                     align="center">
+                                        <template slot-scope="scope">
+                                            <el-popover
+                                                        placement="right"
+                                                        trigger="hover"
+                                                        content="取消收藏">
+                                                <i class="iconfont icon-quxiaoshoucang"
+                                                   slot="reference"
+                                                   @click="handleDel(scope.row.collectionId)"
+                                                   style="color:#ff6600">
+                                                </i>
+                                            </el-popover>
+                                            <el-popover
+                                                    placement="right"
+                                                    trigger="hover"
+                                                    content="查看">
+                                                <i class="iconfont icon-chakan tabIcon"
+                                                   slot="reference"
+                                                   @click="handleDetail(scope.$index, scope.row)"
+                                                   style="color: #1381e3;font-size: 12px;">
+                                                </i>
+                                            </el-popover>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </template>
+                            <!-- 音频 -->
+                            <template v-if="formInline.stuType=='audio'">
+                                <el-row>
+                                    <el-col :span="6" v-for="(item, index) in videoData">
+                                        <el-card :body-style="{ padding: '4px' }">
+
+                                            <audio controls="controls" preload="none" v-if="item.stuType=='音频'">
+                                                <source :src="item.contentUrl" controls="controls">
+                                            </audio>
+                                            <div style="padding: 14px 14px 0 14px;">
+                                                <p>
+                                                    <span class="stuType">{{item.stuType}}</span>
+                                                    <a href="javascript:;" class="title">{{item.stuTitle}}</a>
+                                                </p>
+                                                <p>
+                                                    <span class="stuIssuer">{{item.stuIssuer}}</span>
+                                                    <span class="stuCreat">{{item.stuIsstime}}</span>
+                                                </p>
+                                                <p>
+                                                    <!--<span @click="handleDel(item.collectionId)">取消收藏</span>-->
+                                                    <span  @click="handleDel(item.collectionId)"><i class="iconfont icon-quxiaoshoucang" style="color:#ff6600"></i></span>
+                                                    <span>收藏于{{item.collecttime}}</span>
+                                                </p>
+                                            </div>
+                                        </el-card>
+                                    </el-col>
+                                </el-row>
+                                <p class="no_data" v-if="videoData.length==0"><i class="iconfont icon-xiaoxi"></i> 暂无数据</p>
+                            </template>
+                            <!-- 视频 -->
+                            <template v-if="formInline.stuType=='video'">
+                                <el-row>
+                                    <el-col :span="6" v-for="(item, index) in videoData">
+                                        <el-card :body-style="{ padding: '4px' }">
+
+                                            <video :id="item.id" class="video-js" width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl"  v-if="item.stuType=='视频'">
+                                                <source :src="item.contentUrl" type="video/mp4">
+                                                您的浏览器不支持视频播放
+                                            </video>
+                                            <div style="padding: 14px 14px 0 14px;">
+                                                <p>
+                                                    <span class="stuType">{{item.stuType}}</span>
+                                                    <a href="javascript:;" class="title">{{item.stuTitle}}</a>
+                                                </p>
+                                                <p>
+                                                    <span class="stuIssuer">{{item.stuIssuer}}</span>
+                                                    <span class="stuCreat">{{item.stuIsstime}}</span>
+                                                </p>
+                                                <p>
+                                                    <!--<span @click="handleDel(item.collectionId)">取消收藏</span>-->
+                                                    <span  @click="handleDel(item.collectionId)"><i class="iconfont icon-quxiaoshoucang" style="color:#ff6600"></i></span>
+                                                    <span>收藏于{{item.collecttime}}</span>
+                                                </p>
+                                            </div>
+                                        </el-card>
+                                    </el-col>
+                                </el-row>
+                                <p class="no_data" v-if="videoData.length==0"><i class="iconfont icon-xiaoxi"></i> 暂无数据</p>
+                            </template>
                         </div>
                         <el-pagination
                                 @size-change="handleSizeChange"
@@ -142,7 +274,13 @@
         </el-row>
 
     </div>
-
+    <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogPic" :before-close="closeDia"  ref="picDialog">
+        <div>
+            <el-col :span="24">
+                <el-input type="textarea" v-html="caseContent"></el-input>
+            </el-col>
+        </div>
+    </el-dialog>
     <el-dialog title="选择法律分类" :visible.sync="dialogLaw" >
         <!--对于同一级的节点，每次只能展开一个-->
         <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;"

@@ -225,7 +225,8 @@
                 </div>
             </el-col>
         </el-row>
-        <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogStuMedia" :before-close="closeDia"
+        <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogStuMedia" :before-close="closeDia" v-loading="loading"
+                   element-loading-text="保存中"
                    ref="stuDialog">
             <el-row>
                 <el-col :span="24">

@@ -37,4 +37,15 @@ public interface DictionService extends AbstractService<DictEntity> {
      * @return
      */
     boolean checkDuplicate(String id, String str, String type, String parentCode);
+
+    /**
+     * @Author MengyuWu
+     * @Description 根据名称查code  --系统默认密码使用
+     * @Date 10:07 2019-3-14
+     * @Param [name]
+     * @return String
+     **/
+    
+    String selectOneByName(String name);
+
 }

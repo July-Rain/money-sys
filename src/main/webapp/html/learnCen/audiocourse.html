@@ -119,6 +119,7 @@
                                     </el-card>
                                 </el-col>
                             </el-row>
+                            <p class="no_data" v-if="videoData.length==0"><i class="iconfont icon-xiaoxi"></i> 暂无数据</p>
                         </div>
                         <el-pagination
                                 @size-change="handleSizeChange"

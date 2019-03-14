@@ -154,8 +154,29 @@
                             </el-table-column>
                             <el-table-column label="操作"
                                              header-align="center"
+                                             width="150"
                                              align="center">
                                 <template slot-scope="scope">
+                                    <el-popover v-if="!scope.row.isColl"
+                                            placement="right"
+                                            trigger="hover"
+                                            content="收藏">
+                                        <i class="iconfont icon-shoucang1"
+                                           slot="reference"
+                                           @click="collect(scope.$index, scope.row)"
+                                           >
+                                        </i>
+                                    </el-popover>
+                                    <el-popover v-if="scope.row.isColl"
+                                            placement="right"
+                                            trigger="hover"
+                                            content="取消收藏">
+                                        <i class="iconfont icon-quxiaoshoucang"
+                                           slot="reference"
+                                           @click="cancelCollect(scope.$index, scope.row)"
+                                           style="color:#ff6600">
+                                        </i>
+                                    </el-popover>
                                     <el-popover
                                             placement="right"
                                             trigger="hover"
