@@ -80,13 +80,15 @@
             padding: 0 10px;
             color: #909399;
             display: inline-block;
-        / / 悬浮块横向显示
         }
         .el-dialog{
             overflow: hidden;
         }
         .list {
             max-height: 390px;
+        }
+        .containInfo .el-textarea__inner{
+            height: 100px;
         }
     </style>
 </head>
@@ -379,7 +381,7 @@
                         <el-input type="textarea" :rows="2" v-model="learnTasks.userName" :disabled="!isEdit" readonly @focus="chooseUser" placeholder="请选择使用人员"
                                   clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="任务内容：" prop="taskContent">
+                    <el-form-item class="containInfo" label="任务内容：" prop="taskContent">
                         <el-input type="textarea" :rows="2" v-model="learnTasks.taskContent" :disabled="!isEdit" readonly @focus="chooseTaskContent" placeholder="请选择任务内容"
                                   clearable></el-input>
                         <!--<el-input type="textarea" maxlength="200" v-model="learnTasks.taskContent" placeholder="请输入任务内容" clearable></el-input>-->
