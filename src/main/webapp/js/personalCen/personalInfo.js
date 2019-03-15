@@ -103,6 +103,9 @@ var vm = new Vue({
                             //     vm.reload();
                             // }
                         });
+                        parent.window.vm.srcphoto=baseURL+'/sys/download?accessoryId='+vm.info.photo;
+
+
                     } else {
                         alert(result.msg);
                     }

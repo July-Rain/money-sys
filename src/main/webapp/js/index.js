@@ -16,10 +16,16 @@ var vm = new Vue({
         showThis: false,
         iconString:'icon-xunzhang',
         individual: null,
+        srcphoto: baseURL+"/statics/img/police_head.png",
+
     },
     created: function () {
         this.$nextTick(function () {
             vm.loadNav();
+
+
+            vm.getsrcphoto();
+
 
             //关于勋章
             vm.BymyMedal();
@@ -29,10 +35,18 @@ var vm = new Vue({
     },
 
     methods: {
-        BymyMedal: function (obj) {
+        getsrcphoto: function () {
+            if(jsgetUser().photo){
+
+                vm.srcphoto=baseURL+'/sys/download?accessoryId='+jsgetUser().photo;
+
+            }
+        },
+        BymyMedal: function () {
 
             //进来 先看 这个人身上有没有 背着勋章的id  要根据勋章id反查勋章的字符串   (怕管理员修改了勋章的条件，每次进来在判断下 还符不符合勋章的条件)
             // debugger;
+
             var u=jsgetUser();//user
             if(u.myMedal==null||u.myMedal==""){
                 //身上没有勋章，已经设置了没勋章的样式  什么都不做
@@ -45,6 +59,7 @@ var vm = new Vue({
                     async: false,
                     success: function (result) {
                         // debugger;
+
                         //没找到 对应的 勋章 信息  说明被删了  我要把 勋章这一栏 制空
                         if(result.data==null){
                             //修改这个人身上背的勋章
@@ -69,6 +84,7 @@ var vm = new Vue({
                                 async:false,
                                 success: function (result2) {
                                     // debugger;
+
                                      var integral= result2.info.integralPoint;//积分
                                      var credit= result2.info.creditPoint;//学分
 

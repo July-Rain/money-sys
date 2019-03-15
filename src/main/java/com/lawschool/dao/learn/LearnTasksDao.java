@@ -3,6 +3,8 @@ package com.lawschool.dao.learn;
 import com.lawschool.base.AbstractDao;
 import com.lawschool.beans.learn.LearnTasksEntity;
 
+import java.util.List;
+
 /**
  * InterfaceName: LearnTasksDao
  * Description: 学习任务dao
@@ -30,4 +32,14 @@ public interface LearnTasksDao extends AbstractDao<LearnTasksEntity> {
      **/
     
     void updateByPrimaryKeyWithBLOBs(LearnTasksEntity learnTasksEntity);
+
+    /**
+     * @Author MengyuWu
+     * @Description 根据任务的id查看其中的任务类型
+     * @Date 18:40 2019-3-14
+     * @Param [taskId]
+     * @return java.util.List<java.lang.String>
+     **/
+    
+    List<String> listTypeByTaskId(String taskId);
 }

@@ -93,7 +93,7 @@ var vm = new Vue({
         rules: {//表单验证规则
 
             comContent: [
-                {required: true, message: '请输入试题描述', trigger: 'blur'},
+                {required: false, message: '请输入试题描述', trigger: 'blur'},
                 {max: 100, message: '最大长度100', trigger: 'blur'}
             ],
 
@@ -117,8 +117,12 @@ var vm = new Vue({
             // userName: [
             //     {required: true, message: '请选择使用人员', trigger: 'change'}
             // ],
-            stuDescribe: [
-                {required: true, message: '请输入描述', trigger: 'blur'},
+            // stuDescribe: [
+            //     {required: true, message: '请输入描述', trigger: 'blur'},
+            //     {max: 100, message: '最大长度100', trigger: 'blur'}
+            // ],
+            comContent: [
+                {required: true, message: '请输入试题描述', trigger: 'blur'},
                 {max: 100, message: '最大长度100', trigger: 'blur'}
             ],
         },
