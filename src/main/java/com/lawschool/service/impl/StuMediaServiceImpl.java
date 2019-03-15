@@ -217,7 +217,7 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         }
         if(UtilValidate.isNotEmpty(stuLawid)){
             String[] lawArr=stuLawid.split(",");
-            ew.in("stu_lawid",lawArr);
+            ew.in("to_char(stu_lawid)",lawArr);
         }
         if(UtilValidate.isNotEmpty(stuIssuer)){
             ew.like("stu_issuer",stuIssuer);
