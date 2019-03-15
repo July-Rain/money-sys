@@ -117,6 +117,9 @@ var vm = new Vue({
             storage.setItem("checkExamUserId",vm.checkExamUser.id);
             parent.location.href
                 =baseURL+'checkExamCen/checkSubjectExam.html';
+        },
+        toLogout:function () {
+            window.location.href = baseURL + 'logout'
         }
         
     }
