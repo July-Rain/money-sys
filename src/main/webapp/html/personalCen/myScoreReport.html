@@ -49,8 +49,8 @@
                                 </el-radio>
                             </el-radio-group>
                             <div class="answer-area" v-show="isSubmit">
-                                <p :class="question.userScore ? 'right' : 'err'">
-                                    你的答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>，正确答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
+                                <p>
+                                    你的答案：<span v-if="question.checkList.length" :class="question.userScore ? 'right' : 'err'">{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span><span class="err" v-if="!question.checkList.length">未作答</span>，正确答案：<span class="right">{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
                                 <p class="collection" @click="doCollect(index, '10004')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{question.isCollect == 1 ? '已收藏' : '收藏本题'}}</p>
                                 </p>
                                 <p class="text">
@@ -83,8 +83,8 @@
                                 </el-checkbox>
                             </el-checkbox-group>
                             <div class="answer-area" v-show="isSubmit">
-                                <p :class="question.userScore ? 'right' : 'err'">
-                                    你的答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>，正确答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
+                                <p>
+                                    你的答案：<span v-if="question.checkList.length" :class="question.userScore ? 'right' : 'err'">{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span><span class="err" v-if="!question.checkList.length">未作答</span>，正确答案：<span class="right">{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
                                 <p class="collection" @click="doCollect(index,'10005')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{ question.isCollect == 1 ? '已收藏' : '收藏本题' }}</p>
                                 </p>
                                 <p class="text">
@@ -117,8 +117,8 @@
                                 </el-radio>
                             </el-radio-group>
                             <div class="answer-area" v-show="isSubmit">
-                                <p :class="question.userScore ? 'right' : 'err'">
-                                    你的答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>，正确答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
+                                <p>
+                                    你的答案：<span  :class="question.userScore ? 'right' : 'err'" v-if="question.checkList.length">{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span><span class="err" v-if="!question.checkList.length">未作答</span>，正确答案：<span class="right">{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
                                 <p class="collection" @click="doCollect(index,'10006')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{ question.isCollect == 1 ? '已收藏' : '收藏本题' }}</p>
                                 </p>
                                 <p class="text">
@@ -150,8 +150,8 @@
                             >
                             </el-input>
                             <div class="answer-area" v-show="isSubmit">
-                                <p :class="question.userScore ? 'right' : 'err'">
-                                    此题得分：<span class="right" v-if="question.checkStatus==2">{{ question.userScore }}</span><span class="right" v-if="question.checkStatus!=2">本题暂未阅卷打分！</span>
+                                <p>
+                                    此题得分：<span :class="question.userScore ? 'right' : 'err'" v-if="question.checkStatus==2">{{ question.userScore }}</span><span class="right" v-if="question.checkStatus!=2">本题暂未阅卷打分！</span>
                                 <p class="collection" @click="doCollect(index,'10007')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{ question.isCollect == 1 ? '已收藏' : '收藏本题' }}</p>
                                 </p>
                                 <p class="text">

@@ -318,3 +318,7 @@ html {
 .favorite {
     color: #ff6600 !important;
 }
+.items a.finished {
+    background: #E1F1FF;
+    color: #1381E3;
+}

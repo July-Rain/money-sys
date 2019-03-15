@@ -260,8 +260,8 @@ var vm = new Vue({
             rightIdList.forEach(val => rightIndex.push(vm.optionIndex[answerIdList.indexOf(val)]));
             console.log(checkIndex, rightIndex)
             return {
-                checkIndex: checkIndex.sort((a,b) => a.charCodeAt()-b.charCodeAt()).join('、'),
-                rightIndex: rightIndex.sort((a,b) => a.charCodeAt()-b.charCodeAt()).join('、')
+                checkIndex: checkIndex.sort((a,b) => a.charCodeAt(0)-b.charCodeAt(0)).join('、'),
+                rightIndex: rightIndex.sort((a,b) => a.charCodeAt(0)-b.charCodeAt(0)).join('、')
             }
         },
         // 收藏
