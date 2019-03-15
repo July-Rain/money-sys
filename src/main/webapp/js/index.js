@@ -17,7 +17,7 @@ var vm = new Vue({
         iconString:'icon-xunzhang',
         individual: null,
         srcphoto: baseURL+"/statics/img/police_head.png",
-
+        username: ''
     },
     created: function () {
         this.$nextTick(function () {
@@ -48,6 +48,7 @@ var vm = new Vue({
             // debugger;
 
             var u=jsgetUser();//user
+            vm.username = u.fullName;
             if(u.myMedal==null||u.myMedal==""){
                 //身上没有勋章，已经设置了没勋章的样式  什么都不做
             }else {

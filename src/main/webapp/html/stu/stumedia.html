@@ -29,23 +29,26 @@
             color: #57A8DC;
         }
 
-        /* dialog videojs 样式 */
+        /*!* dialog videojs 样式 *!
         .el-dialog div.vjs-controls-enabled {
             width: 50% !important;
             height: 175px;
             margin: 35px 100px 35px !important;
-        }
+        }*/
 
         img.avatar {
             width: 300px !important;
             margin: 35px 100px 35px !important;
         }
+        video.video-js {
+            margin: 35px 100px 35px;
+        }
 
-        button.vjs-big-play-button {
+        /*button.vjs-big-play-button {
             top: 40% !important;
             left: 50% !important;
             outline: none !important;
-        }
+        }*/
 
         /*video::-webkit-media-controls-enclosure {*/
             /*overflow: hidden;*/
@@ -285,7 +288,7 @@
                                     <el-button type="primary">点击上传</el-button>
 
                                 </el-upload>
-                                <P class="text">请保证图片格式正确，作为视频封面</P>
+                                <p class="text">请保证图片格式正确，作为视频封面</p>
                             </el-form-item>
                             <el-form-item label="视频上传：" prop="comContent">
                                 <video id="video" v-show="stuMedia.comContent !='' && videoFlag == false"

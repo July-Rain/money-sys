@@ -64,7 +64,6 @@
                                     <span class="diff" v-if="question.questionDifficulty!=='10001'">{{ question.questionDifficulty==='10002'||question.questionDifficulty==='10003'?'中级':'高级' }}</span>
                                 </p>
                                 <p class="answer-text">答案描述：<span>{{ question.answerDescrible }}</span></p>
-                                <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
                             </div>
                             <div class="gray" v-if="isSubmit"></div>
                         </div>
@@ -154,11 +153,8 @@
                                 @change="update"
                         >
                         </el-input>
-<!--
-                        <el-button class="button" @click="submitSubject" type="primary" size="mini">提交</el-button>
--->
+
                         <div class="answer-area" v-show="isSubmit">
-                            <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
                             <p :class="1==1 ? 'right' : 'err'">
                                 此题得分：<span class="right">6</span>
                             <p class="collection" @click="favor" :class="{'favorite':isFavored}"><i class="iconfont icon-shoucang" :class="{'favorite':isFavored}"></i>{{ favoriteText }}</p>
@@ -174,7 +170,6 @@
                                 <span class="diff" v-if="question.questionDifficulty!=='10001'">{{ question.questionDifficulty==='10002'||question.questionDifficulty==='10003'?'中级':'高级' }}</span>
                             </p>
                             <p class="answer-text">答案描述：<span>{{ question.answerDescrible }}</span></p>
-                            <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
                         </div>
                         <div class="gray" v-if="isSubmit"></div>
                     </div>

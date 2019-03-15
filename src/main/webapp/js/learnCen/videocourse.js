@@ -61,10 +61,14 @@ var vm = new Vue({
                     }
                 }
             });
-            this.reload();
+            debugger
+            vm.reload();
+            debugger
+            vm.initPlayer();
         });
     },
     mounted: function () {
+        // vm.initPlayer();
     },
     methods: {
         initPlayer: function () {
@@ -315,11 +319,5 @@ var vm = new Vue({
             });
         },
     },
-    watch:  {
-        // 暂时记录：深度监控
-        'videoDataId' : function (newVal) {
-            vm.initPlayer();
-        }
-    }
 });
 
