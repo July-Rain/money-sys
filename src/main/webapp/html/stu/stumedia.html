@@ -29,35 +29,13 @@
             color: #57A8DC;
         }
 
-        /*!* dialog videojs 样式 *!
-        .el-dialog div.vjs-controls-enabled {
-            width: 50% !important;
-            height: 175px;
-            margin: 35px 100px 35px !important;
-        }*/
-
         img.avatar {
             width: 300px !important;
-            margin: 35px 100px 35px !important;
+            margin: 10px 0 10px !important;
         }
         video.video-js {
-            margin: 35px 100px 35px;
+            margin: 10px 0 10px;
         }
-
-        /*button.vjs-big-play-button {
-            top: 40% !important;
-            left: 50% !important;
-            outline: none !important;
-        }*/
-
-        /*video::-webkit-media-controls-enclosure {*/
-            /*overflow: hidden;*/
-        /*}*/
-
-        /*video::-webkit-media-controls-panel {*/
-            /*width: calc(100% + 30px);*/
-        /*}*/
-
 
         .el-dialog__wrapper textarea.el-textarea__inner{
             height: 100px;
@@ -287,7 +265,7 @@
                         <template v-if="stuMedia.stuType=='video'">
                             <el-form-item label="视频封面上传：" prop="videoPicAcc">
                                 <img v-if="stuMedia.videoPicAcc !=''" :src="stuMedia.videoPicAccUrl" class="avatar">
-                                <i class="iconfont icon-tupian"></i>
+                                <i v-if="stuMedia.videoPicAcc ==''" class="iconfont icon-tupian"></i>
                                 <el-upload
                                         class="avatar-uploader"
                                         name="importfile"

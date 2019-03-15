@@ -16,4 +16,6 @@ public interface SchoolYearPlanService extends AbstractService<SchoolYearPlan> {
      * @return
      */
     SchoolYearPlan findYearPlanByNow(String userId);
+
+     int  insertsave (SchoolYearPlan schoolYearPlan);
 }

@@ -61,33 +61,31 @@ var vm = new Vue({
                     }
                 }
             });
-            debugger
             vm.reload();
-            debugger
-            vm.initPlayer();
         });
-    },
-    mounted: function () {
-        // vm.initPlayer();
     },
     methods: {
         initPlayer: function () {
+            // debugger
             var that = this;
+
             window.onload = function () {
-                var options = {
-                    controls: true,
-                    bigPlayButton: true,
-                    controlBar:{
-                        //设置是否显示该组件
-                        playToggle: false,
-                        remainingTimeDisplay: true,
-                        fullscreenToggle: false,
-                        volumePanel: false
-                    },
-                };
-                that.videoDataId.forEach(function (val, index) {
-                    var myPlayer = videojs(val, options);
-                })
+                setTimeout(function () {
+                    var options = {
+                        controls: true,
+                        bigPlayButton: true,
+                        controlBar:{
+                            //设置是否显示该组件
+                            playToggle: false,
+                            remainingTimeDisplay: true,
+                            fullscreenToggle: false,
+                            volumePanel: false
+                        },
+                    };
+                    that.videoDataId.forEach(function (val, index) {
+                        videojs(val, options);
+                    })
+                }, 400)
             }
         },
         // 初始化对话框视频
@@ -105,8 +103,10 @@ var vm = new Vue({
                 },
             };
             this.dialogPlayer = videojs('dialog-player', dialogOptions);
+            if (!vm.videoDataId) {
+                return
+            }
             var bigDialogButton = document.getElementsByClassName('vjs-big-play-button')[this.videoDataId.length];
-            console.log(bigDialogButton);
             bigDialogButton.style.outline = 'none';
             this.dialogPlayer.on('play', function () {
                 bigDialogButton.style.display = 'none';
@@ -176,8 +176,8 @@ var vm = new Vue({
                     }
                 }
             }).then(
-                
-            );
+                vm.initPlayer()
+        );
         },
         // el-tree节点点击事件
         handleNodeClick: function (data) {
@@ -319,5 +319,10 @@ var vm = new Vue({
             });
         },
     },
+    watch: {
+       /* 'videoDataId': function () {
+
+        }*/
+    }
 });
 

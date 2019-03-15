@@ -258,9 +258,10 @@ var vm = new Vue({
             answer.forEach(val => answerIdList.push(val.id));
             list.forEach(val => checkIndex.push(vm.optionIndex[answerIdList.indexOf(val)]));
             rightIdList.forEach(val => rightIndex.push(vm.optionIndex[answerIdList.indexOf(val)]));
+            console.log(checkIndex, rightIndex)
             return {
-                checkIndex: checkIndex.sort((a,b) => a-b).join('、'),
-                rightIndex: rightIndex.sort((a,b) => a-b).join('、')
+                checkIndex: checkIndex.sort((a,b) => a.charCodeAt()-b.charCodeAt()).join('、'),
+                rightIndex: rightIndex.sort((a,b) => a.charCodeAt()-b.charCodeAt()).join('、')
             }
         },
         // 收藏

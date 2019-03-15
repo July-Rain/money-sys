@@ -40,7 +40,15 @@ public class SchoolYearPlanController extends AbstractController {
     @SysLog("保存学年目标")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody SchoolYearPlan entity){
-        schoolYearPlanService.save(entity);
+//        schoolYearPlanService.save(entity);
+        int i=  schoolYearPlanService.insertsave(entity);
+        if(i==0)
+        {
+            return Result.ok().put("code",1).put("msg","失败，输入的时间区间和已添加的时间段有交集");
+        }
+
+
+
         return Result.ok();
     }
 
