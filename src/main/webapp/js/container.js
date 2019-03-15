@@ -19,7 +19,6 @@ var vm = new Vue({
             }
         }
         return {
-            videoDataId: ["SM20190130160129526544", "SM20190126164415860356"],
             navData: [],//导航
             learnTasks: 4,//学习任务
             practiceTasks: 5,//练习任务

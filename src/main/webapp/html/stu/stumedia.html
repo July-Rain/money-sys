@@ -29,35 +29,20 @@
             color: #57A8DC;
         }
 
-        /* dialog videojs 样式 */
-        .el-dialog div.vjs-controls-enabled {
-            width: 50% !important;
-            height: 175px;
-            margin: 35px 100px 35px !important;
-        }
-
         img.avatar {
             width: 300px !important;
-            margin: 35px 100px 35px !important;
+            margin: 10px 0 10px !important;
         }
-
-        button.vjs-big-play-button {
-            top: 40% !important;
-            left: 50% !important;
-            outline: none !important;
+        video.video-js {
+            margin: 10px 0 10px;
         }
-
-        /*video::-webkit-media-controls-enclosure {*/
-            /*overflow: hidden;*/
-        /*}*/
-
-        /*video::-webkit-media-controls-panel {*/
-            /*width: calc(100% + 30px);*/
-        /*}*/
-
 
         .el-dialog__wrapper textarea.el-textarea__inner{
             height: 100px;
+        }
+        .el-loading-mask {
+            z-index: 2090;
+            height: 100vh;
         }
     </style>
 </head>
@@ -270,7 +255,7 @@
                         <template v-if="stuMedia.stuType=='video'">
                             <el-form-item label="视频封面上传：" prop="videoPicAcc">
                                 <img v-if="stuMedia.videoPicAcc !=''" :src="stuMedia.videoPicAccUrl" class="avatar">
-                                <i class="iconfont icon-tupian"></i>
+                                <i v-if="stuMedia.videoPicAcc ==''" class="iconfont icon-tupian"></i>
                                 <el-upload
                                         class="avatar-uploader"
                                         name="importfile"
@@ -281,7 +266,7 @@
                                     <el-button type="primary">点击上传</el-button>
 
                                 </el-upload>
-                                <P class="text">请保证图片格式正确，作为视频封面</P>
+                                <p class="text">请保证图片格式正确，作为视频封面</p>
                             </el-form-item>
                             <el-form-item label="视频上传：" prop="comContent">
                                 <video id="video" v-show="stuMedia.comContent !='' && videoFlag == false"

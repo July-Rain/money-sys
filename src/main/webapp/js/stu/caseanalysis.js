@@ -558,7 +558,7 @@ var vm = new Vue({
             }
         },
         confimDept: function () {
-            debugger
+            // debugger
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
             this.caseAna.deptIds = '';
             this.caseAna.deptName = '';
@@ -662,7 +662,7 @@ var vm = new Vue({
 
             this.multipleLawSelection = this.$refs.lawTree.getCheckedNodes();
             if(this.multipleLawSelection.length>5){
-                alert("最多只能选择5个法律法规分类");
+                vm.$message("最多只能选择5个法律法规分类");
                 return;
             }
             vm.caseAna.caseLawid = "";

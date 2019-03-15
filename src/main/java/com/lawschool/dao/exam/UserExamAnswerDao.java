@@ -10,7 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public interface UserExamAnswerDao extends AbstractDao<UserExamAnswer> {
     UserExamAnswer findByuEIdAndQueId(@Param("userExamId") String userExamId, @Param("qId") String qId);
 
-    void updateByIds(@Param("userAnsId")String userAnsId,@Param("userScore")double userScore,@Param("id")String id);
+    void updateByIds(@Param("userAnsId")String userAnsId,@Param("userScore")double userScore,@Param("checkStatus") String checkStatus,@Param("id")String id);
 
     List<String> getQueType(@Param("userExamId")String userExamId);
 

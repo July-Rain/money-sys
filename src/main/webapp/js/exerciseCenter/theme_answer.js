@@ -48,7 +48,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         if(result.list.length == 0){
-                            alert('答题结束，请提交本次练习');
+                            vm.$message('答题结束，请提交本次练习');
                         } else {
                             vm.dataList = result.list;
                             vm.answers = [];
@@ -57,7 +57,7 @@ var vm = new Vue({
                         }
 
                     } else {
-                        alert(result.msg);
+                        vm.$message(result.msg);
                     }
                 }
             });
