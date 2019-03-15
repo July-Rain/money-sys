@@ -103,11 +103,11 @@ var vm = new Vue({
             var results = this.figureTime(this.lefttime);
             [this.leftHours, this.leftMinutes, this.leftSeconds] = [...results];
             // 3个小时用完,强制提交
-            if (this.lefttime <= 0) {
+           if (this.lefttime <= 0) {
+               vm.submit();
                 vm.$alert('时间到，结束!', '提示', {
                     confirmButtonText: '确定',
                     callback: function () {
-                        vm.submit();
                         var parentWin = window.parent;
                         parentWin.document.getElementById("container").src
                             = 'modules/examCen/userExam.html';
@@ -351,6 +351,7 @@ var vm = new Vue({
 
                         // 考试人员
                         vm.username = result.user.userName;
+                        vm.timer = setInterval(vm.computeTime,1000);
 
                     } else {
                         alert(result.msg);
@@ -435,6 +436,8 @@ var vm = new Vue({
                                 }
                             }
                         }
+                        console.info(vm.lefttime )
+                        vm.timer = setInterval(vm.computeTime,1000);
                     } else {
                         alert(result.msg);
                         var parentWin = window.parent;
@@ -481,11 +484,12 @@ var vm = new Vue({
             if (examStatus == '0') {
                 //开始考试
                 vm.startExam();
+
             } else {
                 //继续考试
                 vm.continueExam();
             }
-            this.timer = setInterval(this.computeTime,1000);
+
         });
     }
 });

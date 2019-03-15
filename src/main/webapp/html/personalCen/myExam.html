@@ -22,12 +22,12 @@
                         </div>
                         <div class="card_contain">
                             <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-                                <el-form-item prop="code">
+                                <el-form-item prop="examName" label="考卷名称">
                                     <el-input v-model="formInline.examName" placeholder="试卷名称" size="mini"></el-input>
                                 </el-form-item>
 
-                                <el-form-item prop="status">
-                                    <el-select v-model="formInline.status" placeholder="已考状态" size="mini">
+                                <el-form-item prop="status" label="已考状态">
+                                    <el-select v-model="formInline.status" placeholder="请选择" size="mini">
                                         <el-option label="已考" value="1"></el-option>
                                         <el-option label="未考" value="0"></el-option>
                                     </el-select>
@@ -61,47 +61,73 @@
                                     width="50">
                             </el-table-column>
                             <el-table-column
+                                    align="center"
                                     prop="examName"
                                     label="试卷名称"
-                                    width="280"
-                                    header-align="center"
+                                    show-overflow-tooltip
                             >
                             </el-table-column>
                             <el-table-column
+                                    align="center"
                                     prop="examTypeName"
                                     label="试卷类型"
-                                    width="130"
-                                    align="center"
+                                    width="140"
                             >
                             </el-table-column>
                             <el-table-column
+                                    align="center"
+                                    prop="isMustTest"
+                                    label="是否必考"
+                                    width="100"
+                            ><template slot-scope="scope">
+                                <el-tag v-if="scope.row.isMustTest=='10029'" size="small" type="danger">是</el-tag>
+                                <el-tag v-if="scope.row.isMustTest=='10030'" size="small" type="danger">否</el-tag>
+                            </template>
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
                                     prop="examTime"
                                     label="考试时长（分钟）"
-                                    width="150"
-                                    align="center"
+                                    width="140"
                             >
                             </el-table-column>
 
                             <el-table-column
+                                    align="center"
                                     prop="organizedOrgCode"
                                     label="组考单位"
-                                    width="150"
-                                    align="center"
+                                    width="210"
                             >
                             </el-table-column>
+
                             <el-table-column
+                                    align="center"
                                     prop="startTime"
                                     label="考试开始时间"
-                                    align="center"
+                                    width="180"
                             >
                             </el-table-column>
                             <el-table-column
+                                    align="center"
                                     prop="endTime"
                                     label="考试结束时间"
-                                    align="center"
+                                    width="180"
                             >
                             </el-table-column>
-                            <el-table-column label="操作" align="center">
+                            <el-table-column
+                                    label="当前状态"
+                                    align="center"
+                                    width="130"
+                            >
+                                <template slot-scope="scope">
+                                    <el-tag v-if="scope.row.examStatus==0&&verifyTime(scope.row.startTime,scope.row.endTime)" size="small" type="danger">未考试</el-tag>
+                                    <el-tag v-if="scope.row.examStatus==2" size="small" type="danger">已完成</el-tag>
+                                    <el-tag v-if="scope.row.examStatus==1&&verifyTime(scope.row.startTime,scope.row.endTime)" size="small" type="danger">未完成</el-tag>
+                                    <el-tag v-if="verifyStartTime(scope.row.startTime)" type="danger">未开始</el-tag>
+                                    <el-tag v-if="verifyEndTime(scope.row.endTime)&&scope.row.examStatus!=2" type="danger">已过期</el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作" align="center" width="120">
                                 <template slot-scope="scope">
                                     <el-popover
                                             v-if="scope.row.examStatus==2"
@@ -119,10 +145,10 @@
                                             placement="right"
                                             trigger="hover"
                                             content="开始考试">
-                                        <i class="iconfont tabIcon"
+                                        <i class="iconfont icon-kaishikaoshi"
                                            slot="reference"
                                            @click="startExam(scope.$index, scope.row)"
-                                           style="color: #1381e3;" >&#xe68c;
+                                           style="color: #1381e3;font-size: 22px;" >
                                         </i>
                                     </el-popover>
                                     <el-popover
@@ -130,10 +156,10 @@
                                             placement="right"
                                             trigger="hover"
                                             content="继续考试">
-                                        <i class="iconfont tabIcon"
+                                        <i class="iconfont icon-kaishikaoshi"
                                            slot="reference"
                                            @click="startExam(scope.$index, scope.row)"
-                                           style="color: #119e0a;" >&#xe68c;
+                                           style="color: #119e0a;font-size: 22px;" >
                                         </i>
                                     </el-popover>
                                 </template>
@@ -155,5 +181,5 @@
     </div>
 </div>
 </body>
-<script src="${rc.contextPath}/js/personalCen/myExam.js"></script>
+<script src="${rc.contextPath}/js/examCen/userExam.js"></script>
 </html>
