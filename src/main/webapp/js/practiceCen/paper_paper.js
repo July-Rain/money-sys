@@ -10,10 +10,7 @@ var vm = new Vue({
         isSubmit: false,
         // 题目数据
         questionList: [],
-        pdList: [],
-        singleList: [],
         fillingList: [],
-        multiList: [],
         expressingList: [],
         // bar
         creator: '凡凡',
@@ -32,6 +29,9 @@ var vm = new Vue({
         oneOptionCheck:[],
         multiOptionsCheck: [],
         checkingCheck: [],
+        pdNum: 0,
+        singleNum: 0,
+        multiNum: 0
     },
     methods: {
         // created中执行以获取数据
@@ -46,13 +46,12 @@ var vm = new Vue({
                 data: obj,
                 contentType: "application/json",
                 success: function (result) {
-                    console.log(result)
                     if (result.code === 0) {
-                        vm.oneOptionList = result.pdList;
-                        vm.singleList = result.singleList;
-                        vm.multiList = result.multiList;
+                        vm.questionList = result.questionList;
+                        vm.singleNum = result.singleNum;
+                        vm.multiNum = result.multiNum;
+                        vm.pdNum = result.pdNum;
                         id = result.id;
-                        vm.questionList = vm.oneOptionList.concat(vm.singleList, vm.multiList);
                     } else {
                         alert(result.msg);
                     }

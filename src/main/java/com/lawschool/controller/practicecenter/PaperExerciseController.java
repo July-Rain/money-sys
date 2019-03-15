@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -77,31 +78,39 @@ public class PaperExerciseController extends AbstractController {
             id = IdWorker.getIdStr();
         }
 
+        // 结果集按题型排序，单选、多选、判断
         List<QuestionForm> list = paperExerciseService.showQuestions(configureId, id, isNew);
 
-        // 定义返回结果集
-        List<QuestionForm> pdList = new ArrayList<>();// 判断list
-        List<QuestionForm> singleList = new ArrayList<>();// 单选list
-        List<QuestionForm> multiList = new ArrayList<>();// 多选list
+        // 根据题目类型统计题型对应的题目数量
+        int pdNum = 0;// 判断题
+        int singleNum = 0;// 单选
+        int multiNum = 0;// 多选
 
-        // 根据题目类型分组
         for(QuestionForm form : list){
             String type = form.getType();
 
             if("10004".equals(type)){
                 // 单选
-                singleList.add(form);
+                singleNum++;
+                form.setUserAnswerStr(form.getUserAnswer());
 
             } else if("10005".equals(type)){
                 // 多选
-                multiList.add(form);
+                multiNum++;
+                List<String> answers = new ArrayList<>();
+                if(StringUtils.isNotBlank(form.getUserAnswer())){
+                    answers = Arrays.asList(form.getUserAnswer().split(","));
+                }
+                form.setUserAnswerList(answers);
+
             } else {
-                pdList.add(form);
+                pdNum++;
+                form.setUserAnswerStr(form.getUserAnswer());
             }
         }
 
-        return Result.ok().put("pdList", pdList)
-                .put("singleList", singleList)
-                .put("multiList", multiList).put("id", id).put("total", list.size());
+        return Result.ok()
+                .put("pdNum", pdNum).put("singleNum", singleNum)
+                .put("multiNum", multiNum).put("id", id).put("questionList", list);
     }
 }
