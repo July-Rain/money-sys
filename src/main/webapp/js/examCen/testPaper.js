@@ -71,7 +71,7 @@ var vm = new Vue({
         consumedSeconds: '00',
         consumed: '',
         // 总分
-        totalScore: 87,
+        totalScore: 0,
 
         favoriteText: '收藏此题',
         paperName: '',
@@ -83,7 +83,9 @@ var vm = new Vue({
         preserved: [],
         examConfig: [],
         goHomeButton: null,
-        floatIcon: null
+        floatIcon: null,
+        floatIcon: null,
+        optionIndex:['A','B','C','D','E','F'],
         // 修改前的数据
         /*,
         otherList: [],
@@ -143,6 +145,7 @@ var vm = new Vue({
             alert("请先保存，直接退出不会保存数据。");
             var parentWin = window.parent;
             vm.goHomeButton.style.display = 'block';
+            vm.floatIcon.style.display = 'flex';
             parentWin.document.getElementById("container").src
                 = 'modules/examCen/userExam.html';
         },
@@ -242,6 +245,7 @@ var vm = new Vue({
                         alert("提交成功");
                         var parentWin = window.parent;
                         vm.goHomeButton.style.display = 'block';
+                        vm.floatIcon.style.display = 'flex';
                         parentWin.document.getElementById("container").src
                             = 'modules/examCen/userExam.html';
                     } else {
@@ -299,6 +303,7 @@ var vm = new Vue({
                         alert("保存成功");
                         var parentWin = window.parent;
                         vm.goHomeButton.style.display = 'block';
+                        vm.floatIcon.style.display = 'flex';
                         parentWin.document.getElementById("container").src
                             = 'modules/examCen/userExam.html';
                     } else {
@@ -317,6 +322,7 @@ var vm = new Vue({
                 },
                 success: function (result) {
                     if (result.code === 0) {
+                        console.log(result);
                         vm.examConfig = result.examConfig;
                         vm.user = result.user;
                         vm.userAnswerForm.userExamId = result.userExam.id;
@@ -469,10 +475,9 @@ var vm = new Vue({
             vm.goHomeButton = window.parent.document.getElementsByClassName('header-right')[0];
             vm.goHomeButton.style.display = 'none';
             // 隐藏悬浮图标 (没有数据，尚未自测)
-            vm.floatIcon = window.parent.document.getElementById('individual')[0];
+            vm.floatIcon = window.parent.document.getElementById('individual');
             vm.floatIcon.style.display = 'none';
-            console.log(vm.floatIcon);
-            // vm.refresh();
+            console.log(vm.floatIcon)
             if (examStatus == '0') {
                 //开始考试
                 vm.startExam();

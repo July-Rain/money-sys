@@ -77,11 +77,12 @@ var vm = new Vue({
         mulStarIcon:[],
         judStarIcon:[],
         subStarIcon:[],
+        optionIndex:['A','B','C','D','E','F'],
     },
     created: function () {
         this.$nextTick(function () {
             vm.viewExam();
-            vm.consumedTime();
+
         })
     },
     methods: {
@@ -106,7 +107,7 @@ var vm = new Vue({
                         vm.userAnswerForm.userExamId = result.userExam.id;
                         vm.username = result.user.userName;
                         vm.lefttime = vm.userExam.remainingExamTime*60000;
-
+                        vm.consumedTime();
                         var _mul = result.mulChoicList;
                         if(_mul){
                             for (var i = 0; i < _mul.length; i++) {
@@ -255,11 +256,12 @@ var vm = new Vue({
             // 答案id字符串分解而得的数组
             var rightIdList = id.split(',');
             answer.forEach(val => answerIdList.push(val.id));
-            list.forEach(val => checkIndex.push(answerIdList.indexOf(val)+1));
-            rightIdList.forEach(val => rightIndex.push(answerIdList.indexOf(val)+1));
+            list.forEach(val => checkIndex.push(vm.optionIndex[answerIdList.indexOf(val)]));
+            rightIdList.forEach(val => rightIndex.push(vm.optionIndex[answerIdList.indexOf(val)]));
+            console.log(checkIndex, rightIndex)
             return {
-                checkIndex: checkIndex.sort((a,b) => a-b).join(' '),
-                rightIndex: rightIndex.sort((a,b) => a-b).join(' ')
+                checkIndex: checkIndex.sort((a,b) => a.charCodeAt()-b.charCodeAt()).join('、'),
+                rightIndex: rightIndex.sort((a,b) => a.charCodeAt()-b.charCodeAt()).join('、')
             }
         },
         // 收藏

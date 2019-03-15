@@ -10,44 +10,9 @@ var vm = new Vue({
         isSubmit: false,
         // 题目数据
         questionList: [],
-        pdList: [],
-        singleList: [],
         fillingList: [],
-        multiList: [],
         expressingList: [],
         // bar
-        barData: [
-            {
-                href: "#oneOption",
-                questionType: '单选题',
-                currentFinishedNum: 1,
-                totalNum: 50
-            },
-            {
-                href: "#multiOptions",
-                questionType: '多选题',
-                currentFinishedNum: 0,
-                totalNum: 10
-            },
-            {
-                href: "#filling",
-                questionType: '填空题',
-                currentFinishedNum: 0,
-                totalNum: 5
-            },
-            {
-                href: "#checking",
-                questionType: '判断题',
-                currentFinishedNum: 0,
-                totalNum: 5
-            },
-            {
-                href: "#expressing",
-                questionType: '论述题',
-                currentFinishedNum: 0,
-                totalNum: 5
-            }
-        ],
         creator: '凡凡',
         type: '综合类型',
         createdTime: '2019-02-12 13:25:10',
@@ -64,7 +29,9 @@ var vm = new Vue({
         oneOptionCheck:[],
         multiOptionsCheck: [],
         checkingCheck: [],
-        questionList: []
+        pdNum: 0,
+        singleNum: 0,
+        multiNum: 0
     },
     methods: {
         // created中执行以获取数据
@@ -80,9 +47,10 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.oneOptionList = result.pdList;
-                        vm.singleList = result.singleList;
-                        vm.multiList = result.multiList;
+                        vm.questionList = result.questionList;
+                        vm.singleNum = result.singleNum;
+                        vm.multiNum = result.multiNum;
+                        vm.pdNum = result.pdNum;
                         id = result.id;
                     } else {
                         alert(result.msg);
@@ -118,7 +86,6 @@ var vm = new Vue({
                 = 'modules/exerciseCenter/paper_index.html';*/
         },
 
-        // 修改后未用到的方法
         sure: function (index) {// 多选
             var obj = vm.questionList[index];
             var answerId = obj.answerId;

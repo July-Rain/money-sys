@@ -72,10 +72,10 @@
         <div class="content">
             <article class="main">
                 <div class="one-option">
-                    <div class="description" v-if="singleList.length">单选题 </div>
-                    <div class="question daliy" v-for="(question, index) in singleList" :class="{'question-background': (index%2 == 0)}">
+                    <div class="description" v-if="singleNum > 0">单选题 </div>
+                    <div class="question daliy" v-for="(question, index) in questionList.slice(0, singleNum)" :class="{'question-background': (index%2 == 0)}">
                         <p class="title"><a :name="index+1"></a>{{ index+1 }}.{{ question.content }}</p>
-                        <el-radio-group v-model="singleList[index]" :disabled="isSubmit">
+                        <el-radio-group v-model="questionList[index].userAnswerStr" :disabled="isSubmit">
                             <el-radio :label="answer.id" v-for="(answer, index) in question.options">
                                 {{ answer.questionContent }}
                             </el-radio>
@@ -89,10 +89,10 @@
                     </div>
                 </div>
                 <div class="multi-options">
-                    <div class="description" v-if="multiList.length">多选题 </div>
-                    <div class="question" v-for="(question, index) in multiList" :class="{'question-background': (index%2 == 0)}">
-                        <p class="title"><a :name="singleList.length+index+1"></a>{{ singleList.length+index+1 }}.{{ question.content }}</p>
-                        <el-checkbox-group v-model="multiList[index]" :disabled="isSubmit">
+                    <div class="description" v-if="multiNum > 0">多选题 </div>
+                    <div class="question" v-for="(question, index) in questionList.slice(singleNum, multiNum+singleNum)" :class="{'question-background': (index%2 == 0)}">
+                        <p class="title"><a :name="singleNum+index+1"></a>{{ singleNum+index+1 }}.{{ question.content }}</p>
+                        <el-checkbox-group v-model="questionList[singleNum+index].userAnswerList" :disabled="isSubmit">
                             <el-checkbox :label="answer.id" v-for="(answer, index) in question.options">
                                 {{ answer.questionContent }}
                             </el-checkbox>
@@ -106,10 +106,10 @@
                     </div>
                 </div>
                 <div class="checking">
-                    <div class="description" v-if="pdList.length">判断题 </div>
-                    <div class="question daliy" v-for="(question, index) in pdList" :class="{'question-background': (index%2 == 0)}">
-                        <p class="title"><a :name="singleList.length+multiList.length+index+1"></a>{{ singleList.length+multiList.length+index+1 }}.{{ question.content }}</p>
-                        <el-radio-group v-model="pdList[index]" :disabled="isSubmit">
+                    <div class="description" v-if="pdNum > 0">判断题 </div>
+                    <div class="question daliy" v-for="(question, index) in questionList.slice(multiNum+singleNum)" :class="{'question-background': (index%2 == 0)}">
+                        <p class="title"><a :name="multiNum+singleNum+index+1"></a>{{ multiNum+singleNum+index+1 }}.{{ question.content }}</p>
+                        <el-radio-group v-model="questionList[multiNum+singleNum+index].userAnswerStr" :disabled="isSubmit">
                             <el-radio :label="answer.id" v-for="(answer, index) in question.options">
                                 {{ answer.questionContent }}
                             </el-radio>
@@ -133,7 +133,10 @@
                 </div>
             </div>
             <div class="items">
-                <a class="anchor" v-for="(item, index) in questionList" :href="'#'+(index+1)" @click="select($event)">{{ index+1 }}</a>
+                <a class="anchor" v-for="(item, index) in questionList"
+                   :href="'#'+(index+1)">
+                    {{ index+1 }}
+                </a>
             </div>
             <div class="buttons">
                 <el-button type="primary" @click="submit">提交</el-button><el-button type="primary" plain class="save">保存，下次继续</el-button>

@@ -3,11 +3,11 @@ var vm = new Vue({
     data: function(){
         var data=[]
         var validateDate = function (rule, value, callback) {
-            if (vm.form.endDate === '') {
+            if (vm.planForm.endDate === '') {
                 callback(new Error('请输入结束日期'))
             } else {
-                if (!(new Date(Date.parse(vm.form.startDate(/-/g, "/")))<
-                    new Date(Date.parse( vm.form.endDate.replace(/-/g, "/"))))) {
+                if (!(new Date(Date.parse(vm.planForm.startDate.replace(/-/g, "/")))<
+                    new Date(Date.parse( vm.planForm.endDate.replace(/-/g, "/"))))) {
                     callback(new Error('结束日期必须大于开始日期'))
                 } else {
                     callback()
@@ -36,6 +36,7 @@ var vm = new Vue({
         formLabelWidth: '120px',
         fileList: [],
         diffList: [],
+        title:"",
         formRules: {//表单验证规则
             planName: [
                 {required: true, message: '请输入计划名称', trigger: 'blur'},
@@ -45,8 +46,11 @@ var vm = new Vue({
                 {required: true, message: '请输入计划开始日期', trigger: 'change'},
             ],
             endDate: [
-                { validator: validateDate,required: true, message: '请输入计划结束日期', trigger: 'change'}
+                { validator: validateDate,required: true, message: validateDate.callback, trigger: 'change'}
             ],
+            // endDate: [
+            //     { required: true, message: '请输入计划结束日期', trigger: 'change'}
+            // ],
             credit: [
                 {message: '请输入计划积分', trigger: 'change', required: true}
             ],
@@ -74,6 +78,10 @@ var vm = new Vue({
             console.log('当前页:' + val);
         },
         addPlan: function () {
+            vm.title="新增";
+            vm.planForm={
+
+            };
             vm.dialogFormVisible = true
         },
 
@@ -83,15 +91,15 @@ var vm = new Vue({
             })
         },
         handleEdit: function (index, row) {
-            var that = this;
+            vm.title="修改";
             $.ajax({
                 type: "GET",
                 url: baseURL + "schoolYearPlan/info/" + row.id,
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-                        that.form = result.data;
-                        that.dialogFormVisible = true;
+                        vm.planForm = result.data;
+                        vm.dialogFormVisible = true;
                     } else {
                         alert(result.msg);
                     }
@@ -135,14 +143,15 @@ var vm = new Vue({
         },
 
         save: function (formName) {
-            alert(formName);
+
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
                     $.ajax({
                         type: "POST",
                         url: baseURL + "schoolYearPlan/save",
                         contentType: "application/json",
-                        data: JSON.stringify(vm.form),
+                        data: JSON.stringify(vm.planForm),
+                        async:false,
                         success: function (result) {
                             if (result.code === 0) {
                                 vm.$alert('操作成功', '提示', {

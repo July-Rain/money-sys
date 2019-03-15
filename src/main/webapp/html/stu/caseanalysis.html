@@ -22,32 +22,17 @@
             font-size: 30px;
             color: #57A8DC;
         }
-
-        /* dialog videojs 样式 */
-        .el-dialog div.vjs-controls-enabled {
-            width: 50% !important;
-            height: 175px;
-            margin: 35px 100px 35px !important;
-        }
-
         img.avatar {
             width: 300px !important;
-            margin: 35px 100px 35px !important;
+            margin: 10px 0 10px !important;
         }
 
-        button.vjs-big-play-button {
-            top: 40% !important;
-            left: 50% !important;
-            outline: none !important;
+        video.video-js {
+            margin: 10px 0 10px;
         }
-
-        .el-dialog__wrapper textarea.el-textarea__inner{
-            height: 100px;
-        }
-        div.vjs-error {
-            width: 50%;
-            height: 200px;
-            margin: 20px 15px 20px 110px;
+        .el-loading-mask {
+            z-index: 2090;
+            height: 100vh;
         }
     </style>
 </head>
@@ -297,7 +282,7 @@
                                 </el-upload>
                             </el-form-item>
                             <el-form-item label="视频上传：" prop="caseContent">
-                                <video  id="video-uploaded" v-show="caseAna.caseContent !='' && videoFlag == false"
+                                <video  class="video-js" v-show="caseAna.caseContent !='' && videoFlag == false"
                                        :src="caseAna.caseContentUrl" class="avatar"
                                         controls="controls">您的浏览器不支持视频播放</video>
                                 <i v-if="caseAna.caseContent =='' && videoFlag == false" class="iconfont icon-shipin"></i>

@@ -12,8 +12,43 @@
         .content_audio audio{
             width: 100%;
         }
-        .title{
+        .video-card {
+            position: relative;
+            margin-left: 45px;
+        }
+        .video-card .title{
+            margin: 11px 0 11px 9px;
             cursor: default;
+            font-size: 17px;
+            color: #222222;
+        }
+        .video-card .stuCreat {
+            height: 10px;
+            font-family: PingFang-SC-Medium;
+            font-size: 12px;
+            font-weight: normal;
+            font-stretch: normal;
+            letter-spacing: 0px;
+            color: #999999;
+        }
+        .video-card .stuIssuer .icon-yonghutouxiang {
+            margin-right: 6px;
+            font-size: 14px;
+        }
+        .video-card div p:last-child.stuIssuer {
+            font-size: 14px;
+            color: #3e4e6f;
+        }
+        .video-card div p:last-child.stuIssuer .upload {
+            color: #999999;
+        }
+        .video-card .icons {
+            position: absolute;
+            left: 70%;
+            bottom: -9px;
+        }
+        .video-card .icons .iconfont {
+            margin-right: 4px;
         }
     </style>
 </head>
@@ -105,15 +140,15 @@
                                                 <source :src="item.contentUrl" controls="controls">
                                             </audio>
                                         </div>
-                                        <div style="padding: 14px 14px 0 14px;">
-                                            <p>
-                                                <span v-if="!item.isColl" @click="collect(item.id)">收藏</span>
-                                                <span v-if="item.isColl" @click="cancelCollect(item.id)">取消收藏</span>
-                                                <a href="javascript:;" class="title">{{item.stuTitle}}</a>
-                                            </p>
-                                            <p>
-                                                <span class="stuIssuer">{{item.stuIssuer}}</span>
-                                                <span class="stuCreat">{{item.stuIsstime}}</span>
+                                        <div class="video-card">
+                                            <div>
+                                                <p href="javascript:;" class="title">{{item.stuTitle}}</p>
+                                                <p class="stuCreat">{{item.stuIsstime}}</p>
+                                                <p class="stuIssuer"><i class="iconfont icon-yonghutouxiang"></i>{{item.stuIssuer}}&nbsp;<span class="upload">上传</span></p>
+                                            </div>
+                                            <p class="icons">
+                                                <span v-if="!item.isColl" @click="collect(item.id)" style="color: #ff6600;"><i class="iconfont icon-shoucang1"></i>已收藏</span>
+                                                <span v-if="item.isColl" @click="cancelCollect(item.id)" style="color: #bfbfbf;"><i class="iconfont icon-shoucang1"></i>收藏</span>
                                             </p>
                                         </div>
                                     </el-card>

@@ -124,6 +124,9 @@ ul li{
 .el-dialog .el-select>.el-input{
     width: 220px;
 }
+.el-dialog .el-select>.el-input.el-input--suffix {
+    width: 255px;
+}
 .el-pagination__sizes .el-select>.el-input{
     width: 100px;
 }
