@@ -9,7 +9,7 @@
         <div class="container">
             <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
                 <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
-                <el-breadcrumb-item>个人中心</el-breadcrumb-item>
+                <el-breadcrumb-item>管理中心</el-breadcrumb-item>
                 <el-breadcrumb-item>出题审核</el-breadcrumb-item>
             </el-breadcrumb>
             <el-table
@@ -71,9 +71,19 @@
                         header-align="center"
                         align="center">
                     <template slot-scope="scope">
-                        <el-button   :disabled="'0'!=scope.row.status" type="primary" size="mini" @click="examine(scope.row.id)">
-                            审核
-                        </el-button>
+
+                        <el-popover
+                                v-if="'0'==scope.row.status"
+                                placement="right"
+                                trigger="hover"
+                                content="审核">
+                            <i class="iconfont icon-shenhe tabIcon"
+                               slot="reference"
+                               @click="examine(scope.row.id)"
+                               style="color: #119e0a;">
+                            </i>
+                        </el-popover>
+
                     </template>
                 </el-table-column>
             </el-table>
@@ -88,7 +98,7 @@
                     :total="formInline.count">
             </el-pagination>
 
-            <el-dialog title="试题编辑" :visible.sync="dialogFormVisible">
+            <el-dialog title="审核" :visible.sync="dialogFormVisible">
                 <el-form :model="form" label-width="100px" size="small">
                     <el-col :span="24">
                         <el-form-item label="试题描述：">
@@ -189,7 +199,8 @@
                 </el-form>
 
                 <div slot="footer" class="dialog-footer" :label-width="formLabelWidth">
-                    <el-button type="primary" @click="saveExamine(1,0)">审核不通过</el-button>
+                    <el-button @click="dialogFormVisible = false">取消</el-button>
+                    <el-button type="danger" @click="saveExamine(1,0)">审核不通过</el-button>
                     <el-button type="primary" @click="saveExamine(1,1)">审核通过</el-button>
                 </div>
             </el-dialog>
@@ -278,7 +289,7 @@
                 </div>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogStuMedia = false">取消</el-button>
-                    <el-button type="primary" @click="saveExamine(2,0)">审核不通过</el-button>
+                    <el-button type="danger" @click="saveExamine(2,0)">审核不通过</el-button>
                     <el-button type="primary" @click="saveExamine(2,1)">审核通过</el-button>
                 </div>
             </el-dialog>

@@ -109,6 +109,11 @@ var vm = new Vue({
                             message: '佩戴成功',
                             type: 'success'
                         });
+
+
+                        parent.window.vm.iconString=row.badge;
+
+
                          vm.reload();
                     } else {
                         alert(result.msg);

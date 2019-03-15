@@ -110,5 +110,15 @@ public interface LearnTasksService extends AbstractService<LearnTasksEntity> {
     
     int countTask (Map<String, Object> params);
 
+    /**
+     * @Author MengyuWu
+     * @Description 根据任务的id查看其中的任务类型
+     * @Date 18:40 2019-3-14
+     * @Param [taskId]
+     * @return java.lang.String
+     **/
+
+    String listTypeByTaskId(String taskId);
+
 
 }

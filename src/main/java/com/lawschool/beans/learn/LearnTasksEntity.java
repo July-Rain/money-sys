@@ -77,6 +77,9 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
     private String isOver;//是否过期  0-过期 1-正常  2-未开始
 
     @TableField(exist = false)
+    private String sourceType;//来源类型
+
+    @TableField(exist = false)
     private List<TaskDesicEntity> taskContentList=new ArrayList<TaskDesicEntity>();//法律法规内容arr
 
     public List<TaskDesicEntity> getTaskContentList() {
@@ -268,5 +271,13 @@ public class LearnTasksEntity extends DataEntity<LearnTasksEntity> {
 
     public void setIsOver(String isOver) {
         this.isOver = isOver;
+    }
+
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
     }
 }
