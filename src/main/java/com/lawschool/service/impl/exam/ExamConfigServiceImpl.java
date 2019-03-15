@@ -74,6 +74,8 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 			examConfigDao.deleteById(id);
 			//删除关联关系表
 			deleteRelated(id);
+			//删除权限关联表
+			authService.delete(new EntityWrapper<AuthRelationBean>().eq("FUNCTION_ID", id));
 			return Result.ok();
 		}
 	}
@@ -82,6 +84,7 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	 * 根据考试配置主键删除关联关系表
 	 * @param id
 	 */
+	@Override
 	public void deleteRelated(String id) {
 		// 删除考试详情表
 		examDetailDao.delete(new EntityWrapper<ExamDetail>().eq("EXAM_CONFIG_ID", id));
@@ -89,8 +92,6 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 		examQueConfigDao.delete(new EntityWrapper<ExamQueConfig>().eq("EXAM_CONFIG_ID", id));
 		//删除考试试卷表
 		examQuestionsDao.delete(new EntityWrapper<ExamQuestions>().eq("EXAM_CONFIG_ID", id));
-		//删除权限关联表
-		authService.delete(new EntityWrapper<AuthRelationBean>().eq("FUNCTION_ID", id));
 
 	}
 

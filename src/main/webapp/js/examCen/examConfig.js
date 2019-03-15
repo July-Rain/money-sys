@@ -222,8 +222,7 @@ var vm = new Vue({
             changeQuestionDialog :false,
             tableData3: [],
             queformInline:{
-                pageNo: 1,
-                pageSize: 1,
+                page: 1,
                 limit: 10,
                 count: 0,
                 comContent:'',
@@ -344,6 +343,18 @@ var vm = new Vue({
                         vm.mulMultipleSelection = result.mulChoicList;
                         vm.judgeMultipleSelection = result.judgeList;
                         vm.subMultipleSelection = result.subjectList;
+                        for (var i = 0 ; i< vm.sinMultipleSelection.length; i++){
+                            vm.sinMultIds.push(vm.sinMultipleSelection[i].id);
+                        }
+                        for (var i = 0 ; i< vm.mulMultipleSelection.length; i++){
+                            vm.mulMultIds.push(vm.mulMultipleSelection[i].id);
+                        }
+                        for (var i = 0 ; i< vm.judgeMultipleSelection.length; i++){
+                            vm.judgeMultIds.push(vm.judgeMultipleSelection[i].id);
+                        }
+                        for (var i = 0 ; i< vm.subMultipleSelection.length; i++){
+                            vm.subMultIds.push(vm.subMultipleSelection[i].id);
+                        }
                     } else {
                         alert(result.msg);
                     }
@@ -354,7 +365,7 @@ var vm = new Vue({
             if(operate==='0') {
                 //新增
                 window.parent.vm.dialogAdd = false
-                if((vm.examConfig.id!=null||vm.examConfig.id=='')&&vm.handleType==='add'){
+               /* if((vm.examConfig.id!=null||vm.examConfig.id=='')&&vm.handleType==='add'){
                     $.ajax({
                         type: "POST",
                         url: baseURL + 'exam/config/delete?id='+vm.examConfig.id,
@@ -364,7 +375,7 @@ var vm = new Vue({
                             window.parent.vm.reload();
                         }
                     });
-                }
+                }*/
             }else if (operate==='1'){
                 //查看
                 window.parent.vm.dialogView = false
@@ -585,11 +596,11 @@ var vm = new Vue({
 
         <!-- 自主出题开始-->
         quehandleSizeChange: function (val) {
-            this.queformInline.pageSize = val;
+            this.queformInline.limit = val;
             this.queReload();
         },
         quehandleCurrentChange:function(val){
-            this.queformInline.currPage = val;
+            this.queformInline.page = val;
             this.queReload();
         },
         setExamFn: function (index,row) {
@@ -654,7 +665,6 @@ var vm = new Vue({
             });
         },
         queReload : function () {
-            console.info("vm.mulMultIds=",vm.mulMultIds)
             var allIds = [];
             vm.queformInline.ids=[];
             allIds = allIds.concat(vm.sinMultIds).concat(vm.mulMultIds).concat(vm.judgeMultIds).concat(vm.subMultIds);
@@ -669,7 +679,6 @@ var vm = new Vue({
             }else {
                 url = 'exam/config/getQueList';
             }
-            console.info(JSON.stringify(vm.queformInline.ids))
             $.ajax({
                 type: "GET",
                 url: baseURL + url,
@@ -755,8 +764,12 @@ var vm = new Vue({
                             vm.setExam = false;
                             if (operate==0){
                                 window.parent.vm.dialogAdd = false;
+                            }else if(operate==2){
+                                window.parent.vm.dialogEdit = false;
                             }
                             window.parent.vm.reload();
+                        }else {
+                            alert(result.msg);
                         }
                     }
                 })
@@ -787,53 +800,7 @@ var vm = new Vue({
         openView : function(){
             this.setExam = true;
         },
-        getSummaries(param) {
-            const { columns, data } = param;
-            const sums = [];
-            let values=[];
-            columns.forEach((column, index) => {
-                if (index === 0) {
-                    sums[index] = '合计';
-                    return;
-                }else if(index === 1){
-                    sums[index] = '';
-                    return;
-                }
-              //  const values = data.map(item => Number(item[column.property]));
-               if (column.property==='questionScore'){
-                    console.info(111);
-                    values =data.map(item => Number(item.questionNumber*item.everyQuestionScore));
-                    console.info(values);
-                }
-                if (column.property==='questionScore'){
-                    sums[index] = values.reduce((prev, curr) => {
-                        const value = Number(curr);
-                        if (!isNaN(value)) {
-                            return prev + curr;
-                        } else {
-                            return prev;
-                        }
-                    }, 0);
-                    sums[index] ;
-                }else {
-                    sums[index] = '';
-                }
-               /* if (!values.every(value => isNaN(value))) {
-                    sums[index] = values.reduce((prev, curr) => {
-                        const value = Number(curr);
-                        if (!isNaN(value)) {
-                            return prev + curr;
-                        } else {
-                            return prev;
-                        }
-                    }, 0);
-                    sums[index] ;
-                } else {
-                    sums[index] = '';
-                }*/
-            });
-            return sums;
-        },
+
         preview : function(randomQuesData){
             console.info(randomQuesData);
             for(i=0;i<randomQuesData.length;i++){
@@ -852,19 +819,6 @@ var vm = new Vue({
                 var msg ='';
                 var subScore=0;
                 for(var i= 0;i<randomQuesData.length;i++){
-                   /* if(randomQuesData[i].questionNumber==null||randomQuesData[i].questionNumber==''){
-                        isRight = false;
-                        msg = '题目数量不能为空';
-                        break;
-                    }else if(randomQuesData[i].questionScore==null||randomQuesData[i].questionScore==''){
-                        isRight = false;
-                        msg = '题目分值不能为空';
-                        break;
-                    }else if(randomQuesData[i].questionType==null||randomQuesData[i].questionType==''){
-                        isRight = false;
-                        msg = '题目类型不能为空';
-                        break;
-                    }*/
                     subScore +=parseFloat(randomQuesData[i].questionScore);
                 }
                 if(!isRight){
@@ -943,8 +897,13 @@ var vm = new Vue({
                         vm.genRandQue = false;
                         if (operate==0){
                             window.parent.vm.dialogAdd = false;
+                        }else if(operate==2){
+                            window.parent.vm.dialogEdit = false;
                         }
                         window.parent.vm.reload();
+                    }else {
+                        alert(result.msg);
+                        vm.genRandQue = false;
                     }
                 }
             })
@@ -1005,8 +964,13 @@ var vm = new Vue({
                                 vm.genRandQue = false;
                                 if (operate==0){
                                     window.parent.vm.dialogAdd = false;
+                                }else if(operate==2){
+                                    window.parent.vm.dialogEdit = false;
                                 }
                                 window.parent.vm.reload();
+                            }else{
+                                alert(result.msg);
+                                vm.genRandQue = false;
                             }
                         }
                     })
@@ -1018,6 +982,12 @@ var vm = new Vue({
         },
         resetQueForm: function (name) {
             this.$refs[name].resetFields();
+            this.queformInline.page= 1;
+            this.queReload();
+        },
+        //序列号计算
+        indexMethod: function (index) {
+            return index + 1 + (vm.queformInline.page - 1) * vm.queformInline.limit;
         },
         saveChange: function () {
             var _index = this.changeIndex.index;
