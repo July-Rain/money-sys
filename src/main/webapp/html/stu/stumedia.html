@@ -200,6 +200,16 @@
                                 <el-popover
                                         placement="right"
                                         trigger="hover"
+                                        content="采纳">
+                                    <i class="iconfont icon-xiugaimima tabIcon"
+                                       slot="reference"
+                                       @click="handleOpen(scope.$index, scope.row)"
+                                       style="color: #119e0a;">
+                                    </i>
+                                </el-popover>
+                                <el-popover
+                                        placement="right"
+                                        trigger="hover"
                                         content="编辑">
                                     <i class="iconfont icon-xiugaimima tabIcon"
                                        slot="reference"

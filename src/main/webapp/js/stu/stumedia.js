@@ -330,6 +330,31 @@ var vm = new Vue({
             });
 
         },
+        handleOpen:function(index, row){
+            var that = this
+            this.$confirm('采纳后该数据为公开数据, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(function () {
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + 'stumedia/updateOpen?stuId='+row.id,
+                    async: true,
+                    contentType: "application/json",
+                    success: function (result) {
+                        vm.reload();
+                        that.$message({
+                            type: 'success',
+                            message: '公开成功!'
+                        });
+
+                    }
+                });
+            }).catch(function () {
+            });
+
+        },
         closeDia: function () {
             this.closePlay();
             this.dialogStuMedia = false;
