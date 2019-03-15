@@ -87,6 +87,11 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         learnTask.setCreateUser(user.getId());
         learnTask.setCreateTime(new Date());
         learnTask.setDeptCode(user.getOrgCode());
+        learnTask.setIsOver("1");
+        learnTask.setIsUse("0");
+        if(UtilValidate.isEmpty(learnTask.getIsSelf())){
+            learnTask.setIsSelf("0");
+        }
 
         int countUser=0;
         //存权限表

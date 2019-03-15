@@ -2,6 +2,7 @@ var editor = null;
 var vm = new Vue({
     el: "#app",
     data: {
+        dialogLaw:false,//法律法规主题分类弹窗
         idArr:[],// 部门Tree默认展开数据
         tableData: [],
         formInline: {
@@ -27,6 +28,11 @@ var vm = new Vue({
             ordersort: '',
             isAnswer: 0
         },
+        defaultProps: { // el-tree
+            children: 'list',
+            label: 'classifyName'
+        },
+        lawData: [],//法律知识库分类树 --去除全部的
         form: {
             typeId: '',
             questionType: '',
@@ -43,6 +49,7 @@ var vm = new Vue({
             answerList: [],
             status:'1',
         },
+        lawCheckData:[],//法律法规回显表格数据
         importFileUrl: baseURL + "sys/upload",//文件上传url
         addConfigFlag: false,
         videoFlag: false,
@@ -89,7 +96,7 @@ var vm = new Vue({
 
         },//人员查询
          lookType:true,
-
+        multipleLawSelection: [],//选中法律法规信息
         rules: {//表单验证规则
 
             comContent: [
@@ -149,7 +156,33 @@ var vm = new Vue({
         },
     },
     methods: {
+        confimLaw:function(){
 
+            this.multipleLawSelection = this.$refs.lawTree.getCheckedNodes();
+            if(this.multipleLawSelection.length>5){
+                alert("最多只能选择5个法律法规分类");
+                return;
+            }
+            vm.stuMedia.caseLawid = "";
+            vm.stuMedia.caseLawname = "";
+            for (var i = 0; i < this.multipleLawSelection.length; i++) {
+                if (!this.stuMedia.stuLawid) {
+                    this.stuMedia.stuLawid = this.multipleLawSelection[i].classifyId;
+                    this.stuMedia.stuKnowledge = this.multipleLawSelection[i].classifyName;
+                } else {
+                    this.stuMedia.stuLawid += "," + this.multipleLawSelection[i].classifyId;
+                    this.stuMedia.stuKnowledge += "," + this.multipleLawSelection[i].classifyName;
+                }
+            }
+            this.dialogLaw = false;
+        },
+        cancelLaw:function(){
+            this.dialogLaw = false;
+        },
+        chooseLaw:function(){
+            //选择法律法规主题分类
+            this.dialogLaw = true;
+        },
 //序列号计算
         indexMethod: function (index) {
             return index + 1 + (vm.formInline.page - 1) * vm.formInline.limit;
@@ -308,6 +341,7 @@ var vm = new Vue({
                 },
                 contentType: "application/json",
                 success: function (result) {
+
                     if (result.code == 0) {
                         vm.manu = result.data;
                         var type = vm.manu.type;
@@ -318,6 +352,16 @@ var vm = new Vue({
                         } else {
                             vm.stuMedia = vm.manu.stu;
                             vm.manu.test = {};
+                            vm.deptCheckData = result.data.stu.deptArr;
+                            vm.lawCheckData = result.data.stu.stuLawid.split(",");
+
+                            if (vm.stuMedia.stuType != 'pic' && vm.stuMedia.comContent) {
+                                vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.comContent;
+                                if (vm.stuMedia.videoPicAcc) {
+                                    vm.stuMedia.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.videoPicAcc;
+                                }
+
+                            }
                             vm.dialogStuMedia = true;
                         }
                     } else {
@@ -550,7 +594,7 @@ var vm = new Vue({
         },
         uploadVideoProcess(event, file, fileList) {
             this.videoFlag = true;
-            this.videoUploadPercent = file.percentage.toFixed(2);
+            this.videoUploadPercent = parseInt(file.percentage.toFixed(2));
         },
         beforeAvatarUpload: function (file) {
             var isLt10M = file.size / 1024 / 1024 < 100;
@@ -565,11 +609,25 @@ var vm = new Vue({
 
         },
         uploadSuccess: function (response, file, fileList) {
+            // this.videoFlag = false;
+            // this.videoUploadPercent = 0;
+            // if (response.code == 0) {
+            //     vm.form.video = response.accessoryId;
+            //     vm.form.videoUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
+            // } else {
+            //     this.$message.error('视频上传失败，请重新上传！');
+            // }
             this.videoFlag = false;
             this.videoUploadPercent = 0;
             if (response.code == 0) {
-                vm.form.video = response.accessoryId;
-                vm.form.videoUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
+                vm.stuMedia.comContent = response.accessoryId;
+                vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
+                setTimeout(function () {
+                    vm.stuMedia.stuTime = document.getElementsByClassName("avatar")[0].duration;
+                    vm.stuMedia.stuTime = document.getElementsByClassName("avatar")[0].duration;
+                    //that.initPlayer();
+                    //console.info("啊啊啊",document.getElementsByClassName("avatar")[0].currentTime,document.getElementsByClassName("avatar")[0].duration);
+                }, 800)
             } else {
                 this.$message.error('视频上传失败，请重新上传！');
             }
@@ -716,7 +774,32 @@ var vm = new Vue({
     created: function () {
         this.$nextTick(function () {
             vm.refresh();
-
+            //法律分类树数据
+            $.ajax({
+                type: "POST",
+                url: baseURL + "law/alltree",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.treeData = result.classifyList;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+            //去除全部
+            $.ajax({
+                type: "POST",
+                url: baseURL + "law/alltree?flag=true",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.lawData = result.classifyList;
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
             $.ajax({
                 type: "GET",
                 url: baseURL + "exercise/random/dict",

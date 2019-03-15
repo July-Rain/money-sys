@@ -209,4 +209,17 @@ public class StuMediaController extends AbstractController {
         recordService.countTime(stuId,stuFrom,playTime,finishFlag,getUser(),taskId,type);
         return Result.ok();
     }
+    /**
+     * @Author MengyuWu
+     * @Description 公开学习资料
+     * @Date 13:49 2019-3-15
+     * @Param [stuId]
+     * @return com.lawschool.util.Result
+     **/
+    
+    @RequestMapping("/updateOpen")
+    public Result updateOpen(String stuId){
+        stuMediaService.updateOpen(stuId,getUser());
+        return  Result.ok();
+    }
 }
