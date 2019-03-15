@@ -93,6 +93,7 @@ public class PaperExerciseController extends AbstractController {
                 // 单选
                 singleNum++;
                 form.setUserAnswerStr(form.getUserAnswer());
+                form.setUserAnswerList(new ArrayList<>());
 
             } else if("10005".equals(type)){
                 // 多选
@@ -106,6 +107,7 @@ public class PaperExerciseController extends AbstractController {
             } else {
                 pdNum++;
                 form.setUserAnswerStr(form.getUserAnswer());
+                form.setUserAnswerList(new ArrayList<>());
             }
         }
 
