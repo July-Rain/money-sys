@@ -478,10 +478,6 @@ var vm = new Vue({
             vm.floatIcon = window.parent.document.getElementById('individual');
             vm.floatIcon.style.display = 'none';
             console.log(vm.floatIcon)
-            // vm.floatIcon = window.parent.document.getElementById('individual');
-            // console.log(vm.floatIcon);
-            // vm.floatIcon.style.display = 'none';
-            // vm.refresh();
             if (examStatus == '0') {
                 //开始考试
                 vm.startExam();
