@@ -67,19 +67,20 @@ public class ExamConfigController extends AbstractController {
     @RequestMapping(value = "/examConfig/preview", method = RequestMethod.POST)
     private Result examConfigPre(@RequestBody ExamConfigForm examConfigForm) {
 
-        Result res = new Result();
+        Result res ;
         try {
             res = newExamConfigService.preview(examConfigForm);
-            return res;
+
         } catch (Exception e) {
-            return  Result.error(e.getMessage());
+            return Result.error(e.getMessage());
         }
+        return res;
     }
 
 
     @SysLog("阅卷设置")
     @RequestMapping(value = "/checkset", method = RequestMethod.POST)
-    private  Result checkset(@RequestBody CheckSetForm checkSetForm){
+    private Result checkset(@RequestBody CheckSetForm checkSetForm) {
 
         System.out.println(checkSetForm.toString());
         examConfigService.checkset(checkSetForm);
@@ -87,58 +88,69 @@ public class ExamConfigController extends AbstractController {
     }
 
     @RequestMapping(value = "/getCheckSetting", method = RequestMethod.GET)
-    private Result getCheckSetting(String id ){
+    private Result getCheckSetting(String id) {
 
         CheckSetForm checkSetForm = examConfigService.getCheckSetting(id);
-         return Result.ok().put("checkSetForm",checkSetForm);
+        return Result.ok().put("checkSetForm", checkSetForm);
     }
 
-    @RequestMapping( value = "/getExamDetail", method = RequestMethod.GET)
-    private Result  getExamDetail(String id){
+    @RequestMapping(value = "/getExamDetail", method = RequestMethod.GET)
+    private Result getExamDetail(String id) {
 
-        Result result = examConfigService.getOneExam(id );
+        Result result = examConfigService.getOneExam(id);
 
         return result;
     }
 
     @SysLog("保存考试配置")
-    @RequestMapping(value = "/saveOrUpdate" , method = RequestMethod.POST)
+    @RequestMapping(value = "/saveOrUpdate", method = RequestMethod.POST)
     private Result saveOrUpdate(
             @RequestBody ExamConfig examConfig) {
 
-        Result   res = newExamConfigService.saveOrUpdate(examConfig,getUser());
+        Result res = newExamConfigService.saveOrUpdate(examConfig, getUser());
 
         return res;
     }
 
     @SysLog("删除考试配置")
-    @RequestMapping(value = "/delete" , method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     private Result delete(
             @RequestParam("id") String id) {
 
-           Result res = examConfigService.deleteExamConfig(id);
+        Result res = examConfigService.deleteExamConfig(id);
 
         return res;
     }
 
 
     @SysLog("生成自主考试配置")
-    @RequestMapping( value = "/examConfig/genAutoQue" , method = RequestMethod.POST)
-    private Result genAutoQue(@RequestBody ExamConfigForm examConfigForm){
+    @RequestMapping(value = "/examConfig/genAutoQue", method = RequestMethod.POST)
+    private Result genAutoQue(@RequestBody ExamConfigForm examConfigForm) {
         Result result = newExamConfigService.genAutoQue(examConfigForm);
         return result;
     }
 
     @SysLog("生成随机考试配置")
-    @RequestMapping( value = "/examConfig/genRandomQue" , method = RequestMethod.POST)
-    private Result genRandomQue(@RequestBody ExamConfigForm examConfigForm){
-        Result result = newExamConfigService.genRandomQue(examConfigForm);
+    @RequestMapping(value = "/examConfig/genRandomQue", method = RequestMethod.POST)
+    private Result genRandomQue(@RequestBody ExamConfigForm examConfigForm) {
+        Result result = null;
+        try {
+            result = newExamConfigService.genRandomQue(examConfigForm);
+        } catch (Exception e) {
+            return Result.error(e.getMessage());
+        }
         return result;
     }
 
-    @RequestMapping( value = "/examConfig/genRanQueAfterPreview" , method = RequestMethod.POST)
-    private Result genRanQueAfterPreview(@RequestBody ExamConfigForm examConfigForm){
-        Result result = newExamConfigService.genRanQueAfterPreview(examConfigForm);
+    @RequestMapping(value = "/examConfig/genRanQueAfterPreview", method = RequestMethod.POST)
+    private Result genRanQueAfterPreview(@RequestBody ExamConfigForm examConfigForm) {
+        Result result;
+        try {
+            result = newExamConfigService.genRanQueAfterPreview(examConfigForm);
+
+        } catch (Exception e) {
+            return Result.error(e.getMessage());
+        }
         return result;
     }
 
@@ -186,7 +198,7 @@ public class ExamConfigController extends AbstractController {
     }
 
     @RequestMapping(value = "/getQueList", method = RequestMethod.GET)
-    public Result getQueList(@RequestParam Map<String, Object> params, @RequestParam("ids[]")List lists) {
+    public Result getQueList(@RequestParam Map<String, Object> params, @RequestParam("ids[]") List lists) {
 
         String typeId = (String) params.get("typeId");
         String questionDifficulty = (String) params.get("questionDifficulty");
@@ -207,7 +219,7 @@ public class ExamConfigController extends AbstractController {
 
         Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), testQuestions);
         List<TestQuestions> list = page.getList();
-        for(TestQuestions tes : list){
+        for (TestQuestions tes : list) {
             tes.setAnswerList(answerService.getAnswerByQid(tes.getId()));
         }
         page.setList(list);

@@ -42,4 +42,6 @@ public interface ExamConfigService extends AbstractService<ExamConfig> {
 
     Result getOneExam(String id );
 
+    void deleteRelated(String examConfigId);
+
 }

@@ -60,6 +60,9 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
     @Autowired
     private AnswerService answerService;
 
+    @Autowired
+    private ExamConfigService examConfigService;
+
     @Override
     public Result saveOrUpdate(ExamConfig examConfig, User user) {
 
@@ -105,6 +108,7 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
     public Result genAutoQue(ExamConfigForm examConfigForm) {
         String id = examConfigForm.getId();
         ExamConfig examConfig = dao.selectById(id);
+        examConfigService.deleteRelated(examConfig.getId());
         ExamDetail examDetail = saveExamDetail(examConfig.getId());
         examDetailDao.insert(examDetail);
         List<TestQuestions> sinMultipleSelection = examConfigForm.getSinMultipleSelection();
@@ -131,7 +135,7 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
     }
 
     @Override
-    public Result genRandomQue(ExamConfigForm examConfigForm) {
+    public Result genRandomQue(ExamConfigForm examConfigForm) throws Exception {
         String id = examConfigForm.getId();
         ExamConfig examConfig = dao.selectById(id);
         int examNum = 0;
@@ -139,6 +143,7 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
         for (ExamQueConfig examQueConfig : examQueList){
             examNum += examQueConfig.getQuestionNumber();
         }
+        examConfigService.deleteRelated(examConfig.getId());
         if ("10027".equals(examConfig.getGroupForm())) {
             //统一组卷，生成一套试卷
             ExamDetail examDetail = saveExamDetail(examConfig.getId());
@@ -213,12 +218,17 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
      * @param num   生成题目数量
      * @return
      */
-    private List<String> getIdList(ExamQueConfig examQueConfig,int num) {
+    private List<String> getIdList(ExamQueConfig examQueConfig,int num) throws Exception {
         Map<String, Object> paramsMap = new HashMap<String, Object>();
         paramsMap.put("specialKnowledgeArr", examQueConfig.getSpecialKnowledgeArr());
         paramsMap.put("questionType", examQueConfig.getQuestionType());
         paramsMap.put("num", num);
         List<String> idList = testQuestionService.findByNum(paramsMap);
+        if(idList.size()<num){
+            String typeName = getTypeName(examQueConfig.getQuestionType());
+            String msg = "题型“"+typeName+"”在此条件下题库中题目数量不足，目前题库中共有"+idList.size()+"题。";
+            throw new Exception(msg);
+        }
         return idList;
     }
 
@@ -247,7 +257,7 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
      * @return
      */
     @Override
-    public Result preview(ExamConfigForm examConfigForm) {
+    public Result preview(ExamConfigForm examConfigForm) throws Exception {
         List<TestQuestions> sinList = new ArrayList<>();  //单选列表
         List<TestQuestions> mulList = new ArrayList<>(); //多选列表
         List<TestQuestions> judList = new ArrayList<>();    //判断
@@ -285,11 +295,12 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
      * @return
      */
     @Override
-    public Result genRanQueAfterPreview(ExamConfigForm examConfigForm) {
+    public Result genRanQueAfterPreview(ExamConfigForm examConfigForm) throws Exception {
         //考试配置ID
         String id = examConfigForm.getId();
         //获取考试配置详情
         ExamConfig examConfig = dao.selectById(id);
+        examConfigService.deleteRelated(examConfig.getId());
         //获取必考题目列表
         List<String> mustQueIdList = examConfigForm.getMustQueList();
         //获取所有必考题目详情
@@ -338,7 +349,7 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
 
     private void generateNumExamAfterPreview(int num, String examConfigId,
                                              List<ExamQueConfig> examQueList,List<String> sinIdList,
-                                             List<String> mulIdList,List<String> judIdList , List<String> subIdList){
+                                             List<String> mulIdList,List<String> judIdList , List<String> subIdList) throws Exception{
         for (ExamQueConfig examQueConfig : examQueList) {
             //保存考试题目配置表
             saveExamQueConfig(examConfigId, examQueConfig);
@@ -374,7 +385,7 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
         }
     }
 
-    private void generateNumExam(int num, String examConfigId, List<ExamQueConfig> examQueList) {
+    private void generateNumExam(int num, String examConfigId, List<ExamQueConfig> examQueList) throws Exception {
         for (ExamQueConfig examQueConfig : examQueList) {
             //保存考试题目配置表
             saveExamQueConfig(examConfigId, examQueConfig);
@@ -389,6 +400,11 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
                 // 根据配置从题库中获取
                 //根据考试配置获取题目ID
                 List<String> idLists = getIdList(examQueConfig, examQueConfig.getQuestionNumber());
+                if (idLists.size()<examQueConfig.getQuestionNumber()){
+                    String typeName = getTypeName(examQueConfig.getQuestionType());
+                    String msg = "题型“"+typeName+"”在此条件下题库中题目数量不足，目前题库中共有"+idLists.size()+"题。";
+                    throw new Exception(msg);
+                }
                 saveExamQueByIdList(idLists, examConfigId, ed.getId(), examQueConfig.getQuestionScore() / examQueConfig.getQuestionNumber());
             }
         }
@@ -407,6 +423,18 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
             tes.setAnswerList(answerService.getAnswerByQid(tes.getId()));
         }
         return  eqList;
+    }
+
+    private String getTypeName(String type){
+        if( "10004".equals(type) ){
+            return "单选题";
+        }else if( "10005".equals(type) ){
+            return "多选题";
+        }else if("10006".equals(type)){
+            return "判断题";
+        }else{
+            return "主观题";
+        }
     }
 
 }
