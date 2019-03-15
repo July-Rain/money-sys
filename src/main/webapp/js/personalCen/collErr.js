@@ -195,7 +195,10 @@ var vm = new Vue({
                         vm.formInline.count = result.page.count;
                         vm.num = result.num;
                     } else {
-                        alert(result.msg);
+                        vm.$message({
+                            message: result.msg,
+                            type: 'warning'
+                        });
                     }
                 }
             });
@@ -210,7 +213,6 @@ var vm = new Vue({
                     if(result.code === 0){
                         vm.reload();
                     }else{
-                        alert(result.msg);
                         vm.$message({
                             message: result.msg,
                             type: 'warning'
