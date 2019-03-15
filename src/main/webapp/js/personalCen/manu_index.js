@@ -3,6 +3,7 @@ var vm = new Vue({
     el: "#app",
     data: {
         dialogLaw:false,//法律法规主题分类弹窗
+        videoUploadPercent: 0,
         idArr:[],// 部门Tree默认展开数据
         tableData: [],
         formInline: {
@@ -113,6 +114,9 @@ var vm = new Vue({
             stuTitle: [
                 {required: true, message: '请输入标题', trigger: 'blur'},
                 {max: 100, message: '最大长度100', trigger: 'blur'}
+            ],
+            stuKnowledge: [
+                {required: true, message: '请选择法律主题分类', trigger: 'blur'},
             ],
             stuPoliceclass: [
                 {required: true, message: '请选择所属警种', trigger: 'blur'},
@@ -590,6 +594,32 @@ var vm = new Vue({
 
         },
         handleExceed: function () {
+
+        },
+        closeDia: function () {
+            this.closePlay();
+            this.dialogStuMedia = false;
+            vm.reload();
+        },
+        closePlay:function(){
+            //关闭播放器
+            //关闭页面时 如果有视频或者音频暂停播放
+            //播放时暂停别的正在播放的音频
+            var player;
+            if(vm.stuMedia.stuType=='audio'){
+                player = document.getElementById("audio");
+
+            }else if(vm.stuMedia.stuType=='video'){
+                player = document.getElementById("video");
+            }
+            if(player!==null&&vm.stuMedia.stuType!='pic'){
+                //检测播放是否已暂停.audio.paused 在播放器播放时返回false.在播放器暂停时返回true
+
+                if(!player.paused)
+                {
+                    player.pause();// 这个就是暂停//audio.play();// 这个就是播放
+                }
+            }
 
         },
         uploadVideoProcess(event, file, fileList) {

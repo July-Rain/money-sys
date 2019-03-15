@@ -44,6 +44,14 @@ var vm = new Vue({
         onSubmit: function () {
             this.reload();
         },
+        viewExam : function (index,row) {
+            var parentWin = window.parent;
+            var id = row.id;
+            var examStatus = row.examStatus;
+            var userExamId = row.userExamId==null?'':row.userExamId;
+            parentWin.document.getElementById("container").src
+                = 'modules/personalCen/myScoreReport.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
+        },
         handleSizeChange: function (event) {
             vm.formInline.limit = event;
             this.reload();

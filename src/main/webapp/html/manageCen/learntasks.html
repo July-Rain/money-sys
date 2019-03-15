@@ -367,6 +367,8 @@
                                 :disabled="!isEdit"
                                 v-model="learnTasks.startTime"
                                 type="date"
+                                format="yyyy年MM月dd日"
+                                value-format="yyyy-MM-dd"
                                 size="mini"
                                 placeholder="开始日期">
                         </el-date-picker>
@@ -376,6 +378,8 @@
                                 :disabled="!isEdit"
                                 v-model="learnTasks.endTime"
                                 type="date"
+                                format="yyyy年MM月dd日"
+                                value-format="yyyy-MM-dd"
                                 size="mini"
                                 placeholder="结束日期">
                         </el-date-picker>

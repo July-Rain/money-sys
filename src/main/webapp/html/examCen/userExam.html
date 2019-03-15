@@ -62,6 +62,7 @@
                                     align="center"
                                     prop="examName"
                                     label="试卷名称"
+                                    show-overflow-tooltip
                             >
                             </el-table-column>
                             <el-table-column
@@ -70,6 +71,16 @@
                                     label="试卷类型"
                                     width="140"
                             >
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="isMustTest"
+                                    label="是否必考"
+                                    width="100"
+                            ><template slot-scope="scope">
+                                <el-tag v-if="scope.row.isMustTest=='10029'" size="small" type="danger">是</el-tag>
+                                <el-tag v-if="scope.row.isMustTest=='10030'" size="small" type="danger">否</el-tag>
+                                </template>
                             </el-table-column>
                             <el-table-column
                                     align="center"
@@ -91,14 +102,14 @@
                                     align="center"
                                     prop="startTime"
                                     label="考试开始时间"
-                                    width="240"
+                                    width="180"
                             >
                             </el-table-column>
                             <el-table-column
                                     align="center"
                                     prop="endTime"
                                     label="考试结束时间"
-                                    width="240"
+                                    width="180"
                             >
                             </el-table-column>
                             <el-table-column
@@ -114,7 +125,7 @@
                                     <el-tag v-if="verifyEndTime(scope.row.endTime)&&scope.row.examStatus!=2" type="danger">已过期</el-tag>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="操作" align="center" width="85">
+                            <el-table-column label="操作" align="center" width="120">
                                 <template slot-scope="scope">
                                     <el-popover
                                             v-if="scope.row.examStatus==2"
@@ -132,10 +143,10 @@
                                             placement="right"
                                             trigger="hover"
                                             content="开始考试">
-                                        <i class="iconfont tabIcon"
+                                        <i class="iconfont icon-kaishikaoshi"
                                            slot="reference"
                                            @click="startExam(scope.$index, scope.row)"
-                                           style="color: #1381e3;" >&#xe68c;
+                                           style="color: #1381e3;font-size: 22px;" >
                                         </i>
                                     </el-popover>
                                     <el-popover
@@ -143,10 +154,10 @@
                                             placement="right"
                                             trigger="hover"
                                             content="继续考试">
-                                        <i class="iconfont tabIcon"
+                                        <i class="iconfont icon-kaishikaoshi"
                                            slot="reference"
                                            @click="startExam(scope.$index, scope.row)"
-                                           style="color: #119e0a;" >&#xe68c;
+                                           style="color: #119e0a;font-size: 22px;" >
                                         </i>
                                     </el-popover>
                                 </template>
