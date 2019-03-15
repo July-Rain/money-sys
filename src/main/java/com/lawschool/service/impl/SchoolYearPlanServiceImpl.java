@@ -46,14 +46,11 @@ public class SchoolYearPlanServiceImpl extends AbstractServiceImpl<SchoolYearPla
                         Date beginTime =  sdf.parse(s1);
                         String s2 = sdf.format( schoolYearPlan.getEndDate());
                         Date endTime =  sdf.parse(s2);
-
                         if(schoolYearPl.getId()!=null){
                             if(schoolYearPlan.getId().equals(schoolYearPl.getId())){
                                 continue;
                             }
                         }
-
-
                         if ( (sdf.parse(sdf.format(schoolYearPl.getEndDate())).getTime()< beginTime.getTime()) || (sdf.parse(sdf.format(schoolYearPl.getStartDate())).getTime()> endTime.getTime()))
                         {
                             //无交集
