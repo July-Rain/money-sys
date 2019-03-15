@@ -150,4 +150,17 @@ public class CaseAnalysisController extends AbstractController {
         recordService.insertStuRecord(user,id,stuType,stuFrom,taskId);
         return Result.ok();
     }
+    /**
+     * @Author MengyuWu
+     * @Description 公开学习资料
+     * @Date 13:49 2019-3-15
+     * @Param [caseId]
+     * @return com.lawschool.util.Result
+     **/
+
+    @RequestMapping("/updateOpen")
+    public Result updateOpen(String caseId){
+        analysisService.updateOpen(caseId,getUser());
+        return  Result.ok();
+    }
 }

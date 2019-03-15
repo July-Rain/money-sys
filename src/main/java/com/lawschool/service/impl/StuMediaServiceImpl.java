@@ -102,6 +102,7 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         stuMedia.setStuIssuer(user.getUserName());
         stuMedia.setStuIssdepartment(user.getOrgName());
         stuMedia.setStuIsstime(new Date());
+        stuMedia.setIsOpen("0");
         mapper.insert(stuMedia);
         //存权限表
         String[] deptIdArr=stuMedia.getDeptArr();
@@ -254,10 +255,10 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
             //需要权限过滤
            String[] authArr= authService.listAllIdByUser(user.getOrgId(),user.getId(),"STUMEDIA");
            if(authArr.length>0){
-               ew.in("id",authArr);
+               ew.andNew().eq("is_open","1").or().in("id",authArr);
            }else{
                String[] arr={"0"};
-               ew.in("id",arr);
+               ew.andNew().eq("is_open","1").or().in("id",arr);
            }
         }
 
@@ -354,6 +355,16 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         page.setRecords(mapper.listStuByUser(page,taskDesicEntity));
         page.setTotal(mapper.countListStuByUser(taskDesicEntity));
         return new PageUtils(page);
+    }
+
+    @Override
+    public int updateOpen(String stuId, User user) {
+        StuMedia stu = new StuMedia();
+        stu.setId(stuId);
+        stu.setIsOpen("1");
+        stu.setOpenTime(new Date());
+        stu.setOpenUser(user.getId());
+        return mapper.updateById(stu);
     }
 
     public boolean isColl(String id,String userId){
