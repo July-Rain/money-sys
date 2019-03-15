@@ -250,6 +250,7 @@ var vm = new Vue({
             judgeMultIds:[],
             subMultIds:[],
             genRandQue : false,
+            changeWay : false
         };
     },
 
@@ -326,6 +327,14 @@ var vm = new Vue({
         },
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
+        },
+        getQuestionWay : function(){
+          if (vm.examConfig.groupForm==='10028'){
+              vm.examConfig.questionWay==='10033'
+              vm.changeWay = true;
+          }else {
+              vm.changeWay = false;
+          }
         },
         getExamDetail: function(id){
             $.ajax({

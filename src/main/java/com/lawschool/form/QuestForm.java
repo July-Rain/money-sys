@@ -45,6 +45,15 @@ public class QuestForm {
 
     private String audCheckBase;    //审核打分依据
     private List<AnswerForm> rightAnswer;   //正确选项
+    private String checkStatus;     //此題閲卷狀態
+
+    public String getCheckStatus() {
+        return checkStatus;
+    }
+
+    public void setCheckStatus(String checkStatus) {
+        this.checkStatus = checkStatus;
+    }
 
     public String getFirCheckBase() {
         return this.firCheckBase;
