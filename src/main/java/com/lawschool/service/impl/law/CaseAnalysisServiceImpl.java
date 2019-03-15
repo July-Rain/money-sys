@@ -107,10 +107,11 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
             //需要权限过滤
             String[] authArr= authService.listAllIdByUser(user.getOrgId(),user.getId(),"CASEANALYSIS");
             if(authArr.length>0){
-                ew.in("id",authArr);
+                ew.andNew().eq("is_open","1").or().in("id",authArr);
+                //ew.in("id",authArr);
             }else{
                 String[] arr={"0"};
-                ew.in("id",arr);
+                ew.andNew().eq("is_open","1").or().in("id",arr);
             }
         }
 
@@ -130,6 +131,7 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         analysisEntity.setCreateUserName(user.getUserName());
         analysisEntity.setCreateTime(new Date());
         analysisEntity.setCaseCode(GetUUID.getUUIDs("CA"));
+        analysisEntity.setIsOpen("0");
         mapper.insert(analysisEntity);
         //存权限表
         String[] deptIdArr=analysisEntity.getDeptArr();
@@ -222,5 +224,15 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         caseAna.setContentCount(1);
         caseAna.setId(stuId);
         return baseMapper.updateById(caseAna);
+    }
+
+    @Override
+    public int updateOpen(String caseId, User user) {
+        CaseAnalysisEntity caseAna = new CaseAnalysisEntity();
+        caseAna.setId(caseId);
+        caseAna.setIsOpen("1");
+        caseAna.setOpenTime(new Date());
+        caseAna.setOpenUser(user.getId());
+        return mapper.updateById(caseAna);
     }
 }

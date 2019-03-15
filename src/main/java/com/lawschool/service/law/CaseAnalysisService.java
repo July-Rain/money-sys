@@ -89,4 +89,13 @@ public interface CaseAnalysisService extends IService<CaseAnalysisEntity> {
      **/
 
     int updateCount(String stuId);
+    /**
+     * @Author MengyuWu
+     * @Description 公开学习内容
+     * @Date 13:45 2019-3-15
+     * @Param [stuId, user]
+     * @return int
+     **/
+
+    int updateOpen(String caseId,User user);
 }

@@ -103,6 +103,12 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
     @TableField(exist = false)
     private boolean isColl;//是否被收藏过
 
+    private String isOpen;//是否公开
+
+    private Date openTime;//公开时间
+
+    private String openUser;//公开人员id
+
 
 
     public String[] getDeptArr() {
@@ -377,5 +383,29 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
 
     public void setIsColl(boolean isColl) {
         this.isColl = isColl;
+    }
+
+    public String getIsOpen() {
+        return isOpen;
+    }
+
+    public void setIsOpen(String isOpen) {
+        this.isOpen = isOpen;
+    }
+
+    public Date getOpenTime() {
+        return openTime;
+    }
+
+    public void setOpenTime(Date openTime) {
+        this.openTime = openTime;
+    }
+
+    public String getOpenUser() {
+        return openUser;
+    }
+
+    public void setOpenUser(String openUser) {
+        this.openUser = openUser;
     }
 }
