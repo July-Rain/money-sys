@@ -335,7 +335,10 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
 
         return dao.updateStatus(id, status);
     }
+    public boolean updateStatus2(String id, String status){
 
+        return dao.updateStatus2(id, status);
+    }
     @Override
     public PageUtils listStuByUser(Map<String, Object> params) {
         Page page = new Page(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));

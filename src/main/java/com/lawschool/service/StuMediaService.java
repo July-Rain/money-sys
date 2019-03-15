@@ -114,7 +114,7 @@ public interface StuMediaService  extends AbstractService<StuMedia> {
     int updateCount(String stuId);
 
     boolean updateStatus(String id, String status);
-
+    boolean updateStatus2(String id, String status);
     /**
      * @Author MengyuWu
      * @Description 根据当前用户查询任务信息查询相关的图文 视频 音频信息
