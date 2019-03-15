@@ -425,6 +425,11 @@
         WHERE id = #{id}
     </update>
 
+    <update id="updateStatus2">
+        UPDATE LAW_STU_MEDIA
+        SET STRUTS = #{status}
+        WHERE id = #{id}
+    </update>
     <select id="listStuByUser" resultType="com.lawschool.beans.law.TaskDesicEntity" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
         dataId,infoId,infoCode,TO_CHAR(infoName) as infoName,infoParentId,infoType

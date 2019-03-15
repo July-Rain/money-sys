@@ -53,6 +53,7 @@ public class ManuscriptServiceImpl extends AbstractServiceImpl<ManuscriptDao, Ma
                 throw new RuntimeException("学习任务信息错误...");
             }
             stu.setDelStatus(1);
+            stu.setStruts("1");
             User user = (User) SecurityUtils.getSubject().getPrincipal();
             stu.setId(GetUUID.getUUIDs("SM"));
             stuMediaService.insertStuMedia(stu, user);
@@ -88,22 +89,32 @@ public class ManuscriptServiceImpl extends AbstractServiceImpl<ManuscriptDao, Ma
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean examine(String id, String type,String userid,String opinion){
+
+        ManuscriptEntity entity = dao.findOne(id);
+        Integer sourceType = entity.getType();
+        String sourceId = entity.getSourceId();
+//        type  0是 不通过   1是通过
         Integer status = 0;
         if("0".equals(type)){
             status = ManuscriptEntity.STATUS_FAIL;
+            if(sourceType == 0){// 习题
+
+            } else {
+                // 学习
+                stuMediaService.updateStatus2(sourceId, "2");
+            }
+
+
         } else {
             status = ManuscriptEntity.STATUS_PASS;
             // 更新对应的习题或者学习
 
-            ManuscriptEntity entity = dao.findOne(id);
-            Integer sourceType = entity.getType();
-            String sourceId = entity.getSourceId();
 
             if(sourceType == 0){// 习题
                 testQuestionService.updateStatus(sourceId, "0");
             } else {
                 // 学习
-                stuMediaService.updateStatus(sourceId, "0");
+                stuMediaService.updateStatus2(sourceId, "3");
             }
 
         }

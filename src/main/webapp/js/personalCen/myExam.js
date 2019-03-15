@@ -27,6 +27,22 @@ var vm = new Vue({
         })
     },
     methods:{
+        verifyTime :function(startTime,endTime){
+            var flag = new Date(Date.parse(startTime.replace(/-/g,  "/"))).getTime() <= new Date().getTime()&&new Date(Date.parse(endTime.replace(/-/g,  "/"))).getTime() >= new Date().getTime();
+            return flag;
+        },
+        verifyStartTime :function(startTime){
+            var flag = new Date(Date.parse(startTime.replace(/-/g,  "/"))).getTime() >= new Date().getTime();
+            return flag;
+        },
+        verifyEndTime :function(endTime){
+            var flag = new Date(Date.parse(endTime.replace(/-/g,  "/"))).getTime() <= new Date().getTime();
+            return flag;
+        },
+        //序列号计算
+        indexMethod: function (index) {
+            return index + 1 + (vm.formInline.page - 1) * vm.formInline.limit;
+        },
         onSubmit: function () {
             this.reload();
         },
@@ -34,16 +50,15 @@ var vm = new Vue({
             vm.formInline.limit = event;
             this.reload();
         },
+        resetForm: function (formName) {
+            this.$refs[formName].resetFields();
+        },
         handleCurChange: function (event) {
             vm.formInline.page = event;
             this.reload();
         },
-        //序列号计算
-        indexMethod:function (index) {
-            return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
-        },
         reload: function () {
-            vm.formInline.source = 1;
+            console.info(vm.formInline);
             $.ajax({
                 type: "POST",
                 url: baseURL + "user/exam/list",
@@ -59,6 +74,14 @@ var vm = new Vue({
                 }
             });
         },
+        viewExam : function (index,row) {
+            var parentWin = window.parent;
+            var id = row.id;
+            var examStatus = row.examStatus;
+            var userExamId = row.userExamId==null?'':row.userExamId;
+            parentWin.document.getElementById("container").src
+                = 'modules/personalCen/myScoreReport.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
+        },
         startExam : function (index,row) {
             var parentWin = window.parent;
             var id = row.id;
@@ -67,12 +90,9 @@ var vm = new Vue({
             parentWin.document.getElementById("container").src
                 = 'modules/examCen/testPaper.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
         },
-        verifyTime :function(startTime,endTime){
-            var flag = new Date(Date.parse(startTime.replace(/-/g,  "/"))).getTime() <= new Date().getTime()&&new Date(Date.parse(endTime.replace(/-/g,  "/"))).getTime() >= new Date().getTime();
-            return flag;
-        },
         toHome: function () {
             parent.location.reload()
         }
-    }
+    },
+
 });
