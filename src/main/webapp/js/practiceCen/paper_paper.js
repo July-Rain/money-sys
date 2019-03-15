@@ -47,6 +47,7 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
+                        console.log('ers',result)
                         vm.questionList = result.questionList;
                         vm.singleNum = result.singleNum;
                         vm.multiNum = result.multiNum;
@@ -67,14 +68,6 @@ var vm = new Vue({
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
                 = 'modules/exerciseCenter/paper_index.html';
-        },
-
-        select: function (e) {
-            var anchors = document.getElementsByClassName('anchor');
-            for (var i=0;i<anchors.length;i++) {
-                anchors[i].style.background = '#dddddd';
-            }
-            e.target.style.background = '#1381e3';
         },
 
         // 提交试卷
@@ -205,6 +198,14 @@ var vm = new Vue({
                 }
             });
         },
+        // 保存后显示做题状况
+        isChecked: function (id, answer) {
+            var answerId = [];
+            answer.forEach(function (val) {
+                answerId.push(val.id);
+            })
+            return answerId.indexOf(id);
+        }
     },
     created: function () {
         this.$nextTick(function () {

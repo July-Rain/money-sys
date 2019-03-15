@@ -489,12 +489,12 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
             List<FractionRules> fractionRulesList = fraction.getFractionRulesList();
             if (fraction.getQueNum()<=examConfig.getExamCount()) {
                 for (FractionRules fractionRules : fractionRulesList) {
-                    if (totalScore >= examConfig.getExamScore() * fractionRules.getRightRateMin() && totalScore < examConfig.getExamScore() * fractionRules.getRightRateMax()) {
+                    if (totalScore >= examConfig.getExamScore() * fractionRules.getRightRateMin() && endScore<fractionRules.getIntervalScore()) {
                         endScore = fractionRules.getIntervalScore();
-                        endScore = svaeIntegral(DateTimeUtils.getCurrentMonthStartTime(), DateTimeUtils.getCurrentMonthEndTime(),
-                                examConfig.getReachRewardType(),user,fraction.getDailyLimit(),endScore,"1");
                     }
                 }
+                endScore = svaeIntegral(DateTimeUtils.getCurrentMonthStartTime(), DateTimeUtils.getCurrentMonthEndTime(),
+                        examConfig.getReachRewardType(),user,fraction.getDailyLimit(),endScore,"1");
             }
         }
         return endScore;

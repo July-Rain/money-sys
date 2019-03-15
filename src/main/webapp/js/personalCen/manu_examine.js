@@ -8,6 +8,8 @@ var vm = new Vue({
             page: 1,
             count: 0
         },
+        lawCheckData:[],//法律法规回显表格数据
+        deptCheckData: [],//部门默认选中节点
         dialogFormVisible: false,
         manu: {
             type: 0,
@@ -235,6 +237,17 @@ var vm = new Vue({
                         } else {
                             vm.stuMedia = vm.manu.stu;
                             vm.manu.test = {};
+
+                            vm.deptCheckData = vm.stuMedia.deptArr;
+                            vm.lawCheckData = vm.stuMedia.stuLawid.split(",");
+
+                            if (vm.stuMedia.stuType != 'pic' && vm.stuMedia.comContent) {
+                                vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.comContent;
+                                if (vm.stuMedia.videoPicAcc) {
+                                    vm.stuMedia.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.videoPicAcc;
+                                }
+
+                            }
                             vm.dialogStuMedia = true;
                         }
                     } else {
@@ -297,6 +310,17 @@ var vm = new Vue({
                     } else {
                         alert(result.msg);
                     }
+                }
+            });
+            // 所属警种
+            $.ajax({
+                type: "POST",
+                url: baseURL + "dict/getByTypeAndParentcode",
+                dataType: "json",
+                async: false,
+                data: {type: "POLICACLASS", Parentcode: "0"},
+                success: function (result) {
+                    vm.stuPoliceclassOption = result.dictlist;
                 }
             });
 

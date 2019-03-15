@@ -146,7 +146,6 @@
             display: flex;
             right: -110px;
             top: 76px;
-
             -webkit-transition: right 500ms 100ms ease-in;
             -moz-transition: right 500ms 100ms ease-in;
             transition: right 500ms 100ms ease-in;
@@ -159,7 +158,6 @@
             border-radius: 50%;
             box-shadow: 0px 2px 4px 0px #9ea3a7;
             transform: rotate(0deg);
-
         }
         .individual:hover .avatar {
             transform: rotate(-360deg);
@@ -181,10 +179,10 @@
             font-size: 16px;
         }
         .individual .center {
+            display: none;
             position: absolute;
             top: 65px;
             left: -27px;
-
         }
         .individual .center .con-ret {
             position: absolute;
@@ -223,9 +221,9 @@
         }
         .individual .info, .individual .center {
             opacity: 0;
-            -webkit-transition: opacity 500ms 100ms ease-in, display 500ms 100ms ease-in;
-            -moz-transition: opacity 500ms 100ms ease-in, display 500ms 100ms ease-in;
-            transition: opacity 500ms 100ms ease-in, display 500ms 100ms ease-in;
+            -webkit-transition: opacity 500ms 100ms ease-in;
+            -moz-transition: opacity 500ms 100ms ease-in;
+            transition: opacity 500ms 100ms ease-in;
         }
         .individual:hover{
             right: 7px;

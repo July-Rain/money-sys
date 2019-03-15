@@ -210,21 +210,21 @@
                     <el-form :model="stuMedia" label-width="100px" class="demo-stuMedia" size="mini">
                         <el-form-item label="资料类型" prop="stuType">
                             <el-radio-group disabled v-model="stuMedia.stuType">
-                                <el-radio  label="1">图文</el-radio>
-                                <el-radio  label="2">音频</el-radio>
-                                <el-radio  label="3">视频</el-radio>
+                                <el-radio  label="pic">图文</el-radio>
+                                <el-radio  label="audio">音频</el-radio>
+                                <el-radio  label="video">视频</el-radio>
                             </el-radio-group>
                         </el-form-item>
                         <el-form-item label="标题" prop="stuTitle">
                             <el-input disabled v-model="stuMedia.stuTitle" placeholder="请输入标题" clearable></el-input>
                         </el-form-item>
-                        <template v-if="stuMedia.stuType=='1'">
+                        <template v-if="stuMedia.stuType=='pic'">
                             <el-form-item disabled label="内容" prop="comContent">
                                 <div disabled id="editor" style="width: 545px;">
                                 </div>
                             </el-form-item>
                         </template>
-                        <template v-if="stuMedia.stuType=='2'">
+                        <template v-if="stuMedia.stuType=='audio'">
 
                             <el-form-item label="音频上传" prop="comContent">
                                 <!-- action必选参数, 上传的地址 -->
@@ -236,28 +236,40 @@
                                 <P class="text">请保证音频格式正确，且不超过100M</P>
                             </el-form-item>
                         </template>
-                        <template v-if="stuMedia.stuType=='3'">
-                            <el-form-item label="视频封面上传" prop="videoPicAcc">
-                                <el-upload disabled
-                                           class="avatar-uploader"
-                                           name="importfile"
-                                           :action="importFileUrl"
-                                           :show-file-list="false"
-                                           :on-success="handlePicSuccess"
-                                           :before-upload="beforePicUpload">
-                                    <img width="320" height="180" v-if="stuMedia.videoPicAcc !=''" :src="stuMedia.videoPicAccUrl" class="avatar">
-                                    <i v-else class="iconfont icon-tupian"></i>
+                        <template v-if="stuMedia.stuType=='video'">
+                            <el-form-item label="视频封面上传：" prop="videoPicAcc">
+                                <img v-if="stuMedia.videoPicAcc !=''" :src="stuMedia.videoPicAccUrl" class="avatar">
+                                <i v-if="stuMedia.videoPicAcc ==''" class="iconfont icon-tupian"></i>
+                                <el-upload
+                                        class="avatar-uploader"
+                                        name="importfile"
+                                        :action="importFileUrl"
+                                        :show-file-list="false"
+                                        :on-success="handlePicSuccess"
+                                        :before-upload="beforePicUpload">
+                                    <el-button type="primary">点击上传</el-button>
+
                                 </el-upload>
-                                <P class="text">请保证图片格式正确，作为视频封面</P>
+                                <p class="text">请保证图片格式正确，作为视频封面</p>
                             </el-form-item>
-                            <el-form-item label="视频上传" prop="comContent">
+                            <el-form-item label="视频上传：" prop="comContent">
+                                <video id="video" v-show="stuMedia.comContent !='' && videoFlag == false"
+                                       :src="stuMedia.contentUrl" id="video-uploaded" class="avatar video-js"
+                                       controls="controls">您的浏览器不支持视频播放
+                                </video>
+                                <i v-if="stuMedia.comContent =='' && videoFlag == false"
+                                   class="iconfont icon-shipin"></i>
+                                <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent"
+                                             style="margin-top:30px;"></el-progress>
                                 <!-- action必选参数, 上传的地址 -->
-                                <el-upload disabled name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false" :on-success="uploadStuSuccess" :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
-                                    <video width="320" height="180" v-if="stuMedia.comContent !='' && videoFlag == false" :src="stuMedia.contentUrl" class="avatar" controls="controls" >您的浏览器不支持视频播放</video>
-                                    <i v-else-if="stuMedia.comContent =='' && videoFlag == false" class="iconfont icon-shipin"></i>
-                                    <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
+                                <el-upload name="importfile"
+                                           class="avatar-uploader el-upload--text"
+                                           :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess"
+                                           :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
+                                    <el-button type="primary">点击上传</el-button>
+
                                 </el-upload>
-                                <P class="text">请保证视频格式正确，且不超过100M</P>
+                                <p class="text">请保证视频格式正确，且不超过100M</p>
                             </el-form-item>
                         </template>
                         <el-form-item label="所属警种" prop="stuPoliceclass">
@@ -271,6 +283,12 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
+
+                        <el-form-item label="法律主题分类：" prop="stuKnowledge">
+                            <el-input v-model="stuMedia.stuKnowledge" readonly placeholder="请选择法律主题分类"
+                                      clearable></el-input>
+                        </el-form-item>
+
                         <el-form-item label="使用部门" prop="deptName">
                             <el-input disabled v-model="stuMedia.deptName" readonly placeholder="请选择使用部门" clearable></el-input>
                         </el-form-item>
