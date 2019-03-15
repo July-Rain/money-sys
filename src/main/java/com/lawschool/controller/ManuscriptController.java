@@ -86,7 +86,7 @@ public class ManuscriptController extends AbstractController {
             test.setAnswerList(anList);
             entity.setTest(test);
         } else {
-            StuMedia media = StuMediaService.findOne(sourceId);
+            StuMedia media = StuMediaService.selectStuMediaInfo(sourceId);
             entity.setStu(media);
         }
 

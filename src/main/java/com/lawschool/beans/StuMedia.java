@@ -110,6 +110,40 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
     private String openUser;//公开人员id
 
 
+    private String struts;//状态   0 梦雨的   1 待审核   2 审核失败   3 审核成功
+
+
+    public String getIsOpen() {
+        return isOpen;
+    }
+
+    public void setIsOpen(String isOpen) {
+        this.isOpen = isOpen;
+    }
+
+    public Date getOpenTime() {
+        return openTime;
+    }
+
+    public void setOpenTime(Date openTime) {
+        this.openTime = openTime;
+    }
+
+    public String getOpenUser() {
+        return openUser;
+    }
+
+    public void setOpenUser(String openUser) {
+        this.openUser = openUser;
+    }
+
+    public String getStruts() {
+        return struts;
+    }
+
+    public void setStruts(String struts) {
+        this.struts = struts;
+    }
 
     public String[] getDeptArr() {
         return deptArr;
@@ -383,29 +417,5 @@ public class StuMedia extends DataEntity<StuMedia> implements Serializable {
 
     public void setIsColl(boolean isColl) {
         this.isColl = isColl;
-    }
-
-    public String getIsOpen() {
-        return isOpen;
-    }
-
-    public void setIsOpen(String isOpen) {
-        this.isOpen = isOpen;
-    }
-
-    public Date getOpenTime() {
-        return openTime;
-    }
-
-    public void setOpenTime(Date openTime) {
-        this.openTime = openTime;
-    }
-
-    public String getOpenUser() {
-        return openUser;
-    }
-
-    public void setOpenUser(String openUser) {
-        this.openUser = openUser;
     }
 }
