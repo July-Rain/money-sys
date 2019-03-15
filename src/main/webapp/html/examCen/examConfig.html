@@ -521,7 +521,7 @@
                 <div class="btn_mid">
                     <el-form-item>
                         <el-button size="mini"  @click="closeRanDia" :disabled="genRandQue">上一步</el-button>
-                        <el-button type="primary" v-if="!handleType=='view'" size="mini" @click="handleSave(randomQuesData)" :disabled="genRandQue">保存并生成试卷</el-button>
+                        <el-button type="primary" v-if="handleType!='view'" size="mini" @click="handleSave(randomQuesData)" :disabled="genRandQue">保存并生成试卷</el-button>
                     </el-form-item>
                 </div>
             </el-form>
@@ -717,113 +717,6 @@
 
             </div>
 
-
-            <!--<div>
-                <el-table
-                        :data="randomQuesData"
-                        border
-                        height="324"
-                        style="width: 100%"
-                        show-summary
-                        stripe
-                        :summary-method="getSummaries"
-                >
-                    <el-table-column
-                            align="center"
-                            prop="questionType"
-                            label="题型">
-                        <template slot-scope="scope">
-                            <el-select v-model="scope.row.questionType" placeholder="请选择" size="mini" :disabled="true">
-                                <el-option
-                                        v-for="item in qtOption"
-                                        :key="item.key"
-                                        :label="item.value"
-                                        :value="item.key">
-                                </el-option>
-                            </el-select>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="specialKnowledgeArr"
-                            align="center"
-                            label="知识点"
-                    >
-                        <template slot-scope="scope">
-                            <el-select v-model="scope.row.specialKnowledgeArr" size="mini"
-                                       multiple collapse-tags style="width: auto" placeholder="多选" :disabled="view">
-                                <el-option v-for="item in skOption" :key="item.key"
-                                           :label="item.value" :value="item.key"></el-option>
-                            </el-select>
-                        </template>
-                    </el-table-column>
-
-                    <el-table-column
-                            align="center"
-                            prop="questionNumber"
-                            width="150"
-                            label="数量"
-                    >
-                        <template slot-scope="scope">
-                            <el-input-number size="mini" v-model="scope.row.questionNumber"
-                                             :min="0" placeholder="请输入本题型总题数" :disabled="view"></el-input-number>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            width="150"
-                            prop="everyQuestionScore"
-                            label="每题分值"
-                            :disabled="view">
-                        <template slot-scope="scope">
-                            <el-input-number size="mini" v-model="scope.row.everyQuestionScore"
-                                             :min="0" placeholder="请输入本题型总分值" :disabled="view"></el-input-number>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            width="150"
-                            prop="questionScore"
-                            label="总分值"
-                            :disabled="view">
-                        <template scope="scope">
-                            {{scope.row.questionNumber * scope.row.everyQuestionScore}}
-                        </template>
-
-                        &lt;!&ndash;<template slot-scope="scope">
-                            <el-input size="mini"
-                                             :min="0" placeholder="请输入本题型总分值" :disabled = "false"></el-input>
-                        </template>&ndash;&gt;
-                    </el-table-column>
-                    <el-table-column
-                            label="操作"
-                            header-align="center"
-                            align="center"
-                            width="100"
-                            v-if="!view">
-                        <template slot-scope="scope">
-                            <el-popover
-                                    placement="right"
-                                    trigger="hover"
-                                    content="清空"
-                            >
-                                <i class="iconfont icon-tubiaozhizuo- tabIcon"
-                                   slot="reference"
-                                   @click="handleDel(scope.$index)"
-                                   style="color: #e31313;"
-                                >
-                                </i>
-                            </el-popover>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
-
-            <div slot="footer" class="dialog-footer">
-                <el-button size="mini" @click="closeRanDia">取消</el-button>
-
-                <el-button type="primary" @click="handleSave(randomQuesData)" v-if="handleType!='view'" size="mini">保存
-                </el-button>
-            </div>-->
         </div>
         <div class="random_box box_right">
             <div class="exam_title">试卷名：{{examConfig.examName}}</div>
@@ -838,13 +731,11 @@
                 <li>判读题：{{randomQuesData[2].questionNumber}}题</li>
                 <li>主观题：{{randomQuesData[3].questionNumber}}题</li>
             </ul>
-           <!-- <div class="tit">
-                <p><span>总分：</span>{{examConfig.examScore}}</p>
-            </div>-->
+
             <div class="btn_mid">
                 <div class="el-form-item">
                     <!--随机出题时的按钮-->
-                    <el-button type="primary" v-if="handleType=='add'&&!previewExam" @click="preview(randomQuesData)"
+                    <el-button type="primary" v-if="handleType!='view'&&!previewExam" @click="preview(randomQuesData)"
                                size="mini">预览
                     </el-button>
                     <!--<el-button type="primary" v-if="handleType!='add'&&!previewExam" @click="openView()" size="mini">预览
@@ -893,7 +784,7 @@
                         <div class="msg">
                             知识点：{{multiple.specialknowledgeValue}}
                         </div>
-                        <el-button class="change"><i style="display: block;border-radius: 50%;font-size: 17px;padding: 4px;color: #fff;background: #999;" class="iconfont icon-shanchu" :disabled="handleType=='view'" @click="delSinMul(index)" ></i></el-button>
+                        <el-button :disabled="handleType=='view'" @click="delSinMul(index)"  class="change"><i style="display: block;border-radius: 50%;font-size: 17px;padding: 4px;color: #fff;background: #999;" class="iconfont icon-shanchu"  ></i></el-button>
                     </div>
                 </div>
 
@@ -921,7 +812,8 @@
                         <div class="msg">
                             知识点：{{multiple.specialknowledgeValue}}
                         </div>
-                        <el-button class="change"><i class="iconfont icon-shanchu" :disabled="handleType=='view'" @click="delMulMul(index)" ></i></el-button>
+                        <!--<el-button class="change"><i class="iconfont icon-shanchu" :disabled="handleType=='view'" @click="delMulMul(index)" ></i></el-button>-->
+                        <el-button class="change" :disabled="handleType=='view'"  @click="delMulMul(index)"><i style="display: block;border-radius: 50%;font-size: 17px;padding: 4px;color: #fff;background: #999;" class="iconfont icon-shanchu"  ></i></el-button>
                     </div>
                 </div>
 
@@ -949,7 +841,8 @@
                         <div class="msg">
                             知识点：{{multiple.specialknowledgeValue}}
                         </div>
-                        <el-button class="change"><i class="iconfont icon-shanchu" :disabled="handleType=='view'"  @click="delJudMul(index)" ></i></el-button>
+                        <!--<el-button class="change"><i class="iconfont icon-shanchu" :disabled="handleType=='view'"  @click="delJudMul(index)" ></i></el-button>-->
+                        <el-button class="change" @click="delJudMul(index)" :disabled="handleType=='view'"><i style="display: block;border-radius: 50%;font-size: 17px;padding: 4px;color: #fff;background: #999;" class="iconfont icon-shanchu" :disabled="handleType=='view'"  ></i></el-button>
                     </div>
                 </div>
 
@@ -981,7 +874,8 @@
                         <div class="msg">
                             知识点：{{multiple.specialknowledgeValue}}
                         </div>
-                        <el-button class="change"><i class="iconfont icon-shanchu" :disabled="handleType=='view'" @click="delSubMul(index)" ></i></el-button>
+                        <!--<el-button class="change"><i class="iconfont icon-shanchu" :disabled="handleType=='view'" @click="delSubMul(index)" ></i></el-button>-->
+                        <el-button class="change" :disabled="handleType=='view'" @click="delSubMul(index)" ><i style="display: block;border-radius: 50%;font-size: 17px;padding: 4px;color: #fff;background: #999;" class="iconfont icon-shanchu"  ></i></el-button>
                     </div>
                 </div>
             </el-form>
@@ -1113,98 +1007,7 @@
             <el-button type="primary" size="mini" @click="confimUser">保存</el-button>
         </div>
     </el-dialog>
-    <!--自主出题开始-->
-    <!--<el-dialog class="set_exam" title="设置考试信息" :visible.sync="setExam" width="1000px">-->
-        <!--<div id="paper">-->
-            <!--<h2>{{examConfig.examName}}</h2>-->
-            <!--<h3>总分 ： {{examConfig.examScore}}</h3>-->
-            <!--<div class="subTitle clearfix">-->
-                <!--<p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。-->
-                    <!--本部分含{{sinMultipleSelection.length}}题，每题-->
-                    <!--<el-input v-model="sinMultScore" type="number" placeholder="请输入分值" :min="1"></el-input>-->
-                    <!--分，共{{sinMultipleSelection.length | sinMultScoreFn}}分。-->
-                    <!--<el-button type="primary" size="mini" @click="addQuestion('10004')">-->
-                        <!--<i class="iconfont icon-htmal5icon18"></i>-->
-                        <!--设置题目-->
-                    <!--</el-button>-->
-                <!--</p>-->
 
-            <!--</div>-->
-            <!--<div class="question_area" v-for="(multiple,index) in sinMultipleSelection" :key="index">-->
-                <!--<p class="ques_name">{{index+1}}.{{multiple.comContent}}。-->
-                    <!--<el-button type="danger" icon="el-icon-delete" @click="delSinMul(index)" circle></el-button>-->
-                <!--</p>-->
-                <!--<el-radio-group>-->
-                    <!--<el-radio :label="item2.id" v-for="item2 in multiple.answerList">-->
-                        <!--{{item2.questionContent}}-->
-                    <!--</el-radio>-->
-                <!--</el-radio-group>-->
-            <!--</div>-->
-            <!--<div class="subTitle clearfix">-->
-                <!--<p>二、多选题。本部分含{{mulMultipleSelection.length}}题，每题-->
-                    <!--<el-input type="number" v-model="mulMultScore" value="1" placeholder="请输入分值" :min="1"></el-input>-->
-                    <!--分，共{{mulMultipleSelection.length | mulMultScoreFn}}分。-->
-                    <!--<el-button type="primary" size="mini" @click="addQuestion('10005')">-->
-                        <!--<i class="iconfont icon-htmal5icon18"></i>-->
-                        <!--设置题目-->
-                    <!--</el-button>-->
-                <!--</p>-->
-            <!--</div>-->
-            <!--<div class="question_area" v-for="(multiple,index) in mulMultipleSelection" :key="index">-->
-                <!--<p class="ques_name">{{index+1}}.{{multiple.comContent}}。-->
-                    <!--<el-button type="danger" icon="el-icon-delete" @click="delMulMul(index)" circle></el-button>-->
-                <!--</p>-->
-                <!--<el-radio-group>-->
-                    <!--<el-radio :label="item2.id" v-for="item2 in multiple.answerList">-->
-                        <!--{{item2.questionContent}}-->
-                    <!--</el-radio>-->
-                <!--</el-radio-group>-->
-            <!--</div>-->
-
-            <!--<div class="subTitle clearfix">-->
-                <!--<p>三、判断题。本部分含{{judgeMultipleSelection.length}}题，每题-->
-                    <!--<el-input type="number" v-model="judgeMultScore" value="1" placeholder="请输入分值" :min="1"></el-input>-->
-                    <!--分,共{{judgeMultipleSelection.length | judgeMultScoreFn}}分-->
-                    <!--<el-button type="primary" size="mini" @click="addQuestion('10006')">-->
-                        <!--<i class="iconfont icon-htmal5icon18"></i>-->
-                        <!--设置题目-->
-                    <!--</el-button>-->
-                <!--</p>-->
-
-            <!--</div>-->
-            <!--<div class="question_area" v-for="(multiple,index) in judgeMultipleSelection" :key="index">-->
-                <!--<p class="ques_name">{{index+1}}.{{multiple.comContent}}。-->
-                    <!--<el-button type="danger" icon="el-icon-delete" @click="delJudMul(index)" circle></el-button>-->
-                <!--</p>-->
-                <!--<el-radio-group>-->
-                    <!--<el-radio :label="item2.id" v-for="item2 in multiple.answerList">-->
-                        <!--{{item2.questionContent}}-->
-                    <!--</el-radio>-->
-                <!--</el-radio-group>-->
-            <!--</div>-->
-            <!--<div class="subTitle clearfix">-->
-                <!--<p>四、主观题-->
-                    <!--<el-button type="primary" size="mini" @click="addQuestion('10007')">-->
-                        <!--<i class="iconfont icon-htmal5icon18"></i>-->
-                        <!--设置题目-->
-                    <!--</el-button>-->
-                <!--</p>-->
-            <!--</div>-->
-            <!--<div class="question_area" v-for="(multiple,index) in subMultipleSelection" :key="index">-->
-                <!--<p class="ques_name">{{index+1}}.{{multiple.comContent}}。分值：-->
-                    <!--<el-input type="number" v-model="subMultipleSelection[index].perScore" value="1"-->
-                              <!--placeholder="请输入分值"></el-input>-->
-                    <!--<el-button type="danger" icon="el-icon-delete" @click="delSubMul(index)" circle></el-button>-->
-
-                <!--</p>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<el-button type="primary" @click="genAutoQue">生成试卷</el-button>-->
-
-                <!--<el-button type="primary" @click="closeAutoQue">取消</el-button>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</el-dialog>-->
     <el-dialog class="set_question" title="设置题目" :visible.sync="setQuestion" width="1200px">
         <div class="info_card">
             <div class="card_title"></div>
@@ -1250,11 +1053,13 @@
                         type="selection"
                         width="60">
                 </el-table-column>
-
                 <el-table-column
                         label="序号"
                         type="index"
-                        width="55">
+                        header-align="center"
+                        align="center"
+                        :index="indexMethod"
+                        width="50">
                 </el-table-column>
                 <el-table-column type="expand" width="60">
                     <template slot-scope="props">
@@ -1305,9 +1110,9 @@
         <el-pagination
                 @size-change="quehandleSizeChange"
                 @current-change="quehandleCurrentChange"
-                :current-page="queformInline.currPage"
+                :current-page="queformInline.page"
                 :page-sizes="[10, 20, 30, 40]"
-                :page-size="queformInline.pageSize"
+                :page-size="queformInline.limit"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="queformInline.count">
         </el-pagination>
@@ -1317,7 +1122,6 @@
         </span>
     </el-dialog>
     <!--自主出题结束-->
-
 
     <el-dialog class="set_question" title="更换题目" :visible.sync="changeQuestionDialog" width="1200px">
         <div class="info_card">

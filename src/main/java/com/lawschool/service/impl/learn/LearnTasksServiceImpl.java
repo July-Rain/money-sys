@@ -217,6 +217,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
             int finishCount = recordService.selectCount(new EntityWrapper<StuRecordEntity>().eq("task_id",e.getId()).eq("user_id",userId));
             e.setAllCount(allCount);
             e.setFinishCount(finishCount);
+
         });
         page.setRecords(tasksEntities);
         return new PageUtils(page);
@@ -294,6 +295,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
             e.setAllCount(allCount);
             e.setFinishCount(finishCount);
             e.setOverCount(overCount);
+            e.setSourceType(listTypeByTaskId(e.getId()));
         });
         page.setRecords(tasksEntities);
         return new PageUtils(page);
@@ -469,5 +471,20 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         ew.eq("is_use","1");
         int count = mapper.selectCount(ew);
         return count;
+    }
+
+    @Override
+    public String listTypeByTaskId(String taskId) {
+        List<String> list = mapper.listTypeByTaskId(taskId);
+        String type ="";
+        for(String str :list){
+            if(UtilValidate.isEmpty(type)){
+                type=str;
+            }else{
+                type=type+","+str;
+            }
+
+        }
+        return type;
     }
 }

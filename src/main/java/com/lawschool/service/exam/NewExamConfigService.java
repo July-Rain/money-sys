@@ -12,9 +12,9 @@ public interface NewExamConfigService extends AbstractService<ExamConfig> {
 
     Result genAutoQue(ExamConfigForm examConfigForm);
 
-    Result genRandomQue(ExamConfigForm examConfigForm);
+    Result genRandomQue(ExamConfigForm examConfigForm) throws Exception;
 
-    Result preview(ExamConfigForm examConfigForm);
+    Result preview(ExamConfigForm examConfigForm) throws Exception;
 
-    Result genRanQueAfterPreview(ExamConfigForm examConfigForm);
+    Result genRanQueAfterPreview(ExamConfigForm examConfigForm) throws Exception ;
 }
