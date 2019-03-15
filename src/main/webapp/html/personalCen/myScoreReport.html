@@ -41,10 +41,10 @@
                             <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
                             <el-radio-group v-model="sinChoicCheck[index]" :disabled="isSubmit" @change="update">
                                 <el-radio :label="answer.id"
-                                          v-for="(answer, index) in question.answer"
+                                          v-for="(answer, index1) in question.answer"
                                           :class="{'right-answer': isSubmit&&(answer.id===question.answerId)}"
                                 >
-                                    {{ answer.questionContent }}
+                                   {{optionIndex[index1]}}、{{ answer.questionContent }}
                                     <i class="iconfont icon-dui1" v-if="isSubmit&&(answer.id===question.answerId)"></i>
                                 </el-radio>
                             </el-radio-group>
@@ -74,11 +74,11 @@
                             <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
                             <el-checkbox-group v-model="mulChoicCheck[index]" :disabled="isSubmit"  @change="update">
                                 <el-checkbox
-                                        v-for="(answer, index) in question.answer"
+                                        v-for="(answer, index1) in question.answer"
                                         :label="answer.id"
                                         :class="{'right-answer': question.answerId.indexOf(answer.id)>=0}"
                                 >
-                                    {{ answer.questionContent }}
+                                    {{optionIndex[index1]}}、{{ answer.questionContent }}
                                     <i class="iconfont icon-dui1" v-if="question.answerId.indexOf(answer.id)>=0"></i>
                                 </el-checkbox>
                             </el-checkbox-group>
@@ -109,10 +109,10 @@
                             <el-radio-group v-model="judge[index]" :disabled="isSubmit"  @change="update">
                                 <el-radio
                                         :label="answer.id"
-                                        v-for="(answer, index) in question.answer"
+                                        v-for="(answer, index1) in question.answer"
                                         :class="{'right-answer': isSubmit&&(answer.id===question.answerId)}"
                                 >
-                                    {{ answer.questionContent }}
+                                    {{optionIndex[index1]}}、 {{ answer.questionContent }}
                                     <i class="iconfont icon-dui1" v-if="isSubmit&&(answer.id===question.answerId)"></i>
                                 </el-radio>
                             </el-radio-group>
@@ -151,7 +151,7 @@
                             </el-input>
                             <div class="answer-area" v-show="isSubmit">
                                 <p :class="question.userScore ? 'right' : 'err'">
-                                    此题得分：<span class="right">{{ question.userScore }}</span>
+                                    此题得分：<span class="right" v-if="question.checkStatus==2">{{ question.userScore }}</span><span class="right" v-if="question.checkStatus!=2">本题暂未阅卷打分！</span>
                                 <p class="collection" @click="doCollect(index,'10007')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{ question.isCollect == 1 ? '已收藏' : '收藏本题' }}</p>
                                 </p>
                                 <p class="text">

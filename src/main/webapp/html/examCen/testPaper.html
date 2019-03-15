@@ -40,10 +40,10 @@
                             <p class="title">{{ index+1 }}.{{ question.comContent }}</p>
                             <el-radio-group v-model="sinChoicCheck[index]" :disabled="isSubmit" @change="update">
                                 <el-radio :label="answer.id"
-                                          v-for="(answer, index) in question.answer"
+                                          v-for="(answer, index1) in question.answer"
                                           :class="{'right-answer': isSubmit&&(answer.id===question.answerId)}"
                                 >
-                                    {{ answer.questionContent }}
+                                    {{optionIndex[index1]}}、{{ answer.questionContent }}
                                     <i class="iconfont icon-dui1" v-if="isSubmit&&(answer.id===question.answerId)"></i>
                                 </el-radio>
                             </el-radio-group>
@@ -75,10 +75,10 @@
                             <el-checkbox-group v-model="mulChoicCheck[index]" :disabled="isSubmit"  @change="update">
                                 <el-checkbox
                                         :label="answer.id"
-                                        v-for="(answer, index) in question.answer"
+                                        v-for="(answer, index1) in question.answer"
                                         :class="{'right-answer': isSubmit&&(question.answerId.indexOf(answer.id))}"
                                 >
-                                    {{ answer.questionContent }}
+                                    {{optionIndex[index1]}}、{{ answer.questionContent }}
                                     <i class="iconfont icon-dui1" v-if="isSubmit&&(question.answerId.indexOf(answer.id))"></i>
                                 </el-checkbox>
                             </el-checkbox-group>
@@ -111,10 +111,10 @@
                             <el-radio-group v-model="judge[index]" :disabled="isSubmit"  @change="update">
                                 <el-radio
                                         :label="answer.id"
-                                        v-for="(answer, index) in question.answer"
+                                        v-for="(answer, index1) in question.answer"
                                         :class="{'right-answer': isSubmit&&(answer.id===question.answerId)}"
                                 >
-                                    {{ answer.questionContent }}
+                                    {{optionIndex[index1]}}、 {{ answer.questionContent }}
                                     <i class="iconfont icon-dui1" v-if="isSubmit&&(answer.id===question.answerId)"></i>
                                 </el-radio>
                             </el-radio-group>

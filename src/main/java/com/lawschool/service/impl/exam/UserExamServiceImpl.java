@@ -183,6 +183,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
             userExamAnswer.setUserExamId(userExamId);
             userExamAnswer.setOrderNum(i);
             userExamAnswer.setTestQueType(que.getQuestionType());
+            userExamAnswer.setCheckStatus("1");         //未完成阅卷
             userExamAnswer.setScore(que.getScore());
             userExamAnswer.setRightAnsId(que.getAnswerId());
             List<AnswerForm> answerlist = que.getAnswer();
@@ -225,6 +226,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
             if ("10007".equals(userExamAnswer.getTestQueType())) {
                 //主观题不判断对错只保存答案
                 isHaveSubject = true;
+                userExamAnswer.setCheckStatus("1");
             } else {
                 //单选多选判断  判断对错并且保存答案
                 String[] userAns = themeAnswerForm.getAnswer() == null ? "".split(",") : themeAnswerForm.getAnswer().split(",");
@@ -235,8 +237,9 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
                 } else {
                     userExamAnswer.setUserScore(0);
                 }
+                userExamAnswer.setCheckStatus("0");
             }
-            userExamAnswerDao.updateByIds(userExamAnswer.getUserAnsId(), userExamAnswer.getUserScore(), userExamAnswer.getId());
+            userExamAnswerDao.updateByIds(userExamAnswer.getUserAnsId(), userExamAnswer.getUserScore(),userExamAnswer.getCheckStatus(), userExamAnswer.getId());
         }
         String isFinMark;
         if (isHaveSubject) {
@@ -309,7 +312,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
             //根据用户考试ID+问题ID查询考题详情
             UserExamAnswer userExamAnswer = userExamAnswerDao.findByuEIdAndQueId(userExamId, themeAnswerForm.getqId());
             userExamAnswer.setUserAnsId(themeAnswerForm.getAnswer());
-            userExamAnswerDao.updateByIds(userExamAnswer.getUserAnsId(), userExamAnswer.getUserScore(), userExamAnswer.getId());
+            userExamAnswerDao.updateByIds(userExamAnswer.getUserAnsId(), userExamAnswer.getUserScore(),userExamAnswer.getCheckStatus(), userExamAnswer.getId());
         }
         //更新考试剩余时间
         userExamDao.updateRemainTimeById(remainingExamTime, "1",userExamId);
@@ -396,6 +399,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
                 questForm.setSecCheckBase(userExamAnswer.getSecCheckBase());
                 questForm.setAudCheckBase(userExamAnswer.getAudCheckBase());
                 questForm.setIsCollect(userExamAnswer.getIsCollect());
+                questForm.setCheckStatus(userExamAnswer.getCheckStatus());
                 questFormList.add(questForm);
             }
             return questFormList;

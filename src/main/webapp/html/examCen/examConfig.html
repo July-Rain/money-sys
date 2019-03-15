@@ -290,7 +290,7 @@
                             <el-select v-model="examConfig.groupForm"
                                        collapse-tags
                                        style="width: auto"
-                                       placeholder="请选择组卷方式" size="mini" :disabled="view">
+                                       placeholder="请选择组卷方式" size="mini" :disabled="view" @change="getQuestionWay">
                                 <el-option v-for="item in gfOption"
                                            :key="item.key"
                                            :label="item.value"
@@ -309,7 +309,7 @@
                     <el-col :span="8">
                         <el-form-item label="出题方式：" prop="questionWay">
                             <el-select v-model="examConfig.questionWay"
-                                       placeholder="请选择出題方式" size="mini" :disabled="view">
+                                       placeholder="请选择出題方式" size="mini" :disabled="view||changeWay" >
                                 <el-option v-for="item in qwOption"
                                            :key="item.key"
                                            :label="item.value"
@@ -767,7 +767,7 @@
                         <el-button size="mini" type="primary" :disabled="handleType=='view'"  @click="addQuestion('10004')"><i class="iconfont icon-htmal5icon18"></i>添加试题
                         </el-button>
                         <p>每题：
-                            <el-input-number size="mini"  :disabled="handleType=='view'"  v-model="sinMultScore" :min="1" ></el-input-number>
+                            <el-input-number size="mini"  :disabled="handleType=='view'"  v-model="sinMultScore" :min="0" ></el-input-number>
                             分
                         </p>
                     </div>
@@ -795,7 +795,7 @@
                         <el-button size="mini" :disabled="handleType=='view'"  type="primary" @click="addQuestion('10005')"><i class="iconfont icon-htmal5icon18"></i>添加试题
                         </el-button>
                         <p>每题：
-                            <el-input-number size="mini"  :disabled="handleType=='view'"  v-model="mulMultScore" :min="1" ></el-input-number>
+                            <el-input-number size="mini"  :disabled="handleType=='view'"  v-model="mulMultScore" :min="0" ></el-input-number>
                             分
                         </p>
                     </div>
@@ -824,7 +824,7 @@
                         <el-button size="mini" type="primary" :disabled="handleType=='view'"  @click="addQuestion('10006')"><i class="iconfont icon-htmal5icon18"></i>添加试题
                         </el-button>
                         <p>每题：
-                            <el-input-number size="mini" :disabled="handleType=='view'"  v-model="judgeMultScore" :min="1" ></el-input-number>
+                            <el-input-number size="mini" :disabled="handleType=='view'"  v-model="judgeMultScore" :min="0" ></el-input-number>
                             分
                         </p>
                     </div>
@@ -857,7 +857,7 @@
                     <div class="question_box"  v-for="(multiple,index) in subMultipleSelection" :key="index">
                         <div class="clearfix">
                             <p style="float: right">此题：
-                                <el-input-number :disabled="handleType=='view'"  size="mini" @change="calaSubAllScore"  v-model="subMultipleSelection[index].perScore" :min="1" ></el-input-number>
+                                <el-input-number :disabled="handleType=='view'"  size="mini" @change="calaSubAllScore"  v-model="subMultipleSelection[index].perScore" :min="0" ></el-input-number>
                                 分
                             </p>
                         </div>

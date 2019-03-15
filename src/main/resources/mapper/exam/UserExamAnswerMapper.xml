@@ -10,7 +10,8 @@
     </select>
 
     <update id="updateByIds" >
-        update LAW_USER_EXAM_ANSWER set user_ans_id = #{userAnsId},user_score=#{userScore}
+        update LAW_USER_EXAM_ANSWER set user_ans_id = #{userAnsId},
+        user_score=#{userScore},check_status=#{checkStatus}
         <where>
             id=#{id}
         </where>

@@ -83,7 +83,8 @@ var vm = new Vue({
         preserved: [],
         examConfig: [],
         goHomeButton: null,
-        floatIcon: null
+        floatIcon: null,
+        optionIndex:['A','B','C','D','E','F'],
         // 修改前的数据
         /*,
         otherList: [],
