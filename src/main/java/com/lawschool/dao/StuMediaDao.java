@@ -63,4 +63,7 @@ public interface StuMediaDao extends AbstractDao<StuMedia> {
     int countListStuByUser( TaskDesicEntity desicEntity);
 
     boolean updateStatus(@Param("id") String id, @Param("status") String status);
+
+    boolean updateStatus2(@Param("id") String id, @Param("status") String status);
+
 }

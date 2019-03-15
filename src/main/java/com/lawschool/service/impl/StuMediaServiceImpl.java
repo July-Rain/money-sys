@@ -103,6 +103,10 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         stuMedia.setStuIssdepartment(user.getOrgName());
         stuMedia.setStuIsstime(new Date());
         stuMedia.setIsOpen("0");
+        stuMedia.setStruts("0");
+        if(UtilValidate.isEmpty(stuMedia.getStuCreat())){
+            stuMedia.setStuCreat(new Date());
+        }
         mapper.insert(stuMedia);
         //存权限表
         String[] deptIdArr=stuMedia.getDeptArr();
@@ -198,7 +202,7 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         String createUser=(String)params.get("createUser");//创建人
         String addsrc=(String)params.get("addsrc");//添加来源  0-其他  1-教官中心
         EntityWrapper<StuMedia> ew = new EntityWrapper<>();
-        ew.setSqlSelect("ID,STU_CODE,STU_TITLE,COM_CONTENT,STU_TYPE,STU_COUNT,STU_ISSUER,STU_ISSTIME,STU_POLICECLASS,DICTCODE2VALE(STU_POLICECLASS) as stuPoliceclassName,VIDEO_PIC_ACC");
+        ew.setSqlSelect("ID,STU_CODE,STU_TITLE,COM_CONTENT,STU_TYPE,STU_COUNT,STU_ISSUER,STU_ISSTIME,STU_POLICECLASS,DICTCODE2VALE(STU_POLICECLASS) as stuPoliceclassName,VIDEO_PIC_ACC,STU_CREAT");
         if(UtilValidate.isNotEmpty(stuTitle)){
             ew.like("stu_title",stuTitle);
         }
@@ -223,7 +227,7 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
             Date startParse = null;
             try {
                 startParse = sdf.parse(startTime);
-                ew.ge("stu_isstime", startParse);
+                ew.ge("STU_CREAT", startParse);
             } catch (ParseException e) {
                 throw new RuntimeException();
             }
@@ -231,15 +235,10 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         if(UtilValidate.isNotEmpty(endTime)){
             Date endParse = null;
             try {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                Format f = new SimpleDateFormat("yyyy-MM-dd");
-                Calendar c = Calendar.getInstance();
-                c.setTime(format.parse(endTime));
-                c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
-                Date tomorrow = c.getTime();
-                endParse = tomorrow;
+                endParse = sdf.parse(endTime);
+                ew.le("STU_CREAT", endParse);
                 //以开始时间搞
-                ew.le("stu_isstime", endParse);
+               // ew.le("STU_CREAT", endParse);
             } catch (ParseException e) {
                 throw new RuntimeException();
             }
@@ -261,7 +260,7 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
                ew.andNew().eq("is_open","1").or().in("id",arr);
            }
         }
-
+        ew.andNew().eq("struts","0").or().in("struts","3");
             ew.orderBy("STU_CREAT",false);
         //Page<StuMedia> page = new Page<StuMedia>();
        /* Page<StuMedia> page = new Page<StuMedia>(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));
@@ -292,6 +291,9 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
     public void updateStuMedia(StuMedia stuMedia, User user) {
         stuMedia.setCreateUser(user.getId());
         stuMedia.setCreateTime(new Date());
+        if(UtilValidate.isEmpty(stuMedia.getStuCreat())){
+            stuMedia.setStuCreat(new Date());
+        }
         mapper.updateById(stuMedia);
         authService.delete(new EntityWrapper<AuthRelationBean>().eq("function_flag","STUMEDIA").eq("function_Id",stuMedia.getId()));
         //存权限表
@@ -335,7 +337,10 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
 
         return dao.updateStatus(id, status);
     }
+    public boolean updateStatus2(String id, String status){
 
+        return dao.updateStatus2(id, status);
+    }
     @Override
     public PageUtils listStuByUser(Map<String, Object> params) {
         Page page = new Page(Integer.parseInt(params.get("currPage").toString()),Integer.parseInt(params.get("pageSize").toString()));

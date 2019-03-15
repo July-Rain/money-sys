@@ -176,10 +176,11 @@
                                          align="center">
                             <template slot-scope="scope">
                                 <el-popover
+                                        v-if="scope.row.isOpen='0'"
                                         placement="right"
                                         trigger="hover"
-                                        content="采纳">
-                                    <i class="iconfont icon-xiugaimima tabIcon"
+                                        content="采用">
+                                    <i class="iconfont icon-shenhe tabIcon"
                                        slot="reference"
                                        @click="handleOpen(scope.$index, scope.row)"
                                        style="color: #119e0a;">
@@ -333,7 +334,7 @@
                             >
                             </el-date-picker>
                         </el-form-item>
-                        <el-form-item label="描述：" prop="stuDescribe">
+                        <el-form-item label="备注：" prop="stuDescribe">
                             <el-input type="textarea" maxlength="200" v-model="stuMedia.stuDescribe"></el-input>
                         </el-form-item>
                     </el-form>
