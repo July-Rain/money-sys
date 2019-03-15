@@ -4,6 +4,7 @@
     <title>每日一题</title>
     <#include "/header.html">
     <link rel="stylesheet" href="${rc.contextPath}/statics/css/Daily.css">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/testPaper.css">
 </head>
 <body>
 <div id="app" v-cloak>
@@ -68,9 +69,15 @@
 
                 <div class="answer_area" v-if="showAnswer">
                     <p :class="userAnswerStr!=rightAnswerStr?'err':''">你的答案：<span>{{userAnswerStr}}</span>，正确答案：<span>{{rightAnswerStr}}</span></p>
-                    <div class="clearfix diff diff5">
-                        <span>试题难度：</span>
-                        <span>{{questionForm.questionDifficulty == '10001' ? '初级' : questionForm.questionDifficulty == '10002' ? '中级' : '高级'}}</span>
+                    <div class="basis clearfix">
+                        <span class="answer-text">试题难度：</span>
+                        <i class="iconfont icon-shoucang1 light"></i>
+                        <i :class="questionForm.questionDifficulty==='10002'||questionForm.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                        <i :class="questionForm.questionDifficulty==='10002'||questionForm.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                        <i :class="questionForm.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                        <i :class="questionForm.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                        <span class="diff" v-if="questionForm.questionDifficulty==='10001'">初级</span>
+                        <span class="diff" v-if="questionForm.questionDifficulty==='10002'||questionForm.questionDifficulty==='10003'">{{ questionForm.questionDifficulty==='10002'?'中级':'高级' }}</span>
                     </div>
                     <div class="basis clearfix">
                         <p>答案描述：</p>
