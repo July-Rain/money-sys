@@ -50,7 +50,7 @@
                             </el-radio-group>
                             <div class="answer-area" v-show="isSubmit">
                                 <p :class="question.userScore ? 'right' : 'err'">
-                                    你的答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>，正确答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>
+                                    你的答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span>，正确答案：<span>{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
                                 <p class="collection" @click="doCollect(index, '10004')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{question.isCollect == 1 ? '已收藏' : '收藏本题'}}</p>
                                 </p>
                                 <p class="text">
