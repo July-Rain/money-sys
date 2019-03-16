@@ -76,7 +76,7 @@
                     <div class="question daliy" v-for="(question, index) in questionList.slice(0, singleNum)" :class="{'question-background': (index%2 == 0)}">
                         <p class="title"><a :name="index+1"></a>{{ index+1 }}.{{ question.content }}</p>
                         <el-radio-group v-model="questionList[index].userAnswerStr" :disabled="isSubmit">
-                            <el-radio :label="answer.id" v-for="(answer, index) in question.options">
+                            <el-radio :label="answer.id" v-for="(answer, index) in question.options" :class="{'is-checked': question.userAnswerStr==answer.id}">
                                 {{ answer.questionContent }}
                             </el-radio>
                         </el-radio-group>
@@ -93,7 +93,7 @@
                     <div class="question" v-for="(question, index) in questionList.slice(singleNum, multiNum+singleNum)" :class="{'question-background': (index%2 == 0)}">
                         <p class="title"><a :name="singleNum+index+1"></a>{{ singleNum+index+1 }}.{{ question.content }}</p>
                         <el-checkbox-group v-model="questionList[singleNum+index].userAnswerList" :disabled="isSubmit">
-                            <el-checkbox :label="answer.id" v-for="(answer, index) in question.options">
+                            <el-checkbox :label="answer.id" v-for="(answer, index) in question.options"  :class="{'is-checked': isChecked(answer.id, question.userAnswerList)>=0}">
                                 {{ answer.questionContent }}
                             </el-checkbox>
                         </el-checkbox-group>
@@ -110,7 +110,7 @@
                     <div class="question daliy" v-for="(question, index) in questionList.slice(multiNum+singleNum)" :class="{'question-background': (index%2 == 0)}">
                         <p class="title"><a :name="multiNum+singleNum+index+1"></a>{{ multiNum+singleNum+index+1 }}.{{ question.content }}</p>
                         <el-radio-group v-model="questionList[multiNum+singleNum+index].userAnswerStr" :disabled="isSubmit">
-                            <el-radio :label="answer.id" v-for="(answer, index) in question.options">
+                            <el-radio :label="answer.id" v-for="(answer, index) in question.options" :class="{'is-checked': question.userAnswerStr==answer.id}">
                                 {{ answer.questionContent }}
                             </el-radio>
                         </el-radio-group>
@@ -134,6 +134,7 @@
             </div>
             <div class="items">
                 <a class="anchor" v-for="(item, index) in questionList"
+                   :class="{'finished': item.userAnswerStr!=null || item.userAnswerList.length!=0}"
                    :href="'#'+(index+1)">
                     {{ index+1 }}
                 </a>
