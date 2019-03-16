@@ -138,6 +138,7 @@ var vm = new Vue({
         },//学习任务内容管理
         isEdit:true,//是否可修改
         loading:false,//加载中
+        taskCheckData:[],//用来回显学习任务的数据
 
     },
     created: function () {
@@ -601,8 +602,10 @@ var vm = new Vue({
             })
         },
         chooseTaskContent:function(){
+            debugger
             this.dialogLearnConTask=true;
             //选择学习内容数据
+            this.huixianTask(vm.learnTasks.taskContentList);
         },
         handleTaskNodeClick:function(data){
             debugger
@@ -646,6 +649,8 @@ var vm = new Vue({
                         vm.taskForm.pageSize = result.page.pageSize;
                         vm.taskForm.totalCount = parseInt(result.page.totalCount);
                         console.info("infoData",vm.learnTaskData)
+
+                        vm.huixianTask(vm.learnTasks.taskContentList);
                     } else {
                         alert(result.msg);
                     }
@@ -672,6 +677,46 @@ var vm = new Vue({
                 }
             }
             console.log("taskContent",this.taskContentList);
+        },
+        changeInfoType:function(){
+            
+            //加载任务信息
+            this.reloadTask();
+        },
+        //学习内容的回显
+        huixianTask: function (ids) {
+            // saveUserTableData    --回显需加
+            if(!ids){
+                return
+            }
+            if(ids.length==0){
+                return
+            }
+            var that = this;
+            ids.map(function (_id) {
+                that.learnTaskData.map(function (_data) {
+                    if (_id.infoId == _data.infoId) {
+                        that.taskCheckData.push(_data)
+                    }
+                })
+
+            });
+            console.info("taskCheckData", that.taskCheckData);
+            this.$nextTick(function () {
+                // vm.$refs.userTable.toggleRowSelection()
+                vm.taskToggleSelection(that.taskCheckData)
+
+            })
+        },
+        taskToggleSelection(rows) {
+            //  --回显需加
+            if (rows) {
+                rows.map(function(row){
+                    vm.$refs.learnTaskTable.toggleRowSelection(row);
+                });
+            } else {
+                this.$refs.learnTaskTable.clearSelection();
+            }
         },
         toHome: function () {
             parent.location.reload()
