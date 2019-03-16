@@ -146,9 +146,10 @@
             display: flex;
             right: -110px;
             top: 76px;
-            -webkit-transition: right 500ms 100ms ease-in;
-            -moz-transition: right 500ms 100ms ease-in;
-            transition: right 500ms 100ms ease-in;
+            height: 58px;
+            -webkit-transition: right 500ms 100ms ease-in, height 500ms 100ms ease-in;
+            -moz-transition: right 500ms 100ms ease-in, height 500ms 100ms ease-in;
+            transition: right 500ms 100ms ease-in, height 500ms 100ms ease-in;
         }
         .individual .avatar {
             z-index: 100;
@@ -182,7 +183,13 @@
             display: none;
             position: absolute;
             top: 65px;
+            left: 80px;
+        }
+        .individual:hover .center {
             left: -27px;
+            -webkit-transition: left 500ms 100ms ease-in-out;
+            -moz-transition: left 500ms 100ms ease-in-out;
+            transition: left 500ms 100ms ease-in-out;
         }
         .individual .center .con-ret {
             position: absolute;
@@ -226,6 +233,7 @@
             transition: opacity 500ms 100ms ease-in;
         }
         .individual:hover{
+            height: 164px;
             right: 7px;
         }
         .individual:hover .info, .individual:hover .center {

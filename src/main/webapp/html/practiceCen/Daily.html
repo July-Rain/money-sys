@@ -68,24 +68,24 @@
                 </div>
 
                 <div class="answer_area" v-if="showAnswer">
-                    <p :class="userAnswerStr!=rightAnswerStr?'err':''">你的答案：<span>{{userAnswerStr}}</span>，正确答案：<span>{{rightAnswerStr}}</span></p>
+                    <p>你的答案：<span :class="userAnswerStr!=rightAnswerStr?'err':''">{{userAnswerStr}}</span>，正确答案：<span class="right">{{rightAnswerStr}}</span></p>
                     <div class="basis clearfix">
-                        <span class="answer-text">试题难度：</span>
+                        <span class="gray">试题难度：</span>
                         <i class="iconfont icon-shoucang1 light"></i>
-                        <i :class="questionForm.questionDifficulty==='10002'||questionForm.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
-                        <i :class="questionForm.questionDifficulty==='10002'||questionForm.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
-                        <i :class="questionForm.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
-                        <i :class="questionForm.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
-                        <span class="diff" v-if="questionForm.questionDifficulty==='10001'">初级</span>
-                        <span class="diff" v-if="questionForm.questionDifficulty==='10002'||questionForm.questionDifficulty==='10003'">{{ questionForm.questionDifficulty==='10002'?'中级':'高级' }}</span>
+                        <i :class="questionForm.questionDifficulty==='10002'||questionForm.questionDifficulty==='10003'?'light':'gray'" class="iconfont icon-shoucang1"></i>
+                        <i :class="questionForm.questionDifficulty==='10002'||questionForm.questionDifficulty==='10003'?'light':'gray'" class="iconfont icon-shoucang1"></i>
+                        <i :class="questionForm.questionDifficulty==='10003'?'light':'gray'" class="iconfont icon-shoucang1"></i>
+                        <i :class="questionForm.questionDifficulty==='10003'?'light':'gray'" class="iconfont icon-shoucang1"></i>
+                        <span class="light" v-if="questionForm.questionDifficulty==='10001'">初级</span>
+                        <span class="light" v-if="questionForm.questionDifficulty==='10002'||questionForm.questionDifficulty==='10003'">{{ questionForm.questionDifficulty==='10002'?'中级':'高级' }}</span>
                     </div>
                     <div class="basis clearfix">
                         <p>答案描述：</p>
                         <p>{{questionForm.answerDescrible}}</p>
                     </div>
-                    <div class="collection col-orange">
-                        <i :class="starIcon" @click="doCollect"></i>
-                        {{questionForm.isCollect == 1 ? '已收藏' : '收藏'}}
+                    <div class="collection" @click="doCollect">
+                        <i class="iconfont icon-shoucang1" :class="questionForm.isCollect == 1 ? 'light' : 'gray'" style="font-size: 15px"></i>
+                        <span :class="questionForm.isCollect == 1 ? 'light' : 'gray'">{{questionForm.isCollect == 1 ? '已收藏' : '收藏'}}</span>
                     </div>
                 </div>
             </div>
