@@ -35,9 +35,9 @@ var vm = new Vue({
         answers:[],
         exercise:[],
         params:{
-            pname:"",
-            num:"",
-            sourceFrom:"3"
+            pname: "",
+            num: 0,
+            sourceFrom: 2
         },
         taskName:'',
         taskId:'',
@@ -106,7 +106,15 @@ var vm = new Vue({
             vm.reload();
         },
         onCom:function(){
-            if (vm.params.num >vm.num){
+            if(vm.num == 0){
+                vm.$alert('尚无【我的错题】', '提示', {
+                    confirmButtonText: '确定',
+                    callback: function () {
+                    }
+                });
+                return false;
+
+            } else if (vm.params.num > vm.num){
                 vm.$alert('出题数量请勿超过错题数量【' + vm.num + '】', '提示', {
                     confirmButtonText: '确定',
                     callback: function () {
@@ -121,34 +129,37 @@ var vm = new Vue({
                 });
                 return false;
             }
+
+            var obj = {
+                key: vm.params.pname,
+                value: vm.params.num,
+                opinion: vm.params.sourceFrom
+            }
+
             $.ajax({
                 type: "POST",
-                url: baseURL + 'coll/randomQuestColl',
-                dataType: "json",
-                async:false,
-                data: vm.params,
+                url: baseURL + "collection/createPaper",
+                data: JSON.stringify(obj),
+                contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
                         vm.taskName = result.name;
                         vm.taskId = result.id;
                         vm.genTaskByQue = true;
                     } else {
-                        vm.$message({
-                            message: result.msg,
-                            type: 'warning'
-                        });
+                        alert(result.msg);
                     }
                 }
             });
+
         },
         closeGenDia : function(){
             vm.genTaskByQue = false;
         },
         jumpTask : function(){
-            vm.$message({
-                message: vm.taskId,
-                type: 'success'
-            });
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/exerciseCenter/paper_paper.html?id=' + vm.taskId;
         },
         handleInfo: function (qid) {
             this.title = "试题详情";
