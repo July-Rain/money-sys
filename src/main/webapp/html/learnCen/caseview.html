@@ -255,7 +255,7 @@
                             <el-col :span="6" v-for="(item, index) in caseData">
                                 <el-card :body-style="{ padding: '4px' }">
 
-                                    <video width="300" height="155" controls preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,'stu_video')" @pause="onPause(item.id,$event)">
+                                    <video :id="item.id" class="video video-js vjs-big-play-centered" width="300" height="155" preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,'stu_video')" @pause="onPause(item.id,$event)">
                                         <source :src="item.caseContentUrl" type="video/mp4">
                                         您的浏览器不支持视频播放
                                     </video>
@@ -329,4 +329,5 @@
 
 <!-- import [current] JavaScript -->
 <script src="${rc.contextPath}/js/learnCen/caseview.js?_${.now?long}"></script>
+<script src="${rc.contextPath}/statics/plugins/video/video.min.js"></script>
 </html>
