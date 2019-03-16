@@ -140,7 +140,7 @@ var vm = new Vue({
                     if (result.code == 0) {
                         vm.caseData = result.page.list;
                         for(var i=0;i<vm.caseData.length;i++){
-                            vm.caseData[i].caseContentUrl=baseURL+"sys/download?accessoryId="+vm.caseData[i].comContent;
+                            vm.caseData[i].caseContentUrl=baseURL+"sys/download?accessoryId="+vm.caseData[i].caseContent;
                             if(vm.caseData[i].videoPicAcc){
                                 vm.caseData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.caseData[i].videoPicAcc;
                             }else{
@@ -195,7 +195,7 @@ var vm = new Vue({
             //请求后台修改播放量 记录学习记录
             $.ajax({
                 type: "POST",
-                url: baseURL + "caseana/updateCount?stuId="+id+"&stuType="+flag+"&stuFrom=caseana",
+                url: baseURL + "caseana/updateCount?id="+id+"&stuType="+flag+"&stuFrom=caseana",
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -225,7 +225,7 @@ var vm = new Vue({
             //请求后台记录观看时长
             $.ajax({
                 type: "POST",
-                url: baseURL + "caseana/countTime?stuId="+id+"&stuFrom=caseana&type="+vm.formInline.contentType+"&playTime="+temp+"&finishFlag="+finishFlag,
+                url: baseURL + "stumedia/countTime?stuId="+id+"&stuFrom=caseana&type="+vm.formInline.contentType+"&playTime="+temp+"&finishFlag="+finishFlag,
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
@@ -243,7 +243,7 @@ var vm = new Vue({
             vm.dialogCaseAna=false;
             $.ajax({
                 type: "POST",
-                url: baseURL + 'caseana/countTime?stuId=' + vm.caseAna.id+'&stuFrom=pic'+'&playTime='+time+'&type=pic',
+                url: baseURL + 'stumedia/countTime?stuId=' + vm.caseAna.id+'&stuFrom=pic'+'&playTime='+time+'&type=pic',
                 contentType: "application/json",
                 success: function (result) {
                     if(result.code === 0){
