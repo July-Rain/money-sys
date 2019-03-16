@@ -34,23 +34,10 @@ public class UserExamForm extends DataEntity<UserExamForm> {
     private String userId;
     private String source ; //来源
     private String isMustTest;
-
-    public String getIsMustTest() {
-        return isMustTest;
-    }
-
-    public void setIsMustTest(String isMustTest) {
-        this.isMustTest = isMustTest;
-    }
-
-    public String getSource() {
-        return this.source;
-    }
-
-    public void setSource(final String source) {
-        this.source = source;
-    }
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date commitTime;   //交卷时间
+    private Float rewards;  //J奖励内容
+    private Float score;  //J奖励内容
     /**
      * 考试分数
      */
@@ -71,6 +58,57 @@ public class UserExamForm extends DataEntity<UserExamForm> {
      * 达标奖励
      */
     private String reachReward;
+
+    private Date currentTime;   //当前时间
+
+
+    public Date getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(Date currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public Float getScore() {
+        return score;
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
+    }
+
+    public Float getRewards() {
+        return rewards;
+    }
+
+    public void setRewards(Float rewards) {
+        this.rewards = rewards;
+    }
+
+    public Date getCommitTime() {
+        return commitTime;
+    }
+
+    public void setCommitTime(Date commitTime) {
+        this.commitTime = commitTime;
+    }
+
+    public String getIsMustTest() {
+        return isMustTest;
+    }
+
+    public void setIsMustTest(String isMustTest) {
+        this.isMustTest = isMustTest;
+    }
+
+    public String getSource() {
+        return this.source;
+    }
+
+    public void setSource(final String source) {
+        this.source = source;
+    }
 
     public Short getExamScore() {
         return this.examScore;

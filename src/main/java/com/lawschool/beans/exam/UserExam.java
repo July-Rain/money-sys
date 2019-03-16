@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.lawschool.base.DataEntity;
 import org.springframework.context.annotation.Bean;
 
+import java.util.Date;
+
 /**
  * ClassName: UserExam
  * Description: 用户试卷总表
@@ -35,6 +37,16 @@ public class UserExam extends DataEntity<UserExam> {
     private String checkStatus; //阅卷状态  0 未开始  1 未完成  2 已完成
 
     private Float rewards; //奖励
+
+    private Date commitTime;    //交卷时间
+
+    public Date getCommitTime() {
+        return commitTime;
+    }
+
+    public void setCommitTime(Date commitTime) {
+        this.commitTime = commitTime;
+    }
 
     public Float getRewards() {
         return rewards;

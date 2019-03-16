@@ -28,7 +28,8 @@ public interface UserExamDao extends AbstractDao<UserExam> {
 
     void updateFinMarkAndScoreById(@Param("isFinMark")String isFinMark,@Param("totalScore") double totalScore,
                                    @Param("examStatus") String examStatus,@Param("endScore") float endScore,
-                                   @Param("remainingExamTime") Double remainingExamTime, @Param("id")String id);
+                                   @Param("remainingExamTime") Double remainingExamTime,
+                                   @Param("commitTime") Date commitTime,@Param("id")String id);
 
     List<UserExamForm> getList(Page page, Map<String, Object> params);
 

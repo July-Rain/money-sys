@@ -8,6 +8,7 @@ import com.lawschool.beans.User;
 import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.beans.exam.UserExam;
 import com.lawschool.beans.exam.UserExamAnswer;
+import com.lawschool.beans.personalCenter.CollectionEntity;
 import com.lawschool.beans.system.Fraction;
 import com.lawschool.beans.system.FractionRules;
 import com.lawschool.dao.TestQuestionsDao;
@@ -23,9 +24,11 @@ import com.lawschool.service.exam.ExamConfigService;
 import com.lawschool.service.exam.UserExamAnswerService;
 import com.lawschool.service.exam.UserExamFormService;
 import com.lawschool.service.exam.UserExamService;
+import com.lawschool.service.personalCenter.CollectionService;
 import com.lawschool.service.system.FractionService;
 import com.lawschool.util.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,8 +76,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
     @Autowired
     private IntegralService integralService;
 
-//    @Autowired
-//    private CollectionService collectionService;
+    @Autowired private CollectionService collectionService;
 
     @Autowired
     private FractionService fractionService;
@@ -254,7 +256,8 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         }
         //提交试卷设置考试状态为完成
         String examStatus = "2";
-        userExamDao.updateFinMarkAndScoreById(isFinMark, totalScore, examStatus,endScore, remainingExamTime, userExamId);
+
+        userExamDao.updateFinMarkAndScoreById(isFinMark, totalScore, examStatus,endScore, remainingExamTime,new Date(), userExamId);
     }
 
     /**
@@ -290,6 +293,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         }
         if (UtilValidate.isEmpty(params.get("limit"))){
             params.put("limit","10");
+            userExamForm.setCurrentTime(new Date());
         }
         String orderBy = " exam_status ('1','0','2'),IS_MUST_TEST, start_time desc ";
         params.put("orderBy",orderBy);
@@ -450,10 +454,20 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
 
     }
 
+    /**
+     * 收藏
+     * @param id 资源ID
+     * @param recordId 考试答题记录
+     * @param type 1收藏、0取消收藏
+     * @return
+     */
     @Override
     public boolean doCollect(String id, String recordId, Integer type) {
-        // boolean result = collectionService.doCollection("20", id, type==1 ? false : true);
-        boolean result = true;
+
+        User user = (User)SecurityUtils.getSubject().getPrincipal();
+
+        boolean result = collectionService.doCollect(id, CollectionEntity.VITAL_QUESTION, type==1? true: false, user.getId());
+
         if(result){
             dao.updateCollect(recordId, type);
         }

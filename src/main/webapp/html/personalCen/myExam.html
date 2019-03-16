@@ -28,8 +28,11 @@
 
                                 <el-form-item prop="status" label="已考状态">
                                     <el-select v-model="formInline.status" placeholder="请选择" size="mini">
-                                        <el-option label="已考" value="1"></el-option>
-                                        <el-option label="未考" value="0"></el-option>
+                                        <el-option label="未开始" value="3"></el-option>
+                                        <el-option label="未考试" value="0"></el-option>
+                                        <el-option label="未完成" value="1"></el-option>
+                                        <el-option label="已完成" value="2"></el-option>
+                                        <el-option label="已过期" value="4"></el-option>
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item>

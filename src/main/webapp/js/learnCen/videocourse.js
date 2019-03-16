@@ -278,13 +278,14 @@ var vm = new Vue({
         },
         collect:function (id) {
             var coll={
-                comStucode:id,
-                type:'10'
+                sourceId: id,
+                type: 1,
+                isCollect: 1
             };
             //收藏课程
             $.ajax({
                 type: "POST",
-                url: baseURL + "coll/addColl?comStucode="+id+"&type=10",
+                url: baseURL + "collection/doCollect",
                 contentType: "application/json",
                 data: JSON.stringify(coll),
                 success: function(result){
@@ -299,18 +300,18 @@ var vm = new Vue({
         },
         cancelCollect:function (id) {
             var coll={
-                comStucode:id,
-                type:'10'
+                sourceId: id,
+                type: 1,
+                isCollect: 0
             };
             // 取消收藏课程
             $.ajax({
                 type: "POST",
-                url: baseURL + "coll/delColl?comStucode="+id+"&type=10",
+                url: baseURL + "collection/doCollect",
                 contentType: "application/json",
                 data: JSON.stringify(coll),
                 success: function(result){
                     if(result.code === 0){
-                        vm.$message('取消收藏成功');
                         vm.reload();
                     }else{
                         vm.$message(result.msg);

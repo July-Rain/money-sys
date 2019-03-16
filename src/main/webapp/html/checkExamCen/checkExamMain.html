@@ -279,7 +279,7 @@
             </div>
             <div class="card_contain">
                 <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-                    <el-form-item prop="checkStatus">
+                    <el-form-item prop="checkStatus" label="阅卷状态：">
                         <el-select v-model="formInline.checkStatus" placeholder="阅卷状态" size="mini">
                             <el-option label="未阅卷" value="0"></el-option>
                             <el-option label="未完成" value="1"></el-option>
@@ -385,8 +385,8 @@
                     <el-col :span="24">
                         <el-form-item label="性别："  prop="examUserSex">
                             <el-radio-group  v-model="checkExamUser.examUserSex">
-                                <el-radio label="0" >男</el-radio>
-                                <el-radio label="1" >女</el-radio>
+                                <el-radio label="0" value="0" >男</el-radio>
+                                <el-radio label="1" value="1" >女</el-radio>
                             </el-radio-group>
                         </el-form-item>
                     </el-col>

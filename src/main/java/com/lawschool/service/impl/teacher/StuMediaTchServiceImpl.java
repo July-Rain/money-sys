@@ -8,10 +8,12 @@ import com.lawschool.beans.Collection;
 import com.lawschool.beans.User;
 import com.lawschool.beans.accessory.AccessoryEntity;
 import com.lawschool.beans.law.TaskDesicEntity;
+import com.lawschool.beans.personalCenter.CollectionEntity;
 import com.lawschool.beans.teacher.StuMediaTch;
 import com.lawschool.dao.teacher.StuMediaTchDao;
 import com.lawschool.service.accessory.AccessoryService;
 import com.lawschool.service.auth.AuthRelationService;
+import com.lawschool.service.personalCenter.CollectionService;
 import com.lawschool.service.teacher.StuMediaTchService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
@@ -39,8 +41,8 @@ public class StuMediaTchServiceImpl extends AbstractServiceImpl<StuMediaTchDao,S
     @Autowired
     private AuthRelationService authService;
 
-//    @Autowired
-//    private CollectionService collectionService;
+    @Autowired
+    private CollectionService collectionService;
 
     @Autowired
     private AccessoryService accessoryService;
@@ -312,14 +314,15 @@ public class StuMediaTchServiceImpl extends AbstractServiceImpl<StuMediaTchDao,S
         return dao.updateStatus(id, status);
     }
 
-    public boolean isColl(String id,String userId){
-        boolean isColl = false;
-        EntityWrapper<Collection> ew=new EntityWrapper();
-        ew.eq("COM_USERID",userId).eq("COM_STUCODE",id);
-//        Collection collection = collectionService.selectOne(ew);
-//        if(UtilValidate.isNotEmpty(collection) && collection.getDelStatus()==0){
-//            isColl=true;
-//        }
+    /**
+     * 判断是否收藏
+     * @param id 资源ID
+     * @param userId 用户ID
+     * @return true已收藏、false未收藏
+     */
+    public boolean isColl(String id, String userId){
+        boolean isColl = collectionService.isCollect(id, userId, CollectionEntity.VITAL_COURSE);
+
         return  isColl;
     }
 }

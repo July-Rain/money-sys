@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.base.Page;
 import com.lawschool.beans.TestQuestions;
+import com.lawschool.beans.User;
 import com.lawschool.beans.auth.AuthRelationBean;
 import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.beans.exam.ExamDetail;
@@ -18,6 +19,7 @@ import com.lawschool.service.exam.ExamConfigService;
 import com.lawschool.service.exam.ExamQueConfigService;
 import com.lawschool.util.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -256,6 +258,8 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	public Result getExamList(Map<String, Object> params) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		ExamConfig examConfig = new ExamConfig();
+		User user = (User)SecurityUtils.getSubject().getPrincipal();
+		examConfig.setOrganizedOrgCode(user.getOrgCode().substring(0,6)+"000000");
 		if(UtilValidate.isNotEmpty(params.get("status"))){
 	//		examConfig.s
 		}

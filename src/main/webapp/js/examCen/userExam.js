@@ -21,7 +21,7 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
-            this.reload();
+            vm.reload();
         })
     },
     methods:{

@@ -58,40 +58,36 @@
                                     prop="examName"
                                     label="试卷名称"
                                     align="center"
+                                    show-overflow-tooltip
                             >
                             </el-table-column>
                             <el-table-column
                                     prop="examTypeName"
                                     label="试卷类型"
                                     align="center"
-                                    width="130"
+                                    width="100"
                             >
                             </el-table-column>
                             <el-table-column
                                     prop="examTime"
                                     label="考试时长（分钟）"
                                     align="center"
-                                    width="150"
+                                    width="140"
                             >
                             </el-table-column>
-
                             <el-table-column
                                     prop="organizedOrgCode"
                                     align="center"
                                     label="组考单位"
                                     width="150"
+                                    show-overflow-tooltip
                             >
                             </el-table-column>
                             <el-table-column
-                                    prop="startTime"
-                                    label="考试开始时间"
                                     align="center"
-                            >
-                            </el-table-column>
-                            <el-table-column
-                                    prop="endTime"
-                                    label="考试结束时间"
-                                    align="center"
+                                    prop="commitTime"
+                                    label="交卷时间"
+                                    width="180"
                             >
                             </el-table-column>
                             <el-table-column
@@ -108,11 +104,17 @@
                             >
                             </el-table-column>
                             <el-table-column
-                                prop = "isPass"
-                                label = "是否达标"
+                                prop = "score"
+                                label = "分数"
                                 align="center"
                                 width="80"
                             ></el-table-column>
+                             <el-table-column
+                                        prop = "reachRewardTypeName"
+                                        label = "奖励类型"
+                                        align="center"
+                                        width="80"
+                             ></el-table-column>
                             <el-table-column
                                 prop = "passReward"
                                 label = "达标奖励"

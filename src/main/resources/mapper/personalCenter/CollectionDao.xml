@@ -32,6 +32,9 @@
             <if test="questionType != null and questionType != ''">
                 AND t.QUESTION_TYPE = #{questionType}
             </if>
+            <if test="type != null">
+                AND c.TYPE = #{type}
+            </if>
         </where>
 
     </select>
@@ -46,7 +49,7 @@
     </delete>
 
     <select id="getTotalQuestion" resultType="int">
-        SELECT COUNT(c.*) AS count
+        SELECT COUNT(*)
         FROM LAW_PERSONAL_COLLECTION c
         LEFT JOIN LAW_TESTQUESTIONS t ON t.ID = c.SOURCE_ID
         WHERE
@@ -54,5 +57,65 @@
             AND t.IS_ENBLE = 0
             AND t.STATUS = 1
             AND c.TYPE = #{type}
+            AND t.QUESTION_TYPE <![CDATA[ <> ]]> '10007'
     </select>
+
+    <select id="getQuestionsForPaper" resultType="string">
+        SELECT
+            o.SOURCE_ID
+        FROM (
+            SELECT
+                c.SOURCE_ID
+            FROM LAW_PERSONAL_COLLECTION c
+            LEFT JOIN LAW_TESTQUESTIONS t ON t.ID = c.SOURCE_ID
+            WHERE
+                c.CREATE_USER = #{userId}
+                AND t.IS_ENBLE = 0
+                AND t.STATUS = 1
+                AND c.TYPE = #{type}
+                AND t.QUESTION_TYPE <![CDATA[ <> ]]> '10007'
+            ORDER BY dbms_random.VALUE) o
+        WHERE
+            ROWNUM <![CDATA[ <= ]]>#{num}
+    </select>
+
+    <select id="isCollect" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            LAW_PERSONAL_COLLECTION
+        WHERE
+            SOURCE_ID = #{sourceId}
+            AND CREATE_USER = #{userId}
+            AND TYPE = #{source}
+    </select>
+
+    <insert id="mySave">
+        INSERT INTO
+        LAW_PERSONAL_COLLECTION
+        (
+            ID,
+            TYPE,
+            SOURCE_ID,
+            CREATE_USER,
+            CREATE_TIME,
+            ANSWERS
+        ) VALUES (
+            #{id},
+            #{type},
+            #{sourceId},
+            #{createUser},
+            #{createTime},
+            #{answers}
+        )
+    </insert>
+
+    <delete id="myDelete">
+        DELETE FROM
+            LAW_PERSONAL_COLLECTION
+        WHERE
+            type = #{source}
+            AND SOURCE_ID = #{sourceId}
+            AND CREATE_USER = #{userId}
+    </delete>
 </mapper>
