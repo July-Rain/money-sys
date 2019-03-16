@@ -6,10 +6,12 @@ import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.Collection;
 import com.lawschool.beans.User;
+import com.lawschool.beans.personalCenter.CollectionEntity;
 import com.lawschool.form.*;
 
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
+import com.lawschool.service.personalCenter.CollectionService;
 import com.lawschool.service.practicecenter.ThemeAnswerRecordService;
 import com.lawschool.util.RedisUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -32,20 +34,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseDao, ThemeExerciseEntity> implements ThemeExerciseService {
 
-	@Autowired
-    private RedisUtil redisUtil;
+	@Autowired private RedisUtil redisUtil;
 
-	@Autowired
-	private ThemeAnswerRecordService themeAnswerRecordService;
+	@Autowired private ThemeAnswerRecordService themeAnswerRecordService;
 
-	@Autowired
-	private TestQuestionService testQuestionService;
+	@Autowired private TestQuestionService testQuestionService;
 
-	@Autowired
-	private AnswerService answerService;
+	@Autowired private AnswerService answerService;
 
-//	@Autowired
-//	private CollectionService collectionService;
+	@Autowired private CollectionService collectionService;
 
 	/**
 	 * 主题练习首页列表数据
@@ -296,18 +293,7 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 
 		User user = (User) SecurityUtils.getSubject().getPrincipal();
 
-		if(type == 1){
-			com.lawschool.beans.Collection collect = new Collection();
-			collect.setId(IdWorker.getIdStr());
-			collect.setType(20);
-			collect.setComStucode(id);
-
-			// 0成功，1失败
-			// int result = collectionService.addCollection(collect, user);
-		} else {
-			// 取消收藏
-			// boolean result = collectionService.cancle(id, user.getId());
-		}
+		boolean result = collectionService.doCollect(id, CollectionEntity.VITAL_QUESTION, type==1?true:false, user.getId());
 
 		dao.updateCollect(recordId, type);
 

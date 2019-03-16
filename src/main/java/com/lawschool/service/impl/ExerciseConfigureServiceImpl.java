@@ -5,17 +5,22 @@ import com.lawschool.base.Page;
 import com.lawschool.beans.Collection;
 import com.lawschool.beans.ExerciseConditionEntity;
 import com.lawschool.beans.ExerciseConfigureEntity;
+import com.lawschool.beans.User;
+import com.lawschool.beans.personalCenter.CollectionEntity;
 import com.lawschool.dao.ExerciseConfigureDao;
 import com.lawschool.form.AnswerForm;
 import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
+import com.lawschool.form.QuestionForm;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.ExerciseConditionService;
 import com.lawschool.service.ExerciseConfigureService;
 import com.lawschool.service.TestQuestionService;
+import com.lawschool.service.personalCenter.CollectionService;
 import com.lawschool.service.practicecenter.PaperRecordService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +45,8 @@ public class ExerciseConfigureServiceImpl
     @Autowired private AnswerService answerService;
 
     @Autowired private PaperRecordService paperRecordService;
+
+    @Autowired private CollectionService collectionService;
 
     /**
      * 保存组卷配置并生成试卷信息
@@ -71,9 +78,28 @@ public class ExerciseConfigureServiceImpl
 
         } else {
 
+            User user = (User)SecurityUtils.getSubject().getPrincipal();
+
             // 错题组卷或重点试题组卷，生成试卷
 
+            // 获取题目信息
             total = entity.getTotal();
+
+            List<String> quests = new ArrayList<>();
+
+            if(ExerciseConfigureEntity.SOURCE_COLLECT_KEY == source){
+                // 重点试题
+                quests = this.getQuestsFromCollection(CollectionEntity.VITAL_QUESTION, total, user.getId());
+            } else {
+
+                // 我的错题
+                quests = this.getQuestsFromCollection(CollectionEntity.ERROR_QUESTION, total, user.getId());
+            }
+
+            // 保存试卷信息
+            if(CollectionUtils.isNotEmpty(quests)){
+                boolean result = paperRecordService.saveBatch(entity.getId(), quests);
+            }
         }
 
         // 1.保存组卷练习设置
@@ -86,7 +112,7 @@ public class ExerciseConfigureServiceImpl
      * 根据设置生成试卷
      * @return
      */
-    public List<String> doPaperForSet(List<ExerciseConditionEntity> list){
+    private List<String> doPaperForSet(List<ExerciseConditionEntity> list){
         // 用于返回的结果集，题目IDs
         List<String> result = new ArrayList<String>();
 
@@ -144,6 +170,20 @@ public class ExerciseConfigureServiceImpl
         }
 
         return result;
+    }
+
+    /**
+     * 获取收藏题目用于组卷练习
+     * @param source
+     * @param total
+     * @param userId
+     * @return
+     */
+    private List<String> getQuestsFromCollection(Integer source, Integer total, String userId){
+
+        List<String> quests = collectionService.getQuestionsForPaper(source, total, userId);
+
+        return quests;
     }
 
     /**
