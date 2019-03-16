@@ -277,8 +277,14 @@
     <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogPic" :before-close="closeDia"  ref="picDialog">
         <div>
             <el-col :span="24">
+                <span>{{stuMedia.stuTitle}}</span>
+                <span>{{stuMedia.stuIssuer}}</span>
+                <span>{{stuMedia.stuCreat}}</span>
                 <el-input type="textarea" v-html="caseContent"></el-input>
             </el-col>
+        </div>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="closeDia">取消</el-button>
         </div>
     </el-dialog>
     <el-dialog title="选择法律分类" :visible.sync="dialogLaw" >

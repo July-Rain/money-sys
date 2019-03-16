@@ -131,6 +131,9 @@
         <if test="issueOrg != null and issueOrg!=''">
             AND issue_org like '%'||#{issueOrg}||'%'
         </if>
+        <if test="status != null and status!=''">
+            AND status = #{status}
+        </if>
         order  by ISSUE_TIME desc
 
     </select>
@@ -157,6 +160,9 @@
         </if>
         <if test="issueOrg != null and issueOrg!=''">
             AND issue_org like '%'||#{issueOrg}||'%'
+        </if>
+        <if test="status != null and status!=''">
+            AND status = #{status}
         </if>
 
     </select>
