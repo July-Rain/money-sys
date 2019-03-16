@@ -56,7 +56,8 @@ public class FileUtil {
             ftpClient.changeWorkingDirectory(curDate);
             ftpClient.storeFile(accessoryEntity.getId() + "." + type, input);
             input.close();
-            ftpClient.logout();
+            //不需要退出  要不然返回到ftp连接池就会报错啦
+            //ftpClient.logout();
             String filePath = curDate;
             accessoryEntity.setFilePath(filePath);//设置文件路径
             accessoryService.insert(accessoryEntity);//保存文件信息
@@ -266,7 +267,8 @@ public class FileUtil {
                     outputStream.close();
                 }
             }
-            ftpClient.logout();
+            //不需要退出  要不然返回到ftp连接池就会报错啦
+            //ftpClient.logout();
             System.out.println("下载文件成功");
         } catch (Exception e) {
             System.out.println("下载文件失败");
@@ -303,7 +305,7 @@ public class FileUtil {
             //切换FTP目录
             ftpClient.changeWorkingDirectory(pathname);
             ftpClient.dele(filename);
-            ftpClient.logout();
+            //ftpClient.logout();
             flag = true;
             System.out.println("删除文件成功");
         } catch (Exception e) {
