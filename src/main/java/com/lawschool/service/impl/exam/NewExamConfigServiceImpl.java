@@ -75,7 +75,8 @@ public class NewExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao,
         if (UtilValidate.isNotEmpty(examConfig.getId())) {
             //update 操作
             ExamConfig ec = dao.selectById(examConfig.getId());
-            if (!ec.getQuestionWay().equals(examConfig.getQuestionWay())) {
+            if (!ec.getQuestionWay().equals(examConfig.getQuestionWay())||
+                    !ec.getGroupForm().equals(examConfig.getGroupForm()) ) {
                 examConfig.setStatus("0");
             }
             //删除权限表

@@ -1,212 +1,213 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lawschool.dao.exam.ExamConfigDao">
-  <resultMap id="BaseResultMap" type="com.lawschool.beans.exam.ExamConfig">
-    <result column="ID" jdbcType="VARCHAR" property="id" />
-    <result column="EXAM_NAME" jdbcType="VARCHAR" property="examName" />
-    <result column="Special_knowledge_ID" jdbcType="VARCHAR" property="specialKnowledgeId" />
-    <result column="GROUP_FORM" jdbcType="VARCHAR" property="groupForm" />
-    <result column="EXAM_TYPE" jdbcType="VARCHAR" property="examType" />
-    <result column="QUESTION_WAY" jdbcType="VARCHAR" property="questionWay" />
-    <result column="TOPIC_ORDER_TYPE" jdbcType="VARCHAR" property="topicOrderType" />
-    <result column="OPTION_ORDER_TYPE" jdbcType="VARCHAR" property="optionOrderType" />
-    <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
-    <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
-    <result column="EXAM_TIME" jdbcType="DECIMAL" property="examTime" />
-    <result column="ANSWER_SHOW_RULE" jdbcType="VARCHAR" property="answerShowRule" />
-    <result column="EXAM_SCORE" jdbcType="DECIMAL" property="examScore" />
-    <result column="PASS_PNT" jdbcType="DECIMAL" property="passPnt" />
-    <result column="REACH_REWARD_TYPE" jdbcType="VARCHAR" property="reachRewardType" />
-    <result column="REACH_REWARD" jdbcType="VARCHAR" property="reachReward" />
-    <result column="ORGANIZED_ORG_CODE" jdbcType="VARCHAR" property="organizedOrgCode" />
-    <result column="IS_SHOW_LAW" jdbcType="VARCHAR" property="isShowLaw" />
-    <result column="IS_SHOW_LAW_PRORORTION" jdbcType="VARCHAR" property="isShowLawProrortion" />
-    <result column="IS_MUST_TEST" jdbcType="VARCHAR" property="isMustTest" />
-    <result column="EXAM_COUNT" jdbcType="DECIMAL" property="examCount" />
-    <result column="CHECK_TYPE" jdbcType="VARCHAR" property="checkType" />
-    <result column="CHECK_NUM" jdbcType="DECIMAL" property="checkNum" />
-    <result column="CHECK_PASSWORD" jdbcType="VARCHAR" property="checkPassword" />
-    <result column="CHECK_SCORE_DIFFERENCE" jdbcType="DECIMAL" property="checkScoreDifference" />
-    <result column="IS_AIBITRATION" jdbcType="VARCHAR" property="isAibitration" />
-    <result column="AIBITRATION_USER_CODE" jdbcType="VARCHAR" property="aibitrationUserCode" />
-    <result column="CONFIG_STATE" jdbcType="VARCHAR" property="configState" />
-  </resultMap>
-  <insert id="insertSelective" parameterType="com.lawschool.beans.exam.ExamConfig">
-    insert into LAW_EXAM_CONFIG
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        ID,
-      </if>
-      <if test="examName != null">
-        EXAM_NAME,
-      </if>
-      <if test="specialKnowledgeId != null">
-        Special_knowledge_ID,
-      </if>
-      <if test="groupForm != null">
-        GROUP_FORM,
-      </if>
-      <if test="examType != null">
-        EXAM_TYPE,
-      </if>
-      <if test="questionWay != null">
-        QUESTION_WAY,
-      </if>
-      <if test="topicOrderType != null">
-        TOPIC_ORDER_TYPE,
-      </if>
-      <if test="optionOrderType != null">
-        OPTION_ORDER_TYPE,
-      </if>
-      <if test="startTime != null">
-        START_TIME,
-      </if>
-      <if test="endTime != null">
-        END_TIME,
-      </if>
-      <if test="examTime != null">
-        EXAM_TIME,
-      </if>
-      <if test="answerShowRule != null">
-        ANSWER_SHOW_RULE,
-      </if>
-      <if test="examScore != null">
-        EXAM_SCORE,
-      </if>
-      <if test="passPnt != null">
-        PASS_PNT,
-      </if>
-      <if test="reachRewardType != null">
-        REACH_REWARD_TYPE,
-      </if>
-      <if test="reachReward != null">
-        REACH_REWARD,
-      </if>
-      <if test="organizedOrgCode != null">
-        ORGANIZED_ORG_CODE,
-      </if>
-      <if test="isShowLaw != null">
-        IS_SHOW_LAW,
-      </if>
-      <if test="isShowLawProrortion != null">
-        IS_SHOW_LAW_PRORORTION,
-      </if>
-      <if test="isMustTest != null">
-        IS_MUST_TEST,
-      </if>
-      <if test="examCount != null">
-        EXAM_COUNT,
-      </if>
-      <if test="checkType != null">
-        CHECK_TYPE,
-      </if>
-      <if test="checkNum != null">
-        CHECK_NUM,
-      </if>
-      <if test="checkPassword != null">
-        CHECK_PASSWORD,
-      </if>
-      <if test="checkScoreDifference != null">
-        CHECK_SCORE_DIFFERENCE,
-      </if>
-      <if test="isAibitration != null">
-        IS_AIBITRATION,
-      </if>
-      <if test="aibitrationUserCode != null">
-        AIBITRATION_USER_CODE,
-      </if>
-      <if test="configState != null">
-        CONFIG_STATE,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="examName != null">
-        #{examName,jdbcType=VARCHAR},
-      </if>
-      <if test="specialKnowledgeId != null">
-        #{specialKnowledgeId,jdbcType=VARCHAR},
-      </if>
-      <if test="groupForm != null">
-        #{groupForm,jdbcType=VARCHAR},
-      </if>
-      <if test="examType != null">
-        #{examType,jdbcType=VARCHAR},
-      </if>
-      <if test="questionWay != null">
-        #{questionWay,jdbcType=VARCHAR},
-      </if>
-      <if test="topicOrderType != null">
-        #{topicOrderType,jdbcType=VARCHAR},
-      </if>
-      <if test="optionOrderType != null">
-        #{optionOrderType,jdbcType=VARCHAR},
-      </if>
-      <if test="startTime != null">
-        #{startTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="endTime != null">
-        #{endTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="examTime != null">
-        #{examTime,jdbcType=DECIMAL},
-      </if>
-      <if test="answerShowRule != null">
-        #{answerShowRule,jdbcType=VARCHAR},
-      </if>
-      <if test="examScore != null">
-        #{examScore,jdbcType=DECIMAL},
-      </if>
-      <if test="passPnt != null">
-        #{passPnt,jdbcType=DECIMAL},
-      </if>
-      <if test="reachRewardType != null">
-        #{reachRewardType,jdbcType=VARCHAR},
-      </if>
-      <if test="reachReward != null">
-        #{reachReward,jdbcType=VARCHAR},
-      </if>
-      <if test="organizedOrgCode != null">
-        #{organizedOrgCode,jdbcType=VARCHAR},
-      </if>
-      <if test="isShowLaw != null">
-        #{isShowLaw,jdbcType=VARCHAR},
-      </if>
-      <if test="isShowLawProrortion != null">
-        #{isShowLawProrortion,jdbcType=VARCHAR},
-      </if>
-      <if test="isMustTest != null">
-        #{isMustTest,jdbcType=VARCHAR},
-      </if>
-      <if test="examCount != null">
-        #{examCount,jdbcType=DECIMAL},
-      </if>
-      <if test="checkType != null">
-        #{checkType,jdbcType=VARCHAR},
-      </if>
-      <if test="checkNum != null">
-        #{checkNum,jdbcType=DECIMAL},
-      </if>
-      <if test="checkPassword != null">
-        #{checkPassword,jdbcType=VARCHAR},
-      </if>
-      <if test="checkScoreDifference != null">
-        #{checkScoreDifference,jdbcType=DECIMAL},
-      </if>
-      <if test="isAibitration != null">
-        #{isAibitration,jdbcType=VARCHAR},
-      </if>
-      <if test="aibitrationUserCode != null">
-        #{aibitrationUserCode,jdbcType=VARCHAR},
-      </if>
-      <if test="configState != null">
-        #{configState,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <select id="findList" resultType="com.lawschool.beans.exam.ExamConfig" parameterType="com.lawschool.beans.exam.ExamConfig">
+    <resultMap id="BaseResultMap" type="com.lawschool.beans.exam.ExamConfig">
+        <result column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="EXAM_NAME" jdbcType="VARCHAR" property="examName"/>
+        <result column="Special_knowledge_ID" jdbcType="VARCHAR" property="specialKnowledgeId"/>
+        <result column="GROUP_FORM" jdbcType="VARCHAR" property="groupForm"/>
+        <result column="EXAM_TYPE" jdbcType="VARCHAR" property="examType"/>
+        <result column="QUESTION_WAY" jdbcType="VARCHAR" property="questionWay"/>
+        <result column="TOPIC_ORDER_TYPE" jdbcType="VARCHAR" property="topicOrderType"/>
+        <result column="OPTION_ORDER_TYPE" jdbcType="VARCHAR" property="optionOrderType"/>
+        <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="EXAM_TIME" jdbcType="DECIMAL" property="examTime"/>
+        <result column="ANSWER_SHOW_RULE" jdbcType="VARCHAR" property="answerShowRule"/>
+        <result column="EXAM_SCORE" jdbcType="DECIMAL" property="examScore"/>
+        <result column="PASS_PNT" jdbcType="DECIMAL" property="passPnt"/>
+        <result column="REACH_REWARD_TYPE" jdbcType="VARCHAR" property="reachRewardType"/>
+        <result column="REACH_REWARD" jdbcType="VARCHAR" property="reachReward"/>
+        <result column="ORGANIZED_ORG_CODE" jdbcType="VARCHAR" property="organizedOrgCode"/>
+        <result column="IS_SHOW_LAW" jdbcType="VARCHAR" property="isShowLaw"/>
+        <result column="IS_SHOW_LAW_PRORORTION" jdbcType="VARCHAR" property="isShowLawProrortion"/>
+        <result column="IS_MUST_TEST" jdbcType="VARCHAR" property="isMustTest"/>
+        <result column="EXAM_COUNT" jdbcType="DECIMAL" property="examCount"/>
+        <result column="CHECK_TYPE" jdbcType="VARCHAR" property="checkType"/>
+        <result column="CHECK_NUM" jdbcType="DECIMAL" property="checkNum"/>
+        <result column="CHECK_PASSWORD" jdbcType="VARCHAR" property="checkPassword"/>
+        <result column="CHECK_SCORE_DIFFERENCE" jdbcType="DECIMAL" property="checkScoreDifference"/>
+        <result column="IS_AIBITRATION" jdbcType="VARCHAR" property="isAibitration"/>
+        <result column="AIBITRATION_USER_CODE" jdbcType="VARCHAR" property="aibitrationUserCode"/>
+        <result column="CONFIG_STATE" jdbcType="VARCHAR" property="configState"/>
+    </resultMap>
+    <insert id="insertSelective" parameterType="com.lawschool.beans.exam.ExamConfig">
+        insert into LAW_EXAM_CONFIG
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="examName != null">
+                EXAM_NAME,
+            </if>
+            <if test="specialKnowledgeId != null">
+                Special_knowledge_ID,
+            </if>
+            <if test="groupForm != null">
+                GROUP_FORM,
+            </if>
+            <if test="examType != null">
+                EXAM_TYPE,
+            </if>
+            <if test="questionWay != null">
+                QUESTION_WAY,
+            </if>
+            <if test="topicOrderType != null">
+                TOPIC_ORDER_TYPE,
+            </if>
+            <if test="optionOrderType != null">
+                OPTION_ORDER_TYPE,
+            </if>
+            <if test="startTime != null">
+                START_TIME,
+            </if>
+            <if test="endTime != null">
+                END_TIME,
+            </if>
+            <if test="examTime != null">
+                EXAM_TIME,
+            </if>
+            <if test="answerShowRule != null">
+                ANSWER_SHOW_RULE,
+            </if>
+            <if test="examScore != null">
+                EXAM_SCORE,
+            </if>
+            <if test="passPnt != null">
+                PASS_PNT,
+            </if>
+            <if test="reachRewardType != null">
+                REACH_REWARD_TYPE,
+            </if>
+            <if test="reachReward != null">
+                REACH_REWARD,
+            </if>
+            <if test="organizedOrgCode != null">
+                ORGANIZED_ORG_CODE,
+            </if>
+            <if test="isShowLaw != null">
+                IS_SHOW_LAW,
+            </if>
+            <if test="isShowLawProrortion != null">
+                IS_SHOW_LAW_PRORORTION,
+            </if>
+            <if test="isMustTest != null">
+                IS_MUST_TEST,
+            </if>
+            <if test="examCount != null">
+                EXAM_COUNT,
+            </if>
+            <if test="checkType != null">
+                CHECK_TYPE,
+            </if>
+            <if test="checkNum != null">
+                CHECK_NUM,
+            </if>
+            <if test="checkPassword != null">
+                CHECK_PASSWORD,
+            </if>
+            <if test="checkScoreDifference != null">
+                CHECK_SCORE_DIFFERENCE,
+            </if>
+            <if test="isAibitration != null">
+                IS_AIBITRATION,
+            </if>
+            <if test="aibitrationUserCode != null">
+                AIBITRATION_USER_CODE,
+            </if>
+            <if test="configState != null">
+                CONFIG_STATE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="examName != null">
+                #{examName,jdbcType=VARCHAR},
+            </if>
+            <if test="specialKnowledgeId != null">
+                #{specialKnowledgeId,jdbcType=VARCHAR},
+            </if>
+            <if test="groupForm != null">
+                #{groupForm,jdbcType=VARCHAR},
+            </if>
+            <if test="examType != null">
+                #{examType,jdbcType=VARCHAR},
+            </if>
+            <if test="questionWay != null">
+                #{questionWay,jdbcType=VARCHAR},
+            </if>
+            <if test="topicOrderType != null">
+                #{topicOrderType,jdbcType=VARCHAR},
+            </if>
+            <if test="optionOrderType != null">
+                #{optionOrderType,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="examTime != null">
+                #{examTime,jdbcType=DECIMAL},
+            </if>
+            <if test="answerShowRule != null">
+                #{answerShowRule,jdbcType=VARCHAR},
+            </if>
+            <if test="examScore != null">
+                #{examScore,jdbcType=DECIMAL},
+            </if>
+            <if test="passPnt != null">
+                #{passPnt,jdbcType=DECIMAL},
+            </if>
+            <if test="reachRewardType != null">
+                #{reachRewardType,jdbcType=VARCHAR},
+            </if>
+            <if test="reachReward != null">
+                #{reachReward,jdbcType=VARCHAR},
+            </if>
+            <if test="organizedOrgCode != null">
+                #{organizedOrgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="isShowLaw != null">
+                #{isShowLaw,jdbcType=VARCHAR},
+            </if>
+            <if test="isShowLawProrortion != null">
+                #{isShowLawProrortion,jdbcType=VARCHAR},
+            </if>
+            <if test="isMustTest != null">
+                #{isMustTest,jdbcType=VARCHAR},
+            </if>
+            <if test="examCount != null">
+                #{examCount,jdbcType=DECIMAL},
+            </if>
+            <if test="checkType != null">
+                #{checkType,jdbcType=VARCHAR},
+            </if>
+            <if test="checkNum != null">
+                #{checkNum,jdbcType=DECIMAL},
+            </if>
+            <if test="checkPassword != null">
+                #{checkPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="checkScoreDifference != null">
+                #{checkScoreDifference,jdbcType=DECIMAL},
+            </if>
+            <if test="isAibitration != null">
+                #{isAibitration,jdbcType=VARCHAR},
+            </if>
+            <if test="aibitrationUserCode != null">
+                #{aibitrationUserCode,jdbcType=VARCHAR},
+            </if>
+            <if test="configState != null">
+                #{configState,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="findList" resultType="com.lawschool.beans.exam.ExamConfig"
+            parameterType="com.lawschool.beans.exam.ExamConfig">
         SELECT
         ID,
         EXAM_NAME,
@@ -228,84 +229,89 @@
         status,
         enabled
         FROM
-            LAW_EXAM_CONFIG
-            where 1=1
-              <if test="examName != null and examName != '' ">
-               and EXAM_NAME like  concat(concat('%',#{examName}),'%')
-              </if>
-              <if test="startTime != null  ">
-                <![CDATA[   and start_Time >=  #{startTime}  ]]>
-              </if>
-              <if test="endTime != null  ">
-                <![CDATA[   and end_Time <= #{endTime}  ]]>
-              </if>
-    <choose>
-      <when test="page !=null and page.orderBy != null and page.orderBy != ''">
-        ORDER BY ${page.orderBy}
-      </when>
-    </choose>
-	</select>
+        LAW_EXAM_CONFIG
+        where 1=1
+        <if test="examName != null and examName != '' ">
+            and EXAM_NAME like concat(concat('%',#{examName}),'%')
+        </if>
+        <if test="organizedOrgCode != null and organizedOrgCode != '' ">
+            and organized_Org_Code =#{organizedOrgCode}
+        </if>
+        <if test="startTime != null  ">
+            <![CDATA[   and start_Time >=  #{startTime}  ]]>
+        </if>
+        <if test="endTime != null  ">
+            <![CDATA[   and end_Time <= #{endTime}  ]]>
+        </if>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+        </choose>
+    </select>
 
-  <!--查询所需要的问题字段-->
-  <select id="findByQueAndEdId" resultType="com.lawschool.form.QuestForm">
-    SELECT
-    t.id,
-    t.com_content,
-    t.question_difficulty,
-    t.question_type,
-    t.answer_id,
-    t.legal_basis,
-    t.answer_describle,
-    t.answer_choice_number,
-    q.score as "score"
-    FROM law_testquestions t
-    inner JOIN LAW_EXAM_QUESTIONS q ON t.id = q.exam_library_id
-    and q.exam_detail_id=#{examDetailId}
-    <where>
-      t.id IN
-      <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
-        #{item}
-      </foreach>
-    </where>
-    ORDER BY t.question_type
-  </select>
+    <!--查询所需要的问题字段-->
+    <select id="findByQueAndEdId" resultType="com.lawschool.form.QuestForm">
+        SELECT
+        t.id,
+        t.com_content,
+        t.question_difficulty,
+        t.question_type,
+        t.answer_id,
+        t.legal_basis,
+        t.answer_describle,
+        t.answer_choice_number,
+        q.score as "score"
+        FROM law_testquestions t
+        inner JOIN LAW_EXAM_QUESTIONS q ON t.id = q.exam_library_id
+        and q.exam_detail_id=#{examDetailId}
+        <where>
+            t.id IN
+            <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+        ORDER BY t.question_type
+    </select>
 
-  <select id="findByQueAndEdIdForExam" resultType="com.lawschool.beans.TestQuestions">
-    SELECT
-    t.id,
-    t.com_content,
-    t.question_difficulty,
-    t.question_type,
-    t.answer_id,
-    t.legal_basis,
-    t.answer_describle,
-    t.answer_choice_number
-    FROM law_testquestions t
-    inner JOIN LAW_EXAM_QUESTIONS q ON t.id = q.exam_library_id
-    and q.exam_detail_id=#{examDetailId}
-    <where>
-      t.id IN
-      <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
-        #{item}
-      </foreach>
-    </where>
-    ORDER BY t.question_type
-  </select>
-  <update id="checkset" parameterType="com.lawschool.form.CheckSetForm">
-    update LAW_EXAM_CONFIG
-    <trim prefix="set" suffixOverrides=",">
-      <if test="checkNum!=null">CHECK_NUM=#{checkNum},</if>
-      <if test="checkPassword!=null">CHECK_PASSWORD=#{checkPassword},</if>
-      <if test="checkScoreDifference!=null">CHECK_SCORE_DIFFERENCE=#{checkScoreDifference},</if>
-      <if test="isAibitration!=null">IS_AIBITRATION=#{isAibitration},</if>
-      <if test="paperPerSetNum!=null">PAPER_PER_SET_NUM=#{paperPerSetNum},</if>
-      <if test="auditCheckPass!=null">AUDIT_CHECK_PASS=#{auditCheckPass},</if>
-    </trim>
-    WHERE id=#{id}
-  </update>
+    <select id="findByQueAndEdIdForExam" resultType="com.lawschool.beans.TestQuestions">
+        SELECT
+        t.id,
+        t.com_content,
+        t.question_difficulty,
+        t.question_type,
+        t.answer_id,
+        t.legal_basis,
+        t.answer_describle,
+        t.answer_choice_number,
+        q.score perScore
+        FROM law_testquestions t
+        inner JOIN LAW_EXAM_QUESTIONS q ON t.id = q.exam_library_id
+        and q.exam_detail_id=#{examDetailId}
+        <where>
+            t.id IN
+            <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+        ORDER BY t.question_type
+    </select>
 
-  <select id="findByCheckPassword" resultType="com.lawschool.beans.exam.ExamConfig">
-    SELECT
+    <update id="checkset" parameterType="com.lawschool.form.CheckSetForm">
+        update LAW_EXAM_CONFIG
+        <trim prefix="set" suffixOverrides=",">
+            <if test="checkNum!=null">CHECK_NUM=#{checkNum},</if>
+            <if test="checkPassword!=null">CHECK_PASSWORD=#{checkPassword},</if>
+            <if test="checkScoreDifference!=null">CHECK_SCORE_DIFFERENCE=#{checkScoreDifference},</if>
+            <if test="isAibitration!=null">IS_AIBITRATION=#{isAibitration},</if>
+            <if test="paperPerSetNum!=null">PAPER_PER_SET_NUM=#{paperPerSetNum},</if>
+            <if test="auditCheckPass!=null">AUDIT_CHECK_PASS=#{auditCheckPass},</if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+    <select id="findByCheckPassword" resultType="com.lawschool.beans.exam.ExamConfig">
+        SELECT
         ID,
         EXAM_NAME,
         EXAM_TIME,
@@ -321,20 +327,20 @@
         PAPER_PER_SET_NUM,
         AUDIT_CHECK_PASS
         FROM
-            LAW_EXAM_CONFIG
+        LAW_EXAM_CONFIG
         where
-         1=1
-    <if test="checkUserType != null and checkUserType != ''">
-        <if test="checkUserType eq 0">
-            and check_Password=#{checkPassword}
+        1=1
+        <if test="checkUserType != null and checkUserType != ''">
+            <if test="checkUserType eq 0">
+                and check_Password=#{checkPassword}
+            </if>
+            <if test="checkUserType eq 1">
+                and audit_Check_Pass=#{checkPassword}
+            </if>
         </if>
-        <if test="checkUserType eq 1">
-            and audit_Check_Pass=#{checkPassword}
-        </if>
-    </if>
-  </select>
+    </select>
 
-  <select id="getCheckSetting" resultType="com.lawschool.form.CheckSetForm">
+    <select id="getCheckSetting" resultType="com.lawschool.form.CheckSetForm">
     select CHECK_NUM,CHECK_PASSWORD,
     CHECK_SCORE_DIFFERENCE,IS_AIBITRATION,PAPER_PER_SET_NUM,AUDIT_CHECK_PASS
     from LAW_EXAM_CONFIG where id=#{id}

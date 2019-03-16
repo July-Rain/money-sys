@@ -17,7 +17,8 @@
     <update id="updateFinMarkAndScoreById">
         update
         law_user_exam set IS_FIN_MARK = #{isFinMark},score=#{totalScore},
-        exam_status = #{examStatus},REMAINING_EXAM_TIME = #{remainingExamTime}, REWARDS = #{endScore}
+        exam_status = #{examStatus},REMAINING_EXAM_TIME = #{remainingExamTime}, REWARDS = #{endScore},
+        <![CDATA[  commit_time = #{commitTime } ]]>
         <where>
             id = #{id}
         </where>

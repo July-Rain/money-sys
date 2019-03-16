@@ -256,7 +256,8 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         }
         //提交试卷设置考试状态为完成
         String examStatus = "2";
-        userExamDao.updateFinMarkAndScoreById(isFinMark, totalScore, examStatus,endScore, remainingExamTime, userExamId);
+
+        userExamDao.updateFinMarkAndScoreById(isFinMark, totalScore, examStatus,endScore, remainingExamTime,new Date(), userExamId);
     }
 
     /**
@@ -292,6 +293,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         }
         if (UtilValidate.isEmpty(params.get("limit"))){
             params.put("limit","10");
+            userExamForm.setCurrentTime(new Date());
         }
         String orderBy = " exam_status ('1','0','2'),IS_MUST_TEST, start_time desc ";
         params.put("orderBy",orderBy);

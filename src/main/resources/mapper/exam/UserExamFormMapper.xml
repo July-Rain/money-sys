@@ -12,7 +12,7 @@
         a.pass_pnt,
         a.reach_Reward_Type,
         a.reach_Reward,
-        DICTCODE2VALE (A .reach_Reward_Type) reach_Reward_Type_NAME,
+        DICTCODE2VALE (A .reach_Reward_Type) reach_Reward_Type_Name,
         DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
         A .EXAM_TIME,
         o .full_name ORGANIZED_ORG_CODE,
@@ -21,7 +21,10 @@
         b.EXAM_STATUS,
         a.IS_MUST_TEST,
         a.status,
-        a.enabled
+        a.enabled,
+        b.commit_Time，
+        b.score,
+        b.rewards
         FROM
         LAW_EXAM_CONFIG A
         INNER JOIN LAW_USER_EXAM b ON A . ID = b.EXAM_CONFIG_ID
@@ -56,7 +59,10 @@
         '0' EXAM_STATUS,
         a.IS_MUST_TEST，
         a.status,
-        a.enabled
+        a.enabled,
+        TO_DATE('', 'yyyy-mm-dd hh24:mi:ss') commit_Time,
+        0 score,
+        0 rewards
         FROM
         LAW_EXAM_CONFIG A
         left  join law_org o on a.ORGANIZED_ORG_CODE = o.local_org_code
@@ -76,21 +82,51 @@
         <if test="authArr == null">
             and 1=2
         </if>
-
         )
         where 1=1
         <if test="examName != null and examName != '' ">
             and EXAM_NAME like concat(concat('%',#{examName}),'%')
         </if>
-        <if test="examStatus != null and examStatus!='' ">
-            and EXAM_STATUS =#{examStatus}
-        </if>
+        <choose >
+            <when test="examStatus==0">
+              <!--未考试  在考试时间内 -->
+              and EXAM_STATUS = '0'
+                <![CDATA[   and start_Time <= sysdate  ]]>
+                <![CDATA[   and end_Time >=  sysdate ]]>
+            </when>
+            <when test="examStatus==1">
+                <!--未考完  在考试时间内 -->
+                and EXAM_STATUS = '1'
+                <![CDATA[   and start_Time <= sysdate  ]]>
+                <![CDATA[   and end_Time >=  sysdate ]]>
+            </when>
+            <when test="examStatus==2">
+                <!--一考完  -->
+                and EXAM_STATUS = '2'
+            </when>
+            <when test="examStatus==3">
+                <!--未开始  在考试时间内 -->
+                and EXAM_STATUS = '0'
+                <![CDATA[   and start_Time >sysdate  ]]>
+            </when>
+            <when test="examStatus==4">
+                <!--未考完  在考试时间内 -->
+                and EXAM_STATUS in ( '0','1')
+                <![CDATA[   and end_Time <  sysdate ]]>
+            </when>
+
+        </choose>
         <if test="source=='1'">
             and exam_status!='2'
         </if>
         <if test="source=='0'">
             and exam_status='2'
         </if>
+        <if test=" currentTime!=null ">
+            <![CDATA[   and start_Time <=  #{currentTime}  ]]>
+            <![CDATA[   and end_Time >=  #{currentTime}  ]]>
+        </if>
+
         and enabled ='1' and status='1'
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">

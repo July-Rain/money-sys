@@ -1,17 +1,17 @@
 var menuId = $("#menuId").val();
-var storage=window.sessionStorage;
+var storage = window.sessionStorage;
 var operate = storage.getItem("operate");
 var vm = new Vue({
     el: '#app',
-    data:function() {
+    data: function () {
 
-        var data=[]
+        var data = []
         var validateDate = function (rule, value, callback) {
             if (vm.examConfig.endTime === '') {
                 callback(new Error('请输入结束时间'))
             } else {
                 if (!(new Date(Date.parse(vm.examConfig.startTime.replace(/-/g, "/"))).getTime() <
-                    new Date(Date.parse( vm.examConfig.endTime.replace(/-/g, "/"))).getTime())) {
+                    new Date(Date.parse(vm.examConfig.endTime.replace(/-/g, "/"))).getTime())) {
                     callback(new Error('结束日期必须大于开始日期'))
                 } else {
                     callback()
@@ -22,7 +22,7 @@ var vm = new Vue({
             if (vm.examConfig.startTime === '') {
                 callback(new Error('开始时间或者结束时间不能为空'))
             } else {
-                if (new Date(Date.parse(vm.examConfig.startTime.replace(/-/g, "/"))).getTime()  < new Date().getTime() ){
+                if (new Date(Date.parse(vm.examConfig.startTime.replace(/-/g, "/"))).getTime() < new Date().getTime()) {
                     callback(new Error('开始时间应大于当前时间'))
                 } else {
                     callback()
@@ -33,7 +33,7 @@ var vm = new Vue({
             if (vm.examConfig.questionWay === '') {
                 callback(new Error('出题方式不能为空'))
             } else {
-                if (vm.examConfig.groupForm==='10028'&&vm.examConfig.questionWay =='10034'){
+                if (vm.examConfig.groupForm === '10028' && vm.examConfig.questionWay == '10034') {
                     callback(new Error('选择随机组卷时出题方式只能为随机出题'))
                 } else {
                     callback()
@@ -43,20 +43,20 @@ var vm = new Vue({
 
         var validateReachReward = function (rule, value, callback) {
 
-            if (vm.examConfig.reachRewardType!='10038'&&vm.examConfig.reachRewardType!='') {
+            if (vm.examConfig.reachRewardType != '10038' && vm.examConfig.reachRewardType != '') {
 
-                if(vm.examConfig.reachReward===''){
+                if (vm.examConfig.reachReward === '') {
 
                     callback(new Error('请输入达标奖励分数'))
-                }else {
+                } else {
                     callback();
                 }
-            }else {
+            } else {
                 callback();
             }
         };
         return {
-            idArr:[],// 部门Tree默认展开数据
+            idArr: [],// 部门Tree默认展开数据
             value2: [],
             navData: [],//导航
             details: [],
@@ -66,20 +66,20 @@ var vm = new Vue({
             examConfig: {
                 deptIds: "",
                 userIds: "",
-                reachRewardType:"",
-                enabled :"1",
-                isMustTest:"10029",
-                topicOrderType:"10032",
-                optionOrderType:"10032",
-                examTime : 120,
-                startTime:'',
-                endTime:'',
-                examScore : 100,
-                passPnt :60,
-                reachRewardType:"10038",
-                examType:"10025",
-                groupForm:"10028",
-                questionWay:"10033"
+                reachRewardType: "",
+                enabled: "1",
+                isMustTest: "10029",
+                topicOrderType: "10032",
+                optionOrderType: "10032",
+                examTime: 120,
+                startTime: '',
+                endTime: '',
+                examScore: 100,
+                passPnt: 60,
+                reachRewardType: "10038",
+                examType: "10025",
+                groupForm: "10028",
+                questionWay: "10033"
             },
             rules: {//表单验证规则
                 examName: [
@@ -89,168 +89,168 @@ var vm = new Vue({
                 examType: [
                     {required: true, message: '请选择考试类型', trigger: 'change'},
                 ],
-                groupForm:[
+                groupForm: [
                     {required: true, message: '请选择组卷方式', trigger: 'change'},
                 ],
-                isMustTest:[
+                isMustTest: [
                     {required: true, message: '请选择是否必考', trigger: 'change'}
                 ],
-                questionWay:[
-                    {validator: validateQueWay, trigger: 'change',required: true}
+                questionWay: [
+                    {validator: validateQueWay, trigger: 'change', required: true}
                 ],
-                topicOrderType:[
+                topicOrderType: [
                     {required: true, message: '请选择题目顺序', trigger: 'change'}
                 ],
-                optionOrderType:[
+                optionOrderType: [
                     {required: true, message: '请选择选项顺序', trigger: 'change'}
                 ],
-                startTime:[
-                    {required: true, message: '请输入开始时间', trigger: 'blur',validator : validateStartTime}
+                startTime: [
+                    {required: true, message: '请输入开始时间', trigger: 'blur', validator: validateStartTime}
                 ],
-                endTime:[
-                    {validator: validateDate, trigger: 'blur',required: true}
+                endTime: [
+                    {validator: validateDate, trigger: 'blur', required: true}
                 ],
-                examTime : [
+                examTime: [
                     {required: true, message: '请输入考试时长', trigger: 'blur'}
                 ],
-                answerShowRule:[
+                answerShowRule: [
                     {required: true, message: '请选择答案显示规则', trigger: 'change'}
                 ],
-                examScore : [
+                examScore: [
                     {required: true, message: '请输入考试总分', trigger: 'blur'}
                 ],
-                passPnt : [
+                passPnt: [
                     {required: true, message: '请输入达标线', trigger: 'blur'}
                 ],
-                reachRewardType : [
+                reachRewardType: [
                     {required: true, message: '请选择达标奖励', trigger: 'change'}
                 ],
-                reachReward : [
+                reachReward: [
                     {validator: validateReachReward, trigger: 'blur'}
                 ]
             },
             title: "",//弹窗的名称
             delIdArr: [],//删除数据
-            data:[],//题型data
-            deleteIds:[],
-            etOption:[],
-            gfOption:[],
-            imtOption:[],
-            qwOption:[],
-            otOption:[],
-            asuOption:[],
-            rrtOption:[],
-            ctOption:[],
-            answers:[],
-            previewList:[],
+            data: [],//题型data
+            deleteIds: [],
+            etOption: [],
+            gfOption: [],
+            imtOption: [],
+            qwOption: [],
+            otOption: [],
+            asuOption: [],
+            rrtOption: [],
+            ctOption: [],
+            answers: [],
+            previewList: [],
             radio_disabled: false,
-            skOption:[],
-            qtOption:[],
-            userTableData:[],//人员表格信息
-            multipleSelection:[],//选中人员信息
-            multipleDeptSelection:[],//选中部门信息
-            deptCheckData:[],//部门默认选中节点
+            skOption: [],
+            qtOption: [],
+            userTableData: [],//人员表格信息
+            multipleSelection: [],//选中人员信息
+            multipleDeptSelection: [],//选中部门信息
+            deptCheckData: [],//部门默认选中节点
             dialogOrgDept: false,
             dialogDept: false,//部门的弹窗
             dialogUser: false,//人员的弹窗
             dialogCompany: false,//单位弹框
             dialogWatch: false,
             dialogChange: false,
-            deptData:[],//部门树数据
-            userData:[],//人员树数据
-            defaultDeptProps:{
+            deptData: [],//部门树数据
+            userData: [],//人员树数据
+            defaultDeptProps: {
                 children: 'child',
                 label: 'orgName'
             },//部门树的默认格式
-            defaultUserProps:{
+            defaultUserProps: {
                 children: 'child',
                 label: 'orgName'
             },//部门人员的默认格式
-            userForm:{
-                userCode:"",
-                userName:"",
-                orgCode:"",
+            userForm: {
+                userCode: "",
+                userName: "",
+                orgCode: "",
                 currPage: 1,
                 pageSize: 10,
-                totalCount:0,
+                totalCount: 0,
                 identify: '',// 表明是用户
-                userStatus:'2000'//查询有效的用户
+                userStatus: '2000'//查询有效的用户
 
             },//人员查询
             sinMultipleSelection: [],//单选题多选框
-            mulMultipleSelection:[],//多选题
-            judgeMultipleSelection:[],//判断题
-            subMultipleSelection:[],  //主观题
-            sinMultScore:1,
-            mulMultScore:1,
-            judgeMultScore:1,
-            subMultScore:1,
-            randomQuesModal : false,
-            randomQuesData:[{
+            mulMultipleSelection: [],//多选题
+            judgeMultipleSelection: [],//判断题
+            subMultipleSelection: [],  //主观题
+            sinMultScore: 1,
+            mulMultScore: 1,
+            judgeMultScore: 1,
+            subMultScore: 1,
+            randomQuesModal: false,
+            randomQuesData: [{
                 questionType: '10004',
                 specialKnowledgeArr: [],
-                questionNumber:'',
-                everyQuestionScore:'',
-                questionScore:0
+                questionNumber: '',
+                everyQuestionScore: '',
+                questionScore: 0
             },
                 {
                     questionType: '10005',
                     specialKnowledgeArr: [],
-                    questionNumber:'',
-                    everyQuestionScore:'',
-                    questionScore:0
+                    questionNumber: '',
+                    everyQuestionScore: '',
+                    questionScore: 0
                 },
                 {
                     questionType: '10006',
                     specialKnowledgeArr: [],
-                    questionNumber:'',
-                    everyQuestionScore:'',
-                    questionScore:0
+                    questionNumber: '',
+                    everyQuestionScore: '',
+                    questionScore: 0
                 },
                 {
                     questionType: '10007',
                     specialKnowledgeArr: [],
-                    questionNumber:'',
-                    everyQuestionScore:'',
-                    questionScore:0
+                    questionNumber: '',
+                    everyQuestionScore: '',
+                    questionScore: 0
                 },
             ],
             dataListSelections: [],//选中行
-            view:false,
+            view: false,
             setExam: false,//自主出题设置考试弹框
             setQuestion: false,// 设置题目弹框
-            changeQuestionDialog :false,
+            changeQuestionDialog: false,
             tableData3: [],
-            queformInline:{
+            queformInline: {
                 page: 1,
                 limit: 10,
                 count: 0,
-                comContent:'',
-                specialKnowledgeId:'',
-                ids:[]
+                comContent: '',
+                specialKnowledgeId: '',
+                ids: []
             },
-            queNum :0,
-            queScore:0,
-            examConfigForm:{},
-            previewExam : false,
+            queNum: 0,
+            queScore: 0,
+            examConfigForm: {},
+            previewExam: false,
             changeQues: '',// 选中题目
             saveChangeQues: {},
             saveChangeQuesList: [],
-            changeIndex:{
-                index:0,
-                type:''
+            changeIndex: {
+                index: 0,
+                type: ''
             },
-            handleType :'',
+            handleType: '',
             saveUserTableData: [],//用于人员回显表格的对象  --回显需加
-            optionIndex:['A','B','C','D','E','F'],
-            subAllScore:0,
-            saveButton:false,
-            sinMultIds:[],
-            mulMultIds:[],
-            judgeMultIds:[],
-            subMultIds:[],
-            genRandQue : false,
-            changeWay : false
+            optionIndex: ['A', 'B', 'C', 'D', 'E', 'F'],
+            subAllScore: 0,
+            saveButton: false,
+            sinMultIds: [],
+            mulMultIds: [],
+            judgeMultIds: [],
+            subMultIds: [],
+            genRandQue: false,
+            changeWay: false
         };
     },
 
@@ -283,36 +283,37 @@ var vm = new Vue({
                 type: "POST",
                 url: baseURL + "org/tree",
                 contentType: "application/json",
-                success: function(result){
-                    if(result.code === 0){
+                success: function (result) {
+                    if (result.code === 0) {
                         vm.deptData = result.orgList;
                         vm.userData = result.orgList;
                         // 默认展开第一级
                         vm.userData.map(function (m) {
                             vm.idArr.push(m.id)
                         });
-                    }else{
+                    } else {
                         alert(result.msg);
                     }
                 }
             });
-            if(operate==='0'){
+            if (operate === '0') {
                 //新增
                 vm.view = false;
                 vm.handleType = 'add';
-            }else if (operate==='1') {
-               //查看
+            } else if (operate === '1') {
+                //查看
                 var examConfigId = storage.getItem("examConId");
                 vm.view = true;
                 vm.handleType = 'view';
                 this.getExamDetail(examConfigId);
-            }else {
+            } else {
                 //修改
                 var examConfigId = storage.getItem("examConId");
                 vm.view = false;
                 vm.handleType = 'edit';
                 this.getExamDetail(examConfigId);
-            };
+            }
+            ;
             this.reloadUser();
 
         });
@@ -322,29 +323,29 @@ var vm = new Vue({
         indexUserMethod: function (index) {
             return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;
         },
-        getPassPnt : function(){
-            vm.examConfig.passPnt = (vm.examConfig.examScore*0.6).toFixed(0);
+        getPassPnt: function () {
+            vm.examConfig.passPnt = (vm.examConfig.examScore * 0.6).toFixed(0);
         },
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
         },
-        getQuestionWay : function(){
-          if (vm.examConfig.groupForm==='10028'){
-              vm.examConfig.questionWay==='10033'
-              vm.changeWay = true;
-          }else {
-              vm.changeWay = false;
-          }
+        getQuestionWay: function () {
+            if (vm.examConfig.groupForm === '10028') {
+                vm.examConfig.questionWay === '10033'
+                vm.changeWay = true;
+            } else {
+                vm.changeWay = false;
+            }
         },
-        getExamDetail: function(id){
+        getExamDetail: function (id) {
             $.ajax({
-                type : "GET",
-                url: baseURL + "exam/config/getExamDetail?id="+id,
+                type: "GET",
+                url: baseURL + "exam/config/getExamDetail?id=" + id,
                 contentType: "application/json",
-                success:function (result) {
+                success: function (result) {
                     if (result.code === 0) {
                         vm.examConfig = result.examConfig;
-                        if (result.examQueConfiglist.length>0) {
+                        if (result.examQueConfiglist.length > 0) {
                             vm.randomQuesData = result.examQueConfiglist;
                             console.info(vm.randomQuesData);
                         }
@@ -352,128 +353,144 @@ var vm = new Vue({
                         vm.mulMultipleSelection = result.mulChoicList;
                         vm.judgeMultipleSelection = result.judgeList;
                         vm.subMultipleSelection = result.subjectList;
-                        for (var i = 0 ; i< vm.sinMultipleSelection.length; i++){
-                            vm.sinMultIds.push(vm.sinMultipleSelection[i].id);
+                        /*sinMultScore:1,
+                            mulMultScore:1,
+                            judgeMultScore:1,*/
+                        if (vm.sinMultipleSelection.length > 0) {
+                            vm.sinMultScore = vm.sinMultipleSelection[0].perScore;
                         }
-                        for (var i = 0 ; i< vm.mulMultipleSelection.length; i++){
+                        if (vm.sinMultipleSelection.length > 0) {
+                            vm.mulMultScore = vm.sinMultipleSelection[0].perScore;
+                        }
+                        if (vm.judgeMultipleSelection.length > 0) {
+                            vm.judgeMultScore = vm.judgeMultipleSelection[0].perScore;
+                        }
+
+                        for (var i = 0; i < vm.sinMultipleSelection.length; i++) {
+                            vm.sinMultIds.push(vm.sinMultipleSelection[i].id);
+
+                        }
+                        for (var i = 0; i < vm.mulMultipleSelection.length; i++) {
                             vm.mulMultIds.push(vm.mulMultipleSelection[i].id);
                         }
-                        for (var i = 0 ; i< vm.judgeMultipleSelection.length; i++){
+                        for (var i = 0; i < vm.judgeMultipleSelection.length; i++) {
                             vm.judgeMultIds.push(vm.judgeMultipleSelection[i].id);
                         }
-                        for (var i = 0 ; i< vm.subMultipleSelection.length; i++){
+                        for (var i = 0; i < vm.subMultipleSelection.length; i++) {
                             vm.subMultIds.push(vm.subMultipleSelection[i].id);
+                            vm.subAllScore += vm.subMultipleSelection[i].perScore;
                         }
+
                     } else {
                         alert(result.msg);
                     }
                 }
             })
         },
-        cancel : function(){
-            if(operate==='0') {
+        cancel: function () {
+            if (operate === '0') {
                 //新增
                 window.parent.vm.dialogAdd = false
-               /* if((vm.examConfig.id!=null||vm.examConfig.id=='')&&vm.handleType==='add'){
-                    $.ajax({
-                        type: "POST",
-                        url: baseURL + 'exam/config/delete?id='+vm.examConfig.id,
-                        async: true,
-                        contentType: "application/json",
-                        success: function (result) {
-                            window.parent.vm.reload();
-                        }
-                    });
-                }*/
-            }else if (operate==='1'){
+                /* if((vm.examConfig.id!=null||vm.examConfig.id=='')&&vm.handleType==='add'){
+                     $.ajax({
+                         type: "POST",
+                         url: baseURL + 'exam/config/delete?id='+vm.examConfig.id,
+                         async: true,
+                         contentType: "application/json",
+                         success: function (result) {
+                             window.parent.vm.reload();
+                         }
+                     });
+                 }*/
+            } else if (operate === '1') {
                 //查看
                 window.parent.vm.dialogView = false
-            }else{
+            } else {
                 //编辑
                 window.parent.vm.dialogEdit = false
             }
-       },
-        save : function(formName){
-                vm.saveButton = true;
-                this.$refs[formName].validate(function (valid) {
-                    if (valid) {
-                        vm.examConfig.qfList = vm.previewList;
-                        var deptArr = vm.examConfig.deptIds ? vm.examConfig.deptIds.split(",") : [];
-                        var userArr = vm.examConfig.userIds ? vm.examConfig.userIds.split(",") : [];
-                        vm.examConfig.deptArr = deptArr;
-                        vm.examConfig.userArr = userArr;
-                        //
-                        $.ajax({
-                            type: "POST",
-                            url: baseURL + "exam/config/saveOrUpdate",
-                            data: JSON.stringify(
-                                vm.examConfig
-                            ),
-                            contentType: "application/json",
-                            success: function (result) {
-                                if (result.code === 0) {
-                                    vm.$message({
-                                        type: 'success',
-                                        message: '保存成功!'
-                                    });
-                                    vm.examConfig = result.examConfig;
-                                    if (vm.examConfig.questionWay=='10033'){
-                                        vm.randomQuesModal = true;
-                                    }else {
-                                        vm.setExam = true;
-                                    }
-                                    vm.saveButton = false;
-                                    window.parent.vm.reload();
+        },
+        save: function (formName) {
+            vm.saveButton = true;
+            this.$refs[formName].validate(function (valid) {
+                if (valid) {
+                    vm.examConfig.qfList = vm.previewList;
+                    var deptArr = vm.examConfig.deptIds ? vm.examConfig.deptIds.split(",") : [];
+                    var userArr = vm.examConfig.userIds ? vm.examConfig.userIds.split(",") : [];
+                    vm.examConfig.deptArr = deptArr;
+                    vm.examConfig.userArr = userArr;
+                    //
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + "exam/config/saveOrUpdate",
+                        data: JSON.stringify(
+                            vm.examConfig
+                        ),
+                        contentType: "application/json",
+                        success: function (result) {
+                            if (result.code === 0) {
+                                vm.$message({
+                                    type: 'success',
+                                    message: '保存成功!'
+                                });
+                                vm.examConfig = result.examConfig;
+                                if (vm.examConfig.questionWay == '10033') {
+                                    vm.randomQuesModal = true;
                                 } else {
-                                    alert(result.msg);
+                                    vm.setExam = true;
                                 }
+                                vm.saveButton = false;
+                                window.parent.vm.reload();
+                            } else {
+                                alert(result.msg);
                             }
-                        });
-                    } else {
-                        vm.saveButton = false;
-                        return false;
-                    }
-                })
+                        }
+                    });
+                } else {
+                    vm.saveButton = false;
+                    return false;
+                }
+            })
 
         },
-        open :function(){
+        open: function () {
 
-          if (vm.examConfig.questionWay =="10033"){
-              this.randomQuesModal = true ;
-          }else {
-              this.openView();
-          }
+            if (vm.examConfig.questionWay == "10033") {
+                this.randomQuesModal = true;
+            } else {
+                this.openView();
+            }
         },
-        editExam:function(){
-            if (vm.examConfig.questionWay =="10033"){
-                this.randomQuesModal = true ;
-            }else {
+        editExam: function () {
+            if (vm.examConfig.questionWay == "10033") {
+                this.randomQuesModal = true;
+            } else {
                 this.openView();
             }
         },
         confimDept: function () {
 
-            this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
+            this.multipleDeptSelection = this.$refs.deptTree.getCheckedNodes();
             this.examConfig.deptIds = '';
             this.examConfig.deptName = '';
-            for(var i=0;i<this.multipleDeptSelection.length;i++){
+            for (var i = 0; i < this.multipleDeptSelection.length; i++) {
                 if (!this.examConfig.deptIds) {
-                    this.examConfig.deptIds=this.multipleDeptSelection[i].id;
-                    this.examConfig.deptName=this.multipleDeptSelection[i].orgName;
-                }else{
-                    if(this.examConfig.deptIds.indexOf(this.multipleDeptSelection[i].id) === -1){
-                        this.examConfig.deptIds+=","+this.multipleDeptSelection[i].id;
-                        this.examConfig.deptName+=","+this.multipleDeptSelection[i].orgName;
+                    this.examConfig.deptIds = this.multipleDeptSelection[i].id;
+                    this.examConfig.deptName = this.multipleDeptSelection[i].orgName;
+                } else {
+                    if (this.examConfig.deptIds.indexOf(this.multipleDeptSelection[i].id) === -1) {
+                        this.examConfig.deptIds += "," + this.multipleDeptSelection[i].id;
+                        this.examConfig.deptName += "," + this.multipleDeptSelection[i].orgName;
                     }
                 }
             }
 
-            this.examConfig.deptIds = delFirstStr(this.examConfig.deptIds,',');
-            this.examConfig.deptName = delFirstStr(this.examConfig.deptName,',');
-            this.dialogDept=false;
+            this.examConfig.deptIds = delFirstStr(this.examConfig.deptIds, ',');
+            this.examConfig.deptName = delFirstStr(this.examConfig.deptName, ',');
+            this.dialogDept = false;
         },
         cancelDept: function () {
-            this.dialogDept=false;
+            this.dialogDept = false;
         },
         confimUser: function () {
             //  --回显需加
@@ -489,10 +506,10 @@ var vm = new Vue({
                     vm.examConfig.userName = vm.examConfig.userName + ',' + val[i].userName;
                 }
             }
-            this.dialogUser=false;
+            this.dialogUser = false;
         },
         cancelUser: function () {
-            this.dialogUser=false;
+            this.dialogUser = false;
             // window.parent.vm.dialogAdd = false;
         },
         searchUser: function () {
@@ -500,31 +517,31 @@ var vm = new Vue({
             vm.reloadUser();
         },
         userHandleSizeChange: function (val) {
-            this.userForm.pageSize=val;
+            this.userForm.pageSize = val;
             this.reloadUser();
         },
         userHandleCurrentChange: function (val) {
-            this.userForm.currPage=val;
+            this.userForm.currPage = val;
             this.reloadUser();
         },
-        chooseOrgDept: function(){
+        chooseOrgDept: function () {
             this.dialogCompany = true
         },
-        cancelCompany : function(){
-            this.dialogCompany=false;
+        cancelCompany: function () {
+            this.dialogCompany = false;
         },
         chooseDept: function () {
             //选择部门
             console.log(vm.deptData);
-            this.dialogDept=true;
+            this.dialogDept = true;
 
         },
-        saveCompany: function(){
+        saveCompany: function () {
             this.dialogCompany = false;
         },
         //部门人员控件中点击事件
         handleDeptNodeClick: function (data) {
-            this.userForm.orgCode=data.orgCode;
+            this.userForm.orgCode = data.orgCode;
             this.reloadUser();
         },
         handleCheckChange: function (data, checked, indeterminate) {
@@ -534,20 +551,20 @@ var vm = new Vue({
             //选择人员信息
             this.multipleSelection = val;
             //遍历最终的人员信息
-            for (var i=0;i<val.length;i++){
+            for (var i = 0; i < val.length; i++) {
                 if (!this.examConfig.userIds) {
-                    this.examConfig.userIds=val[i].id;
-                    this.examConfig.userName=val[i].userName;
-                }else{
-                    this.examConfig.userIds+=","+val[i].id;
-                    this.examConfig.userName+=","+val[i].userName;
+                    this.examConfig.userIds = val[i].id;
+                    this.examConfig.userName = val[i].userName;
+                } else {
+                    this.examConfig.userIds += "," + val[i].id;
+                    this.examConfig.userName += "," + val[i].userName;
                 }
             }
 
         },
         chooseUser: function () {
             //选择人员
-            this.dialogUser=true;
+            this.dialogUser = true;
             //this.reloadUser();
             this.huixian(this.examConfig.userArr) //  --回显需加
         },
@@ -608,16 +625,16 @@ var vm = new Vue({
             this.queformInline.limit = val;
             this.queReload();
         },
-        quehandleCurrentChange:function(val){
+        quehandleCurrentChange: function (val) {
             this.queformInline.page = val;
             this.queReload();
         },
-        setExamFn: function (index,row) {
+        setExamFn: function (index, row) {
             vm.examConfig = row;
-            if(row.questionWay==='10033'){
+            if (row.questionWay === '10033') {
                 this.randomQuesModal = true
                 this.getDict();
-            }else {
+            } else {
                 this.setExam = true;
                 this.dataListSelections = [];
             }
@@ -628,37 +645,37 @@ var vm = new Vue({
         handleChange: function () {
 
         },
-        cancleSetQue : function(){
+        cancleSetQue: function () {
             this.setQuestion = false;
         },
-        addQuestion:function (type){
+        addQuestion: function (type) {
             this.setQuestion = true;
             vm.queformInline.questionType = type;
             this.queReload();
             this.getDict();
         },
-        onQueSubmit : function () {
+        onQueSubmit: function () {
             this.queReload();
         },
         //根据下标删除题目
-        delSinMul:function(index){
-            this.sinMultIds.splice(index,1)
-            this.sinMultipleSelection.splice(index,1);
+        delSinMul: function (index) {
+            this.sinMultIds.splice(index, 1)
+            this.sinMultipleSelection.splice(index, 1);
         },
-        delMulMul:function(index){
-            this.mulMultIds.splice(index,1)
-            this.mulMultipleSelection.splice(index,1);
+        delMulMul: function (index) {
+            this.mulMultIds.splice(index, 1)
+            this.mulMultipleSelection.splice(index, 1);
         },
-        delJudMul:function(index){
-            this.judgeMultIds.splice(index,1)
-            this.judgeMultipleSelection.splice(index,1);
+        delJudMul: function (index) {
+            this.judgeMultIds.splice(index, 1)
+            this.judgeMultipleSelection.splice(index, 1);
         },
-        delSubMul:function(index){
-            this.subMultIds.splice(index,1)
-            this.subMultipleSelection.splice(index,1);
+        delSubMul: function (index) {
+            this.subMultIds.splice(index, 1)
+            this.subMultipleSelection.splice(index, 1);
             this.calaSubAllScore();
         },
-        getDict : function(){
+        getDict: function () {
             $.ajax({
                 type: "GET",
                 url: baseURL + "exam/config/dict",
@@ -673,19 +690,19 @@ var vm = new Vue({
                 }
             });
         },
-        queReload : function () {
+        queReload: function () {
             var allIds = [];
-            vm.queformInline.ids=[];
+            vm.queformInline.ids = [];
             allIds = allIds.concat(vm.sinMultIds).concat(vm.mulMultIds).concat(vm.judgeMultIds).concat(vm.subMultIds);
-            for (var i =0 ;i< allIds.length; i++){
-                if(vm.queformInline.ids.indexOf(allIds[i])==-1){
+            for (var i = 0; i < allIds.length; i++) {
+                if (vm.queformInline.ids.indexOf(allIds[i]) == -1) {
                     vm.queformInline.ids.push(allIds[i]);
                 }
             }
             var url = '';
-            if (vm.queformInline.ids.length<=0){
+            if (vm.queformInline.ids.length <= 0) {
                 url = 'testQuestion/list';
-            }else {
+            } else {
                 url = 'exam/config/getQueList';
             }
             $.ajax({
@@ -705,26 +722,26 @@ var vm = new Vue({
                 }
             });
         },
-        getQue : function () {
-            if (this.dataListSelections.length>0){
-                if(this.dataListSelections[0].questionType === '10004'){
+        getQue: function () {
+            if (this.dataListSelections.length > 0) {
+                if (this.dataListSelections[0].questionType === '10004') {
                     this.sinMultipleSelection = this.sinMultipleSelection.concat(this.dataListSelections);
-                    for (var i =0; i<this.dataListSelections.length ; i++){
+                    for (var i = 0; i < this.dataListSelections.length; i++) {
                         this.sinMultIds.push(this.dataListSelections[i].id);
                     }
-                }else if (this.dataListSelections[0].questionType === '10005'){
-                    this.mulMultipleSelection = this.mulMultipleSelection.concat(this.dataListSelections) ;
-                    for (var i =0; i<this.dataListSelections.length ; i++){
+                } else if (this.dataListSelections[0].questionType === '10005') {
+                    this.mulMultipleSelection = this.mulMultipleSelection.concat(this.dataListSelections);
+                    for (var i = 0; i < this.dataListSelections.length; i++) {
                         this.mulMultIds.push(this.dataListSelections[i].id);
                     }
-                }else if(this.dataListSelections[0].questionType === '10006'){
+                } else if (this.dataListSelections[0].questionType === '10006') {
                     this.judgeMultipleSelection = this.judgeMultipleSelection.concat(this.dataListSelections);
-                    for (var i =0; i<this.dataListSelections.length ; i++){
+                    for (var i = 0; i < this.dataListSelections.length; i++) {
                         this.judgeMultIds.push(this.dataListSelections[i].id);
                     }
-                }else {
+                } else {
                     this.subMultipleSelection = this.subMultipleSelection.concat(this.dataListSelections);
-                    for (var i =0; i<this.dataListSelections.length ; i++){
+                    for (var i = 0; i < this.dataListSelections.length; i++) {
                         this.subMultIds.push(this.dataListSelections[i].id);
                     }
                 }
@@ -733,10 +750,10 @@ var vm = new Vue({
             this.calaSubAllScore();
             this.setQuestion = false;
         },
-        closeAutoQue:function(){
+        closeAutoQue: function () {
             this.setExam = false;
         },
-        genAutoQue :function(){
+        genAutoQue: function () {
             vm.examConfigForm.id = vm.examConfig.id;
             vm.examConfigForm.sinMultScore = vm.sinMultScore;
             vm.examConfigForm.mulMultScore = vm.mulMultScore;
@@ -747,37 +764,37 @@ var vm = new Vue({
             vm.examConfigForm.subMultipleSelection = vm.subMultipleSelection;
             console.info(vm.subMultipleSelection)
             var subScore = 0;
-            for (var i=0;i<vm.subMultipleSelection.length;i++){
+            for (var i = 0; i < vm.subMultipleSelection.length; i++) {
                 subScore += parseFloat(vm.subMultipleSelection[i].perScore);
             }
-            subScore = subScore+parseFloat(vm.sinMultipleSelection.length*vm.sinMultScore)
-                +parseFloat(vm.mulMultipleSelection.length*vm.mulMultScore)+parseFloat(vm.judgeMultipleSelection.length*vm.judgeMultScore);
-            if (subScore!=vm.examConfig.examScore){
-                vm.$alert( '配置规则总分应与试题总分相等', '操作失败', {
+            subScore = subScore + parseFloat(vm.sinMultipleSelection.length * vm.sinMultScore)
+                + parseFloat(vm.mulMultipleSelection.length * vm.mulMultScore) + parseFloat(vm.judgeMultipleSelection.length * vm.judgeMultScore);
+            if (subScore != vm.examConfig.examScore) {
+                vm.$alert('配置规则总分应与试题总分相等', '操作失败', {
                     confirmButtonText: '确定',
                     callback: function () {
                         return false;
                     }
                 });
-            }else {
+            } else {
                 $.ajax({
-                    type:"POST",
-                    url :baseURL + "exam/config/examConfig/genAutoQue",
+                    type: "POST",
+                    url: baseURL + "exam/config/examConfig/genAutoQue",
                     data: JSON.stringify(
                         vm.examConfigForm
                     ),
                     contentType: "application/json",
-                    success :function (result) {
-                        if (result.code === 0){
+                    success: function (result) {
+                        if (result.code === 0) {
                             alert('试题配置完成');
                             vm.setExam = false;
-                            if (operate==0){
+                            if (operate == 0) {
                                 window.parent.vm.dialogAdd = false;
-                            }else if(operate==2){
+                            } else if (operate == 2) {
                                 window.parent.vm.dialogEdit = false;
                             }
                             window.parent.vm.reload();
-                        }else {
+                        } else {
                             alert(result.msg);
                         }
                     }
@@ -787,13 +804,13 @@ var vm = new Vue({
         },
         <!-- 随机出题开始-->
         //清空行
-        handleDel : function(index){
+        handleDel: function (index) {
             vm.randomQuesData[index].specialKnowledgeId = [];
             vm.randomQuesData[index].questionNumber = 0;
             vm.randomQuesData[index].everyQuestionScore = 0;
             vm.randomQuesData[index].questionScore = 0;
         },
-        changeQuestionFn:function (type,index){
+        changeQuestionFn: function (type, index) {
             vm.changeIndex = {
                 index: index,
                 type: type
@@ -803,77 +820,77 @@ var vm = new Vue({
             vm.queReload();
             vm.getDict();
         },
-        getTemplateRow:function(index,row){
+        getTemplateRow: function (index, row) {
             this.saveChangeQues = row;
         },
-        openView : function(){
+        openView: function () {
             this.setExam = true;
         },
 
-        preview : function(randomQuesData){
+        preview: function (randomQuesData) {
             console.info(randomQuesData);
-            for(i=0;i<randomQuesData.length;i++){
-                randomQuesData[i].questionScore = randomQuesData[i].questionNumber*randomQuesData[i].everyQuestionScore;
+            for (i = 0; i < randomQuesData.length; i++) {
+                randomQuesData[i].questionScore = randomQuesData[i].questionNumber * randomQuesData[i].everyQuestionScore;
             }
             vm.randomQuesData = randomQuesData;
-            if (randomQuesData.length<=0||randomQuesData==''){
+            if (randomQuesData.length <= 0 || randomQuesData == '') {
                 vm.$alert('请配置随机出题规则', '操作失败', {
                     confirmButtonText: '确定',
                     callback: function () {
                         return false;
                     }
                 });
-            }else {
+            } else {
                 var isRight = true;
-                var msg ='';
-                var subScore=0;
-                for(var i= 0;i<randomQuesData.length;i++){
-                    subScore +=parseFloat(randomQuesData[i].questionScore);
+                var msg = '';
+                var subScore = 0;
+                for (var i = 0; i < randomQuesData.length; i++) {
+                    subScore += parseFloat(randomQuesData[i].questionScore);
                 }
-                if(!isRight){
-                    vm.$alert( msg, '操作失败', {
+                if (!isRight) {
+                    vm.$alert(msg, '操作失败', {
                         confirmButtonText: '确定',
                         callback: function () {
                             return false;
                         }
                     });
-                }else if (subScore!=vm.examConfig.examScore){
-                    vm.$alert( '配置规则总分应与试题总分相等', '操作失败', {
+                } else if (subScore != vm.examConfig.examScore) {
+                    vm.$alert('配置规则总分应与试题总分相等', '操作失败', {
                         confirmButtonText: '确定',
                         callback: function () {
                             return false;
                         }
                     });
-                }else{
+                } else {
                     vm.examConfigForm.id = vm.examConfig.id;
                     vm.examConfigForm.examQueConfigList = randomQuesData;
                     $.ajax({
-                        type:"POST",
-                        url :baseURL + "exam/config/examConfig/preview",
+                        type: "POST",
+                        url: baseURL + "exam/config/examConfig/preview",
                         data: JSON.stringify(
                             vm.examConfigForm
                         ),
                         contentType: "application/json",
-                        success :function (result) {
-                            if (result.code === 0){
+                        success: function (result) {
+                            if (result.code === 0) {
                                 vm.previewExam = true;
                                 vm.sinMultipleSelection = result.sinList;
-                                for (var i = 0 ; i< vm.sinMultipleSelection.length; i++){
+                                for (var i = 0; i < vm.sinMultipleSelection.length; i++) {
                                     vm.sinMultIds.push(vm.sinMultipleSelection[i].id);
                                 }
                                 vm.mulMultipleSelection = result.mulList;
-                                for (var i = 0 ; i< vm.mulMultipleSelection.length; i++){
+                                for (var i = 0; i < vm.mulMultipleSelection.length; i++) {
                                     vm.mulMultIds.push(vm.mulMultipleSelection[i].id);
                                 }
                                 vm.judgeMultipleSelection = result.judList;
-                                for (var i = 0 ; i< vm.judgeMultipleSelection.length; i++){
+                                for (var i = 0; i < vm.judgeMultipleSelection.length; i++) {
                                     vm.judgeMultIds.push(vm.judgeMultipleSelection[i].id);
                                 }
                                 vm.subMultipleSelection = result.subList;
-                                for (var i = 0 ; i< vm.subMultipleSelection.length; i++){
+                                for (var i = 0; i < vm.subMultipleSelection.length; i++) {
                                     vm.subMultIds.push(vm.subMultipleSelection[i].id);
                                 }
-                            }else{
+                            } else {
                                 alert(result.msg);
                             }
                         }
@@ -881,51 +898,51 @@ var vm = new Vue({
                 }
             }
         },
-        closePreview : function(){
-          this.previewExam = false;
+        closePreview: function () {
+            this.previewExam = false;
         },
-        genRandQueAfterPreview : function(){
+        genRandQueAfterPreview: function () {
             vm.genRandQue = true;
             vm.examConfigForm.id = vm.examConfig.id;
             vm.examConfigForm.examQueConfigList = vm.randomQuesData;
             vm.examConfigForm.mustQueList = vm.saveChangeQuesList;
             $.ajax({
-                type:"POST",
-                url :baseURL + "exam/config/examConfig/genRanQueAfterPreview",
+                type: "POST",
+                url: baseURL + "exam/config/examConfig/genRanQueAfterPreview",
                 data: JSON.stringify(
                     vm.examConfigForm
                 ),
                 contentType: "application/json",
-                success :function (result) {
-                    if (result.code === 0){
+                success: function (result) {
+                    if (result.code === 0) {
                         vm.$message({
                             message: '试题配置完成',
                             type: 'success'
                         });
                         vm.randomQuesModal = false;
                         vm.genRandQue = false;
-                        if (operate==0){
+                        if (operate == 0) {
                             window.parent.vm.dialogAdd = false;
-                        }else if(operate==2){
+                        } else if (operate == 2) {
                             window.parent.vm.dialogEdit = false;
                         }
                         window.parent.vm.reload();
-                    }else {
+                    } else {
                         alert(result.msg);
                         vm.genRandQue = false;
                     }
                 }
             })
         },
-        handleSave:function(randomQuesData){
+        handleSave: function (randomQuesData) {
             vm.genRandQue = true;
             console.info(randomQuesData);
-            for(i=0;i<randomQuesData.length;i++){
-                randomQuesData[i].questionScore = randomQuesData[i].questionNumber*randomQuesData[i].everyQuestionScore;
+            for (i = 0; i < randomQuesData.length; i++) {
+                randomQuesData[i].questionScore = randomQuesData[i].questionNumber * randomQuesData[i].everyQuestionScore;
             }
             console.info(randomQuesData);
             vm.randomQuesData = randomQuesData;
-            if (randomQuesData.length<=0||randomQuesData==''){
+            if (randomQuesData.length <= 0 || randomQuesData == '') {
                 vm.$alert('请配置随机出题规则', '操作失败', {
                     confirmButtonText: '确定',
                     callback: function () {
@@ -933,51 +950,51 @@ var vm = new Vue({
                         return false;
                     }
                 });
-            }else {
+            } else {
                 var isRight = true;
-                var msg ='';
-                var subScore=0;
-                for(var i= 0;i<randomQuesData.length;i++){
-                    subScore +=parseFloat(randomQuesData[i].questionScore);
+                var msg = '';
+                var subScore = 0;
+                for (var i = 0; i < randomQuesData.length; i++) {
+                    subScore += parseFloat(randomQuesData[i].questionScore);
                 }
-                if(!isRight){
-                    vm.$alert( msg, '操作失败', {
+                if (!isRight) {
+                    vm.$alert(msg, '操作失败', {
                         confirmButtonText: '确定',
                         callback: function () {
                             vm.genRandQue = false;
                             return false;
                         }
                     });
-                }else if (subScore!=vm.examConfig.examScore){
-                    vm.$alert( '配置规则总分应与试题总分相等', '操作失败', {
+                } else if (subScore != vm.examConfig.examScore) {
+                    vm.$alert('配置规则总分应与试题总分相等', '操作失败', {
                         confirmButtonText: '确定',
                         callback: function () {
                             vm.genRandQue = false;
                             return false;
                         }
                     });
-                }else{
+                } else {
                     vm.examConfigForm.id = vm.examConfig.id;
                     vm.examConfigForm.examQueConfigList = randomQuesData;
                     $.ajax({
-                        type:"POST",
-                        url :baseURL + "exam/config/examConfig/genRandomQue",
+                        type: "POST",
+                        url: baseURL + "exam/config/examConfig/genRandomQue",
                         data: JSON.stringify(
                             vm.examConfigForm
                         ),
                         contentType: "application/json",
-                        success :function (result) {
-                            if (result.code === 0){
+                        success: function (result) {
+                            if (result.code === 0) {
                                 alert('试题配置完成');
                                 vm.randomQuesModal = false;
                                 vm.genRandQue = false;
-                                if (operate==0){
+                                if (operate == 0) {
                                     window.parent.vm.dialogAdd = false;
-                                }else if(operate==2){
+                                } else if (operate == 2) {
                                     window.parent.vm.dialogEdit = false;
                                 }
                                 window.parent.vm.reload();
-                            }else{
+                            } else {
                                 alert(result.msg);
                                 vm.genRandQue = false;
                             }
@@ -986,12 +1003,12 @@ var vm = new Vue({
                 }
             }
         },
-        closeRanDia : function () {
+        closeRanDia: function () {
             vm.randomQuesModal = false;
         },
         resetQueForm: function (name) {
             this.$refs[name].resetFields();
-            this.queformInline.page= 1;
+            this.queformInline.page = 1;
             this.queReload();
         },
         //序列号计算
@@ -1001,51 +1018,51 @@ var vm = new Vue({
         saveChange: function () {
             var _index = this.changeIndex.index;
             var _saveQuse = this.saveChangeQues;
-            if(_saveQuse){
+            if (_saveQuse) {
                 switch (this.changeIndex.type) {
                     case '10004':
-                        vm.removeAndReplace(vm.sinMultipleSelection[_index].id,_saveQuse);
+                        vm.removeAndReplace(vm.sinMultipleSelection[_index].id, _saveQuse);
                         vm.sinMultipleSelection[_index] = _saveQuse;
                         vm.sinMultIds[_index] = _saveQuse.id;
                         break;
                     case '10005':
-                        vm.removeAndReplace(vm.mulMultipleSelection[_index].id,_saveQuse);
+                        vm.removeAndReplace(vm.mulMultipleSelection[_index].id, _saveQuse);
                         vm.mulMultipleSelection[_index] = _saveQuse;
                         vm.mulMultIds[_index] = _saveQuse.id;
                         break;
                     case '10006':
-                        vm.removeAndReplace(vm.judgeMultipleSelection[_index].id,_saveQuse);
+                        vm.removeAndReplace(vm.judgeMultipleSelection[_index].id, _saveQuse);
                         vm.judgeMultipleSelection[_index] = _saveQuse;
                         vm.judgeMultIds[_index] = _saveQuse.id;
                         break;
                     case '10007':
-                        vm.removeAndReplace(vm.subMultipleSelection[_index].id,_saveQuse);
+                        vm.removeAndReplace(vm.subMultipleSelection[_index].id, _saveQuse);
                         vm.subMultipleSelection[_index] = _saveQuse;
                         vm.subMultIds[_index] = _saveQuse.id;
                         break;
                 }
                 vm.changeQuestionDialog = false;
-            }else {
+            } else {
                 alert("请你选择一下")
             }
         },
-        removeAndReplace:function (_before,_after) {
+        removeAndReplace: function (_before, _after) {
             this.saveChangeQuesList.push(_after.id)
-            if (this.saveChangeQuesList.length===0){
-                return ;
+            if (this.saveChangeQuesList.length === 0) {
+                return;
             }
-            if(this.saveChangeQuesList.indexOf(_before) > -1){
+            if (this.saveChangeQuesList.indexOf(_before) > -1) {
                 this.saveChangeQuesList.remove(_before);
             }
         },
-        closeViewWindow:function(){
-            if (handleType=='view'){
+        closeViewWindow: function () {
+            if (handleType == 'view') {
                 window.parent.vm.dialogView = false
             }
         },
-        calaSubAllScore : function () {
+        calaSubAllScore: function () {
             vm.subAllScore = 0;
-            for( var i=0;i<vm.subMultipleSelection.length;i++){
+            for (var i = 0; i < vm.subMultipleSelection.length; i++) {
                 vm.subAllScore += vm.subMultipleSelection[i].perScore;
             }
         }
