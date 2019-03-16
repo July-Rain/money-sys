@@ -45,6 +45,12 @@
         }
         .content_info{
             padding-top: 10px;
+            line-height: 25px;
+        }
+        pre{
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: '微软雅黑';
         }
     </style>
 </head>
@@ -233,7 +239,7 @@
 
 
                 <div class="shengxiao">{{lawDesic.status}}</div>
-                <p class="content_info" v-html="lawDesic.content"></p>
+                <pre class="content_info" v-html="lawDesic.content"></pre>
             </div>
         </el-dialog>
 
