@@ -528,6 +528,8 @@ var vm = new Vue({
             this.dialogDept = false;
         },
         confimUser: function () {
+            vm.saveStep1()
+            vm.saveStep2()
             //  --回显需加
             var val = this.saveChangePageDatas;//提交时候不能保存当前选中的，要保存所有的
             this.saveChangePageDatas = [];//保存后清空避免影响下次
@@ -713,32 +715,42 @@ var vm = new Vue({
             editor.create();
 
         },
+        saveStep1:function(){
+            vm.multipleSelection.map(function (multipleSel) {
+                vm.saveChangePageDatas.push(multipleSel)
+            });
+        },
+        saveStep2:function () {
+            vm.saveChangePageDatas = (function (arr) {
 
-        // canJoin(obj, arr) {
-        //     arr.map(function (obj2) {
-        //         if(obj2.id === obj.id){
-        //             return false
-        //         }
-        //     });
-        //     return true
-        // }
-        defFn(arr){
-
-            var allArr = [];
-            for(var i=0;i<arr.length;i++){
-                var flag = true;
-                for(var j=0;j<allArr.length;j++){
-                    if(arr[i].id == allArr[j].id){
-                        flag = false;
+                var allArr = [];
+                for (var i = 0; i < arr.length; i++) {
+                    var flag = true;
+                    for (var j = 0; j < allArr.length; j++) {
+                        if (arr[i].id == allArr[j].id) {
+                            flag = false;
+                        }
+                    }
+                    if (flag) {
+                        allArr.push(arr[i]);
                     }
                 }
-                if(flag){
-                    allArr.push(arr[i]);
-                }
-            }
-            return allArr
+                return allArr
 
+            })(vm.saveChangePageDatas)
+
+
+            var _arr = [];
+            vm.userTableData.map(function (data1) {
+                vm.saveChangePageDatas.map(function (data2) {
+                    if (data1.id === data2.id) {
+                        _arr.push(data1)
+                    }
+                })
+            });
+            vm.userToggleSelection(_arr)
         }
+
     },
     mounted: function () {
         var that = this;
@@ -750,23 +762,10 @@ var vm = new Vue({
     },
     watch: {
         userTableData() {
-            vm.multipleSelection.map(function (multipleSel) {
-                // if (vm.canJoin(multipleSel, this.saveChangePageDatas)) {
-                    vm.saveChangePageDatas.push(multipleSel)
-                // }
-            });
+            vm.saveStep1()
             this.$nextTick(() => {
 
-                vm.saveChangePageDatas = vm.defFn(vm.saveChangePageDatas);
-                var _arr = [];
-                vm.userTableData.map(function (data1) {
-                    vm.saveChangePageDatas.map(function (data2) {
-                        if(data1.id === data2.id){
-                            _arr.push(data1)
-                        }
-                    })
-                });
-                vm.userToggleSelection(_arr)
+                vm.saveStep2()
             })
         }
     }
