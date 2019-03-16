@@ -36,7 +36,7 @@ var vm = new Vue({
             stuKnowledge: "",//专项知识
             stuPoliceclass: "",//所属警种
             videoPicAcc: "",//视频首页
-            stuCreat:new Date(),//获取当前时间
+            stuCreat: new Date(),//获取当前时间
         },
         uploadedPlayer: null, // 上传视频实例
         rules: {//表单验证规则
@@ -84,7 +84,7 @@ var vm = new Vue({
             pageSize: 10,
             totalCount: 0,
             identify: '',// 表明是用户
-            userStatus:'2000'//查询有效的用户
+            userStatus: '2000'//查询有效的用户
 
         },//人员查询
         userTableData: [],//人员表格信息
@@ -95,12 +95,12 @@ var vm = new Vue({
         videoUploadPercent: 0,
         deptCheckData: [],//部门默认选中节点
         saveUserTableData: [],//用于人员回显表格的对象  --回显需加
-        dialogLaw:false,//法律法规主题分类弹窗
-        lawCheckData:[],//法律法规回显表格数据
+        dialogLaw: false,//法律法规主题分类弹窗
+        lawCheckData: [],//法律法规回显表格数据
         multipleLawSelection: [],//选中法律法规信息
         lawData: [],//法律知识库分类树 --去除全部的
-        loading:false,//加载层
-
+        loading: false,//加载层
+        saveChangePageDatas: []
     },
     created: function () {
         this.$nextTick(function () {
@@ -201,7 +201,7 @@ var vm = new Vue({
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
                     // debugger
-                    vm.loading=true;
+                    vm.loading = true;
                     var url = vm.stuMedia.id ? "stumedia/updateStuMedia" : "stumedia/insertStuMedia";
                     var deptArr = vm.stuMedia.deptIds ? vm.stuMedia.deptIds.split(",") : [];
                     var userArr = vm.stuMedia.userIds ? vm.stuMedia.userIds.split(",") : [];
@@ -215,7 +215,7 @@ var vm = new Vue({
                         data: JSON.stringify(vm.stuMedia),
                         success: function (result) {
                             if (result.code === 0) {
-                                vm.loading=false;
+                                vm.loading = false;
                                 vm.$alert('操作成功', '提示', {
                                     confirmButtonText: '确定',
                                     callback: function () {
@@ -226,7 +226,7 @@ var vm = new Vue({
                                     }
                                 });
                             } else {
-                                vm.loading=false;
+                                vm.loading = false;
                                 alert(result.msg);
                             }
                         }
@@ -260,13 +260,13 @@ var vm = new Vue({
                 stuLawid: "",//专项知识id
                 stuKnowledge: "",//专项知识
                 videoPicAcc: "",//视频首页
-                stuCreat:new Date()
-            },
-                //清空editor
-                editor.txt.html("");
+                stuCreat: new Date()
+            }
+            //清空editor
+            editor.txt.html("");
             this.title = "新增";
             this.dialogStuMedia = true;
-            this.deptCheckData=[];
+            this.deptCheckData = [];
             this.lawCheckData = [];
         },
         handleEdit: function (index, row) {
@@ -330,7 +330,7 @@ var vm = new Vue({
             });
 
         },
-        handleOpen:function(index, row){
+        handleOpen: function (index, row) {
             var that = this
             this.$confirm('采用后该数据为公开数据, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -339,7 +339,7 @@ var vm = new Vue({
             }).then(function () {
                 $.ajax({
                     type: "POST",
-                    url: baseURL + 'stumedia/updateOpen?stuId='+row.id,
+                    url: baseURL + 'stumedia/updateOpen?stuId=' + row.id,
                     async: true,
                     contentType: "application/json",
                     success: function (result) {
@@ -360,22 +360,21 @@ var vm = new Vue({
             this.dialogStuMedia = false;
             vm.reload();
         },
-        closePlay:function(){
+        closePlay: function () {
             //关闭播放器
             //关闭页面时 如果有视频或者音频暂停播放
             //播放时暂停别的正在播放的音频
             var player;
-            if(vm.stuMedia.stuType=='audio'){
+            if (vm.stuMedia.stuType == 'audio') {
                 player = document.getElementById("audio");
 
-            }else if(vm.stuMedia.stuType=='video'){
+            } else if (vm.stuMedia.stuType == 'video') {
                 player = document.getElementById("video");
             }
-            if(player!==null&&vm.stuMedia.stuType!='pic'){
+            if (player !== null && vm.stuMedia.stuType != 'pic') {
                 //检测播放是否已暂停.audio.paused 在播放器播放时返回false.在播放器暂停时返回true
 
-                if(!player.paused)
-                {
+                if (!player.paused) {
                     player.pause();// 这个就是暂停//audio.play();// 这个就是播放
                 }
             }
@@ -515,14 +514,14 @@ var vm = new Vue({
                     this.stuMedia.deptIds = this.multipleDeptSelection[i].id;
                     this.stuMedia.deptName = this.multipleDeptSelection[i].orgName;
                 } else {
-                    if(this.stuMedia.deptIds.indexOf(this.multipleDeptSelection[i].id)===-1){
+                    if (this.stuMedia.deptIds.indexOf(this.multipleDeptSelection[i].id) === -1) {
                         this.stuMedia.deptIds += "," + this.multipleDeptSelection[i].id;
                         this.stuMedia.deptName += "," + this.multipleDeptSelection[i].orgName;
                     }
                 }
             }
-            this.stuMedia.deptIds = delFirstStr(this.stuMedia.deptIds,',');
-            this.stuMedia.deptName = delFirstStr(this.stuMedia.deptName,',');
+            this.stuMedia.deptIds = delFirstStr(this.stuMedia.deptIds, ',');
+            this.stuMedia.deptName = delFirstStr(this.stuMedia.deptName, ',');
             this.dialogDept = false;
         },
         cancelDept: function () {
@@ -530,9 +529,10 @@ var vm = new Vue({
         },
         confimUser: function () {
             //  --回显需加
-            var val = this.multipleSelection;
+            var val = this.saveChangePageDatas;//提交时候不能保存当前选中的，要保存所有的
+            this.saveChangePageDatas = [];//保存后清空避免影响下次
             //遍历最终的人员信息
-            if(val.length==0){
+            if (val.length == 0) {
                 vm.stuMedia.userIds = "";
                 vm.stuMedia.userName = "";
             }
@@ -618,7 +618,7 @@ var vm = new Vue({
         handleSelectionChange(val) {
             //选择人员信息
             this.multipleSelection = val;
-
+            // console.info("|", this.multipleSelection)
 
         },
         changeStuType: function () {
@@ -627,20 +627,20 @@ var vm = new Vue({
             vm.stuMedia.videoPicAcc = "";
             vm.stuMedia.videoPicAccUrl = "";
             // if (vm.stuMedia.stuType == 'pic') {
-            //     loadEditor();
+            //     vm.loadEditor();
             // }
         },
-        chooseLaw:function(){
+        chooseLaw: function () {
             //选择法律法规主题分类
             this.dialogLaw = true;
         },
-        cancelLaw:function(){
+        cancelLaw: function () {
             this.dialogLaw = false;
         },
-        confimLaw:function(){
+        confimLaw: function () {
 
             this.multipleLawSelection = this.$refs.lawTree.getCheckedNodes();
-            if(this.multipleLawSelection.length>5){
+            if (this.multipleLawSelection.length > 5) {
                 alert("最多只能选择5个法律法规分类");
                 return;
             }
@@ -659,6 +659,85 @@ var vm = new Vue({
         },
         toHome: function () {
             parent.location.reload()
+        },
+        /**
+         * wangEditor 富文本框初始
+         *
+         */
+        loadEditor: function () {
+            var E = window.wangEditor;
+            editor = new E('#editor');
+            // 或者 var editor = new E( document.getElementById('editor') )
+            //显示“上传图片”的tab
+            editor.customConfig.uploadImgServer = baseURL + "sys/upload";// 上传图片到服务器
+            // 自定义菜单配置
+            editor.customConfig.menus = [
+                'head',  // 标题
+                'bold',  // 粗体
+                'fontSize',  // 字号
+                'fontName',  // 字体
+                'italic',  // 斜体
+                'underline',  // 下划线
+                'strikeThrough',  // 删除线
+                'foreColor',  // 文字颜色
+                // 'backColor',  // 背景颜色
+                // 'link',  // 插入链接
+                'list',  // 列表
+                'justify',  // 对齐方式
+                'quote',  // 引用
+                // 'emoticon',  // 表情
+                'image',  // 插入图片
+                'table',  // 表格
+                'video',  // 插入视频
+                // 'code',  // 插入代码
+                'undo',  // 撤销
+                'redo'  // 重复
+            ];
+            editor.customConfig.uploadFileName = 'importfile';
+            editor.customConfig.uploadImgHooks = {
+                // 如果服务器端返回的不是 {errno:0, data: [...]} 这种格式，可使用该配置
+                // （但是，服务器端返回的必须是一个 JSON 格式字符串！！！否则会报错）
+                customInsert: function (insertImg, result, editor) {
+                    // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
+                    // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
+
+                    // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
+                    var url = baseURL + "sys/download?accessoryId=" + result.accessoryId;
+                    insertImg(url)
+                }
+            }
+            editor.customConfig.onchange = function (html) {
+                // 监控变化，同步更新到 textarea
+                vm.stuMedia.comContent = html;
+            };
+            editor.create();
+
+        },
+
+        // canJoin(obj, arr) {
+        //     arr.map(function (obj2) {
+        //         if(obj2.id === obj.id){
+        //             return false
+        //         }
+        //     });
+        //     return true
+        // }
+        defFn(arr){
+
+            var allArr = [];
+            for(var i=0;i<arr.length;i++){
+                var flag = true;
+                for(var j=0;j<allArr.length;j++){
+                    if(arr[i].id == allArr[j].id){
+                        flag = false;
+                    }
+                }
+                if(flag){
+                    allArr.push(arr[i]);
+                }
+            }
+            return allArr
+
         }
     },
     mounted: function () {
@@ -666,62 +745,33 @@ var vm = new Vue({
         this.$refs.stuDialog.open();
         setTimeout(function () {
             that.$refs.stuDialog.close();
-            loadEditor();
+            vm.loadEditor();
         }, 200);
+    },
+    watch: {
+        userTableData() {
+            vm.multipleSelection.map(function (multipleSel) {
+                // if (vm.canJoin(multipleSel, this.saveChangePageDatas)) {
+                    vm.saveChangePageDatas.push(multipleSel)
+                // }
+            });
+            this.$nextTick(() => {
+
+                vm.saveChangePageDatas = vm.defFn(vm.saveChangePageDatas);
+                var _arr = [];
+                vm.userTableData.map(function (data1) {
+                    vm.saveChangePageDatas.map(function (data2) {
+                        if(data1.id === data2.id){
+                            _arr.push(data1)
+                        }
+                    })
+                });
+                vm.userToggleSelection(_arr)
+            })
+        }
     }
 });
 
 
-/**
- * wangEditor 富文本框初始
- *
- */
-function loadEditor() {
-    var E = window.wangEditor;
-    editor = new E('#editor');
-    // 或者 var editor = new E( document.getElementById('editor') )
-    //显示“上传图片”的tab
-    editor.customConfig.uploadImgServer = baseURL + "sys/upload";// 上传图片到服务器
-    // 自定义菜单配置
-    editor.customConfig.menus = [
-        'head',  // 标题
-        'bold',  // 粗体
-        'fontSize',  // 字号
-        'fontName',  // 字体
-        'italic',  // 斜体
-        'underline',  // 下划线
-        'strikeThrough',  // 删除线
-        'foreColor',  // 文字颜色
-        // 'backColor',  // 背景颜色
-        // 'link',  // 插入链接
-        'list',  // 列表
-        'justify',  // 对齐方式
-        'quote',  // 引用
-        // 'emoticon',  // 表情
-        'image',  // 插入图片
-        'table',  // 表格
-        'video',  // 插入视频
-        // 'code',  // 插入代码
-        'undo',  // 撤销
-        'redo'  // 重复
-    ];
-    editor.customConfig.uploadFileName = 'importfile';
-    editor.customConfig.uploadImgHooks = {
-        // 如果服务器端返回的不是 {errno:0, data: [...]} 这种格式，可使用该配置
-        // （但是，服务器端返回的必须是一个 JSON 格式字符串！！！否则会报错）
-        customInsert: function (insertImg, result, editor) {
-            // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
-            // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
 
-            // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
-            var url = baseURL + "sys/download?accessoryId=" + result.accessoryId;
-            insertImg(url)
-        }
-    }
-    editor.customConfig.onchange = function (html) {
-        // 监控变化，同步更新到 textarea
-        vm.stuMedia.comContent = html;
-    };
-    editor.create();
 
-}
