@@ -2,13 +2,15 @@ var vm = new Vue({
     el: '#app',
     data: {
         choice:["A","B","C","D","E","F","G","H","I"],
+        num: 0,
         formInline: { // 搜索表单
             specialKnowledgeId: '',
             questionDifficulty: '',
             questionType: "",
-            currPage: 1,
-            pageSize: 10,
-            totalCount: 0
+            page: 1,
+            limit: 10,
+            count: 0,
+            type: 0
         },
         sks:[],//所属专项
         qds:[],//难度
@@ -28,28 +30,29 @@ var vm = new Vue({
         answers:[],
         exercise:[],
         params:{
-            pname:"",
-            num:"",
-            sourceFrom:"2"
+            pname: "",
+            num: 0,
+            sourceFrom: 3
         },
-        taskName:'',
-        taskId:'',
-        genTaskByQue:false
+        taskName: '',
+        taskId: '',
+        genTaskByQue: false
     },
     created: function () {
         this.$nextTick(function () {
             this.reload();
 
-            //加载选项数据
             $.ajax({
-                type: "POST",
-                url: baseURL + "dict/getByTypeAndParentcode",
-                dataType: "json",
-                async: false,
-                data: {type: "QUESTION_DIFF", Parentcode: "0"},
+                type: "GET",
+                url: baseURL + "common/dicts",
+                contentType: "application/json",
+                data: {
+                    codes: 'QUESTION_DIFF,QUESTION_TYPE'
+                },
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.qds = result.dictlist;
+                        vm.qds = result.results.QUESTION_DIFF;
+                        vm.qts = result.results.QUESTION_TYPE;
                     } else {
                         vm.$message({
                             message: result.msg,
@@ -66,24 +69,6 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.sks = result.skOption;
-                    } else {
-                        vm.$message({
-                            message: result.msg,
-                            type: 'warning'
-                        });
-                    }
-                }
-            });
-
-            $.ajax({
-                type: "POST",
-                url: baseURL + "dict/getByTypeAndParentcode",
-                dataType: "json",
-                async: false,
-                data: {type: "QUESTION_TYPE", Parentcode: "0"},
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.qts = result.dictlist;
                     } else {
                         vm.$message({
                             message: result.msg,
@@ -111,37 +96,52 @@ var vm = new Vue({
         // 表单重置
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
+            vm.formInline.page = 1;
+            vm.reload();
         },
         onCom:function(){
-            if (vm.params.num >vm.formInline.totalCount){
-                vm.$message({
-                    message: "出题数量不能大于收藏试题总数量",
-                    type: 'warning'
+            if(vm.num == 0){
+                vm.$alert('尚无【重点试题】', '提示', {
+                    confirmButtonText: '确定',
+                    callback: function () {
+                    }
+                });
+                return false;
+
+            } else if (vm.params.num > vm.num){
+                vm.$alert('出题数量请勿超过重点试题数量【' + vm.num + '】', '提示', {
+                    confirmButtonText: '确定',
+                    callback: function () {
+                    }
                 });
                 return false;
             }else if (vm.params.num<0|| vm.params.num % 1 != 0){
-                vm.$message({
-                    message: "出题数量必须为正整数",
-                    type: 'warning'
+                vm.$alert('请输入正确出题数量', '提示', {
+                    confirmButtonText: '确定',
+                    callback: function () {
+                    }
                 });
                 return false;
             }
+
+            var obj = {
+                key: vm.params.pname,
+                value: vm.params.num,
+                opinion: vm.params.sourceFrom
+            }
+
             $.ajax({
                 type: "POST",
-                url: baseURL + 'coll/randomQuestColl',
-                dataType: "json",
-                async:false,
-                data: vm.params,
+                url: baseURL + "collection/createPaper",
+                data: JSON.stringify(obj),
+                contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
                         vm.taskName = result.name;
                         vm.taskId = result.id;
                         vm.genTaskByQue = true;
                     } else {
-                        vm.$message({
-                            message: result.msg,
-                            type: 'warning'
-                        });
+                        alert(result.msg);
                     }
                 }
             });
@@ -150,24 +150,24 @@ var vm = new Vue({
             vm.genTaskByQue = false;
         },
         jumpTask : function(){
-            vm.$message({
-                message: vm.taskId,
-                type: 'success'
-            });
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/exerciseCenter/paper_paper.html?id=' + vm.taskId;
         },
-        handleInfo: function (index, row) {
+        handleInfo: function (qid) {
             this.title = "试题详情";
             this.testInfo = true;
-            vm.questObj=row;
             $.ajax({
-                type: "POST",
-                url: baseURL + 'coll/getTestQuestion',
+                type: "GET",
+                url: baseURL + 'collection/show',
                 contentType: "application/json",
-                async:false,
-                data: JSON.stringify(vm.questObj),
+                data:{
+                    qid: qid,
+                    type: 0
+                },
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.answers=result.answer;
+                        vm.questObj = result.form;
                     } else {
                         vm.$message({
                             message: result.msg,
@@ -176,38 +176,25 @@ var vm = new Vue({
                     }
                 }
             });
-            console.log(vm.answers)
         },
         handleDel: function (index, row) {
-            questObj=row;
-            vm.questObj.id=row.collectionId;
-            this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(function () {
-                $.ajax({
-                    type: "POST",
-                    url: baseURL + 'coll/delColl',
-                    async: true,
-                    data: JSON.stringify(vm.questObj),
-                    contentType: "application/json",
-                    success: function (result) {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "collection/delete/"+id,
+                contentType: "application/json",
+                success: function(result){
+
+                    if(result.code === 0){
                         vm.reload();
+                    }else{
+                        alert(result.msg);
                         vm.$message({
-                            type: 'success',
-                            message: '删除成功!'
+                            message: result.msg,
+                            type: 'warning'
                         });
-
                     }
-                });
-            }).catch(function () {
-                // vm.$message({
-                //     type: 'info',
-                //     message: '已取消删除'
-                // });
+                }
             });
-
         },
         closeDia: function () {
             this.testInfo = false;
@@ -219,21 +206,17 @@ var vm = new Vue({
         },
         reload: function () {
             $.ajax({
-                type: "POST",
-                url: baseURL + "coll/testQuestion",
-                dataType: "json",
+                type: "GET",
+                url: baseURL + "collection/list",
+                contentType: "application/json",
                 data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
-                        vm.tableData = result.result.list;
-                        vm.formInline.currPage = result.result.currPage;
-                        vm.formInline.pageSize = result.result.pageSize;
-                        vm.formInline.totalCount = parseInt(result.result.totalCount);
+                        vm.tableData = result.page.list;
+                        vm.formInline.count = result.page.count;
+                        vm.num = result.num;
                     } else {
-                        vm.$message({
-                            message: result.msg,
-                            type: 'warning'
-                        });
+                        alert(result.msg);
                     }
                 }
             });

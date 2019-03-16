@@ -3,12 +3,15 @@ package com.lawschool.service.impl.practicecenter;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.User;
+import com.lawschool.beans.personalCenter.CollectionEntity;
 import com.lawschool.beans.practicecenter.ExerciseAnswerRecordEntity;
 import com.lawschool.beans.practicecenter.ThemeAnswerRecordEntity;
 import com.lawschool.dao.practicecenter.ExerciseAnswerRecordDao;
 import com.lawschool.form.ThemeAnswerForm;
+import com.lawschool.service.personalCenter.CollectionService;
 import com.lawschool.service.practicecenter.ExerciseAnswerRecordService;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +29,14 @@ import java.util.List;
 public class ExerciseAnswerRecordServiceImpl extends AbstractServiceImpl<ExerciseAnswerRecordDao, ExerciseAnswerRecordEntity>
         implements ExerciseAnswerRecordService {
 
+    @Autowired private CollectionService collectionService;
+
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveForm(ThemeAnswerForm form){
+        if(form.getRight() == 0){
+            // 答错，自动收录进我的错题
+            collectionService.doCollect(form.getqId(), CollectionEntity.ERROR_QUESTION, true, form.getAnswer());
+        }
         return dao.saveForm(form);
     }
 

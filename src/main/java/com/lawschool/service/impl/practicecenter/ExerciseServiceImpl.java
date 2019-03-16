@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.Collection;
 import com.lawschool.beans.User;
+import com.lawschool.beans.personalCenter.CollectionEntity;
 import com.lawschool.beans.practicecenter.ExerciseEntity;
 import com.lawschool.dao.practicecenter.ExerciseDao;
 import com.lawschool.form.*;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
+import com.lawschool.service.personalCenter.CollectionService;
 import com.lawschool.service.practicecenter.ExerciseAnswerRecordService;
 import com.lawschool.service.practicecenter.ExerciseService;
 import org.apache.commons.collections.CollectionUtils;
@@ -29,17 +31,13 @@ import java.util.*;
 @Service
 public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, ExerciseEntity> implements ExerciseService {
 
-    @Autowired
-    private TestQuestionService testQuestionService;
+    @Autowired private TestQuestionService testQuestionService;
 
-    @Autowired
-    private ExerciseAnswerRecordService exerciseAnswerRecordService;
+    @Autowired private ExerciseAnswerRecordService exerciseAnswerRecordService;
 
-    @Autowired
-    private AnswerService answerService;
+    @Autowired private AnswerService answerService;
 
-//    @Autowired
-//    private CollectionService collectionService;
+    @Autowired private CollectionService collectionService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -294,10 +292,11 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
             collect.setComStucode(id);
 
             // 0成功，1失败
-            // int result = collectionService.addCollection(collect, user);
+             boolean result = collectionService.doCollect(id, CollectionEntity.VITAL_QUESTION, true, "");
         } else {
+
             // 取消收藏
-            // boolean result = collectionService.cancle(id, user.getId());
+            boolean result = collectionService.doCollect(id, CollectionEntity.VITAL_QUESTION, false, "");
         }
 
         dao.updateCollect(recordId, type);

@@ -171,13 +171,13 @@
                         <div class="card_contain">
                             <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
 
-                                <el-form-item prop="specialKnowledgeId" label="所属专项">
+                                <el-form-item prop="specialKnowledgeId" label="主题">
                                     <el-select v-model="formInline.specialKnowledgeId" size="mini" clearable>
                                         <el-option v-for="(item,index) in sks" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
                                     </el-select>
                                 </el-form-item>
 
-                                <el-form-item prop="questionDifficulty" label="试题难度">
+                                <el-form-item prop="questionDifficulty" label="难度">
                                     <el-select v-model="formInline.questionDifficulty"  size="mini" clearable>
                                         <el-option v-for="(item,index) in qds" :key="item.key" :label="item.value"  v-bind:value="item.key"></el-option>
                                     </el-select>
@@ -189,11 +189,9 @@
                                 </el-form-item>
 
                                 <el-form-item>
-                                    <el-button type="primary" @click="onSubmit" size="mini">
-                                        <i class="iconfont icon-sousuo1"></i>
+                                    <el-button type="primary" @click="onSubmit" size="mini"><i class="iconfont icon-sousuo1"></i>
                                         查询</el-button>
-                                    <el-button class="reset_btn" size="mini" @click="resetForm('formInline')">
-                                        <i class="iconfont icon-tableresetpassword"></i>
+                                    <el-button size="mini" @click="resetForm('formInline')"><i class="iconfont icon-tableresetpassword"></i>
                                         重置</el-button>
                                 </el-form-item>
                                 </el-form-item>
@@ -216,14 +214,13 @@
                                         width="50">
                                 </el-table-column>
                                 <el-table-column
-                                        prop="comContent"
+                                        prop="contant"
                                         label="试题内容"
                                         >
                                 </el-table-column>
-
                                 <el-table-column
-                                        prop="typeValue"
-                                        label="类型"
+                                        prop="type"
+                                        label="题型"
                                         header-align="center"
                                         align="center"
                                         width="80"
@@ -232,7 +229,7 @@
                                 </el-table-column>
 
                                 <el-table-column
-                                        prop="questiondifficultyValue"
+                                        prop="diff"
                                         label="难度"
                                         width="80"
                                         header-align="center"
@@ -241,7 +238,7 @@
                                 </el-table-column>
 
                                 <el-table-column
-                                        prop="questiontypeValue"
+                                        prop="classify"
                                         label="类型"
                                         width="80"
                                         header-align="center"
@@ -250,8 +247,8 @@
                                 </el-table-column>
 
                                 <el-table-column
-                                        prop="specialknowledgeValue"
-                                        label="专项知识"
+                                        prop="topic"
+                                        label="主题"
                                         header-align="center"
                                         align="center"
                                         width="100"
@@ -270,17 +267,18 @@
                                                 content="查看">
                                             <i class="iconfont icon-chakan tabIcon"
                                                slot="reference"
-                                               @click="handleInfo(scope.$index, scope.row)"
-                                               style="color: #1381e3;font-size: 12px;">
+                                               @click="handleInfo(scope.row.sourceId)"
+                                               style="color: #1381e3;font-size: 12px">
                                             </i>
                                         </el-popover>
+
                                         <el-popover
                                                 placement="right"
                                                 trigger="hover"
                                                 content="取消收藏">
                                             <i class="iconfont icon-quxiaoshoucang tabIcon"
                                                slot="reference"
-                                               @click="handleDel(scope.$index, scope.row)"
+                                               @click="handleDel(scope.row.id)"
                                                style="color: #e31313;">
                                             </i>
                                         </el-popover>

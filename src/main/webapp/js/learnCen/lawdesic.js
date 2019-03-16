@@ -163,6 +163,7 @@ var vm = new Vue({
                         vm.dialogLaw=true;
                         if(result.info.list[0]){
                             vm.lawDesic=result.info.list[0];
+                            console.info(vm.lawDesic.content)
                         }
                         console.log(result);
                         //vm.treeData = result.classifyList;

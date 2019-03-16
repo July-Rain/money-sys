@@ -9,9 +9,11 @@ import com.lawschool.beans.StuMedia;
 import com.lawschool.beans.User;
 import com.lawschool.beans.auth.AuthRelationBean;
 import com.lawschool.beans.law.TaskDesicEntity;
+import com.lawschool.beans.personalCenter.CollectionEntity;
 import com.lawschool.dao.StuMediaDao;
 import com.lawschool.service.StuMediaService;
 import com.lawschool.service.auth.AuthRelationService;
+import com.lawschool.service.personalCenter.CollectionService;
 import com.lawschool.util.GetUUID;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Query;
@@ -37,8 +39,8 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
     @Autowired
     private AuthRelationService authService;
 
-//    @Autowired
-//    private CollectionService collectionService;
+    @Autowired
+    private CollectionService collectionService;
 
     /**
      * @Author zjw
@@ -372,14 +374,15 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         return mapper.updateById(stu);
     }
 
-    public boolean isColl(String id,String userId){
-        boolean isColl = false;
-        EntityWrapper<Collection> ew=new EntityWrapper();
-        ew.eq("COM_USERID",userId).eq("COM_STUCODE",id);
-//        Collection collection = collectionService.selectOne(ew);
-//        if(UtilValidate.isNotEmpty(collection) && collection.getDelStatus()==0){
-//            isColl=true;
-//        }
+    /**
+     * 判断是否收藏
+     * @param id
+     * @param userId
+     * @return
+     */
+    public boolean isColl(String id, String userId){
+        boolean isColl = collectionService.isCollect(id, userId, CollectionEntity.VITAL_COURSE);
+
         return  isColl;
     }
 }
