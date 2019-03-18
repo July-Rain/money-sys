@@ -432,7 +432,6 @@ var vm = new Vue({
                     this.learnTasks.userName+=","+val[i].userName;
                 }
             }
-
         },
         handleClassCheckChange: function () {
             this.multipleClassSelection=this.$refs.classTree.getCheckedNodes();

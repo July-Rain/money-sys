@@ -110,8 +110,7 @@ var vm = new Vue({
     },
     methods: {
         //实例化视频
-        initPlayer: function () {
-            debugger;
+        /*initPlayer: function () {
             var that = this;
             window.onload = function () {
                 setTimeout(function () {
@@ -126,12 +125,12 @@ var vm = new Vue({
                             volumePanel: false
                         },
                     };
-                    that.videoDataId.forEach(function (val, index) {
+                    that.videoDataId.forEach(function (val) {
                         videojs(val, options);
                     })
                 }, 400)
             }
-        },
+        },*/
         //序列号计算
         indexMethod: function (index) {
             return index + 1 + (vm.formInline.currPage - 1) * vm.formInline.pageSize;
@@ -190,7 +189,7 @@ var vm = new Vue({
                     }
                 }
             }).then(
-                vm.initPlayer()
+                // vm.initPlayer()
             );
         },
         // el-tree节点点击事件

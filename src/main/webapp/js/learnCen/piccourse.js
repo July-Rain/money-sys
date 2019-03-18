@@ -45,6 +45,7 @@ var vm = new Vue({
         startTime:"",//开始时间
         endTime:""//结束时间
     },
+
     created: function () {
 
         this.$nextTick(function () {
