@@ -2,6 +2,7 @@
 var configureId = getUrlParam('id');
 // 练习任务Id
 var id = getUrlParam('taskId');
+var review = getUrlParam('review');
 
 var vm = new Vue({
     el: "#app",
@@ -38,7 +39,8 @@ var vm = new Vue({
         refresh: function () {
             var obj = {
                 configureId: configureId,
-                id: id
+                id: id,
+                isSubmit: vm.isSubmit
             };
             $.ajax({
                 type: "GET",
@@ -47,12 +49,16 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-                        console.log('ers',result)
                         vm.questionList = result.questionList;
                         vm.singleNum = result.singleNum;
                         vm.multiNum = result.multiNum;
                         vm.pdNum = result.pdNum;
                         id = result.id;
+
+                        vm.creator = result.userName;
+                        vm.type = result.typeName;
+                        vm.createdTime = result.createTime;
+                        vm.paperName = result.paperName;
                     } else {
                         alert(result.msg);
                     }
@@ -64,104 +70,45 @@ var vm = new Vue({
             parent.location.reload()
         },
         goBack: function () {
-            console.info('goback')
             var parentWin = window.parent;
             parentWin.document.getElementById("container").src
                 = 'modules/exerciseCenter/paper_index.html';
         },
-
-        // 提交试卷
-        submit: function () {
-            this.isSubmit = true;
-            // 路径转换
-            /*var parentWin = window.parent;
+        comback: function(){
+            var parentWin = window.parent;
             parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/paper_index.html';*/
-        },
-
-        sure: function (index) {// 多选
-            var obj = vm.questionList[index];
-            var answerId = obj.answerId;
-            var checkList = obj.checkList;
-            if (checkList.length == 0) {
-                alert('请选择选项后再提交');
-                return;
-            }
-
-            var arr = new Array();
-            arr = answerId.split(',');
-
-            if (arr.length != checkList.length) {
-                obj.right = 0;
-                return;
-            }
-
-            obj.right = 1;
-            for (var i = 0; i < arr.length; i++) {
-                if (checkList.indexOf(arr[i]) == -1) {
-                    obj.right = 0;
-                    break;
-                }
-            }
-
-            var form = {
-                taskId: id,
-                qId: obj.id,
-                answer: checkList.join(','),
-                right: obj.right,
-                themeName: obj.themeName
-            };
-
-            vm.preserved.push(form);
-        },
-        affirm: function (index) {
-            var obj = vm.questionList[index];
-            var answerId = obj.answerId;
-            var userAnswer = obj.userAnswer;
-            var themeName = obj.themeName;
-
-            if (userAnswer == answerId) {
-                obj.right = 1;
-            } else {
-                obj.right = 0;
-            }
-
-            var form = {
-                taskId: id,
-                qId: obj.id,
-                answer: userAnswer,
-                right: obj.right,
-                themeName: themeName
-            };
-
-            vm.preserved.push(form);
+                = 'modules/exerciseCenter/paper_index.html';
         },
         save: function () {
-            if (vm.preserved.length > 0) {
-                vm.preserve(0);
-            }
-            var parentWin = window.parent;
-            parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/paper_index.html';
+            $.ajax({
+                type: "POST",
+                url: baseURL + "exercise/paper/save/" + id,
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(vm.questionList),
+                success: function (result) {
+                    if (result.code == 0) {
+                        var parentWin = window.parent;
+                        parentWin.document.getElementById("container").src
+                            = 'modules/exerciseCenter/paper_index.html';
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
         },
-        commit: function () {
-            if (vm.preserved.length > 0) {
-                vm.preserve(1);
-            } else {
-                vm.tj();
-            }
-            var parentWin = window.parent;
-            parentWin.document.getElementById("container").src
-                = 'modules/exerciseCenter/paper_index.html';
-        },
-        tj: function () {
+        submit: function () {
             $.ajax({
                 type: "POST",
                 url: baseURL + "exercise/paper/commit/" + id,
+                dataType: "json",
                 contentType: "application/json",
+                data: JSON.stringify(vm.questionList),
                 success: function (result) {
-                    if (result.code === 0) {
-
+                    if (result.code == 0) {
+                        var parentWin = window.parent;
+                        parentWin.document.getElementById("container").src
+                            = 'modules/exerciseCenter/paper_index.html';
                     } else {
                         alert(result.msg);
                     }
@@ -182,22 +129,6 @@ var vm = new Vue({
             }
             vm.refresh();
         },
-        preserve: function (type) {
-            // 保存答题情况
-            $.ajax({
-                type: "POST",
-                url: baseURL + "exercise/paper/preserve/" + type,
-                data: JSON.stringify(vm.preserved),
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
-        },
         // 保存后显示做题状况
         isChecked: function (id, answer) {
             var answerId = [];
@@ -209,6 +140,11 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
+            if(review != null && review != ''){
+                vm.isSubmit = true;
+            } else {
+                vm.isSubmit = false;
+            }
             vm.refresh();
         });
     },

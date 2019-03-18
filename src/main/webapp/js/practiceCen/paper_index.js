@@ -43,6 +43,11 @@ var vm = new Vue({
             parentWin.document.getElementById("container").src
                 = 'modules/exerciseCenter/paper_paper.html?id=' + id + '&taskId=' + taskId;
         },
+        review: function(id, taskId){
+            var parentWin = window.parent;
+            parentWin.document.getElementById("container").src
+                = 'modules/exerciseCenter/paper_paper.html?id=' + id + '&taskId=' + taskId + '&review=review';
+        },
         toHome: function () {
             parent.location.reload()
         }

@@ -39,4 +39,47 @@
         GROUP BY theme_name, right
         ORDER BY theme_name
     </select>
+
+    <!-- 批量新增 -->
+    <insert id="batchInsert" parameterType="list" useGeneratedKeys="false">
+        INSERT INTO law_paper_record
+        (
+            ID,
+            TASK_ID,
+            QUESTION_ID,
+            ANSWER,
+            THEME_NAME,
+            IS_COLLECT,
+            RIGHT,
+            CREATE_USER
+        )
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+        (
+            select
+            #{item.recordId},
+            #{taskId},
+            #{item.questId},
+            #{item.userAnswer},
+            #{item.themeName},
+            0,
+            #{item.right},
+            #{userId}
+            from dual
+        )
+        </foreach>
+    </insert>
+
+    <update id="batchUpdate" parameterType="list">
+        BEGIN
+        <foreach collection="list" item="item" index="index" separator=";">
+            UPDATE law_paper_record
+            SET
+                ANSWER = #{item.userAnswer},
+                RIGHT = #{item.right}
+            WHERE
+                ID = #{item.recordId}
+                AND CREATE_USER = #{userId}
+        </foreach>
+        ;END;
+    </update>
 </mapper>
