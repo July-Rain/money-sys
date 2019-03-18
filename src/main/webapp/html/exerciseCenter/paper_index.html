@@ -48,12 +48,12 @@
                     align="center">
             </el-table-column>
             <el-table-column
-                    label="总题量/已答题量"
+                    label="已答题量/总题量"
                     header-align="center"
                     align="center"
             >
                 <template slot-scope="scope">
-                    {{scope.row.total}}/{{scope.row.answerNum==null?0:scope.row.answerNum}}
+                    {{scope.row.answerNum==null?0:scope.row.answerNum}} / {{scope.row.total}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -78,7 +78,7 @@
                             placement="right-start"
                             width="105"
                             trigger="hover"
-                            content="点击开始练习">
+                            content="开始练习">
                         <i class="iconfont icon-lianxi" v-if="scope.row.status == null"
                            @click="start(scope.row.id, scope.row.taskId)"
                            slot="reference"
@@ -91,7 +91,7 @@
                             placement="right-start"
                             width="105"
                             trigger="hover"
-                            content="点击继续练习">
+                            content="继续练习">
                         <i class="iconfont icon-lianxi"
                            v-if="scope.row.status == 0"
                            @click="goon(scope.row.id, scope.row.taskId)"
@@ -105,11 +105,12 @@
                             placement="right-start"
                             width="105"
                             trigger="hover"
-                            content="点击练习回顾">
+                            content="练习回顾">
                         <i class="iconfont icon-lianxihuigu"
                                 style="color: #1381e3;font-size: 20px"
                            v-if="scope.row.status == 1"
                            slot="reference"
+                           @click="review(scope.row.id, scope.row.taskId)"
                         >
                         </i>
                     </el-popover>

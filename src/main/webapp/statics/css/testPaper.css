@@ -329,6 +329,11 @@ div.answer_area .gray {
     color: #ff6600 !important;
 }
 .items a.finished {
-    background: #E1F1FF;
+    background: #3dff02;
     color: #1381E3;
+}
+
+.items a.submit {
+    background: #ff2916;
+    color: #050303;
 }

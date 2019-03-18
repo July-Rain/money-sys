@@ -72,9 +72,12 @@
             t.ANSWER_ID AS "answer",
             t.ANSWER_DESCRIBLE AS "describe",
             r.IS_COLLECT AS "isCollect",
-            r.ANSWER AS "userAnswer"
+            r.ANSWER AS "userAnswer",
+            r.RIGHT AS "right"
         FROM LAW_PAPER_PAPER p
-        LEFT JOIN LAW_PAPER_RECORD r ON p.CONFIGURE_ID = r.TASK_ID
+        LEFT JOIN LAW_EXERCISE_PAPER e ON e.CONFIGURE_ID = p.CONFIGURE_ID
+            AND e.USER_ID = #{userId}
+        LEFT JOIN LAW_PAPER_RECORD r ON e.ID = r.TASK_ID
             AND p.QUEST_ID = r.QUESTION_ID
             AND r.CREATE_USER = #{userId}
         LEFT JOIN LAW_TESTQUESTIONS t ON t.ID = p.QUEST_ID
@@ -98,4 +101,16 @@
         ORDER BY
             a.QUESTION_ID, a.ORDERSORT
     </select>
+
+    <update id="updateRecord">
+        UPDATE
+            LAW_EXERCISE_PAPER
+        SET
+            ANSWER_NUM = #{answerNum}
+            <if test="status != null">
+                , STATUS = #{status}
+            </if>
+        WHERE
+            ID = #{id}
+    </update>
 </mapper>

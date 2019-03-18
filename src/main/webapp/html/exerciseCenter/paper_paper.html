@@ -3,7 +3,7 @@
 <head>
     <title>练习卷</title>
     <#include "/header.html">
-    <link rel="stylesheet" href="${rc.contextPath}/statics/css/testPaper.css">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/testPaper.css?_${.now?long}">
     <style>
         .main {
             width: 90%;
@@ -14,18 +14,6 @@
             padding-bottom: 5px;
             margin-bottom: 8px;
         }
-        /*.info_list .el-progress {
-            border: none;
-            margin: 0 auto;
-        }
-        .info_list .el-progress__text {
-            color: #333333;
-            font-size: 18px !important;
-        }
-        .info_list > .progress_area {
-            width: 88px;
-            margin: 15px auto 25px;
-        }*/
         .info_list .info {
             width: 90%;
             margin: 15px auto;
@@ -81,9 +69,9 @@
                             </el-radio>
                         </el-radio-group>
                         <div class="answer-area" v-show="isSubmit">
-                            <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
-                            <p :class="1==1 ? 'right' : 'err'">你的答案：<span>AB</span>，正确答案：<span>AB</span></p>
-                            <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
+                            <p :class="question.right==1 ? 'right' : 'err'">
+                                {{question.userAnswer}}
+                            </p>
                         </div>
                         <div class="gray" v-if="isSubmit"></div>
                     </div>
@@ -98,14 +86,14 @@
                             </el-checkbox>
                         </el-checkbox-group>
                         <div class="answer-area" v-show="isSubmit">
-                            <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
-                            <p :class="1==1 ? 'right' : 'err'">你的答案：<span>AB</span>，正确答案：<span>AB</span></p>
-                            <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
+                            <p :class="question.right==1 ? 'right' : 'err'">
+                                {{question.userAnswer}}
+                            </p>
                         </div>
                         <div class="gray" v-if="isSubmit"></div>
                     </div>
                 </div>
-                <div class="checking">
+                <div class="checking" v-if="pdNum > 0">
                     <div class="description" v-if="pdNum > 0">判断题 </div>
                     <div class="question daliy" v-for="(question, index) in questionList.slice(multiNum+singleNum)" :class="{'question-background': (index%2 == 0)}">
                         <p class="title"><a :name="multiNum+singleNum+index+1"></a>{{ multiNum+singleNum+index+1 }}.{{ question.content }}</p>
@@ -115,9 +103,9 @@
                             </el-radio>
                         </el-radio-group>
                         <div class="answer-area" v-show="isSubmit">
-                            <!-- 为了展示,逻辑写好,可删掉此行,使能下一行 -->
-                            <p :class="0==1 ? 'right' : 'err'">你的答案：<span>AB</span>，正确答案：<span>AB</span></p>
-                            <!--<p :class="userAnswerStr!=rightAnswerStr?'err':'right'">你的答案：<span>{{ userAnswerStr }}</span>，正确答案：<span>{{ rightAnswerStr }}</span></p>-->
+                            <p :class="question.right==1 ? 'right' : 'err'">
+                                {{question.userAnswer}}
+                            </p>
                         </div>
                         <div class="gray" v-if="isSubmit"></div>
                     </div>
@@ -133,14 +121,23 @@
                 </div>
             </div>
             <div class="items">
-                <a class="anchor" v-for="(item, index) in questionList"
+                <a class="anchor" v-for="(item, index) in questionList" v-show="!isSubmit"
                    :class="{'finished': item.userAnswerStr!=null || item.userAnswerList.length!=0}"
                    :href="'#'+(index+1)">
                     {{ index+1 }}
                 </a>
+                <a class="anchor" v-for="(item, index) in questionList" v-show="isSubmit"
+                   :class="{'submit': item.right == 0}"
+                   :href="'#'+(index+1)">
+                    {{ index+1 }}
+                </a>
             </div>
-            <div class="buttons">
-                <el-button type="primary" @click="submit">提交</el-button><el-button type="primary" plain class="save">保存，下次继续</el-button>
+            <div class="buttons" v-if="isSubmit">
+                <el-button type="primary" plain class="save" @click="comback">返回</el-button>
+            </div>
+            <div class="buttons" v-if="!isSubmit">
+                <el-button type="primary" plain class="save" @click="save">保存，下次继续</el-button>
+                <el-button type="primary" @click="submit">提交</el-button>
             </div>
         </div>
     </div>
