@@ -41,4 +41,13 @@ public interface PaperExerciseService extends AbstractService<PaperExerciseEntit
      * @return
      */
     List<QuestionForm> showQuestions(String configureId, String id, boolean isNew);
+
+    /**
+     * 暂存题目信息
+     * @param list
+     * @param taskId
+     * @param isCommit true(提交)/false(暂存)
+     * @return
+     */
+    boolean save(List<QuestionForm> list, String taskId, boolean isCommit);
 }

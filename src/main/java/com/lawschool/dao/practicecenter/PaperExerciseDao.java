@@ -37,4 +37,15 @@ public interface PaperExerciseDao extends AbstractDao<PaperExerciseEntity> {
                                            @Param("userId") String userId);
 
     List<AnswerForm> getAnswers(@Param("configureId") String configureId);
+
+    /**
+     * 更新练习记录
+     * @param id
+     * @param answerNum
+     * @param status
+     * @return
+     */
+    boolean updateRecord(@Param("id") String id,
+                         @Param("answerNum") Integer answerNum,
+                         @Param("status") Integer status);
 }

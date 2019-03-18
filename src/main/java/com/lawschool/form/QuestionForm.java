@@ -13,7 +13,7 @@ public class QuestionForm {
     private String themeName;// 主题类型
 
     private String questId;// 题目ID
-    private String content;// 试题秒速
+    private String content;// 试题描述
     private String difficulty;// 试题难度
     private String type;// 题型
     private String answer;// 正确答案
@@ -25,6 +25,8 @@ public class QuestionForm {
     private List<AnswerForm> options;// 选项list
 
     private String userAnswer;
+    private Integer right;// 1正确、0错误
+    private String userId;
 
     public String getQuestId() {
         return questId;
@@ -128,5 +130,21 @@ public class QuestionForm {
 
     public void setUserAnswer(String userAnswer) {
         this.userAnswer = userAnswer;
+    }
+
+    public Integer getRight() {
+        return right;
+    }
+
+    public void setRight(Integer right) {
+        this.right = right;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

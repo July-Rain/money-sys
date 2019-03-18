@@ -111,26 +111,31 @@ var vm = new Vue({
     methods: {
         //实例化视频
         initPlayer: function () {
-            debugger;
             var that = this;
-            window.onload = function () {
-                setTimeout(function () {
-                    var options = {
-                        controls: true,
-                        bigPlayButton: true,
-                        controlBar: {
-                            //设置是否显示该组件
-                            playToggle: false,
-                            remainingTimeDisplay: true,
-                            fullscreenToggle: false,
-                            volumePanel: false
-                        },
-                    };
-                    that.videoDataId.forEach(function (val, index) {
-                        videojs(val, options);
-                    })
-                }, 400)
-            }
+            setTimeout(function () {
+                var options = {
+                    controls: true,
+                    bigPlayButton: true,
+                    controlBar: {
+                        //设置是否显示该组件
+                        playToggle: false,
+                        remainingTimeDisplay: true,
+                        fullscreenToggle: false,
+                        volumePanel: false
+                    },
+                };
+                that.videoDataId.forEach(function (val, index) {
+                    var myPlayer = videojs(val, options);
+                    var bigButton = document.getElementsByClassName('vjs-big-play-button')[index];
+                    bigButton.style.outline = 'none';
+                    myPlayer.on('play', function () {
+                        bigButton.style.display = 'none';
+                    });
+                    myPlayer.on('pause', function () {
+                        bigButton.style.display = 'block';
+                    });
+                })
+            }, 400)
         },
         //序列号计算
         indexMethod: function (index) {
@@ -163,11 +168,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.caseData = result.page.list;
-
                         for (var i = 0; i < vm.caseData.length; i++) {
-                            vm.caseData.forEach(function (val) {
-                                vm.videoDataId.push(val.id);
-                            });
                             vm.caseData[i].caseContentUrl = baseURL + "sys/download?accessoryId=" + vm.caseData[i].caseContent;
                             if (vm.caseData[i].videoPicAcc) {
                                 vm.caseData[i].videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.caseData[i].videoPicAcc;
@@ -178,20 +179,19 @@ var vm = new Vue({
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
                         vm.formInline.totalCount = parseInt(result.page.totalCount);
-                   //     if (vm.formInline.contentType == "video") {
-                            vm.caseData.forEach(function (val) {
-                                vm.videoDataId.push(val.id);
-                            });
-                     //       vm.initPlayer();
-                   //     }
                         console.info("caseData", vm.caseData)
                     } else {
                         alert(result.msg);
                     }
+                    if (vm.formInline.contentType=='video') {
+                        vm.caseData.forEach(function (val) {
+                            vm.videoDataId.push(val.id)
+                        })
+                        console.info(vm.videoDataId)
+                        vm.initPlayer();
+                    }
                 }
-            }).then(
-                vm.initPlayer()
-            );
+            })
         },
         // el-tree节点点击事件
         handleNodeClick: function (data) {

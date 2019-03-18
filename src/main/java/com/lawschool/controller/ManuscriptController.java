@@ -41,6 +41,7 @@ public class ManuscriptController extends AbstractController {
     @Autowired
     private AnswerService answerService;
 
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result list(@RequestParam Map<String, Object> params){
         User u=getUser();
@@ -113,6 +114,35 @@ public class ManuscriptController extends AbstractController {
             return Result.error("保存失败...");
         }
     }
+
+    @SysLog("修改课程")
+    @RequestMapping("/saveupdateStuMedia")
+    public Result saveupdateStuMedia(@RequestBody ManuscriptEntity entity){
+        //User user=getUser();
+        //修改 课件之前  把这个 条 也修改了
+        entity.setAuditor(null);
+        entity.setOpinion(null);
+        entity.setStatus(0);
+        manuscriptService.updateById(entity);
+
+        StuMediaService.updateStuMedia(entity.getStu(),getUser());
+        return Result.ok().put("id",entity.getStu().getId());
+    }
+
+    @SysLog("修改课程")
+    @RequestMapping("/saveupdateStuTestQ")
+    public Result saveupdateStuTestQ(@RequestBody ManuscriptEntity entity){
+        //User user=getUser();
+        //修改 课件之前  把这个 条 也修改了
+        entity.setAuditor(null);
+        entity.setOpinion(null);
+        entity.setStatus(0);
+        manuscriptService.updateById(entity);
+
+        testQuestionService.mySave( entity.getTest());
+        return Result.ok().put("id",entity.getTest().getId());
+    }
+
 
     @SysLog("删除题库")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
