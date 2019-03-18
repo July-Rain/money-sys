@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.lawschool.base.AbstractServiceImpl;
 import com.lawschool.beans.User;
 import com.lawschool.beans.practicecenter.PaperExerciseEntity;
+import com.lawschool.dao.practicecenter.PaperAnswerRecordDao;
 import com.lawschool.dao.practicecenter.PaperExerciseDao;
 import com.lawschool.form.*;
 import com.lawschool.service.AnswerService;
@@ -28,6 +29,8 @@ import java.util.*;
 @Service
 public class PaperExerciseServiceImpl extends AbstractServiceImpl<PaperExerciseDao, PaperExerciseEntity>
         implements PaperExerciseService {
+
+    @Autowired private PaperAnswerRecordDao paperAnswerRecordDao;
 
     @Override
     public boolean updateStatus(String id, Integer status){
@@ -71,6 +74,136 @@ public class PaperExerciseServiceImpl extends AbstractServiceImpl<PaperExerciseD
         handleQuestion(result, answerList);
 
         return result;
+    }
+
+    /**
+     * 暂存答题记录
+     * @param list 题目信息
+     * @param taskId 任务记录ID
+     * @param isCommit true(提交)/false(暂存)
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean save(List<QuestionForm> list, String taskId, boolean isCommit){
+        User user = (User)SecurityUtils.getSubject().getPrincipal();
+
+        // 存放新增的答题记录
+        List<QuestionForm> saveList = new ArrayList<>();
+
+        // 存放更新的答题记录
+        List<QuestionForm> updateList = new ArrayList<>();
+
+        // 存放我的错题
+        List<QuestionForm> errList = new ArrayList<>();
+
+        // 处理操作参数
+        Integer answerNum = handSaveList(list, saveList, updateList, errList, isCommit);
+
+        // 保存答题记录
+        if(CollectionUtils.isNotEmpty(saveList)){
+            paperAnswerRecordDao.batchInsert(saveList, taskId, user.getId());
+        }
+
+        // 更新答题记录
+        if(CollectionUtils.isNotEmpty(updateList)){
+            paperAnswerRecordDao.batchUpdate(updateList, taskId, user.getId());
+        }
+
+
+
+        // 更新练习记录信息(答题数、练习状态)
+        Integer status = 0;
+        if(isCommit){
+            status = PaperExerciseEntity.STATUS_OFF;
+        }
+        updateRecord(taskId, answerNum, status);
+
+        return true;
+    }
+
+    /**
+     * 处理保存参数
+     * @param list
+     * @param saveList
+     * @param updateList
+     * @param errList
+     * @param isCommit
+     * @return 答题数量
+     */
+    protected Integer handSaveList(List<QuestionForm> list, List<QuestionForm> saveList,
+                                   List<QuestionForm> updateList, List<QuestionForm> errList, boolean isCommit){
+        Integer result = 0;
+
+        for(QuestionForm form : list){
+            String recordId = form.getRecordId();// 记录ID
+            String type = form.getType();// 题型
+
+            if("10005".equals(type)){
+                // 多选
+                if(CollectionUtils.isNotEmpty(form.getUserAnswerList())){
+                    form.setUserAnswer(String.join(",", form.getUserAnswerList()));
+
+                    if(isCommit){
+                        // 提交时，判断答题正确性
+                        String[] arr = form.getAnswer().split(",");
+                        List<String> rightList = new ArrayList<String>(Arrays.asList(arr));
+                        if(rightList.containsAll(form.getUserAnswerList()) && form.getUserAnswerList().containsAll(rightList)){
+                            form.setRight(1);
+                        }else {
+                            form.setRight(0);
+                            errList.add(form);
+                        }
+
+                    }
+                }
+
+            } else {
+
+                form.setUserAnswer(form.getUserAnswerStr());
+                if(isCommit) {
+                    // 提交时，判断答题正确性
+                    if (StringUtils.isNotBlank(form.getUserAnswer())) {
+                        if (form.getUserAnswer().equals(form.getAnswer())) {
+                            form.setRight(1);
+                        } else {
+
+                            form.setRight(0);
+                            errList.add(form);
+                        }
+                    }
+                }
+            }
+
+            if(StringUtils.isBlank(recordId)){
+                form.setRecordId(IdWorker.getIdStr());
+
+                // 新增
+                saveList.add(form);
+            } else {
+
+                updateList.add(form);
+            }
+
+            // 统计答题数量
+            if(StringUtils.isNotBlank(form.getUserAnswer())){
+                result ++;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * 更新组卷练习的状态
+     * @param taskId ID
+     * @param answerNum 回答数量
+     * @param status 练习记录状态 （为NULL不处理）
+     * @return
+     */
+    private boolean updateRecord(String taskId, Integer answerNum, Integer status){
+
+        return dao.updateRecord(taskId, answerNum, status);
     }
 
     /**

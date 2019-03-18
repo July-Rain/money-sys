@@ -322,10 +322,28 @@ var vm = new Vue({
                         if (type == 0) {
                             vm.form = vm.manu.test;
                             vm.manu.stu = {};
+
+                            if (vm.form.typeId != '0' && vm.form.video) {
+                                vm.form.videoUrl = baseURL + "sys/download?accessoryId=" + vm.form.video;
+                            }
                             vm.dialogFormVisible = true;
-                        } else {
+                        }
+                        else {
                             vm.stuMedia = vm.manu.stu;
                             vm.manu.test = {};
+
+
+
+                            vm.deptCheckData = result.data.stu.deptArr;
+                            vm.lawCheckData = result.data.stu.stuLawid.split(",");
+
+                            if (vm.stuMedia.stuType != 'pic' && vm.stuMedia.comContent) {
+                                vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.comContent;
+                                if (vm.stuMedia.videoPicAcc) {
+                                    vm.stuMedia.videoPicAccUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.videoPicAcc;
+                                }
+
+                            }
                             vm.dialogStuMedia = true;
                         }
                     } else {
@@ -352,6 +370,10 @@ var vm = new Vue({
                         if (type == 0) {
                             vm.form = vm.manu.test;
                             vm.manu.stu = {};
+
+                            if (vm.form.typeId != '0' && vm.form.video) {
+                                vm.form.videoUrl = baseURL + "sys/download?accessoryId=" + vm.form.video;
+                            }
                             vm.dialogFormVisible = true;
                         } else {
                             vm.stuMedia = vm.manu.stu;
@@ -558,9 +580,10 @@ var vm = new Vue({
 
                         vm.manu.test = vm.form;
                         vm.manu.type = 0;
+                        var url = vm.form.id ? "manuscript/saveupdateStuTestQ" : "manuscript/save";
                         $.ajax({
                             type: "POST",
-                            url: baseURL + "manuscript/save",
+                            url: baseURL + url,
                             data: JSON.stringify(vm.manu),
                             contentType: "application/json",
                             success: function (result) {
@@ -596,6 +619,28 @@ var vm = new Vue({
         handleExceed: function () {
 
         },
+
+        closeDia2: function () {
+            this.closePlay2();
+            this.dialogFormVisible = false;
+            vm.reload();
+        },
+        closePlay2:function(){
+            //关闭播放器
+            //关闭页面时 如果有视频或者音频暂停播放
+            //播放时暂停别的正在播放的音频
+            var player=null;
+
+            if(vm.form.typeId=='1'){
+                player = document.getElementById("video2");
+            }
+            if( player!=null ) {
+                //检测播放是否已暂停.audio.paused 在播放器播放时返回false.在播放器暂停时返回true
+                if (!player.paused) {
+                    player.pause();// 这个就是暂停//audio.play();// 这个就是播放
+                }
+            }
+        },
         closeDia: function () {
             this.closePlay();
             this.dialogStuMedia = false;
@@ -612,7 +657,10 @@ var vm = new Vue({
             }else if(vm.stuMedia.stuType=='video'){
                 player = document.getElementById("video");
             }
-            if(player!==null&&vm.stuMedia.stuType!='pic'){
+            if(vm.form.typeId=='1'){
+                player = document.getElementById("video2");
+            }
+            if( player!==null&&  vm.stuMedia.stuType!='pic'  ){
                 //检测播放是否已暂停.audio.paused 在播放器播放时返回false.在播放器暂停时返回true
 
                 if(!player.paused)
@@ -650,13 +698,18 @@ var vm = new Vue({
             this.videoFlag = false;
             this.videoUploadPercent = 0;
             if (response.code == 0) {
+
                 vm.stuMedia.comContent = response.accessoryId;
                 vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
+
+                vm.form.video = response.accessoryId;
+                vm.form.videoUrl = baseURL + "sys/download?accessoryId=" + response.accessoryId;
                 setTimeout(function () {
                     vm.stuMedia.stuTime = document.getElementsByClassName("avatar")[0].duration;
                     vm.stuMedia.stuTime = document.getElementsByClassName("avatar")[0].duration;
-                    //that.initPlayer();
-                    //console.info("啊啊啊",document.getElementsByClassName("avatar")[0].currentTime,document.getElementsByClassName("avatar")[0].duration);
+                    vm.form.stuTime = document.getElementsByClassName("avatar")[0].duration;
+                    vm.form.stuTime = document.getElementsByClassName("avatar")[0].duration;
+
                 }, 800)
             } else {
                 this.$message.error('视频上传失败，请重新上传！');
@@ -739,9 +792,11 @@ var vm = new Vue({
                     if (valid) {
                         vm.manu.stu = vm.stuMedia;
                         vm.manu.type = 1;
+
+                        var url = vm.stuMedia.id ? "manuscript/saveupdateStuMedia" : "manuscript/save";
                         $.ajax({
                             type: "POST",
-                            url: baseURL + "manuscript/save",
+                            url: baseURL + url,
                             data: JSON.stringify(vm.manu),
                             contentType: "application/json",
                             success: function (result) {
