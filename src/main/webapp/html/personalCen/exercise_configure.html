@@ -3,6 +3,19 @@
 <head>
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .item {
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+        .el-input-group__append {
+            background-color: #cae6fe;
+
+        }
+        .create_btn span{
+            color: #1381e3;
+        }
+    </style>
 </head>
 <body>
 <div id="app" v-cloak>
@@ -153,7 +166,7 @@
                 <el-form :model="exerciseConfigure" :rules="rules" ref="exerciseConfigure" label-width="100px"  size="mini">
                     <el-form-item label="名称前缀：" prop="prefix">
                         <el-input v-model="exerciseConfigure.prefix" placeholder="请输入名称前缀" clearable>
-                            <el-button slot="append" @click="createName"><i class="iconfont icon-shengchengshijuanming"></i> 生成试卷名称</el-button>
+                            <el-button class="create_btn" slot="append" @click="createName"><i class="iconfont icon-shengchengshijuanming"></i> 生成试卷名称</el-button>
                         </el-input>
                     </el-form-item>
                     <el-form-item label="试卷名称：" prop="name">
