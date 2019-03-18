@@ -7,7 +7,7 @@
 <style>
     /* dialog图文 */
     .el-dialog__wrapper .info {
-        width: 80%;
+        width: 100%;
         margin: 10px auto;
         text-align: center;
     }
@@ -20,17 +20,13 @@
         font-weight: bold;
     }
     .el-dialog__wrapper .info .el-col {
-        background-color: #f8f8f8;
-        padding: 20px;
-        border-radius: 6px;
-        box-shadow: 3px 8px 16px rgba(0,0,0,0.3);
         line-height: 22px;
         margin-bottom: 25px;
     }
     .el-dialog__wrapper .info .creator {
         display: flex;
-        justify-content: space-around;
-        margin-bottom: 10px;
+        justify-content: space-between;
+        margin-bottom: 20px;
         font-size: 14px;
     }
     .el-dialog__wrapper .info .content {
@@ -41,6 +37,41 @@
         /* 允许长单词拆开换行 */
         word-wrap: break-word;
         font-family: '微软雅黑';
+        color: #333333;
+    }
+    .video-card {
+        width: 70%;
+        position: relative;
+        margin: 0 auto;
+    }
+    .video-card .title{
+        margin: 11px 0 11px 9px;
+        cursor: default;
+        font-size: 17px;
+        color: #222222;
+    }
+
+    .video-card .stuIssuer .icon-yonghutouxiang {
+        margin-right: 6px;
+        font-size: 14px;
+    }
+    .video-card div p:last-child.stuIssuer {
+        font-size: 14px;
+        color: #3e4e6f;
+    }
+    .video-card div p:last-child.stuIssuer .upload {
+        color: #999999;
+    }
+    .video-card .icons {
+        position: absolute;
+        left: 70%;
+        bottom: -9px;
+    }
+    .video-card .icons .iconfont {
+        margin-right: 4px;
+    }
+    div.video-js.vjs-big-play-centered {
+        margin: 0 auto;
     }
 </style>
 <body>
@@ -290,20 +321,18 @@
                             <el-row>
                             <el-col :span="6" v-for="(item, index) in caseData">
                                 <el-card :body-style="{ padding: '4px' }">
-
-                                    <video :id="item.id" class="video video-js vjs-big-play-centered" width="300" height="155" preload="none" :poster="item.videoPicAccUrl" @play="onPlay(item.id,'stu_video')" @pause="onPause(item.id,$event)">
-                                        <source :src="item.caseContentUrl" type="video/mp4">
-                                        您的浏览器不支持视频播放
+                                    <video :id="item.id" class="video video-js vjs-big-play-centered" width="300" height="155" :poster="item.videoPicAccUrl" @play="onPlay(item.id,'stu_video')" @pause="onPause(item.id,$event)">
+                                        <source  :src="item.caseContentUrl" type="video/mp4">
                                     </video>
-                                    <div style="padding: 14px 14px 0 14px;">
-                                        <p>
-                                            <!--<span class="contentType">{{item.contentType}}</span>-->
-                                            <a href="javascript:;" class="title">{{item.caseTitle}}</a>
-                                        </p>
-                                        <p>
-                                            <span class="stuIssuer">{{item.createUserName}}</span>
-                                            <span class="stuCreat">{{item.createTime}}</span>
-                                        </p>
+                                    <div class="video-card">
+                                        <div>
+                                            <p href="javascript:;" class="title">{{item.caseTitle}}</p>
+                                            <div class="flex">
+                                                <p class="stuIssuer"><i class="iconfont icon-yonghutouxiang"></i>{{item.createUserName}}&nbsp;<span class="upload">上传</span></p>
+                                                <p class="stuCreat">{{item.createTime}}</p>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </el-card>
                             </el-col>
@@ -351,7 +380,7 @@
             <el-col :span="24">
                 <span class="title">{{caseAna.caseTitle}}</span>
                 <div class="creator">
-                    <p class="issuer">{{caseAna.createUserName}}</p>
+                    <p class="issuer">上传者：{{caseAna.createUserName}}</p>
                     <p class="created-time">{{caseAna.createTime}}</p>
                 </div>
                 <pre class="content" v-html="caseContent"></pre>

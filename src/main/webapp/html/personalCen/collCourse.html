@@ -20,7 +20,7 @@
     }
     /* dialog图文 */
     .el-dialog__wrapper .info {
-        width: 80%;
+        width: 100%;
         margin: 10px auto;
         text-align: center;
     }
@@ -33,17 +33,13 @@
         font-weight: bold;
     }
     .el-dialog__wrapper .info .el-col {
-        background-color: #f8f8f8;
-        padding: 20px;
-        border-radius: 6px;
-        box-shadow: 3px 8px 16px rgba(0,0,0,0.3);
         line-height: 22px;
         margin-bottom: 25px;
     }
     .el-dialog__wrapper .info .creator {
         display: flex;
-        justify-content: space-around;
-        margin-bottom: 10px;
+        justify-content: space-between;
+        margin-bottom: 20px;
         font-size: 14px;
     }
     .el-dialog__wrapper .info .content {
@@ -54,6 +50,7 @@
         /* 允许长单词拆开换行 */
         word-wrap: break-word;
         font-family: '微软雅黑';
+        color: #333333;
     }
 </style>
 <body>
@@ -316,7 +313,7 @@
             <el-col :span="24">
                 <span class="title">{{stuMedia.stuTitle}}</span>
                 <div class="creator">
-                    <p class="issuer">{{stuMedia.stuIssuer}}</p>
+                    <p class="issuer">上传者：{{stuMedia.stuIssuer}}</p>
                     <p class="created-time">{{stuMedia.stuCreat}}</p>
                 </div>
                 <pre class="content" v-html="caseContent"></pre>

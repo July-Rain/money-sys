@@ -193,8 +193,8 @@
                                                     <p class="stuIssuer"><i class="iconfont icon-yonghutouxiang"></i>{{item.stuIssuer}}&nbsp;<span class="upload">上传</span></p>
                                                 </div>
                                                 <p class="icons">
-                                                    <span v-if="!item.isColl" @click="collect(item.id)" style="color: #ff6600;"><i class="iconfont icon-shoucang1"></i>已收藏</span>
-                                                    <span v-if="item.isColl" @click="cancelCollect(item.id)" style="color: #bfbfbf;"><i class="iconfont icon-shoucang1"></i>收藏</span>
+                                                    <span v-if="!item.isColl" @click="collect(item.id)" style="color: #bfbfbf;"><i class="iconfont icon-shoucang1"></i>收藏</span>
+                                                    <span v-if="item.isColl" @click="cancelCollect(item.id)" style="color: #ff6600;"><i class="iconfont icon-shoucang1"></i>已收藏</span>
                                                 </p>
                                             </div>
                                         </div>
