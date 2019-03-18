@@ -249,7 +249,7 @@ var vm = new Vue({
             myChart.setOption(option)
             myChart.dispatchAction({type: 'highlight',seriesIndex: 0,dataIndex: 0})
 
-            myChart.on('mouseover',(v) => {
+            myChart.on('mouseover',function(v){
                 if(v.dataIndex != 0){
                     myChart.dispatchAction({
                         type: 'downplay',
@@ -258,7 +258,7 @@ var vm = new Vue({
                     });
                 }
             });
-            myChart.on('mouseout',(v) => {
+            myChart.on('mouseout',function(v){
 
                     myChart.dispatchAction({type: 'highlight',seriesIndex: 0,dataIndex: 0});
 

@@ -20,7 +20,7 @@ var vm = new Vue({
         },
         mulChoicCheck: [],
         sinChoicCheck: [],
-        judge:[],
+        judge: [],
         subject: [],
         // 题目数据
         sinChoicList: [],
@@ -29,7 +29,7 @@ var vm = new Vue({
         subjectList: [],
         otherList: [],
         questionList: [],
-        arrTotal:[],
+        arrTotal: [],
         // bar
         barData: [
             {
@@ -57,8 +57,8 @@ var vm = new Vue({
                 totalNum: 0
             }
         ],
-        rightNum:0,
-        wrongNum:0,
+        rightNum: 0,
+        wrongNum: 0,
 
         displayTime: 0,
         lefttime: 0,
@@ -71,13 +71,13 @@ var vm = new Vue({
         username: '',
 
         examConfig: [],
-        userExam:[],
+        userExam: [],
 
-        sinStarIcon:[],
-        mulStarIcon:[],
-        judStarIcon:[],
-        subStarIcon:[],
-        optionIndex:['A','B','C','D','E','F'],
+        sinStarIcon: [],
+        mulStarIcon: [],
+        judStarIcon: [],
+        subStarIcon: [],
+        optionIndex: ['A', 'B', 'C', 'D', 'E', 'F'],
     },
     created: function () {
         this.$nextTick(function () {
@@ -100,29 +100,29 @@ var vm = new Vue({
                         // 配置试卷
                         vm.examConfig = result.examConfig;
                         vm.paperName = vm.examConfig.examName;
-                        vm.displayTime= vm.examConfig.examTime;
+                        vm.displayTime = vm.examConfig.examTime;
                         // 考试人员
                         vm.userExam = result.userExam;
                         vm.totalScore = vm.userExam.score;
                         vm.userAnswerForm.userExamId = result.userExam.id;
                         vm.username = result.user.userName;
-                        vm.lefttime = vm.userExam.remainingExamTime*60000;
+                        vm.lefttime = vm.userExam.remainingExamTime * 60000;
                         vm.consumedTime();
                         var _mul = result.mulChoicList;
-                        if(_mul){
+                        if (_mul) {
                             for (var i = 0; i < _mul.length; i++) {
                                 vm.testForm.mulChoic.push([]);
 
-                                if(_mul[i].userAnswer){
+                                if (_mul[i].userAnswer) {
                                     var _arr = _mul[i].userAnswer.split(",");
                                     vm.mulChoicCheck.push(_arr)
-                                    vm.barData[1].currentFinishedNum ++;
-                                }else {
+                                    vm.barData[1].currentFinishedNum++;
+                                } else {
                                     vm.mulChoicCheck.push([])
                                 }
-                                if (_mul[i].isCollect===1){
+                                if (_mul[i].isCollect === 1) {
                                     vm.mulStarIcon.push('el-icon-star-on');
-                                } else{
+                                } else {
                                     vm.mulStarIcon.push('el-icon-star-off');
                                 }
                             }
@@ -130,18 +130,18 @@ var vm = new Vue({
                         //单选
                         vm.sinChoicList = result.sinChoicList;
                         vm.barData[0].totalNum = vm.sinChoicList.length;
-                        if(vm.sinChoicList){
-                            for(var i=0;i<vm.sinChoicList.length;i++){
-                                if(vm.sinChoicList[i].userAnswer){
+                        if (vm.sinChoicList) {
+                            for (var i = 0; i < vm.sinChoicList.length; i++) {
+                                if (vm.sinChoicList[i].userAnswer) {
                                     vm.sinChoicCheck.push(vm.sinChoicList[i].userAnswer);
-                                    vm.barData[0].currentFinishedNum ++;
-                                }else{
+                                    vm.barData[0].currentFinishedNum++;
+                                } else {
                                     vm.sinChoicCheck.push('');
                                 }
-                                if (vm.sinChoicList[i].isCollect===1){
-                                   vm.sinStarIcon.push('el-icon-star-on');
-                                } else{
-                                   vm.sinStarIcon.push('el-icon-star-off');
+                                if (vm.sinChoicList[i].isCollect === 1) {
+                                    vm.sinStarIcon.push('el-icon-star-on');
+                                } else {
+                                    vm.sinStarIcon.push('el-icon-star-off');
                                 }
                             }
                         }
@@ -151,17 +151,17 @@ var vm = new Vue({
                         //判断
                         vm.judgeList = result.judgeList;
                         vm.barData[2].totalNum = vm.judgeList.length;
-                        if(vm.judgeList){
-                            for(var i=0;i<vm.judgeList.length;i++){
-                                if(vm.judgeList[i].userAnswer){
+                        if (vm.judgeList) {
+                            for (var i = 0; i < vm.judgeList.length; i++) {
+                                if (vm.judgeList[i].userAnswer) {
                                     vm.judge.push(vm.judgeList[i].userAnswer);
-                                    vm.barData[2].currentFinishedNum ++;
-                                }else{
+                                    vm.barData[2].currentFinishedNum++;
+                                } else {
                                     vm.judge.push('');
                                 }
-                                if (vm.judgeList[i].isCollect===1){
+                                if (vm.judgeList[i].isCollect === 1) {
                                     vm.judStarIcon.push('el-icon-star-on');
-                                } else{
+                                } else {
                                     vm.judStarIcon.push('el-icon-star-off');
                                 }
                             }
@@ -169,17 +169,17 @@ var vm = new Vue({
                         //主观
                         vm.subjectList = result.subjectList;
                         vm.barData[3].totalNum = vm.subjectList.length;
-                        if(vm.subjectList){
-                            for(var i=0;i<vm.subjectList.length;i++){
-                                if(vm.subjectList[i].userAnswer){
+                        if (vm.subjectList) {
+                            for (var i = 0; i < vm.subjectList.length; i++) {
+                                if (vm.subjectList[i].userAnswer) {
                                     vm.subject.push(vm.subjectList[i].userAnswer);
-                                    vm.barData[3].currentFinishedNum ++;
-                                }else{
+                                    vm.barData[3].currentFinishedNum++;
+                                } else {
                                     vm.subject.push('');
                                 }
-                                if (vm.subjectList[i].isCollect===1){
+                                if (vm.subjectList[i].isCollect === 1) {
                                     vm.subStarIcon.push('el-icon-star-on');
-                                } else{
+                                } else {
                                     vm.subStarIcon.push('el-icon-star-off');
                                 }
                             }
@@ -198,16 +198,16 @@ var vm = new Vue({
         // bar栏完成题数实时更新
         updateCommon: function (index, arr) {
             vm.barData[index].currentFinishedNum = 0;
-            if (index!=1) {
+            if (index != 1) {
                 arr.forEach(function (val) {
                     if (val) {
-                        vm.barData[index].currentFinishedNum ++;
+                        vm.barData[index].currentFinishedNum++;
                     }
                 })
             } else {
                 arr.forEach(function (val) {
                     if (val.length) {
-                        vm.barData[index].currentFinishedNum ++;
+                        vm.barData[index].currentFinishedNum++;
                     }
                 })
             }
@@ -220,28 +220,28 @@ var vm = new Vue({
         },
         // 使用时间
         consumedTime: function () {
-            var consumed =  this.displayTime*60000 - this.lefttime;
+            var consumed = this.displayTime * 60000 - this.lefttime;
             var results = this.figureTime(consumed);
             [this.consumedHours, this.consumedMinutes, this.consumedSeconds] = [...results];
-            this.consumedMinutes = Number(this.consumedHours)*60 + Number(this.consumedMinutes);
+            this.consumedMinutes = Number(this.consumedHours) * 60 + Number(this.consumedMinutes);
         },
         // 计算时间
         figureTime: function (time) {
-            var hours = Math.floor(time/3600000); // 时
-            var minutes = Math.floor((time-hours*3600000)/60000); // 分
-            var seconds = Math.floor((time-hours*3600000-minutes*60000)/1000); // 秒
-            hours<10?hours='0'+hours:hours;
-            minutes<10?minutes='0'+minutes:minutes;
-            seconds<10?seconds='0'+seconds:seconds;
+            var hours = Math.floor(time / 3600000); // 时
+            var minutes = Math.floor((time - hours * 3600000) / 60000); // 分
+            var seconds = Math.floor((time - hours * 3600000 - minutes * 60000) / 1000); // 秒
+            hours < 10 ? hours = '0' + hours : hours;
+            minutes < 10 ? minutes = '0' + minutes : minutes;
+            seconds < 10 ? seconds = '0' + seconds : seconds;
             return [hours, minutes, seconds];
         },
         // 答题对错个数
         answerNumber: function () {
             vm.arrTotal.forEach(function (val) {
                 if (val.userScore) {
-                    vm.rightNum ++;
+                    vm.rightNum++;
                 } else {
-                    vm.wrongNum ++;
+                    vm.wrongNum++;
                 }
             });
         },
@@ -252,64 +252,74 @@ var vm = new Vue({
             // 正确答案对应的数字数组
             var rightIndex = [];
             // 选项id的数组
-            var answerIdList =[];
+            var answerIdList = [];
             // 答案id字符串分解而得的数组
             var rightIdList = id.split(',');
-            answer.forEach(val => answerIdList.push(val.id));
-            list.forEach(val => checkIndex.push(vm.optionIndex[answerIdList.indexOf(val)]));
-            rightIdList.forEach(val => rightIndex.push(vm.optionIndex[answerIdList.indexOf(val)]));
+            answer.forEach(function (val) {
+                answerIdList.push(val.id)
+            });
+            list.forEach(function (val) {
+                checkIndex.push(vm.optionIndex[answerIdList.indexOf(val)])
+            });
+            rightIdList.forEach(function (val) {
+                rightIndex.push(vm.optionIndex[answerIdList.indexOf(val)])
+            });
             console.log(checkIndex, rightIndex)
             return {
-                checkIndex: checkIndex.sort((a,b) => a.charCodeAt(0)-b.charCodeAt(0)).join('、'),
-                rightIndex: rightIndex.sort((a,b) => a.charCodeAt(0)-b.charCodeAt(0)).join('、')
+                checkIndex: checkIndex.sort(function (a, b) {
+                    a.charCodeAt(0) - b.charCodeAt(0)
+                }).join('、'),
+                rightIndex: rightIndex.sort(function (a, b) {
+                    a.charCodeAt(0) - b.charCodeAt(0)
+                }).join('、')
             }
         },
         // 收藏
-        doCollect :function(index,type){
-            var obj ={};
+        doCollect: function (index, type) {
+            var obj = {};
             var type;
-            if(type==='10004'){
-                obj={
+            if (type === '10004') {
+                obj = {
                     key: vm.sinChoicList[index].id,
-                    value : vm.sinChoicList[index].questionId
+                    value: vm.sinChoicList[index].questionId
                 }
-                if(vm.sinChoicList[index].isCollect == 1){
+                if (vm.sinChoicList[index].isCollect == 1) {
                     type = 0;
                     vm.sinChoicList[index].isCollect = 0;
                 } else {
                     type = 1;
                     vm.sinChoicList[index].isCollect = 1;
                 }
-            }else if (type ==='10005'){
-                obj={
+            } else if (type === '10005') {
+                obj = {
                     key: vm.mulChoicList[index].id,
-                    value : vm.mulChoicList[index].questionId
+                    value: vm.mulChoicList[index].questionId
                 }
-                if(vm.mulChoicList[index].isCollect == 1){
+                if (vm.mulChoicList[index].isCollect == 1) {
                     type = 0;
                     vm.mulChoicList[index].isCollect = 0;
                 } else {
                     type = 1;
                     vm.mulChoicList[index].isCollect = 1;
                 }
-            }else if(type==='10006'){
-                obj={
+            } else if (type === '10006') {
+                obj = {
                     key: vm.judgeList[index].id,
-                    value : vm.judgeList[index].questionId
+                    value: vm.judgeList[index].questionId
                 }
-                if(vm.judgeList[index].isCollect == 1){
+                if (vm.judgeList[index].isCollect == 1) {
                     type = 0;
                     vm.judgeList[index].isCollect = 0;
                 } else {
                     type = 1;
                     vm.judgeList[index].isCollect = 1;
                 }
-            }else if(type==='10007'){
-                obj={
+            } else if (type === '10007') {
+                obj = {
                     key: vm.subjectList[index].id,
-                    value : vm.subjectList[index].questionId
+                    value: vm.subjectList[index].questionId
                 }
-                if(vm.subjectList[index].isCollect == 1){
+                if (vm.subjectList[index].isCollect == 1) {
                     type = 0;
                     vm.subjectList[index].isCollect = 0;
                 } else {
@@ -320,7 +330,7 @@ var vm = new Vue({
 
             $.ajax({
                 type: "POST",
-                url: baseURL + "user/exam/doCollect/"+type,
+                url: baseURL + "user/exam/doCollect/" + type,
                 data: JSON.stringify(obj),
                 contentType: "application/json",
                 success: function (result) {

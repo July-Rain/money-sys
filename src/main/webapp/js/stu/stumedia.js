@@ -763,7 +763,7 @@ var vm = new Vue({
     watch: {
         userTableData() {
             vm.saveStep1()
-            this.$nextTick(() => {
+            this.$nextTick(function(){
 
                 vm.saveStep2()
             })

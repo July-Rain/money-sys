@@ -273,8 +273,8 @@ var vm = new Vue({
             //locations是v-for里面的也是datas里面的值
             console.log(val);
             console.log(this);
-            let obj = {};
-            obj = vm.knowledgeIds.find((item)=>{
+            var obj = {};
+            obj = vm.knowledgeIds.find(function(item){
                 return item.id === val;
             });
             vm.test.specialKnowledgeName=obj.name;
