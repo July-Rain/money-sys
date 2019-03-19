@@ -12,7 +12,6 @@
 </head>
 
 <body>
-<!-- 修改后的html -->
 <div id="app" v-cloak>
     <div class="container">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
@@ -51,7 +50,8 @@
                             <div class="answer-area" v-show="isSubmit">
                                 <p>
                                     你的答案：<span v-if="question.checkList.length" :class="question.userScore ? 'right' : 'err'">{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span><span class="err" v-if="!question.checkList.length">未作答</span>，正确答案：<span class="right">{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
-                                <p class="collection" @click="doCollect(index, '10004')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{question.isCollect == 1 ? '已收藏' : '收藏本题'}}</p>
+                                <p class="collection favorite" @click="doCollect(index, '10004')" v-if="question.isCollect"><i class="iconfont icon-shoucang1 favorite"></i>已收藏</p>
+                                <p class="collection" @click="doCollect(index, '10004')" v-if="!question.isCollect"><i class="iconfont icon-shoucang"></i>收藏本题</p>
                                 </p>
                                 <p class="text">
                                     <span class="answer-text">试题难度：</span>
@@ -85,7 +85,8 @@
                             <div class="answer-area" v-show="isSubmit">
                                 <p>
                                     你的答案：<span v-if="question.checkList.length" :class="question.userScore ? 'right' : 'err'">{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span><span class="err" v-if="!question.checkList.length">未作答</span>，正确答案：<span class="right">{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
-                                <p class="collection" @click="doCollect(index,'10005')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{ question.isCollect == 1 ? '已收藏' : '收藏本题' }}</p>
+                                <p class="collection favorite" @click="doCollect(index, '10005')" v-if="question.isCollect"><i class="iconfont icon-shoucang1 favorite"></i>已收藏</p>
+                                <p class="collection" @click="doCollect(index, '10005')" v-if="!question.isCollect"><i class="iconfont icon-shoucang"></i>收藏本题</p>
                                 </p>
                                 <p class="text">
                                     <span class="answer-text">试题难度：</span>
@@ -119,7 +120,8 @@
                             <div class="answer-area" v-show="isSubmit">
                                 <p>
                                     你的答案：<span  :class="question.userScore ? 'right' : 'err'" v-if="question.checkList.length">{{ answerDisplay(question.checkList, question.answerId, question.answer).checkIndex }}</span><span class="err" v-if="!question.checkList.length">未作答</span>，正确答案：<span class="right">{{ answerDisplay(question.checkList, question.answerId, question.answer).rightIndex }}</span>
-                                <p class="collection" @click="doCollect(index,'10006')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{ question.isCollect == 1 ? '已收藏' : '收藏本题' }}</p>
+                                <p class="collection favorite" @click="doCollect(index, '10006')" v-if="question.isCollect"><i class="iconfont icon-shoucang1 favorite"></i>已收藏</p>
+                                <p class="collection" @click="doCollect(index, '10006')" v-if="!question.isCollect"><i class="iconfont icon-shoucang"></i>收藏本题</p>
                                 </p>
                                 <p class="text">
                                     <span class="answer-text">试题难度：</span>
@@ -152,7 +154,8 @@
                             <div class="answer-area" v-show="isSubmit">
                                 <p>
                                     此题得分：<span :class="question.userScore ? 'right' : 'err'" v-if="question.checkStatus==0">{{ question.userScore }}</span><span class="right" v-if="question.checkStatus!=0">本题暂未阅卷打分！</span>
-                                <p class="collection" @click="doCollect(index,'10007')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{ question.isCollect == 1 ? '已收藏' : '收藏本题' }}</p>
+                                <p class="collection favorite" @click="doCollect(index, '10007')" v-if="question.isCollect"><i class="iconfont icon-shoucang1 favorite"></i>已收藏</p>
+                                <p class="collection" @click="doCollect(index, '10007')" v-if="!question.isCollect"><i class="iconfont icon-shoucang"></i>收藏本题</p>
                                 </p>
                                 <p class="text">
                                     <span class="answer-text">试题难度：</span>
@@ -166,7 +169,7 @@
                                 </p>
                                 <p class="answer-text">答案描述：<span>{{ question.answerDescrible }}</span></p>
                             </div>
-                            <div class="gray" v-if="isSubmit"></div>
+                            <div class="gray" v-if="subjectList.length!=(index+1)"></div>
                         </div>
                     </div>
                 </el-form>
@@ -213,98 +216,3 @@
 <!-- import [current] JavaScript -->
 <script src="${rc.contextPath}/js/personalCen/myScoreReport.js"></script>
 </html>
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>江苏省公安机关网上法律学校 | Sinorock</title>
-    <#include "/header.html">
-</head>
-
-<body>
-<div id="app" v-cloak>
-    <div id="paper">
-    <h2>{{examConfig.examName}}</h2>
-        <h3>试卷总分：{{examConfig.examScore}}</h3>
-        <h3>我的分数：{{userExam.score}}</h3>
-    <el-form :model="testForm" v-if="sinChoicList.length">
-        <div class="subTitle">
-            <p>一、单项选择题。每题所设选项中只有一个正确答案，多选、错选或不选均不得分。本部分含1—50题，每题1分，共50分。</p>
-        </div>
-        <div v-for="(item,index) in sinChoicList" class="question_area">
-            <p class="ques_name">{{index+1}}. {{item.comContent}}。
-
-                <i :class="sinStarIcon[index]" @click="doCollect(index,'10004')"></i>
-                {{item.isCollect == 1 ? '已收藏' : '收藏本题'}}
-
-            </p>
-            <el-radio-group v-model="sinChoicCheck[index]" :disabled="true">
-                <el-radio :label="item2.id" v-for="item2 in item.answer" >
-                    {{item2.questionContent}}
-                </el-radio>
-            </el-radio-group>
-            <p></p>
-            <p class="ques_name" v-if="item.rightAnswer!=null">正确答案：
-                <span v-for="item2 in item.rightAnswer" >{{item2.questionContent}};</span></p>
-            <p>    本题获得分数：{{item.userScore}}分</p>
-        </div>
-        <div class="subTitle" v-if="mulChoicList.length">
-            <p>二、多选题。</p>
-        </div>
-        <div v-for="(item,index) in mulChoicList" class="question_area">
-            <p class="ques_name">{{index+1}}. {{item.comContent}}。
-                <i :class="mulStarIcon[index]" @click="doCollect(index,'10005')"></i>
-                {{item.isCollect == 1 ? '已收藏' : '收藏本题'}}</p>
-            <el-checkbox-group  v-model="mulChoicCheck[index]" :disabled="true">
-                <el-checkbox :label="item2.id" v-for="item2 in item.answer" v-if="item.right == null">
-                    {{item2.questionContent}}
-                </el-checkbox>
-                <el-checkbox disabled :label="item2.id" v-for="item2 in item.answer" v-if="item.right != null">
-                    {{item2.questionContent}}
-                </el-checkbox>
-                <br/>
-            </el-checkbox-group>
-            <p></p>
-            <p class="ques_name" v-if="item.rightAnswer!=null">正确答案：
-                <span v-for="item2 in item.rightAnswer" >{{item2.questionContent}};</span></p>
-            <p>    本题获得分数：{{item.userScore}}分</p>
-        </div>
-
-        <div class="subTitle" v-if="judgeList.length">
-            <p>三、判断题。判断题判断题判断题</p>
-        </div>
-        <div class="question_area">
-            <div v-for="(item,index) in judgeList" class="question_area">
-                <p class="ques_name">{{index+1}}. {{item.comContent}} 。
-                    <i :class="judStarIcon[index]" @click="doCollect(index,'10006')"></i>
-                    {{item.isCollect == 1 ? '已收藏' : '收藏本题'}}</p>
-                <el-radio-group v-model="judge[index]" :disabled="true">
-                    <el-radio :label="item2.id" v-for="item2 in item.answer">
-                        {{item2.questionContent}}
-                    </el-radio>
-                </el-radio-group>
-                <p class="ques_name" v-if="item.rightAnswer!=null">正确答案：
-                    <span v-for="item2 in item.rightAnswer" >{{item2.questionContent}};</span></p>
-                <p>    本题获得分数：{{item.userScore}}分</p>
-            </div>
-            <p></p>
-        </div>
-        <div class="subTitle" v-if="subjectList[0]">
-            <p>四、主观题</p>
-        </div>
-        <div v-for="(item,index) in subjectList" class="question_area">
-            <p class="ques_name">{{index+1}}. {{item.comContent}} 。
-                <i :class="subStarIcon[index]" @click="doCollect(index,'10007')"></i>
-                {{item.isCollect == 1 ? '已收藏' : '收藏本题'}}</p>
-            答 ：<el-input type="text" v-model="subject[index]" placeholder="請輸入答案" :disabled="true"></el-input>
-            <p></p>
-            <p class="ques_name" v-if="item.rightAnswer!=null">正确答案：
-                <span v-for="item2 in item.rightAnswer" >{{item2.questionContent}};</span>
-            </p>
-            <p> 本题获得分数：{{item.userScore}}分</p>
-
-        </div>
-    </el-form>
-    </div>
-</div>
-</body
-</html>-->
