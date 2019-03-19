@@ -271,19 +271,27 @@ var vm = new Vue({
             vm.exerciseConfigure.list.splice(index, 1);
         },
         dele: function (id) {
-            $.ajax({
-                type: "POST",
-                url: baseURL + "exercise/configure/delete/"+id,
-                contentType: "application/json",
-                success: function(result){
+            this.$confirm('请确认是否删除该练习配置', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(function () {
 
-                    if(result.code === 0){
-                        vm.refresh();
-                    }else{
-                        alert(result.msg);
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "exercise/configure/delete/"+id,
+                    contentType: "application/json",
+                    success: function(result){
+
+                        if(result.code === 0){
+                            vm.refresh();
+                        }else{
+                            alert(result.msg);
+                        }
                     }
-                }
+                });
             });
+
         },
         toHome:function () {
             parent.location.reload()
