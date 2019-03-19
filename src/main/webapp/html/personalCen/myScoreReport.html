@@ -151,7 +151,7 @@
                             </el-input>
                             <div class="answer-area" v-show="isSubmit">
                                 <p>
-                                    此题得分：<span :class="question.userScore ? 'right' : 'err'" v-if="question.checkStatus==2">{{ question.userScore }}</span><span class="right" v-if="question.checkStatus!=2">本题暂未阅卷打分！</span>
+                                    此题得分：<span :class="question.userScore ? 'right' : 'err'" v-if="question.checkStatus==0">{{ question.userScore }}</span><span class="right" v-if="question.checkStatus!=0">本题暂未阅卷打分！</span>
                                 <p class="collection" @click="doCollect(index,'10007')" :class="{'favorite':question.isCollect}"><i class="iconfont icon-shoucang" :class="{'favorite':question.isCollect}"></i>{{ question.isCollect == 1 ? '已收藏' : '收藏本题' }}</p>
                                 </p>
                                 <p class="text">
