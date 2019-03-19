@@ -762,16 +762,16 @@
             <el-radio-group v-model="answers"
                             v-if="questionForm.questionType==10004 || questionForm.questionType==10006"
                             :disabled="radio_disabled">
-                <el-radio :label="answer.id" v-for="answer in questionForm.answer">
-                    {{answer.questionContent}}
+                <el-radio :label="answer.id" v-for="(answer,index) in questionForm.answer" :key="index">
+                    {{optionIndex[index]}}、{{answer.questionContent}}
                 </el-radio>
             </el-radio-group>
 
 
             <!--多选题-->
             <el-checkbox-group v-model="answers" v-if="questionForm.questionType==10005" :disabled="radio_disabled">
-                <el-checkbox :label="answer.id" v-for="answer in questionForm.answer">
-                    {{answer.questionContent}}
+                <el-checkbox :label="answer.id" v-for="(answer,index) in questionForm.answer" :key="index">
+                    {{optionIndex[index]}}、{{answer.questionContent}}
                 </el-checkbox>
             </el-checkbox-group>
 
@@ -782,7 +782,9 @@
 
             <br/>
             <span v-show="showDetail">
-                <span v-show="answerShow">答案描述：{{questionForm.answerDescrible}}</span><br/>
+                <span v-show="answerShow">
+                    <p>你的答案：<span :class="userAnswerStr!=rightAnswerStr?'err':''">{{userAnswerStr}}</span>，正确答案：<span class="right">{{rightAnswerStr}}</span></p>
+                   <p>答案描述：{{questionForm.answerDescrible}}</p> </span><br/>
             </span>
         </div>
     </el-dialog>
