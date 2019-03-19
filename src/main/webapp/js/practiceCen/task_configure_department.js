@@ -240,10 +240,10 @@ var vm = new Vue({
         },
         deletes: function (id) {
             this.$confirm('确定删除此任务设置吗？', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(function () {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
                 $.ajax({
                     type: "POST",
                     url: baseURL + "taskConfigure/delete/" + id,

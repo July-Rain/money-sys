@@ -235,37 +235,88 @@ var vm = new Vue({
             });
         },
         last: function () {
-            // 上一页
-            if(vm.index == 1){
-                vm.isLast = true;
-            } else {
-                vm.index--;
-                vm.refresh();
-                vm.isNext = false;
-            }
-        },
-        next: function () {
-            // 下一页
-            if(total == vm.index){
-                vm.isNext = true;
-
-                var msg = "";
-                if(isReview != '' && isReview != null){
-                    msg = '当前为最后一题，请结束本次错题回顾！';
-                } else {
-                    msg = '当前为最后一题，请结束本次练习！';
-                }
-                vm.$alert(msg, '提示', {
+            if(vm.question.questionType == '10005' && vm.answers.length > 0 && !vm.isAnswer) {
+                this.$confirm('请确认是否放弃本次答题？', '提示', {
                     confirmButtonText: '确定',
-                    callback: function () {
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
+                    // 上一页
+                    if(vm.index == 1){
+                        vm.isLast = true;
+                    } else {
+                        vm.index--;
+                        vm.refresh();
+                        vm.isNext = false;
                     }
                 });
             } else {
-
-                vm.index++;
-                vm.refresh();
-                vm.isLast = false;
+                // 上一页
+                if(vm.index == 1){
+                    vm.isLast = true;
+                } else {
+                    vm.index--;
+                    vm.refresh();
+                    vm.isNext = false;
+                }
             }
+
+        },
+        next: function () {
+
+            // 多选题，已选未提交
+            if(vm.question.questionType == '10005' && vm.answers.length > 0 && !vm.isAnswer){
+                this.$confirm('请确认是否放弃本次答题？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
+                    // 下一页
+                    if(total == vm.index){
+                        vm.isNext = true;
+
+                        var msg = "";
+                        if(isReview != '' && isReview != null){
+                            msg = '当前为最后一题，请结束本次错题回顾！';
+                        } else {
+                            msg = '当前为最后一题，请结束本次练习！';
+                        }
+                        vm.$alert(msg, '提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                            }
+                        });
+                    } else {
+
+                        vm.index++;
+                        vm.refresh();
+                        vm.isLast = false;
+                    }
+                })
+            } else {
+                // 下一页
+                if(total == vm.index){
+                    vm.isNext = true;
+
+                    var msg = "";
+                    if(isReview != '' && isReview != null){
+                        msg = '当前为最后一题，请结束本次错题回顾！';
+                    } else {
+                        msg = '当前为最后一题，请结束本次练习！';
+                    }
+                    vm.$alert(msg, '提示', {
+                        confirmButtonText: '确定',
+                        callback: function () {
+                        }
+                    });
+                } else {
+
+                    vm.index++;
+                    vm.refresh();
+                    vm.isLast = false;
+                }
+            }
+
         },
 
     },
