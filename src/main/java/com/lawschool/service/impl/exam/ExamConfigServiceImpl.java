@@ -304,7 +304,7 @@ public class ExamConfigServiceImpl extends AbstractServiceImpl<ExamConfigDao, Ex
 	@Override
 	public Result getOneExam(String id) {
 		//获取考试配置信息
-		ExamConfig examConfig = dao.selectById(id);
+		ExamConfig examConfig = this.getExamDetail(id);
 		List<ExamQueConfig> examQueConfiglist = new ArrayList<>();
 		if("10033".equals(examConfig.getQuestionWay())){
 			//随机出题
