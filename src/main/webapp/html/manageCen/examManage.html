@@ -25,11 +25,31 @@
                         <el-form-item label="试题描述">
                             <el-input v-model="formInline.comContent" placeholder="试题描述" size="mini" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="状态">
-                            <el-select v-model="formInline.isEnble" placeholder="状态" size="mini" clearable>
+
+                        <el-form-item label="主题类型：">
+                            <el-select  v-model="formInline.specialKnowledgeId" placeholder="主题类型">
+                                <el-option
+                                        v-for="item in topicList"
+                                        :key="item.key"
+                                        :label="item.value"
+                                        :value="item.key">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item label="是否启用">
+                            <el-select v-model="formInline.isEnble" placeholder="是否启用" size="mini" clearable>
                                <el-option label="启用" value="0"></el-option>
                                <el-option label="禁用" value="1"></el-option>
                              </el-select>
+                        </el-form-item>
+
+
+                        <el-form-item label="是否发布">
+                            <el-select v-model="formInline.releaseStatus" placeholder="是否发布" size="mini" clearable>
+                                <el-option label="未发布" value="0"></el-option>
+                                <el-option label="已发布" value="1"></el-option>
+                            </el-select>
                         </el-form-item>
 
                         <el-form-item>
@@ -72,7 +92,8 @@
                 </el-table-column>
                 <el-table-column
                         prop="comContent"
-                        label="试题描述">
+                        label="试题描述"
+                        width="600">
                 </el-table-column>
                 <el-table-column
                         label="类型"
@@ -85,6 +106,16 @@
                             '多选' : '判断'}}
                     </template>
                 </el-table-column>
+
+                <el-table-column
+                        prop="specialknowledgeValue"
+                        label="主题类型"
+                        width="150"
+                        header-align="center"
+                        align="center">
+                </el-table-column>
+
+
                 <el-table-column
                         label="难度"
                         width="90"
@@ -228,7 +259,7 @@
             </el-col>
         </el-row>
 
-        <el-dialog title="试题编辑" :visible.sync="dialogFormVisible" :before-close="closeDia">
+        <el-dialog :title="title" :visible.sync="dialogFormVisible" :before-close="closeDia">
             <el-form :model="form" :rules="rules" ref="form" label-width="100px" size="small">
                 <el-col :span="24">
                     <el-form-item label="试题描述：" prop="comContent">
@@ -282,7 +313,7 @@
                                 label="序号">
                         </el-table-column>
                         <el-table-column
-                                label="选项内容"
+                                label="选项描述"
                                 header-align="center"
                                 align="center"
                                 prop="questionContent">

@@ -45,6 +45,8 @@ var vm = new Vue({
             limit: 10,
             count: 0
         },
+
+        title:"新增",
         rules: {
             comContent: [
                 {max: 100, message: '最大长度100', trigger: 'blur'},
@@ -167,6 +169,7 @@ var vm = new Vue({
             vm.reload();
         },
         addExam: function () {
+            vm.title="新增"
             vm.form.status= '1'
             vm.dialogFormVisible = true;
             vm.isEdit = false;
@@ -178,10 +181,13 @@ var vm = new Vue({
 
         },
         handleWatch: function (id) {
+
             vm.handleEdit(id);
+            vm.title="查看"
             vm.isEdit = true;
         },
         handleEdit: function (id) {
+            vm.title="编辑"
             vm.isEdit = false;
             $.ajax({
                 type: "GET",

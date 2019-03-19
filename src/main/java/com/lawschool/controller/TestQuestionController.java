@@ -41,6 +41,7 @@ public class TestQuestionController {
         String queContent = (String) params.get("comContent");
         String isEnble = (String) params.get("isEnble");
         String specialKnowledgeId = (String) params.get("specialKnowledgeId");
+        String releaseStatus = (String) params.get("releaseStatus");
 
 
         TestQuestions testQuestions = new TestQuestions();
@@ -50,6 +51,7 @@ public class TestQuestionController {
         testQuestions.setComContent(queContent);
         testQuestions.setIsEnble(isEnble);
         testQuestions.setSpecialKnowledgeId(specialKnowledgeId);
+        testQuestions.setReleaseStatus(releaseStatus);
 
         Page<TestQuestions> page = testQuestionService.findPage(new Page<TestQuestions>(params), testQuestions);
         List<TestQuestions> list = page.getList();
