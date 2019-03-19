@@ -17,6 +17,7 @@ import com.lawschool.service.IntegralService;
 import com.lawschool.service.UserIntegralService;
 import com.lawschool.util.*;
 import com.sun.net.httpserver.Authenticator;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -104,10 +105,16 @@ public class IntegralServiceImpl extends ServiceImpl<IntegralDao, Integral> impl
         if(userIntegral.size()>0){
             if("0".equalsIgnoreCase(type)){
                 //设置学分
+                if(userIntegral.get(0).getCreditPoint()==null){
+                    userIntegral.get(0).setCreditPoint(0F); ;
+                }
                 userIntegral.get(0).setCreditPoint(userIntegral.get(0).getCreditPoint()+point);
 
             }else if("1".equalsIgnoreCase(type)){
                 //设置积分
+                if(userIntegral.get(0).getIntegralPoint()==null){
+                    userIntegral.get(0).setIntegralPoint(0F) ;
+                }
                 userIntegral.get(0).setIntegralPoint(userIntegral.get(0).getIntegralPoint()+point);
             }
 

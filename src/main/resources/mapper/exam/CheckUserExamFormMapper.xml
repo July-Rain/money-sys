@@ -20,7 +20,7 @@
         inner join law_check_exam c on b.id = c.user_Exam_Id
         left  join law_org o on a.ORGANIZED_ORG_CODE = o.local_org_code
           and c.check_exam_user_id =#{userExamId}
-        where 1=1 and o.org_status >=2000
+        where 1=1 and o.org_status >=2000  and c.check_status！='2'
         <if test="list != null and list.size > 0">
             and b.id in
         <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
@@ -38,20 +38,25 @@ SELECT
             A .EXAM_TYPE,
             DICTCODE2VALE (A .EXAM_TYPE) EXAM_TYPE_NAME,
             A .EXAM_TIME,
-            A .ORGANIZED_ORG_CODE,
+        o .full_name ORGANIZED_ORG_CODE,
             A .START_TIME,
             A .END_TIME，
             '3' check_status
         FROM
             LAW_EXAM_CONFIG A
+
         INNER JOIN LAW_USER_EXAM b ON A . ID = b.EXAM_CONFIG_ID
+        left  join law_org o on a.ORGANIZED_ORG_CODE = o.local_org_code
         where
-        1=1
+        1=1 and o.org_status >=2000
         <if test="list != null and list.size > 0">
             and b.id in
             <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
                 #{list[${index}]}
             </foreach>
+        </if>
+        <if test=" list.size ==0">
+            and 1=2
         </if>
     </select>
 </mapper>

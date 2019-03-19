@@ -8,6 +8,7 @@ import com.lawschool.beans.exam.ExamConfig;
 import com.lawschool.beans.exam.UserExam;
 import com.lawschool.beans.exam.UserExamAnswer;
 import com.lawschool.dao.exam.CheckExamDao;
+import com.lawschool.dao.exam.ExamConfigDao;
 import com.lawschool.dao.exam.UserExamAnswerDao;
 import com.lawschool.dao.exam.UserExamDao;
 import com.lawschool.form.CalcScoreForm;
@@ -51,12 +52,6 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
 
     @Autowired
     private ExamConfigService examConfigService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private IntegralService integralService;
 
     @Override
     public List<String> getUserExamIdBuCheckUserId(String checkUserId) {
@@ -194,16 +189,15 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
     @Override
     public Result auditCheckExam(String userExamId) {
         UserExam userExam = userExamDao.selectById(userExamId);
+        ExamConfig examConfig = examConfigService.selectById(userExam.getExamConfigId());
         //主观
-        List<UserExamAnswer> userSubjectList = userExamAnswerDao.findByuEIdAndQueType(userExamId, "10007");
+       // List<UserExamAnswer> userSubjectList = userExamAnswerDao.findByuEIdAndQueType(userExamId, "10007");
+        List<UserExamAnswer> userSubjectList = userExamAnswerDao.findForAudit(userExamId, "10007",examConfig.getCheckScoreDifference());
         if(userSubjectList==null){
             userSubjectList = new ArrayList<>();
         }
 
         List<QuestForm> subjectList = userExamService.buildExam(userSubjectList)==null?new ArrayList<>():userExamService.buildExam(userSubjectList);
-
-        ExamConfig examConfig = examConfigService.selectById(userExam.getExamConfigId());
-
 
         return Result.ok().put("subjectList", subjectList).put("examConfig", examConfig).put("userExam", userExam);
     }
