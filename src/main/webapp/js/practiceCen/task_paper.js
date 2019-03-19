@@ -20,7 +20,8 @@ var vm = new Vue({
         isNew: true,
         isNext: false,
         title: '',
-        starIcon: 'el-icon-star-off'
+        starIcon: 'el-icon-star-off',
+        isReview: false
     },
     methods: {
         sure: function (rightAnswer) {// 多选
@@ -272,8 +273,10 @@ var vm = new Vue({
         this.$nextTick(function () {
             if(isReview != null && isReview != ''){
                 vm.title = '结束回顾';
+                vm.isReview = true;
             } else {
                 vm.title = '提 交';
+                vm.isReview = false;
             }
             if(indexs != null && indexs != ''){
                 vm.index = Number(indexs) + 1;
