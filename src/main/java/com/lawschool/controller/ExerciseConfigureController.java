@@ -156,9 +156,16 @@ public class ExerciseConfigureController extends AbstractController{
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public Result delete(@PathVariable("id") String id){
 
+        // 判断是否已经有人答过题
+        int num = exerciseConfigureService.hasUsed(id);
+        if(num > 0){
+
+            return Result.error("该组卷配置已被使用，请勿删除");
+        }
+
         int result = exerciseConfigureService.updateDelflag(id);
         if(result != 1){
-            throw new RuntimeException("删除失败");
+            return Result.error("删除失败...");
         }
         return Result.ok();
     }
