@@ -141,9 +141,9 @@
                         </div>
                     </div>
                     <div class="expressing">
-                        <div class="description"><a name="expressing"></a>四. 主观题。本部分含{{ subjectList.length }}题。</div>
+                        <div class="description"><a name="expressing"></a>四. 主观题。本部分含{{ subjectList.length }}题，共{{ subjectScore }}分。</div>
                         <div class="question daliy clearfix" v-for="(question, index) in subjectList">
-                        <p class="title">{{ index+1 }}.{{ question.comContent }}<span class="title">({{ question.score }})分</span></p>
+                        <p class="title">{{ index+1 }}.{{ question.comContent }}<span class="title">（{{ question.score }}分）</span></p>
                         <el-input
                                 type="textarea"
                                 autosize

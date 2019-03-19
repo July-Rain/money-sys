@@ -255,9 +255,12 @@ html {
     font-size: 20px;
 }
 .bar .buttons {
+    display: flex;
+    flex-flow: column;
+    position: absolute;
+    padding-left: calc(50% - 80px);
     width: 100%;
     padding-top: 21px;
-    padding-left: 90px;
     border-top: 1px solid #dddddd;
 }
 .bar .buttons .el-button {

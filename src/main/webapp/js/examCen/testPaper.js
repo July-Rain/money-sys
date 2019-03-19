@@ -86,6 +86,7 @@ var vm = new Vue({
         floatIcon: null,
         floatIcon: null,
         optionIndex:['A','B','C','D','E','F'],
+        subjectScore: 0
         // 修改前的数据
         /*,
         otherList: [],
@@ -357,6 +358,9 @@ var vm = new Vue({
                         vm.barData[2].totalNum = vm.judgeList.length;
                         //主观
                         vm.subjectList = result.subjectList;
+                        vm.subjectList.forEach(function (val) {
+                            vm.subjectScore += val.score;
+                        })
                         vm.barData[3].totalNum = vm.subjectList.length;
 
                         // 考试人员
@@ -438,6 +442,7 @@ var vm = new Vue({
                         vm.barData[3].totalNum = vm.subjectList.length;
                         if(vm.subjectList){
                             for(var i=0;i<vm.subjectList.length;i++){
+                                vm.subjectScore += vm.subjectList[i].score;
                                 if(vm.subjectList[i].userAnswer){
                                     vm.subject.push(vm.subjectList[i].userAnswer);
                                     vm.barData[3].currentFinishedNum ++;
