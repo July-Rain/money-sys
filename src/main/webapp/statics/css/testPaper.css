@@ -170,9 +170,16 @@ html {
 .el-radio-group {
     width: 100%;
 }
+.content .main div.question .el-checkbox {
+    margin-bottom: 5px;
+}
+/*.content .main div.question .el-checkbox-group {
+    background: #1381E3;
+}*/
 .one-option label.el-radio, .multi-options label.el-checkbox, .checking label.el-radio {
     display: block;
     margin-left: 0;
+    margin-bottom: 5px;
     padding-left: 54px;
     height: 52px;
     line-height: 52px;
@@ -307,7 +314,7 @@ html {
     color: #37aa57;
 }
 .err {
-    color: #fb1515
+    color: #fb1515 !important;
 }
 .right-answer {
     background: #e3fff1;
@@ -315,10 +322,18 @@ html {
 .light {
     color: #ff6600 !important;
 }
+div.answer_area .gray {
+    color: #999999 !important;
+}
 .favorite {
     color: #ff6600 !important;
 }
 .items a.finished {
-    background: #E1F1FF;
+    background: #3dff02;
     color: #1381E3;
+}
+
+.items a.submit {
+    background: #ff2916;
+    color: #050303;
 }

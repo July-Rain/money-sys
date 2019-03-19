@@ -57,21 +57,6 @@ var vm = new Vue({
         handleClick : function(tab, event){
             console.log(tab, event);
         },
-        // getTempName: function (_html) {
-        //     let a = ["中文姓名","证件类型"];
-        //     let b = [{"name":"证件类型","value":"IDTYPE"},{"name":"中文姓名","value":"CHINESE_NAME"},{"name":"证件号码","value":"IDNO"}];
-        //     let result = []
-        //     a.map((i)=>{
-        //         b.map((j)=>{
-        //             if(i === j.name){
-        //                 result.push(j.value)
-        //             }
-        //         })
-        //     });
-        //     console.log(result);
-        //     console.info("_html",_html)
-        //     console.log(typeof _html)
-        // },
         toUrl: function (_url) {
 
             if(_url=='rushLevel')

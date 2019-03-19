@@ -58,6 +58,7 @@
     line-height: 52px;
     padding: 0 44px;
     background: #F2F9FF;
+    margin-bottom: 5px;
 }
 
 .daliy .el-checkbox span{
@@ -73,9 +74,11 @@
 }
 .daliy .el-checkbox-group{
     display: block;
+    background: #F2F9FF;
 }
 .daliy .el-checkbox+.el-checkbox{
-    margin: 0;
+    margin-bottom: 5px;
+    margin-left: 0;
 }
 
 .daliy .el-button{
@@ -140,7 +143,7 @@
     overflow-y: auto;
 }
 .daliy>.daliy_title,.daliy>.el-radio-group{
-    background: #e1f1ff;
+    background: #F2F9FF;
 }
 .answer_area{
     border-top: 1px solid #ddd;
@@ -171,7 +174,6 @@
 }
 .answer_area > p,.answer_area > p span{
     line-height: 24px;
-    color: #37aa57;
     font-size: 20px;
     padding-bottom: 9px;
     border-bottom: 1px dashed #dddddd;
@@ -191,6 +193,10 @@
 }
 .answer_area .diff span,.answer_area .diff i{
     color:#999999;
+}
+.answer_area .basis {
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 .answer_area .basis p{
     float: left;
@@ -245,3 +251,4 @@
     color: #a9a9a9;
     margin-top: 14px;
 }
+

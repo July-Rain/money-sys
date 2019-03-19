@@ -71,8 +71,7 @@
                 </el-table-column>
                 <el-table-column
                         prop="comContent"
-                        label="试题描述"
-                        width="650">
+                        label="试题描述">
                 </el-table-column>
                 <el-table-column
                         label="类型"
@@ -140,28 +139,45 @@
                         label="操作">
                     <template slot-scope="scope">
 
-                        <el-button
+                        <el-popover
                                 v-if="'0'===scope.row.releaseStatus"
-                                size="mini"
-                                @click="changisEnble(scope.row,'3')">发布
-                        </el-button>
-
-
-
-                        <el-button
-                                v-if="'0'===scope.row.isEnble && '1'===scope.row.releaseStatus"
-                                size="mini"
-                                @click="changisEnble(scope.row,'1')">禁用
-                        </el-button>
-                        <el-button
-                                v-if="'1'===scope.row.isEnble && '1'===scope.row.releaseStatus"
-                                size="mini"
-                                @click="changisEnble(scope.row,'0')">启用
-                        </el-button>
+                                placement="right"
+                                trigger="hover"
+                                content="发布">
+                            <i class="iconfont icon-shequneiicon- tabIcon"
+                               slot="reference"
+                               @click="changisEnble(scope.row,'3')"
+                               style="color: #1381e3;font-size: 18px;">
+                            </i>
+                        </el-popover>
 
 
                         <el-popover
+                                v-if="'0'===scope.row.isEnble && '1'===scope.row.releaseStatus"
+                                placement="right"
+                                trigger="hover"
+                                content="禁用">
+                            <i class="iconfont icon-jinyong1 tabIcon"
+                               slot="reference"
+                               @click="changisEnble(scope.row,'1')"
+                               style="color: #e31313;font-size: 18px;">
+                            </i>
+                        </el-popover>
 
+                        <el-popover
+                                v-if="'1'===scope.row.isEnble && '1'===scope.row.releaseStatus"
+                                placement="right"
+                                trigger="hover"
+                                content="启用">
+                            <i class="iconfont icon-renyuanqiyong tabIcon"
+                               slot="reference"
+                               @click="changisEnble(scope.row,'0')"
+                               style="color: #1381e3;font-size: 18px;">
+                            </i>
+                        </el-popover>
+
+
+                        <el-popover
                                 placement="right"
                                 trigger="hover"
                                 content="查看">
@@ -224,14 +240,22 @@
                         </el-radio>
                     </el-form-item>
 
-                    <el-form-item label="视频上传：" v-if="form.typeId == 1" prop="video">
-                        <el-upload :disabled="isEdit" name="importfile" class="avatar-uploader el-upload--text" :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess" :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
-                            <video width="320" height="180" v-if="form.video !='' && videoFlag == false" :src="form.videoUrl" class="avatar" controls="controls" >您的浏览器不支持视频播放</video>
-                            <i v-else-if="form.video =='' && videoFlag == false" class="iconfont icon-shipin"></i>
-                            <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>
-                        </el-upload>
-                        <P class="text">请保证视频格式正确，且不超过100M</P>
+
+
+                    <el-form-item label="视频上传："  v-if="form.typeId == 1">
+                        <video id="video2" v-show="form.video !='' && videoFlag == false"
+                               :src="form.videoUrl" id="video-uploaded2" class="avatar video-js"
+                               controls="controls">您的浏览器不支持视频播放
+                        </video>
+                        <i v-if="form.video =='' && videoFlag == false"
+                           class="iconfont icon-shipin"></i>
+                        <el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent"
+                                     style="margin-top:30px;"></el-progress>
+
                     </el-form-item>
+
+
+
 
                     <el-form-item label="试题类型：" prop="questionType">
                         <el-radio-group :disabled="isEdit" v-model="form.questionType" @change="qtChange">

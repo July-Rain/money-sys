@@ -2,6 +2,7 @@ package com.lawschool.beans;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.FieldStrategy;
 import com.lawschool.base.DataEntity;
 
 import java.util.ArrayList;
@@ -30,11 +31,15 @@ public class ManuscriptEntity extends DataEntity<ManuscriptEntity> {
 
 
 
-
+    @TableField(value="AUDITOR",strategy= FieldStrategy.IGNORED)
     private String auditor;// 审核人
     @TableField(exist = false)
     private String auditorName;// 审核人中文
+
+    @TableField(value="OPINION",strategy= FieldStrategy.IGNORED)
     private String opinion;// 审核意见
+
+
     private String author;// 作者
     private String orgCode;// 作者部门
 

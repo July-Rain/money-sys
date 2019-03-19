@@ -7,6 +7,9 @@
         .el-col{
             min-height: 45px;
         }
+        .el-textarea__inner{
+            height: 100px;
+        }
     </style>
 </head>
 <body>
@@ -53,7 +56,7 @@
                 <!--</el-table-column>-->
                 <el-table-column
                         prop="recievePeopleNmae"
-                        width="100"
+                        width="300"
                         label="接收人"
                         align="center"
                 >
@@ -61,14 +64,14 @@
                 <el-table-column
                         prop="recieveDate"
                         label="创建时间"
-                        width="180"
+                        width="170"
                         align="center"
                 >
                 </el-table-column>
                 <el-table-column
                         prop="releaseDate"
                         label="发送时间"
-                        width="180"
+                        width="170"
                         align="center"
                 >
                 </el-table-column>
@@ -76,7 +79,7 @@
                 <el-table-column
                         prop="noticeType"
                         label="消息类型"
-                        width="100"
+                        width="105"
                         align="center"
                 >
                     <template slot-scope="scope">
@@ -97,7 +100,7 @@
                         <el-tag v-else size="success">已发送</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作"  align="center">
+                <el-table-column label="操作"  align="center" width="275">
                     <template slot-scope="scope">
                         <!--<el-button
                                 :disabled="'1'===scope.row.releaseState"
@@ -105,11 +108,17 @@
                                 @click="send(scope.$index, scope.row)">发送
                         </el-button>-->
 
-                        <el-button
-                                :disabled="'0'===scope.row.releaseState"
-                                size="mini"
-                                @click="black(scope.$index, scope.row)">撤回
-                        </el-button>
+                        <el-popover
+                                v-if="'0'!==scope.row.releaseState"
+                                placement="right"
+                                trigger="hover"
+                                content="撤回">
+                            <i class="iconfont icon-zhongzuo tabIcon"
+                               slot="reference"
+                               @click="black(scope.$index, scope.row)"
+                               style="color: #e31313;" >
+                            </i>
+                        </el-popover>
                         <el-popover
                                 placement="right"
                                 trigger="hover"

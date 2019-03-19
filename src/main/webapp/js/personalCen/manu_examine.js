@@ -233,6 +233,11 @@ var vm = new Vue({
                         if(type == 0){
                             vm.form = vm.manu.test;
                             vm.manu.stu = {};
+
+
+                            if (vm.form.typeId != '0' && vm.form.video) {
+                                vm.form.videoUrl = baseURL + "sys/download?accessoryId=" + vm.form.video;
+                            }
                             vm.dialogFormVisible = true;
                         } else {
                             vm.stuMedia = vm.manu.stu;

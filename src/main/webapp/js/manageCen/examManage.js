@@ -192,11 +192,10 @@ var vm = new Vue({
                         console.info(result);
                         vm.form = result.data;
                         vm.dialogFormVisible = true;
-                        if(vm.form.typeId == '1'){
-                            vm.form.videoUrl = '/law_school_war_exploded/sys/download?accessoryId=' + vm.form.video;
-                        } else {
-                            vm.form.videoUrl = '';
+                        if (vm.form.typeId != '0' && vm.form.video) {
+                            vm.form.videoUrl = baseURL + "sys/download?accessoryId=" + vm.form.video;
                         }
+
                     } else {
                         alert(result.msg);
                     }
@@ -551,6 +550,7 @@ var vm = new Vue({
             parent.location.reload()
         },
         closeDia: function () {
+            this.closePlay2();
             vm.dialogFormVisible = false;
             this.$refs['form'].resetFields();
             vm.form = {
@@ -568,7 +568,23 @@ var vm = new Vue({
                 videoUrl: '',
                 answerList: []
             }
-        }
+        },
+        closePlay2:function(){
+            //关闭播放器
+            //关闭页面时 如果有视频或者音频暂停播放
+            //播放时暂停别的正在播放的音频
+            var player=null;
+
+            if(vm.form.typeId=='1'){
+                player = document.getElementById("video2");
+            }
+            if( player!=null ) {
+                //检测播放是否已暂停.audio.paused 在播放器播放时返回false.在播放器暂停时返回true
+                if (!player.paused) {
+                    player.pause();// 这个就是暂停//audio.play();// 这个就是播放
+                }
+            }
+        },
     },
     created: function () {
         this.$nextTick(function () {
