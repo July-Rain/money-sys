@@ -32,6 +32,8 @@ public class PaperExerciseServiceImpl extends AbstractServiceImpl<PaperExerciseD
 
     @Autowired private PaperAnswerRecordDao paperAnswerRecordDao;
 
+    @Autowired private ExerciseConfigureService exerciseConfigureService;
+
     @Override
     public boolean updateStatus(String id, Integer status){
 
@@ -60,6 +62,9 @@ public class PaperExerciseServiceImpl extends AbstractServiceImpl<PaperExerciseD
             entity.setStatus(PaperExerciseEntity.STATUS_ON);
             entity.setUserId(user.getId());
             dao.insert(entity);
+
+            // 更新练习配置的使用人数
+            exerciseConfigureService.updateUsedNum(configureId);
         }
 
         // 定义返回结果集

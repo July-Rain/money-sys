@@ -27,4 +27,18 @@ public interface ExerciseConfigureService extends AbstractService<ExerciseConfig
     Map<String, String> getQuestions(String id);
 
     String findQuestionsById(String id);
+
+    /**
+     * 判断是否已经使用
+     * @param id
+     * @return
+     */
+    Integer hasUsed(String id);
+
+    /**
+     * 更新组卷配置的使用人数
+     * @param id
+     * @return
+     */
+    Integer updateUsedNum(String id);
 }

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.enums.FieldStrategy;
 import com.lawschool.base.DataEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,6 +41,7 @@ public class ManuscriptEntity extends DataEntity<ManuscriptEntity> {
     private String opinion;// 审核意见
 
 
+
     private String author;// 作者
     private String orgCode;// 作者部门
 
@@ -49,9 +51,35 @@ public class ManuscriptEntity extends DataEntity<ManuscriptEntity> {
     private StuMedia stu;
 
 
+    //查询条件用  前
+    @TableField(exist = false)
+    private String time1;
+    //查询条件用  后
+    @TableField(exist = false)
+    private String time2;
+
+
+
+
     @TableField(exist = false)
     private List<String> orgidList=new ArrayList<String>();//部门 id  List
 
+
+    public String getTime1() {
+        return time1;
+    }
+
+    public void setTime1(String time1) {
+        this.time1 = time1;
+    }
+
+    public String getTime2() {
+        return time2;
+    }
+
+    public void setTime2(String time2) {
+        this.time2 = time2;
+    }
 
     public Integer getType() {
         return type;

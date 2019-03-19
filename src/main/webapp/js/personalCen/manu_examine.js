@@ -80,9 +80,22 @@ var vm = new Vue({
             vm.formInline.page = val;
             vm.refresh();
         },
+        resetForm: function (formName) {
+
+            vm.formInline={
+                limit: 10,
+                page: 1,
+                count: 0
+            }
+            this.refresh();
+        },
+        // 查询
+        onSubmit: function () {
+            this.refresh();
+        },
         refresh: function () {
 
-            vm.formInline.type='shenhe';
+            vm.formInline.quanxian='shenhe';
             $.ajax({
                 type: "GET",
                 url: baseURL + "manuscript/list",
@@ -127,7 +140,7 @@ var vm = new Vue({
             });
         },
         toHome: function () {
-            
+            parent.location.reload()
         },
         handlePreview: function () {
             
@@ -215,6 +228,7 @@ var vm = new Vue({
 
         },
         examine: function (id) {
+
             vm.form.opinion="";
             vm.stuMedia.opinion="";
             $.ajax({
@@ -240,11 +254,13 @@ var vm = new Vue({
                             }
                             vm.dialogFormVisible = true;
                         } else {
+                            editor.txt.html("");
                             vm.stuMedia = vm.manu.stu;
                             vm.manu.test = {};
 
                             vm.deptCheckData = vm.stuMedia.deptArr;
                             vm.lawCheckData = vm.stuMedia.stuLawid.split(",");
+                            editor.txt.html(vm.stuMedia.comContent);
 
                             if (vm.stuMedia.stuType != 'pic' && vm.stuMedia.comContent) {
                                 vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.comContent;
@@ -297,7 +313,59 @@ var vm = new Vue({
                     }
                 }
             });
-        }
+        },
+        loadEditor: function () {
+
+            var E = window.wangEditor;
+            editor = new E('#editor');
+            // 或者 var editor = new E( document.getElementById('editor') )
+            //显示“上传图片”的tab
+            editor.customConfig.uploadImgServer = baseURL + "sys/upload";// 上传图片到服务器
+            // 自定义菜单配置
+            editor.customConfig.menus = [
+                'head',  // 标题
+                'bold',  // 粗体
+                'fontSize',  // 字号
+                'fontName',  // 字体
+                'italic',  // 斜体
+                'underline',  // 下划线
+                'strikeThrough',  // 删除线
+                'foreColor',  // 文字颜色
+                // 'backColor',  // 背景颜色
+                // 'link',  // 插入链接
+                'list',  // 列表
+                'justify',  // 对齐方式
+                'quote',  // 引用
+                // 'emoticon',  // 表情
+                'image',  // 插入图片
+                'table',  // 表格
+                'video',  // 插入视频
+                // 'code',  // 插入代码
+                'undo',  // 撤销
+                'redo'  // 重复
+            ];
+            editor.customConfig.uploadFileName = 'importfile';
+            editor.customConfig.uploadImgHooks = {
+                // 如果服务器端返回的不是 {errno:0, data: [...]} 这种格式，可使用该配置
+                // （但是，服务器端返回的必须是一个 JSON 格式字符串！！！否则会报错）
+                customInsert: function (insertImg, result, editor) {
+                    // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
+                    // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
+
+                    // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
+                    var url = baseURL + "sys/download?accessoryId=" + result.accessoryId;
+                    insertImg(url)
+                }
+            }
+            editor.customConfig.onchange = function (html) {
+                // 监控变化，同步更新到 textarea
+                vm.stuMedia.comContent = html;
+            };
+            editor.create();
+
+
+        },
+
     },
     created: function () {
         this.$nextTick(function () {
@@ -331,15 +399,15 @@ var vm = new Vue({
 
         })
     },
+
+
     mounted: function() {
-        // var that = this;
-        // this.$refs.stuDialog.open();
-        // this.$nextTick(function () {
-        //     setTimeout(function () {
-        //         that.$refs.stuDialog.close();
-        //         loadEditor();
-        //     },200);
-        // });
+        var that = this;
+        this.$refs.stuDialog.open();
+        setTimeout(function () {
+            that.$refs.stuDialog.close();
+            vm.loadEditor();
+        }, 200);
     }
 });
 
@@ -347,51 +415,4 @@ var vm = new Vue({
  * wangEditor 富文本框初始
  *
  */
-function loadEditor(){
-    var E = window.wangEditor;
-    editor = new E('#editor');
-    // 或者 var editor = new E( document.getElementById('editor') )
-    //显示“上传图片”的tab
-    editor.customConfig.uploadImgServer = baseURL+"sys/upload";// 上传图片到服务器
-    // 自定义菜单配置
-    editor.customConfig.menus = [
-        'head',  // 标题
-        'bold',  // 粗体
-        'fontSize',  // 字号
-        'fontName',  // 字体
-        'italic',  // 斜体
-        'underline',  // 下划线
-        'strikeThrough',  // 删除线
-        'foreColor',  // 文字颜色
-        // 'backColor',  // 背景颜色
-        // 'link',  // 插入链接
-        'list',  // 列表
-        'justify',  // 对齐方式
-        'quote',  // 引用
-        // 'emoticon',  // 表情
-        'image',  // 插入图片
-        'table',  // 表格
-        'video',  // 插入视频
-        // 'code',  // 插入代码
-        'undo',  // 撤销
-        'redo'  // 重复
-    ];
-    editor.customConfig.uploadFileName = 'importfile';
-    editor.customConfig.uploadImgHooks = {
-        // 如果服务器端返回的不是 {errno:0, data: [...]} 这种格式，可使用该配置
-        // （但是，服务器端返回的必须是一个 JSON 格式字符串！！！否则会报错）
-        customInsert: function (insertImg, result, editor) {
-            // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
-            // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
 
-            // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
-            var url = baseURL+"sys/download?accessoryId="+result.accessoryId;
-            insertImg(url)
-        }
-    };
-    editor.customConfig.onchange = function (html) {
-        // 监控变化，同步更新到 textarea
-        vm.caseAna.caseContent=html;
-    };
-    editor.create();
-}
