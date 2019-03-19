@@ -115,8 +115,8 @@
                     align="center">
             </el-table-column>
             <el-table-column
-                    prop="userName"
-                    label="创建人"
+                    prop="useNum"
+                    label="练习人次"
                     header-align="center"
                     align="center"
             >
@@ -153,6 +153,7 @@
                            slot="reference"
                            @click="dele(scope.row.id)"
                            style="color: #e31313;cursor: pointer;padding: 0 20px;font-size: 18px"
+                           v-if="scope.row.useNum == 0"
                         >
                         </i>
                     </el-popover>

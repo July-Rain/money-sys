@@ -50,4 +50,5 @@ public interface PaperExerciseService extends AbstractService<PaperExerciseEntit
      * @return
      */
     boolean save(List<QuestionForm> list, String taskId, boolean isCommit);
+
 }

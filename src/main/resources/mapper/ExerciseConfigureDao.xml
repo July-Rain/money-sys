@@ -85,7 +85,8 @@
     <!-- 练习配置分页列表 -->
     <select id="findList" resultType="com.lawschool.beans.ExerciseConfigureEntity">
         SELECT
-        <include refid="ecColumns"/>
+        <include refid="ecColumns"/>,
+        o.USE_NUM AS "useNum"
         FROM LAW_EXERCISE_CONFIGURE o
         <where>
             o.del_flag = #{delFlag}
@@ -123,7 +124,8 @@
         t.answer_num AS "answerNum",
         t.status AS "status",
         t.id AS "taskId",
-        o.SOURCE AS "source"
+        o.SOURCE AS "source",
+        o.USE_NUM AS "useNum"
         FROM LAW_EXERCISE_CONFIGURE o
         LEFT JOIN LAW_EXERCISE_PAPER t ON o.id = t.configure_id
         AND t.user_id = #{createUser}
@@ -161,4 +163,21 @@
             id = #{id}
         </where>
     </select>
+
+    <select id="hasUsed" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            LAW_EXERCISE_PAPER
+        WHERE
+            CONFIGURE_ID = #{id}
+    </select>
+
+    <update id="updateUsedNum">
+        UPDATE LAW_EXERCISE_CONFIGURE
+        SET
+            USE_NUM = USE_NUM + 1
+        WHERE
+            ID = #{id}
+    </update>
 </mapper>
