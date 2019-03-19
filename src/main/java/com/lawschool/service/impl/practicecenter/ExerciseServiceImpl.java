@@ -241,7 +241,6 @@ public class ExerciseServiceImpl extends AbstractServiceImpl<ExerciseDao, Exerci
             // 封装查询参数
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("start", index);
-            params.put("end", index);
             params.put("themeId", config.getTopicType());
             params.put("difficulty", config.getDifficulty());
             params.put("type", config.getType());

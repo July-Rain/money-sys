@@ -133,18 +133,48 @@ var vm = new Vue({
             }
         },
         last: function () {
-            // 上一页
-            if(vm.index == 1){
-                vm.isLast = true;
+            if(vm.question.questionType == '10005' && vm.answers.length > 0 && !vm.isAnswer) {
+                this.$confirm('请确认是否放弃本次答题？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
+                    // 上一页
+                    if(vm.index == 1){
+                        vm.isLast = true;
+                    } else {
+                        vm.getQuestion(0);
+                        vm.isNext = false;
+                    }
+                });
             } else {
-                vm.getQuestion(0);
-                vm.isNext = false;
+                // 上一页
+                if(vm.index == 1){
+                    vm.isLast = true;
+                } else {
+                    vm.getQuestion(0);
+                    vm.isNext = false;
+                }
             }
+
         },
         next: function () {
-            // 下一页
-            vm.getQuestion(1);
-            vm.isLast = false;
+            // 多选题，已选未提交
+            if(vm.question.questionType == '10005' && vm.answers.length > 0 && !vm.isAnswer){
+                this.$confirm('请确认是否放弃本次答题？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
+                    // 下一页
+                    vm.getQuestion(1);
+                    vm.isLast = false;
+                });
+            } else {
+                // 下一页
+                vm.getQuestion(1);
+                vm.isLast = false;
+            }
         },
         commit: function () {
             // 结束本次练习

@@ -25,4 +25,13 @@ public interface ExerciseConfigureDao extends AbstractDao<ExerciseConfigureEntit
     Integer updateDelflag(@Param("id") String id);
 
     Map<String, String> selectQuestions(@Param("id") String id);
+
+    /**
+     * 判断是否已经使用
+     * @param id
+     * @return
+     */
+    Integer hasUsed(String id);
+
+    Integer updateUsedNum(String id);
 }

@@ -233,7 +233,7 @@
                         </el-form-item>
 
                         <el-form-item label="主题类型：">
-                            <el-select :disabled="isEdit" multiple collapse-tags
+                            <el-select v-if="!isEdit" multiple collapse-tags
                                        v-model="configureEntity.topics"
                                        placeholder="请选择"
                                        >
@@ -245,6 +245,10 @@
                                         >
                                 </el-option>
                             </el-select>
+                            <p v-if="isEdit" style="background-color: #f5f7fa;color: #999;padding:0 5px">
+                                <span v-for="item in topicList" style="padding: 0 5px">{{item.value}}</span>
+                            </p>
+
                         </el-form-item>
 
                         <el-form-item label="使用部门：">

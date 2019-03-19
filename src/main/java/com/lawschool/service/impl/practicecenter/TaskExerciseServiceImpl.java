@@ -83,7 +83,6 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
             // 封装查询参数
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("start", index);
-            params.put("end", index);
             params.put("themeId", configure.getThemeId());
             params.put("difficulty", configure.getDifficulty());
             params.put("classify", configure.getClassify());

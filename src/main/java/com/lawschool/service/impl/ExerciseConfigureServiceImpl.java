@@ -276,4 +276,21 @@ public class ExerciseConfigureServiceImpl
 
         return dao.findQuestionsById(id);
     }
+
+    @Override
+    public Integer hasUsed(String id){
+
+        return dao.hasUsed(id);
+    }
+
+    /**
+     * 更新配置的使用人数
+     * @param id
+     * @return
+     */
+    @Override
+    public Integer updateUsedNum(String id){
+
+        return dao.updateUsedNum(id);
+    }
 }
