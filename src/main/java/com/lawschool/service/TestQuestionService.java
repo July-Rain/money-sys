@@ -7,6 +7,7 @@ import com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity;
 import com.lawschool.form.AnswerForm;
 import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
+import com.lawschool.form.TopicForm;
 
 import java.util.List;
 import java.util.Map;
@@ -109,5 +110,5 @@ public interface TestQuestionService extends AbstractService<TestQuestions> {
      * 统计主题、难度对应的题目数量，除主观题
      * @return
      */
-    List<CommonForm> countTopicNum();
+    List<TopicForm> countTopicNum();
 }

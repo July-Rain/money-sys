@@ -2,6 +2,7 @@ package com.lawschool.controller.common;
 
 import com.lawschool.base.AbstractController;
 import com.lawschool.form.CommonForm;
+import com.lawschool.form.TopicForm;
 import com.lawschool.service.TestQuestionService;
 import com.lawschool.service.system.DictionService;
 import com.lawschool.service.system.TopicTypeService;
@@ -12,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Auther: Moon
@@ -29,6 +27,7 @@ public class CommonController extends AbstractController {
     @Autowired private DictionService dictionService;
 
     @Autowired private TestQuestionService testQuestionService;
+
     /**
      * 根据父类code获取字典信息，支持一次请求多个
      * @param codes
@@ -44,42 +43,62 @@ public class CommonController extends AbstractController {
     }
 
     /**
-     * 获取主题对应的题目数量，不包含主观题
+     * 获取主题对应的题目数量，不包含主观题，且去除无题目的主题
      * @return
      */
     @RequestMapping(value = "/topicNums", method = RequestMethod.GET)
     public Result getTopicNum(){
         // 定义返回结果集
-        Map<String, Integer[]> result = new HashMap<String, Integer[]>();
+        List<TopicForm> result = new ArrayList<TopicForm>();
 
         // 查询主题、难度对应的题量，除主观题
-        List<CommonForm> list = testQuestionService.countTopicNum();
+        List<TopicForm> list = testQuestionService.countTopicNum();
 
-        for(CommonForm form : list){
-            String key = form.getKey();// 主题ID
-            String diff = form.getOpinion();// 难度CODE
-            Integer num = Integer.parseInt(form.getValue());
+        // 合并处理结果
+        for(int i=0; i<list.size(); i++){
+            TopicForm current = list.get(i);
+            String id = current.getKey();// 主键
+            String diff = current.getOpinion();
 
-            Integer[] tempArr = new Integer[]{0, 0, 0};
 
-            if(result.get(key) != null){
-                tempArr = result.get(key);
-            }
-
+            List<String> tempList = new ArrayList<>(Arrays.asList("0", "0", "0"));
             if("10001".equals(diff)){
-                tempArr[0] = num;
+                // 初级
+                tempList.set(0, list.get(i).getValue());
 
             } else if("10002".equals(diff)){
-                tempArr[1] = num;
+                // 中级
+                tempList.set(1, list.get(i).getValue());
 
             } else {
-                tempArr[2] = num;
+                // 高级
+                tempList.set(2, list.get(i).getValue());
             }
 
-            result.put(key, tempArr);
+            for(int j=i+1; j<list.size(); j++){
+
+                if(list.get(j).getKey().equals(current.getKey())){
+                    String diffNew = list.get(j).getOpinion();
+                    if("10001".equals(diffNew)){
+                        tempList.set(0, list.get(j).getValue());// 初级
+
+                    } else if("10002".equals(diffNew)){
+                        tempList.set(1, list.get(j).getValue());// 中级
+
+                    } else {
+                        tempList.set(2, list.get(j).getValue());// 高级
+                    }
+                } else {
+                    i = j-1;
+                    break;
+                }
+            }
+            current.setValue(current.getName());
+            current.setNums(tempList);
+            result.add(current);
         }
 
-        return Result.ok().put("numArr", result);
+        return Result.ok().put("topicList", result);
     }
 
 }

@@ -259,22 +259,28 @@
                                 <el-option
                                         v-for="item in topicList"
                                         :key="item.key"
-                                        :label="item.value"
+                                        :label="item.name"
                                         :value="item">
                                 </el-option>
                             </el-select>
                         </el-form-item>
 
                         <el-form-item label="初级题量：" prop="primaryNum">
-                            <el-input-number v-model="config.primaryNum" controls-position="right" :min="0" :max="priMax"></el-input-number>
+                            <el-input-number v-model="config.primaryNum" controls-position="right" :min="0" :max="priMax">
+                            </el-input-number>
+                            <el-button type="info" round v-show="priMax < 999999">Max：{{priMax}}</el-button>
                         </el-form-item>
 
                         <el-form-item label="中级题量：" prop="middleNum">
-                            <el-input-number v-model="config.middleNum" controls-position="right" :min="0" :max="midMax"></el-input-number>
+                            <el-input-number v-model="config.middleNum" controls-position="right" :min="0" :max="midMax">
+                            </el-input-number>
+                            <el-button type="info" round v-show="midMax < 999999">Max：{{midMax}}</el-button>
                         </el-form-item>
 
                         <el-form-item label="高级题量：" prop="seniorNum">
-                            <el-input-number v-model="config.seniorNum" controls-position="right" :min="0" :max="senMax"></el-input-number>
+                            <el-input-number v-model="config.seniorNum" controls-position="right" :min="0" :max="senMax">
+                            </el-input-number>
+                            <el-button type="info" round v-show="senMax < 999999">Max：{{senMax}}</el-button>
                         </el-form-item>
 
                         <el-form-item>
