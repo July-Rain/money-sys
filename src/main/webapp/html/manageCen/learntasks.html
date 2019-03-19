@@ -103,6 +103,10 @@
         ul.el-pager li {
             min-width: 25px;
         }
+
+        #spel_title .el-input.el-input--mini{
+            width: 350px;
+        }
     </style>
 </head>
 <body>
@@ -169,15 +173,14 @@
                                     </el-date-picker>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button type="primary" @click="onSubmit" size="mini">
-                                        <i class="iconfont icon-sousuo1"></i>
-                                        查询
-                                    </el-button>
                                     <el-button class="reset_btn" size="mini" @click="resetForm('formInline')">
                                         <i class="iconfont icon-tableresetpassword"></i>
                                         重置
                                     </el-button>
-
+                                    <el-button type="primary" @click="onSubmit" size="mini">
+                                        <i class="iconfont icon-sousuo1"></i>
+                                        查询
+                                    </el-button>
                                 </el-form-item>
                             </el-form>
                         </div>
@@ -482,8 +485,8 @@
                             <el-input v-model="userForm.userName" placeholder="用户名" size="mini"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
                             <el-button @click="resetForm('userForm')" size="mini">重置</el-button>
+                            <el-button type="primary" @click="searchUser" size="mini">查询</el-button>
                         </el-form-item>
                     </el-form>
                     <div>
@@ -539,7 +542,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="选择学习任务内容" :visible.sync="dialogLearnConTask">
+        <el-dialog title="选择学习任务内容" :visible.sync="dialogLearnConTask" width="70%">
             <!--对于同一级的节点，每次只能展开一个-->
             <div>
                 <el-col :span="6">
@@ -559,24 +562,19 @@
 
                 <el-col :span="18" class="paddingLeft20">
                     <el-form :inline="true" :model="taskForm" ref="taskForm" class="demo-form-inline">
-                        <el-form-item prop="infoName" label="标题：">
+                        <el-form-item id="spel_title" prop="infoName" label="标题：">
                             <el-input v-model="taskForm.infoName" placeholder="标题" size="mini"></el-input>
                         </el-form-item>
                         <el-form-item prop="infoType" label="来源：">
-                            <!--<el-select v-model="taskForm.infoType" placeholder="类型" size="mini" >-->
-                                <!--<el-option label="法律法规" value="law"></el-option>-->
-                                <!--<el-option label="视频" value="video"></el-option>-->
-                                <!--<el-option label="音频" value="audio"></el-option>-->
-                                <!--<el-option label="图文" value="pic"></el-option>-->
-                            <!--</el-select>-->
                             <el-radio v-model="taskForm.infoType" label="law" @change="changeInfoType">法律法规</el-radio>
                             <el-radio v-model="taskForm.infoType" label="video" @change="changeInfoType">视频</el-radio>
                             <el-radio v-model="taskForm.infoType" label="audio" @change="changeInfoType">音频</el-radio>
                             <el-radio v-model="taskForm.infoType" label="pic" @change="changeInfoType">图文</el-radio>
                         </el-form-item>
+                        <br>
                         <el-form-item>
-                            <el-button type="primary" @click="searchContent" size="mini">查询</el-button>
                             <el-button @click="resetForm('taskForm')" size="mini">重置</el-button>
+                            <el-button type="primary" @click="searchContent" size="mini">查询</el-button>
                         </el-form-item>
                     </el-form>
                     <div>
