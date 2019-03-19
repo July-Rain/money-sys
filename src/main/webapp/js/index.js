@@ -181,6 +181,7 @@ var vm = new Vue({
             if(item.name == "退出"){
                 window.location.href = baseURL + 'logout'
             }
+
             if (item.url) {
                 $(".header-right ul li").removeClass("this");
 

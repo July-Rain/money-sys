@@ -237,6 +237,7 @@ var vm = new Vue({
                 data: JSON.stringify(coll),
                 success: function(result){
                     if(result.code === 0){
+                        alert("收藏成功！");
                         vm.reload();
                     }else{
                         alert(result.msg);
