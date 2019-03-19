@@ -307,7 +307,9 @@ var vm = new Vue({
             },//学情统计数据
             popoverTitle: "考试提示标题",
             popoverContent: "考试提示内容",
-
+            optionIndex:['A','B','C','D','E','F','G'],
+            rightAnswerStr: '',
+            userAnswerStr: ''
             // 播放器
         }
     },
@@ -384,9 +386,8 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.questionForm = result.question;
                         if(result.question != null){
-
+                            vm.questionForm = result.question;
                             var userAnswer = vm.questionForm.userAnswer;
                             if(userAnswer == null || userAnswer == ''){
                                 vm.everyDay="未完成";
@@ -400,8 +401,10 @@ var vm = new Vue({
                                 } else {
                                     vm.answers = userAnswer;
                                 }
+                                vm.getTsxx(userAnswer, vm.questionForm.answerId);
                                 vm.showAnswer = true;
                                 vm.everyDay="已完成";
+                                vm.answerShow = true;
                             }
 
                         } else {
@@ -492,6 +495,8 @@ var vm = new Vue({
                         vm.questionForm.recordId = result.recordId;
                         vm.questionForm.isCollect = 0;
                         vm.everyDay = '已完成';
+                        vm.answerShow = true;
+                        vm.getTsxx(str,vm.questionForm.answerId);
                     } else {
                         alert(result.msg);
                     }
@@ -499,6 +504,31 @@ var vm = new Vue({
             });
 
 
+        },
+        getTsxx: function(userAnswer, rightAnswer){
+            // userAnswer、rightAnswer可能多选
+            var userArr = new Array();
+            var rightArr = new Array();
+            userArr = userAnswer.split(',');
+            rightArr = rightAnswer.split(',');
+            vm.rightAnswerStr = '';
+            vm.userAnswerStr = '';
+
+            for(var i=0; i<vm.questionForm.answer.length; i++){
+                if(rightArr.indexOf(vm.questionForm.answer[i].id) > -1){
+                    vm.rightAnswerStr += vm.indexs[i];
+                }
+                if(userArr.indexOf(vm.questionForm.answer[i].id) > -1){
+                    vm.userAnswerStr += vm.indexs[i];
+                }
+            }
+
+            if(vm.rightAnswerStr == vm.userAnswerStr){
+                vm.questionForm.right = 1;
+            }else {
+                vm.questionForm.right = 0;
+            }
+            vm.showAnswer = true;
         },
         initPlayer: function () {
             var that = this;

@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,22 @@ public class ManuscriptController extends AbstractController {
             manuscriptEntity.setCreateUser((String)params.get("createUser"));
         }
 
-
+        if(UtilValidate.isNotEmpty(params.get("type"))){
+            manuscriptEntity.setType(Integer.parseInt((String)params.get("type")));
+        }
+        if(UtilValidate.isNotEmpty(params.get("status"))){
+            manuscriptEntity.setStatus(Integer.parseInt((String)params.get("status")));
+        }
+        if(UtilValidate.isNotEmpty(params.get("time1"))){
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+////            System.out.println(sdf.parse((String)params.get("time1")));
+            manuscriptEntity.setTime1((String)params.get("time1"));
+        }
+        if(UtilValidate.isNotEmpty(params.get("time2"))){
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            System.out.println(sdf.parse((String)params.get("time1")));
+            manuscriptEntity.setTime2((String)params.get("time2"));
+        }
         //说明是 试题审核那边过来的
 //        if(UtilValidate.isNotEmpty(params.get("type"))){
 //            manuscriptEntity.setOrgidList(u.getOrgIdList());

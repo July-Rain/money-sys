@@ -9,9 +9,74 @@
         <div class="container">
             <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
                 <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+                <el-breadcrumb-item>管理员入口</el-breadcrumb-item>
                 <el-breadcrumb-item>管理中心</el-breadcrumb-item>
                 <el-breadcrumb-item>出题审核</el-breadcrumb-item>
             </el-breadcrumb>
+
+
+            <div class="info_card">
+                <div class="card_title"></div>
+                <div class="card_contain">
+                    <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
+
+                        <el-form-item prop="type" label="出题类型：">
+                            <el-select v-model="formInline.type" placeholder="类型" size="mini" clearable>
+                                <el-option label="习题" value="0"></el-option>
+                                <el-option label="学习" value="1"></el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item label="开始日期：" prop="startTime">
+                            <el-date-picker
+                                    v-model="formInline.time1"
+                                    type="datetime"
+                                    format="yyyy年MM月dd日 HH时mm分ss秒"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    placeholder="开始时间"
+                                    size="mini"
+                            >
+                            </el-date-picker>
+                        </el-form-item>
+
+                        <el-form-item label="结束日期：" prop="endTime">
+                            <el-date-picker
+                                    v-model="formInline.time2"
+                                    type="datetime"
+                                    format="yyyy年MM月dd日 HH时mm分ss秒"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    placeholder="结束时间"
+                                    size="mini"
+                            >
+                            </el-date-picker>
+                        </el-form-item>
+
+
+                        <el-form-item prop="type" label="审核状态：">
+                            <el-select v-model="formInline.status" placeholder="类型" size="mini" clearable>
+                                <el-option label="待审核" value="0"></el-option>
+                                <el-option label="审核通过" value="1"></el-option>
+                                <el-option label="审核不通过" value="2"></el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item>
+                            <el-button type="primary" @click="onSubmit" size="mini">
+                                <i class="iconfont icon-sousuo1"></i>
+                                查询
+                            </el-button>
+                            <el-button @click="resetForm('formInline')" size="mini">
+                                <i class="iconfont icon-tableresetpassword"></i>
+                                重置
+                            </el-button>
+
+                        </el-form-item>
+                    </el-form>
+
+                </div>
+            </div>
+
+
             <el-table
                     :data="tableData"
                     style="width: 100%"
@@ -223,9 +288,9 @@
                         <el-form-item label="标题" prop="stuTitle">
                             <el-input disabled v-model="stuMedia.stuTitle" placeholder="请输入标题" clearable></el-input>
                         </el-form-item>
-                        <template v-if="stuMedia.stuType=='pic'">
-                            <el-form-item disabled label="内容" prop="comContent">
-                                <div disabled id="editor" style="width: 545px;">
+                        <template v-show="stuMedia.stuType=='pic'">
+                            <el-form-item disabled label="内容" prop="comContent"  v-show="stuMedia.stuType=='pic'">
+                                <div  id="editor" style="width: 545px;">
                                 </div>
                             </el-form-item>
                         </template>

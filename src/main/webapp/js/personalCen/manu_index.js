@@ -133,8 +133,7 @@ var vm = new Vue({
             //     {max: 100, message: '最大长度100', trigger: 'blur'}
             // ],
             comContent: [
-                {required: true, message: '请输入试题描述', trigger: 'blur'},
-                {max: 100, message: '最大长度100', trigger: 'blur'}
+                {required: true, message: '请添加内容', trigger: 'blur'},
             ],
         },
         rules3: {//表单验证规则
@@ -240,9 +239,7 @@ var vm = new Vue({
             }
 
         },
-        resetForm: function (formName) {
-            this.$refs[formName].resetFields();
-        },
+
         handleDeptNodeClick: function (data) {
             this.userForm.orgCode = data.orgCode;
             this.reloadUser();
@@ -285,6 +282,19 @@ var vm = new Vue({
         handleCurChange: function (val) {
             vm.formInline.page = val;
             vm.refresh();
+        },
+        // 查询
+        onSubmit: function () {
+            this.refresh();
+        },
+        resetForm: function (formName) {
+
+            vm.formInline={
+                limit: 10,
+                page: 1,
+                count: 0
+            }
+            this.refresh();
         },
         refresh: function () {
 
@@ -329,6 +339,7 @@ var vm = new Vue({
                             vm.dialogFormVisible = true;
                         }
                         else {
+                            editor.txt.html("");
                             vm.stuMedia = vm.manu.stu;
                             vm.manu.test = {};
 
@@ -336,7 +347,7 @@ var vm = new Vue({
 
                             vm.deptCheckData = result.data.stu.deptArr;
                             vm.lawCheckData = result.data.stu.stuLawid.split(",");
-
+                            editor.txt.html(vm.stuMedia.comContent);
                             if (vm.stuMedia.stuType != 'pic' && vm.stuMedia.comContent) {
                                 vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.comContent;
                                 if (vm.stuMedia.videoPicAcc) {
@@ -376,11 +387,13 @@ var vm = new Vue({
                             }
                             vm.dialogFormVisible = true;
                         } else {
+                            editor.txt.html("");
+
                             vm.stuMedia = vm.manu.stu;
                             vm.manu.test = {};
                             vm.deptCheckData = result.data.stu.deptArr;
                             vm.lawCheckData = result.data.stu.stuLawid.split(",");
-
+                            editor.txt.html(vm.stuMedia.comContent);
                             if (vm.stuMedia.stuType != 'pic' && vm.stuMedia.comContent) {
                                 vm.stuMedia.contentUrl = baseURL + "sys/download?accessoryId=" + vm.stuMedia.comContent;
                                 if (vm.stuMedia.videoPicAcc) {

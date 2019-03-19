@@ -73,6 +73,19 @@
                 </foreach>
 
             </if>
+            <if test="type != null">
+                and TYPE = #{type}
+            </if>
+
+            <if test="status != null">
+                and STATUS = #{status}
+            </if>
+            <if test="time1 != null">
+                and <![CDATA[ CREATE_TIME  >=  to_date(#{time1},'yyyy-mm-dd hh24:mi:ss')]]>
+            </if>
+            <if test="time2 != null">
+                and <![CDATA[ CREATE_TIME  <=  to_date(#{time2},'yyyy-mm-dd hh24:mi:ss')]]>
+            </if>
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">
                 ORDER BY ${page.orderBy}
