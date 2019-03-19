@@ -20,8 +20,8 @@
                 </ul>
             </div>
             <div class="submit_info">
-                <el-form ref="form" :model="form">
-                    <el-form-item>
+                <el-form ref="form" :model="form" :rules="rules">
+                    <el-form-item prop="content">
                         <el-input type="textarea" v-model="form.content" placeholder="有什么和大家一起交流的话题？"></el-input>
                     </el-form-item>
                     <div class="clearfix">
@@ -90,6 +90,9 @@
                         <!--<p class="openMore">展开更多评论</p>-->
 
                     </div>
+                </div>
+                <div class="item" v-if="tableData.length==0">
+                    <p class="text" style="width: auto" >暂无内容</p>
                 </div>
             </div>
         </div>

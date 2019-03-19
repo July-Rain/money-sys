@@ -43,7 +43,8 @@ public class ReplyController extends AbstractController {
             createUser = getUser().getId();
             replyEntity.setCreateUser(createUser);
         }
-
+        String orderBy = " a.create_time desc";
+        params.put("orderBy",orderBy);
         Page<ReplyEntity> page = replyService.findPage(new Page<ReplyEntity>(params), replyEntity);
         return Result.ok().put("page", page);
     }
@@ -65,7 +66,7 @@ public class ReplyController extends AbstractController {
         newPostEntity.setId(postEntity.getId());
         newPostEntity.setCommentNum(postEntity.getCommentNum() == null ? 1 : postEntity.getCommentNum()+ 1);
 
-        postService.updateNum(postEntity);
+        postService.updateNum(newPostEntity);
         return Result.ok();
     }
 

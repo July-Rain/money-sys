@@ -43,7 +43,8 @@ public class PostController extends AbstractController {
 
         PostEntity postEntity = new PostEntity();
         postEntity.setSubordinateColumn(subordinateColumn);
-
+        String orderBy = " a.create_time desc";
+        params.put("orderBy",orderBy);
         Page<PostEntity> page = postService.findPage(new Page<PostEntity>(params), postEntity);
         return Result.ok().put("page", page);
     }

@@ -22,4 +22,15 @@ public interface UserExamAnswerDao extends AbstractDao<UserExamAnswer> {
 
     float getScoreByUserExamId(@Param("userExamId") String userExamId);
     float getScoreExAudit(@Param("userExamId") String userExamId);
+
+    /**
+     * 获取需要审核的题目
+     * @param userExamId 试卷ID
+     * @param queType   题目类型
+     * @param auditScore 阅卷审核分数
+     * @return
+     */
+    List<UserExamAnswer>  findForAudit(@Param("userExamId")String userExamId,@Param("queType") String queType,
+                                       @Param("auditScore") float auditScore);
+
 }

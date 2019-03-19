@@ -34,6 +34,15 @@
         and abs(FIR_CHECK_SCORE - Sec_CHECK_SCORE) >#{score}
     </select>
 
+    <select id="findForAudit" resultType="com.lawschool.beans.exam.UserExamAnswer">
+        select *
+        from LAW_USER_EXAM_ANSWER
+        WHERE 1=1 and
+         USER_EXAM_ID=#{userExamId} and TEST_QUE_TYPE= #{queType}
+        and  FIR_CHECK_SCORE is not null and Sec_CHECK_SCORE is not null
+        and abs(FIR_CHECK_SCORE - Sec_CHECK_SCORE) >#{auditScore}
+    </select>
+
     <select id="getScoreByUserExamId" resultType="float">
         select
         sum(user_score) from law_user_exam_answer

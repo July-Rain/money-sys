@@ -26,7 +26,7 @@ var vm = new Vue({
         tableData: [],//评论数据
         form: {
             content: "",
-            subordinateColumn: ""
+            subordinateColumn: "st"
         },
         reply: {
             postId: "",
@@ -65,6 +65,15 @@ var vm = new Vue({
             name: "我的参与",
             alias: ""
         }],
+        rules:{
+            content: [
+                {required: true, message: '请输入......', trigger: 'blur'},
+                {max: 500, message: '最大长度500', trigger: 'blur'}
+            ],
+            subordinateColumn:[
+                {required: true, message: '请选择所属分类', trigger: 'blur'},
+            ]
+        }
         // navList: ["全部", "试题", "试题报错", "学习", "案例", "建议", "常见问题解答", "我的参与"]
     },
     created: function () {
@@ -74,7 +83,6 @@ var vm = new Vue({
                 type: "GET",
                 url: baseURL + "post/list",
                 contentType: "application/json",
-                data: vm.form,
                 success: function (result) {
                     if (result.code === 0) {
 
@@ -118,11 +126,12 @@ var vm = new Vue({
                 data: JSON.stringify(vm.form),
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.$alert('操作成功', '提示', {
+                        vm.$alert('发布成功', '提示', {
                             confirmButtonText: '确定',
                             callback: function () {
-                                vm.dialogFormVisible = false;
+                            //    vm.dialogFormVisible = false;
                                 vm.reload();
+                                vm.form.content = '';
                             }
                         });
                     } else {
@@ -133,6 +142,16 @@ var vm = new Vue({
         },
         // 发表评论
         saveReply: function (postId, content, replyObject) {
+            vm.reply.content = vm.reply.content.replace(/(^\s*)|(\s*$)/g, "");
+            if(vm.reply.content.length==0){
+                vm.$alert('请输入评论内容', '操作失败', {
+                    confirmButtonText: '确定',
+                    callback: function () {
+                        return false;
+                    }
+                });
+                return false;
+            }
             var _reply = {
                 postId: postId,
                 replyObject: replyObject || null,
@@ -147,10 +166,10 @@ var vm = new Vue({
                 data: JSON.stringify(_reply),
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.$alert('操作成功', '提示', {
+                        vm.$alert('评论成功', '提示', {
                             confirmButtonText: '确定',
                             callback: function () {
-                                vm.dialogFormVisible = false;
+                            //    vm.dialogFormVisible = false;
                                 vm.reload();
                             }
                         });
@@ -194,7 +213,7 @@ var vm = new Vue({
             vm.$alert('举报id：' + id, '确认举报', {
                 confirmButtonText: '确定',
                 callback: function () {
-                    vm.dialogFormVisible = false;
+                  //  vm.dialogFormVisible = false;
                     vm.reload();
                 }
             });

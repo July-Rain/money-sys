@@ -63,6 +63,11 @@
                 AND a.create_user = #{createUser}
             </if>
         </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+        </choose>
     </select>
 
     <select id="findOne" resultType="com.lawschool.beans.bbs.ReplyEntity">
