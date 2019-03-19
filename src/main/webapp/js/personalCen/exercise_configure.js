@@ -286,7 +286,13 @@ var vm = new Vue({
                         if(result.code === 0){
                             vm.refresh();
                         }else{
-                            alert(result.msg);
+                            vm.$alert(result.msg, '提示', {
+                                confirmButtonText: '确定',
+                                callback: function () {
+                                    vm.dialogConfig = false;
+                                    vm.reload();
+                                }
+                            });
                         }
                     }
                 });
