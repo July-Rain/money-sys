@@ -718,19 +718,26 @@
     </select>
 
     <!-- 统计各主题、难度题目数量 -->
-    <select id="countTopicNum" resultType="com.lawschool.form.CommonForm">
+    <select id="countTopicNum" resultType="com.lawschool.form.TopicForm">
         SELECT
-            Q.SPECIAL_KNOWLEDGE_ID AS key,
+            T . NAME AS NAME,
+            Q.SPECIAL_KNOWLEDGE_ID AS KEY,
             Q.QUESTION_DIFFICULTY AS opinion,
-            COUNT(Q.QUESTION_DIFFICULTY) AS value
+            COUNT (Q.QUESTION_DIFFICULTY) AS VALUE
         FROM
             LAW_TESTQUESTIONS Q
+            LEFT JOIN LAW_SYS_TOPIC T ON Q.SPECIAL_KNOWLEDGE_ID = T . ID
         WHERE
             Q.IS_ENBLE = '0'
             AND Q.RELEASE_STATUS = 1
             AND Q.STATUS = '1'
             AND Q.QUESTION_TYPE <![CDATA[ <> ]]> '10007'
-        GROUP BY Q.SPECIAL_KNOWLEDGE_ID, Q.QUESTION_DIFFICULTY
-        ORDER BY Q.SPECIAL_KNOWLEDGE_ID, Q.QUESTION_DIFFICULTY
+        GROUP BY
+            T . NAME,
+            Q.SPECIAL_KNOWLEDGE_ID,
+            Q.QUESTION_DIFFICULTY
+        ORDER BY
+            Q.SPECIAL_KNOWLEDGE_ID,
+            Q.QUESTION_DIFFICULTY
     </select>
 </mapper>

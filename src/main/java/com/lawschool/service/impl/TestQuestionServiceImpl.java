@@ -7,6 +7,7 @@ import com.lawschool.dao.TestQuestionsDao;
 import com.lawschool.form.AnswerForm;
 import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
+import com.lawschool.form.TopicForm;
 import com.lawschool.service.AnswerService;
 import com.lawschool.service.TestQuestionService;
 import org.apache.commons.collections.CollectionUtils;
@@ -272,7 +273,7 @@ public class TestQuestionServiceImpl extends AbstractServiceImpl<TestQuestionsDa
      * @return
      */
     @Override
-    public List<CommonForm> countTopicNum(){
+    public List<TopicForm> countTopicNum(){
 
         return dao.countTopicNum();
     }

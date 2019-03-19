@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -130,7 +131,7 @@ public class ExerciseConfigureController extends AbstractController{
      */
     @SysLog("生成练习卷名称")
     @RequestMapping(value = "/createName", method = RequestMethod.GET)
-    public Result createName(@RequestParam String prefix){
+    public Result createName(@RequestParam String prefix) throws Exception{
 
         Date date = new Date();
         SimpleDateFormat sim = new SimpleDateFormat("yyyyMMdd");
