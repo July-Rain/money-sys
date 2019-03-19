@@ -85,9 +85,9 @@ var vm = new Vue({
 
         },//人员查询
         userTableData: [],//人员表格信息
-        midMax: 9999,
-        priMax: 9999,
-        senMax: 9999,
+        midMax: 999999,
+        priMax: 999999,
+        senMax: 999999,
         obj: {}
     },
     methods: {
@@ -271,19 +271,27 @@ var vm = new Vue({
             vm.exerciseConfigure.list.splice(index, 1);
         },
         dele: function (id) {
-            $.ajax({
-                type: "POST",
-                url: baseURL + "exercise/configure/delete/"+id,
-                contentType: "application/json",
-                success: function(result){
+            this.$confirm('请确认是否删除该练习配置', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(function () {
 
-                    if(result.code === 0){
-                        vm.refresh();
-                    }else{
-                        alert(result.msg);
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "exercise/configure/delete/"+id,
+                    contentType: "application/json",
+                    success: function(result){
+
+                        if(result.code === 0){
+                            vm.refresh();
+                        }else{
+                            alert(result.msg);
+                        }
                     }
-                }
+                });
             });
+
         },
         toHome:function () {
             parent.location.reload()
@@ -299,6 +307,10 @@ var vm = new Vue({
                 total: 0
             };
             vm.addConfigFlag = false;
+            vm.midMax = 999999;
+            vm.priMax = 999999;
+            vm.senMax = 999999;
+
         },
         chooseUser: function () {
             //选择人员
@@ -390,7 +402,7 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.obj = result.numArr;
+                        vm.topicList = result.topicList;
 
                     } else {
                         alert(result.msg);
@@ -400,37 +412,33 @@ var vm = new Vue({
         },
         change: function (param) {
             if(param == null || param == ''){
-                vm.senMax = 9999;
-                vm.priMax = 9999;
-                vm.midMax = 9999;
-                vm.config.primaryNum = 0;
-                vm.config.primaryNum = 0;
-                vm.config.primaryNum = 0;
+                vm.senMax = 999999;
+                vm.priMax = 999999;
+                vm.midMax = 999999;
 
             } else {
+
                 var arr = new Array();
-                arr = vm.obj[param.key];
-                vm.senMax = arr[2];
-                vm.priMax = arr[0];
-                vm.midMax = arr[1];
+                arr = param.nums;
+                if(arr == undefined){
+                    vm.senMax = 0;
+                    vm.priMax = 0;
+                    vm.midMax = 0;
+                } else {
+                    vm.senMax = arr[2];
+                    vm.priMax = arr[0];
+                    vm.midMax = arr[1];
+                }
             }
+            vm.config.primaryNum = 0;
+            vm.config.middleNum = 0;
+            vm.config.seniorNum = 0;
         }
     },
     created: function () {
         this.$nextTick(function () {
-        this.refresh();
-            $.ajax({
-                type: "GET",
-                url: baseURL + "exercise/random/dict",
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-                        vm.topicList = result.topicList;
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
+            this.refresh();
+            this.topicNums();
 
             $.ajax({
                 type: "POST",
@@ -449,7 +457,7 @@ var vm = new Vue({
                     }
                 }
             });
-            this.topicNums();
+
             this.reloadUser();
      });
     }

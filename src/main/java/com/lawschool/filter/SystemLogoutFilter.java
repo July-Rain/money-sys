@@ -33,7 +33,9 @@ public class SystemLogoutFilter extends LogoutFilter {
         String redirectUrl=getRedirectUrl(request,response,subject);
         ServletContext context= request.getServletContext();
         User user = ShiroUtils.getUserEntity();
-        int res = userService.updateUserOnlineStatus(user.getId(),"1","0");
+        if(!"checkexam".equals(user.getUserCode())) {
+            int res = userService.updateUserOnlineStatus(user.getId(), "1", "0");
+        }
         try {
             subject.logout();
             context.removeAttribute("error");

@@ -5,6 +5,7 @@ import com.lawschool.beans.TestQuestions;
 import com.lawschool.beans.practicecenter.TaskExerciseConfigureEntity;
 import com.lawschool.form.CommonForm;
 import com.lawschool.form.QuestForm;
+import com.lawschool.form.TopicForm;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -94,5 +95,5 @@ public interface TestQuestionsDao extends AbstractDao<TestQuestions> {
      */
     QuestForm obtainByRandom(Map<String, String> params);
 
-    List<CommonForm> countTopicNum();
+    List<TopicForm> countTopicNum();
 }

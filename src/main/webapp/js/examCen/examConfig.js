@@ -250,7 +250,8 @@ var vm = new Vue({
             judgeMultIds: [],
             subMultIds: [],
             genRandQue: false,
-            changeWay: false
+            changeWay: false,
+            saveChangePageDatas: []//保存人员信息（解决分页回显问题）
         };
     },
 
@@ -493,9 +494,16 @@ var vm = new Vue({
             this.dialogDept = false;
         },
         confimUser: function () {
+            vm.saveStep1()
+            vm.saveStep2()
             //  --回显需加
-            var val = this.multipleSelection;
+            var val = this.saveChangePageDatas;//提交时候不能保存当前选中的，要保存所有的
+            this.saveChangePageDatas = [];//保存后清空避免影响下次
 
+            if (val.length == 0) {
+                vm.examConfig.userIds = "";
+                vm.examConfig.userName = "";
+            }
             //遍历最终的人员信息
             for (var i = 0; i < val.length; i++) {
                 if (i == 0) {
@@ -551,15 +559,15 @@ var vm = new Vue({
             //选择人员信息
             this.multipleSelection = val;
             //遍历最终的人员信息
-            for (var i = 0; i < val.length; i++) {
-                if (!this.examConfig.userIds) {
-                    this.examConfig.userIds = val[i].id;
-                    this.examConfig.userName = val[i].userName;
-                } else {
-                    this.examConfig.userIds += "," + val[i].id;
-                    this.examConfig.userName += "," + val[i].userName;
-                }
-            }
+            // for (var i = 0; i < val.length; i++) {
+            //     if (!this.examConfig.userIds) {
+            //         this.examConfig.userIds = val[i].id;
+            //         this.examConfig.userName = val[i].userName;
+            //     } else {
+            //         this.examConfig.userIds += "," + val[i].id;
+            //         this.examConfig.userName += "," + val[i].userName;
+            //     }
+            // }
 
         },
         chooseUser: function () {
@@ -589,6 +597,7 @@ var vm = new Vue({
             });
         },
         huixian: function (ids) {
+            console.info('ids',ids)
             // saveUserTableData    --回显需加
             if (!ids) {
                 return
@@ -1065,7 +1074,50 @@ var vm = new Vue({
             for (var i = 0; i < vm.subMultipleSelection.length; i++) {
                 vm.subAllScore += vm.subMultipleSelection[i].perScore;
             }
-        }
+        },
+        saveStep1:function(){
+            vm.multipleSelection.map(function (multipleSel) {
+                vm.saveChangePageDatas.push(multipleSel)
+            });
+        },
+        saveStep2:function () {
+            vm.saveChangePageDatas = (function (arr) {
 
+                var allArr = [];
+                for (var i = 0; i < arr.length; i++) {
+                    var flag = true;
+                    for (var j = 0; j < allArr.length; j++) {
+                        if (arr[i].id == allArr[j].id) {
+                            flag = false;
+                        }
+                    }
+                    if (flag) {
+                        allArr.push(arr[i]);
+                    }
+                }
+                return allArr
+
+            })(vm.saveChangePageDatas)
+
+
+            var _arr = [];
+            vm.userTableData.map(function (data1) {
+                vm.saveChangePageDatas.map(function (data2) {
+                    if (data1.id === data2.id) {
+                        _arr.push(data1)
+                    }
+                })
+            });
+            vm.userToggleSelection(_arr)
+        }
+    },
+    watch: {
+        userTableData() {
+            vm.saveStep1()
+            this.$nextTick(function(){
+
+                vm.saveStep2()
+            })
+        }
     }
 });
