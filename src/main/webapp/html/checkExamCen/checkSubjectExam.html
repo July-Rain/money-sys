@@ -117,7 +117,7 @@
                 <el-row>
                     <el-col :span="5">
                         <el-form-item label="分值：" label-width="100px">
-                            <el-input type="number" v-model = "subScore[index]" placeholder="请输入分值" :min="0" :max ="item.score" ></el-input>
+                            <el-input-number  v-model = "subScore[index]" placeholder="请输入分值" :min="0" :max ="item.score" ></el-input-number>
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">
@@ -136,7 +136,7 @@
             </div>
         </el-form>
         <div class="submit_btn">
-            <el-button size="mini" @click="save" @click="submit" type="primary"><i class="iconfont icon-dui1"></i> 提交</el-button>
+            <el-button size="mini" @click="submit" type="primary"><i class="iconfont icon-dui1"></i> 提交</el-button>
 
         </div>
     </div>
