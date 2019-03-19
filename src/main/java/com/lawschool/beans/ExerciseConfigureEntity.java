@@ -33,6 +33,7 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
     private String deptNames;
 
     private Integer source;  //来源
+    private Integer useNum;// 使用次数
 
     @TableField(exist = false)
     private List<String> deptIds;
@@ -203,5 +204,13 @@ public class ExerciseConfigureEntity extends DataEntity<ExerciseConfigureEntity>
 
     public void setJssj(String jssj) {
         this.jssj = jssj;
+    }
+
+    public Integer getUseNum() {
+        return useNum;
+    }
+
+    public void setUseNum(Integer useNum) {
+        this.useNum = useNum;
     }
 }

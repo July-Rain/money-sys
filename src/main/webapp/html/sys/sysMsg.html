@@ -17,6 +17,7 @@
     <div class="container">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
             <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>管理员入口</el-breadcrumb-item>
             <el-breadcrumb-item>系统管理</el-breadcrumb-item>
             <el-breadcrumb-item>站内信设置</el-breadcrumb-item>
         </el-breadcrumb>
@@ -54,6 +55,13 @@
                         <!--label="消息内容"-->
                 <!--&gt;-->
                 <!--</el-table-column>-->
+                <el-table-column
+                        prop="deptName"
+                        width="300"
+                        label="接收部门"
+                        align="center"
+                >
+                </el-table-column>
                 <el-table-column
                         prop="recievePeopleNmae"
                         width="300"
@@ -197,19 +205,23 @@
                         </el-select>
                     </el-form-item>
                 </el-col>
-                <!--<el-col :span="11">
-                    <el-form-item label="发布单位：" prop="releaseDept">
-                        <el-input v-model="sysMsg.releaseDept" placeholder="请输入发布单位" clearable></el-input>
-                    </el-form-item>
-                </el-col>-->
+
                 <el-col :span="24">
                     <el-form-item label="发布人：" >
                         <el-input v-model="sysMsg.releasePeopleName" disabled></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                    <el-form-item label="接收人：" prop="recievePeopleNmae">
-                        <el-input :disabled="isEdit" :max="5000" v-model="sysMsg.recievePeopleNmae" @focus="chooseUser" placeholder="请输接收人"
+                    <el-form-item label="选择部门：" >
+                        <el-input :disabled="isEdit" v-model="sysMsg.deptName" readonly @focus="chooseDept" placeholder="选择部门"
+                                  clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                    <!--<el-form-item label="选择人员：" prop="recievePeopleNmae">-->
+                     <el-form-item label="选择人员：">
+
+                        <el-input :disabled="isEdit" :max="5000" v-model="sysMsg.recievePeopleNmae" @focus="chooseUser" placeholder="请选择人员"
                                   clearable></el-input>
                     </el-form-item>
                 </el-col>
@@ -221,23 +233,7 @@
                         </template>
                     </el-form-item>
                 </el-col>
-                <!--<el-col :span="11">-->
-                <!--&lt;!&ndash;<el-form-item label="接收单位：" prop="recieveDept">-->
-                <!--&lt;!&ndash;对于同一级的节点，每次只能展开一个&ndash;&gt;-->
-                <!--<el-tree-->
-                <!--:data="treeData"-->
-                <!--:props="defaultProps"-->
-                <!--accordion-->
-                <!--@node-click="handleNodeClick">-->
-                <!--</el-tree>-->
-                <!--<el-input v-model="sysMsg.recieveDept" placeholder="请选择接收单位" clearable>-->
-                <!--</el-input>-->
-                <!--</el-form-item>&ndash;&gt;-->
-                <!--<el-form-item label="接收部门" prop="deptName">-->
-                <!--<el-input v-model="sysMsg.recieveDept" @focus="chooseDept" placeholder="请选择接收部门"-->
-                <!--clearable></el-input>-->
-                <!--</el-form-item>-->
-                <!--</el-col>-->
+
 
             </el-form>
             <div slot="footer" class="dialog-footer" v-show="teamtype2">
@@ -246,19 +242,20 @@
             </div>
         </el-dialog>
 
-
-        <el-dialog title="选择法律分类" :visible.sync="dialogDept" >
+        <el-dialog title="选择部门" :visible.sync="dialogDept">
             <!--对于同一级的节点，每次只能展开一个-->
             <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;"
                           view-class="view-box" :native="false">
                 <el-tree
                         ref="deptTree"
                         :data="deptData"
-                        :props="defaultProps"
+                        :props="defaultDeptProps"
                         accordion
-                        node-key="id"
                         show-checkbox
-                        @check-change="handleCheckChange">
+                        @check-change="handleCheckChange"
+                        node-key="id"
+                        :default-expanded-keys="idArr"
+                        :default-checked-keys="deptCheckData">
                 </el-tree>
             </el-scrollbar>
             <div slot="footer" class="dialog-footer">
@@ -266,6 +263,7 @@
                 <el-button type="primary" size="mini" @click="confimDept">保存</el-button>
             </div>
         </el-dialog>
+
 
         <el-dialog title="选择人员" :visible.sync="dialogUser" class="dialog_minW750">
             <!--对于同一级的节点，每次只能展开一个-->

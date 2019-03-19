@@ -3,12 +3,20 @@
 <head>
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
+    <style>
+        .choose_icon i.iconfont{
+            font-size: 40px;
+            padding: 0 20px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <div id="app" v-cloak>
     <div class="container">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
             <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>管理员入口</el-breadcrumb-item>
             <el-breadcrumb-item>管理中心</el-breadcrumb-item>
             <el-breadcrumb-item>勋章管理</el-breadcrumb-item>
         </el-breadcrumb>
@@ -113,7 +121,7 @@
                     </el-col>
                     <el-col :span="24">
                         <el-form-item label="勋章图标" :label-width="formLabelWidthS" prop="badge">
-                            <el-input v-model="medal.badge" autocomplete="off" placeholder="请输入勋章图标（后期会做成选择图片库图片，现在请手动写图标 例如：icon-ai-book）"></el-input>
+                            <el-input v-model="medal.badge" @focus="chooseIcon=true" autocomplete="off" placeholder="请选择勋章图标"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -144,7 +152,10 @@
             </div>
 
         </el-dialog>
-
+        <el-dialog class="choose_icon" title="选择勋章" :visible.sync="chooseIcon">
+            <i v-for="icon in iconList" class="iconfont" :class="icon" @click="chooseFn(icon)"></i>
+            <div slot="footer" class="dialog-footer"></div>
+        </el-dialog>
     </div>
 </div>
 </body>

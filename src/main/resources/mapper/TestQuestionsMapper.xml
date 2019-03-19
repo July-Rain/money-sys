@@ -402,6 +402,10 @@
             <if test="isEnble != null and isEnble != ''">
                 AND a.is_enble = #{isEnble}
             </if>
+
+            <if test="releaseStatus != null and releaseStatus != ''">
+                AND a.RELEASE_STATUS = #{releaseStatus}
+            </if>
             <if test="comContent != null and comContent != ''">
                 AND a.com_content like concat(concat('%',#{comContent}),'%')
             </if>
@@ -634,9 +638,8 @@
                 ORDER BY
                     create_time
             ) o
-            WHERE
-                ROWNUM <![CDATA[ <= ]]> #{end}) t
-            WHERE t.rn  <![CDATA[ >= ]]> #{start}
+            ) t
+            WHERE t.rn  = #{start}
     </select>
 
     <select id="countByThemeId" resultType="com.lawschool.form.CommonForm">

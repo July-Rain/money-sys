@@ -10,6 +10,15 @@ public class MedalEntity extends DataEntity<MedalEntity> {
     private String integral;//积分条件
     private String credit;//学分条件
     private String badge;//徽章图标
+    private String medalColor;  //勋章颜色
+
+    public String getMedalColor() {
+        return medalColor;
+    }
+
+    public void setMedalColor(String medalColor) {
+        this.medalColor = medalColor;
+    }
 
     public String getTitleName() {
         return titleName;

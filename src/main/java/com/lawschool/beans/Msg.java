@@ -35,12 +35,10 @@ public class Msg implements Serializable{
      */
     private String releaseDept;
 
-    /**
-     * 接收单位名称（deptName）
-     */
-    @TableField(exist = false)
+
     private String deptName;
 
+    private String deptIds;
     /**
      * 接收人名称(userName)
      */
@@ -121,6 +119,15 @@ public class Msg implements Serializable{
      */
     @TableField(exist = false)
     private String backup5;
+
+
+    public String getDeptIds() {
+        return deptIds;
+    }
+
+    public void setDeptIds(String deptIds) {
+        this.deptIds = deptIds;
+    }
 
     public String getRecievePeopleNmae() {
         return recievePeopleNmae;

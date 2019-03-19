@@ -33,6 +33,8 @@ var vm = new Vue({
                 {required: true,max: 200, message: '最大长度200', trigger: 'blur'}
             ]
         },
+        chooseIcon: false,
+        iconList: ['icon-tongji-copy','icon-jingcha','icon-jifen','icon-pinglun','icon-ai-book','icon-icon-bisai']
     },
     mounted: function () {
 
@@ -178,12 +180,6 @@ var vm = new Vue({
                                 }
                             }
                         });
-
-                        //////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
                     }
                     else {
                         return false;
@@ -212,6 +208,10 @@ var vm = new Vue({
         },
         toHome: function () {
             parent.location.reload()
+        },
+        chooseFn: function (_string) {
+            this.chooseIcon = false;
+            this.medal.badge = _string
         }
     },
     created: function(){
