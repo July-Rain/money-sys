@@ -6,6 +6,8 @@ var vm = new Vue({
         user:{},
         teamtype2:true,
         isEdit:true,//弹出框是否能编辑
+        deptCheckData: [],//部门默认选中节点
+        saveUserTableData: [],//用于人员回显表格的对象  --回显需加
         sysMsg:{
             id:"",
             title:"",//标题
@@ -57,6 +59,10 @@ var vm = new Vue({
         userData:[],//人员树数据
         tableData: [],//表格数据
         deptData:[],//接收树形数据
+        defaultDeptProps: {
+            children: 'child',
+            label: 'orgName'
+        },//部门树的默认格式
         dialogDept:false,//部门的弹窗
         dialogUser:false,//人员的弹窗
         defaultProps: { // el-tree
@@ -68,12 +74,15 @@ var vm = new Vue({
 
             title:[
                 {required: true, message: '请输入消息标题', trigger: 'blur'},
+                {max: 4000, message: '最大长度4000', trigger: 'blur'}
             ],
             noticeType:[
                 {required: true, message: '请选择消息类型', trigger: 'blur'},
+
             ],
             content:[
                 {required: true, message: '请输入消息内容', trigger: 'blur'},
+                {max: 4000, message: '最大长度4000', trigger: 'blur'}
             ],
             recievePeopleNmae:[
                 {required: true, message: '请至少选择一个接收人', trigger: 'blur'}
@@ -92,6 +101,24 @@ var vm = new Vue({
 
             this.reload();
             this.reloadUser();
+            //加载部门数据
+            $.ajax({
+                type: "POST",
+                url: baseURL + "org/tree",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.deptData = result.orgList;
+                        vm.userData = result.orgList;
+                        // 默认展开第一级
+                        vm.userData.map(function (m) {
+                            vm.idArr.push(m.id)
+                        });
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
             //加载部门数据
             $.ajax({
                 type: "POST",
@@ -119,6 +146,9 @@ var vm = new Vue({
         //序列号计算
         indexMethod: function (index) {
             return index + 1 + (vm.formInline.currPage - 1) * vm.formInline.pageSize;
+        },
+        indexUserMethod: function (index) {
+            return index + 1 + (vm.userForm.currPage - 1) * vm.userForm.pageSize;
         },
         searchUser: function () {
             //查询人员信息
@@ -191,6 +221,38 @@ var vm = new Vue({
         chooseUser: function () {
             //选择人员
             this.dialogUser=true;
+            this.huixian(this.sysMsg.userArr) //  --回显需加
+        },
+        huixian: function (ids) {
+            // saveUserTableData    --回显需加
+            if (!ids) {
+                return
+            }
+            var that = this;
+            ids.map(function (_id) {
+                that.userTableData.map(function (_data) {
+                    if (_id == _data.id) {
+                        that.saveUserTableData.push(_data)
+                    }
+                })
+
+            });
+            console.info("saveUserTableData", that.saveUserTableData);
+            this.$nextTick(function () {
+                // vm.$refs.userTable.toggleRowSelection()
+                vm.userToggleSelection(that.saveUserTableData)
+
+            })
+        },
+        userToggleSelection(rows) {
+            //  --回显需加
+            if (rows) {
+                rows.map(function (row) {
+                    vm.$refs.userTable.toggleRowSelection(row);
+                });
+            } else {
+                this.$refs.userTable.clearSelection();
+            }
         },
         confimUser: function () {
             this.dialogUser=false;
@@ -248,20 +310,31 @@ var vm = new Vue({
 
         },
         handleCheckChange: function (data, checked, indeterminate) {
-            console.log(data);tableData
+            console.log(data);
         },
         confimDept: function () {
             this.multipleDeptSelection=this.$refs.deptTree.getCheckedNodes();
             this.sysMsg.deptIds = '';
             this.sysMsg.deptName = '';
-            for(var i=0;i<this.multipleDeptSelection.length;i++){
-                if (this.sysMsg.recievePeople == "") {
-                    this.sysMsg.recieveDept=this.multipleDeptSelection[i].id;
-                    this.sysMsg.deptName=this.multipleDeptSelection[i].orgName;
-                }else{
-                    if(this.sysMsg.deptIds.indexOf(this.multipleDeptSelection[i].id)===-1){
-                        this.sysMsg.recieveDept+=","+this.multipleDeptSelection[i].id;
-                        this.sysMsg.deptName+=","+this.multipleDeptSelection[i].orgName;
+            // for(var i=0;i<this.multipleDeptSelection.length;i++){
+            //     if (this.sysMsg.deptIds == "") {
+            //         this.sysMsg.recieveDept=this.multipleDeptSelection[i].id;
+            //         this.sysMsg.deptName=this.multipleDeptSelection[i].fullName;
+            //     }else{
+            //         if(this.sysMsg.deptIds.indexOf(this.multipleDeptSelection[i].id)===-1){
+            //             this.sysMsg.recieveDept+=","+this.multipleDeptSelection[i].id;
+            //             this.sysMsg.deptName+=","+this.multipleDeptSelection[i].orgName;
+            //         }
+            //     }
+            // }
+            for (var i = 0; i < this.multipleDeptSelection.length; i++) {
+                if (!this.sysMsg.deptIds) {
+                    this.sysMsg.deptIds = this.multipleDeptSelection[i].id;
+                    this.sysMsg.deptName = this.multipleDeptSelection[i].orgName;
+                } else {
+                    if (this.sysMsg.deptIds.indexOf(this.multipleDeptSelection[i].id) === -1) {
+                        this.sysMsg.deptIds += "," + this.multipleDeptSelection[i].id;
+                        this.sysMsg.deptName += "," + this.multipleDeptSelection[i].orgName;
                     }
                 }
             }
