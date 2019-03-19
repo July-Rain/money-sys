@@ -5,7 +5,40 @@
     <#include "/header.html">
 </head>
 <style>
-
+    /* dialog图文 */
+    .el-dialog__wrapper .info {
+        width: 100%;
+        margin: 10px auto;
+        text-align: center;
+    }
+    .el-dialog__wrapper .info .title {
+        display: inline-block;
+        line-height: 35px;
+        height: 35px;
+        margin-bottom: 10px;
+        font-size: 35px;
+        font-weight: bold;
+    }
+    .el-dialog__wrapper .info .el-col {
+        line-height: 22px;
+        margin-bottom: 25px;
+    }
+    .el-dialog__wrapper .info .creator {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+    .el-dialog__wrapper .info .content {
+        text-align: left;
+    }
+    pre{
+        white-space: pre-wrap;
+        /* 允许长单词拆开换行 */
+        word-wrap: break-word;
+        font-family: '微软雅黑';
+        color: #333333;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -226,12 +259,14 @@
     </div>
 
     <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogPic" :before-close="closeDia"  ref="picDialog">
-        <div>
+        <div class="info">
             <el-col :span="24">
-                <span>{{stuMedia.stuTitle}}</span>
-                <span>{{stuMedia.stuIssuer}}</span>
-                <span>{{stuMedia.stuCreat}}</span>
-                <el-input type="textarea" v-html="caseContent"></el-input>
+                <span class="title">{{stuMedia.stuTitle}}</span>
+                <div class="creator">
+                    <p class="issuer">上传者：{{stuMedia.stuIssuer}}</p>
+                    <p class="created-time">{{stuMedia.stuCreat}}</p>
+                </div>
+                <pre class="content" v-html="caseContent"></pre>
             </el-col>
         </div>
         <div slot="footer" class="dialog-footer">

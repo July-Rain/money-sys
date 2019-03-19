@@ -322,7 +322,7 @@ html {
 .light {
     color: #ff6600 !important;
 }
-div.answer_area .gray {
+div.answer_area i.gray {
     color: #999999 !important;
 }
 .favorite {

@@ -44,8 +44,14 @@
             z-index: 2090;
             height: 100vh;
         }
-        .el-dialog .el-select>.el-input.el-input--suffix{
+        div.el-dialog .el-select>.el-input.el-input--suffix {
             width: 100px;
+        }
+        div.el-pagination .el-pagination__jump {
+            margin-left: 0px;
+        }
+        ul.el-pager li {
+            min-width: 25px;
         }
     </style>
 </head>
@@ -228,7 +234,7 @@
                    ref="stuDialog">
             <el-row>
                 <el-col :span="24">
-                    <el-form :model="stuMedia" :rules="rules" ref="stuMedia" label-width="100px" class="demo-stuMedia"
+                    <el-form :model="stuMedia" :rules="rules" ref="stuMedia" label-width="130px" class="demo-stuMedia"
                              size="mini">
                         <el-form-item label="资料类型：" prop="stuType">
                             <el-radio-group v-model="stuMedia.stuType" @change="changeStuType">

@@ -384,9 +384,8 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.questionForm = result.question;
                         if(result.question != null){
-
+                            vm.questionForm = result.question;
                             var userAnswer = vm.questionForm.userAnswer;
                             if(userAnswer == null || userAnswer == ''){
                                 vm.everyDay="未完成";

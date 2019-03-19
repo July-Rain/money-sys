@@ -21,6 +21,7 @@ import com.lawschool.service.exam.ExamConfigService;
 import com.lawschool.service.exam.UserExamService;
 import com.lawschool.util.Result;
 import com.lawschool.util.UtilValidate;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -167,11 +168,13 @@ public class CheckExamServiceImpl extends AbstractServiceImpl<CheckExamDao,Check
         String isFinsh = "1";
         for(CheckExamForm checkExamForm : checkExamForms){
             UserExamAnswer userExamAnswer = userExamAnswerDao.selectById(checkExamForm.getQueId());
-            if("".equals(userExamAnswer.getFirCheckScore())||(userExamAnswer.getFirCheckScore()==0.0&&("".equals(userExamAnswer.getFirCheckUserId())||userExamAnswer.getFirCheckUserId()==null))){
+            if(StringUtils.isBlank(userExamAnswer.getFirCheckUserId())){
                 userExamAnswer.setFirCheckScore(checkExamForm.getScore());
                 userExamAnswer.setFirCheckUserId(userAnswerForm.getCheckExamUserId());
                 userExamAnswer.setUserScore(checkExamForm.getScore());
+                userExamAnswer.setCheckStatus("0");
                 score += userExamAnswer.getUserScore();
+
                 isFinsh ="0";
             }
             userExamAnswerDao.updateById(userExamAnswer);

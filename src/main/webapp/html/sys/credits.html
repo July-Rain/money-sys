@@ -174,6 +174,7 @@
     <div class="container">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 30px">
             <el-breadcrumb-item :to="{ path: '/' }"><span @click="toHome">首页</span></el-breadcrumb-item>
+            <el-breadcrumb-item>管理员入口</el-breadcrumb-item>
             <el-breadcrumb-item>系统管理</el-breadcrumb-item>
             <el-breadcrumb-item>积分学分管理</el-breadcrumb-item>
         </el-breadcrumb>
@@ -326,6 +327,9 @@
                                             <el-input type="number" :min="0" :disabled="handleType=='view'" size="small" v-model="fractionList.examIntegral.queNum" ><template slot="append">题</template></el-input>
                                         </el-form-item>
                                         <span class="hint">获得积分的条件在下方编辑</span>
+                                        <el-form-item label="每月上限：">
+                                            <el-input size="small" :min="0" :disabled="handleType=='view'"  type="number" v-model="fractionList.examIntegral.dailyLimit"><template slot="append">分</template></el-input>
+                                        </el-form-item>
                                     </div>
                                     <div class="exam-data dropdowns" v-for="index in sum">
                                         <div class="dropdown-group" style="display: flex;">

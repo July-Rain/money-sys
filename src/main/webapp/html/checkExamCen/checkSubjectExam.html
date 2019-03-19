@@ -7,7 +7,9 @@
 <style>
 
 
-
+    html{
+        background-color:#efefef;
+    }
     #app{
         background-color:#efefef;
         width: 100vw;
@@ -76,6 +78,7 @@
         line-height: 52px;
         background-color: #e1f1ff;
         margin-bottom: 20px;
+        padding-left: 20px;
     }
     .el-form-item__content{
         line-height: 25px;
@@ -102,6 +105,34 @@
     .submit_btn .el-button span{
         color: #fff;
     }
+    .info{
+        border-top: 1px #dddddd dashed;
+        background-color: #e1f1ff;
+        margin-bottom: 10px;
+        padding-left: 20px;
+    }
+    .info .left > p{
+        float: left;
+        width: 20%;
+        font-size: 20px;
+        color: #666666;
+        line-height: 40px;
+    }
+    .info .left span{
+        color: #00952a;
+    }
+    .info .right > p{
+        float: left;
+        width: 80%;
+        font-size: 18px;
+        color: #666666;
+        line-height: 40px;
+
+    }
+    .info .right span{
+        font-size: 18px;
+        color: #333333;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -117,7 +148,7 @@
                 <el-row>
                     <el-col :span="5">
                         <el-form-item label="分值：" label-width="100px">
-                            <el-input type="number" v-model = "subScore[index]" placeholder="请输入分值" :min="0" :max ="item.score" ></el-input>
+                            <el-input-number  v-model = "subScore[index]" placeholder="请输入分值" :min="0" :max ="item.score" ></el-input-number>
                         </el-form-item>
                     </el-col>
                     <el-col :span="24">
@@ -129,14 +160,29 @@
 
 
 
-                <div v-if="checkStatus=='3'">
-                    <p> 阅卷分数1 ：{{item.firScore}}&nbsp;&nbsp;&nbsp; 打分依据：{{item.firCheckBase}} </p>
-                    <p>阅卷分数2 ：{{item.secScore}}&nbsp;&nbsp;&nbsp; 打分依据：{{item.secCheckBase}}</p>
+                <div class="info clearfix" v-if="checkStatus=='3'">
+                    <div class="clearfix">
+                        <div class="left">
+                            <p>阅卷分数1：<span>{{item.firScore}}</span></p>
+                        </div>
+                        <div class="right">
+                            <p>打分依据：<span>{{item.firCheckBase}}</span></p>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="left">
+                            <p>阅卷分数2：<span>{{item.secScore}}</span></p>
+                        </div>
+                        <div class="right">
+                            <p>打分依据：<span>{{item.secCheckBase}}</span></p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </el-form>
         <div class="submit_btn">
-            <el-button size="mini" @click="save" @click="submit" type="primary"><i class="iconfont icon-dui1"></i> 提交</el-button>
+            <el-button size="mini" @click="submit" type="primary"><i class="iconfont icon-dui1"></i> 提交</el-button>
 
         </div>
     </div>
