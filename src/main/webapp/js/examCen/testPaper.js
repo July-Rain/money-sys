@@ -245,12 +245,14 @@ var vm = new Vue({
                         vm.$confirm('提交成功!', '提示', {
                             confirmButtonText: '确定',
                             type: 'success'
+                        }).then(function () {
+                            var parentWin = window.parent;
+                            vm.goHomeButton.style.display = 'block';
+                            vm.floatIcon.style.display = 'flex';
+                            parentWin.document.getElementById("container").src
+                                = 'modules/examCen/userExam.html';
                         })
-                        var parentWin = window.parent;
-                        vm.goHomeButton.style.display = 'block';
-                        vm.floatIcon.style.display = 'flex';
-                        parentWin.document.getElementById("container").src
-                            = 'modules/examCen/userExam.html';
+
                     } else {
                         alert(result.msg);
                     }
@@ -306,12 +308,14 @@ var vm = new Vue({
                         vm.$confirm('保存成功!','提示', {
                             confirmButtonText: '确定',
                             type: 'success'
-                        } )
-                        var parentWin = window.parent;
-                        vm.goHomeButton.style.display = 'block';
-                        vm.floatIcon.style.display = 'flex';
-                        parentWin.document.getElementById("container").src
-                            = 'modules/examCen/userExam.html';
+                        }).then(function () {
+                            var parentWin = window.parent;
+                            vm.goHomeButton.style.display = 'block';
+                            vm.floatIcon.style.display = 'flex';
+                            parentWin.document.getElementById("container").src
+                                = 'modules/examCen/userExam.html';
+                        })
+
                     } else {
                         alert(result.msg);
                     }
