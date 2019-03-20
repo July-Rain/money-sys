@@ -86,6 +86,7 @@ var vm = new Vue({
         floatIcon: null,
         floatIcon: null,
         optionIndex:['A','B','C','D','E','F'],
+        subjectScore: 0
         // 修改前的数据
         /*,
         otherList: [],
@@ -104,22 +105,22 @@ var vm = new Vue({
             [this.leftHours, this.leftMinutes, this.leftSeconds] = [...results];
             // 3个小时用完,强制提交
            if (this.lefttime <= 0) {
-               vm.submit();
-                vm.$alert('时间到，结束!', '提示', {
+                vm.$confirm('时间到，结束!', '提示', {
                     confirmButtonText: '确定',
-                    callback: function () {
-                        var parentWin = window.parent;
-                        parentWin.document.getElementById("container").src
-                            = 'modules/examCen/userExam.html';
-                    }
+                    type: 'warning'
+                }).then(function () {
+                    vm.submit();
+                    var parentWin = window.parent;
+                    parentWin.document.getElementById("container").src
+                        = 'modules/examCen/userExam.html';
                 });
-            }
+           }
             // 考试时间还剩五分钟的提示
             if (this.lefttime == 5 * 60000) {
-                this.$notify.info({
-                    title: '提示',
-                    message: '距离考试结束时间还有五分钟！'
-                });
+                vm.$confirm('距离考试结束时间还有五分钟！', '提示', {
+                    confirmButtonText: '确定',
+                    type: 'warning'
+                })
             };
         },
         // 使用时间
@@ -242,12 +243,17 @@ var vm = new Vue({
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     if (result.code === 0) {
-                        alert("提交成功");
-                        var parentWin = window.parent;
-                        vm.goHomeButton.style.display = 'block';
-                        vm.floatIcon.style.display = 'flex';
-                        parentWin.document.getElementById("container").src
-                            = 'modules/examCen/userExam.html';
+                        vm.$confirm('提交成功!', '提示', {
+                            confirmButtonText: '确定',
+                            type: 'success'
+                        }).then(function () {
+                            var parentWin = window.parent;
+                            vm.goHomeButton.style.display = 'block';
+                            vm.floatIcon.style.display = 'flex';
+                            parentWin.document.getElementById("container").src
+                                = 'modules/examCen/userExam.html';
+                        })
+
                     } else {
                         alert(result.msg);
                     }
@@ -300,12 +306,17 @@ var vm = new Vue({
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     if (result.code === 0) {
-                        alert("保存成功");
-                        var parentWin = window.parent;
-                        vm.goHomeButton.style.display = 'block';
-                        vm.floatIcon.style.display = 'flex';
-                        parentWin.document.getElementById("container").src
-                            = 'modules/examCen/userExam.html';
+                        vm.$confirm('保存成功!','提示', {
+                            confirmButtonText: '确定',
+                            type: 'success'
+                        }).then(function () {
+                            var parentWin = window.parent;
+                            vm.goHomeButton.style.display = 'block';
+                            vm.floatIcon.style.display = 'flex';
+                            parentWin.document.getElementById("container").src
+                                = 'modules/examCen/userExam.html';
+                        })
+
                     } else {
                         alert(result.msg);
                     }
@@ -347,6 +358,9 @@ var vm = new Vue({
                         vm.barData[2].totalNum = vm.judgeList.length;
                         //主观
                         vm.subjectList = result.subjectList;
+                        vm.subjectList.forEach(function (val) {
+                            vm.subjectScore += val.score;
+                        })
                         vm.barData[3].totalNum = vm.subjectList.length;
 
                         // 考试人员
@@ -428,6 +442,7 @@ var vm = new Vue({
                         vm.barData[3].totalNum = vm.subjectList.length;
                         if(vm.subjectList){
                             for(var i=0;i<vm.subjectList.length;i++){
+                                vm.subjectScore += vm.subjectList[i].score;
                                 if(vm.subjectList[i].userAnswer){
                                     vm.subject.push(vm.subjectList[i].userAnswer);
                                     vm.barData[3].currentFinishedNum ++;
@@ -489,7 +504,6 @@ var vm = new Vue({
                 //继续考试
                 vm.continueExam();
             }
-
         });
     }
 });

@@ -147,6 +147,7 @@ img{
     line-height: 28px;
     color: #333;
     font-size: 16px;
+    word-wrap: break-word;
 }
 .item ul.item_bot > li{
     float: left;

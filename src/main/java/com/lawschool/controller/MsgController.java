@@ -93,16 +93,16 @@ public class MsgController extends AbstractController{
     @RequestMapping(value = "/info",method = RequestMethod.GET)
     public Result info(@RequestParam String id){
         Msg msg = msgService.selectByMsgId(id);
-        String[] idArr = msg.getRecievePeople().split(",");
-        for(int i=0;i<idArr.length;i++){
-            if(i==0)
-            {
-                msg.setRecievePeopleNmae(userService.selectUserByUserId(idArr[i]).getFullName());
-            }
-            else {
-                msg.setRecievePeopleNmae(msg.getRecievePeopleNmae() + "," + userService.selectUserByUserId(idArr[i]).getFullName());
-            }
-        }
+//        String[] idArr = msg.getRecievePeople().split(",");
+//        for(int i=0;i<idArr.length;i++){
+//            if(i==0)
+//            {
+//                msg.setRecievePeopleNmae(userService.selectUserByUserId(idArr[i]).getFullName());
+//            }
+//            else {
+//                msg.setRecievePeopleNmae(msg.getRecievePeopleNmae() + "," + userService.selectUserByUserId(idArr[i]).getFullName());
+//            }
+//        }
         return Result.ok().put("msg",msg);
 
     }
@@ -119,6 +119,11 @@ public class MsgController extends AbstractController{
 //            msg.setRecieveDate(new Date());
 //            msgService.insert(msg);
 //        }
+        User u =getUser();
+        if(msg.getDeptIds()==null || msg.getDeptIds()==""){
+            msg.setDeptName(u.getOrgName());
+            msg.setDeptIds(u.getOrgId());
+        }
         msg.setReleaseState("0");//未发送
         msg.setRecieveDate(new Date());
         msg.setId(IdWorker.getIdStr());
@@ -137,6 +142,11 @@ public class MsgController extends AbstractController{
 //            msg.setReleaseState("0");//未发送
 //            msgService.updateById(msg);
 //        }
+        User u =getUser();
+        if(msg.getDeptIds()==null || msg.getDeptIds()==""){
+            msg.setDeptName(u.getOrgName());
+            msg.setDeptIds(u.getOrgId());
+        }
         msg.setRecieveDate(new Date());
         msgService.updateById(msg);
         return Result.ok().put("id",msg.getId());

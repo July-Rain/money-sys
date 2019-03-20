@@ -145,7 +145,6 @@ public class ThemeExerciseServiceImpl extends AbstractServiceImpl<ThemeExerciseD
 			// 封装查询参数
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("start", index);
-			params.put("end", index);
 			params.put("themeId", entity.getTypeId());
 			ids = testQuestionService.selectIdsForPage(params);
 		} else {

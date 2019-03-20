@@ -638,9 +638,8 @@
                 ORDER BY
                     create_time
             ) o
-            WHERE
-                ROWNUM <![CDATA[ <= ]]> #{end}) t
-            WHERE t.rn  <![CDATA[ >= ]]> #{start}
+            ) t
+            WHERE t.rn  = #{start}
     </select>
 
     <select id="countByThemeId" resultType="com.lawschool.form.CommonForm">

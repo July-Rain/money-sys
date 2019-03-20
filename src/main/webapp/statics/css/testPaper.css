@@ -113,14 +113,15 @@ html {
 }
 .main .question .answer-area .collection {
     position: absolute;
-    right: 20px;
+    left: 90%;
+    text-align: left;
     top: 40px;
     font-size: 1.6rem;
 }
 .main .question .answer-area .collection i {
     margin-right: 5px;
     color: #dddddd;
-    font-size: 2rem;
+    font-size: 1.6rem;
 }
 .main .question .answer-area::before {
     content:'.';
@@ -254,9 +255,12 @@ html {
     font-size: 20px;
 }
 .bar .buttons {
+    display: flex;
+    flex-flow: column;
+    position: absolute;
+    padding-left: calc(50% - 80px);
     width: 100%;
     padding-top: 21px;
-    padding-left: 90px;
     border-top: 1px solid #dddddd;
 }
 .bar .buttons .el-button {
@@ -271,6 +275,8 @@ html {
     border-top: 1px solid #dddddd;
 }
 .bar .display .number {
+    display: flex;
+    justify-content: space-around;
     width: 80%;
     margin: 0 auto;
     text-align: center;
@@ -278,7 +284,7 @@ html {
 .bar .display .right-num, .bar .display .error-num {
     display: inline-block;
     margin-top: 20px;
-    padding: 0 40px;
+    padding: 0 60px;
     color: black;
 }
 .bar .display .right-num {
@@ -327,6 +333,7 @@ div.answer_area i.gray {
 }
 .favorite {
     color: #ff6600 !important;
+    font-size: 1.6rem !important;
 }
 .items a.finished {
     background: #3dff02;
