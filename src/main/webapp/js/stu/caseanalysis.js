@@ -109,6 +109,7 @@ var vm = new Vue({
         uploadedPlayer: null, // videojs实例
         saveUserTableData: [],//用于人员回显表格的对象  --回显需加
         loading:false,//加载中
+        saveChangePageDatas:[]//用于人员翻页数据保存
     },
     created: function () {
 
@@ -609,8 +610,12 @@ var vm = new Vue({
             this.dialogDept=false;
         },
         confimUser: function () {
-            this.dialogUser=false;
-            var val =this.multipleSelection;
+            // 20190316 数据绑定 --bu
+            vm.saveStep1()
+            vm.saveStep2()
+
+            var val = this.saveChangePageDatas;//提交时候不能保存当前选中的，要保存所有的
+            this.saveChangePageDatas = [];//保存后清空避免影响下次
             //遍历最终的人员信息
             vm.caseAna.userIds = "";
             vm.caseAna.userName = "";
@@ -623,6 +628,10 @@ var vm = new Vue({
                     this.caseAna.userName+=","+val[i].userName;
                 }
             }
+            if(this.caseAna.userIds){
+                this.caseAna.userArr=this.caseAna.userIds.split(",");
+            }
+            this.dialogUser=false;
         },
         cancelUser: function () {
             this.dialogUser=false;
@@ -703,6 +712,43 @@ var vm = new Vue({
             }
             this.dialogLaw = false;
         },
+        // 20190316 数据绑定 --bu
+        saveStep1:function(){
+            vm.multipleSelection.map(function (multipleSel) {
+                vm.saveChangePageDatas.push(multipleSel)
+            });
+        },
+        // 20190316 数据绑定 --bu
+        saveStep2:function () {
+            vm.saveChangePageDatas = (function (arr) {
+
+                var allArr = [];
+                for (var i = 0; i < arr.length; i++) {
+                    var flag = true;
+                    for (var j = 0; j < allArr.length; j++) {
+                        if (arr[i].id == allArr[j].id) {
+                            flag = false;
+                        }
+                    }
+                    if (flag) {
+                        allArr.push(arr[i]);
+                    }
+                }
+                return allArr
+
+            })(vm.saveChangePageDatas)
+
+
+            var _arr = [];
+            vm.userTableData.map(function (data1) {
+                vm.saveChangePageDatas.map(function (data2) {
+                    if (data1.id === data2.id) {
+                        _arr.push(data1)
+                    }
+                })
+            });
+            vm.userToggleSelection(_arr)
+        },
         toHome: function () {
             parent.location.reload()
         }
@@ -716,6 +762,16 @@ var vm = new Vue({
                 loadEditor();
             },200);
         });
+    },
+    watch: {
+        // 20190316 数据绑定 --bu
+        userTableData() {
+            vm.saveStep1()
+            this.$nextTick(function(){
+
+                vm.saveStep2()
+            })
+        }
     }
 });
 

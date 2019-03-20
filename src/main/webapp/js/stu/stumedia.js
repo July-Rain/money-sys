@@ -527,6 +527,7 @@ var vm = new Vue({
         cancelDept: function () {
             this.dialogDept = false;
         },
+        // 20190316 数据绑定 --bu
         confimUser: function () {
             vm.saveStep1()
             vm.saveStep2()
@@ -721,11 +722,13 @@ var vm = new Vue({
             editor.create();
 
         },
+        // 20190316 数据绑定 --bu
         saveStep1:function(){
             vm.multipleSelection.map(function (multipleSel) {
                 vm.saveChangePageDatas.push(multipleSel)
             });
         },
+        // 20190316 数据绑定 --bu
         saveStep2:function () {
             vm.saveChangePageDatas = (function (arr) {
 
@@ -767,6 +770,7 @@ var vm = new Vue({
         }, 200);
     },
     watch: {
+        // 20190316 数据绑定 --bu
         userTableData() {
             vm.saveStep1()
             this.$nextTick(function(){

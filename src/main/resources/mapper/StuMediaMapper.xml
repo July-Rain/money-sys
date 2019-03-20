@@ -432,7 +432,7 @@
     </update>
     <select id="listStuByUser" resultType="com.lawschool.beans.law.TaskDesicEntity" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
-        dataId,infoId,infoCode,TO_CHAR(infoName) as infoName,infoParentId,infoType
+        DISTINCT dataId,infoId,infoCode,TO_CHAR(infoName) as infoName,TO_CHAR(infoParentId),infoType
         FROM
         (
         SELECT
@@ -467,7 +467,7 @@
         union ALL
 
         SELECT
-        dataId,infoId,infoCode,TO_CHAR(infoName)as infoName,infoParentId,infoType
+        DISTINCT dataId,infoId,infoCode,TO_CHAR(infoName)as infoName,TO_CHAR(infoParentId),infoType
         FROM
         (
         SELECT
@@ -502,7 +502,7 @@
   </select>
     <select id="countListStuByUser" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
-        count(1)
+        count(DISTINCT(dataId))
         FROM
         (
         SELECT
