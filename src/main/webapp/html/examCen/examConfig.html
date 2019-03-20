@@ -564,7 +564,7 @@
                             <ul class="clearfix" >
                                 <li v-for="(item2,index1)  in multiple.answerList" :key="index1">{{optionIndex[index1]}}、{{item2.questionContent}}</li>
                             </ul>
-                            <div class="msg">
+                            <div class="msg" v-if="multiple.specialknowledgeValue">
                                 知识点：{{multiple.specialknowledgeValue}}
                             </div>
                             <el-button class="change" @click="changeQuestionFn('10004',index)" v-if="handleType!='view'"><i class="iconfont icon-genghuan"></i></el-button>
@@ -590,7 +590,7 @@
                             <ul class="clearfix" >
                                 <li v-for="(item2,index1)  in multiple.answerList" :key="index1">{{optionIndex[index1]}}、{{item2.questionContent}}</li>
                             </ul>
-                            <div class="msg">
+                            <div class="msg" v-if="multiple.specialknowledgeValue">
                                 知识点：{{multiple.specialknowledgeValue}}
                             </div>
                             <el-button class="change" @click="changeQuestionFn('10005',index)"
@@ -617,7 +617,7 @@
                             <ul class="clearfix" >
                                 <li v-for="(item2,index1)  in multiple.answerList" :key="index1">{{optionIndex[index1]}}、{{item2.questionContent}}</li>
                             </ul>
-                            <div class="msg">
+                            <div class="msg" v-if="multiple.specialknowledgeValue">
                                 知识点：{{multiple.specialknowledgeValue}}
                             </div>
                             <el-button class="change" @click="changeQuestionFn('10006',index)"
@@ -644,7 +644,7 @@
                             <ul class="clearfix" >
                                 <li v-for="(item2,index1)  in multiple.answerList" :key="index1">{{optionIndex[index1]}}、{{item2.questionContent}}</li>
                             </ul>
-                            <div class="msg">
+                            <div class="msg" v-if="multiple.specialknowledgeValue">
                                 知识点：{{multiple.specialknowledgeValue}}
                             </div>
                             <el-button class="change" @click="changeQuestionFn('10007',index)"
@@ -654,77 +654,6 @@
 
                 </el-form>
 
-                <!--<div>
-
-                    <h3>注：更换的题目将会作为必考题</h3>
-                    <div class="subTitle clearfix">
-                        <p>一、单项选择题。</p>
-                    </div>
-                    <div class="question_area" v-for="(multiple,index) in sinMultipleSelection" :key="index">
-                        <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                            <el-button type="primary" size="mini" @click="changeQuestion('10004',index)"
-                                       v-if="handleType!='view'">
-                                <i class="iconfont icon-htmal5icon18"></i>
-                                更换题目
-                            </el-button>
-                        </p>
-                        <el-radio-group>
-                            <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
-                                {{item2.questionContent}}
-                            </el-radio>
-                        </el-radio-group>
-                    </div>
-                    <div class="subTitle clearfix">
-                        <p>二、多选题。</p>
-                    </div>
-                    <div class="question_area" v-for="(multiple,index) in mulMultipleSelection" :key="index">
-                        <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                            <el-button type="primary" size="mini" @click="changeQuestion('10005',index)"
-                                       v-if="handleType!='view'">
-                                <i class="iconfont icon-htmal5icon18"></i>
-                                更换题目
-                            </el-button>
-                        </p>
-                        <el-radio-group>
-                            <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
-                                {{item2.questionContent}}
-                            </el-radio>
-                        </el-radio-group>
-                    </div>
-
-                    <div class="subTitle clearfix">
-                        <p>三、判断题。</p>
-                    </div>
-                    <div class="question_area" v-for="(multiple,index) in judgeMultipleSelection" :key="index">
-                        <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                            <el-button type="primary" size="mini" @click="changeQuestion('10006',index)"
-                                       v-if="handleType!='view'">
-                                <i class="iconfont icon-htmal5icon18"></i>
-                                更换题目
-                            </el-button>
-                        </p>
-                        <el-radio-group>
-                            <el-radio :label="item2.id" v-for="item2 in multiple.answerList">
-                                {{item2.questionContent}}
-                            </el-radio>
-                        </el-radio-group>
-                    </div>
-                    <div class="subTitle clearfix">
-                        <p>四、主观题
-                        </p>
-                    </div>
-                    <div class="question_area" v-for="(multiple,index) in subMultipleSelection" :key="index">
-                        <p class="ques_name">{{index+1}}.{{multiple.comContent}}。
-                            <el-button type="primary" size="mini" @click="changeQuestion('10007',index)"
-                                       v-if="handleType!='view'">
-                                <i class="iconfont icon-htmal5icon18"></i>
-                                更换题目
-                            </el-button>
-                        </p>
-                    </div>
-
-
-                </div>-->
 
 
             </div>
@@ -793,7 +722,7 @@
                         <ul class="clearfix"   >
                             <li v-for="(item2,index2) in multiple.answerList" :key="index2">{{optionIndex[index2]}}、{{item2.questionContent}}</li>
                         </ul>
-                        <div class="msg">
+                        <div class="msg" v-if="multiple.specialknowledgeValue">
                             知识点：{{multiple.specialknowledgeValue}}
                         </div>
                         <el-button :disabled="handleType=='view'" @click="delSinMul(index)"  class="change"><i style="display: block;border-radius: 50%;font-size: 17px;padding: 4px;color: #fff;background: #999;" class="iconfont icon-shanchu"  ></i></el-button>
@@ -821,7 +750,7 @@
                         <ul class="clearfix"   >
                             <li v-for="(item2,index2) in multiple.answerList" :key="index2">{{optionIndex[index2]}}、{{item2.questionContent}}</li>
                         </ul>
-                        <div class="msg">
+                        <div class="msg" v-if="multiple.specialknowledgeValue">
                             知识点：{{multiple.specialknowledgeValue}}
                         </div>
                         <!--<el-button class="change"><i class="iconfont icon-shanchu" :disabled="handleType=='view'" @click="delMulMul(index)" ></i></el-button>-->
@@ -850,7 +779,7 @@
                         <ul class="clearfix"   >
                             <li v-for="(item2,index2) in multiple.answerList" :key="index2">{{optionIndex[index2]}}、{{item2.questionContent}}</li>
                         </ul>
-                        <div class="msg">
+                        <div class="msg" v-if="multiple.specialknowledgeValue">
                             知识点：{{multiple.specialknowledgeValue}}
                         </div>
                         <!--<el-button class="change"><i class="iconfont icon-shanchu" :disabled="handleType=='view'"  @click="delJudMul(index)" ></i></el-button>-->
@@ -883,7 +812,7 @@
                         <ul class="clearfix">
                             <li v-for="(item2,index2) in multiple.answerList" :key="index2">{{optionIndex[index2]}}、{{item2.questionContent}}</li>
                         </ul>
-                        <div class="msg">
+                        <div class="msg" v-if="multiple.specialknowledgeValue">
                             知识点：{{multiple.specialknowledgeValue}}
                         </div>
                         <!--<el-button class="change"><i class="iconfont icon-shanchu" :disabled="handleType=='view'" @click="delSubMul(index)" ></i></el-button>-->
