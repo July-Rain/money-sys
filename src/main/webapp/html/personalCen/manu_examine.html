@@ -290,7 +290,7 @@
                         </el-form-item>
                         <template v-show="stuMedia.stuType=='pic'">
                             <el-form-item disabled label="内容" prop="comContent"  v-show="stuMedia.stuType=='pic'">
-                                <div  id="editor" style="width: 545px;">
+                                <div id="editor" style="width: 545px;">
                                 </div>
                             </el-form-item>
                         </template>
@@ -366,7 +366,8 @@
                             <el-input disabled v-model="stuMedia.userName" readonly placeholder="请选择使用人员" clearable></el-input>
                         </el-form-item>
                         <el-form-item label="描述" prop="stuDescribe">
-                            <el-input disabled type="textarea" maxlength="200" v-model="stuMedia.stuDescribe"></el-input>
+                            <!--<el-input disabled type="textarea" maxlength="200" v-model="stuMedia.stuDescribe"></el-input>-->
+                            <div style="background-color: #f5f7fa;color: #999;border-radius: 4px;padding: 0 15px;"><p>{{stuMedia.stuDescribe}}</p></div>
                         </el-form-item>
 
 
