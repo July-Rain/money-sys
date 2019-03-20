@@ -6,7 +6,6 @@ console.info(checkExamUser);
 var vm = new Vue({
     el:'#app',
     data:{
-        checkExamUser: {},
         userStatus:{},
         headerHide: false,
         checkExamUserDia:false,
@@ -20,7 +19,7 @@ var vm = new Vue({
         },
         checkExamUser :{
             examUserName :'',
-            examUserSex :'0'
+            examUserSex : '0'
         },
         checkExamUserRule:{
             examUserName: [
@@ -31,11 +30,13 @@ var vm = new Vue({
     created: function () {
         this.$nextTick(function () {
             if (userStatus == 0) {
-                vm.checkExamUser = JSON.parse(checkExamUser);
-                vm.openDia();
+                this.checkExamUser = JSON.parse(checkExamUser);
+                this.checkExamUser.examUserName = '';
+                this.checkExamUser.examUserSex = '0';
+                this.openDia();
             }else{
-                vm.checkExamUser = JSON.parse(checkExamUser);
-                vm.closeDia();
+                this.checkExamUser = JSON.parse(checkExamUser);
+                this.closeDia();
                 this.reload();
             }
         })
@@ -62,6 +63,7 @@ var vm = new Vue({
         },
         openDia:function(){
             this.checkExamUserDia = true;
+            console.log(vm.checkExamUser)
         },
         closeDia:function () {
             this.checkExamUserDia = false;

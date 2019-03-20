@@ -250,7 +250,9 @@
     .el-menu-item i,el-menu-item span{
         color: #1381e3;
     }
-
+    .demo-examConfig{
+        padding: 0 20px;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -371,7 +373,7 @@
         </div>
         <el-dialog title="个人信息完善" :visible.sync="checkExamUserDia" :before-close="closeDia"
                    :close-on-click-modal=false :close-on-press-escape=false :show-close=false	>
-            <el-form :model="checkExamUser" ref="checkExamUser" :rules="checkExamUserRule" label-width="150px" class="demo-examConfig"
+            <el-form :model="checkExamUser" ref="checkExamUser" :rules="checkExamUserRule" label-width="100px" class="demo-examConfig"
                      size="mini" >
                 <el-row>
                     <el-col :span="24">
@@ -384,8 +386,8 @@
                     <el-col :span="24">
                         <el-form-item label="性别："  prop="examUserSex">
                             <el-radio-group  v-model="checkExamUser.examUserSex">
-                                <el-radio label="0" value="0" >男</el-radio>
-                                <el-radio label="1" value="1" >女</el-radio>
+                                <el-radio label="0" value="0">男</el-radio>
+                                <el-radio label="1" value="1">女</el-radio>
                             </el-radio-group>
                         </el-form-item>
                     </el-col>
@@ -396,13 +398,11 @@
                             ></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="24">
-                        <el-form-item>
-                            <el-button type="primary" @click="saveCheckExamUser('checkExamUser')">保存</el-button>
-                        </el-form-item>
-                    </el-col>
                 </el-row>
             </el-form>
+            <div slot="footer" class="dialog-footer" style="padding-right: 20px;">
+                <el-button type="primary" @click="saveCheckExamUser('checkExamUser')">保存</el-button>
+            </div>
         </el-dialog>
     </div>
 
