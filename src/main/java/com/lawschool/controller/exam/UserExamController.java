@@ -37,9 +37,6 @@ import java.util.Map;
 public class UserExamController extends AbstractController {
 
     @Autowired
-    private ExamConfigService examConfigService;
-
-    @Autowired
     private UserExamService userExamService;
 
     @Autowired
@@ -47,13 +44,6 @@ public class UserExamController extends AbstractController {
 
     @Resource
     private Destination queueDestination;
-
-//    @RequestMapping("/list")
-//    public Result list(@RequestParam Map<String, Object> params) {
-//        ExamConfig entity = new ExamConfig();
-//        Page<ExamConfig> page = examConfigService.findPage(new Page<ExamConfig>(params), entity);
-//        return Result.ok().put("page", page);
-//    }
 
     @RequestMapping("/list")
     public Result list(@RequestParam Map<String, Object> params) {
@@ -119,6 +109,17 @@ public class UserExamController extends AbstractController {
 
         return Result.ok();
     }
+
+    @SysLog("更新考试剩余时间")
+    @RequestMapping(value = "/updateRemainTime", method = RequestMethod.POST)
+    public Result updateRemainTime(@RequestBody UserAnswerForm userAnswerForm) {
+
+
+        userExamService.updateRemainTime(userAnswerForm.getRemainingExamTime(),userAnswerForm.getUserExamId());
+
+        return Result.ok();
+    }
+
 
     @RequestMapping(value = "/viewExam", method = RequestMethod.POST)
     public Result viewExam(String userExamId) {

@@ -1,14 +1,13 @@
+var storage = window.sessionStorage;
 var vm = new Vue({
     el:'#app',
     data:{
         formInline: { // 搜索表单
             examName:"",
             status: "",
-            source:"",
             limit: 10,
             page: 1,
-            count: 0,
-            source:'1'
+            count: 0
         },
         tableData: [],//表格数据
         visible: false,
@@ -23,7 +22,7 @@ var vm = new Vue({
     },
     created: function () {
         this.$nextTick(function () {
-            this.reload();
+            vm.reload();
         })
     },
     methods:{
@@ -46,12 +45,27 @@ var vm = new Vue({
         onSubmit: function () {
             this.reload();
         },
+        viewExam : function (index,row) {
+            var parentWin = window.parent;
+            var id = row.id;
+            var examStatus = row.examStatus;
+            var userExamId = row.userExamId==null?'':row.userExamId;
+            parentWin.document.getElementById("container").src
+                = 'modules/personalCen/myScoreReport.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
+        },
         handleSizeChange: function (event) {
             vm.formInline.limit = event;
             this.reload();
         },
         resetForm: function (formName) {
-            this.$refs[formName].resetFields();
+            // this.$refs[formName].resetFields();
+            vm.formInline= { // 搜索表单
+
+                limit: 10,
+                page: 1,
+                count: 0
+            };
+            this.reload();
         },
         handleCurChange: function (event) {
             vm.formInline.page = event;
@@ -74,19 +88,14 @@ var vm = new Vue({
                 }
             });
         },
-        viewExam : function (index,row) {
-            var parentWin = window.parent;
-            var id = row.id;
-            var examStatus = row.examStatus;
-            var userExamId = row.userExamId==null?'':row.userExamId;
-            parentWin.document.getElementById("container").src
-                = 'modules/personalCen/myScoreReport.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
-        },
         startExam : function (index,row) {
             var parentWin = window.parent;
             var id = row.id;
             var examStatus = row.examStatus;
             var userExamId = row.userExamId==null?'':row.userExamId;
+            storage.setItem("id",id);
+            storage.setItem("examStatus",examStatus);
+            storage.setItem("userExamId",userExamId);
             parentWin.document.getElementById("container").src
                 = 'modules/examCen/testPaper.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
         },

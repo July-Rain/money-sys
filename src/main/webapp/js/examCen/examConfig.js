@@ -346,7 +346,6 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-                        debugger
                         vm.examConfig = result.examConfig;
                         vm.examConfig.reachReward = 0;
                         if (result.examQueConfiglist.length > 0) {
@@ -363,8 +362,8 @@ var vm = new Vue({
                         if (vm.sinMultipleSelection.length > 0) {
                             vm.sinMultScore = vm.sinMultipleSelection[0].perScore;
                         }
-                        if (vm.sinMultipleSelection.length > 0) {
-                            vm.mulMultScore = vm.sinMultipleSelection[0].perScore;
+                        if (vm.mulMultipleSelection.length > 0) {
+                            vm.mulMultScore = vm.mulMultipleSelection[0].perScore;
                         }
                         if (vm.judgeMultipleSelection.length > 0) {
                             vm.judgeMultScore = vm.judgeMultipleSelection[0].perScore;
@@ -705,6 +704,8 @@ var vm = new Vue({
         queReload: function () {
             var allIds = [];
             vm.queformInline.ids = [];
+            vm.queformInline.comContent='';
+            vm.queformInline.specialKnowledgeId = '';
             allIds = allIds.concat(vm.sinMultIds).concat(vm.mulMultIds).concat(vm.judgeMultIds).concat(vm.subMultIds);
             for (var i = 0; i < allIds.length; i++) {
                 if (vm.queformInline.ids.indexOf(allIds[i]) == -1) {
@@ -798,17 +799,19 @@ var vm = new Vue({
                     contentType: "application/json",
                     success: function (result) {
                         if (result.code === 0) {
-                            vm.$message({
-                                message: '试题配置完成',
-                                type: 'success'
+                            vm.$alert('生成试卷成功', '提示', {
+                                confirmButtonText: '确定',
+                                callback: function () {
+                                    vm.setExam = false;
+                                    if (operate == 0) {
+                                        window.parent.vm.dialogAdd = false;
+                                    } else if (operate == 2) {
+                                        window.parent.vm.dialogEdit = false;
+                                    }
+                                    window.parent.vm.reload();
+                                }
                             });
-                            vm.setExam = false;
-                            if (operate == 0) {
-                                window.parent.vm.dialogAdd = false;
-                            } else if (operate == 2) {
-                                window.parent.vm.dialogEdit = false;
-                            }
-                            window.parent.vm.reload();
+
                         } else {
                             alert(result.msg);
                         }
@@ -930,18 +933,19 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.$message({
-                            message: '试题配置完成',
-                            type: 'success'
+                        vm.$alert('生成试卷成功', '提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                                vm.randomQuesModal = false;
+                                vm.genRandQue = false;
+                                if (operate == 0) {
+                                    window.parent.vm.dialogAdd = false;
+                                } else if (operate == 2) {
+                                    window.parent.vm.dialogEdit = false;
+                                }
+                                window.parent.vm.reload();
+                            }
                         });
-                        vm.randomQuesModal = false;
-                        vm.genRandQue = false;
-                        if (operate == 0) {
-                            window.parent.vm.dialogAdd = false;
-                        } else if (operate == 2) {
-                            window.parent.vm.dialogEdit = false;
-                        }
-                        window.parent.vm.reload();
                     } else {
                         vm.$message({
                             message: result.msg,
@@ -1003,15 +1007,19 @@ var vm = new Vue({
                         contentType: "application/json",
                         success: function (result) {
                             if (result.code === 0) {
-                                alert('试题配置完成');
-                                vm.randomQuesModal = false;
-                                vm.genRandQue = false;
-                                if (operate == 0) {
-                                    window.parent.vm.dialogAdd = false;
-                                } else if (operate == 2) {
-                                    window.parent.vm.dialogEdit = false;
-                                }
-                                window.parent.vm.reload();
+                                vm.$alert('生成试卷成功', '提示', {
+                                    confirmButtonText: '确定',
+                                    callback: function () {
+                                        vm.randomQuesModal = false;
+                                        vm.genRandQue = false;
+                                        if (operate == 0) {
+                                            window.parent.vm.dialogAdd = false;
+                                        } else if (operate == 2) {
+                                            window.parent.vm.dialogEdit = false;
+                                        }
+                                        window.parent.vm.reload();
+                                    }
+                                });
                             } else {
                                 alert(result.msg);
                                 vm.genRandQue = false;

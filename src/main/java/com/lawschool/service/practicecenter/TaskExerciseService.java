@@ -49,7 +49,7 @@ public interface TaskExerciseService extends AbstractService<TaskExerciseEntity>
      * @param status
      * @return
      */
-    boolean updateStatus(String id, Integer status);
+    Integer updateStatus(String id, Integer status);
 
     AnalysisForm analysis(String month, String userId);
 

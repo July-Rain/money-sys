@@ -96,7 +96,12 @@ var vm = new Vue({
                         var parentWin = window.parent;
                         parentWin.document.getElementById("container").src = 'modules/exerciseCenter/task_index.html';
                     } else {
-                        alert(result.msg);
+                        vm.$alert(result.msg, '提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+
+                            }
+                        });
                     }
                 }
             });

@@ -81,4 +81,8 @@
         and <![CDATA[ EC.END_TIME >= #{startTime}]]>
         and ec.REACH_REWARD_TYPE = #{reachRewardType}
     </select>
+
+    <update id="updateRemainTime">
+        update law_user_exam set
+    </update>
 </mapper>

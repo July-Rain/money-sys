@@ -56,4 +56,7 @@ public interface UserExamDao extends AbstractDao<UserExam> {
      */
     float getSubScoreByTimes(@Param("startTime") Date startTime,@Param("endTime") Date endTime,
                              @Param("reachRewardType") String reachRewardType,@Param("userId") String userId);
+
+    void updateRemainTime(Double remainTime,String userExamId);
+
 }
