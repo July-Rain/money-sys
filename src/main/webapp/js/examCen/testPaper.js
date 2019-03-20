@@ -102,7 +102,9 @@ var vm = new Vue({
             // 用计时器动态显示:间隔时间1s
             this.lefttime -= 1000;
             var results = this.figureTime(this.lefttime);
-            [this.leftHours, this.leftMinutes, this.leftSeconds] = [...results];
+            this.leftHours = results[0];
+            this.leftMinutes = results[1];
+            this.leftSeconds = results[2];
             // 3个小时用完,强制提交
            if (this.lefttime <= 0) {
                vm.submit();
@@ -127,7 +129,9 @@ var vm = new Vue({
         consumedTime: function () {
             var consumed =  this.displayTime*60000 - this.lefttime;
             var results = this.figureTime(consumed);
-            [this.consumedHours, this.consumedMinutes, this.consumedSeconds] = [...results];
+            this.consumedHours = results[0];
+            this.consumedMinutes = results[1];
+            this.consumedSeconds = results[2];
             this.consumedMinutes = Number(this.consumedHours)*60 + Number(this.consumedMinutes);
         },
         // 计算时间
