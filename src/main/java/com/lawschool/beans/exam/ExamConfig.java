@@ -64,17 +64,19 @@ public class ExamConfig extends DataEntity<ExamConfig> {
     /**
      * 开始时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date startTime;
 
     /**
      * 结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date endTime;
 
     /**
      * 考试时长
      */
-    private Short examTime;
+    private Float examTime;
 
     /**
      * 答案显示规则
@@ -84,12 +86,12 @@ public class ExamConfig extends DataEntity<ExamConfig> {
     /**
      * 考试分数
      */
-    private Short examScore;
+    private Float examScore;
 
     /**
      * 及格线
      */
-    private Short passPnt;
+    private Float passPnt;
 
     /**
      * 达标奖励方式
@@ -124,7 +126,7 @@ public class ExamConfig extends DataEntity<ExamConfig> {
     /**
      * 题目数量
      */
-    private int examCount;
+    private Integer examCount;
 
     /**
      * 阅卷类型
@@ -139,7 +141,7 @@ public class ExamConfig extends DataEntity<ExamConfig> {
     /**
      * 阅卷人数
      */
-    private BigDecimal checkNum;
+    private Integer checkNum;
 
     /**
      * 阅卷口令
@@ -149,7 +151,7 @@ public class ExamConfig extends DataEntity<ExamConfig> {
     /**
      * 阅卷分差值
      */
-    private Short checkScoreDifference;
+    private Float checkScoreDifference;
 
     /**
      * 是否仲裁
@@ -204,594 +206,331 @@ public class ExamConfig extends DataEntity<ExamConfig> {
     @TableField(exist = false)
     private String[] specialKnowledgeArr;
 
-    public String getUserName() {
-        return this.userName;
-    }
-
-    public void setUserName(final String userName) {
-        this.userName = userName;
-    }
-
-    public String getDeptName() {
-        return this.deptName;
-    }
-
-    public void setDeptName(final String deptName) {
-        this.deptName = deptName;
-    }
-
-    public String[] getSpecialKnowledgeArr() {
-        return this.specialKnowledgeArr;
-    }
-
-    public String getEnabled() {
-        return this.enabled;
-    }
-
-    public void setEnabled(final String enabled) {
-        this.enabled = enabled;
-    }
-
-    public void setSpecialKnowledgeArr(final String[] specialKnowledgeArr) {
-        this.specialKnowledgeArr = specialKnowledgeArr;
-    }
-
-    public List<CommonForm> getCommonForms() {
-        return this.commonForms;
-    }
-
-    public void setCommonForms(final List<CommonForm> commonForms) {
-        this.commonForms = commonForms;
-    }
-
-    public String getExamTypeName() {
-        return this.examTypeName;
-    }
-
-    public void setExamTypeName(final String examTypeName) {
-        this.examTypeName = examTypeName;
-    }
-
-    public String[] getDeptArr() {
-        return this.deptArr;
-    }
-
-    public void setDeptArr(final String[] deptArr) {
-        this.deptArr = deptArr;
-    }
-
-    public String[] getUserArr() {
-        return this.userArr;
-    }
-
-    public void setUserArr(final String[] userArr) {
-        this.userArr = userArr;
-    }
-
-
-    public List<QuestForm> getQfList() {
-        return this.qfList;
-    }
-
-    public void setQfList(final List<QuestForm> qfList) {
-        this.qfList = qfList;
-    }
-
-    public String getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(final String status) {
-        this.status = status;
-    }
-
-    public List<ExamQueConfig> getExamQueConfigList() {
-        return this.examQueConfigList;
-    }
-
-    public void setExamQueConfigList(final List<ExamQueConfig> examQueConfigList) {
-        this.examQueConfigList = examQueConfigList;
-    }
-
-    public List<String> getIdList() {
-        return this.idList;
-    }
-
-    public void setIdList(final List<String> idList) {
-        this.idList = idList;
-    }
-
-    /**
-     * 考试名称
-     *
-     * @return EXAM_NAME 考试名称
-     */
     public String getExamName() {
         return examName;
     }
 
-    /**
-     * 考试名称
-     *
-     * @param examName 考试名称
-     */
     public void setExamName(String examName) {
-        this.examName = examName == null ? null : examName.trim();
+        this.examName = examName;
     }
 
-    /**
-     * 专项知识ID
-     *
-     * @return Special_knowledge_ID 专项知识ID
-     */
     public String getSpecialKnowledgeId() {
         return specialKnowledgeId;
     }
 
-    /**
-     * 专项知识ID
-     *
-     * @param specialKnowledgeId 专项知识ID
-     */
     public void setSpecialKnowledgeId(String specialKnowledgeId) {
-        this.specialKnowledgeId = specialKnowledgeId == null ? null : specialKnowledgeId.trim();
+        this.specialKnowledgeId = specialKnowledgeId;
     }
 
-    /**
-     * 组卷形式
-     *
-     * @return GROUP_FORM 组卷形式
-     */
     public String getGroupForm() {
         return groupForm;
     }
 
-    /**
-     * 组卷形式
-     *
-     * @param groupForm 组卷形式
-     */
     public void setGroupForm(String groupForm) {
-        this.groupForm = groupForm == null ? null : groupForm.trim();
+        this.groupForm = groupForm;
     }
 
-    /**
-     * 试卷类型
-     *
-     * @return EXAM_TYPE 试卷类型
-     */
     public String getExamType() {
         return examType;
     }
 
-    /**
-     * 试卷类型
-     *
-     * @param examType 试卷类型
-     */
     public void setExamType(String examType) {
-        this.examType = examType == null ? null : examType.trim();
+        this.examType = examType;
     }
 
-    /**
-     * 出题方式
-     *
-     * @return QUESTION_WAY 出题方式
-     */
     public String getQuestionWay() {
         return questionWay;
     }
 
-    /**
-     * 出题方式
-     *
-     * @param questionWay 出题方式
-     */
     public void setQuestionWay(String questionWay) {
-        this.questionWay = questionWay == null ? null : questionWay.trim();
+        this.questionWay = questionWay;
     }
 
-    /**
-     * 题目顺序
-     *
-     * @return TOPIC_ORDER_TYPE 题目顺序
-     */
     public String getTopicOrderType() {
         return topicOrderType;
     }
 
-    /**
-     * 题目顺序
-     *
-     * @param topicOrderType 题目顺序
-     */
     public void setTopicOrderType(String topicOrderType) {
-        this.topicOrderType = topicOrderType == null ? null : topicOrderType.trim();
+        this.topicOrderType = topicOrderType;
     }
 
-    /**
-     * 选项顺序
-     *
-     * @return OPTION_ORDER_TYPE 选项顺序
-     */
     public String getOptionOrderType() {
         return optionOrderType;
     }
 
-    /**
-     * 选项顺序
-     *
-     * @param optionOrderType 选项顺序
-     */
     public void setOptionOrderType(String optionOrderType) {
-        this.optionOrderType = optionOrderType == null ? null : optionOrderType.trim();
+        this.optionOrderType = optionOrderType;
     }
 
-    /**
-     * 开始时间
-     *
-     * @return START_TIME 开始时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getStartTime() {
         return startTime;
     }
 
-    /**
-     * 开始时间
-     *
-     * @param startTime 开始时间
-     */
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    /**
-     * 结束时间
-     *
-     * @return END_TIME 结束时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getEndTime() {
         return endTime;
     }
 
-    /**
-     * 结束时间
-     *
-     * @param endTime 结束时间
-     */
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
-    /**
-     * 考试时长
-     *
-     * @return EXAM_TIME 考试时长
-     */
-    public Short getExamTime() {
+    public Float getExamTime() {
         return examTime;
     }
 
-    /**
-     * 考试时长
-     *
-     * @param examTime 考试时长
-     */
-    public void setExamTime(Short examTime) {
+    public void setExamTime(Float examTime) {
         this.examTime = examTime;
     }
 
-    /**
-     * 答案显示规则
-     *
-     * @return ANSWER_SHOW_RULE 答案显示规则
-     */
     public String getAnswerShowRule() {
         return answerShowRule;
     }
 
-    /**
-     * 答案显示规则
-     *
-     * @param answerShowRule 答案显示规则
-     */
     public void setAnswerShowRule(String answerShowRule) {
-        this.answerShowRule = answerShowRule == null ? null : answerShowRule.trim();
+        this.answerShowRule = answerShowRule;
     }
 
-    /**
-     * 考试分数
-     *
-     * @return EXAM_SCORE 考试分数
-     */
-    public Short getExamScore() {
+    public Float getExamScore() {
         return examScore;
     }
 
-    /**
-     * 考试分数
-     *
-     * @param examScore 考试分数
-     */
-    public void setExamScore(Short examScore) {
+    public void setExamScore(Float examScore) {
         this.examScore = examScore;
     }
 
-    /**
-     * 及格线
-     *
-     * @return PASS_PNT 及格线
-     */
-    public Short getPassPnt() {
+    public Float getPassPnt() {
         return passPnt;
     }
 
-    /**
-     * 及格线
-     *
-     * @param passPnt 及格线
-     */
-    public void setPassPnt(Short passPnt) {
+    public void setPassPnt(Float passPnt) {
         this.passPnt = passPnt;
     }
 
-    /**
-     * 达标奖励方式
-     *
-     * @return REACH_REWARD_TYPE 达标奖励方式
-     */
     public String getReachRewardType() {
         return reachRewardType;
     }
 
-    /**
-     * 达标奖励方式
-     *
-     * @param reachRewardType 达标奖励方式
-     */
     public void setReachRewardType(String reachRewardType) {
-        this.reachRewardType = reachRewardType == null ? null : reachRewardType.trim();
+        this.reachRewardType = reachRewardType;
     }
 
-    /**
-     * 达标奖励
-     *
-     * @return REACH_REWARD 达标奖励
-     */
     public String getReachReward() {
         return reachReward;
     }
 
-    /**
-     * 达标奖励
-     *
-     * @param reachReward 达标奖励
-     */
     public void setReachReward(String reachReward) {
-        this.reachReward = reachReward == null ? null : reachReward.trim();
+        this.reachReward = reachReward;
     }
 
-    /**
-     * 组织机构代码
-     *
-     * @return ORGANIZED_ORG_CODE 组织机构代码
-     */
     public String getOrganizedOrgCode() {
         return organizedOrgCode;
     }
 
-    /**
-     * 组织机构代码
-     *
-     * @param organizedOrgCode 组织机构代码
-     */
     public void setOrganizedOrgCode(String organizedOrgCode) {
-        this.organizedOrgCode = organizedOrgCode == null ? null : organizedOrgCode.trim();
+        this.organizedOrgCode = organizedOrgCode;
     }
 
-    /**
-     * 是否显示法律依据
-     *
-     * @return IS_SHOW_LAW 是否显示法律依据
-     */
     public String getIsShowLaw() {
         return isShowLaw;
     }
 
-    /**
-     * 是否显示法律依据
-     *
-     * @param isShowLaw 是否显示法律依据
-     */
     public void setIsShowLaw(String isShowLaw) {
-        this.isShowLaw = isShowLaw == null ? null : isShowLaw.trim();
+        this.isShowLaw = isShowLaw;
     }
 
-    /**
-     * 是否显示法律比例
-     *
-     * @return IS_SHOW_LAW_PRORORTION 是否显示法律比例
-     */
     public String getIsShowLawProrortion() {
         return isShowLawProrortion;
     }
 
-    /**
-     * 是否显示法律比例
-     *
-     * @param isShowLawProrortion 是否显示法律比例
-     */
     public void setIsShowLawProrortion(String isShowLawProrortion) {
-        this.isShowLawProrortion = isShowLawProrortion == null ? null : isShowLawProrortion.trim();
+        this.isShowLawProrortion = isShowLawProrortion;
     }
 
-    /**
-     * 是否必考
-     *
-     * @return IS_MUST_TEST 是否必考
-     */
     public String getIsMustTest() {
         return isMustTest;
     }
 
-    /**
-     * 是否必考
-     *
-     * @param isMustTest 是否必考
-     */
     public void setIsMustTest(String isMustTest) {
-        this.isMustTest = isMustTest == null ? null : isMustTest.trim();
+        this.isMustTest = isMustTest;
     }
 
-    public int getExamCount() {
-        return this.examCount;
+    public Integer getExamCount() {
+        return examCount;
     }
 
-    public void setExamCount(final int examCount) {
+    public void setExamCount(Integer examCount) {
         this.examCount = examCount;
     }
 
-    /**
-     * 阅卷类型
-     *
-     * @return CHECK_TYPE 阅卷类型
-     */
     public String getCheckType() {
         return checkType;
     }
 
-    /**
-     * 阅卷类型
-     *
-     * @param checkType 阅卷类型
-     */
     public void setCheckType(String checkType) {
-        this.checkType = checkType == null ? null : checkType.trim();
+        this.checkType = checkType;
     }
 
-    /**
-     * 阅卷人数
-     *
-     * @return CHECK_NUM 阅卷人数
-     */
-    public BigDecimal getCheckNum() {
-        return checkNum;
-    }
-
-    /**
-     * 阅卷人数
-     *
-     * @param checkNum 阅卷人数
-     */
-    public void setCheckNum(BigDecimal checkNum) {
-        this.checkNum = checkNum;
-    }
-
-    /**
-     * 阅卷口令
-     *
-     * @return CHECK_PASSWORD 阅卷口令
-     */
-    public String getCheckPassword() {
-        return checkPassword;
-    }
-
-    /**
-     * 阅卷口令
-     *
-     * @param checkPassword 阅卷口令
-     */
-    public void setCheckPassword(String checkPassword) {
-        this.checkPassword = checkPassword == null ? null : checkPassword.trim();
-    }
-
-    /**
-     * 阅卷分差值
-     *
-     * @return CHECK_SCORE_DIFFERENCE 阅卷分差值
-     */
-    public Short getCheckScoreDifference() {
-        return checkScoreDifference;
-    }
-
-    /**
-     * 阅卷分差值
-     *
-     * @param checkScoreDifference 阅卷分差值
-     */
-    public void setCheckScoreDifference(Short checkScoreDifference) {
-        this.checkScoreDifference = checkScoreDifference;
-    }
-
-    /**
-     * 是否仲裁
-     *
-     * @return IS_AIBITRATION 是否仲裁
-     */
-    public String getIsAibitration() {
-        return isAibitration;
-    }
-
-    /**
-     * 是否仲裁
-     *
-     * @param isAibitration 是否仲裁
-     */
-    public void setIsAibitration(String isAibitration) {
-        this.isAibitration = isAibitration == null ? null : isAibitration.trim();
-    }
-
-    /**
-     * 仲裁人code
-     *
-     * @return AIBITRATION_USER_CODE 仲裁人code
-     */
-    public String getAibitrationUserCode() {
-        return aibitrationUserCode;
-    }
-
-    /**
-     * 仲裁人code
-     *
-     * @param aibitrationUserCode 仲裁人code
-     */
-    public void setAibitrationUserCode(String aibitrationUserCode) {
-        this.aibitrationUserCode = aibitrationUserCode == null ? null : aibitrationUserCode.trim();
-    }
-
-    /**
-     * 配置状态
-     *
-     * @return CONFIG_STATE 配置状态
-     */
     public String getConfigState() {
         return configState;
     }
 
-    /**
-     * 配置状态
-     *
-     * @param configState 配置状态
-     */
     public void setConfigState(String configState) {
-        this.configState = configState == null ? null : configState.trim();
+        this.configState = configState;
+    }
+
+    public Integer getCheckNum() {
+        return checkNum;
+    }
+
+    public void setCheckNum(Integer checkNum) {
+        this.checkNum = checkNum;
+    }
+
+    public String getCheckPassword() {
+        return checkPassword;
+    }
+
+    public void setCheckPassword(String checkPassword) {
+        this.checkPassword = checkPassword;
+    }
+
+    public Float getCheckScoreDifference() {
+        return checkScoreDifference;
+    }
+
+    public void setCheckScoreDifference(Float checkScoreDifference) {
+        this.checkScoreDifference = checkScoreDifference;
+    }
+
+    public String getIsAibitration() {
+        return isAibitration;
+    }
+
+    public void setIsAibitration(String isAibitration) {
+        this.isAibitration = isAibitration;
+    }
+
+    public String getAibitrationUserCode() {
+        return aibitrationUserCode;
+    }
+
+    public void setAibitrationUserCode(String aibitrationUserCode) {
+        this.aibitrationUserCode = aibitrationUserCode;
     }
 
     public Integer getPaperPerSetNum() {
-        return this.paperPerSetNum;
+        return paperPerSetNum;
     }
 
-    public void setPaperPerSetNum(final Integer paperPerSetNum) {
+    public void setPaperPerSetNum(Integer paperPerSetNum) {
         this.paperPerSetNum = paperPerSetNum;
     }
 
     public String getAuditCheckPass() {
-        return this.auditCheckPass;
+        return auditCheckPass;
     }
 
-    public void setAuditCheckPass(final String auditCheckPass) {
+    public void setAuditCheckPass(String auditCheckPass) {
         this.auditCheckPass = auditCheckPass;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String[] getDeptArr() {
+        return deptArr;
+    }
+
+    public void setDeptArr(String[] deptArr) {
+        this.deptArr = deptArr;
+    }
+
+    public String[] getUserArr() {
+        return userArr;
+    }
+
+    public void setUserArr(String[] userArr) {
+        this.userArr = userArr;
+    }
+
+    public String getExamTypeName() {
+        return examTypeName;
+    }
+
+    public void setExamTypeName(String examTypeName) {
+        this.examTypeName = examTypeName;
+    }
+
+    public List<ExamQueConfig> getExamQueConfigList() {
+        return examQueConfigList;
+    }
+
+    public void setExamQueConfigList(List<ExamQueConfig> examQueConfigList) {
+        this.examQueConfigList = examQueConfigList;
+    }
+
+    public List<String> getIdList() {
+        return idList;
+    }
+
+    public void setIdList(List<String> idList) {
+        this.idList = idList;
+    }
+
+    public List<CommonForm> getCommonForms() {
+        return commonForms;
+    }
+
+    public void setCommonForms(List<CommonForm> commonForms) {
+        this.commonForms = commonForms;
+    }
+
+    public List<QuestForm> getQfList() {
+        return qfList;
+    }
+
+    public void setQfList(List<QuestForm> qfList) {
+        this.qfList = qfList;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(String enabled) {
+        this.enabled = enabled;
+    }
+
+    public String[] getSpecialKnowledgeArr() {
+        return specialKnowledgeArr;
+    }
+
+    public void setSpecialKnowledgeArr(String[] specialKnowledgeArr) {
+        this.specialKnowledgeArr = specialKnowledgeArr;
     }
 }

@@ -538,4 +538,8 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
         return endScore;
     }
 
+    @Override
+    public void updateRemainTime(Double remainTime, String userExamId) {
+        userExamDao.updateRemainTimeById(remainTime, "1",userExamId);
+    }
 }

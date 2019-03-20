@@ -45,4 +45,6 @@ public interface UserExamService  extends AbstractService<UserExam> {
     boolean doCollect(String id, String recordId, Integer type);
 
     float calcGetInt(ExamConfig examConfig,double totalScore,String userId);
+
+    void updateRemainTime(Double remainTime,String userExamId);
 }

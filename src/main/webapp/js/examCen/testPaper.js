@@ -1,7 +1,12 @@
 // 配置ID
-var examConfigId = getUrlParam('id');
-var examStatus = getUrlParam("examStatus");
-var userExamId = getUrlParam("userExamId");
+document.oncontextmenu = function()
+{
+    return false;
+}
+var storage = window.sessionStorage;
+var examConfigId = storage.getItem("id");
+var examStatus = storage.getItem("examStatus");
+var userExamId = storage.getItem("userExamId");
 var vm = new Vue({
     el: '#app',
     data: {
@@ -100,13 +105,15 @@ var vm = new Vue({
         // 倒计时
         computeTime: function () {
             // 用计时器动态显示:间隔时间1s
-            this.lefttime -= 1000;
-            var results = this.figureTime(this.lefttime);
-            this.leftHours = results[0];
-            this.leftMinutes = results[1];
-            this.leftSeconds = results[2];
+            if (this.lefttime > 0 ) {
+                this.lefttime -= 1000;
+                var results = this.figureTime(this.lefttime);
+                this.leftHours = results[0];
+                this.leftMinutes = results[1];
+                this.leftSeconds = results[2];            }
             // 3个小时用完,强制提交
-           if (this.lefttime <= 0) {
+           if (this.lefttime == 0) {
+               this.timer = null;
                vm.submit();
                vm.$alert('时间到，考试结束！', '提示', {
                    confirmButtonText: '确定',
@@ -147,10 +154,11 @@ var vm = new Vue({
 
         // 路径方法
         goBack: function () {
-            vm.$confirm('保存成功!','提示', {
+            vm.$confirm('请先保存试卷，直接退出将不会保存答题内容，点击确定按钮继续退出!','提示', {
                 confirmButtonText: '确定',
-                type: 'success'
+                type: 'warning'
             }).then(function () {
+                updateRemainTime();
                 var parentWin = window.parent;
                 vm.goHomeButton.style.display = 'block';
                 vm.floatIcon.style.display = 'flex';
@@ -158,8 +166,35 @@ var vm = new Vue({
                     = 'modules/examCen/userExam.html';
             })
         },
+        updateRemainTime : function(){
+          <!--更新剩余时间-->
+            vm.userAnswerForm.remainingExamTime = vm.lefttime/60000;
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: baseURL + "user/exam/updateRemainTime",
+                data: JSON.stringify(
+                    vm.userAnswerForm
+                ),
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result.code === 0) {
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
         toHome: function () {
-            parent.location.reload()
+            vm.$confirm('请先保存试卷，直接返回首页将不会保存答题内容，点击确定按钮继续返回!','提示', {
+                confirmButtonText: '确定',
+                type: 'warning'
+            }).then(function () {
+                updateRemainTime();
+                parent.location.reload()
+            })
+
         },
         // 改变字体大小
         changeFontSize: function (e) {
@@ -219,7 +254,7 @@ var vm = new Vue({
             this.timer = null;
             // this.isSubmit = true;
             // 展示使用时间
-            // this.consumedTime();
+            this.consumedTime();
             vm.userAnswerForm.answerForm = [];
             vm.userAnswerForm.remainingExamTime = vm.lefttime/60000;
             for (var i = 0; i < vm.sinChoicList.length; i++) {
@@ -261,8 +296,7 @@ var vm = new Vue({
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     if (result.code === 0) {
-                        /*vm.$alert('您已交卷！', '提示', {
-                        vm.$confirm('确定提交？', '提示', {
+                        vm.$alert('您已交卷！', '提示', {
                             confirmButtonText: '确定',
                             callback: function () {
                                 var parentWin = window.parent;
@@ -271,7 +305,7 @@ var vm = new Vue({
                                 parentWin.document.getElementById("container").src
                                     = 'modules/examCen/userExam.html';
                             }
-                        });*/
+                        });
 
 
                     } else {
@@ -355,11 +389,18 @@ var vm = new Vue({
                     if (result.code === 0) {
                         console.log(result);
                         vm.examConfig = result.examConfig;
+                        var endTime = new Date(Date.parse(vm.examConfig.endTime.replace(/-/g,  "/")))
+                        var nowTime = new Date($.ajax({async: false}).getResponseHeader("Date"));
+                        var timeDiff = endTime - nowTime;
+
                         vm.user = result.user;
                         vm.userAnswerForm.userExamId = result.userExam.id;
                         vm.paperName = result.examConfig.examName;
                         // 考试时间
                         vm.lefttime = result.examConfig.examTime*60000;
+                        if (vm.lefttime>timeDiff){
+                            vm.lefttime = timeDiff;
+                        }
                         vm.displayTime = result.examConfig.examTime;
 
                         var _mul = result.mulChoicList;
@@ -387,6 +428,8 @@ var vm = new Vue({
                         vm.username = result.user.userName;
                         vm.computeTime();
                         vm.timer = setInterval(vm.computeTime,1000);
+                        storage.setItem("examStatus",'1');
+                        storage.setItem("userExamId", result.userExam.id);
                     } else {
                         alert(result.msg);
                         var parentWin = window.parent;
@@ -407,11 +450,17 @@ var vm = new Vue({
                     if (result.code === 0) {
                         vm.user = result.user;
                         vm.examConfig = result.examConfig;
+                        var endTime = new Date(Date.parse(vm.examConfig.endTime.replace(/-/g,  "/")))
+                        var nowTime = new Date($.ajax({async: false}).getResponseHeader("Date"));
+                        var timeDiff = endTime - nowTime;
+
                         // 考试人员
                         vm.username = result.user.userName;
                         vm.displayTime = result.examConfig.examTime;
                         vm.lefttime = result.userExam.remainingExamTime * 60000;
-
+                        if (vm.lefttime>timeDiff){
+                            vm.lefttime = timeDiff;
+                        }
                         vm.paperName = result.examConfig.examName;
 
                         vm.userAnswerForm.userExamId = result.userExam.id;

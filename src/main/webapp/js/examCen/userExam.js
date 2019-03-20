@@ -1,3 +1,4 @@
+var storage = window.sessionStorage;
 var vm = new Vue({
     el:'#app',
     data:{
@@ -92,6 +93,9 @@ var vm = new Vue({
             var id = row.id;
             var examStatus = row.examStatus;
             var userExamId = row.userExamId==null?'':row.userExamId;
+            storage.setItem("id",id);
+            storage.setItem("examStatus",examStatus);
+            storage.setItem("userExamId",userExamId);
             parentWin.document.getElementById("container").src
                 = 'modules/examCen/testPaper.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
         },

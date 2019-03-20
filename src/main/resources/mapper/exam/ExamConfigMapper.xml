@@ -1,36 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lawschool.dao.exam.ExamConfigDao">
-    <resultMap id="BaseResultMap" type="com.lawschool.beans.exam.ExamConfig">
-        <result column="ID" jdbcType="VARCHAR" property="id"/>
-        <result column="EXAM_NAME" jdbcType="VARCHAR" property="examName"/>
-        <result column="Special_knowledge_ID" jdbcType="VARCHAR" property="specialKnowledgeId"/>
-        <result column="GROUP_FORM" jdbcType="VARCHAR" property="groupForm"/>
-        <result column="EXAM_TYPE" jdbcType="VARCHAR" property="examType"/>
-        <result column="QUESTION_WAY" jdbcType="VARCHAR" property="questionWay"/>
-        <result column="TOPIC_ORDER_TYPE" jdbcType="VARCHAR" property="topicOrderType"/>
-        <result column="OPTION_ORDER_TYPE" jdbcType="VARCHAR" property="optionOrderType"/>
-        <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime"/>
-        <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime"/>
-        <result column="EXAM_TIME" jdbcType="DECIMAL" property="examTime"/>
-        <result column="ANSWER_SHOW_RULE" jdbcType="VARCHAR" property="answerShowRule"/>
-        <result column="EXAM_SCORE" jdbcType="DECIMAL" property="examScore"/>
-        <result column="PASS_PNT" jdbcType="DECIMAL" property="passPnt"/>
-        <result column="REACH_REWARD_TYPE" jdbcType="VARCHAR" property="reachRewardType"/>
-        <result column="REACH_REWARD" jdbcType="VARCHAR" property="reachReward"/>
-        <result column="ORGANIZED_ORG_CODE" jdbcType="VARCHAR" property="organizedOrgCode"/>
-        <result column="IS_SHOW_LAW" jdbcType="VARCHAR" property="isShowLaw"/>
-        <result column="IS_SHOW_LAW_PRORORTION" jdbcType="VARCHAR" property="isShowLawProrortion"/>
-        <result column="IS_MUST_TEST" jdbcType="VARCHAR" property="isMustTest"/>
-        <result column="EXAM_COUNT" jdbcType="DECIMAL" property="examCount"/>
-        <result column="CHECK_TYPE" jdbcType="VARCHAR" property="checkType"/>
-        <result column="CHECK_NUM" jdbcType="DECIMAL" property="checkNum"/>
-        <result column="CHECK_PASSWORD" jdbcType="VARCHAR" property="checkPassword"/>
-        <result column="CHECK_SCORE_DIFFERENCE" jdbcType="DECIMAL" property="checkScoreDifference"/>
-        <result column="IS_AIBITRATION" jdbcType="VARCHAR" property="isAibitration"/>
-        <result column="AIBITRATION_USER_CODE" jdbcType="VARCHAR" property="aibitrationUserCode"/>
-        <result column="CONFIG_STATE" jdbcType="VARCHAR" property="configState"/>
-    </resultMap>
     <insert id="insertSelective" parameterType="com.lawschool.beans.exam.ExamConfig">
         insert into LAW_EXAM_CONFIG
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -282,6 +252,7 @@
         t.question_type,
         t.answer_id,
         t.legal_basis,
+        ( SELECT name  FROM LAW_SYS_TOPIC WHERE id = t.SPECIAL_KNOWLEDGE_ID )AS specialknowledgeValue,
         t.answer_describle,
         t.answer_choice_number,
         q.score perScore
