@@ -194,7 +194,10 @@ var vm = new Vue({
                     if(result.data.length!="0")
                     {
 
-                        vm.$alert('请先删除原有配置，在添加新的配置');
+                        vm.$alert('请先删除原有配置,再添加新的配置！', '提示', { confirmButtonText: '确定', callback: function () {
+
+                        }
+                        });
                         vm.dialogConfig = false;
                     }
                     else

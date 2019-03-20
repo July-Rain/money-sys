@@ -20,15 +20,10 @@
             margin-right: 14px;
         }
         .layout .lay1 {
-            /*height: 100%;*/
-            min-width:360px;
-            width: 26.3543191800878vm;
+            width: calc(20% - 14px);
         }
         .layout .lay2{
-            margin-right: 0;
-            /*height: 604px;*/
-            min-width: 949px;
-            width: 69.4729136163982vm;
+            width: calc(80% - 14px)
         }
         .chart1,.chart2,.chart3{
             width: 100%;
@@ -70,7 +65,7 @@
             <div class="lay1">
                 <div class="chart1">
                     <img :src="img">
-                    <a href="javascript:;">{{name}}</a>
+                    <a href="javascript:;">{{user.fullName}}</a>
                 </div>
                 <div class="chart2">
                     <el-tabs type="border-card">
@@ -86,198 +81,199 @@
             <div class="lay2">
                 <div class="chart3">
                     <div class="little-title">历史记录</div>
-                    <!--<el-tabs type="border-card">-->
-                        <!--<el-tab-pane label="闯关">-->
-                            <!--<div>-->
 
-                                <!--<el-table-->
-                                        <!--:data="tableData"-->
-                                        <!--border-->
-                                        <!--style="width: 100%">-->
+                    <el-tabs type="border-card">
+                        <el-tab-pane label="闯关">
+                            <div>
 
-                                    <!--<el-table-column-->
-                                            <!--prop="createTime"-->
-                                            <!--label="时间"-->
-                                            <!--width="500"-->
-                                            <!--header-align="center"-->
-                                            <!--align="center">-->
-                                    <!--</el-table-column>-->
-                                    <!--<el-table-column-->
-                                            <!--prop="score"-->
-                                            <!--label="获得积分"-->
-                                            <!--width="400"-->
-                                            <!--header-align="center"-->
-                                            <!--align="center"-->
-                                    <!--&gt;-->
-                                    <!--</el-table-column>-->
-                                    <!--<el-table-column-->
-                                            <!--prop="howBig"-->
-                                            <!--label="第几大关"-->
-                                            <!--width="400"-->
-                                            <!--header-align="center"-->
-                                            <!--align="center"-->
-                                    <!--&gt;-->
-                                    <!--</el-table-column>-->
-                                    <!--<el-table-column-->
-                                            <!--prop="howLit"-->
-                                            <!--label="第几小关"-->
-                                            <!--width="400"-->
-                                            <!--header-align="center"-->
-                                            <!--align="center"-->
-                                    <!--&gt;-->
-                                    <!--</el-table-column>-->
+                                <el-table
+                                        :data="tableData"
+                                        border
+                                        style="width: 100%">
 
-                                    <!--&lt;!&ndash;<el-table-column&ndash;&gt;-->
-                                    <!--&lt;!&ndash;label="操作"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;header-align="center"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;align="center"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;width="180">&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<template slot-scope="scope">&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<el-button&ndash;&gt;-->
-                                    <!--&lt;!&ndash;size="mini"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;@click="look(scope.$index, scope.row)">查看关卡配置&ndash;&gt;-->
-                                    <!--&lt;!&ndash;</el-button>&ndash;&gt;-->
-
-                                    <!--&lt;!&ndash;</template>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;</el-table-column>&ndash;&gt;-->
-                                <!--</el-table>-->
-                                <!--<el-pagination-->
-                                        <!--@size-change="handleSizeChange"-->
-                                        <!--@current-change="handleCurrentChange"-->
-                                        <!--:current-page="formInline.currPage"-->
-                                        <!--:page-sizes="[10, 20, 30, 40]"-->
-                                        <!--:page-size="formInline.pageSize"-->
-                                        <!--layout="total, sizes, prev, pager, next, jumper"-->
-                                        <!--:total="formInline.totalCount">-->
-                                <!--</el-pagination>-->
-                            <!--</div>-->
-                        <!--</el-tab-pane>-->
-
-                        <!--<el-tab-pane label="在线比武">-->
-                            <!--<div>-->
-
-                                <!--<el-table-->
-                                        <!--:data="tableData2"-->
-                                        <!--border-->
-                                        <!--style="width: 100%">-->
-                                    <!--<el-table-column-->
-                                            <!--prop="type"-->
-                                            <!--label="类型"-->
-                                            <!--width="350"-->
-                                            <!--header-align="center"-->
-                                            <!--align="center">-->
-                                        <!--<template slot-scope="scope">-->
-                                            <!--{{scope.row.type=='OnlinPk'?"在线比武":scope.row.type=='OnlinPkByCode' ?"邀请码1对1比武":"组队比武"}}-->
-                                        <!--</template>-->
-                                    <!--</el-table-column>-->
-                                    <!--<el-table-column-->
-                                            <!--prop="createTime"-->
-                                            <!--label="时间"-->
-                                            <!--width="350"-->
-                                            <!--header-align="center"-->
-                                            <!--align="center">-->
-                                    <!--</el-table-column>-->
-                                    <!--<el-table-column-->
-                                            <!--prop="score"-->
-                                            <!--label="获得积分"-->
-                                            <!--width="350"-->
-                                            <!--header-align="center"-->
-                                            <!--align="center"-->
-                                    <!--&gt;-->
-                                    <!--</el-table-column>-->
-                                    <!--<el-table-column-->
-                                            <!--prop="enemyName"-->
-                                            <!--label="对手"-->
-                                            <!--width="350"-->
-                                            <!--header-align="center"-->
-                                            <!--align="center"-->
-                                    <!--&gt;-->
-                                        <!--<template slot-scope="scope">-->
-                                            <!--{{scope.row.type=='teamOnline'?scope.row.enemyName+"的队伍":scope.row.enemyName}}-->
-                                        <!--</template>-->
-                                    <!--</el-table-column>-->
-                                    <!--<el-table-column-->
-                                            <!--prop="whetherWin"-->
-                                            <!--label="是否获胜"-->
-                                            <!--width="400"-->
-                                            <!--header-align="center"-->
-                                            <!--align="center"-->
-                                    <!--&gt;-->
-                                        <!--<template slot-scope="scope">-->
-                                            <!--{{scope.row.whetherWin==1?"获胜":"失败"}}-->
-                                        <!--</template>-->
-                                    <!--</el-table-column>-->
-
-
-                                <!--</el-table>-->
-                                <!--<el-pagination-->
-                                        <!--@size-change="handleSizeChange2"-->
-                                        <!--@current-change="handleCurrentChange2"-->
-                                        <!--:current-page="formInline2.currPage"-->
-                                        <!--:page-sizes="[10, 20, 30, 40]"-->
-                                        <!--:page-size="formInline2.pageSize"-->
-                                        <!--layout="total, sizes, prev, pager, next, jumper"-->
-                                        <!--:total="formInline2.totalCount">-->
-                                <!--</el-pagination>-->
-                            <!--</div>-->
-                        <!--</el-tab-pane>-->
-                        <!--<el-tab-pane label="擂台赛">-->
-                            <!--<div>-->
-
-                                <!--<el-table-->
-                                        <!--:data="tableData3"-->
-                                        <!--border-->
-                                        <!--style="width: 100%">-->
+                                    <el-table-column
+                                            prop="createTime"
+                                            label="时间"
+                                            width="500"
+                                            header-align="center"
+                                            align="center">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="score"
+                                            label="获得积分"
+                                            width="400"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="howBig"
+                                            label="第几大关"
+                                            width="400"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="howLit"
+                                            label="第几小关"
+                                            width="400"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                    </el-table-column>
 
                                     <!--<el-table-column-->
-                                            <!--prop="createTime"-->
-                                            <!--label="时间"-->
-                                            <!--width="500"-->
-                                            <!--header-align="center"-->
-                                            <!--align="center">-->
+                                    <!--label="操作"-->
+                                    <!--header-align="center"-->
+                                    <!--align="center"-->
+                                    <!--width="180">-->
+                                    <!--<template slot-scope="scope">-->
+                                    <!--<el-button-->
+                                    <!--size="mini"-->
+                                    <!--@click="look(scope.$index, scope.row)">查看关卡配置-->
+                                    <!--</el-button>-->
+
+                                    <!--</template>-->
                                     <!--</el-table-column>-->
-                                    <!--<el-table-column-->
-                                            <!--prop="score"-->
-                                            <!--label="获得积分"-->
-                                            <!--width="400"-->
-                                            <!--header-align="center"-->
-                                            <!--align="center"-->
-                                    <!--&gt;-->
-                                    <!--</el-table-column>-->
-                                    <!--<el-table-column-->
-                                            <!--prop="enemyName"-->
-                                            <!--label="对手"-->
-                                            <!--width="400"-->
-                                            <!--header-align="center"-->
-                                            <!--align="center"-->
-                                    <!--&gt;-->
-                                    <!--</el-table-column>-->
-                                    <!--<el-table-column-->
-                                            <!--prop="whetherWin"-->
-                                            <!--label="是否获胜"-->
-                                            <!--width="400"-->
-                                            <!--header-align="center"-->
-                                            <!--align="center"-->
-                                    <!--&gt;-->
-                                        <!--<template slot-scope="scope">-->
-                                            <!--{{scope.row.whetherWin==1?"获胜":"失败"}}-->
-                                        <!--</template>-->
-                                    <!--</el-table-column>-->
+                                </el-table>
+                                <el-pagination
+                                        @size-change="handleSizeChange"
+                                        @current-change="handleCurrentChange"
+                                        :current-page="formInline.currPage"
+                                        :page-sizes="[10, 20, 30, 40]"
+                                        :page-size="formInline.pageSize"
+                                        layout="total, sizes, prev, pager, next, jumper"
+                                        :total="formInline.totalCount">
+                                </el-pagination>
+                            </div>
+                        </el-tab-pane>
+
+                        <el-tab-pane label="在线比武">
+                            <div>
+
+                                <el-table
+                                        :data="tableData2"
+                                        border
+                                        style="width: 100%">
+                                    <el-table-column
+                                            prop="type"
+                                            label="类型"
+                                            width="350"
+                                            header-align="center"
+                                            align="center">
+                                        <template slot-scope="scope">
+                                            {{scope.row.type=='OnlinPk'?"在线比武":scope.row.type=='OnlinPkByCode' ?"邀请码1对1比武":"组队比武"}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="createTime"
+                                            label="时间"
+                                            width="350"
+                                            header-align="center"
+                                            align="center">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="score"
+                                            label="获得积分"
+                                            width="350"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="enemyName"
+                                            label="对手"
+                                            width="350"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                        <template slot-scope="scope">
+                                            {{scope.row.type=='teamOnline'?scope.row.enemyName+"的队伍":scope.row.enemyName}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="whetherWin"
+                                            label="是否获胜"
+                                            width="400"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                        <template slot-scope="scope">
+                                            {{scope.row.whetherWin==1?"获胜":"失败"}}
+                                        </template>
+                                    </el-table-column>
 
 
-                                <!--</el-table>-->
-                                <!--<el-pagination-->
-                                        <!--@size-change="handleSizeChange3"-->
-                                        <!--@current-change="handleCurrentChange3"-->
-                                        <!--:current-page="formInline3.currPage"-->
-                                        <!--:page-sizes="[10, 20, 30, 40]"-->
-                                        <!--:page-size="formInline3.pageSize"-->
-                                        <!--layout="total, sizes, prev, pager, next, jumper"-->
-                                        <!--:total="formInline3.totalCount">-->
-                                <!--</el-pagination>-->
-                            <!--</div>-->
-                        <!--</el-tab-pane>-->
-                    <!--</el-tabs>-->
+                                </el-table>
+                                <el-pagination
+                                        @size-change="handleSizeChange2"
+                                        @current-change="handleCurrentChange2"
+                                        :current-page="formInline2.currPage"
+                                        :page-sizes="[10, 20, 30, 40]"
+                                        :page-size="formInline2.pageSize"
+                                        layout="total, sizes, prev, pager, next, jumper"
+                                        :total="formInline2.totalCount">
+                                </el-pagination>
+                            </div>
+                        </el-tab-pane>
+                        <el-tab-pane label="擂台赛">
+                            <div>
+
+                                <el-table
+                                        :data="tableData3"
+                                        border
+                                        style="width: 100%">
+
+                                    <el-table-column
+                                            prop="createTime"
+                                            label="时间"
+                                            width="500"
+                                            header-align="center"
+                                            align="center">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="score"
+                                            label="获得积分"
+                                            width="400"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="enemyName"
+                                            label="对手"
+                                            width="400"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="whetherWin"
+                                            label="是否获胜"
+                                            width="400"
+                                            header-align="center"
+                                            align="center"
+                                    >
+                                        <template slot-scope="scope">
+                                            {{scope.row.whetherWin==1?"获胜":"失败"}}
+                                        </template>
+                                    </el-table-column>
+
+
+                                </el-table>
+                                <el-pagination
+                                        @size-change="handleSizeChange3"
+                                        @current-change="handleCurrentChange3"
+                                        :current-page="formInline3.currPage"
+                                        :page-sizes="[10, 20, 30, 40]"
+                                        :page-size="formInline3.pageSize"
+                                        layout="total, sizes, prev, pager, next, jumper"
+                                        :total="formInline3.totalCount">
+                                </el-pagination>
+                            </div>
+                        </el-tab-pane>
+                    </el-tabs>
                 </div>
             </div>
         </div>

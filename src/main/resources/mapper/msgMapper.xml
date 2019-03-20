@@ -141,9 +141,14 @@
         RELEASE_STATE AS "releaseState"
         FROM
         LAW_SYS_MSG_WITHIN_STATION
-        WHERE
 
-        RECIEVE_PEOPLE LIKE   '%' || #{userId} || '%'
+        WHERE
+        (
+            DEPT_IDS LIKE '%' || #{deptId} || '%'
+            OR
+            RECIEVE_PEOPLE LIKE   '%' || #{userId} || '%'
+        )
+
         AND 	RELEASE_STATE='1'
         order by RECIEVE_DATE desc
     </select>
@@ -155,7 +160,12 @@
         FROM
         LAW_SYS_MSG_WITHIN_STATION
         WHERE
-        RECIEVE_PEOPLE LIKE   '%' || #{userId} || '%'
+
+        (
+            DEPT_IDS LIKE '%' || #{deptId} || '%'
+            OR
+            RECIEVE_PEOPLE LIKE   '%' || #{userId} || '%'
+        )
          AND 	RELEASE_STATE='1'
     </select>
 </mapper>

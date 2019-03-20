@@ -169,6 +169,7 @@ public class MsgController extends AbstractController{
     public Result findMsgList(@RequestParam Map<String,Object> param){
 
         param.put("userId",getUser().getId());
+        param.put("deptId",getUser().getOrgId());
         PageUtils pageUtils = msgService.findMsgList(param);
         return Result.ok().put("page",pageUtils);
 
