@@ -108,8 +108,21 @@ var vm = new Vue({
         },
         // 表单重置
         resetForm: function (formName) {
-            this.formInline.stuLawid="";
-            this.$refs[formName].resetFields();
+            // this.formInline.stuLawid="";
+            // this.$refs[formName].resetFields();
+
+
+            vm.formInline= { // 搜索表单
+                stuType:"pic",
+                    currPage: 1,
+                    pageSize: 10,
+                    totalCount:0,
+                    stuLawName:"",
+                    stuIssuer:"",
+                    startTime:"",
+                    endTime:"",
+            };
+            this.reload();
         },
         handleDel: function (id) {
             // vm.delIdArr.push(row.collectionId);

@@ -59,7 +59,16 @@ var vm = new Vue({
             this.reload();
         },
         resetForm: function (formName) {
-            this.$refs[formName].resetFields();
+            // this.$refs[formName].resetFields();
+            vm.formInline= { // 搜索表单
+                currPage: 1,
+                    pageSize: 10,
+                    totalCount: 0,
+                    startTime:"",
+                    endTime:"",
+                    type:"",
+            };
+            this.reload();
         },
         handleSizeChange: function (val) {
             this.formInline.pageSize = val;

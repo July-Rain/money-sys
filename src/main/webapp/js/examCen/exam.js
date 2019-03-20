@@ -91,7 +91,16 @@ var vm = new Vue({
 
         },
         resetForm: function (formName) {
-            this.$refs[formName].resetFields();
+            // this.$refs[formName].resetFields();
+            vm.formInline={ // 搜索表单
+                examName: '',
+                    startTime: '',
+                    endTime: '',
+                    page: 1,
+                    limit: 10,
+                    count: 0
+            };
+            this.reload();
         },
         handleEdit: function (index, row) {
             storage.setItem("operate",2); //修改
