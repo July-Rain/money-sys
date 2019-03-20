@@ -547,6 +547,10 @@ var vm = new Vue({
                     vm.stuMedia.userName = vm.stuMedia.userName + ',' + val[i].userName;
                 }
             }
+            if(vm.stuMedia.userIds){
+                this.stuMedia.userArr=vm.stuMedia.userIds.split(",");
+            }
+
             this.dialogUser = false;
         },
         cancelUser: function () {
@@ -637,6 +641,8 @@ var vm = new Vue({
             this.dialogLaw = true;
         },
         cancelLaw: function () {
+            //!!
+            this.$refs.lawTree.setCheckedKeys([])
             this.dialogLaw = false;
         },
         confimLaw: function () {
@@ -646,8 +652,8 @@ var vm = new Vue({
                 alert("最多只能选择5个法律法规分类");
                 return;
             }
-            vm.stuMedia.caseLawid = "";
-            vm.stuMedia.caseLawname = "";
+            this.stuMedia.stuLawid = "";
+            this.stuMedia.stuKnowledge = "";
             for (var i = 0; i < this.multipleLawSelection.length; i++) {
                 if (!this.stuMedia.stuLawid) {
                     this.stuMedia.stuLawid = this.multipleLawSelection[i].classifyId;
