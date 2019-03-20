@@ -67,8 +67,19 @@ var vm = new Vue({
         },
         // 表单重置
         resetForm: function (formName) {
-            this.$refs[formName].resetFields();
+            // this.$refs[formName].resetFields();
+            vm.formInline={ // 搜索表单
+                username: '',
+                    operation: '',
+                    startTime: "",
+                    endTime: "",
+                    currPage: 1,
+                    pageSize: 10,
+                    totalCount: 0
+            };
+            this.reload();
         },
+
         closeDia: function () {
             this.dialogConfig = false;
             vm.reload();

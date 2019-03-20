@@ -200,11 +200,11 @@
             <el-form :model="form" label-width="100px" size="mini" :rules="rules" ref="form">
                 <el-col :span="24">
                     <el-form-item label="试题描述：" prop="comContent">
-                        <el-input v-model="form.comContent" autocomplete="off"></el-input>
+                        <el-input v-model="form.comContent" autocomplete="off" :disabled="!lookType"></el-input>
                     </el-form-item>
 
                     <el-form-item label="试题分类：">
-                        <el-radio-group v-model="form.typeId">
+                        <el-radio-group v-model="form.typeId" :disabled="!lookType">
                             <el-radio v-for="item in typeList" :label="item.key">{{item.value}}</el-radio>
                         </el-radio-group>
 
@@ -224,7 +224,7 @@
                                    class="avatar-uploader el-upload--text"
                                    :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess"
                                    :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
-                            <el-button type="primary">点击上传</el-button>
+                            <el-button type="primary" :disabled="!lookType">点击上传</el-button>
 
                         </el-upload>
                         <p class="text" v-if="lookType">请保证视频格式正确，且不超过100M</p>
@@ -234,13 +234,13 @@
 
 
                     <el-form-item label="试题类型：">
-                        <el-radio-group v-model="form.questionType">
+                        <el-radio-group v-model="form.questionType" :disabled="!lookType">
                             <el-radio v-if="item.value != '主观题'" v-for="item in qtList" :label="item.key">{{item.value}}</el-radio>
                         </el-radio-group>
                     </el-form-item>
 
-                    <el-form-item label="配置选项：" >
-                        <el-button size="mini" type="primary" @click="addAnswer">添加选项</el-button>
+                    <el-form-item label="配置选项：">
+                        <el-button size="mini" type="primary" @click="addAnswer" :disabled="!lookType">添加选项</el-button>
                     </el-form-item>
                     <el-table
                             :data="form.answerList"
@@ -290,7 +290,7 @@
                                 align="center"
                                 prop="status">
                             <template slot-scope="scope">
-                                <el-button type="primary" size="mini" @click="delanswer(scope)">
+                                <el-button type="primary" :disabled="!lookType" size="mini" @click="delanswer(scope)">
                                     删除
                                 </el-button>
                             </template>
@@ -298,13 +298,13 @@
                     </el-table>
 
                     <el-form-item label="试题难度：">
-                        <el-radio v-for="item in diffList" v-model="form.questionDifficulty" :label="item.key">
+                        <el-radio v-for="item in diffList" v-model="form.questionDifficulty" :label="item.key" :disabled="!lookType">
                             {{item.value}}
                         </el-radio>
                     </el-form-item>
 
-                    <el-form-item label="主题类型：" >
-                        <el-select v-model="form.specialKnowledgeId" placeholder="请选择">
+                    <el-form-item label="主题类型：">
+                        <el-select v-model="form.specialKnowledgeId" placeholder="请选择" :disabled="!lookType">
                             <el-option
                                     v-for="item in topicList"
                                     :key="item.key"
@@ -319,7 +319,7 @@
                     <!--</el-form-item>-->
 
                     <el-form-item label="答案描述：" prop="answerDescrible">
-                        <el-input v-model="form.answerDescrible" autocomplete="off"></el-input>
+                        <el-input v-model="form.answerDescrible" autocomplete="off" :disabled="!lookType"></el-input>
                     </el-form-item>
 
                 </el-col>

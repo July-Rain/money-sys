@@ -71,7 +71,20 @@ var vm = new Vue({
         },
         // 表单重置
         resetForm: function (formName) {
-            this.$refs[formName].resetFields();
+            // this.$refs[formName].resetFields();
+            vm.formInline= { // 搜索表单
+                id:'',
+                    userName: '',
+                    userPoliceId: '',
+                    orgCode:'',
+                    identify:'1',//表明是教官
+                    currPage: 1,
+                    pageSize:10,
+                    totalCount: 0,
+                    userStatus:'2000'
+            },
+            vm.reload();
+
         },
         closeDia : function(){
             this.dialogConfig=false;
