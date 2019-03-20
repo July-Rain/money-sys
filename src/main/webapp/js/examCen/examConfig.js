@@ -79,7 +79,8 @@ var vm = new Vue({
                 reachRewardType: "10038",
                 examType: "10025",
                 groupForm: "10028",
-                questionWay: "10033"
+                questionWay: "10033",
+                reachReward: 0
             },
             rules: {//表单验证规则
                 examName: [
@@ -345,7 +346,9 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function (result) {
                     if (result.code === 0) {
+                        debugger
                         vm.examConfig = result.examConfig;
+                        vm.examConfig.reachReward = 0;
                         if (result.examQueConfiglist.length > 0) {
                             vm.randomQuesData = result.examQueConfiglist;
                             console.info(vm.randomQuesData);
@@ -795,7 +798,10 @@ var vm = new Vue({
                     contentType: "application/json",
                     success: function (result) {
                         if (result.code === 0) {
-                            alert('试题配置完成');
+                            vm.$message({
+                                message: '试题配置完成',
+                                type: 'success'
+                            });
                             vm.setExam = false;
                             if (operate == 0) {
                                 window.parent.vm.dialogAdd = false;
@@ -937,7 +943,10 @@ var vm = new Vue({
                         }
                         window.parent.vm.reload();
                     } else {
-                        alert(result.msg);
+                        vm.$message({
+                            message: result.msg,
+                            type: 'warning'
+                        });
                         vm.genRandQue = false;
                     }
                 }

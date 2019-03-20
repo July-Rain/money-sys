@@ -17,7 +17,9 @@ var vm = new Vue({
         iconString:'icon-xunzhang',
         individual: null,
         srcphoto: baseURL+"/statics/img/police_head.png",
-        username: ''
+        username: '',
+        personItem: null,
+        isShow: false
     },
     created: function () {
         this.$nextTick(function () {
@@ -160,6 +162,7 @@ var vm = new Vue({
                     } else {
                         alert(result.msg);
                     }
+                    vm.personItem = vm.navData[6];
                 }
             });
         },
@@ -168,7 +171,6 @@ var vm = new Vue({
             console.log(key, keyPath);
         },
         toChild: function (item,event) {
-            console.info(item, baseURL);
             if(item.url === null){
                 return
             }
@@ -228,7 +230,10 @@ var vm = new Vue({
             window.location.href = baseURL + 'logout';
         },
         toPersonCenter: function () {
-            document.getElementById('container').src = baseURL + "modules/personalCen/messageRemind.html?id=1072374227602251777";
+            vm.toChild(vm.personItem);
         },
+        display: function (e) {
+            vm.isShow = !vm.isShow;
+        }
     }
 });

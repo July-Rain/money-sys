@@ -46,14 +46,14 @@
                                 v-if="questionForm.questionType==10004 || questionForm.questionType==10006"
                                 :disabled="showAnswer">
                     <el-radio :label="answer.id" v-for="(answer,index) in questionForm.answer" :key="index">
-                        {{indexs[index]}} {{answer.questionContent}}
+                        {{indexs[index]}}、{{answer.questionContent}}
                     </el-radio>
                 </el-radio-group>
 
                 <!--多选题-->
                 <el-checkbox-group v-model="answers" v-if="questionForm.questionType==10005" :disabled="showAnswer">
                     <el-checkbox :label="answer.id" v-for="(answer,index) in questionForm.answer" :key="index">
-                      {{indexs[index]}}  {{answer.questionContent}}
+                      {{indexs[index]}}、{{answer.questionContent}}
                     </el-checkbox>
                 </el-checkbox-group>
 

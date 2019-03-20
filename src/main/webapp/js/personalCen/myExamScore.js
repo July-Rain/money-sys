@@ -37,6 +37,11 @@ var vm = new Vue({
             vm.formInline.page = event;
             this.reload();
         },
+        resetForm: function (formName) {
+            this.formInline.examName="";
+            this.$refs[formName].resetFields();
+            this.reload();
+        },
         reload: function () {
             $.ajax({
                 type: "POST",

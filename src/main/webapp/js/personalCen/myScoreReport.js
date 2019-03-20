@@ -78,6 +78,7 @@ var vm = new Vue({
         judStarIcon: [],
         subStarIcon: [],
         optionIndex: ['A', 'B', 'C', 'D', 'E', 'F'],
+        subjectScore: 0
     },
     created: function () {
         this.$nextTick(function () {
@@ -171,6 +172,7 @@ var vm = new Vue({
                         vm.barData[3].totalNum = vm.subjectList.length;
                         if (vm.subjectList) {
                             for (var i = 0; i < vm.subjectList.length; i++) {
+                                vm.subjectScore += vm.subjectList[i].score;
                                 if (vm.subjectList[i].userAnswer) {
                                     vm.subject.push(vm.subjectList[i].userAnswer);
                                     vm.barData[3].currentFinishedNum++;

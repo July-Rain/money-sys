@@ -530,6 +530,7 @@ public class UserExamServiceImpl extends AbstractServiceImpl<UserExamDao, UserEx
             }
             integral.setType(type);
             integral.setSrc("exam");
+            integral.setPoint(endScore);
             integralService.addIntegralRecord(integral,user);
         }else {
             endScore = 0f;

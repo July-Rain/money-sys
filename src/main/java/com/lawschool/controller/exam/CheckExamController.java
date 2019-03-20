@@ -130,7 +130,7 @@ public class CheckExamController extends AbstractController {
     @RequestMapping( value = "/auditCheckExam" , method = RequestMethod.POST)
     public Result auditCheckExam(String userExamId){
 
-        Result res = checkExamService.startCheckExam(userExamId);
+        Result res = checkExamService.auditCheckExam(userExamId);
 
         return res;
     }
