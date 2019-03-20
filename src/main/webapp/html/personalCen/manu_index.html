@@ -200,11 +200,11 @@
             <el-form :model="form" label-width="100px" size="mini" :rules="rules" ref="form">
                 <el-col :span="24">
                     <el-form-item label="试题描述：" prop="comContent">
-                        <el-input v-model="form.comContent" autocomplete="off"></el-input>
+                        <el-input v-model="form.comContent" autocomplete="off" :disabled="!lookType"></el-input>
                     </el-form-item>
 
                     <el-form-item label="试题分类：">
-                        <el-radio-group v-model="form.typeId">
+                        <el-radio-group v-model="form.typeId" :disabled="!lookType">
                             <el-radio v-for="item in typeList" :label="item.key">{{item.value}}</el-radio>
                         </el-radio-group>
 
@@ -224,7 +224,7 @@
                                    class="avatar-uploader el-upload--text"
                                    :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess"
                                    :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
-                            <el-button type="primary">点击上传</el-button>
+                            <el-button type="primary" :disabled="!lookType">点击上传</el-button>
 
                         </el-upload>
                         <p class="text" v-if="lookType">请保证视频格式正确，且不超过100M</p>
@@ -234,13 +234,13 @@
 
 
                     <el-form-item label="试题类型：">
-                        <el-radio-group v-model="form.questionType">
+                        <el-radio-group v-model="form.questionType" :disabled="!lookType">
                             <el-radio v-if="item.value != '主观题'" v-for="item in qtList" :label="item.key">{{item.value}}</el-radio>
                         </el-radio-group>
                     </el-form-item>
 
-                    <el-form-item label="配置选项：" >
-                        <el-button size="mini" type="primary" @click="addAnswer">添加选项</el-button>
+                    <el-form-item label="配置选项：">
+                        <el-button size="mini" type="primary" @click="addAnswer" :disabled="!lookType">添加选项</el-button>
                     </el-form-item>
                     <el-table
                             :data="form.answerList"
@@ -290,7 +290,7 @@
                                 align="center"
                                 prop="status">
                             <template slot-scope="scope">
-                                <el-button type="primary" size="mini" @click="delanswer(scope)">
+                                <el-button type="primary" :disabled="!lookType" size="mini" @click="delanswer(scope)">
                                     删除
                                 </el-button>
                             </template>
@@ -298,13 +298,13 @@
                     </el-table>
 
                     <el-form-item label="试题难度：">
-                        <el-radio v-for="item in diffList" v-model="form.questionDifficulty" :label="item.key">
+                        <el-radio v-for="item in diffList" v-model="form.questionDifficulty" :label="item.key" :disabled="!lookType">
                             {{item.value}}
                         </el-radio>
                     </el-form-item>
 
-                    <el-form-item label="主题类型：" >
-                        <el-select v-model="form.specialKnowledgeId" placeholder="请选择">
+                    <el-form-item label="主题类型：">
+                        <el-select v-model="form.specialKnowledgeId" placeholder="请选择" :disabled="!lookType">
                             <el-option
                                     v-for="item in topicList"
                                     :key="item.key"
@@ -319,7 +319,7 @@
                     <!--</el-form-item>-->
 
                     <el-form-item label="答案描述：" prop="answerDescrible">
-                        <el-input v-model="form.answerDescrible" autocomplete="off"></el-input>
+                        <el-input v-model="form.answerDescrible" autocomplete="off" :disabled="!lookType"></el-input>
                     </el-form-item>
 
                 </el-col>
@@ -365,14 +365,14 @@
             <el-col :span="24">
                 <el-form :model="stuMedia" label-width="100px" class="demo-stuMedia" size="mini" :rules="rules2" ref="stuMedia">
                     <el-form-item label="资料类型" prop="stuType">
-                        <el-radio-group v-model="stuMedia.stuType" @change="changeStuType">
+                        <el-radio-group v-model="stuMedia.stuType" @change="changeStuType" :disabled="!lookType">
                             <el-radio label="pic">图文</el-radio>
                             <el-radio label="audio">音频</el-radio>
                             <el-radio label="video">视频</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="标题" prop="stuTitle" >
-                        <el-input v-model="stuMedia.stuTitle" placeholder="请输入标题" clearable></el-input>
+                        <el-input v-model="stuMedia.stuTitle" placeholder="请输入标题" clearable :disabled="!lookType"></el-input>
                     </el-form-item>
                     <template v-show="stuMedia.stuType=='pic'">
                         <el-form-item label="内容" prop="comContent"  v-show="stuMedia.stuType=='pic'">
@@ -396,24 +396,11 @@
                             <el-upload name="importfile" class="avatar-uploader el-upload--text"
                                        :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess"
                                        :before-upload="beforeAudioUpload" :on-progress="uploadVideoProcess">
-                                <el-button type="primary">点击上传</el-button>
+                                <el-button type="primary" :disabled="!lookType">点击上传</el-button>
                             </el-upload>
                         </el-form-item>
                     </template>
                     <template v-if="stuMedia.stuType=='video'">
-                        <!--<el-form-item label="视频封面上传" prop="videoPicAcc">-->
-                            <!--<el-upload-->
-                                    <!--class="avatar-uploader"-->
-                                    <!--name="importfile"-->
-                                    <!--:action="importFileUrl"-->
-                                    <!--:show-file-list="false"-->
-                                    <!--:on-success="handlePicSuccess"-->
-                                    <!--:before-upload="beforePicUpload">-->
-                                <!--<img width="320" height="180" v-if="stuMedia.videoPicAcc !=''" :src="stuMedia.videoPicAccUrl" class="avatar">-->
-                                <!--<i v-else class="iconfont icon-tupian"></i>-->
-                            <!--</el-upload>-->
-                            <!--<P class="text">请保证图片格式正确，作为视频封面</P>-->
-                        <!--</el-form-item>-->
                         <el-form-item label="视频封面上传：" prop="videoPicAcc">
                             <img v-if="stuMedia.videoPicAcc !=''" :src="stuMedia.videoPicAccUrl" class="avatar">
                             <i v-if="stuMedia.videoPicAcc ==''" class="iconfont icon-tupian"></i>
@@ -429,15 +416,6 @@
                             </el-upload>
                             <p class="text">请保证图片格式正确，作为视频封面</p>
                         </el-form-item>
-                        <!--<el-form-item label="视频上传" prop="comContent">-->
-                            <!--&lt;!&ndash; action必选参数, 上传的地址 &ndash;&gt;-->
-                            <!--<el-upload name="importfile" class="avatar-uploader el-upload&#45;&#45;text" :action="importFileUrl" :show-file-list="false" :on-success="uploadStuSuccess" :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">-->
-                                <!--<video width="320" height="180" v-if="stuMedia.comContent !='' && videoFlag == false" :src="stuMedia.contentUrl" class="avatar" controls="controls" >您的浏览器不支持视频播放</video>-->
-                                <!--<i v-else-if="stuMedia.comContent =='' && videoFlag == false" class="iconfont icon-shipin"></i>-->
-                                <!--<el-progress v-if="videoFlag == true" type="circle" :percentage="videoUploadPercent" style="margin-top:30px;"></el-progress>-->
-                            <!--</el-upload>-->
-                            <!--<P class="text">请保证视频格式正确，且不超过100M</P>-->
-                        <!--</el-form-item>-->
 
                         <el-form-item label="视频上传：" prop="comContent">
                             <video id="video" v-show="stuMedia.comContent !='' && videoFlag == false"
@@ -453,14 +431,14 @@
                                        class="avatar-uploader el-upload--text"
                                        :action="importFileUrl" :show-file-list="false" :on-success="uploadSuccess"
                                        :before-upload="beforeAvatarUpload" :on-progress="uploadVideoProcess">
-                                <el-button type="primary">点击上传</el-button>
+                                <el-button type="primary" :disabled="!lookType">点击上传</el-button>
 
                             </el-upload>
                             <p class="text">请保证视频格式正确，且不超过100M</p>
                         </el-form-item>
                     </template>
                     <el-form-item label="所属警种" prop="stuPoliceclass" >
-                        <el-select v-model="stuMedia.stuPoliceclass" placeholder="所属警种" >
+                        <el-select v-model="stuMedia.stuPoliceclass" placeholder="所属警种" :disabled="!lookType">
                             <el-option
                                     v-for="item in stuPoliceclassOption"
                                     :key="item.key"
@@ -472,16 +450,16 @@
                     </el-form-item>
                     <el-form-item label="法律主题分类：" prop="stuKnowledge">
                         <el-input v-model="stuMedia.stuKnowledge" readonly @focus="chooseLaw" placeholder="请选择法律主题分类"
-                                  clearable></el-input>
+                                  clearable :disabled="!lookType"></el-input>
                     </el-form-item>
                     <el-form-item label="使用部门" prop="deptName">
-                        <el-input v-model="stuMedia.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门" clearable></el-input>
+                        <el-input v-model="stuMedia.deptName" readonly @focus="chooseDept" placeholder="请选择使用部门" clearable :disabled="!lookType"></el-input>
                     </el-form-item>
                     <el-form-item label="使用人员" prop="userName">
-                        <el-input v-model="stuMedia.userName" readonly @focus="chooseUser" placeholder="请选择使用人员" clearable></el-input>
+                        <el-input v-model="stuMedia.userName" readonly @focus="chooseUser" placeholder="请选择使用人员" clearable :disabled="!lookType"></el-input>
                     </el-form-item>
                     <el-form-item label="描述" prop="stuDescribe">
-                        <el-input type="textarea" maxlength="200" v-model="stuMedia.stuDescribe"></el-input>
+                        <el-input type="textarea" maxlength="200" v-model="stuMedia.stuDescribe" :disabled="!lookType"></el-input>
                     </el-form-item>
                 </el-form>
             </el-col>

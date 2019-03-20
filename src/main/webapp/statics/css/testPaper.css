@@ -206,12 +206,12 @@ html {
 /* bar 样式 */
 .bar .category {
     width: 50%;
-    margin: 20px auto;
+    margin: 20px auto 10px;
 }
 .bar .time {
     width: 100%;
     margin: 30px auto 0;
-    padding-bottom: 25px;
+    padding-bottom: 30px;
     text-align: center;
     border-bottom: 1px solid #dddddd;
 }
@@ -226,7 +226,7 @@ html {
 }
 .bar .time .duration>span {
     display: block;
-    margin-top: 25px;
+    margin-top: 30px;
 }
 .bar .time .duration>span span {
     padding: 8px;
@@ -260,7 +260,7 @@ html {
     position: absolute;
     padding-left: calc(50% - 80px);
     width: 100%;
-    padding-top: 21px;
+    padding-top: 16px;
     border-top: 1px solid #dddddd;
 }
 .bar .buttons .el-button {
@@ -300,6 +300,32 @@ html {
 }
 .bar .display .red {
     color: red;
+}
+.el-radio__inner, .el-checkbox__inner {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+}
+.el-radio__input {
+    width: 45px;
+    margin-bottom: 4px;
+}
+.el-radio__input.is-checked .el-radio__inner::after {
+    -webkit-transform: translate(-50%,-50%) scale(3);
+    transform: translate(-50%,-50%) scale(3);
+}
+.el-radio__inner::after {
+    border-radius: 50%;
+}
+.el-checkbox__input {
+    width: 45px;
+
+}
+.el-checkbox__input.is-checked .el-checkbox__inner::after {
+    -webkit-transform: rotate(45deg) scale(2);
+    transform: rotate(45deg) scale(2);
+    margin-left: 8px;
+    margin-top: 7px;
 }
 
 /* toggle 公共样式 */

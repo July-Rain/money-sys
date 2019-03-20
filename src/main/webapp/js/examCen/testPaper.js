@@ -105,15 +105,15 @@ var vm = new Vue({
             [this.leftHours, this.leftMinutes, this.leftSeconds] = [...results];
             // 3个小时用完,强制提交
            if (this.lefttime <= 0) {
-                vm.$confirm('时间到，结束!', '提示', {
-                    confirmButtonText: '确定',
-                    type: 'warning'
-                }).then(function () {
-                    vm.submit();
-                    var parentWin = window.parent;
-                    parentWin.document.getElementById("container").src
-                        = 'modules/examCen/userExam.html';
-                });
+               vm.submit();
+               vm.$alert('时间到，考试结束！', '提示', {
+                   confirmButtonText: '确定',
+                   callback: function () {
+                       var parentWin = window.parent;
+                       parentWin.document.getElementById("container").src
+                           = 'modules/examCen/userExam.html';
+                   }
+               });
            }
             // 考试时间还剩五分钟的提示
             if (this.lefttime == 5 * 60000) {
@@ -143,12 +143,19 @@ var vm = new Vue({
 
         // 路径方法
         goBack: function () {
-            alert("请先保存，直接退出不会保存数据。");
-            var parentWin = window.parent;
-            vm.goHomeButton.style.display = 'block';
-            vm.floatIcon.style.display = 'flex';
-            parentWin.document.getElementById("container").src
-                = 'modules/examCen/userExam.html';
+            vm.$confirm('保存成功!','提示', {
+                confirmButtonText: '确定',
+                type: 'success'
+            }).then(function () {
+                var parentWin = window.parent;
+                vm.goHomeButton.style.display = 'block';
+                vm.floatIcon.style.display = 'flex';
+                parentWin.document.getElementById("container").src
+                    = 'modules/examCen/userExam.html';
+            })
+        },
+        toHome: function () {
+            parent.location.reload()
         },
         // 改变字体大小
         changeFontSize: function (e) {
@@ -173,16 +180,23 @@ var vm = new Vue({
         },
         // 改变 bar 中元素被选择时的字体颜色 & 定位字体图标
         pickArea: function (e) {
+            var des = null;
+            if (e) {
+                des = e.target;
+            } else {
+                des = document.getElementsByClassName('type')[0];
+            }
+            console.info(des)
             var aTags = document.getElementsByClassName('type');
             var icons = document.getElementsByClassName('icon-biaodiandidian');
-            var icon = e.target.getElementsByClassName('iconfont')[0];
+            var icon = des.getElementsByClassName('iconfont')[0];
             for (var i = 0; i < aTags.length; i++) {
                 aTags[i].style.color = 'black';
             }
             for (var i = 0; i < icons.length; i++) {
                 icons[i].style.display = 'none';
             }
-            e.target.style.color = '#1381e3';
+            des.style.color = '#1381e3';
             icon.style.display = 'inline-block';
         },
         // 收藏
@@ -201,7 +215,7 @@ var vm = new Vue({
             this.timer = null;
             // this.isSubmit = true;
             // 展示使用时间
-            this.consumedTime();
+            // this.consumedTime();
             vm.userAnswerForm.answerForm = [];
             vm.userAnswerForm.remainingExamTime = vm.lefttime/60000;
             for (var i = 0; i < vm.sinChoicList.length; i++) {
@@ -243,16 +257,18 @@ var vm = new Vue({
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     if (result.code === 0) {
-                        vm.$confirm('提交成功!', '提示', {
+                        /*vm.$alert('您已交卷！', '提示', {
+                        vm.$confirm('确定提交？', '提示', {
                             confirmButtonText: '确定',
-                            type: 'success'
-                        }).then(function () {
-                            var parentWin = window.parent;
-                            vm.goHomeButton.style.display = 'block';
-                            vm.floatIcon.style.display = 'flex';
-                            parentWin.document.getElementById("container").src
-                                = 'modules/examCen/userExam.html';
-                        })
+                            callback: function () {
+                                var parentWin = window.parent;
+                                vm.goHomeButton.style.display = 'block';
+                                vm.floatIcon.style.display = 'flex';
+                                parentWin.document.getElementById("container").src
+                                    = 'modules/examCen/userExam.html';
+                            }
+                        });*/
+
 
                     } else {
                         alert(result.msg);
@@ -365,8 +381,8 @@ var vm = new Vue({
 
                         // 考试人员
                         vm.username = result.user.userName;
+                        vm.computeTime();
                         vm.timer = setInterval(vm.computeTime,1000);
-
                     } else {
                         alert(result.msg);
                         var parentWin = window.parent;
@@ -451,7 +467,7 @@ var vm = new Vue({
                                 }
                             }
                         }
-                        console.info(vm.lefttime )
+                        vm.computeTime();
                         vm.timer = setInterval(vm.computeTime,1000);
                     } else {
                         alert(result.msg);
@@ -499,11 +515,13 @@ var vm = new Vue({
             if (examStatus == '0') {
                 //开始考试
                 vm.startExam();
-
             } else {
                 //继续考试
                 vm.continueExam();
             }
+            setTimeout(function () {
+                vm.pickArea()
+            }, 400)
         });
     }
 });
