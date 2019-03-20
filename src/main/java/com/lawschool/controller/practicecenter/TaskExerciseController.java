@@ -128,9 +128,12 @@ public class TaskExerciseController extends AbstractController {
     public Result commit(@PathVariable("id") String id){
         User user = getUser();
 
-        // 提交，更新任务状态
-        taskExerciseService.updateStatus(id, TaskExerciseEntity.STATUS_OFF);
+        // 提交，更新任务状态，一题未做的禁止提交
+        int result = taskExerciseService.updateStatus(id, TaskExerciseEntity.STATUS_OFF);
 
+        if(result == 0){
+            return Result.error("请答题后再次提交本次练习");
+        }
         return Result.ok();
     }
 

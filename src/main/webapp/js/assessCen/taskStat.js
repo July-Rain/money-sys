@@ -176,7 +176,17 @@ var vm = new Vue({
         },
         // 表单重置
         resetForm: function (formName) {
-            this.$refs[formName].resetFields();
+            // this.$refs[formName].resetFields();
+            vm.formInline={ // 搜索表单
+                taskContent: '',
+                    taskName: '',
+                    currPage: 1,
+                    pageSize: 10,
+                    totalCount: 0,
+                    taskClass:"",
+                    policeclass:""
+            };
+            this.reload();
         },
         handleEdit: function (index, row) {
             this.title = "修改学习任务";

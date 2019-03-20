@@ -91,7 +91,16 @@ var vm = new Vue({
 
         },
         resetForm: function (formName) {
-            this.$refs[formName].resetFields();
+            // this.$refs[formName].resetFields();
+            vm.formInline={ // 搜索表单
+                examName: '',
+                    startTime: '',
+                    endTime: '',
+                    page: 1,
+                    limit: 10,
+                    count: 0
+            };
+            this.reload();
         },
         handleEdit: function (index, row) {
             storage.setItem("operate",2); //修改
@@ -171,9 +180,12 @@ var vm = new Vue({
                         contentType: "application/json",
                         success: function (result) {
                             if (result.code == 0) {
-                                alert("保存成功");
-                                vm.closeCheckSettingDia();
-
+                                vm.$alert('操作成功', '提示', {
+                                    confirmButtonText: '确定',
+                                    callback: function () {
+                                        vm.closeCheckSettingDia();
+                                    }
+                                });
                             } else {
                                 alert(result.msg);
                             }

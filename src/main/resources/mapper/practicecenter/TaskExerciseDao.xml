@@ -131,6 +131,7 @@
         SET status = #{status}
         <where>
             id = #{id}
+            AND ANSWER_NUM <![CDATA[ > ]]> 0
         </where>
     </update>
 

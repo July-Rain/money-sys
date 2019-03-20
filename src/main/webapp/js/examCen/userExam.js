@@ -1,3 +1,4 @@
+var storage = window.sessionStorage;
 var vm = new Vue({
     el:'#app',
     data:{
@@ -57,7 +58,14 @@ var vm = new Vue({
             this.reload();
         },
         resetForm: function (formName) {
-            this.$refs[formName].resetFields();
+            // this.$refs[formName].resetFields();
+            vm.formInline= { // 搜索表单
+
+                    limit: 10,
+                    page: 1,
+                    count: 0
+            };
+            this.reload();
         },
         handleCurChange: function (event) {
             vm.formInline.page = event;
@@ -85,6 +93,9 @@ var vm = new Vue({
             var id = row.id;
             var examStatus = row.examStatus;
             var userExamId = row.userExamId==null?'':row.userExamId;
+            storage.setItem("id",id);
+            storage.setItem("examStatus",examStatus);
+            storage.setItem("userExamId",userExamId);
             parentWin.document.getElementById("container").src
                 = 'modules/examCen/testPaper.html?id='+id+'&examStatus='+examStatus+'&userExamId='+userExamId;
         },

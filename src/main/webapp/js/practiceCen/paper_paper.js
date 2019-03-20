@@ -50,6 +50,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.questionList = result.questionList;
+                        console.info(vm.questionList)
                         vm.singleNum = result.singleNum;
                         vm.multiNum = result.multiNum;
                         vm.pdNum = result.pdNum;
@@ -59,6 +60,8 @@ var vm = new Vue({
                         vm.type = result.typeName;
                         vm.createdTime = result.createTime;
                         vm.paperName = result.paperName;
+                        console.info(vm.multiNum, vm.singleNum)
+                        console.info(vm.questionList.slice(vm.multiNum+vm.singleNum))
                     } else {
                         alert(result.msg);
                     }
@@ -128,6 +131,9 @@ var vm = new Vue({
                 vm.preserve(0);
             }
             vm.refresh();
+        },
+        doCollect: function () {
+
         },
         // 保存后显示做题状况
         isChecked: function (id, answer) {
