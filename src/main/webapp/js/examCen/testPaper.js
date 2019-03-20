@@ -129,7 +129,8 @@ var vm = new Vue({
                 vm.$confirm('距离考试结束时间还有五分钟！', '提示', {
                     confirmButtonText: '确定',
                     type: 'warning'
-                })
+                }).catch(() => {
+                });
             };
         },
         // 使用时间
@@ -158,13 +159,15 @@ var vm = new Vue({
                 confirmButtonText: '确定',
                 type: 'warning'
             }).then(function () {
-                updateRemainTime();
+                vm.updateRemainTime();
                 var parentWin = window.parent;
                 vm.goHomeButton.style.display = 'block';
                 vm.floatIcon.style.display = 'flex';
                 parentWin.document.getElementById("container").src
                     = 'modules/examCen/userExam.html';
-            })
+            },() => {
+                // 点击取消 ----- 加入这部分就可以了
+            });
         },
         updateRemainTime : function(){
           <!--更新剩余时间-->
@@ -187,13 +190,14 @@ var vm = new Vue({
             });
         },
         toHome: function () {
-            vm.$confirm('请先保存试卷，直接返回首页将不会保存答题内容，点击确定按钮继续返回!','提示', {
+            vm.$confirm('请先保存试卷，直接返回首页将不会保存答题内容，点击确定按钮继续返回首页!','提示', {
                 confirmButtonText: '确定',
                 type: 'warning'
             }).then(function () {
-                updateRemainTime();
+                vm.updateRemainTime();
                 parent.location.reload()
-            })
+            }).catch(() => {
+            });
 
         },
         // 改变字体大小
@@ -227,7 +231,7 @@ var vm = new Vue({
             }
             console.info(des)
             var aTags = document.getElementsByClassName('type');
-            var icons = document.getElementsByClassName('icon-biaodiandidian');
+            var icons = document.getElementsByClassName('iconfont icon-biaodiandidian');
             var icon = des.getElementsByClassName('iconfont')[0];
             for (var i = 0; i < aTags.length; i++) {
                 aTags[i].style.color = 'black';
@@ -369,7 +373,8 @@ var vm = new Vue({
                             vm.floatIcon.style.display = 'flex';
                             parentWin.document.getElementById("container").src
                                 = 'modules/examCen/userExam.html';
-                        })
+                        }).catch(() => {
+                        });
 
                     } else {
                         alert(result.msg);
