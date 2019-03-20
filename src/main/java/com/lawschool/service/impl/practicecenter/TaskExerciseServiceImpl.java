@@ -136,8 +136,14 @@ public class TaskExerciseServiceImpl extends AbstractServiceImpl<TaskExerciseDao
 
     }
 
+    /**
+     * 更新练习任务的状态
+     * @param id
+     * @param status
+     * @return
+     */
     @Override
-    public boolean updateStatus(String id, Integer status){
+    public Integer updateStatus(String id, Integer status){
 
         return dao.updateStatus(id, status);
     }
