@@ -473,7 +473,8 @@
                         show-checkbox
                         @check-change="handleCheckChange"
                         node-key="classifyId"
-                        :default-checked-keys="lawCheckData">
+                        :default-checked-keys="lawCheckData"
+                        :close="cancelLaw">
                 </el-tree>
             </el-scrollbar>
             <div slot="footer" class="dialog-footer">
