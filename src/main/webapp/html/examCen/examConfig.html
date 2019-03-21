@@ -266,6 +266,13 @@
         .el-dialog .el-select>.el-input.el-input--suffix{
             width: 100px;
         }
+        dl.table_info{
+            padding-left: 35px;
+        }
+        dl.table_info dt, dl.table_info dd{
+            float: left;
+            padding: 0 10px;
+        }
     </style>
 </head>
 <body>
@@ -1005,16 +1012,13 @@
                         width="50">
                 </el-table-column>
                 <el-table-column type="expand" width="60">
-                    <template slot-scope="props">
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="答案内容：">
-                                <el-radio-group>
-                                    <el-radio :label="item2.id" v-for="item2 in props.row.answerList">
-                                        {{item2.questionContent}}
-                                    </el-radio>
-                                </el-radio-group>
-                            </el-form-item>
-                        </el-form>
+                    <template slot-scope="props" v-if="props.row.answerList.length">
+                        <dl class="clearfix table_info">
+                            <dt>答案内容：</dt>
+                            <dd v-for="item2 in props.row.answerList">
+                                {{item2.questionContent}}
+                            </dd>
+                        </dl>
                     </template>
                 </el-table-column>
                 <el-table-column

@@ -166,6 +166,10 @@
             margin-left: 11px;
             border-color: transparent;
         }
+        .read_setting .el-input-number--mini,.read_setting .el-input-number.el-input-number--mini.is-disabled{
+            width: 255px;
+        }
+
     </style>
 </head>
 <body>
@@ -378,7 +382,7 @@
         </div>
 
     </div>
-    <el-dialog title="阅卷设置" :visible.sync="checkSettingDia" :before-close="closeCheckSettingDia">
+    <el-dialog class="read_setting" title="阅卷设置" :visible.sync="checkSettingDia" :before-close="closeCheckSettingDia">
         <el-form :model="checkSetting" :rules="checkSettingRules" ref="checkSetting" label-width="150px"
                  class="demo-examConfig"
                  size="mini">
@@ -426,7 +430,7 @@
             <el-button type="primary" @click="saveCheckSet('checkSetting')">保存</el-button>
         </div>
     </el-dialog>
-    <el-dialog title="查看阅卷信息" :visible.sync="viewCheckSettingDia" :before-close="closeViewCheckSettingDia">
+    <el-dialog class="read_setting" title="查看阅卷信息" :visible.sync="viewCheckSettingDia" :before-close="closeViewCheckSettingDia">
         <el-form :model="checkSetting" :rules="checkSettingRules" ref="checkSetting" label-width="150px"
                  class="demo-examConfig"
                  size="mini" :label-position="labelPosition">
@@ -490,6 +494,7 @@
                 </el-col>
             </el-row>
         </el-form>
+        <div slot="footer" class="dialog-footer"></div>
     </el-dialog>
 
 
