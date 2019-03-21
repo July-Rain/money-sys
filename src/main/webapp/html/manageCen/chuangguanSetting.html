@@ -187,6 +187,11 @@
         padding-left: 5px;
         line-height: 16px;
     }
+    .el-dialog .el-form-item.set_level{
+        margin-bottom: 0;
+        padding: 5px 0;
+        border-bottom: 1px solid #ddd;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -302,7 +307,7 @@
         <el-dialog class="special_dialog" :title="title" :visible.sync="dialogConfig" :before-close="closeDia">
             <div class="dialog_inner clearfix">
                 <el-form label-width="100px" :model="daguanArray" ref="daguanArray">
-                    <el-form-item label="设置大关">
+                    <el-form-item label="设置大关" class="set_level">
                         <el-select @change="onselect" v-model="daguannum"
                                    size="mini"
                                    style="margin-left: 20px;"
@@ -337,16 +342,7 @@
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
-                                    <!--<el-col :span="6">-->
-                                        <!--<el-form-item label="大关奖励">-->
-                                            <!--<el-switch></el-switch>-->
-                                        <!--</el-form-item>-->
-                                    <!--</el-col>-->
-                                    <!--<el-col :span="24">-->
-                                        <!--<el-form-item label="大关奖励积分">-->
-                                            <!--<el-input-number :min="1" :max="10"></el-input-number>-->
-                                        <!--</el-form-item>-->
-                                    <!--</el-col>-->
+
                                 </el-row>
 
                                 <div v-for="item2 in item.recruitCheckpointConfigurationList">
@@ -411,134 +407,8 @@
 
                     </div>
                 </el-form>
-                <!--<span slot="footer" class="dialog-footer">-->
-                    <!--<el-button type="primary" @click="saveOrUpdate('daguanArray')">保存</el-button>-->
-                    <!--<el-button @click="closeDia">取消</el-button>-->
-                <!--</span>-->
             </div>
-            <!--<div style="background-color: blue;color: #fff;text-align: center">&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; ↓ 以下是原来的表单，逻辑还没有迁移上来 ↓ &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</div>-->
-            <!--<el-row>-->
-                <!--<el-col :span="12">-->
-                    <!--<el-form :model="daguanArray" :rules="rules" ref="daguanArray" label-width="100px"-->
-                             <!--class="demo-daguanArray" size="mini">-->
-                        <!--<el-form-item label="设置大关" prop="xiala">-->
-                            <!--<el-select @change="onselect" v-model="daguannum"-->
-                                       <!--size="mini"-->
-                                       <!--style="margin-left: 20px;"-->
-                                       <!--placeholder="大关数量">-->
-                                <!--<el-option-->
-                                        <!--v-for="item in bigcheckNum"-->
-                                        <!--:key="item.value"-->
-                                        <!--:label="item.label"-->
-                                        <!--:value="item.value">-->
-                                <!--</el-option>-->
-                            <!--</el-select>-->
-                        <!--</el-form-item>-->
 
-                        <!--<div v-for="item in daguanArray" class="swiper-slide"-->
-                             <!--style="border: solid 1px #f00;width: 200%;">-->
-                            <!--第{{item.markNumOrder}}大关-->
-                            <!--<table style="border: solid 2px black;width: 100%">-->
-                                <!--<tr>-->
-                                    <!--<th>-->
-                                        <!--<el-form-item label="小关数量" prop="smallNum">-->
-                                            <!--<el-input v-model="item.smallNum" placeholder="小关数量" clearable></el-input>-->
-                                        <!--</el-form-item>-->
-                                    <!--</th>-->
-                                    <!--<th>-->
-                                        <!--<el-form-item label="是否统一配置" prop="xiala">-->
-                                            <!--&lt;!&ndash;<el-input v-model="item.smallNum" placeholder="是否统一配置" clearable></el-input>&ndash;&gt;-->
-                                            <!--<el-select v-model="item.unifyConfiguration"-->
-                                                       <!--@change="onselectunifyConfiguration(item)" placeholder="是否统一配置"-->
-                                                       <!--clearable>-->
-                                                <!--<el-option label="是" value="1"></el-option>-->
-                                                <!--<el-option label="否" value="0"></el-option>-->
-                                            <!--</el-select>-->
-                                        <!--</el-form-item>-->
-                                    <!--</th>-->
-                                <!--</tr>-->
-                                <!--<tr>-->
-                                    <!--<th>-->
-                                        <!--<el-form-item label="大关是否奖励" prop="markReward">-->
-                                            <!--<el-switch v-model="item.markReward" active-text="是" inactive-text="否"-->
-                                                       <!--active-value="1" inactive-value="0"></el-switch>-->
-                                        <!--</el-form-item>-->
-                                    <!--</th>-->
-                                    <!--<th>-->
-                                        <!--<el-form-item label="大关奖励分值 " prop="smallNum">-->
-                                            <!--<el-input v-model="item.rewardScore" placeholder="大关奖励分值"-->
-                                                      <!--clearable></el-input>-->
-                                        <!--</el-form-item>-->
-                                    <!--</th>-->
-                                <!--</tr>-->
-                            <!--</table>-->
-                            <!--<div v-for="item2 in item.recruitCheckpointConfigurationList" class="swiper-slide">-->
-
-                                <!--<table style="border: solid 2px black;width: 100%">-->
-                                    <!--<tr>-->
-                                        <!--<th colspan="2">-->
-                                            <!--<el-form-item label="" v-if="item2.unifyConfiguration==0"-->
-                                                          <!--prop="crossingPoints">-->
-                                                <!--第{{item2.howManySmall}}小关-->
-                                            <!--</el-form-item>-->
-                                        <!--</th>-->
-                                    <!--</tr>-->
-                                    <!--<tr>-->
-                                        <!--<th>-->
-                                            <!--<el-form-item label="小关积分" prop="smallNum">-->
-                                                <!--<el-input v-model="item2.crossingPoints" placeholder="小关积分"-->
-                                                          <!--clearable></el-input>-->
-                                            <!--</el-form-item>-->
-                                        <!--</th>-->
-                                        <!--<th>-->
-                                            <!--<el-form-item label="试题难度" prop="itemDifficulty">-->
-                                                <!--<el-radio-group v-model="item2.itemDifficulty">-->
-                                                    <!--<el-radio :label="item.key" v-for="item in itemjibie">-->
-                                                        <!--{{item.value}}-->
-                                                    <!--</el-radio>-->
-                                                <!--</el-radio-group>-->
-                                            <!--</el-form-item>-->
-                                        <!--</th>-->
-                                    <!--</tr>-->
-                                    <!--<tr>-->
-                                        <!--<th>-->
-                                            <!--<el-form-item label="专项知识" prop="xiala">-->
-                                                <!--<el-select v-model="item2.specialKnowledgeId"-->
-                                                           <!--size="mini"-->
-                                                           <!--style="margin-left: 20px;"-->
-                                                           <!--placeholder="专项知识">-->
-                                                    <!--<el-option-->
-                                                            <!--v-for="item in zhuanxiangzhishiList"-->
-                                                            <!--:key="item.key"-->
-                                                            <!--:label="item.value"-->
-                                                            <!--:value="item.key">-->
-                                                    <!--</el-option>-->
-                                                <!--</el-select>-->
-                                            <!--</el-form-item>-->
-                                        <!--</th>-->
-                                        <!--<th>-->
-                                            <!--<el-form-item label="试题类型" prop="xiala">-->
-                                                <!--<el-select v-model="item2.itemType"-->
-                                                           <!--size="mini"-->
-                                                           <!--style="margin-left: 20px;"-->
-                                                           <!--placeholder="试题类型">-->
-                                                    <!--<el-option-->
-                                                            <!--v-for="item in itemtype"-->
-                                                            <!--:key="item.key"-->
-                                                            <!--:label="item.value"-->
-                                                            <!--:value="item.key">-->
-                                                    <!--</el-option>-->
-                                                <!--</el-select>-->
-                                            <!--</el-form-item>-->
-                                        <!--</th>-->
-                                    <!--</tr>-->
-                                <!--</table>-->
-                            <!--</div>-->
-                        <!--</div>-->
-
-                    <!--</el-form>-->
-                <!--</el-col>-->
-            <!--</el-row>-->
             <span slot="footer" class="dialog-footer">
                 <el-button @click="closeDia">取消</el-button>
                 <el-button type="primary" @click="saveOrUpdate('daguanArray')">保存</el-button>

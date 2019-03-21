@@ -109,7 +109,13 @@ public class UserController extends AbstractController {
     @SysLog("修改员工身份")
     @RequestMapping("/changeIdentify")
     public Result changeIdentify(String id,String identify){
-       userService.changeIdentify(id,identify);
+       userService.changeIdentify(id,identify,"identify");
+       return  Result.ok();
+    }
+    @SysLog("修改管理员身份")
+    @RequestMapping("/changeAdmin")
+    public Result changeAdmin(String id,String isAdmin){
+       userService.changeIdentify(id,isAdmin,"isAdmin");
        return  Result.ok();
     }
 
