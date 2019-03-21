@@ -42,7 +42,8 @@ var vm = new Vue({
         taskName:'',
         taskId:'',
         genTaskByQue:false,
-        num: 0
+        num: 0,
+        optionIndex: ['A', 'B', 'C', 'D', 'E', 'F']
     },
     created: function () {
         this.$nextTick(function () {
@@ -175,6 +176,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.questObj = result.form;
+                        console.info(vm.questObj.checkList.length)
                     } else {
                         vm.$message({
                             message: result.msg,
@@ -231,7 +233,35 @@ var vm = new Vue({
                     }
                 }
             });
-        }
+        },
+        answerDisplay: function (list, id, answer) {
+            /*// 用户答案对应的数字数组
+            var checkIndex = [];
+            // 正确答案对应的数字数组
+            var rightIndex = [];
+            // 选项id的数组
+            var answerIdList = [];
+            // 答案id字符串分解而得的数组
+            var rightIdList = id.split(',');
+            answer.forEach(function (val) {
+                answerIdList.push(val.id)
+            });
+            list.forEach(function (val) {
+                checkIndex.push(vm.optionIndex[answerIdList.indexOf(val)])
+            });
+            rightIdList.forEach(function (val) {
+                rightIndex.push(vm.optionIndex[answerIdList.indexOf(val)])
+            });
+            console.log(checkIndex, rightIndex)
+            return {
+                checkIndex: checkIndex.sort(function (a, b) {
+                    a.charCodeAt(0) - b.charCodeAt(0)
+                }).join('、'),
+                rightIndex: rightIndex.sort(function (a, b) {
+                    a.charCodeAt(0) - b.charCodeAt(0)
+                }).join('、')
+            }*/
+        },
     }
 });
 
