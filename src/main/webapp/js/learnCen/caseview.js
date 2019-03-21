@@ -51,6 +51,7 @@ var vm = new Vue({
         startTime: "",//开始时间
         endTime: "",//结束时间
         caseAna: {},//实体
+        myPlayers: []
     },
     created: function () {
 
@@ -111,6 +112,11 @@ var vm = new Vue({
     methods: {
         //实例化视频
         initPlayer: function () {
+            if (vm.myPlayers.length!=0) {
+                vm.myPlayers.forEach(function (val) {
+                    val.dispose();
+                })
+            }
             var that = this;
             setTimeout(function () {
                 var options = {
@@ -184,6 +190,7 @@ var vm = new Vue({
                         alert(result.msg);
                     }
                     if (vm.formInline.contentType=='video') {
+                        vm.videoDataId = [];
                         vm.caseData.forEach(function (val) {
                             vm.videoDataId.push(val.id)
                         })
