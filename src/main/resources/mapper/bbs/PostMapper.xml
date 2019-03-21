@@ -27,7 +27,9 @@
         opt_user,
         opt_time,
         create_user,
-        create_time
+        create_time,
+        org_code,
+        status
         ) VALUES (
         #{id},
         #{content},
@@ -38,7 +40,9 @@
         #{optUser},
         #{optTime},
         #{createUser},
-        #{createTime}
+        #{createTime},
+        #{orgCode},
+        #{status}
         )
     </insert>
 
@@ -72,6 +76,15 @@
             <if test="createUser != null and createUser != ''">
                 AND a.create_user = #{createUser}
             </if>
+            <if test="ids !=null and ids.size > 0">
+                and   a.id  in
+                <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                    #{ids[${index}]}
+                </foreach>
+            </if>
+            <if test="status != null and status!=''">
+                and a.status =#{status}
+            </if>
         </where>
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -104,5 +117,10 @@
             law_post
         WHERE
             create_user = #{userId}
+    </select>
+
+    <select id="findMineList" resultType="string">
+        select id from law_post where
+        create_user = #{userId}
     </select>
 </mapper>

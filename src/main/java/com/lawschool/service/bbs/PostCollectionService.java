@@ -5,6 +5,8 @@ import com.lawschool.base.Page;
 import com.lawschool.beans.bbs.PostCollectionEntity;
 import com.lawschool.form.CollectionPostForm;
 
+import java.util.List;
+
 public interface PostCollectionService extends AbstractService<PostCollectionEntity> {
 
     /**
@@ -18,4 +20,11 @@ public interface PostCollectionService extends AbstractService<PostCollectionEnt
     Integer findMyCollection(String userId);
 
     Integer findByUser(PostCollectionEntity postCollectionEntity);
+
+    /**
+     * 获取所有我收藏的内容的ID
+     * @param userId
+     * @return
+     */
+    List<String> findMyCollIds(String userId);
 }

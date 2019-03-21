@@ -27,4 +27,5 @@ public interface PostCollectionDao extends AbstractDao<PostCollectionEntity> {
     Integer findMyCollection(@Param("userId") String userId);
 
     Integer findByUser(PostCollectionEntity postCollectionEntity);
+
 }
