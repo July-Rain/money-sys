@@ -270,10 +270,26 @@ var vm = new Vue({
             this.dialogStuMedia = true;
             this.deptCheckData = [];
             this.lawCheckData = [];
+            //清空法律分类的选中值
+            if(this.$refs.lawTree){
+                this.$refs.lawTree.setCheckedKeys([])
+            }
+            //清空部门的选中值
+            if(this.$refs.deptTree){
+                this.$refs.deptTree.setCheckedKeys([])
+            }
+
         },
         handleEdit: function (index, row) {
             this.title = "编辑";
-
+            //清空法律分类的选中值
+            if(this.$refs.lawTree){
+                this.$refs.lawTree.setCheckedKeys([])
+            }
+            //清空部门的选中值
+            if(this.$refs.deptTree){
+                this.$refs.deptTree.setCheckedKeys([])
+            }
             this.deptCheckData = [];
             this.lawCheckData = [];
             editor.txt.html("");
@@ -640,12 +656,15 @@ var vm = new Vue({
             // }
         },
         chooseLaw: function () {
+            if(vm.stuMedia.stuLawid){
+                vm.lawCheckData = vm.stuMedia.stuLawid.split(",");
+            }
             //选择法律法规主题分类
             this.dialogLaw = true;
         },
         cancelLaw: function () {
             //!!
-            this.$refs.lawTree.setCheckedKeys([])
+            //this.$refs.lawTree.setCheckedKeys([])
             this.dialogLaw = false;
         },
         confimLaw: function () {

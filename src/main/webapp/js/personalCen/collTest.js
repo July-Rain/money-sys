@@ -36,7 +36,8 @@ var vm = new Vue({
         },
         taskName: '',
         taskId: '',
-        genTaskByQue: false
+        genTaskByQue: false,
+        optionIndex: ['A', 'B', 'C', 'D', 'E', 'F']
     },
     created: function () {
         this.$nextTick(function () {
@@ -168,6 +169,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code === 0) {
                         vm.questObj = result.form;
+                        console.info(vm.questObj)
                     } else {
                         vm.$message({
                             message: result.msg,

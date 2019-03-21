@@ -319,10 +319,25 @@ var vm = new Vue({
             this.dialogCaseAna=true;
             this.deptCheckData=[];
             this.lawCheckData = [];
+            //清空法律分类的选中值
+            if(this.$refs.lawTree){
+                this.$refs.lawTree.setCheckedKeys([])
+            }
+            //清空部门的选中值
+            if(this.$refs.deptTree){
+                this.$refs.deptTree.setCheckedKeys([])
+            }
         },
         handleEdit: function (index, row){
             this.title="编辑";
-
+            //清空法律分类的选中值
+            if(this.$refs.lawTree){
+                this.$refs.lawTree.setCheckedKeys([])
+            }
+            //清空部门的选中值
+            if(this.$refs.deptTree){
+                this.$refs.deptTree.setCheckedKeys([])
+            }
             this.deptCheckData=[];
             this.lawCheckData = [];
             editor.txt.html("");
