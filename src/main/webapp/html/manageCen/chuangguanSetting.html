@@ -192,6 +192,9 @@
         padding: 5px 0;
         border-bottom: 1px solid #ddd;
     }
+    .mini_select .el-input.el-input--mini.el-input--suffix{
+        width: 108px;
+    }
 </style>
 <body>
 <div id="app" v-cloak>
@@ -330,12 +333,12 @@
                                 <el-row>
                                     <el-col :span="12">
                                         <el-form-item label="总题数量">
-                                            <el-input-number v-model="item.smallNum" @change="handleChange" :min="1" :max="999" label="小关数量"></el-input-number>
+                                            <el-input-number size="mini" v-model="item.smallNum" @change="handleChange" :min="1" :max="999" label="小关数量"></el-input-number>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :span="6">
-                                        <el-form-item label="统一配置">
-                                            <el-select v-model="item.unifyConfiguration"
+                                    <el-col :span="12">
+                                        <el-form-item label="统一配置" class="mini_select">
+                                            <el-select v-model="item.unifyConfiguration" size="mini"
                                                        @change="onselectunifyConfiguration(item)" placeholder="是否统一配置">
                                                 <el-option label="是" value="1"></el-option>
                                                 <el-option label="否" value="0"></el-option>
@@ -357,7 +360,7 @@
                                         <!--</el-col>-->
                                     </el-row>
                                     <el-row>
-                                        <el-col :span="10" :offset="5">
+                                        <el-col :span="10" :offset="5" style="min-width:375px">
                                             <el-form-item label="试题难度">
                                                 <el-radio-group v-model="item2.itemDifficulty">
                                                     <el-radio :label="item.key" v-for="item in itemjibie">
