@@ -125,35 +125,23 @@ var vm = new Vue({
             this.reload();
         },
         handleDel: function (id) {
-            // vm.delIdArr.push(row.collectionId);
-            vm.delIdArr.id=id;
-            this.$confirm('此操作将取消收藏, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(function () {
-                $.ajax({
-                    type: "POST",
-                    url: baseURL + 'coll/delColl',
-                    async: true,
-                    data: JSON.stringify(vm.delIdArr),
-                    contentType: "application/json",
-                    success: function (result) {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "collection/delete/"+id,
+                contentType: "application/json",
+                success: function(result){
+
+                    if(result.code === 0){
                         vm.reload();
+                    }else{
+                        alert(result.msg);
                         vm.$message({
-                            type: 'success',
-                            message: '取消成功!'
+                            message: result.msg,
+                            type: 'warning'
                         });
-
                     }
-                });
-            }).catch(function () {
-                // vm.$message({
-                //     type: 'info',
-                //     message: '已取消删除'
-                // });
+                }
             });
-
         },
         reload: function () {
             $.ajax({
