@@ -70,7 +70,7 @@
                     </ul>
                     <div class="writeComment clearfix" v-if="item.commentShow">
                         <el-input v-model="reply.content" placeholder="写下你的评论 · · ·"></el-input>
-                        <el-button @click="saveReply(item.id)" type="primary">发布</el-button>
+                        <el-button @click="saveReply(item.id)" type="primary">评论</el-button>
                     </div>
                     <!--这个model要改-->
                     <div class="comment_area" v-if="item.commentShow">
@@ -101,7 +101,7 @@
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/school/index.js"></script>
+<script src="${rc.contextPath}/js/school/index.js?_${.now?long}"></script>
 <script>
     $(function () {
         // $('#app').css('background','#f00')

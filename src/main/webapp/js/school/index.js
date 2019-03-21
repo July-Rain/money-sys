@@ -156,7 +156,11 @@ var vm = new Vue({
                                 vm.reload();
                             }
                         });
-                    } else {
+                    }
+                    else if(result.code === 1){
+                        alert("评论失败,包含敏感词"+result.word);
+                    }
+                    else {
                         alert(result.msg);
                     }
                 }
