@@ -3,23 +3,6 @@
  * Date: 2018/12/3
  * Description:
  */
-
-// var a = [{
-//     b:[]
-// },{
-//     b:[]
-// },{
-//     b:[]
-// }];
-// var c = {
-//     dd:111,
-//     ee:222,
-//     cc:[{rrr:"123"}]
-// };
-// a.map(function (value, index, array) {
-//     value.b.push(c)
-// })
-// console.log(JSON.stringify(a));
 var vm = new Vue({
     el: '#app',
     data: {
@@ -220,7 +203,7 @@ var vm = new Vue({
         },
         reload: function (index, alias) {
             // index tab
-            if (index) {
+            if (index||index === 0) {
                 this.menuIndex = index;
             }
             $.ajax({
