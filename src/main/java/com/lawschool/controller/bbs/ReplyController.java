@@ -1,19 +1,23 @@
 package com.lawschool.controller.bbs;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
 import com.lawschool.beans.bbs.PostEntity;
 import com.lawschool.beans.bbs.ReplyEntity;
+import com.lawschool.controller.bbs.Sensitivefilter.SensitivewordFilter;
 import com.lawschool.service.bbs.PostService;
 import com.lawschool.service.bbs.ReplyService;
+import com.lawschool.util.RedisUtil;
 import com.lawschool.util.Result;
+import com.lawschool.util.SpringContextUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName ReplyController
@@ -29,7 +33,13 @@ public class ReplyController extends AbstractController {
     private ReplyService replyService;
 
     @Autowired
+    private SensitivewordFilter sensitivewordFilter;
+
+    @Autowired
     private PostService postService;
+    @Autowired
+    private RedisUtil redisUtil;
+
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result list(@RequestParam Map<String, Object> params){
@@ -58,16 +68,34 @@ public class ReplyController extends AbstractController {
     @SysLog("添加回复")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody ReplyEntity entity){
-        replyService.save(entity);
 
-        PostEntity postEntity = postService.findOne(entity.getPostId());
+        String string =  entity.getContent();
 
-        PostEntity newPostEntity = new PostEntity();
-        newPostEntity.setId(postEntity.getId());
-        newPostEntity.setCommentNum(postEntity.getCommentNum() == null ? 1 : postEntity.getCommentNum()+ 1);
+        Set<String> keyWordSet=new HashSet<>();
+        keyWordSet= JSON.parseObject(redisUtil.get("sensitive"),new TypeReference<Set<String>>(){});
 
-        postService.updateNum(newPostEntity);
-        return Result.ok();
+        Map map= sensitivewordFilter.doSensitiveFifter(string,keyWordSet);
+
+        String size=map.get("size").toString();
+        Set content= (Set) map.get("content");
+        if(size.equals("0")){
+            replyService.save(entity);
+            PostEntity postEntity = postService.findOne(entity.getPostId());
+            PostEntity newPostEntity = new PostEntity();
+            newPostEntity.setId(postEntity.getId());
+            newPostEntity.setCommentNum(postEntity.getCommentNum() == null ? 1 : postEntity.getCommentNum()+ 1);
+
+            postService.updateNum(newPostEntity);
+            return Result.ok();
+        }
+        else {
+            String word = "";
+            Iterator<String> iterator = content.iterator();
+            while (iterator.hasNext()) {
+                word = word+"  "+iterator.next();
+            }
+            return Result.ok().put("code", 1).put("word",word);
+        }
     }
 
     @SysLog("删除回复")

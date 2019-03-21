@@ -5,6 +5,7 @@ import com.lawschool.beans.Org;
 import com.lawschool.beans.competition.BattlePlatform;
 import com.lawschool.beans.system.DictEntity;
 import com.lawschool.service.OrgService;
+import com.lawschool.service.bbs.sensitivefilter.SensitivefilterService;
 import com.lawschool.service.system.DictionService;
 import com.lawschool.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class LoadData {
     @Autowired
     private OrgService orgService;
 
+    @Autowired
+    private SensitivefilterService sensitivefilterService;
     //数据表在Servlet容器启动时存入Redis
     @PostConstruct
     public void putDataToRedis(){
@@ -58,6 +61,9 @@ public class LoadData {
         for(DictEntity data : list){
             redisUtil.set("dictInfo",data);
         }
+
+        redisUtil.set("sensitive", sensitivefilterService.getAll());
+
 
 
         if(!redisUtil.hasKey("permOrg")){

@@ -98,8 +98,8 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
-                        vm.formInline.currPage = result.page.currPage;
-                        vm.formInline.pageSize = result.page.pageSize;
+                        vm.formInline.page = result.page.currPage;
+                        vm.formInline.limit = result.page.pageSize;
                         vm.formInline.count = parseInt(result.page.count);
                     } else {
                         alert(result.msg);

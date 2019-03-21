@@ -14,9 +14,9 @@
             <div class="person_info">
                 <p class="name">{{info.userName}}</p>
                 <ul class="clearfix">
-                    <li><span class="num">{{info.release}}</span><span class="name">发表</span></li>
-                    <li><span class="num">{{info.comment}}</span><span class="name">评论</span></li>
-                    <li><span class="num">{{info.collection}}</span><span class="name">收藏</span></li>
+                    <li><span class="num" @click="getDetail('realease')">{{info.release}}</span><span class="name">发表</span></li>
+                    <li><span class="num" @click="getDetail('comment')">{{info.comment}}</span><span class="name">评论</span></li>
+                    <li><span class="num" @click="getDetail('collection')" >{{info.collection}}</span><span class="name">收藏</span></li>
                 </ul>
             </div>
             <div class="submit_info">
@@ -47,9 +47,9 @@
 
             </div>
         </div>
-        <div class="info_area">
+        <div class="info_area" v-show = "allInfo">
             <ul class="clearfix">
-                <li v-for="(navItem,index) in navList" :class="!(index - menuIndex)?'active':''" @click="reload(index,navItem.alias)">{{navItem.name}}</li>
+                <li v-for="(navItem,index) in navList" :class="!(index - menuIndex)?'active':''" @click="changeSubordinate(index,navItem.alias)">{{navItem.name}}</li>
             </ul>
             <div class="tab">
                 <div class="item" v-if="tableData" v-for="(item,index) in tableData">
@@ -64,9 +64,66 @@
                     </div>
                     <pre class="text">{{item.content}}</pre>
                     <ul class="item_bot clearfix">
-                        <li @click="collection(item.id,index)"><i class="iconfont icon-shoucang1"></i><span>{{item.collectionNum||0}}</span><span> 收藏</span></li>
-                        <li @click="showComment(item.id,index)"><i class="iconfont icon-gerenzhongxin"></i><span>{{item.commentNum||0}}</span><span> 评论</span></li>
-                        <li @click="report(item.id,index)">举报</li>
+                        <li @click="collection(item.id,index,'tableData')"><i class="iconfont icon-shoucang1"></i><span>{{item.collectionNum||0}}</span><span> 收藏</span></li>
+                        <li @click="showComment(item.id,index,'tableData')"><i class="iconfont icon-gerenzhongxin"></i><span>{{item.commentNum||0}}</span><span> 评论</span></li>
+                        <li @click="report(item.id,index,'tableData')">举报</li>
+                    </ul>
+                    <div class="writeComment clearfix" v-if="item.commentShow">
+                        <el-input v-model="reply.content" placeholder="写下你的评论 · · ·"></el-input>
+                        <el-button @click="saveReply(item.id)" type="primary">评论</el-button>
+                    </div>
+                    <!--这个model要改-->
+                    <div class="comment_area" v-if="item.commentShow">
+                        <div class="title">{{item.commentNum||0}}评论</div>
+                        <div class="comment_item" v-for="i in item.child">
+                            <div class="item_top clearfix">
+                                <div class="item_head">
+                                    <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                                </div>
+                                <p>
+                                    <span class="name">{{i.userName}}</span>
+                                    <span class="time">{{i.createTime}}</span>
+                                </p>
+                            </div>
+                            <pre class="text">{{i.content}}</pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="item" v-if="tableData.length==0">
+                    <p class="text" style="width: auto" >暂无内容</p>
+                </div>
+            </div>
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="formInline.page"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="formInline.limit"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="formInline.count">
+            </el-pagination>
+        </div>
+        <div class="info_area" v-show = "!allInfo">
+            <ul class="clearfix">
+                <li v-for="(navItem,index) in navList" :class="{active:!(index - menuIndex)}" @click="mineInfoReload(index,navItem.alias)">{{navItem.name}}</li>
+                <li @click="showAllInfo">返回全部内容</li>
+            </ul>
+            <div class="tab">
+                <div class="item" v-if="myTableData" v-for="(item,index) in myTableData">
+                    <div class="item_top clearfix">
+                        <div class="item_head">
+                            <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                        </div>
+                        <p>
+                            <span class="name">{{item.userName}}</span>
+                            <span class="time">{{item.createTime}}</span>
+                        </p>
+                    </div>
+                    <pre class="text">{{item.content}}</pre>
+                    <ul class="item_bot clearfix">
+                        <li @click="collection(item.id,index,'myTableData')"><i class="iconfont icon-shoucang1"></i><span>{{item.collectionNum||0}}</span><span> 收藏</span></li>
+                        <li @click="showComment(item.id,index,'myTableData')"><i class="iconfont icon-gerenzhongxin"></i><span>{{item.commentNum||0}}</span><span> 评论</span></li>
+                        <li @click="report(item.id,index,'myTableData')">举报</li>
                     </ul>
                     <div class="writeComment clearfix" v-if="item.commentShow">
                         <el-input v-model="reply.content" placeholder="写下你的评论 · · ·"></el-input>
@@ -85,23 +142,30 @@
                                     <span class="time">{{i.createTime}}</span>
                                 </p>
                             </div>
-                            <pre class="text">{{i.content}}</pre>
+                            <p class="text">{{i.content}}</p>
                         </div>
-                        <!--<p class="openMore">展开更多评论</p>-->
-
                     </div>
                 </div>
                 <div class="item" v-if="tableData.length==0">
                     <pre class="text" style="width: auto" >暂无内容</pre>
                 </div>
             </div>
+            <el-pagination
+                    @size-change="mineHandleSizeChange"
+                    @current-change="mineHandleCurrentChange"
+                    :current-page="mineForm.page"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="mineForm.limit"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="mineForm.count">
+            </el-pagination>
         </div>
     </div>
 </div>
 </body>
 
 <!-- import [current] JavaScript -->
-<script src="${rc.contextPath}/js/school/index.js"></script>
+<script src="${rc.contextPath}/js/school/index.js?_${.now?long}"></script>
 <script>
     $(function () {
         // $('#app').css('background','#f00')

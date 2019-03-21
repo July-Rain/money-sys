@@ -305,6 +305,11 @@ var vm = new Vue({
             this.title = "新增";
             this.dialogLearnTask = true;
             this.isEdit=true;
+            this.deptCheckData=[];
+            //清空部门的选中值
+            if(this.$refs.deptTree){
+                this.$refs.deptTree.setCheckedKeys([])
+            }
             this.reloadTask();
         },
         handleEdit: function (index, row) {
@@ -320,6 +325,10 @@ var vm = new Vue({
             this.dialogLearnTask = true;
             this.isEdit=true;
             this.deptCheckData=[];
+            //清空部门的选中值
+            if(this.$refs.deptTree){
+                this.$refs.deptTree.setCheckedKeys([])
+            }
             this.reloadTask();
             $.ajax({
                 type: "POST",

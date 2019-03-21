@@ -8,6 +8,8 @@ import com.lawschool.form.CollectionPostForm;
 import com.lawschool.service.bbs.PostCollectionService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @ClassName PostCollectionServiceImpl
  * @Author wangtongye
@@ -23,17 +25,25 @@ public class PostCollectionServiceImpl extends AbstractServiceImpl<PostCollectio
      * @param entity
      * @return
      */
+    @Override
     public Page<CollectionPostForm> findPage(Page<CollectionPostForm> page, CollectionPostForm entity){
         entity.setPage(page);
         page.setList(dao.findList(entity));
         return page;
     }
 
+    @Override
     public Integer findMyCollection(String userId){
         return dao.findMyCollection(userId);
     }
 
+    @Override
     public Integer findByUser(PostCollectionEntity postCollectionEntity){
         return dao.findByUser(postCollectionEntity);
+    }
+
+    @Override
+    public List<String> findMyCollIds(String userId) {
+        return dao.queryPostIdList(userId);
     }
 }
