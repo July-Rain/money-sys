@@ -112,13 +112,14 @@ var vm = new Vue({
     methods: {
         //实例化视频
         initPlayer: function () {
-            if (vm.myPlayers.length!=0) {
-                vm.myPlayers.forEach(function (val) {
-                    val.dispose();
-                })
-            }
             var that = this;
             setTimeout(function () {
+                if (vm.myPlayers.length!=0) {
+                    vm.myPlayers.forEach(function (val) {
+                        val.dispose();
+                    })
+                    vm.myPlayers = [];
+                }
                 var options = {
                     controls: true,
                     bigPlayButton: true,
@@ -140,8 +141,9 @@ var vm = new Vue({
                     myPlayer.on('pause', function () {
                         bigButton.style.display = 'block';
                     });
+                    vm.myPlayers.push(myPlayer);
                 })
-            }, 400)
+            }, 200)
         },
         //序列号计算
         indexMethod: function (index) {

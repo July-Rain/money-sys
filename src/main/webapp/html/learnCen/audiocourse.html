@@ -135,10 +135,11 @@
                                 <el-col :span="6" v-for="(item, index) in videoData">
                                     <el-card :body-style="{ padding: '0px' }">
                                         <div class="content_audio">
-                                            <audio :id="item.id" controls="controls" preload="none" @play="onPlay(item.id)"
+                                            <!--<audio :id="item.id" controls="controls" preload="none" @play="onPlay(item.id)"
                                                    @pause="onPause(item.id,$event)">
                                                 <source :src="item.contentUrl" controls="controls">
-                                            </audio>
+                                            </audio>-->
+                                            <audio class="audio-js" :id="item.id" :src="item.contentUrl" preload="auto"></audio>
                                         </div>
                                         <div class="video-card">
                                             <div>

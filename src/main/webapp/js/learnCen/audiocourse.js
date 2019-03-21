@@ -73,11 +73,44 @@ var vm = new Vue({
             });*/
         })
         this.$nextTick(function () {
-            this.reload();
+            vm.reload();
+            vm.initAudio();
         })
 
     },
     methods: {
+        // audiojs
+        initAudio: function () {
+            setTimeout(function () {
+                audiojs.events.ready(function () {
+                    debugger
+                    var audios = document.getElementsByClassName('audio-js');
+                    debugger
+                    for (var i=0;i<audios.length;i++) {
+                        debugger
+                        audiojs.create(audios[i], {
+                            css: false,
+                            createPlayer: {
+                                /*markup: false,
+                                playPauseClass: 'play-pauseZ',
+                                scrubberClass: 'scrubberZ',
+                                progressClass: 'progressZ',
+                                loaderClass: 'loadedZ',
+                                timeClass: 'timeZ',
+                                durationClass: 'durationZ',
+                                playedClass: 'playedZ',
+                                errorMessageClass: 'error-messageZ',
+                                playingClass: 'playingZ',
+                                loadingClass: 'loadingZ',
+                                errorClass: 'errorZ'*/
+                            }
+                        })
+                    }
+                    debugger
+                })
+            }, 2000)
+
+        },
         // 查询
         onSubmit: function () {
             this.reload();
