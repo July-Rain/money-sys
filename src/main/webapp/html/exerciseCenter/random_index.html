@@ -6,7 +6,11 @@
 </head>
 <style>
     .el-select input.el-input__inner{
-        width: 350px;
+        width: 100px;
+    }
+    .el-pagination .el-input__suffix {
+        right: 30px;
+        text-align: left;
     }
     .el-select i.el-input__icon{
         margin-right: -240px;
@@ -106,6 +110,7 @@
             <el-table-column
                     label="操作"
                     header-align="center"
+                    align="center"
                     prop="status">
                 <template slot-scope="scope">
 

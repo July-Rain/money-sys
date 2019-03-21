@@ -117,7 +117,7 @@ var vm = new Vue({
         },//法律法规树默认数据
         taskClassOption:[],//所属分类
         policeclassOption:[],//所属警种
-       // multipleClassSelection:[]//法律法规数据选择框
+        multipleClassSelection:[],//法律法规数据选择框
         deptCheckData:[],//部门默认选中节点
         saveUserTableData: [],//用于人员回显表格的对象  --回显需加
         breadArr:[],//面包屑数据
@@ -139,6 +139,8 @@ var vm = new Vue({
         isEdit:true,//是否可修改
         loading:false,//加载中
         taskCheckData:[],//用来回显学习任务的数据
+        saveTaskChangePageDatas:[],//用来回显学习任务的数据
+        saveChangePageDatas:[]//用于人员翻页数据保存
 
     },
     created: function () {
@@ -501,19 +503,29 @@ var vm = new Vue({
             this.dialogDept=false;
         },
         confimUser: function () {
-            this.dialogUser=false;
+            // 20190316 数据绑定 --bu
+            vm.saveStep1()
+            vm.saveStep2()
+            //  --回显需加
+            var val = this.saveChangePageDatas;//提交时候不能保存当前选中的，要保存所有的
+            this.saveChangePageDatas = [];//保存后清空避免影响下次
+
             //遍历最终的人员信息
             vm.learnTasks.userIds = "";
             vm.learnTasks.userName = "";
-            for (var i=0;i<this.multipleSelection.length;i++){
+            for (var i=0;i<val.length;i++){
                 if (this.learnTasks.userIds == "") {
-                    this.learnTasks.userIds=this.multipleSelection[i].id;
-                    this.learnTasks.userName=this.multipleSelection[i].userName;
+                    this.learnTasks.userIds=val[i].id;
+                    this.learnTasks.userName=val[i].userName;
                 }else{
-                    this.learnTasks.userIds+=","+this.multipleSelection[i].id;
-                    this.learnTasks.userName+=","+this.multipleSelection[i].userName;
+                    this.learnTasks.userIds+=","+val[i].id;
+                    this.learnTasks.userName+=","+val[i].userName;
                 }
             }
+            if(this.learnTasks.userIds){
+                this.learnTasks.userArr=this.learnTasks.userIds.split(",");
+            }
+            this.dialogUser=false;
         },
         cancelUser: function () {
             this.dialogUser=false;
@@ -661,11 +673,15 @@ var vm = new Vue({
             this.dialogLearnConTask=false;
         },
         confimTaskCom:function(){
+            // 20190316 数据绑定 任务数据 --bu
+            vm.saveTaskStep1()
+            vm.saveTaskStep2()
+            //  --回显需加
+            var val = this.saveTaskChangePageDatas;//提交时候不能保存当前选中的，要保存所有的
             this.learnTasks.taskContent="";
-            this.dialogLearnConTask=false;
             //遍历最终的人员信息
-            this.learnTasks.taskContentList= this.multipleClassSelection;
-            var val=this.multipleClassSelection;
+            this.learnTasks.taskContentList= this.saveTaskChangePageDatas;
+            //var val=this.multipleClassSelection;
             if(val.length==0){
                 vm.learnTasks.taskContent= "";
             }
@@ -676,7 +692,9 @@ var vm = new Vue({
                     this.learnTasks.taskContent+=","+val[i].infoName;
                 }
             }
-            console.log("taskContent",this.taskContentList);
+            this.saveTaskChangePageDatas = [];//保存后清空避免影响下次
+            this.dialogLearnConTask=false;
+           // console.log("taskContent",this.taskContentList);
         },
         changeInfoType:function(){
             
@@ -696,15 +714,15 @@ var vm = new Vue({
             ids.map(function (_id) {
                 that.learnTaskData.map(function (_data) {
                     if (_id.infoId == _data.infoId) {
-                        that.taskCheckData.push(_data)
+                        that.multipleClassSelection.push(_data)
                     }
                 })
 
             });
-            console.info("taskCheckData", that.taskCheckData);
+            console.info("multipleClassSelection", that.multipleClassSelection);
             this.$nextTick(function () {
                 // vm.$refs.userTable.toggleRowSelection()
-                vm.taskToggleSelection(that.taskCheckData)
+                vm.taskToggleSelection(that.multipleClassSelection)
 
             })
         },
@@ -718,8 +736,102 @@ var vm = new Vue({
                 this.$refs.learnTaskTable.clearSelection();
             }
         },
+        // 20190316 数据绑定 --bu
+        saveStep1:function(){
+            vm.multipleSelection.map(function (multipleSel) {
+                vm.saveChangePageDatas.push(multipleSel)
+            });
+        },
+        // 20190316 数据绑定 --bu
+        saveStep2:function () {
+            vm.saveChangePageDatas = (function (arr) {
+
+                var allArr = [];
+                for (var i = 0; i < arr.length; i++) {
+                    var flag = true;
+                    for (var j = 0; j < allArr.length; j++) {
+                        if (arr[i].id == allArr[j].id) {
+                            flag = false;
+                        }
+                    }
+                    if (flag) {
+                        allArr.push(arr[i]);
+                    }
+                }
+                return allArr
+
+            })(vm.saveChangePageDatas)
+
+
+            var _arr = [];
+            vm.userTableData.map(function (data1) {
+                vm.saveChangePageDatas.map(function (data2) {
+                    if (data1.id === data2.id) {
+                        _arr.push(data1)
+                    }
+                })
+            });
+            vm.userToggleSelection(_arr)
+        },
+
+        // 20190316 数据绑定 任务数据 --bu
+        saveTaskStep1:function(){
+            vm.multipleClassSelection.map(function (multipleSel) {
+                vm.saveTaskChangePageDatas.push(multipleSel)
+            });
+        },
+        // 20190316 数据绑定 任务数据 --bu
+        saveTaskStep2:function () {
+            vm.saveTaskChangePageDatas = (function (arr) {
+
+                var allArr = [];
+                for (var i = 0; i < arr.length; i++) {
+                    var flag = true;
+                    for (var j = 0; j < allArr.length; j++) {
+                        if (arr[i].infoId == allArr[j].infoId) {
+                            flag = false;
+                        }
+                    }
+                    if (flag) {
+                        allArr.push(arr[i]);
+                    }
+                }
+                return allArr
+
+            })(vm.saveTaskChangePageDatas)
+
+
+            var _arr = [];
+            vm.learnTaskData.map(function (data1) {
+                vm.saveTaskChangePageDatas.map(function (data2) {
+                    if (data1.infoId === data2.infoId) {
+                        _arr.push(data1)
+                    }
+                })
+            });
+            vm.taskToggleSelection(_arr)
+        },
+
         toHome: function () {
             parent.location.reload()
+        }
+    },
+    watch: {
+        // 20190316 数据绑定 --bu
+        userTableData() {
+            vm.saveStep1()
+            this.$nextTick(function(){
+
+                vm.saveStep2()
+            })
+        },
+        // 20190316 数据绑定 任务数据 --bu
+        learnTaskData() {
+            vm.saveTaskStep1()
+            this.$nextTick(function(){
+
+                vm.saveTaskStep2()
+            })
         }
     }
 });

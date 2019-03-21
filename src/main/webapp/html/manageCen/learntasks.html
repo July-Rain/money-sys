@@ -315,7 +315,7 @@
                                             placement="right"
                                             trigger="hover"
                                             content="发布">
-                                        <i class="iconfont icon-renyuanqiyong tabIcon"
+                                        <i class="iconfont icon-shequneiicon- tabIcon"
                                            slot="reference"
                                            @click="handleStart(scope.$index, scope.row)"
                                            style="color: #1381e3;"
@@ -566,10 +566,13 @@
                             <el-input v-model="taskForm.infoName" placeholder="标题" size="mini"></el-input>
                         </el-form-item>
                         <el-form-item prop="infoType" label="来源：">
-                            <el-radio v-model="taskForm.infoType" label="law" @change="changeInfoType">法律法规</el-radio>
-                            <el-radio v-model="taskForm.infoType" label="video" @change="changeInfoType">视频</el-radio>
-                            <el-radio v-model="taskForm.infoType" label="audio" @change="changeInfoType">音频</el-radio>
-                            <el-radio v-model="taskForm.infoType" label="pic" @change="changeInfoType">图文</el-radio>
+                            <el-radio-group v-model="taskForm.infoType" @change="changeInfoType">
+                                <el-radio label="law">法律法规</el-radio>
+                                <el-radio label="video">视频</el-radio>
+                                <el-radio label="audio">音频</el-radio>
+                                <el-radio label="pic" >图文</el-radio>
+                            </el-radio-group>
+
                         </el-form-item>
                         <br>
                         <el-form-item>

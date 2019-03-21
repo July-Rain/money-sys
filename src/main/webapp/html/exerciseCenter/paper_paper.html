@@ -23,6 +23,7 @@
         }
         .bar .buttons {
             padding-bottom: 10px;
+            background: #fff;
         }
         .bar .buttons .el-button span {
             display: block;
@@ -39,7 +40,8 @@
         .bar .anchor {
             display: inline-block;
             width: 30px;
-            padding: 5px;
+            text-align: center;
+            line-height: 30px;
             margin:5px;
             border-radius: 2px;
             background: #dddddd;
@@ -70,10 +72,13 @@
                         </el-radio-group>
                         <div class="answer-area" v-show="isSubmit">
                             <p :class="question.right==1 ? 'right' : 'err'">
-                                {{question.userAnswer}}
+                                {{question.userAnswer?question.userAnswer:'未作答'}}
                             </p>
+                            <p class="collection favorite" @click="doCollect(index, '10004')" v-if="question.isCollect"><i class="iconfont icon-shoucang1 favorite"></i>已收藏</p>
+                            <p class="collection" @click="doCollect(index, '10004')" v-if="!question.isCollect"><i class="iconfont icon-shoucang"></i>收藏本题</p>
+                            <p class="answer-text">答案描述：<span>{{ question.describe }}</span></p>
                         </div>
-                        <div class="gray" v-if="isSubmit"></div>
+                        <div class="gray" v-if="isSubmit && questionList.slice(0, singleNum).length!=(index+1)"></div>
                     </div>
                 </div>
                 <div class="multi-options">
@@ -87,10 +92,13 @@
                         </el-checkbox-group>
                         <div class="answer-area" v-show="isSubmit">
                             <p :class="question.right==1 ? 'right' : 'err'">
-                                {{question.userAnswer}}
+                                {{question.userAnswer?question.userAnswer:'未作答'}}
                             </p>
+                            <p class="collection favorite" @click="doCollect(index, '10005')" v-if="question.isCollect"><i class="iconfont icon-shoucang1 favorite"></i>已收藏</p>
+                            <p class="collection" @click="doCollect(index, '10005')" v-if="!question.isCollect"><i class="iconfont icon-shoucang"></i>收藏本题</p>
+                            <p class="answer-text">答案描述：<span>{{ question.describe }}</span></p>
                         </div>
-                        <div class="gray" v-if="isSubmit"></div>
+                        <div class="gray" v-if="isSubmit && questionList.slice(singleNum, multiNum+singleNum).length!=(index+1)"></div>
                     </div>
                 </div>
                 <div class="checking" v-if="pdNum > 0">
@@ -104,10 +112,13 @@
                         </el-radio-group>
                         <div class="answer-area" v-show="isSubmit">
                             <p :class="question.right==1 ? 'right' : 'err'">
-                                {{question.userAnswer}}
+                                {{question.userAnswer?question.userAnswer:'未作答'}}
                             </p>
+                            <p class="collection favorite" @click="doCollect(index, '10006')" v-if="question.isCollect"><i class="iconfont icon-shoucang1 favorite"></i>已收藏</p>
+                            <p class="collection" @click="doCollect(index, '10006')" v-if="!question.isCollect"><i class="iconfont icon-shoucang"></i>收藏本题</p>
+                            <p class="answer-text">答案描述：<span>{{ question.describe }}</span></p>
                         </div>
-                        <div class="gray" v-if="isSubmit"></div>
+                        <div class="gray" v-if="isSubmit && questionList.slice(multiNum+singleNum).length!=(index+1)"></div>
                     </div>
                 </div>
             </article>
@@ -127,7 +138,7 @@
                     {{ index+1 }}
                 </a>
                 <a class="anchor" v-for="(item, index) in questionList" v-show="isSubmit"
-                   :class="{'submit': item.right == 0}"
+                   :class="item.right==1?'right-back':'wrong-back'"
                    :href="'#'+(index+1)">
                     {{ index+1 }}
                 </a>

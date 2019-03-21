@@ -49,7 +49,7 @@
         </div>
         <div class="info_area">
             <ul class="clearfix">
-                <li v-for="(navItem,index) in navList" :class="{active:!(index - menuIndex)}" @click="reload(index,navItem.alias)">{{navItem.name}}</li>
+                <li v-for="(navItem,index) in navList" :class="!(index - menuIndex)?'active':''" @click="reload(index,navItem.alias)">{{navItem.name}}</li>
             </ul>
             <div class="tab">
                 <div class="item" v-if="tableData" v-for="(item,index) in tableData">
@@ -62,9 +62,9 @@
                             <span class="time">{{item.createTime}}</span>
                         </p>
                     </div>
-                    <p class="text">{{item.content}}</p>
+                    <pre class="text">{{item.content}}</pre>
                     <ul class="item_bot clearfix">
-                        <li @click="collection(item.id,index)"><i class="iconfont icon-gerenzhongxin"></i><span>{{item.collectionNum||0}}</span><span> 收藏</span></li>
+                        <li @click="collection(item.id,index)"><i class="iconfont icon-shoucang1"></i><span>{{item.collectionNum||0}}</span><span> 收藏</span></li>
                         <li @click="showComment(item.id,index)"><i class="iconfont icon-gerenzhongxin"></i><span>{{item.commentNum||0}}</span><span> 评论</span></li>
                         <li @click="report(item.id,index)">举报</li>
                     </ul>
@@ -85,14 +85,14 @@
                                     <span class="time">{{i.createTime}}</span>
                                 </p>
                             </div>
-                            <p class="text">{{i.content}}</p>
+                            <pre class="text">{{i.content}}</pre>
                         </div>
                         <!--<p class="openMore">展开更多评论</p>-->
 
                     </div>
                 </div>
                 <div class="item" v-if="tableData.length==0">
-                    <p class="text" style="width: auto" >暂无内容</p>
+                    <pre class="text" style="width: auto" >暂无内容</pre>
                 </div>
             </div>
         </div>

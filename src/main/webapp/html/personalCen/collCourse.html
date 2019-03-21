@@ -5,6 +5,9 @@
     <#include "/header.html">
 </head>
 <style>
+    .container {
+        overflow-x:hidden;
+    }
     .video-js{
         margin: 0 auto;
     }
@@ -53,9 +56,48 @@
         color: #333333;
     }
     .el-dialog__wrapper.dialog_minW750 .el-dialog__body {
-        height: 40vh;
+        max-height: 40vh;
         overflow-x: hidden;
         overflow-y: auto;
+    }
+    .video-card {
+        position: relative;
+        width: 90%;
+        margin: 0 auto;
+    }
+    .video-card .title{
+        margin: 11px 0 11px 9px;
+        cursor: default;
+        font-size: 17px;
+        color: #222222;
+    }
+    .video-card .stuCreat {
+        height: 10px;
+        font-family: PingFang-SC-Medium;
+        font-size: 12px;
+        font-weight: normal;
+        font-stretch: normal;
+        letter-spacing: 0px;
+        color: #999999;
+    }
+    .video-card .stuIssuer .icon-yonghutouxiang {
+        margin-right: 6px;
+        font-size: 14px;
+    }
+    .video-card div p:last-child.stuIssuer {
+        font-size: 14px;
+        color: #3e4e6f;
+    }
+    .video-card div p:last-child.stuIssuer .upload {
+        color: #999999;
+    }
+    .video-card .icons {
+        position: absolute;
+        left: 80%;
+        bottom: -9px;
+    }
+    .video-card .icons .iconfont {
+        margin-right: 4px;
     }
 </style>
 <body>
@@ -277,7 +319,18 @@
                                                 <source :src="item.contentUrl" type="video/mp4">
                                                 您的浏览器不支持视频播放
                                             </video>
-                                            <div style="padding: 14px 14px 0 14px;">
+                                            <div class="video-card">
+                                                <div>
+                                                    <p href="javascript:;" class="title">{{item.stuTitle}}</p>
+                                                    <p class="stuCreat">{{item.stuIsstime}}</p>
+                                                    <p class="stuIssuer"><i class="iconfont icon-yonghutouxiang"></i>{{item.stuIssuer}}&nbsp;<span class="upload">上传</span></p>
+                                                </div>
+                                                <p class="icons">
+                                                    <span v-if="!item.isColl" @click="handleDel(item.collectionId)" style="color: #bfbfbf;"><i class="iconfont icon-shoucang1"></i>收藏</span>
+                                                    <span v-if="item.isColl" @click="handleDel(item.collectionId)" style="color: #ff6600;"><i class="iconfont icon-shoucang1"></i>已收藏</span>
+                                                </p>
+                                            </div>
+                                            <!--<div style="padding: 14px 14px 0 14px;">
                                                 <p>
                                                     <span class="stuType">{{item.stuType}}</span>
                                                     <a href="javascript:;" class="title">{{item.stuTitle}}</a>
@@ -287,11 +340,11 @@
                                                     <span class="stuCreat">{{item.stuIsstime}}</span>
                                                 </p>
                                                 <p>
-                                                    <!--<span @click="handleDel(item.collectionId)">取消收藏</span>-->
+                                                    &lt;!&ndash;<span @click="handleDel(item.collectionId)">取消收藏</span>&ndash;&gt;
                                                     <span  @click="handleDel(item.collectionId)"><i class="iconfont icon-quxiaoshoucang" style="color:#ff6600"></i></span>
                                                     <span>收藏于{{item.collecttime}}</span>
                                                 </p>
-                                            </div>
+                                            </div>-->
                                         </el-card>
                                     </el-col>
                                 </el-row>

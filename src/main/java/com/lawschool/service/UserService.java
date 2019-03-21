@@ -98,7 +98,7 @@ public interface UserService  extends AbstractService<User> {
       * @return int
       **/
      
-     int changeIdentify(String id,String identify);
+     int changeIdentify(String id,String identify,String flag);
 
 
 

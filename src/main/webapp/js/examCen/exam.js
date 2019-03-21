@@ -180,9 +180,12 @@ var vm = new Vue({
                         contentType: "application/json",
                         success: function (result) {
                             if (result.code == 0) {
-                                alert("保存成功");
-                                vm.closeCheckSettingDia();
-
+                                vm.$alert('操作成功', '提示', {
+                                    confirmButtonText: '确定',
+                                    callback: function () {
+                                        vm.closeCheckSettingDia();
+                                    }
+                                });
                             } else {
                                 alert(result.msg);
                             }

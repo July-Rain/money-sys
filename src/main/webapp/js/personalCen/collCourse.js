@@ -43,7 +43,8 @@ var vm = new Vue({
         },//删除数据
         dialogPic:false,
         title:"",
-        caseContent:""
+        caseContent:"",
+        myPlayers: []
 
     },
     created: function () {
@@ -65,11 +66,8 @@ var vm = new Vue({
 
         })
         this.$nextTick(function () {
-            this.reload();
+            vm.reload();
         })
-    },
-    mounted: function () {
-      this.initPlayer();
     },
     methods: {
         //序列号计算
@@ -77,7 +75,12 @@ var vm = new Vue({
             return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
         },
         initPlayer: function () {
-            window.onload = function () {
+            if (vm.myPlayers.length!=0) {
+                vm.myPlayers.forEach(function (val) {
+                    val.dispose();
+                })
+            }
+            setTimeout(function () {
                 var options = {
                     bigPlayButton: true
                 };
@@ -91,8 +94,9 @@ var vm = new Vue({
                     favoritePlayer.on('pause', function () {
                         bigButton.style.display = 'block';
                     });
+                    vm.myPlayers.push(favoritePlayer);
                 })
-            }
+            }, 500)
         },
         // 查询
         onSubmit: function () {
@@ -125,35 +129,23 @@ var vm = new Vue({
             this.reload();
         },
         handleDel: function (id) {
-            // vm.delIdArr.push(row.collectionId);
-            vm.delIdArr.id=id;
-            this.$confirm('此操作将取消收藏, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(function () {
-                $.ajax({
-                    type: "POST",
-                    url: baseURL + 'coll/delColl',
-                    async: true,
-                    data: JSON.stringify(vm.delIdArr),
-                    contentType: "application/json",
-                    success: function (result) {
+            $.ajax({
+                type: "POST",
+                url: baseURL + "collection/delete/"+id,
+                contentType: "application/json",
+                success: function(result){
+
+                    if(result.code === 0){
                         vm.reload();
+                    }else{
+                        alert(result.msg);
                         vm.$message({
-                            type: 'success',
-                            message: '取消成功!'
+                            message: result.msg,
+                            type: 'warning'
                         });
-
                     }
-                });
-            }).catch(function () {
-                // vm.$message({
-                //     type: 'info',
-                //     message: '已取消删除'
-                // });
+                }
             });
-
         },
         reload: function () {
             $.ajax({
@@ -165,7 +157,6 @@ var vm = new Vue({
                     if (result.code == 0) {
                         vm.videoData = result.result.list;
                         for(var i=0;i<vm.videoData.length;i++){
-                            vm.videoDataId.push(vm.videoData[i].id);
                             vm.videoData[i].contentUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].comContent;
                             if(vm.videoData[i].videoPicAcc){
                                 vm.videoData[i].videoPicAccUrl=baseURL+"sys/download?accessoryId="+vm.videoData[i].videoPicAcc;
@@ -184,6 +175,13 @@ var vm = new Vue({
                         vm.formInline.pageSize = result.result.pageSize;
                         vm.formInline.totalCount = parseInt(result.result.totalCount);
                         console.info("videoData",vm.videoData)
+                        if (vm.formInline.stuType=='video') {
+                            vm.videoDataId = [];
+                            vm.videoData.forEach(function (val) {
+                                vm.videoDataId.push(val.id)
+                            })
+                            vm.initPlayer();
+                        }
                     } else {
                         alert(result.msg);
                     }

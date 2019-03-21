@@ -126,11 +126,11 @@ html {
 .main .question .answer-area::before {
     content:'.';
     height: 0;
-    width: 77vw;
-    margin-left: -14vw;
+    width: 80vw;
+    margin-left: -11vw;
     margin-bottom: 20px;
     display: block;
-    border: 1px dashed #dddddd;
+    border: 1px dashed #EFEFEF;
 }
 .main .question .answer-area i {
     color: #dddddd;
@@ -310,12 +310,19 @@ html {
     width: 45px;
     margin-bottom: 4px;
 }
+.el-radio__inner::after {
+    left: 14px;
+    top: 14px;
+    -webkit-border-radius: 60%;
+    -moz-border-radius: 60%;
+    border-radius: 60%;
+}
 .el-radio__input.is-checked .el-radio__inner::after {
     -webkit-transform: translate(-50%,-50%) scale(3);
     transform: translate(-50%,-50%) scale(3);
 }
 .el-radio__inner::after {
-    border-radius: 50%;
+    border-radius: 60%;
 }
 .el-checkbox__input {
     width: 45px;
@@ -366,7 +373,11 @@ div.answer_area i.gray {
     color: #1381E3;
 }
 
-.items a.submit {
+.items a.wrong-back {
     background: #ff2916;
+    color: #050303;
+}
+.items a.right-back {
+    background: #37AA57;
     color: #050303;
 }

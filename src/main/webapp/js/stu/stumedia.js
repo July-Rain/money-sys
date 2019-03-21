@@ -5,6 +5,7 @@
  */
 var editor = null;
 var menuId = getUrlParam("id");
+var user = jsgetUser();
 // 视频上传DOM 改为由v-show控制以实现上传视频替换功能后，会有一个warn，于功能无碍。待定。
 var vm = new Vue({
     el: '#app',
@@ -100,7 +101,8 @@ var vm = new Vue({
         multipleLawSelection: [],//选中法律法规信息
         lawData: [],//法律知识库分类树 --去除全部的
         loading: false,//加载层
-        saveChangePageDatas: []
+        saveChangePageDatas: [],
+        isAdmin:user.isAdmin
     },
     created: function () {
         this.$nextTick(function () {
@@ -527,6 +529,7 @@ var vm = new Vue({
         cancelDept: function () {
             this.dialogDept = false;
         },
+        // 20190316 数据绑定 --bu
         confimUser: function () {
             vm.saveStep1()
             vm.saveStep2()
@@ -721,11 +724,13 @@ var vm = new Vue({
             editor.create();
 
         },
+        // 20190316 数据绑定 --bu
         saveStep1:function(){
             vm.multipleSelection.map(function (multipleSel) {
                 vm.saveChangePageDatas.push(multipleSel)
             });
         },
+        // 20190316 数据绑定 --bu
         saveStep2:function () {
             vm.saveChangePageDatas = (function (arr) {
 
@@ -767,6 +772,7 @@ var vm = new Vue({
         }, 200);
     },
     watch: {
+        // 20190316 数据绑定 --bu
         userTableData() {
             vm.saveStep1()
             this.$nextTick(function(){

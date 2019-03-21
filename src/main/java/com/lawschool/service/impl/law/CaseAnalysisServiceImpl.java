@@ -54,7 +54,7 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
         String endTime = (String)params.get("endTime");
         String createUser=(String)params.get("createUser");
         EntityWrapper<CaseAnalysisEntity> ew = new EntityWrapper<>();
-        ew.setSqlSelect("ID,CASE_TITLE,CASE_CONTENT,CONTENT_TYPE,CASE_TIME,DICTCODE2VALE(CASE_PROCESS) as CASE_PROCESS,DICTCODE2VALE(CASE_TYPE) as CASE_TYPE,DICTCODE2VALE(LAW_LEVEL) as LAW_LEVEL,VIDEO_PIC_ACC,CREATE_TIME,CREATE_USER_NAME");
+        ew.setSqlSelect("ID,CASE_TITLE,CASE_CONTENT,CONTENT_TYPE,CASE_TIME,DICTCODE2VALE(CASE_PROCESS) as CASE_PROCESS,DICTCODE2VALE(CASE_TYPE) as CASE_TYPE,DICTCODE2VALE(LAW_LEVEL) as LAW_LEVEL,VIDEO_PIC_ACC,CREATE_TIME,CREATE_USER_NAME,IS_OPEN");
         if(UtilValidate.isNotEmpty(caseTitle)){
             ew.like("CASE_TITLE",caseTitle);
         }
@@ -74,8 +74,12 @@ public class CaseAnalysisServiceImpl extends ServiceImpl<CaseAnalysisDao,CaseAna
             String[] lawArr=caseLawid.split(",");
             ew.in("CASE_LAWID",lawArr);
         }
-        if(UtilValidate.isNotEmpty(createUser)){
-            ew.in("create_user",createUser);
+        if(UtilValidate.isNotEmpty(createUser)){  //创建人
+            if(user.getIsAdmin()==1){
+                //是超级管理员  可以看到所有人的学习管理信息
+            }else{
+                ew.eq("CREATE_USER",createUser);
+            }
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if(UtilValidate.isNotEmpty(startTime)){

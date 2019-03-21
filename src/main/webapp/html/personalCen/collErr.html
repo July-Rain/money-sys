@@ -3,7 +3,12 @@
 <head>
     <title>江苏省公安机关网上法律学校 | Sinorock</title>
     <#include "/header.html">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/testPaper.css">
     <style>
+        div.container {
+            overflow-x: hidden;
+            background: white !important;
+        }
         .header-right ul{
             background: transparent;
         }
@@ -148,6 +153,39 @@
             margin-bottom: 50px;
             color: #1381e3;
             font-size: 14px;
+        }
+        .main .el-checkbox-group {
+            display: flex;
+            flex-flow: column;
+        }
+        .main .el-checkbox {
+            margin-bottom: 10px;
+            margin-left: 30px;
+        }
+        .main .question .icon-dui1 {
+            top: 6px;
+        }
+        .main .el-radio-group {
+            display: flex;
+            flex-flow: column;
+        }
+        .main .el-radio {
+            margin-bottom: 10px;
+            margin-left: 30px;
+            padding-top: 5px;
+        }
+        .main .question .el-radio__label .icon-dui1 {
+            top: 11px;
+        }
+        .main .el-textarea {
+            padding-left: 55px;
+        }
+        .main textarea {
+            min-height: 100px !important;
+            background: #fbfcfe;
+        }
+        .main .question.text {
+            padding: 10px;
         }
     </style>
 </head>
@@ -316,20 +354,60 @@
 
         <el-dialog :title="title" :visible.sync="testInfo" :before-close="closeDia">
             <el-row>
-            <el-col >
-                <p ><span>题目：({{questObj.questiontypeValue}}) </span>{{questObj.comContent}}</p>
-                <p >
-                    <span v-for="(item,index) in answers" style="margin-right: 20px;display: inline-block" :class="questObj.answerId.indexOf(item.id)!=-1?'green':''" >{{choice[index]}}.{{item.questionContent}} </span>
-                </p>
-                <p>
-                    <span>描述：{{questObj.answerDescrible}}</span>
-                </p>
-            </el-col>
-        </el-row>
+                <el-col class="main">
+                    <p class="title">题目：{{ questObj.comContent }}</p>
+                    <div class="question">
+                        <el-radio-group v-if="questObj.questionType==='10004'||questObj.questionType==='10006'" v-model="questObj.answer" :disabled="true">
+                            <el-radio :label="answer.id"
+                                      v-for="(answer, index1) in questObj.answer"
+                                      :class="{'right-answer': answer.id===questObj.answerId}"
+                            >
+                                {{optionIndex[index1]}}、{{ answer.questionContent }}
+                                <i class="iconfont icon-dui1" v-if="answer.id===questObj.answerId"></i>
+                            </el-radio>
+                        </el-radio-group>
+                        <el-checkbox-group v-if="questObj.questionType=='10005'" v-model="questObj.answer" :disabled="true">
+                            <el-checkbox
+                                    v-for="(answer, index1) in questObj.answer"
+                                    :label="answer.id"
+                                    :class="{'right-answer': questObj.answerId.indexOf(answer.id)>=0}"
+                            >
+                                {{optionIndex[index1]}}、{{ answer.questionContent }}
+                                <i class="iconfont icon-dui1" v-if="questObj.answerId.indexOf(answer.id)>=0"></i>
+                            </el-checkbox>
+                        </el-checkbox-group>
+                        <div v-if="questObj.questionType=='10007'" class="question text">
+                            <el-input
+                                    type="textarea"
+                                    autosize
+                                    :placeholder="questObj.checkList[0]"
+                                    :disabled="true"
+                            >
+                            </el-input>
+                        </div>
+                        <div class="answer-area">
+                            <p>
+                                <!--你的答案：<span v-if="questObj.checkList!=undefined" :class="questObj.userScore ? 'right' : 'err'">{{ answerDisplay(questObj.checkList, questObj.answerId, questObj.answer).checkIndex }}</span><span class="err" v-if="questObj.checkList==undefined">未作答</span>，正确答案：<span class="right"></span>-->
+                            </p>
+                            <p class="text">
+                                <span class="answer-text">试题难度：</span>
+                                <i class="iconfont icon-shoucang1 light"></i>
+                                <i :class="questObj.questionDifficulty==='10002'||questObj.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                <i :class="questObj.questionDifficulty==='10002'||questObj.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                <i :class="questObj.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                <i :class="questObj.questionDifficulty==='10003'?'light':''" class="iconfont icon-shoucang1"></i>
+                                <span class="diff" v-if="questObj.questionDifficulty==='10001'">初级</span>
+                                <span class="diff" v-if="questObj.questionDifficulty==='10002'||questObj.questionDifficulty==='10003'">{{ questObj.questionDifficulty==='10002'?'中级':'高级' }}</span>
+                            </p>
+                            <p class="answer-text">答案描述：<span>{{ questObj.answerDescrible }}</span></p>
+                        </div>
+                    </div>
+                </el-col>
+            </el-row>
         </el-dialog>
 
 
-        <el-dialog :title="title1" :visible.sync="random" :before-close="closeDia1">
+        <!--<el-dialog :title="title1" :visible.sync="random" :before-close="closeDia1">
             <el-row  v-for="(value,key) in exercise">
                 <el-col >
                     <p ><span>题目：{{value.comContent}}</span></p>
@@ -341,7 +419,7 @@
                     </p>
                 </el-col>
             </el-row>
-        </el-dialog>
+        </el-dialog>-->
 
         <el-dialog class="task-confirmation" :visible.sync="genTaskByQue" :before-close="closeGenDia">
             <div class="check-mark"><i class="iconfont icon-dui1"></i></div>

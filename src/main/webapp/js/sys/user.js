@@ -217,7 +217,21 @@ var vm = new Vue({
                 }
             })
         },
-
+        changeAdmin: function(index, row){
+            $.ajax({
+                type: "POST",
+                url: baseURL + "sys/changeAdmin?id=" + row.id+"&isAdmin="+row.isAdmin,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        alert("操作成功");
+                        vm.reload();
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            })
+        },
         //用户禁用
         handleDel: function (index, row) {
             $.ajax({
