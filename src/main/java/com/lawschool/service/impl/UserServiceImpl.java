@@ -325,14 +325,25 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
     }
 
     @Override
-    public int changeIdentify(String id, String identify) {
+    public int changeIdentify(String id, String identify,String flag) {
         User user =userMapper.selectById(id);
         user.setId(id);
-        if("0".equals(identify)){
-            user.setIdentify("1");
-        }else if("1".equals(identify)){
-            user.setIdentify("0");
+        if("identify".equals(flag)){
+            //修改教官身份
+            if("0".equals(identify)){
+                user.setIdentify("1");
+            }else if("1".equals(identify)){
+                user.setIdentify("0");
+            }
+        }else if("isAdmin".equals(flag)){
+            //修改管理员身份
+            if("0".equals(identify)){
+                user.setIsAdmin(1);
+            }else if("1".equals(identify)){
+                user.setIsAdmin(0);
+            }
         }
+
         return userMapper.updateById(user);
     }
 
