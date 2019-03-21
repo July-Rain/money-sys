@@ -204,7 +204,7 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         String createUser=(String)params.get("createUser");//创建人
         String addsrc=(String)params.get("addsrc");//添加来源  0-其他  1-教官中心
         EntityWrapper<StuMedia> ew = new EntityWrapper<>();
-        ew.setSqlSelect("ID,STU_CODE,STU_TITLE,COM_CONTENT,STU_TYPE,STU_COUNT,STU_ISSUER,STU_ISSTIME,STU_POLICECLASS,DICTCODE2VALE(STU_POLICECLASS) as stuPoliceclassName,VIDEO_PIC_ACC,STU_CREAT");
+        ew.setSqlSelect("ID,STU_CODE,STU_TITLE,COM_CONTENT,STU_TYPE,STU_COUNT,STU_ISSUER,STU_ISSTIME,STU_POLICECLASS,DICTCODE2VALE(STU_POLICECLASS) as stuPoliceclassName,VIDEO_PIC_ACC,STU_CREAT,IS_OPEN");
         if(UtilValidate.isNotEmpty(stuTitle)){
             ew.like("stu_title",stuTitle);
         }
@@ -247,7 +247,11 @@ public class StuMediaServiceImpl extends AbstractServiceImpl<StuMediaDao,StuMedi
         }
 
         if(UtilValidate.isNotEmpty(createUser)){  //创建人
-            ew.eq("CREATE_USER",createUser);
+            if(user.getIsAdmin()==1){
+                //是超级管理员  可以看到所有人的学习管理信息
+            }else{
+                ew.eq("CREATE_USER",createUser);
+            }
         }
         if(UtilValidate.isNotEmpty(addsrc)){  //添加来源
             ew.eq("ADDSRC",addsrc);

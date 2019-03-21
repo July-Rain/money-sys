@@ -5,6 +5,7 @@
  */
 var editor = null;
 var menuId=getUrlParam("id");
+var user = jsgetUser();
 var vm = new Vue({
     el: '#app',
     data: {
@@ -109,7 +110,8 @@ var vm = new Vue({
         uploadedPlayer: null, // videojs实例
         saveUserTableData: [],//用于人员回显表格的对象  --回显需加
         loading:false,//加载中
-        saveChangePageDatas:[]//用于人员翻页数据保存
+        saveChangePageDatas:[],//用于人员翻页数据保存
+        isAdmin:user.isAdmin
     },
     created: function () {
 

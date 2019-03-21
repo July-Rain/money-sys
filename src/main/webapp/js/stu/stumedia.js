@@ -5,6 +5,7 @@
  */
 var editor = null;
 var menuId = getUrlParam("id");
+var user = jsgetUser();
 // 视频上传DOM 改为由v-show控制以实现上传视频替换功能后，会有一个warn，于功能无碍。待定。
 var vm = new Vue({
     el: '#app',
@@ -100,7 +101,8 @@ var vm = new Vue({
         multipleLawSelection: [],//选中法律法规信息
         lawData: [],//法律知识库分类树 --去除全部的
         loading: false,//加载层
-        saveChangePageDatas: []
+        saveChangePageDatas: [],
+        isAdmin:user.isAdmin
     },
     created: function () {
         this.$nextTick(function () {
