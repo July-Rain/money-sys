@@ -20,7 +20,7 @@ var vm = new Vue({
             label: '本年度'
         }],
         selected: '0',
-        colorList: ['#52c9e7','#3e98e8','#81bdd8','#5ebd5c','#feae24','#f97a1f','#f26443','#b97deb','#7e72f2','#4f7ee9'],
+        colorList: ['#3e98e8','#f97a1f','#feae24','#b97deb','#52c9e7','#81bdd8','#5ebd5c','#7e72f2','#4f7ee9'],
         breadArr: []//面包屑数据
     },
     methods: {
