@@ -281,7 +281,7 @@ var vm = new Vue({
                 data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
-                        vm.tableData = result.page.list;
+                        vm.tableData = [];
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
                         vm.formInline.totalCount = parseInt(result.page.totalCount);

@@ -18,7 +18,7 @@ var vm = new Vue({
             totalCount: 0,
             userStatus:'2000'
         },
-        tchData:[1],//教官数据
+        tchData:[],//教官数据
         newsData:[],//最新课程数据
 
         visible: false,
@@ -98,7 +98,13 @@ var vm = new Vue({
                 data: vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
+                        result.page.list = []
+                        if(result.page.list.length === 0){
+                            vm.tchData = [];
+                            return
+                        }
                         vm.tchData = result.page.list;
+
                         vm.formInline.currPage = result.page.currPage;
                         vm.formInline.pageSize = result.page.pageSize;
                         vm.formInline.totalCount = parseInt(result.page.totalCount);
