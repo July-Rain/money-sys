@@ -7,7 +7,8 @@ var vm = new Vue({
         levelList: [],
         position: [{left: 0, top: 102}, {left: 471, top: 0}, {left: 942, top: 102}, {left: 1342, top: 102}],
         moveClass: false,
-        coinNum: ""
+        coinNum: "",
+        ruleAreaShow: false
     },
     created: function () {
         this.$nextTick(function () {

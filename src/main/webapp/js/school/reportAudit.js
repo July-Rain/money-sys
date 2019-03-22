@@ -38,7 +38,6 @@ var vm = new Vue({
     created: function () {
         this.$nextTick(function () {
             this.reload();
-            this.getTypeNum();
         })
     },
     methods: {
@@ -110,7 +109,33 @@ var vm = new Vue({
             });
         },
         audit: function (id,index,status) {
-            
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'post/auditReport',
+                dataType: "json",
+                data :{
+                  id:id,
+                  status : status
+                },
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.$alert('审核成功' ,'提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                                vm.reload();
+                            }
+                        });
+                    }else{
+                        vm.$alert(result.msg ,'提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                                vm.reload();
+                            }
+                        });
+                    }
+
+                }
+            })
         }
     }
 });

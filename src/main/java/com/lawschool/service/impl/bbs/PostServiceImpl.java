@@ -82,4 +82,11 @@ public class PostServiceImpl extends AbstractServiceImpl<PostDao, PostEntity> im
         postEntity.setReportNum(postEntity.getReportNum()==null?1:(postEntity.getReportNum()+1));
         dao.updateById(postEntity);
     }
+
+    @Override
+    public void auditReport(String id, String status) {
+        PostEntity postEntity = dao.selectById(id);
+        postEntity.setStatus(status);
+        dao.updateById(postEntity);
+    }
 }
