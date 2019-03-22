@@ -24,7 +24,7 @@
         <div class="integral">
             <p>本次闯关积分 <span>{{coinNum}}</span></p>
         </div>
-        <button class="rule_info">
+        <button class="rule_info" @click="ruleAreaShow=true">
             <img src="${rc.contextPath}/statics/img/competeCenter/btn_gonglue.png" alt="">
         </button>
         <ul class="level_list">
@@ -34,6 +34,15 @@
             </li>
             <li class="car" @click="jumpGame"></li>
         </ul>
+        <!--规则-->
+        <div class="model_area rule_area" v-if="ruleAreaShow">
+            <div class="inner">
+                <button class="close" @click="ruleAreaShow = false"></button>
+                <div class="title"></div>
+                <p>
+                    规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则</p>
+            </div>
+        </div>
     </div>
 </div>
 </body>

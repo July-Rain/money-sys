@@ -25,7 +25,7 @@ button {
     background-size: 100% auto;
     height: 100vh;
     position: relative;
-    padding-top: 22.47437774524158vw;
+    padding-top: 34vh;
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -347,4 +347,46 @@ button {
     background-size: 100vw 100%;
     animation: 20s bgMove1 linear infinite;
     -webkit-animation: 20s bgMove1 linear infinite;
+}
+
+.model_area {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    background-color: rgba(0,0,0,0.5);
+}
+/*规则*/
+
+.rule_area .inner{
+    width: 866px;
+    height: 505px;
+    margin: 200px auto 0;
+    position: relative;
+    background-image: url("../img/competeCenter/bu_gonglue.png");
+    background-size: 100% 100%;
+    padding-top: 1px;
+}
+.rule_area .inner .close{
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 91px;
+    top: 0px;
+}
+.rule_area .inner .title{
+    width: 123px;
+    height: 36px;
+    margin: 86px auto 0;
+    background-image: url("../img/competeCenter/chuangguan_gonglue.png");
+    background-size: 100% 100%;
+}
+.rule_area .inner p{
+    width: 650px;
+    font-size: 18px;
+    color: #75431f;
+    margin: 50px auto 0;
+    line-height: 23px;
 }
