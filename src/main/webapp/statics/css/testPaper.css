@@ -1,7 +1,7 @@
 /* 整体布局搭建 */
 html {
     /* 控制字体大小 小 8px 中 10px 大 12px */
-    font-size: 9px;
+    font-size: 10px;
 }
 .container {
     position: relative;
@@ -64,16 +64,20 @@ html {
 
 
 .tips .font-size span:first-child {
-    font-size: 17.6px;
-    font-weight: 900;
+    font-size: 17px;
 }
 .tips .font-size span:nth-child(2) {
     margin-left: 3px;
     font-size: 22px;
+    background: #eff8ff;
 }
 .tips .font-size span:last-child {
     margin-left: 3px;
-    font-size: 26.4px;
+    font-size: 26px;
+}
+.tips .font-size .font-size-span {
+    display: inline-block;
+    padding: 4px;
 }
 
 
@@ -313,9 +317,9 @@ html {
 .el-radio__inner::after {
     left: 14px;
     top: 14px;
-    -webkit-border-radius: 60%;
-    -moz-border-radius: 60%;
-    border-radius: 60%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
 }
 .el-radio__input.is-checked .el-radio__inner::after {
     -webkit-transform: translate(-50%,-50%) scale(3);

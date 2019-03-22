@@ -206,19 +206,17 @@ var vm = new Vue({
             var html = document.getElementById('html');
 
             if (e.target.innerHTML === '小') {
-                html.style.fontSize = '9px';
+                html.style.fontSize = '10px';
             } else if (e.target.innerHTML === '中') {
-                html.style.fontSize = '13px';
+                html.style.fontSize = '12px';
             } else if (e.target.innerHTML === '大') {
-                html.style.fontSize = '14px';
+                html.style.fontSize = '13px';
             } else {
                 return;
             }
             for (var i = 0; i < fontSpans.length; i++) {
-                fontSpans[i].style.fontWeight = '300';
                 fontSpans[i].style.background = 'white';
             }
-            e.target.style.fontWeight = '600';
             e.target.style.background = '#eff8ff';
         },
         // 改变 bar 中元素被选择时的字体颜色 & 定位字体图标
