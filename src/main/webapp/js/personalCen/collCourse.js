@@ -75,11 +75,6 @@ var vm = new Vue({
             return index + 1 + (vm.formInline.currPage-1) * vm.formInline.pageSize;
         },
         initPlayer: function () {
-            if (vm.myPlayers.length!=0) {
-                vm.myPlayers.forEach(function (val) {
-                    val.dispose();
-                })
-            }
             setTimeout(function () {
                 var options = {
                     bigPlayButton: true
@@ -128,24 +123,35 @@ var vm = new Vue({
             };
             this.reload();
         },
-        handleDel: function (id) {
-            $.ajax({
-                type: "POST",
-                url: baseURL + "collection/delete/"+id,
-                contentType: "application/json",
-                success: function(result){
-
-                    if(result.code === 0){
-                        vm.reload();
-                    }else{
-                        alert(result.msg);
-                        vm.$message({
-                            message: result.msg,
-                            type: 'warning'
-                        });
+        handleDel: function (id, item) {
+            vm.$confirm('此操作将取消收藏, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(function () {
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "collection/delete/"+id,
+                    contentType: "application/json",
+                    success: function(result){
+                        if(result.code === 0){
+                            vm.myPlayers.forEach(function (val, index) {
+                                if (val.id_ === item) {
+                                    val.dispose();
+                                }
+                                vm.myPlayers.slice(index, index+1);
+                            })
+                            vm.reload();
+                        }else{
+                            vm.$message({
+                                message: result.msg,
+                                type: 'warning'
+                            });
+                        }
                     }
-                }
-            });
+                });
+            })
+
         },
         reload: function () {
             $.ajax({
@@ -174,9 +180,10 @@ var vm = new Vue({
                         vm.formInline.currPage = result.result.currPage;
                         vm.formInline.pageSize = result.result.pageSize;
                         vm.formInline.totalCount = parseInt(result.result.totalCount);
-                        console.info("videoData",vm.videoData)
+                        console.info('videoData', vm.videoData)
                         if (vm.formInline.stuType=='video') {
                             vm.videoDataId = [];
+
                             vm.videoData.forEach(function (val) {
                                 vm.videoDataId.push(val.id)
                             })
@@ -223,6 +230,12 @@ var vm = new Vue({
             parent.location.reload()
         },
         changeType: function () {
+            if (vm.myPlayers.length!=0) {
+                vm.myPlayers.forEach(function (val) {
+                    val.dispose()
+                })
+                vm.myPlayers = [];
+            }
             this.reload();
         },
         handleDetail :function (id,row) {

@@ -260,6 +260,8 @@ public class FileUtil {
             System.out.println("开始下载文件");
             //切换FTP对应的文件目录
             boolean test = ftpClient.changeWorkingDirectory(accessoryEntity.getFilePath());
+            //每次数据连接之前，ftp client告诉ftp server开通一个端口来传输数据。
+            ftpClient.enterLocalPassiveMode();
             FTPFile[] ftpFiles = ftpClient.listFiles();
             for (FTPFile file : ftpFiles) {
                 if (file.getName().equals(accessoryEntity.getId() + "." + accessoryEntity.getAccessoryType())) {

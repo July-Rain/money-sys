@@ -11,4 +11,11 @@ public interface ReplyDao extends AbstractDao<ReplyEntity> {
     void deleteByPostId(List<String> ids);
 
     Integer findMyReply(@Param("userId") String userId);
+
+    /**
+     * 获取所有我评论的内容的ids
+     * @param userId
+     * @return
+     */
+    List<String> findMyReplyIds (@Param("userId")String userId);
 }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>江苏省公安机关网上法律学校 | Sinorock</title>
+    <#include "/header.html">
+</head>
+<link rel="stylesheet" href="${rc.contextPath}/statics/css/schoolMain.css">
+<body>
+<div id="app" v-cloak>
+
+    <div class="container">
+        <div class="info_area" >
+            <ul class="clearfix">
+                <li v-for="(navItem,index) in navList" :class="!(index - menuIndex)?'active':''" @click="changeSubordinate(index,navItem.alias)">{{navItem.name}}</li>
+            </ul>
+            <div class="tab">
+                <div class="item" v-if="tableData" v-for="(item,index) in tableData">
+                    <div class="item_top clearfix">
+                        <div class="item_head">
+                            <img src="${rc.contextPath}/statics/img/dog.jpg" alt="">
+                        </div>
+                        <p>
+                            <span class="name">{{item.userName}}</span>
+                            <span class="time">{{item.createTime}}</span>
+                        </p>
+                    </div>
+                    <pre class="text">{{item.content}}</pre>
+                    <ul class="item_bot clearfix">
+                        <li @click="audit(item.id,index,'2')"><i class="iconfont icon-shoucang1"></i><span> 审核通过</span></li>
+                        <li @click="audit(item.id,index,'0')"><i class="iconfont icon-gerenzhongxin"></i><span> 审核不通过</span></li>
+                    </ul>
+                </div>
+                <div class="item" v-if="tableData.length==0">
+                    <p class="text" style="width: auto" >暂无内容</p>
+                </div>
+            </div>
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="formInline.page"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="formInline.limit"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="formInline.count">
+            </el-pagination>
+        </div>
+    </div>
+</div>
+</body>
+
+<!-- import [current] JavaScript -->
+<script src="${rc.contextPath}/js/school/reportAudit.js?_${.now?long}"></script>
+<script>
+    $(function () {
+        // $('#app').css('background','#f00')
+    })
+</script>
+</html>

@@ -474,7 +474,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="选择法律法规主题分类" :visible.sync="dialogLaw">
+        <el-dialog title="选择法律法规主题分类" :visible.sync="dialogLaw" :before-close="cancelLaw">
             <!--对于同一级的节点，每次只能展开一个-->
             <el-scrollbar wrap-class="list" wrap-style="color: red;" view-style="font-weight: bold;"
                           view-class="view-box" :native="false">

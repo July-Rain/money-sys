@@ -44,46 +44,64 @@ var vm = new Vue({
         }, {
             name: "常见问题解答",
             alias: "cjwtjd"
-        }, {
+        },
+       /*     {
             name: "我的参与",
             alias: ""
-        }],
+        }*/
+        ],
         rules:{
             content: [
-                {required: true, message: '请输入......', trigger: 'blur'},
+                {required: true,trigger: 'blur'},
                 {max: 500, message: '最大长度500', trigger: 'blur'}
             ],
             subordinateColumn:[
                 {required: true, message: '请选择所属分类', trigger: 'blur'},
             ]
+        },
+        allInfo: true,
+        myTableData : [],  //用于存放展示我的评论使用
+        mineForm:{
+            page: 1,
+            limit: 10,
+            count :0 ,
+            subordinateColumn: '',
+            type : '',
+            status: '0'
+        },
+        mineMenuIndex : 0,
+        formInline:{
+            limit: 10,
+            page: 1,
+            count: 0,
+            subordinateColumn: '',
+            status:'0'
         }
-        // navList: ["全部", "试题", "试题报错", "学习", "案例", "建议", "常见问题解答", "我的参与"]
     },
     created: function () {
-
         this.$nextTick(function () {
-            $.ajax({
-                type: "GET",
-                url: baseURL + "post/list",
-                contentType: "application/json",
-                success: function (result) {
-                    if (result.code === 0) {
-
-                        vm.tableData = result.page.list;
-                        console.info("create1", vm.tableData);
-                        for (var i = 0; i < vm.tableData.length; i++) {
-                            vm.tableData[i].commentShow = false;
-                        }
-                        console.info("create2", vm.tableData);
-                        vm.form.page = result.page.page;
-                        vm.form.pageSize = result.page.pageSize;
-                        vm.form.count = parseInt(result.page.count);
-                    } else {
-                        alert(result.msg);
-                    }
-                }
-            });
-
+            this.reload();
+            this.getTypeNum();
+        })
+    },
+    methods: {
+        handleCurrentChange: function (val) {
+            this.formInline.page = val;
+            this.reload();
+        },
+        handleSizeChange: function (val) {
+            this.formInline.limit = val;
+            this.reload();
+        },
+        mineHandleCurrentChange: function (val) {
+            this.mineForm.page = val;
+            this.mineInfoReload();
+        },
+        mineHandleSizeChange: function (val) {
+            this.mineForm.limit = val;
+            this.mineInfoReload();
+        },
+        getTypeNum : function(){
             $.ajax({
                 type: "GET",
                 url: baseURL + "post/count",
@@ -97,9 +115,7 @@ var vm = new Vue({
                     }
                 }
             });
-        })
-    },
-    methods: {
+        },
         // 发表帖子
         save: function () {
             $.ajax({
@@ -112,8 +128,8 @@ var vm = new Vue({
                         vm.$alert('发布成功', '提示', {
                             confirmButtonText: '确定',
                             callback: function () {
-                            //    vm.dialogFormVisible = false;
                                 vm.reload();
+                                vm.getTypeNum();
                                 vm.form.content = '';
                             }
                         });
@@ -152,8 +168,8 @@ var vm = new Vue({
                         vm.$alert('评论成功', '提示', {
                             confirmButtonText: '确定',
                             callback: function () {
-                            //    vm.dialogFormVisible = false;
                                 vm.reload();
+                                vm.getTypeNum();
                             }
                         });
                     }
@@ -167,7 +183,7 @@ var vm = new Vue({
             });
         },
         // 查询评论并展示
-        showComment: function (id, index) {
+        showComment: function (id, index,taName) {
             $.ajax({
                 type: "GET",
                 url: baseURL + "reply/list",
@@ -176,60 +192,137 @@ var vm = new Vue({
                     postId: id
                 },
                 success: function (result) {
-                    console.info("result", result);
-                    vm.tableData[index].child = result.page.list;
-                    vm.tableData[index].commentShow = true;
-                    var arr = vm.tableData;
-                    vm.tableData = [];
-                    vm.tableData = arr;
-                    console.info("showCom", vm.tableData)
+                    if (result.code === 0) {
+                        vm[taName][index].child = result.page.list;
+                        vm[taName][index].commentShow = true;
+                        var arr = vm[taName];
+                        vm[taName] = [];
+                        vm[taName] = arr;
+                    }else {
+                        alert( result.msg );
+                    }
                 }
             })
         },
-        collection: function (id, index) {
+        collection: function (id, index,taName) {
             $.ajax({
                 type: "POST",
                 url: baseURL + 'post/collection/' + id,
                 dataType: "json",
                 success: function (result) {
-                    vm.reload();
+                    if (result.code === 0) {
+                        vm.$alert('收藏成功' ,'提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                                if (taName ==='tableData' ){
+                                    vm.reload();
+                                }else {
+                                    vm.mineInfoReload()
+                                }
+
+                            }
+                        });
+                    }else{
+                        vm.$alert(result.msg ,'提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                                vm.reload();
+                            }
+                        });
+                    }
+
                 }
             })
         },
-        report: function (id, index) {
-            vm.$alert('举报id：' + id, '确认举报', {
-                confirmButtonText: '确定',
-                callback: function () {
-                  //  vm.dialogFormVisible = false;
-                    vm.reload();
+        report: function (id, index ,taName ) {
+            $.ajax({
+                type: "POST",
+                url: baseURL + 'post/report/' + id,
+                dataType: "json",
+                success: function (result) {
+                    if (result.code === 0) {
+                        vm.$alert('举报成功，审核通过前将不会显示此条内容' ,'提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                                if (taName ==='tableData' ){
+                                    vm.reload();
+                                }else {
+                                    vm.mineInfoReload()
+                                }
+
+                            }
+                        });
+                    }else{
+                        vm.$alert(result.msg ,'提示', {
+                            confirmButtonText: '确定',
+                            callback: function () {
+                                vm.reload();
+                            }
+                        });
+                    }
+
                 }
-            });
+            })
         },
-        reload: function (index, alias) {
+        changeSubordinate : function(index, alias){
+            //切换tab页
             // index tab
             if (index||index === 0) {
-                this.menuIndex = index;
+                vm.menuIndex = index;
             }
+            vm.formInline.subordinateColumn = alias;
+            vm.formInline.limit = 10;
+            vm.formInline.page = 1;
+            vm.reload();
+        },
+        reload: function () {
             $.ajax({
                 type: "GET",
                 url: baseURL + "post/list",
                 dataType: "json",
-                data: {
-                    page: 1,
-                    limit: 10,
-                    subordinateColumn: alias || null
-                },
+                data:vm.formInline,
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
-                        vm.form.page = result.page.page;
-                        vm.form.pageSize = result.page.pageSize;
-                        vm.form.count = parseInt(result.page.count);
+                        vm.formInline.page = result.page.currPage;
+                        vm.formInline.limit = result.page.pageSize;
+                        vm.formInline.count = parseInt(result.page.count);
                     } else {
                         alert(result.msg);
                     }
                 }
             });
+        },
+        getDetail : function (type) {
+            vm.mineForm.type = type;
+            vm.allInfo = false;
+            vm.mineInfoReload(vm.mineMenuIndex,'');
+        },
+        mineInfoReload:function(index,alias){
+            if (index||index === 0) {
+                vm.menuIndex = index;
+            }
+            vm.mineForm.subordinateColumn = alias;
+            $.ajax({
+                type: "GET",
+                url: baseURL + "post/mineList",
+                dataType: "json",
+                data:vm.mineForm,
+                success: function (result) {
+                    if (result.code == 0) {
+                        vm.myTableData = result.page.list;
+                        vm.mineForm.mineFormPage = result.page.page;
+                        vm.mineForm.mineFormLimit = result.page.pageSize;
+                        vm.mineForm.count = parseInt(result.page.count);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        },
+        showAllInfo : function () {
+            vm.allInfo = true ;
+            vm.reload();
         }
     }
 });

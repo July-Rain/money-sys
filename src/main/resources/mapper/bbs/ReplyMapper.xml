@@ -36,19 +36,6 @@
         )
     </insert>
 
-    <!--<update id="update">-->
-        <!--UPDATE law_reply-->
-        <!--SET-->
-        <!--post_id = #{postId},-->
-        <!--content = #{content},-->
-        <!--reply_object = #{replyObject},-->
-        <!--opt_user = #{optUser},-->
-        <!--opt_time = #{optTime}-->
-        <!--<where>-->
-            <!--id = #{id}-->
-        <!--</where>-->
-    <!--</update>-->
-
     <select id="findList" resultType="com.lawschool.beans.bbs.ReplyEntity">
         SELECT
         <include refid="replyColumn"/>
@@ -102,5 +89,11 @@
             law_reply
         WHERE
             create_user = #{userId}
+    </select>
+    
+    <select id="findMyReplyIds" resultType="string">
+        select post_id from
+          law_reply
+        WHERE  create_user = #{userId}
     </select>
 </mapper>
