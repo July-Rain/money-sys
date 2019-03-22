@@ -85,7 +85,7 @@ var vm = new Vue({
                 ],
                 series : [
                     {
-                        name:'直接访问',
+                        name:'答题数量',
                         type:'bar',
                         barWidth: '40%',
                         data:vm.showValues,
