@@ -25,4 +25,11 @@ public interface PostService extends AbstractService<PostEntity> {
      *
      */
     void report(String id );
+
+    /**
+     * 举报审核
+     * @param id
+     * @param status
+     */
+    void auditReport(String id,String status);
 }
