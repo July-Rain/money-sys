@@ -136,7 +136,7 @@ var vm = new Vue({
                 },
                 series: [
                     {
-                        // name:'访问来源',
+                        name:'题目占比',
                         type:'pie',
                         center: ['50%', '40%'],
                         radius: ['35%', '55%'],
@@ -205,7 +205,7 @@ var vm = new Vue({
                 },
                 series: [
                     {
-                        // name:'访问来源',
+                        name:'题目占比',
                         type:'pie',
                         center: ['50%', '40%'],
                         radius: ['35%', '55%'],
