@@ -125,10 +125,30 @@ public class PostController extends AbstractController {
         return result;
     }
 
+    /**
+     * 举报
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/report/{id}", method = RequestMethod.POST)
     public Result report(@PathVariable("id") String id) {
 
         postService.report(id);
+        return Result.ok();
+    }
+
+    /**
+     * 举报审核
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/auditReport", method = RequestMethod.POST)
+    public Result auditReport(@RequestParam Map<String, Object> params) {
+
+        String id = (String) params.get("id");
+        String status = (String) params.get("status");
+        postService.auditReport(id,status);
+      //  postService.report(id);
         return Result.ok();
     }
 }
