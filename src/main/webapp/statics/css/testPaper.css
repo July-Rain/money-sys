@@ -373,8 +373,8 @@ div.answer_area i.gray {
     font-size: 1.6rem !important;
 }
 .items a.finished {
-    background: #3dff02;
-    color: #1381E3;
+    background: green;
+    color: white;
 }
 
 .items a.wrong-back {
