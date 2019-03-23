@@ -16,6 +16,7 @@ var vm = new Vue({
                 }
             }
         };
+
        return {
            labelPosition: 'right',
            navData: [],//导航
