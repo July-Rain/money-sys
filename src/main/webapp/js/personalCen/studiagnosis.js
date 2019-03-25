@@ -82,8 +82,23 @@ var vm = new Vue({
     methods: {
         // ECharts - 绘制图表
         echartsOption: function (myChart, option) {
-            // this[chartName].clear()
             myChart.setOption(option)
+            myChart.dispatchAction({type: 'highlight',seriesIndex: 0,dataIndex: 0})
+
+            myChart.on('mouseover',function(v){
+                if(v.dataIndex != 0){
+                    myChart.dispatchAction({
+                        type: 'downplay',
+                        seriesIndex: 0,
+                        dataIndex: 0
+                    });
+                }
+            });
+            myChart.on('mouseout',function(v){
+
+                myChart.dispatchAction({type: 'highlight',seriesIndex: 0,dataIndex: 0});
+
+            });
             window.addEventListener('resize', function () {
                 myChart.resize()
             })
