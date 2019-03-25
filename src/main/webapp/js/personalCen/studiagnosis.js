@@ -28,7 +28,7 @@ var vm = new Vue({
                 label: '本学年'
             }],
             selected: '0',
-            colorList: ['#52c9e7','#3e98e8','#81bdd8','#5ebd5c','#feae24','#f97a1f','#f26443','#b97deb','#7e72f2','#4f7ee9'],
+            colorList: ['#52c9e7','#feae24','#b97deb','#3e98e8','#81bdd8','#5ebd5c','#f97a1f','#f26443','#7e72f2','#4f7ee9'],
             studyPerNames: [],
             studyPerData: [],//学习占比
             studyCountNames: [],
@@ -221,7 +221,7 @@ var vm = new Vue({
                                     fontWeight: 'bold',
                                     color: '#333'
                                 },
-                                formatter:"{c}\n{b}"
+                                formatter:"{c}%\n{b}"
                             },
 
                         },
