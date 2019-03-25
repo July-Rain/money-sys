@@ -10,7 +10,7 @@
             padding: 0 14px ;
         }
         .content_audio audio{
-            width: 100%;
+            width: 80%;
         }
         .video-card {
             position: relative;
@@ -50,6 +50,7 @@
         .video-card .icons .iconfont {
             margin-right: 4px;
         }
+
     </style>
 </head>
 <body>
@@ -139,7 +140,11 @@
                                                    @pause="onPause(item.id,$event)">
                                                 <source :src="item.contentUrl" controls="controls">
                                             </audio>-->
-                                            <audio class="audio-js" :id="item.id" :src="item.contentUrl" preload="auto"></audio>
+                                            <div class="audio">
+                                                <audio class="audio-js" :id="item.id" preload="none">
+                                                    <source :src="item.contentUrl">
+                                                </audio>
+                                            </div>
                                         </div>
                                         <div class="video-card">
                                             <div>
