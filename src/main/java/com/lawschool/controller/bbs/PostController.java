@@ -3,10 +3,13 @@ package com.lawschool.controller.bbs;
 import com.lawschool.annotation.SysLog;
 import com.lawschool.base.AbstractController;
 import com.lawschool.base.Page;
+import com.lawschool.beans.User;
 import com.lawschool.beans.bbs.PostCollectionEntity;
 import com.lawschool.beans.bbs.PostEntity;
+import com.lawschool.enums.UserGrade;
 import com.lawschool.form.CollectionPostForm;
 import com.lawschool.form.PostFrom;
+import com.lawschool.service.UserService;
 import com.lawschool.service.bbs.PostCollectionService;
 import com.lawschool.service.bbs.PostService;
 import com.lawschool.service.bbs.ReplyService;
@@ -37,13 +40,34 @@ public class PostController extends AbstractController {
     @Autowired
     private PostCollectionService postCollectionService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result list(@RequestParam Map<String, Object> params) {
 
+        User user = getUser();
         String subordinateColumn = (String) params.get("subordinateColumn");
         String status = (String) params.get("status");
         PostEntity postEntity = new PostEntity();
-        if (StringUtils.isNotBlank(subordinateColumn)){
+        if (PostEntity.STATUS_REPORT.equals(status)) {
+            UserGrade userGrade = userService.getUserGradeByOrgCode(user.getOrgCode());
+            switch (userGrade) {
+                case STUSER:
+                    postEntity.setOrgCode("32");
+                    break;
+                case SJUSER:
+                    postEntity.setOrgCode(user.getOrgCode().substring(0, 4));
+                    break;
+                case XJUSER:
+                    postEntity.setOrgCode(user.getOrgCode().substring(0, 6));
+                    break;
+                default:
+                    postEntity.setOrgCode(user.getOrgCode().substring(0, 6));
+                    break;
+            }
+        }
+        if (StringUtils.isNotBlank(subordinateColumn)) {
             postEntity.setSubordinateColumn(subordinateColumn);
         }
         postEntity.setStatus(status);
@@ -115,6 +139,7 @@ public class PostController extends AbstractController {
 
     /**
      * 获取我的信息列表  评论、发表内容、收藏
+     *
      * @param params
      * @return
      */
@@ -127,6 +152,7 @@ public class PostController extends AbstractController {
 
     /**
      * 举报
+     *
      * @param id
      * @return
      */
@@ -139,7 +165,8 @@ public class PostController extends AbstractController {
 
     /**
      * 举报审核
-     * @param id
+     *
+     * @param params
      * @return
      */
     @RequestMapping(value = "/auditReport", method = RequestMethod.POST)
@@ -147,8 +174,8 @@ public class PostController extends AbstractController {
 
         String id = (String) params.get("id");
         String status = (String) params.get("status");
-        postService.auditReport(id,status);
-      //  postService.report(id);
+        postService.auditReport(id, status);
+        //  postService.report(id);
         return Result.ok();
     }
 }
