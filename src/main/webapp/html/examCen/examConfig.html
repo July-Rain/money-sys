@@ -550,6 +550,7 @@
                 </div>
                 <div class="btn_mid">
                     <el-form-item>
+                        <el-button size="mini"  type="primary" plain @click="cancel('examConfig')" :disabled="genRandQue">返回列表</el-button>
                         <el-button size="mini"  @click="closeRanDia" :disabled="genRandQue">上一步</el-button>
                         <el-button type="primary" v-if="handleType!='view'" size="mini" @click="handleSave(randomQuesData)" :disabled="genRandQue">保存并生成试卷</el-button>
                     </el-form-item>
@@ -853,6 +854,7 @@
                 <li>主观题：{{subMultipleSelection.length}}题</li>
             </ul>
             <!--随机出题时的按钮-->
+            <el-button type="primary" plain @click="cancel('examConfig')" >返回列表</el-button>
             <el-button size="mini" @click="closeAutoQue">上一步</el-button>
             <el-button type="primary" size="mini" :disabled="handleType=='view'" @click="genAutoQue">保存并生成试卷</el-button>
 
