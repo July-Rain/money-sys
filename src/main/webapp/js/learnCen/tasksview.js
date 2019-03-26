@@ -326,6 +326,7 @@ var vm = new Vue({
                 success: function (result) {
                     if (result.code == 0) {
                         vm.tableData = result.page.list;
+                        console.info(vm.tableData)
                         if(vm.tableData){
                             //有值
                             for(var i=0;i< vm.tableData.length;i++){

@@ -108,25 +108,32 @@ var vm = new Vue({
         },
         onCom:function(){
             if(vm.num == 0){
-                vm.$alert('尚无【我的错题】', '提示', {
-                    confirmButtonText: '确定',
-                    callback: function () {
-                    }
+                vm.$message({
+                    message: '尚无【我的错题】',
+                    type: 'warning',
+                    duration: 1000
                 });
                 return false;
 
-            } else if (vm.params.num > vm.num){
-                vm.$alert('出题数量请勿超过错题数量【' + vm.num + '】', '提示', {
-                    confirmButtonText: '确定',
-                    callback: function () {
-                    }
+            } else if (vm.params.pname=='') {
+                vm.$message({
+                    message: '请输入正确的卷名',
+                    type: 'warning',
+                    duration: 1000
                 });
                 return false;
-            }else if (vm.params.num<0|| vm.params.num % 1 != 0){
-                vm.$alert('请输入正确出题数量', '提示', {
-                    confirmButtonText: '确定',
-                    callback: function () {
-                    }
+            } else if (vm.params.num > vm.num){
+                vm.$message({
+                    message: '出题数量请勿超过错题数量【' + vm.num + '】',
+                    type: 'warning',
+                    duration: 1000
+                });
+                return false;
+            }else if (vm.params.num<=0|| vm.params.num % 1 != 0){
+                vm.$message({
+                    message: '请输入正确出题数量',
+                    type: 'warning',
+                    duration: 1000
                 });
                 return false;
             }

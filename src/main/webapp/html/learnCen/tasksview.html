@@ -186,8 +186,8 @@
                             >
                                 <template slot-scope="scope">
                                     <el-tag v-if="scope.row.isOver === '0'" size="small" type="info">已过期</el-tag>
-                                    <el-tag v-if="scope.row.isOver === '1'" size="small" type="success">进行中</el-tag>
-                                    <el-tag v-if="scope.row.isOver === '2'" size="small" type="warning">未开始</el-tag>
+                                    <el-tag v-if="scope.row.completionDegree!='0%'&&scope.row.isOver != '0'" size="small" type="success">进行中</el-tag>
+                                    <el-tag v-if="scope.row.completionDegree=='0%'&&scope.row.isOver != '0'" size="small" type="warning">未开始</el-tag>
                                 </template>
                             </el-table-column>
                             <el-table-column
@@ -208,7 +208,7 @@
                                         </i>
                                     </el-popover>
                                     <el-popover
-                                            v-if="scope.row.isOver=='1'"
+                                            v-if="scope.row.completionDegree!='0%'&&scope.row.isOver != '0'"
                                             placement="right"
                                             trigger="hover"
                                             content="继续学习">
@@ -216,6 +216,17 @@
                                            @click="continueStudy(scope.$index, scope.row)"
                                            slot="reference"
                                            style="color: #119e0b;cursor: pointer;padding: 0 20px;font-size: 20px" >
+                                        </i>
+                                    </el-popover>
+                                    <el-popover
+                                            v-if="scope.row.completionDegree=='0%'&&scope.row.isOver != '0'"
+                                            placement="right"
+                                            trigger="hover"
+                                            content="开始学习">
+                                        <i class="iconfont icon-lianxi"
+                                           @click="continueStudy(scope.$index, scope.row)"
+                                           slot="reference"
+                                           style="color: #e6a23c;cursor: pointer;padding: 0 20px;font-size: 20px">
                                         </i>
                                     </el-popover>
                                 </template>
