@@ -12,6 +12,7 @@ import com.lawschool.config.ShiroUtils;
 import com.lawschool.controller.system.DictController;
 import com.lawschool.dao.SysUserRoleDao;
 import com.lawschool.dao.UserMapper;
+import com.lawschool.enums.UserGrade;
 import com.lawschool.service.UserService;
 import com.lawschool.service.system.DictionService;
 import com.lawschool.util.*;
@@ -352,5 +353,32 @@ public class UserServiceImpl extends AbstractServiceImpl<UserMapper, User> imple
          int i=  userMapper.selectCount(new EntityWrapper<User>().ge("USER_STATUS",2000));
 
         return i;
+    }
+
+    @Override
+    public UserGrade getUserGradeByOrgCode(String orgCode) {
+        if ("00".equals(orgCode.substring(2,4))){
+            //3,4位为0的为省厅用户
+            return UserGrade.STUSER;
+        }else {
+            if("00".equals(orgCode.substring(4,6))){
+                //5,6为0 的市局用户
+                return UserGrade.SJUSER;
+            }else{
+                if (!("00").equals(orgCode.substring(4,6))&&
+                        (Integer.parseInt(orgCode.substring(6,8))<50||"X".equals(orgCode.substring(6,7)))){
+                    //5-6!=00,7-8<50或者第七位为X的是分局用户
+                    return UserGrade.XJUSER;
+                }else{
+                    if(!"00".equals(orgCode.substring(4,6))&&Integer.parseInt(orgCode.substring(6,8))>=50
+                        &&"0000".equals(orgCode.substring(8,12))){
+                        //5-6！=00 7-8位》=50最后4位为0000的是派出所
+                        return UserGrade.SDUSER;
+                    }else{
+                        return UserGrade.OTHSDUSER;
+                    }
+                }
+            }
+        }
     }
 }

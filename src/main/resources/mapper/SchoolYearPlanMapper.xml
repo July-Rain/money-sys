@@ -94,8 +94,7 @@
         <include refid="schoolYearPlanColumn"/>
         FROM law_school_year_plan
         <where>
-            participant_user = #{userId}
-            AND SYSDATE BETWEEN start_date AND end_date
+            SYSDATE BETWEEN start_date AND end_date
         </where>
     </select>
 </mapper>
