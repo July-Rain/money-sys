@@ -276,6 +276,11 @@
             float: left;
             padding: 0 10px;
         }
+        .set_question .el-dialog__body{
+            height: 422px;
+            overflow-y: scroll;
+
+        }
     </style>
 </head>
 <body>
@@ -1001,7 +1006,6 @@
                     ref="multipleTable"
                     :data="tableData3"
                     tooltip-effect="dark"
-                    height="530"
                     stripe
                     style="width: 100%"
                     @selection-change="handleQueSelectionChange"
