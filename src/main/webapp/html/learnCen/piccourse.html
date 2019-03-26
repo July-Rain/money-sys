@@ -151,12 +151,13 @@
                             <el-table-column
                                     prop="stuTitle"
                                     label="标题"
+                                    header-align="center"
                             >
                             </el-table-column>
                             <el-table-column
                                     prop="stuCount"
                                     label="观看次数"
-                                    width="100"
+                                    width="150"
                                     header-align="center"
                                     align="center"
                             >
@@ -173,7 +174,7 @@
                             <el-table-column
                                     prop="stuPoliceclassName"
                                     label="警种"
-                                    width="100"
+                                    width="150"
                                     header-align="center"
                                     align="center"
                             >
@@ -181,7 +182,7 @@
                             <el-table-column
                                     prop="stuType"
                                     label="课件类型"
-                                    width="100"
+                                    width="150"
                                     header-align="center"
                                     align="center"
                             >
@@ -194,14 +195,14 @@
                             <el-table-column
                                     prop="stuCreat"
                                     label="制作时间"
-                                    width="120"
+                                    width="180"
                                     header-align="center"
                                     align="center"
                             >
                             </el-table-column>
                             <el-table-column label="操作"
                                              header-align="center"
-                                             width="150"
+                                             width="200"
                                              align="center">
                                 <template slot-scope="scope">
                                     <el-popover v-if="!scope.row.isColl"

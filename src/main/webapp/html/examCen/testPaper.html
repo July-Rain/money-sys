@@ -181,9 +181,9 @@
         </div>
         <div class="bar">
             <div class="time">
-                <span class="duration" v-if="!isSubmit">本卷计时{{ displayTime }}分钟，还剩:<span style="font-weight: 900">
-                    <span>{{ leftHours }}</span>:
-                    <span>{{ leftMinutes }}</span>:
+                <span class="duration" v-if="!isSubmit">本卷计时{{ displayTime }}分钟，计时<span style="font-weight: 900">
+                    <span>{{ leftHours }}</span>&nbsp;:
+                    <span>{{ leftMinutes }}</span>&nbsp;:
                     <span>{{ leftSeconds }}</span>
                 </span></span>
                 <span class="duration" v-if="isSubmit">本卷计时{{ displayTime }}分钟，<span class="consumed-time" style="font-weight: 900">用时{{ consumedMinutes }}分钟{{ consumedSeconds }}秒</span></span>
