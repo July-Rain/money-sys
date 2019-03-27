@@ -316,7 +316,7 @@
                     </div>
                     <div class="content lesson">
                         <el-row :gutter="66">
-                            <el-col :span="12" v-for="(item, index) in videoData">
+                            <el-col :span="12" v-for="(item, index) in videoData" v-if="videoData.length">
                                 <el-card :body-style="{ padding: '0px' }">
                                     <video :id="item.id" class="video video-js vjs-big-play-centered" height="175"
                                            style="width: 100%;" preload="none"
@@ -338,6 +338,7 @@
                                     </div>
                                 </el-card>
                             </el-col>
+                            <p class="no_data" style="line-height: 200px" v-if="!videoData.length">暂无课程数据</p>
                         </el-row>
                     </div>
                 </div>

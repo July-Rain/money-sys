@@ -103,7 +103,7 @@
                                     <el-table-column
                                             prop="infoName"
                                             label="标题"
-                                    >
+                                            header-align="center">
                                     </el-table-column>
                                     <el-table-column
                                             prop="stuType"
@@ -162,7 +162,7 @@
                                     <el-table-column
                                             prop="infoName"
                                             label="标题"
-                                    >
+                                            header-align="center">
                                     </el-table-column>
                                     <el-table-column
                                             prop="stuType"
@@ -224,7 +224,7 @@
                                         </el-card>
                                     </el-col>
                                 </el-row>
-                                <p class="no_data" v-if="infoData.length==0"><i class="iconfont icon-xiaoxi"></i> 暂无数据</p>
+                                <p class="no_data" v-if="infoData.length==0">暂无数据</p>
                             </div>
                             <div v-if="queryCond.infoType=='audio'" class="content lesson">
                                 <el-row :gutter="66">
@@ -245,7 +245,7 @@
                                         </el-card>
                                     </el-col>
                                 </el-row>
-                                <p class="no_data" v-if="infoData.length==0"><i class="iconfont icon-xiaoxi"></i> 暂无数据</p>
+                                <p class="no_data" v-if="infoData.length==0">暂无数据</p>
                             </div>
                             <el-pagination
                                     @size-change="handleSizeChange"

@@ -2,6 +2,7 @@ package com.lawschool.service;
 
 import com.lawschool.base.AbstractService;
 import com.lawschool.beans.User;
+import com.lawschool.enums.UserGrade;
 import com.lawschool.util.PageUtils;
 import com.lawschool.util.Result;
 
@@ -105,4 +106,6 @@ public interface UserService  extends AbstractService<User> {
 
 
       int  getAllusesCount();
+
+      UserGrade getUserGradeByOrgCode(String orgCode);
 }

@@ -303,8 +303,8 @@
                         <el-switch v-model="teacher.identify" active-text="是" inactive-text="否" active-value="1"
                                    inactive-value="0" ></el-switch>
                     </el-form-item>
-                    <el-form-item label="排序号：" prop="sort">
-                        <el-input type="number" v-model="teacher.sort" placeholder="请输入排序号" ></el-input>
+                    <el-form-item label="排序：" prop="sort">
+                        <el-input-number v-model="teacher.sort" :min="1" :max="10" label="请输入排序号"></el-input-number>
                     </el-form-item>
                 </el-form>
             </el-col>

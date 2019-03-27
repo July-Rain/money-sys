@@ -25,7 +25,7 @@
                 <div class="title">{{ paperName }}</div>
                 <div class="tips">
                     <span class="username">姓名：<span>{{ username }}</span></span>
-                    <span class="font-size" @click="changeFontSize($event)">字体：
+                    <span class="font-size" @click="changeFontSize($event)">字体
                         (<span class="font-size-span">小</span>
                         <span class="font-size-span">中</span>
                         <span class="font-size-span">大</span>)
@@ -181,9 +181,9 @@
         </div>
         <div class="bar">
             <div class="time">
-                <span class="duration" v-if="!isSubmit">本卷计时{{ displayTime }}分钟，还剩:<span style="font-weight: 900">
-                    <span>{{ leftHours }}</span>:
-                    <span>{{ leftMinutes }}</span>:
+                <span class="duration" v-if="!isSubmit">本卷计时{{ displayTime }}分钟，计时<span style="font-weight: 900">
+                    <span>{{ leftHours }}</span>&nbsp;:
+                    <span>{{ leftMinutes }}</span>&nbsp;:
                     <span>{{ leftSeconds }}</span>
                 </span></span>
                 <span class="duration" v-if="isSubmit">本卷计时{{ displayTime }}分钟，<span class="consumed-time" style="font-weight: 900">用时{{ consumedMinutes }}分钟{{ consumedSeconds }}秒</span></span>

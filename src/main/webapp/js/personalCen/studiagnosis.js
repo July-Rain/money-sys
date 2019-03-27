@@ -28,7 +28,7 @@ var vm = new Vue({
                 label: '本学年'
             }],
             selected: '0',
-            colorList: ['#52c9e7','#3e98e8','#81bdd8','#5ebd5c','#feae24','#f97a1f','#f26443','#b97deb','#7e72f2','#4f7ee9'],
+            colorList: ['#52c9e7','#feae24','#b97deb','#3e98e8','#81bdd8','#5ebd5c','#f97a1f','#f26443','#7e72f2','#4f7ee9'],
             studyPerNames: [],
             studyPerData: [],//学习占比
             studyCountNames: [],
@@ -82,8 +82,23 @@ var vm = new Vue({
     methods: {
         // ECharts - 绘制图表
         echartsOption: function (myChart, option) {
-            // this[chartName].clear()
             myChart.setOption(option)
+            myChart.dispatchAction({type: 'highlight',seriesIndex: 0,dataIndex: 0})
+
+            myChart.on('mouseover',function(v){
+                if(v.dataIndex != 0){
+                    myChart.dispatchAction({
+                        type: 'downplay',
+                        seriesIndex: 0,
+                        dataIndex: 0
+                    });
+                }
+            });
+            myChart.on('mouseout',function(v){
+
+                myChart.dispatchAction({type: 'highlight',seriesIndex: 0,dataIndex: 0});
+
+            });
             window.addEventListener('resize', function () {
                 myChart.resize()
             })
@@ -206,7 +221,7 @@ var vm = new Vue({
                                     fontWeight: 'bold',
                                     color: '#333'
                                 },
-                                formatter:"{c}\n{b}"
+                                formatter:"{c}%\n{b}"
                             },
 
                         },

@@ -85,6 +85,9 @@
             <if test="status != null and status!=''">
                 and a.status =#{status}
             </if>
+            <if test="orgCode!=null and orgCode!=''">
+                and a.org_code like concat(concat('%',#{orgCode}),'%')
+            </if>
         </where>
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">

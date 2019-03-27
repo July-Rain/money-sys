@@ -32,29 +32,29 @@
                                     type="index"
                                     header-align="center"
                                     align="center"
-                                    width="60">
+                                    width="50">
                             </el-table-column>
                             <el-table-column
                                     prop="title"
                                     label="消息标题"
                                     width="200"
-                            >
+                                    header-align="center">
                             </el-table-column>
 
                             <el-table-column
                                     prop="releasePeopleName"
                                     label="发件人"
-                            >
+                                    align="center">
                             </el-table-column>
                             <el-table-column
                                     prop="releaseDate"
                                     label="发送时间"
-                            >
+                                    align="center">
                             </el-table-column>
                             <el-table-column
                                     prop="noticeType"
                                     label="消息类型"
-                            >
+                                    align="center">
                                 <template slot-scope="scope">
                                     <el-tag v-if="scope.row.noticeType === '10008'" >系统消息</el-tag>
                                     <el-tag v-else >管理员消息</el-tag>
@@ -62,7 +62,8 @@
                             </el-table-column>
                            <el-table-column
                                     label="操作"
-                                    width="200">
+                                    width="200"
+                                    align="center">
                                 <template slot-scope="scope">
                                     <el-popover
                                             placement="right"

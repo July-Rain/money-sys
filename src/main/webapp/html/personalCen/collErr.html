@@ -249,7 +249,7 @@
                                 <el-table-column
                                         prop="contant"
                                         label="试题内容"
-                                        >
+                                        header-align="center">
                                 </el-table-column>
 
                                 <el-table-column
@@ -342,7 +342,7 @@
                                 </el-form-item>
                                 <el-form-item label="题数" prop="num">
                                     <!--  :max="formInline.totalCount" -->
-                                    <el-input-number :min="1" v-model="params.num"></el-input-number>
+                                    <el-input-number v-model="params.num"></el-input-number>
                                 </el-form-item>
                                 <el-button type="primary" @click="onCom">确定</el-button>
                             </el-form>
