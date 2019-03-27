@@ -1161,14 +1161,26 @@ var vm = new Vue({
         integralPer: function(){
             // alert(this.yearPlan.integraled/this.yearPlan.integral*100||0)
             if(this.yearPlan.integral){
-                return this.yearPlan.integraled/this.yearPlan.integral*100||0
+                var returnNum  = 0;
+                if (this.yearPlan.integraled/this.yearPlan.integral*100>100){
+                    returnNum=100;
+                }else{
+                    returnNum=this.yearPlan.integraled/this.yearPlan.integral*100||0;
+                }
+                return returnNum;
             }
 
         },
         creditPer: function () {
             // alert(this.yearPlan.credited/this.yearPlan.credit*100||0)
             if(this.yearPlan.credit){
-                return this.yearPlan.credited/this.yearPlan.credit*100||0
+                var returnNum  = 0;
+                if (this.yearPlan.integraled/this.yearPlan.integral*100>100){
+                    returnNum=100;
+                }else{
+                    returnNum=this.yearPlan.integraled/this.yearPlan.integral*100||0;
+                }
+                return returnNum;
             }
 
         }
