@@ -19,7 +19,7 @@ var vm = new Vue({
             //获取闯关排名
             $.ajax({
                 type: "POST",
-                url: baseURL + "competitionRecord/chuangGuanRanking",//闯关排名
+                url: baseURL + "competitionRecord/chuangGuanRanking",//闯关排 名
                 Type: "json",
                 async:false,
                 success: function (data) {
