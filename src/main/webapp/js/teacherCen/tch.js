@@ -97,8 +97,8 @@ var vm = new Vue({
                 dataType: "json",
                 data: vm.formInline,
                 success: function (result) {
+                    debugger
                     if (result.code == 0) {
-                        result.page.list = []
                         if(result.page.list.length === 0){
                             vm.tchData = [];
                             return
