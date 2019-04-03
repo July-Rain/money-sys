@@ -53,10 +53,10 @@ var vm = new Vue({
             ],
             stuPoliceclass: [
                 {required: true, message: '请选择法律主题分类', trigger: 'blur'}
-            ],
-            stuKnowledge: [
-                {required: true, message: '请选择警种', trigger: 'blur'}
             ]
+            /*stuKnowledge: [
+                {required: true, message: '请选择警种', trigger: 'blur'}
+            ]*/
         },
         dialogStuMedia: false,//table弹出框可见性
         title: "",//弹窗的名称
