@@ -12,8 +12,12 @@ var vm = new Vue({
                 endTime: '',
             },
             echartsTab: '',//学情看板分页
-            seriesData:[{name: "视频中心", type: "videocen", countTime: 0, ratio: "0.00%"}],
+            seriesData:[],
             colorList: ['#52c9e7','#3e98e8','#81bdd8','#5ebd5c','#feae24','#f97a1f','#f26443','#b97deb','#7e72f2','#4f7ee9'],
+            studyPerNames: [],
+            studyPerData: [],//学习占比
+            studyCountNames: [],
+            studyCountData: [],//学习次数
             stuInfo:{
                 stuCount:0,//学习时长
                 ratio:"0%",//超过百分比
@@ -90,59 +94,67 @@ var vm = new Vue({
         initPie1: function () {
             // 基于准备好的dom，初始化echarts实例
             var myChart = echarts.init(document.getElementById('canvas1'));
+            // 基于准备好的dom，初始化echarts实例
+            //var myChart = echarts.init(document.getElementById('pie1'));
             // 指定图表的配置项和数据
             var option = {
-                backgroundColor: '#fff',
-
-
-                tooltip : {
+                tooltip: {
                     trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
                 },
-
-                visualMap: {
-                    show: false,
-                    min: 80,
-                    max: 600,
-                    inRange: {
-                    }
+                grid: {
+                    left: '8%',
+                    right: '8%',
+                    bottom: '3%',
+                    containLabel: true
                 },
-                series : [
+                legend: {
+                    orient: 'vertical',
+                    right: '5%',
+                    y:'center',
+                    itemWidth: 24,
+                    itemHeight: 14,
+                    textStyle: {
+                        fontSize: 14
+                    },
+                    data:vm.studyPerNames
+                },
+                series: [
                     {
                         name:'学习时长统计',
                         type:'pie',
-                        radius : '55%',
-                        center: ['50%', '50%'],
-                        data:vm.seriesData.sort(function (a, b) { return a.value - b.value; }),
-                        roseType: 'radius',
+                        center: ['40%', '50%'],
+                        radius: ['35%', '55%'],
+                        avoidLabelOverlap: false,
                         label: {
                             normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                show: true,
                                 textStyle: {
-                                    color: '#666'
-                                }
-                            }
+                                    fontSize: '20',
+                                    fontWeight: 'bold',
+                                    color: '#333'
+                                },
+                                formatter:"{d}%\n{b}"
+                            },
+
                         },
                         labelLine: {
                             normal: {
-                                lineStyle: {
-                                    color: '#666'
-                                },
-                                smooth: 0.2,
-                                length: 10,
-                                length2: 20
+                                show: false
                             }
                         },
+                        data:vm.studyPerData,
                         itemStyle: {
                             normal: {
-                                // 定制显示（按顺序）
-                                color: this.colorPicker
+                                color: function(params) {
+                                    var colorList = vm.colorList;
+                                    return colorList[params.dataIndex]
+                                }
                             },
-                        },
-
-                        animationType: 'scale',
-                        animationEasing: 'elasticOut',
-                        animationDelay: function (idx) {
-                            return Math.random() * 200;
                         }
                     }
                 ]
@@ -155,58 +167,63 @@ var vm = new Vue({
             var myChart = echarts.init(document.getElementById('canvas2'));
             // 指定图表的配置项和数据
             var option = {
-                backgroundColor: '#fff',
-
-
-                tooltip : {
+                tooltip: {
                     trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
                 },
-
-                visualMap: {
-                    show: false,
-                    min: 80,
-                    max: 600,
-                    inRange: {
-                    }
+                grid: {
+                    left: '8%',
+                    right: '8%',
+                    bottom: '3%',
+                    containLabel: true
                 },
-                color: ["#ff0000"],
-                series : [
+                legend: {
+                    orient: 'vertical',
+                    y:'center',
+                    right: '5%',
+                    itemWidth: 24,
+                    itemHeight: 14,
+                    textStyle: {
+                        fontSize: 14
+                    },
+                    data:vm.studyCountNames
+                },
+                series: [
                     {
-                        name:'学习情况统计',
+                        name:'学习次数',
                         type:'pie',
-                        radius : '55%',
-                        center: ['50%', '50%'],
-                        data:vm.seriesNumData.sort(function (a, b) { return a.value - b.value; }),
-                        roseType: 'radius',
+                        center: ['40%', '50%'],
+                        radius: ['35%', '55%'],
+                        avoidLabelOverlap: false,
                         label: {
                             normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                show: true,
                                 textStyle: {
-                                    color: '#666'
-                                }
-                            }
+                                    fontSize: '20',
+                                    fontWeight: 'bold',
+                                    color: '#333'
+                                },
+                                formatter:"{c}%\n{b}"
+                            },
+
                         },
                         labelLine: {
                             normal: {
-                                lineStyle: {
-                                    color: '#666'
-                                },
-                                smooth: 0.2,
-                                length: 10,
-                                length2: 20
+                                show: false
                             }
                         },
+                        data:vm.studyCountData,
                         itemStyle: {
                             normal: {
-                                // 定制显示（按顺序）
-                                color: this.colorPicker
+                                color: function(params) {
+                                    var colorList = vm.colorList;
+                                    return colorList[params.dataIndex]
+                                }
                             },
-                        },
-
-                        animationType: 'scale',
-                        animationEasing: 'elasticOut',
-                        animationDelay: function (idx) {
-                            return Math.random() * 200;
                         }
                     }
                 ]
@@ -780,10 +797,31 @@ var vm = new Vue({
                 data: vm.dateRange,
                 success: function (result) {
                     if (result.code == 0) {
-                        // vm.seriesData = result.data;
-                        console.info(result.data)
-                        vm.stuInfo=result.stuInfo;
+                        vm.seriesData = result.data;
+                        debugger
                         vm.seriesNumData = result.stuCount;
+                        vm.stuInfo=result.stuInfo;
+
+                        vm.seriesData.map(function (value) {
+                            vm.studyPerNames.push(value.name);
+                            vm.studyPerData.push({
+                                value: value.value?value.value:0,
+                                name: value.name
+                            });
+                        });
+
+                        vm.seriesNumData.map(function (value) {
+                            vm.studyCountNames.push(value.name);
+                            vm.studyCountData.push({
+                                value: value.value?value.value:0,
+                                name: value.name
+                            });
+                        });
+                        vm.sum=0;
+                        vm.stuInfo.map(function (value) {
+                            value.per =Number(value.ratio.slice(0,value.ratio.length-1))
+                            vm.sum+=value.countTime;
+                        });
                     } else {
                         alert(result.msg);
                     }

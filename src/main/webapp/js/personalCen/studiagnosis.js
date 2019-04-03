@@ -50,7 +50,7 @@ var vm = new Vue({
                     vm.seriesData.map(function (value) {
                         vm.studyPerNames.push(value.name);
                         vm.studyPerData.push({
-                            value: value.value,
+                            value: value.value?value.value:0,
                             name: value.name
                         });
                     });
