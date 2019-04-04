@@ -271,35 +271,65 @@ var vm = new Vue({
             var stuType="";
             if("stu_pic_data"==type){
                 stuType="stu_pic";
-            }else if("case_pic_data"==flag){
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + 'stumedia/info?id=' + id,
+                    contentType: "application/json",
+                    success: function (result) {
+                        if(result.code === 0){
+                            vm.caseContent=result.data.comContent;
+                            vm.stuMedia=result.data;
+                            vm.dialogPic=true;
+                        }else{
+                            alert(result.msg);
+                        }
+                    }
+                });
+                //请求后台修改播放量 记录学习记录
+                $.ajax({
+                    type: "POST",
+                    url: baseURL +  "stumedia/updateCount?stuId="+id+"&stuType="+stuType+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,
+                    contentType: "application/json",
+                    success: function(result){
+                        if(result.code === 0){
+                            //vm.treeData = result.classifyList;
+                        }else{
+                            alert(result.msg);
+                        }
+                    }
+                });
+            }else if("case_pic_data"==type){
                 stuType="case_pic";
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + 'caseana/info?id=' + id,
+                    contentType: "application/json",
+                    success: function (result) {
+                        if(result.code === 0){
+                            vm.caseContent=result.data.caseContent;
+                            vm.stuMedia.stuTitle=result.data.caseTitle;
+                            vm.stuMedia.stuIssuer=result.data.createUserName;
+                            vm.stuMedia.stuCreat=result.data.createTime;
+                            vm.dialogPic=true;
+                        }else{
+                            alert(result.msg);
+                        }
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: baseURL +  "caseana/updateCount?id="+id+"&stuType="+vm.infoFlag+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,
+                    contentType: "application/json",
+                    success: function(result){
+                        if(result.code === 0){
+                            //vm.treeData = result.classifyList;
+                        }else{
+                            alert(result.msg);
+                        }
+                    }
+                });
             }
-            $.ajax({
-                type: "POST",
-                url: baseURL + 'stumedia/info?id=' + id,
-                contentType: "application/json",
-                success: function (result) {
-                    if(result.code === 0){
-                        vm.caseContent=result.data.comContent;
-                        vm.dialogPic=true;
-                    }else{
-                        alert(result.msg);
-                    }
-                }
-            });
-            //请求后台修改播放量 记录学习记录
-            $.ajax({
-                type: "POST",
-                url: baseURL +  "stumedia/updateCount?stuId="+id+"&stuType="+stuType+"&stuFrom=learntask&taskId="+vm.queryCond.taskId,
-                contentType: "application/json",
-                success: function(result){
-                    if(result.code === 0){
-                        //vm.treeData = result.classifyList;
-                    }else{
-                        alert(result.msg);
-                    }
-                }
-            });
+
         },
         countCase:function (id) {
             //请求后台修改播放量 记录学习记录 --案例分析模块
@@ -366,6 +396,7 @@ var vm = new Vue({
             var finishFlag =false;
             if(el.currentTime == el.duration ){
                 finishFlag=true;
+
             }
             //获取当前选择对象
 
@@ -377,12 +408,17 @@ var vm = new Vue({
                 contentType: "application/json",
                 success: function(result){
                     if(result.code === 0){
+                        if(finishFlag){
+                            vm.reload();
+                        }
                         //vm.treeData = result.classifyList;
                     }else{
                         alert(result.msg);
                     }
                 }
             });
+
+
         },
         handleTaskNodeClick:function(data){
             vm.queryCond.infoId= data.classifyCode;
@@ -400,7 +436,7 @@ var vm = new Vue({
             parent.location.reload()
         },
         toMain: function () {
-            window.location.href = baseURL + 'modules/learnCen/tasksview.html'
+            window.location.href = baseURL + 'modules/learnCen/tasksview.html?id=1072372533220876289'
         },
     }
 });

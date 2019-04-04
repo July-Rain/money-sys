@@ -279,7 +279,7 @@
       REGEXP_REPLACE (T .INFO_PARENT_ID, ',', '')
       ) + 1  ]]>
       ) aa
-      LEFT JOIN LAW_STU_RECORD r ON aa.id=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
+      LEFT JOIN LAW_STU_RECORD r ON aa.id=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId} and r.is_finish='1'
       where 1=1
       <if test="infoType != null and infoType!=''">
           AND aa.INFO_TYPE = 'stu_'||#{infoType}
@@ -310,7 +310,7 @@
       REGEXP_REPLACE (T .INFO_PARENT_ID, ',', '')
       ) + 1  ]]>
       )aa
-      LEFT JOIN LAW_STU_RECORD r ON aa.id=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
+      LEFT JOIN LAW_STU_RECORD r ON aa.id=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId} and r.is_finish='1'
       where 1=1
       <if test="infoType != null and infoType!=''">
           AND aa.INFO_TYPE = 'case_'||#{infoType}
@@ -322,7 +322,7 @@
           and aa.PARENT_ID in (select "ID" FROM LAW_CLASSIFY T START WITH T .id = #{infoId} CONNECT BY PRIOR T .id = T .PARENT_ID)
       </if>
       )
-
+      ORDER BY CREATE_TIME ASC,data_id ASC
   </select>
   <select id="countListStuByTask" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">
         SELECT
@@ -346,7 +346,7 @@
               REGEXP_REPLACE (T .INFO_PARENT_ID, ',', '')
               ) + 1  ]]>
               ) aa
-              LEFT JOIN LAW_STU_RECORD r ON aa.id=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
+              LEFT JOIN LAW_STU_RECORD r ON aa.id=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId} and r.is_finish='1'
               where 1=1
               <if test="infoType != null and infoType!=''">
                   AND aa.INFO_TYPE = 'stu_'||#{infoType}
@@ -377,7 +377,7 @@
               REGEXP_REPLACE (T .INFO_PARENT_ID, ',', '')
               ) + 1  ]]>
               )aa
-              LEFT JOIN LAW_STU_RECORD r ON aa.id=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
+              LEFT JOIN LAW_STU_RECORD r ON aa.id=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId} and r.is_finish='1'
               where 1=1
               <if test="infoType != null and infoType!=''">
                   AND aa.INFO_TYPE = 'case_'||#{infoType}

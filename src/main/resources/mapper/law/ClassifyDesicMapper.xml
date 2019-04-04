@@ -30,7 +30,7 @@
             r.id as recordId
         FROM
             law_tasks_desic la
-        LEFT JOIN LAW_STU_RECORD r ON la.id=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId}
+        LEFT JOIN LAW_STU_RECORD r ON la.id=r.stu_id and r.task_id=#{taskId} and r.user_id=#{userId} and r.is_finish='1'
         WHERE 1=1
         <if test="infoType != null and infoType!=''">
             AND la.INFO_TYPE = #{infoType}
@@ -41,6 +41,7 @@
         <if test="infoId != null and infoId!=''">
            and la.info_parent_id in (select CLASSIFY_CODE FROM LAW_CLASSIFY T START WITH T .id = #{infoId} CONNECT BY PRIOR T .id = T .PARENT_ID)
         </if>
+        order by la.create_time ASC
 
   </select>
     <select id="countListByTask" resultType="java.lang.Integer" parameterType="com.lawschool.beans.law.TaskDesicEntity">

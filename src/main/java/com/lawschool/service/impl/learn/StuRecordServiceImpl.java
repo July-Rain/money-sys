@@ -74,6 +74,11 @@ public class StuRecordServiceImpl extends ServiceImpl<StuRecordDao,StuRecordEnti
             stuRecordEntity.setCreateUser(user.getId());
             stuRecordEntity.setUserName(user.getUserName());
             stuRecordEntity.setStuFrom(stuFrom);
+            if("stu_pic".equals(stuType)||"case_pic".equals(stuType)){
+                stuRecordEntity.setIsFinish("1");
+            }else{
+                stuRecordEntity.setIsFinish("0");
+            }
             if(UtilValidate.isNotEmpty(taskId)){
                 stuRecordEntity.setTaskId(taskId);
             }
@@ -112,6 +117,7 @@ public class StuRecordServiceImpl extends ServiceImpl<StuRecordDao,StuRecordEnti
             stuRecordEntity.setCreateUser(user.getId());
             stuRecordEntity.setUserName(user.getUserName());
             stuRecordEntity.setStuFrom(stuFrom);
+            stuRecordEntity.setIsFinish("1");
             if(UtilValidate.isNotEmpty(taskId)){
                 stuRecordEntity.setTaskId(taskId);
             }
@@ -129,6 +135,7 @@ public class StuRecordServiceImpl extends ServiceImpl<StuRecordDao,StuRecordEnti
             if(finishFlag){
                 //看完一个视频统计量
                 recordEntity.setStuCount(1);
+                recordEntity.setIsFinish("1");
             }
             BigDecimal time = recordEntity.getStuCountTime();
             time = time.add(playTime);
@@ -145,7 +152,7 @@ public class StuRecordServiceImpl extends ServiceImpl<StuRecordDao,StuRecordEnti
                 //音频课堂
                 source=Source.PICSTUDY;
             }
-            updateUserIntegral(stuFrom,taskId,playTime.divide(new BigDecimal(60)),user,source);
+            updateUserIntegral(stuFrom,taskId,playTime.divide(new BigDecimal(60),2,BigDecimal.ROUND_HALF_DOWN),user,source);
         }
 
         return 0;

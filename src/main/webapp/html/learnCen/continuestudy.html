@@ -40,9 +40,48 @@
         color: #333333;
     }
     .el-dialog__wrapper.dialog_minW750 .el-dialog__body {
-        max-height: 40vh;
         overflow-x: hidden;
         overflow-y: auto;
+    }
+    .content_p{
+        background-color: #f8f8f8;
+        padding: 20px;
+        border-radius: 6px;
+        box-shadow: 3px 8px 16px rgba(0,0,0,0.3);
+        line-height: 22px;
+        margin-bottom: 25px;
+        position: relative;
+    }
+    .content_p .clearfix{
+
+    }
+    .content_p .clearfix p:first-child{
+        float: left;
+        font-style: italic;
+        padding-left: 20px;
+    }
+    .content_p .clearfix p:last-child{
+        float: right;
+    }
+    .content_p .shengxiao{
+        position: absolute;
+        right: -14px;
+        top: -18px;
+        width: 100px;
+        height: 100px;
+        border: 8px solid red;
+        line-height: 78px;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 30px;
+        color: red;
+        transform: rotate(26deg);
+        font-weight: bold;
+        opacity: 0.3;
+    }
+    .content_info{
+        padding-top: 10px;
+        line-height: 25px;
     }
 </style>
 <body>
@@ -280,15 +319,27 @@
     </el-dialog>
 
     <el-dialog class="dialog_minW750" :title="title" :visible.sync="dialogLaw" :before-close="closeLawDia"  ref="lawDialog">
-        <div>
+        <!--<div>
             <p>{{lawDesic.title}}</p>
             <p>{{lawDesic.issuedate}}</p>
             <p>{{lawDesic.issueddept}}</p>
             <p>{{lawDesic.status}}</p>
-            <!--<p>{{lawDesic.content}}</p>-->
+            &lt;!&ndash;<p>{{lawDesic.content}}</p>&ndash;&gt;
             <el-col :span="24">
                 <el-input type="textarea" v-model="lawDesic.content"></el-input>
             </el-col>
+        </div>-->
+        <div class="content_p">
+            <div class="clearfix">
+                <p>{{lawDesic.issueddept}}颁布于：{{lawDesic.issuedate}}</p>
+                <p></p>
+
+            </div>
+            <!--<p>{{lawDesic.title}}</p>-->
+
+
+            <div class="shengxiao">{{lawDesic.status}}</div>
+            <pre class="content_info" v-html="lawDesic.content"></pre>
         </div>
     </el-dialog>
 </div>

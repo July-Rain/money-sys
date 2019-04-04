@@ -219,7 +219,7 @@ public class LearnTasksServiceImpl extends AbstractServiceImpl<LearnTasksDao,Lea
         List<LearnTasksEntity> tasksEntities=page.getRecords();
         tasksEntities.stream().forEach(e->{
             int allCount = desicService.selectCount(new EntityWrapper<TaskDesicEntity>().eq("task_id",e.getId()).like("info_type","_data"));
-            int finishCount = recordService.selectCount(new EntityWrapper<StuRecordEntity>().eq("task_id",e.getId()).eq("user_id",userId));
+            int finishCount = recordService.selectCount(new EntityWrapper<StuRecordEntity>().eq("task_id",e.getId()).eq("user_id",userId).eq("is_finish","1"));
             e.setAllCount(allCount);
             e.setFinishCount(finishCount);
 

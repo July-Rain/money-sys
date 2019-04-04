@@ -34,6 +34,8 @@ public class StuRecordEntity implements Serializable {
 
     private String deptId;//部门id
 
+    private String isFinish;//是否完成 0-未完成  1-已完成
+
     @Version
     @TableField(update = "%s+1")
     private Integer stuCount;//学习次数
@@ -142,5 +144,13 @@ public class StuRecordEntity implements Serializable {
 
     public void setDeptId(String deptId) {
         this.deptId = deptId;
+    }
+
+    public String getIsFinish() {
+        return isFinish;
+    }
+
+    public void setIsFinish(String isFinish) {
+        this.isFinish = isFinish;
     }
 }
